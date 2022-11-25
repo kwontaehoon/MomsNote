@@ -8,6 +8,8 @@ import Home from './Home/Main'
 import Information from './Information/Main'
 import Materials from './Materials/Main'
 import Talk from './Talk/Main'
+import Talk1 from './Talk/Talk1'
+import Default from './Default';
 
 
 const Navigation = () => {
@@ -16,8 +18,23 @@ const Navigation = () => {
   
     return (
       <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen name="Talk" component={Talk}></Tab.Screen>
+        <Tab.Navigator screenOptions={{ headerShown: false }}>
+          <Tab.Screen name="Default" component={Default}></Tab.Screen>
+          <Tab.Screen name="Talk">
+          {()=>(
+               <Stack.Navigator >
+                    <Stack.Screen 
+                        name="TalkMain"
+                        component={Talk1}
+                        options={{headerShown: false}}
+                        />
+                    <Stack.Screen 
+                        name="검색"
+                        component={Talk}
+                        />
+               </Stack.Navigator>   
+            )}
+          </Tab.Screen>
           <Tab.Screen name="Dday" component={Dday}></Tab.Screen>
           <Tab.Screen name="Home" component={Home}></Tab.Screen>
           <Tab.Screen name="Marterial" component={Materials}></Tab.Screen>
