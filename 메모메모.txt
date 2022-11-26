@@ -1,0 +1,4 @@
+1. typescript vector-icons 설치
+- npm install --save @types/react-native-vector-icons
+
+2.

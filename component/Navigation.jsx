@@ -18,7 +18,7 @@ const Navigation = () => {
   
     return (
       <NavigationContainer>
-        <Tab.Navigator screenOptions={{ headerShown: false }}>
+        <Tab.Navigator screenOptions={{ headerShown: false, tabBarStyle:{ height: 60, position: 'absolute', paddindgBottom: 7}}}>
           <Tab.Screen name="Default" component={Default}></Tab.Screen>
           <Tab.Screen name="Talk">
           {()=>(
