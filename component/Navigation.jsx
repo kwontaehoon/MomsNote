@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, LogBox } from 'react-native'
 import { NavigationContainer, TabActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -10,6 +10,8 @@ import Materials from './Materials/Main'
 import Talk from './Talk/Main'
 import Talk1 from './Talk/Talk1'
 import Default from './Default';
+
+LogBox.ignoreAllLogs();
 
 
 const Navigation = () => {
