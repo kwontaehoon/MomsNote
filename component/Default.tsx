@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     iconBox:{
-        borderWidth: 1,
         width: '50%',
         height: '100%',
         alignItems: 'center',
@@ -163,8 +162,8 @@ const Default = () => {
     <View style={styles.container}>
         <View style={styles.header}>
             <View style={styles.headerBox}>
-                <View style={styles.iconBox}><Icon name='bell-o' size={25}/></View>
-                <View style={styles.iconBox}><Icon name='user' size={25}/></View>
+                <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
+                <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
             </View>
         </View>
         <View style={styles.header2}>

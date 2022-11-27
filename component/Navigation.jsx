@@ -27,12 +27,12 @@ const Navigation = () => {
                <Stack.Navigator >
                     <Stack.Screen 
                         name="TalkMain"
-                        component={Talk1}
+                        component={Talk}
                         options={{headerShown: false}}
                         />
                     <Stack.Screen 
                         name="검색"
-                        component={Talk}
+                        component={Talk1}
                         />
                </Stack.Navigator>   
             )}
