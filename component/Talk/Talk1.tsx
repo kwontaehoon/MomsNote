@@ -1,23 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 const styles = StyleSheet.create({
   container:{
-    borderWidth: 1,
     height: '82%',
-    backgroundColor: 'pink'
   },
   header:{
     height: '10%',
-    borderWidth: 1,
   },
   headerFilterBox:{
     height: 40,
     borderWidth: 1,
     margin: 10,
     borderRadius: 16,
-    padding: 5,
+    padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -38,12 +35,17 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   main:{
-
+    height: '86%',
+    borderWidth: 1,
+  },
+  mainBox:{
+    borderWidth: 1,
+    height: 200,
   },
 })
 
 
-const Talk1 = () => {
+const Talk1 = ({navigation}: any) => {
 
   const DATA = [
     {
@@ -72,6 +74,13 @@ const Talk1 = () => {
     }
   ];
 
+  const [filter, setFilter] = useState([true, false, false, false]);
+
+  const test = () => {
+    console.log('test');
+    navigation.navigate('Talk1Sub');
+  }
+
   const renderItem = ({ item }) => (
     <View style={styles.headerFilterBox}>
         <TouchableOpacity><Text>{item.title}</Text></TouchableOpacity>
@@ -79,9 +88,9 @@ const Talk1 = () => {
   );
 
   const renderItem2 = ({ item }) => (
-    <View style={styles.headerFilterBox}>
-        <TouchableOpacity><Text>{item.title}</Text></TouchableOpacity>
-    </View>
+    <TouchableOpacity style={styles.mainBox} onPress={test}>
+      <Text>{item.title}</Text>
+    </TouchableOpacity>
   ); 
 
   return (

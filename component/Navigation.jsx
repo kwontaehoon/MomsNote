@@ -5,11 +5,13 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Dday from './Dday/Main'
 import Home from './Home/Main'
+import tt from './Talk/Talk1Sub';
 import Information from './Information/Main'
 import Materials from './Materials/Main'
 import Talk from './Talk/Main'
-import Talk1 from './Talk/Talk1'
-import Default from './Default';
+import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon2 from 'react-native-vector-icons/SimpleLineIcons'
+import Icon3 from 'react-native-vector-icons/Feather' 
 
 LogBox.ignoreAllLogs();
 
@@ -21,26 +23,36 @@ const Navigation = () => {
     return (
       <NavigationContainer>
         <Tab.Navigator screenOptions={{ headerShown: false, tabBarStyle:{ height: 60, position: 'absolute', paddindgBottom: 7}}}>
-          <Tab.Screen name="Default" component={Default}></Tab.Screen>
-          <Tab.Screen name="Talk">
+          
+        <Tab.Screen name="Home" options={{tabBarIcon: () => (<Icon2 name='home' size={23}/>)}}>
+        {()=>(
+               <Stack.Navigator>
+                    <Stack.Screen 
+                        name="Home"
+                        component={Home}
+                        options={{headerShown: false}}
+                        />
+                    <Stack.Screen 
+                        name=" "
+                        component={tt}
+                        />
+               </Stack.Navigator>   
+          )}
+        </Tab.Screen>
+          <Tab.Screen name="Talk" options={{tabBarIcon: () => (<Icon3 name='message-square' size={23}/>)}}>
           {()=>(
-               <Stack.Navigator >
+               <Stack.Navigator>
                     <Stack.Screen 
                         name="TalkMain"
                         component={Talk}
                         options={{headerShown: false}}
                         />
-                    <Stack.Screen 
-                        name="검색"
-                        component={Talk1}
-                        />
                </Stack.Navigator>   
             )}
           </Tab.Screen>
-          <Tab.Screen name="Dday" component={Dday}></Tab.Screen>
-          <Tab.Screen name="Home" component={Home}></Tab.Screen>
-          <Tab.Screen name="Marterial" component={Materials}></Tab.Screen>
-          <Tab.Screen name="Information" component={Information}></Tab.Screen>
+          <Tab.Screen name="Dday" component={Dday} options={{tabBarIcon: () => (<Icon name='calendar-o' size={23}/>)}}></Tab.Screen>
+          <Tab.Screen name="Marterial" component={Materials} options={{tabBarIcon: () => (<Icon2 name='bag' size={23}/>)}}></Tab.Screen>
+          <Tab.Screen name="Information" component={Information} options={{tabBarIcon: () => (<Icon name='bullhorn' size={23}/>)}}></Tab.Screen>
         </Tab.Navigator>
       </NavigationContainer>
   )

@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         height: '10%',
         borderWidth: 1,
         justifyContent: 'center',
-        alignItems: 'center',
+        padding: 10,
         position: 'relative',
     },
     headerBox:{
@@ -34,28 +34,33 @@ const styles = StyleSheet.create({
         margin: 5,
     },
     header2:{
-        borderWidth: 1,
         height: '8%',
         flexDirection: 'row',
     },
     header2Box:{
-        borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        borderBottomWidth: 2,
+        borderBottomColor: '#ddd'
     },
 })
 const Main = () => {
 
-    const [filter, setFilter] = useState(0);
+    const [filter, setFilter] = useState([true, false, false]);
     console.log('filter: ', filter);
 
 
     const List = ():any => {
-        switch(filter){
-            case 0: return <Talk1/>
-            case 1: return <Talk2/>
-            case 2: return <Talk3/>
+        switch(true){
+            case filter[0] === true: return <Talk1/>
+            case filter[1] === true: return <Talk2/>
+            case filter[2] === true: return <Talk3/>
         }
+    }
+    const filter_func = (e) => {
+        let arr = [false, false, false];
+        arr[e] = true;
+        setFilter(arr);
     }
 
   return (
@@ -65,11 +70,17 @@ const Main = () => {
             <Icon2 name='search1' size={22} style={styles.headerIcon}/>
             <Icon name='bell-o' size={22} style={styles.headerIcon}/>
             <Icon name='user-o' size={22} style={styles.headerIcon}/>
-        </View><Text>맘스 톡</Text></View>
+        </View><Text style={{fontSize: 23, fontWeight: 'bold'}}>맘스 톡</Text></View>
         <View style={styles.header2}>
-            <TouchableOpacity style={[styles.header2Box, {width: '25%'}]} onPress={()=>setFilter(0)}><Text>맘스토크</Text></TouchableOpacity>
-            <TouchableOpacity style={[styles.header2Box, {width: '50%'}]} onPress={()=>setFilter(1)}><Text>출산리스트공유</Text></TouchableOpacity>
-            <TouchableOpacity style={[styles.header2Box, {width: '25%'}]} onPress={()=>setFilter(2)}><Text>체험단</Text></TouchableOpacity>
+            <TouchableOpacity style={[styles.header2Box, {width: '25%', borderBottomColor: filter[0] ? 'orange' : 'lightgrey'}]} onPress={()=>filter_func(0)}>
+                <Text style={{fontWeight: 'bold', color: filter[0] ? 'orange' : 'lightgrey'}}>맘스토크</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.header2Box, {width: '50%', borderBottomColor: filter[1] ? 'orange' : 'lightgrey'}]} onPress={()=>filter_func(1)}>
+                <Text style={{fontWeight: 'bold', color: filter[1] ? 'orange' : 'lightgrey'}}>출산리스트공유</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.header2Box, {width: '25%', borderBottomColor: filter[2] ? 'orange' : 'lightgrey'}]} onPress={()=>filter_func(2)}>
+                <Text style={{fontWeight: 'bold', color: filter[2] ? 'orange' : 'lightgrey'}}>체험단</Text>
+            </TouchableOpacity>
         </View>
         <List />
     </View>
