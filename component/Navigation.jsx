@@ -5,10 +5,19 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Dday from './Dday/Main'
 import Home from './Home/Main'
-import tt from './Talk/Talk1Sub';
+import TalkDetail from './Talk/Talk1Sub'
+import TalkSearch from './Talk/Search'
+import TalkRegister from './Talk/Register'
+import TalkCategories from './Talk/Categories'
 import Information from './Information/Main'
 import Materials from './Materials/Main'
 import Talk from './Talk/Main'
+import MyPage from './MyPage/MyPage'
+import MyPageInquiry from './MyPage/Inquiry/Main'
+import MyPageInquiryDetail from './MyPage/Inquiry/InquiryDetail'
+import MyPageNotice from './MyPage/Notice/Main' // 공지사항
+import MyPageNoticeDetail from './MyPage/Notice/NoticeDetail' // 공지사항 내용
+import MyPageEdit from './MyPage/Edit/Main' // 내 정보 수정
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/SimpleLineIcons'
 import Icon3 from 'react-native-vector-icons/Feather' 
@@ -22,9 +31,9 @@ const Navigation = () => {
   
     return (
       <NavigationContainer>
-        <Tab.Navigator screenOptions={{ headerShown: false, tabBarStyle:{ height: 60, position: 'absolute', paddindgBottom: 7}}}>
+        <Tab.Navigator screenOptions={{ headerShown: false, tabBarStyle:{ height: 60, position: 'absolute', paddingBottom: 7}, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 12}}}>
           
-        <Tab.Screen name="Home" options={{tabBarIcon: () => (<Icon2 name='home' size={23}/>)}}>
+        <Tab.Screen name="홈" options={{tabBarIcon: ({color}) => (<Icon2 name='home' size={22} color={color}/>)}}>
         {()=>(
                <Stack.Navigator>
                     <Stack.Screen 
@@ -33,13 +42,13 @@ const Navigation = () => {
                         options={{headerShown: false}}
                         />
                     <Stack.Screen 
-                        name=" "
-                        component={tt}
+                        name="공지사항"
+                        component={MyPageEdit}
                         />
                </Stack.Navigator>   
           )}
         </Tab.Screen>
-          <Tab.Screen name="Talk" options={{tabBarIcon: () => (<Icon3 name='message-square' size={23}/>)}}>
+          <Tab.Screen name="맘스톡" options={{tabBarIcon: ({color}) => (<Icon3 name='message-square' size={22} color={color}/>)}}>
           {()=>(
                <Stack.Navigator>
                     <Stack.Screen 
@@ -50,9 +59,9 @@ const Navigation = () => {
                </Stack.Navigator>   
             )}
           </Tab.Screen>
-          <Tab.Screen name="Dday" component={Dday} options={{tabBarIcon: () => (<Icon name='calendar-o' size={23}/>)}}></Tab.Screen>
-          <Tab.Screen name="Marterial" component={Materials} options={{tabBarIcon: () => (<Icon2 name='bag' size={23}/>)}}></Tab.Screen>
-          <Tab.Screen name="Information" component={Information} options={{tabBarIcon: () => (<Icon name='bullhorn' size={23}/>)}}></Tab.Screen>
+          <Tab.Screen name="D-280" component={Dday} options={{tabBarIcon: ({color}) => (<Icon name='calendar-o' size={22} color={color}/>)}}></Tab.Screen>
+          <Tab.Screen name="출산준비물" component={Materials} options={{tabBarIcon: ({color}) => (<Icon2 name='bag' size={22} color={color}/>)}}></Tab.Screen>
+          <Tab.Screen name="맘스정보" component={Information} options={{tabBarIcon: ({color}) => (<Icon name='bullhorn' size={22} color={color}/>)}}></Tab.Screen>
         </Tab.Navigator>
       </NavigationContainer>
   )

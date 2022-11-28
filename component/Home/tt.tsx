@@ -3,10 +3,17 @@ import { View, Text, StyleSheet, FlatList } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-const tt = () => {
+const styles = StyleSheet.create({
+    container:{
+        
+    }
+})
+const InquiryDetail = () => {
   return (
-    <View><Text>tt</Text></View>
+    <View style={styles.container}>
+        
+    </View>
   )
 }
 
-export default tt
+export default InquiryDetail

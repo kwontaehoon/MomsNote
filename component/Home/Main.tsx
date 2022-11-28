@@ -159,8 +159,7 @@ const Home = ({navigation}:any) => {
       );
       
     const test = () => {
-      console.log('test');
-      navigation.navigate(' ');
+      navigation.navigate('공지사항');
     }
     
   return (
