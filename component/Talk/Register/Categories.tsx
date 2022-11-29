@@ -8,11 +8,11 @@ const styles = StyleSheet.create({
         height: '92%',
     },
     header:{
-      borderWidth: 1,
-      borderColor: 'lightgrey',
-      height: '10%',
+      borderBottomWidth: 1,
+      borderColor: '#E0E0E0',
+      height: '9%',
       justifyContent: 'center',
-      paddingLeft: 10,
+      paddingLeft: 15,
     },
     text:{
       fontSize: 17,

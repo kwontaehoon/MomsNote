@@ -1,6 +1,6 @@
 import React from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import Icon3 from 'react-native-vector-icons/Feather'
@@ -10,11 +10,11 @@ const styles = StyleSheet.create({
     marginTop: getStatusBarHeight(),
     borderWidth: 2,
     height: '89%',
+    backgroundColor: 'white',
   },
   header:{
     width: '100%',
-    height: '6%',
-    borderWidth: 1,
+    height: '8%',
     flexDirection: 'row',
   },
   headerBox:{
@@ -27,12 +27,15 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   header2:{
+    height: '2%',
+    backgroundColor: '#F5F5F5'
+  },
+  header3:{
     height: '6%',
-    borderWidth: 1,
     flexDirection: 'row',
   },
   main:{
-    height: '78%',
+    height: '74%',
     borderWidth: 1,
   },
   mainBox:{
@@ -40,7 +43,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     justifyContent: 'center',
-    paddingLeft: 10,
+  },
+  mainBox2:{
+    flexDirection: 'row',
+    padding: 15,
+  },
+  titleBox:{
+    width: '50%',
+    justifyContent: 'center'
   },
 
   footer:{
@@ -64,22 +74,27 @@ const Navigation = () => {
     {
       id: '1',
       title: '산모용품',
+      color: '#FFADAD'
     },
     {
       id: '2',
       title: '수유용품',
+      color: '#FFD6A5'
     },
     {
       id: '3',
       title: '위생용품',
+      color: 'green'
     },
     {
       id: '4',
       title: '목욕용품',
+      color: 'skyblue'
     },
     {
       id: '5',
-      title: '침구류'
+      title: '침구류',
+      color: 'purple'
     },
     {
       id: '6',
@@ -97,7 +112,10 @@ const Navigation = () => {
 
   const renderItem = ({ item }) => (
     <View style={styles.mainBox}>
-        <Text>{item.title}</Text>
+        <View style={[styles.mainBox2]}>
+            <View style={[styles.titleBox]}><Text>{item.title}</Text></View>
+            <TouchableOpacity style={[styles.titleBox, {alignItems: 'flex-end'}]}><Icon name="angle-down" size={22} /></TouchableOpacity>
+        </View>
     </View>
   ); 
 
@@ -105,7 +123,7 @@ const Navigation = () => {
     <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.headerBox}>
-            <Text>출산준비물 리스트</Text>
+            <Text>출산준비물</Text>
           </View>
           <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
             <View style={styles.iconBox}><Icon3 name='refresh-cw' size={22}/></View>
@@ -115,7 +133,8 @@ const Navigation = () => {
             <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
           </View>
         </View>
-        <View style={styles.header2}>
+        <View style={styles.header2}></View>
+        <View style={styles.header3}>
           <View style={styles.headerBox}>
             <Text>전체 (5/37)</Text>
           </View>

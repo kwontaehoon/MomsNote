@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     ddayBox:{
-        borderWidth: 1,
         width: '25%',
         height: '30%',
         position: 'absolute',
@@ -57,7 +56,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     saveBox:{
-        borderWidth: 1,
         width: '25%',
         height: '30%',
         position: 'absolute',
@@ -171,7 +169,7 @@ const Home = ({navigation}:any) => {
             </View>
         </View>
         <View style={styles.header2}>
-            <Text>이름</Text>
+
         </View>
         <View style={styles.main}>
             <View style={styles.photoBox}>

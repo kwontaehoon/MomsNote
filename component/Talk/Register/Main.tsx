@@ -6,16 +6,13 @@ import { getStatusBarHeight } from "react-native-status-bar-height"
 const styles = StyleSheet.create({
     container:{
         marginTop: getStatusBarHeight(),
-        borderWidth: 2,
         height: '89%',
     },
     header:{
-        height: '10%',
-        borderWidth: 1,
+        height: '8%',
         flexDirection: 'row',
     },
     headerBox:{
-        borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -48,33 +45,37 @@ const styles = StyleSheet.create({
     },
     main:{
         height: '16%',
-        borderWidth: 1,
         flexDirection: 'row',
+        padding: 5,
     },
     mainBox:{
-        borderWidth: 1,
         width: '30%',
         alignItems: 'center',
         justifyContent: 'center',
     },
     cameraBox:{
         borderWidth: 1,
-        borderColor: 'grey',
+        borderColor: '#E0E0E0',
         width: '70%',
         height: '70%',
         padding: 10,
         alignItems: 'center',
         justifyContent: 'center',
+        borderRadius: 10,
     },
     mainBox2:{
-        borderWidth: 1,
         width: '70%',
         alignItems: 'center',
         justifyContent: 'center',
     },
     main2:{
-        height: '10%',
+        height: '9%',
         flexDirection: 'row',
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: 'black',
+        marginLeft: 10,
+        marginRight: 10,
     },
     main2Box:{
         width: '85%',
@@ -87,26 +88,31 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     main3:{
-        height: '56%',
-        borderWidth: 1,
+        height: '59%',
+        marginLeft: 10,
+        marginRight: 10,
+        borderBottomWidth: 1,
     },
     main3TitleBox:{
-        borderWidth: 1,
         height: '20%',
+        borderBottomWidth: 1,
+        paddingLeft: 10,
+        paddingTop: 10,
     },
     main3ContentBox:{
-        borderWidth: 1,
-        height: '80%',
+        height: '70%',
+        paddingLeft: 10,
+        paddingTop: 10,
     },
 
 })
-const Register = () => {
+const Register = ({navigation}) => {
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} keyboardVerticalOffset={0}>
         <View style={styles.header}>
-            <View style={[styles.headerBox, {width: '20%'}]}><Text>취소</Text></View>
-            <View style={[styles.headerBox, {width: '60%'}]}><Text style={{fontSize: 25}}>맘스톡 등록</Text></View>
-            <View style={[styles.headerBox, {width: '20%'}]}><Text>완료</Text></View>
+            <View style={[styles.headerBox, {width: '20%'}]}><Text style={{fontSize: 15}}>취소</Text></View>
+            <View style={[styles.headerBox, {width: '60%'}]}><Text style={{fontSize: 25, fontWeight: 'bold'}}>맘스톡 등록</Text></View>
+            <View style={[styles.headerBox, {width: '20%'}]}><Text style={{color: '#FE7000', fontSize: 15}}>완료</Text></View>
         </View>
         <View style={styles.header2}>
             <View style={styles.header2Box}>
@@ -130,13 +136,13 @@ const Register = () => {
         </View>
         <View style={styles.main2}>
             <View style={styles.main2Box}><Text>카테고리 선택</Text></View>
-            <View style={styles.main2Box2}><Icon name='user' size={20}/></View>
+            <TouchableOpacity style={styles.main2Box2} onPress={()=>navigation.navigate("카테고리 선택")}><Icon name='angle-right' size={20}/></TouchableOpacity>
         </View>
         <SafeAreaView style={styles.main3}>
-            <TextInput style={styles.main3TitleBox} ></TextInput>
-            <TextInput style={styles.main3ContentBox}></TextInput>
+            <View style={styles.main3TitleBox}><TextInput  placeholder='제목을 입력해주세요.'></TextInput></View>
+            <View style={styles.main3ContentBox}><TextInput  placeholder='게시글 내용을 작성해주세요.'></TextInput></View>
         </SafeAreaView>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 

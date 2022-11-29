@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     height: 180,
   }
 })
-const Navigation = () => {
+const Information = () => {
 
   const DATA = [
     {
@@ -159,4 +159,4 @@ const Navigation = () => {
   )
 }
 
-export default Navigation
+export default Information

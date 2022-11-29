@@ -3,19 +3,17 @@ import { getStatusBarHeight } from "react-native-status-bar-height";
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
-import Talk1 from './Talk1'
-import Talk2 from './Talk2'
-import Talk3 from './Talk3'
+import Talk1 from './Tab1/Main'
+import Talk2 from './Tab2/Main'
+import Talk3 from './Tab3/Main'
 
 const styles = StyleSheet.create({
     container:{
         marginTop: getStatusBarHeight(),
-        borderWidth: 2,
         height: '89%',
     },
     header:{
-        height: '10%',
-        borderWidth: 1,
+        height: '9%',
         justifyContent: 'center',
         padding: 10,
         position: 'relative',
@@ -41,10 +39,22 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderBottomWidth: 2,
-        borderBottomColor: '#ddd'
+    },
+    footer:{
+        width: 60,
+        height: 60,
+        position: 'absolute',
+        bottom: 20,
+        right: 20,
+        borderRadius: 999,
+        backgroundColor: '#FEA100',
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: "#000",
+        elevation: 5,
     },
 })
-const Main = () => {
+const Main = ({navigation}:any) => {
 
     const [filter, setFilter] = useState([true, false, false]);
     console.log('filter: ', filter);
@@ -72,17 +82,20 @@ const Main = () => {
             <Icon name='user-o' size={22} style={styles.headerIcon}/>
         </View><Text style={{fontSize: 23, fontWeight: 'bold'}}>맘스 톡</Text></View>
         <View style={styles.header2}>
-            <TouchableOpacity style={[styles.header2Box, {width: '25%', borderBottomColor: filter[0] ? 'orange' : 'lightgrey'}]} onPress={()=>filter_func(0)}>
-                <Text style={{fontWeight: 'bold', color: filter[0] ? 'orange' : 'lightgrey'}}>맘스토크</Text>
+            <TouchableOpacity style={[styles.header2Box, {width: '25%', borderBottomColor: filter[0] ? 'orange' : '#BDBDBD'}]} onPress={()=>filter_func(0)}>
+                <Text style={{fontWeight: 'bold', fontSize: 18, color: filter[0] ? 'orange' : '#BDBDBD'}}>맘스 토크</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.header2Box, {width: '50%', borderBottomColor: filter[1] ? 'orange' : 'lightgrey'}]} onPress={()=>filter_func(1)}>
-                <Text style={{fontWeight: 'bold', color: filter[1] ? 'orange' : 'lightgrey'}}>출산리스트공유</Text>
+            <TouchableOpacity style={[styles.header2Box, {width: '50%', borderBottomColor: filter[1] ? 'orange' : '#BDBDBD'}]} onPress={()=>filter_func(1)}>
+                <Text style={{fontWeight: 'bold', fontSize: 18, color: filter[1] ? 'orange' : '#BDBDBD'}}>출산리스트공유</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.header2Box, {width: '25%', borderBottomColor: filter[2] ? 'orange' : 'lightgrey'}]} onPress={()=>filter_func(2)}>
-                <Text style={{fontWeight: 'bold', color: filter[2] ? 'orange' : 'lightgrey'}}>체험단</Text>
+            <TouchableOpacity style={[styles.header2Box, {width: '25%', borderBottomColor: filter[2] ? 'orange' : '#BDBDBD'}]} onPress={()=>filter_func(2)}>
+                <Text style={{fontWeight: 'bold', fontSize: 18, color: filter[2] ? 'orange' : '#BDBDBD'}}>체험단</Text>
             </TouchableOpacity>
         </View>
         <List />
+        <TouchableOpacity style={styles.footer} onPress={()=>navigation.navigate(' ')}>
+            <Icon name="pencil" size={22} style={{color: 'white'}}/>
+        </TouchableOpacity>
     </View>
   )
 }

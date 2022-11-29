@@ -4,10 +4,12 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 const styles = StyleSheet.create({
   container:{
-    height: '82%',
+    height: '83%',
+    backgroundColor: 'white',
   },
   header:{
-    height: '10%',
+    height: '5%',
+    backgroundColor: '#F5F5F5',
   },
   headerFilterBox:{
     height: 40,
@@ -20,32 +22,46 @@ const styles = StyleSheet.create({
   },
   header2:{
     height: '7%',
-    borderWidth: 1,
     flexDirection: 'row',
-    padding: 5,
-  },
-  header2Box2:{
-    height: '7%',
-    borderWidth: 1,
-    flexDirection: 'row',
-    padding: 5,
+    padding: 10,
+    backgroundColor: '#F5F5F5',
   },
   header2FilterBox:{
     width: '50%',
     justifyContent: 'flex-end',
   },
   main:{
-    height: '86%',
+    height: '88%',
     borderWidth: 1,
   },
   mainBox:{
-    borderWidth: 1,
-    height: 200,
+    borderBottomWidth: 1,
+    height: 100,
+    padding: 10,
+  },
+  mainBox2:{
+    height: '50%',
+    justifyContent: 'center',
+    paddingLeft: 5
+  },
+  mainBox3:{
+    height: '50%',
+    flexDirection: 'row',
+  },
+  infoBox:{
+    width: '50%',
+    paddingLeft: 5,
+
+  },
+  clockBox:{
+    width: '50%',
+    alignItems: 'flex-end',
+    paddingRight: 5,
   },
 })
 
 
-const Talk1 = ({navigation}: any) => {
+const Talk3 = ({navigation}: any) => {
 
   const DATA = [
     {
@@ -78,34 +94,24 @@ const Talk1 = ({navigation}: any) => {
 
   const test = () => {
     console.log('test');
-    navigation.navigate('Talk1Sub');
+    navigation.navigate(' ');
   }
 
   const renderItem = ({ item }) => (
-    <View style={styles.headerFilterBox}>
-        <TouchableOpacity><Text>{item.title}</Text></TouchableOpacity>
-    </View>
-  );
-
-  const renderItem2 = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={test}>
-      <Text>{item.title}</Text>
+        
     </TouchableOpacity>
   ); 
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <FlatList data={DATA} renderItem={renderItem}
-          keyExtractor={item => item.id} horizontal={true}>
-        </FlatList>
-      </View>
+      <View style={styles.header}></View>
       <View style={styles.header2}>
-        <View style={styles.header2FilterBox}><Text>9,999건</Text></View>
+        <View style={styles.header2FilterBox}><Text>0 건</Text></View>
         <View style={[styles.header2FilterBox, {alignItems: 'flex-end'}]}><Icon name='filter' size={22} /></View>
       </View>
       <View style={styles.main}>
-        <FlatList data={DATA} renderItem={renderItem2}
+        <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id}>
         </FlatList>
       </View>
@@ -113,4 +119,4 @@ const Talk1 = ({navigation}: any) => {
   )
 }
 
-export default Talk1
+export default Talk3
