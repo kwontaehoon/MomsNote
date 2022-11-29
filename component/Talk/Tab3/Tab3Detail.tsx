@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
@@ -13,16 +13,27 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     header:{
-        height: 300,
+        height: 250,
         backgroundColor: 'yellow'
     },
     main:{
-        height: 200,
+        height: 220,
+        padding: 10,
+    },
+    mainBox:{
+        borderBottomWidth: 1,
+        borderColor: '#EEEEEE',
+        height: '50%',
+        justifyContent: 'center',
+        paddingTop: 10,
+    },
+    mainBox2:{
+        height: '50%',
+        justifyContent: 'center',
     },
     main2:{
         height: 10,
         backgroundColor: '#F5F5F5'
-
     },
     main3:{
         height: 380,
@@ -38,6 +49,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     main3Box2:{
+        borderWidth: 1,
+        height: 100,
+    },
+    main3Box3:{
         borderWidth: 1,
         height: 100,
     },
@@ -68,46 +83,29 @@ const Talk1Sub = () => {
         {
           id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
           title: '전체'
-        },
-        {
-          id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-          title: '자유게시판'
-        },
-        {
-          id: '58694a0f-3da1-471f-bd96-145571e29d72',
-          title: '일상이야기'
-        },
-        {
-            id: '1',
-            title: '임신정보'
-        },
-        {
-            id: '2',
-            title: '고민상담'
-        },
-        {
-            id: '3',
-            title: '질문게시판'
         }
     ];
 
     const [filter, setFilter] = useState(false);
 
-    const renderItem2 = ({ item }) => (
-        <TouchableOpacity style={styles.main3Box2}>
-            <Text>{item.title}</Text>
-        </TouchableOpacity>
-    ); 
-
-
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item }:any) => (
         
         <View style={styles.container2}>
             <View style={styles.header}>
 
             </View>
             <View style={styles.main}>
-
+                <View style={styles.mainBox}>
+                    <Text style={{color: '#9E9E9E'}}>신청인원 36 / 모집인원 10</Text>
+                    <Text style={{fontSize: 25}}>맘스노트 신규체험단 모집</Text>
+                </View>
+                <View style={styles.mainBox2}>
+                    <View style={styles.main2Box}>
+                        <View><Text style={{margin: 2}}>신청기간: 22.11.01 ~ 22.11.15</Text></View>
+                        <View><Text style={{margin: 2}}>발표일자: 22.11.18</Text></View>
+                        <View><Text style={{margin: 2}}>등록기간: 22.12.01</Text></View>
+                    </View>
+                </View>
             </View>
             <View style={styles.main2}/>
             <View style={styles.main3}>
@@ -121,11 +119,44 @@ const Talk1Sub = () => {
                 </View>
                 
             <FlatList data={DATA2} renderItem={renderItem2}
-            keyExtractor={item => item.id}>
+                keyExtractor={item => item.id}>
             </FlatList>
             </View>
         </View>
       );
+
+    const renderItem2 = ({ item }:any) => (
+        <List item={item}/>
+    );
+
+    const List = ({item}:any) => {
+        switch(filter){
+            case false : return (
+                <View style={styles.main3Box2}>
+                    <Text>체험정보</Text>
+                </View>
+            )
+            case true : return (
+                <View style={styles.main3Box3}>
+                    <Text>선정인원</Text>
+                </View>
+            )
+        }
+    }
+    const check = () => {
+        Alert.alert(
+            "체험단 신청을 하시려면 신청정보를 먼저 작성 하셔야합니다. 지금 작성하시겠습니까?",
+            "My Alert Msg",
+            [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+              },
+              { text: "OK", onPress: () => console.log("OK Pressed") }
+            ]
+          );
+    }
 
 
   return (
@@ -139,7 +170,7 @@ const Talk1Sub = () => {
                 <Text> 12</Text>
             </View>
             <View style={[styles.footerBox, {width: '5%', borderWidth: 0}]}></View>
-            <View style={[styles.footerBox, {width: '75%'}]}><Text style={{fontSize: 20, fontWeight: '500'}}>신청서 확인</Text></View>
+            <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={check}><Text style={{fontSize: 20, fontWeight: '500'}}>신청서 확인</Text></TouchableOpacity>
         </View>
     </View>
   )

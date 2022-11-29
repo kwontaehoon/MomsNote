@@ -39,7 +39,7 @@ const Navigation = () => {
                <Stack.Navigator>
                     <Stack.Screen 
                         name="Home"
-                        component={Talk}
+                        component={Materials}
                         options={{headerShown: false}}
                         />
                     <Stack.Screen 
@@ -47,8 +47,8 @@ const Navigation = () => {
                         component={TalkTab3Detail}
                         />
                     <Stack.Screen 
-                        name="1:1문의"
-                        component={MyPageEdit}
+                        name="aa"
+                        component={TalkTab3Detail}
                         />
                </Stack.Navigator>   
           )}

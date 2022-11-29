@@ -1,19 +1,18 @@
 import React from 'react'
-import { getStatusBarHeight } from "react-native-status-bar-height"
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import { getStatusBarHeight } from "react-native-status-bar-height"; 
+import { View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import Icon3 from 'react-native-vector-icons/Feather'
+import CheckBox from '@react-native-community/checkbox';
 
 const styles = StyleSheet.create({
   container:{
     marginTop: getStatusBarHeight(),
-    borderWidth: 2,
     height: '89%',
     backgroundColor: 'white',
   },
   header:{
-    width: '100%',
     height: '8%',
     flexDirection: 'row',
   },
@@ -21,7 +20,8 @@ const styles = StyleSheet.create({
     width: '50%',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 5,
+    paddingLeft: 15,
+    paddingRight: 15,
   },
   iconBox:{
     margin: 5,
@@ -36,13 +36,11 @@ const styles = StyleSheet.create({
   },
   main:{
     height: '74%',
-    borderWidth: 1,
   },
   mainBox:{
-    height: 55,
+    height: 500,
     borderWidth: 1,
     marginBottom: 10,
-    justifyContent: 'center',
   },
   mainBox2:{
     flexDirection: 'row',
@@ -52,7 +50,30 @@ const styles = StyleSheet.create({
     width: '50%',
     justifyContent: 'center'
   },
-
+  mainBox3:{
+    borderWidth: 1,
+    height: 400,
+  },
+  filterBox:{
+    height: 35,
+    flexDirection: 'row',
+  },
+  filter:{
+    width: '43%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  listBox:{
+    borderWidth: 1,
+    height: 50,
+    flexDirection: 'row',
+  },
+  list:{
+    width: '43%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   footer:{
     height: '10%',
     borderWidth: 1,
@@ -60,6 +81,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 7,
+  },
+  parchase:{
+    width: 18,
+    height: 18,
+    borderWidth: 1,
+    borderRadius: 3,
+  },
+  type:{
+    flexDirection: 'row',
+  },
+  typeBox:{
+    width: 36,
+    height: 20,
+    alignItems:'center',
+    justifyContent: 'center',
+    marginRight: 5,
+    borderRadius: 3,
+    backgroundColor: '#5291EF'
+  },
+  brand:{
+    width: 120,
+    height: 32,
+    backgroundColor: '#F5F5F5',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 3,
   },
   footerBox:{
     height: '50%',
@@ -73,41 +120,10 @@ const Navigation = () => {
   const DATA = [
     {
       id: '1',
-      title: '산모용품',
+      title: '산모용품 (0/13)',
       color: '#FFADAD'
     },
-    {
-      id: '2',
-      title: '수유용품',
-      color: '#FFD6A5'
-    },
-    {
-      id: '3',
-      title: '위생용품',
-      color: 'green'
-    },
-    {
-      id: '4',
-      title: '목욕용품',
-      color: 'skyblue'
-    },
-    {
-      id: '5',
-      title: '침구류',
-      color: 'purple'
-    },
-    {
-      id: '6',
-      title: '아기의류'
-    },
-    {
-      id: '7',
-      title: '의출용품'
-    },
-    {
-      id: '8',
-      title: '가전용품'
-    },
+
   ];
 
   const renderItem = ({ item }) => (
@@ -116,10 +132,39 @@ const Navigation = () => {
             <View style={[styles.titleBox]}><Text>{item.title}</Text></View>
             <TouchableOpacity style={[styles.titleBox, {alignItems: 'flex-end'}]}><Icon name="angle-down" size={22} /></TouchableOpacity>
         </View>
+        <View style={styles.mainBox3}>
+          <View style={styles.filterBox}>
+            <View style={[styles.filter, {width: '14%'}]}><Text>구매</Text></View>
+            <View style={styles.filter}><Text>품목</Text></View>
+            <View style={styles.filter}><Text>브랜드</Text></View>
+          </View>
+          <View style={styles.listBox}>
+            <View style={[styles.list, {width: '14%'}]}>
+            <CheckBox
+    disabled={false}
+    value={toggleCheckBox}
+    onValueChange={(newValue) => setToggleCheckBox(newValue)}
+  />
+            </View>
+            <View style={[styles.list, {alignItems: 'flex-start'}]}>
+              <View style={styles.type}>
+                <View style={styles.typeBox}><Text style={{color: 'white'}}>권장</Text></View>
+                <View style={{paddingTop: 1,}}><Text>산모 패드</Text></View>
+              </View>
+            </View>
+            <View style={styles.list}>
+              <View style={styles.brand}>
+                <Icon name='plus' size={14} style={{color: '#757575'}}></Icon>
+              </View>
+            </View>
+          </View>
+        </View>
     </View>
   ); 
 
   return (
+    <>
+
     <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.headerBox}>
@@ -156,6 +201,7 @@ const Navigation = () => {
           <View style={[styles.footerBox, {width: '60%'}]}><Text>브랜드 선택시 예산이 표기됩니다.</Text></View>
         </View>
     </View>
+    </>
   )
 }
 
