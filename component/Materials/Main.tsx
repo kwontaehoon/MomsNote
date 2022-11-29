@@ -1,15 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
 import { View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import Icon2 from 'react-native-vector-icons/AntDesign'
-import Icon3 from 'react-native-vector-icons/Feather'
-import CheckBox from '@react-native-community/checkbox';
+import Checkbox from 'expo-checkbox';
 
 const styles = StyleSheet.create({
   container:{
-    marginTop: getStatusBarHeight(),
-    height: '89%',
+    height: '92%',
     backgroundColor: 'white',
   },
   header:{
@@ -35,7 +32,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   main:{
-    height: '74%',
+    height: '84%',
   },
   mainBox:{
     height: 500,
@@ -45,6 +42,7 @@ const styles = StyleSheet.create({
   mainBox2:{
     flexDirection: 'row',
     padding: 15,
+    borderBottomWidth: 1,
   },
   titleBox:{
     width: '50%',
@@ -74,19 +72,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  footer:{
-    height: '10%',
-    borderWidth: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 7,
-  },
-  parchase:{
+  checkbox: {
+    margin: 8,
     width: 18,
     height: 18,
-    borderWidth: 1,
     borderRadius: 3,
+    borderColor: '#E0E0E0',
   },
   type:{
     flexDirection: 'row',
@@ -108,14 +99,33 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 3,
   },
-  footerBox:{
-    height: '50%',
+  footer:{
+    width: '100%',
+    height: '10%',
+    borderWidth: 1,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    padding: 7,
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: 'white',
+  },
+  footerBox:{
+    width: '95%',
+    height: '80%',
+    backgroundColor: '#F5F5F5',
+    borderRadius: 3,
+    flexDirection: 'row',
+    padding: 10
+  },
+  budgetBox:{
+    width: '50%',
     justifyContent: 'center',
   }
 })
 
-const Navigation = () => {
+const Navigation = ({navigation}:any) => {
 
   const DATA = [
     {
@@ -126,13 +136,18 @@ const Navigation = () => {
 
   ];
 
+  const [list, setList] = useState(Array.from({ length: 7 }, () => { return false}));
+  console.log('list: ', list);
+  const [isChecked, setChecked] = useState(false); // check box
+
   const renderItem = ({ item }) => (
     <View style={styles.mainBox}>
         <View style={[styles.mainBox2]}>
             <View style={[styles.titleBox]}><Text>{item.title}</Text></View>
-            <TouchableOpacity style={[styles.titleBox, {alignItems: 'flex-end'}]}><Icon name="angle-down" size={22} /></TouchableOpacity>
+            <TouchableOpacity style={[styles.titleBox, {alignItems: 'flex-end'}]}
+            onPress={()=>setList(!list)}><Icon name="angle-down" size={22} /></TouchableOpacity>
         </View>
-        <View style={styles.mainBox3}>
+        <View style={[styles.mainBox3, {display: list ? 'flex' : 'none'}]}>
           <View style={styles.filterBox}>
             <View style={[styles.filter, {width: '14%'}]}><Text>구매</Text></View>
             <View style={styles.filter}><Text>품목</Text></View>
@@ -140,11 +155,12 @@ const Navigation = () => {
           </View>
           <View style={styles.listBox}>
             <View style={[styles.list, {width: '14%'}]}>
-            <CheckBox
-    disabled={false}
-    value={toggleCheckBox}
-    onValueChange={(newValue) => setToggleCheckBox(newValue)}
-  />
+            <Checkbox
+              style={styles.checkbox}
+              value={isChecked}
+              onValueChange={setChecked}
+              color={isChecked ? '#FEB401' : undefined}
+            />
             </View>
             <View style={[styles.list, {alignItems: 'flex-start'}]}>
               <View style={styles.type}>
@@ -163,21 +179,7 @@ const Navigation = () => {
   ); 
 
   return (
-    <>
-
     <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.headerBox}>
-            <Text>출산준비물</Text>
-          </View>
-          <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-            <View style={styles.iconBox}><Icon3 name='refresh-cw' size={22}/></View>
-            <View style={styles.iconBox}><Icon2 name='download' size={22}/></View>
-            <View style={styles.iconBox}><Icon2 name='search1' size={22}/></View>
-            <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
-            <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
-          </View>
-        </View>
         <View style={styles.header2}></View>
         <View style={styles.header3}>
           <View style={styles.headerBox}>
@@ -194,14 +196,14 @@ const Navigation = () => {
           </FlatList>
         </View>
         <View style={styles.footer}>
-          <View style={[styles.footerBox, {width: '20%', backgroundColor: 'black'}]}>
-            <Text style={{color: 'white'}}>자세히</Text>
+          <View style={styles.footerBox}>
+            <View style={styles.budgetBox}><Text>총 예산: 0000원</Text></View>
+            <View style={[styles.budgetBox, {alignItems: 'flex-end'}]}>
+              <TouchableOpacity onPress={()=> navigation.navigate('총 예산')}><Text>  자세히 보기  <Icon name='angle-right' size={15}/></Text></TouchableOpacity>
+            </View>
           </View>
-          <View style={[styles.footerBox, {width: '20%'}]}><Text>총예산</Text></View>
-          <View style={[styles.footerBox, {width: '60%'}]}><Text>브랜드 선택시 예산이 표기됩니다.</Text></View>
         </View>
     </View>
-    </>
   )
 }
 

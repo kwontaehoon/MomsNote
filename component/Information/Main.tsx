@@ -5,9 +5,8 @@ import Icon2 from 'react-native-vector-icons/AntDesign'
 
 const styles = StyleSheet.create({
   container:{
-    marginTop: getStatusBarHeight(),
     borderWidth: 1,
-    height: '89%',
+    height: '92%',
   },
   header:{
     borderWidth: 1,

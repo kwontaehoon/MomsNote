@@ -5,17 +5,15 @@ import Icon2 from 'react-native-vector-icons/AntDesign'
 
 const styles = StyleSheet.create({
     container:{
-        borderWidth: 1,
         height: '92%',
     },
     header:{
-        borderWidth: 1,
         height: '12%',
+        
     },
     headerBox:{
         width: '40%',
         height: '100%',
-        borderWidth: 1,
         flexDirection: 'row',
     },
     profileBox:{
@@ -27,7 +25,6 @@ const styles = StyleSheet.create({
     },
     infoBox:{
         width: '50%',
-        borderWidth: 1,
     },
     infoSubBox:{
         borderWidth: 1,
@@ -37,18 +34,16 @@ const styles = StyleSheet.create({
     },
     
     main:{
-        height: '88%',
-        borderWidth: 1,
+        height: '88%'
     },
     mainBox:{
-        borderWidth: 1,
         height: '13%',
-        alignItems: 'center',
         justifyContent: 'center',
+        padding: 15,
     },
     mainBox2:{
-        borderWidth: 1,
-        height: '46%'
+        height: '46%',
+        padding: 15,
     },
     mainBox3:{
         borderWidth: 1,
@@ -131,7 +126,9 @@ const Talk1Sub = () => {
             <View style={styles.mainBox}>
                 <Text>제목</Text>
             </View>
-            <View style={styles.mainBox2}></View>
+            <View style={styles.mainBox2}>
+                <Text>내용</Text>
+            </View>
             <View style={styles.mainBox3}>
                 <View style={styles.likeBox}>
                     <Icon name='user' size={22} style={{paddingLeft: 10}}/>

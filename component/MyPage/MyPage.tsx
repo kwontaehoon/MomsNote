@@ -5,10 +5,14 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 const styles = StyleSheet.create({
     container:{
         height: '92%',
+        backgroundColor: 'white'
     },
     header:{
-        height: '14%',
+        height: '15%',
         flexDirection: 'row',
+        marginTop: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
     },
     headerBox:{
         width: '75%',
@@ -17,7 +21,7 @@ const styles = StyleSheet.create({
     },
     profileBox:{
         borderWidth: 1,
-        width: '30%',
+        width: '35%',
         borderRadius: 999,
     },
     infoBox:{
@@ -70,7 +74,7 @@ const Main = () => {
                 <View style={styles.editBox}><Text>내 정보 수정</Text></View>
             </View>
         </View>
-        <View style={{backgroundColor: 'lightgrey', height: '2%'}}></View>
+        <View style={{backgroundColor: '#F5F5F5', height: '2%'}}></View>
         <View style={styles.main}>
             <View style={styles.mainBox}><Text style={{fontWeight: 'bold'}}>내 활동 관리</Text></View>
             <View style={styles.mainBox2}><Text>내가 쓴 게시물</Text></View>
@@ -78,7 +82,7 @@ const Main = () => {
             <View style={styles.mainBox2}><Text>추천한 게시물</Text></View>
             <View style={styles.mainBox2}><Text>신청한 체험단</Text></View>
         </View>
-        <View style={{backgroundColor: 'lightgrey', height: '2%'}}></View>
+        <View style={{backgroundColor: '#F5F5F5', height: '2%'}}></View>
         <View style={styles.main2}>
             <View style={styles.mainBox}><Text style={{fontWeight: 'bold'}}>고객센터</Text></View>
             <View style={styles.mainBox2}><Text>어플 이용 가이드</Text></View>
@@ -87,7 +91,7 @@ const Main = () => {
             <View style={styles.mainBox2}><Text>1:1 문의</Text></View>
         </View>
         <View style={styles.main3}></View>
-        <View style={{backgroundColor: 'lightgrey', height: '8%'}}></View>
+        <View style={{backgroundColor: '#F5F5F5', height: '8%'}}></View>
     </View>
   )
 }

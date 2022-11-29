@@ -2,112 +2,109 @@ import React from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon2 from 'react-native-vector-icons/Feather'
 
 const styles = StyleSheet.create({
     container:{
         marginTop: getStatusBarHeight(),
-        borderWidth: 1,
         height: '89%',
+        backgroundColor: '#FFF8E1',
+    },
+    container2:{
+
     },
     header:{
-        height: '6%',
-        borderWidth: 2,
-        alignItems: 'flex-end',
+        height: 100,
     },
     headerBox:{
-        borderWidth: 1,
-        width: '25%',
-        height: '100%',
         flexDirection: 'row',
-    },
-    header2:{
-        borderWidth: 1,
-        height: '6%',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    iconBox:{
-        width: '50%',
-        height: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
+        paddingTop: 20,
+        paddingRight: 25,
+        justifyContent: 'flex-end',
     },
     main:{
-        height: '32%',
-        borderWidth: 2,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    photoBox:{
-        borderWidth: 1,
-        width: '50%',
-        height: '80%',
-        borderRadius: 999,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    ddayBox:{
-        width: '25%',
-        height: '30%',
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    saveBox:{
-        width: '25%',
-        height: '30%',
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    main2:{
-        height: '20%',
-        borderWidth: 1,
-        flexDirection: 'row',
-    },
-    bestBox:{
-        width: '50%',
-        borderWidth: 1,
-        padding: 5,
-    },
-    titleBox:{
-        height: '25%',
-        flexDirection: 'row',
-    },
-    plus:{
-        position: 'absolute',
-        right: 0,
-    },
-    text:{
-        height: '25%',
-    },
-    best2Box:{
-        width: '50%',
-        borderWidth: 1,
-        padding: 5,
-    },
-    footer:{
-        height: '36%',
-        borderWidth: 1,
-    },
-    footerHeader:{
-        borderWidth: 1,
-        height: '25%',
+        height: 340,
         padding: 15,
     },
-    titleBox2:{
+    mainBox:{
+        padding: 15,
+        backgroundColor: 'white',
+        shadowColor: "#000",
+        elevation: 5,
+    },
+    photoBox:{
+        height: '70%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#FEECB3',
+    },
+    infoBox:{
+        height: '30%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    main2:{
+        height: 180,
+        padding: 15,
+    },
+    main2Box:{
+        padding: 20,
+        backgroundColor: 'white',
+        shadowColor: "#000",
+        elevation: 5,
         height: '100%',
+        borderRadius: 10,
+    },
+    main2Box2:{
+        height: '33.4%',
         flexDirection: 'row',
         alignItems: 'center',
     },
-    main3Main:{
-        height: '75%',
-        borderWidth: 1,
+    DDayBox:{
+        width: '50%',
+        
     },
+    main3:{
+        backgroundColor: 'white',
+        height: 250,
+        paddingTop: 40,
+        paddingBottom: 40,
+        paddingLeft: 20,
+        paddingRight: 20,
+    },
+    main3Box:{
+        flexDirection: 'row',
+    },
+    main3Box2:{
+        width: '50%',
+    },
+    titleBox:{
+        flexDirection: 'row',
+        height: '25%'
+    },
+    title:{
+        width: '50%',
+        justifyContent: 'center',
+        padding: 5
+    },
+    contentBox:{
+        height: '75%',
+    },
+    content:{
+        height: '33.4%',
+        justifyContent: 'center',
+        paddingLeft: 10,
+    },
+    main4:{
+        backgroundColor: 'white',
+        borderWidth: 1,
+        height: 200,  
+    },
+    main4Box:{
+
+    },
+
     albumBox:{
         width: 140,
         height: 160,
@@ -132,6 +129,13 @@ const Home = ({navigation}:any) => {
           id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
           title: 'First Item',
         },
+      ];
+
+      const DATA2 = [
+        {
+          id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+          title: 'First Item',
+        },
         {
           id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
           title: 'Second Item',
@@ -150,73 +154,80 @@ const Home = ({navigation}:any) => {
     
 
     const renderItem = ({ item }) => (
+        <View style={styles.container2}>
+            <View style={styles.header}>
+                <View style={styles.headerBox}>
+                    <Icon name='bell-o' size={22} style={{marginRight: 18}} />
+                    <Icon name='user-o' size={22} onPress={()=>navigation.navigate('마이페이지')}/>
+                </View>
+            </View>
+            <View style={styles.main}>
+                <View style={styles.mainBox}>
+                    <View style={styles.photoBox}><Text></Text></View>
+                    <View style={styles.infoBox}>
+                        <Text>우리 아기와 함께한 97일</Text>
+                    </View>
+                </View>
+            </View>
+            <View style={styles.main2}>
+                <View style={styles.main2Box}>
+                    <View style={styles.main2Box2}><Text style={{fontSize: 20}}>별똥이</Text></View>
+                    <View style={styles.main2Box2}>
+                        <View style={styles.DDayBox}><Text style={{color: '#FE9000', fontWeight: 'bold', fontSize: 22}}>D-183 (24주차 1일)</Text></View>
+                        <View style={[styles.DDayBox, {alignItems: 'flex-end'}]}><Icon2 name='download' size={24}/></View>                        
+                    </View>
+                    <View style={styles.main2Box2}><Text style={{color: '#9E9E9E'}}>예정일: 202년 10월 31일</Text></View>
+                </View>
+            </View>
+            <View style={styles.main3}>
+                <View style={styles.main3Box}>
+                    <View style={styles.main3Box2}>
+                        <View style={styles.titleBox}>
+                            <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>출산 리스트</Text></View>
+                            <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E'}}>+ 더보기</Text></View>
+                        </View>
+                        <View style={styles.contentBox}>
+                            <View style={styles.content}><Text>글1</Text></View>
+                            <View style={styles.content}><Text>글2</Text></View>
+                            <View style={styles.content}><Text>글3</Text></View>
+                        </View>
+                    </View>
+                    <View style={[styles.main3Box2, {width: '0.2%', borderWidth: 1, borderColor: '#EEEEEE'}]}></View>
+                    <View style={styles.main3Box2}>
+                        <View style={styles.titleBox}>
+                            <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>맘스 토크</Text></View>
+                            <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E'}}>+ 더보기</Text></View>
+                        </View>
+                        <View style={styles.contentBox}>
+                            <View style={styles.content}><Text>글1</Text></View>
+                            <View style={styles.content}><Text>글2</Text></View>
+                            <View style={styles.content}><Text>글3</Text></View>
+                        </View>
+                    </View>
+                </View>
+            </View>
+            <View style={styles.main4}>
+                <FlatList data={DATA2} renderItem={renderItem2}
+                        keyExtractor={item => item.id} horizontal={true}>
+                </FlatList>
+            </View>
+            
+
+        </View>
+    );
+    
+    const renderItem2 = ({ item }) => (
         <View style={styles.albumBox}>
             <View style={styles.albumPhoto}></View>
             <View style={styles.albumTitle}><Text>{item.title}</Text></View>
         </View>
-      );
-      
-    const test = () => {
-      navigation.navigate('공지사항');
-    }
+    );
     
   return (
     <View style={styles.container}>
-        <View style={styles.header}>
-            <View style={styles.headerBox}>
-                <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
-                <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
-            </View>
-        </View>
-        <View style={styles.header2}>
-
-        </View>
-        <View style={styles.main}>
-            <View style={styles.photoBox}>
-                <Text>사진</Text>
-            </View>
-            <View style={styles.ddayBox}>
-                <Text>예정일</Text>
-                <Text>날짜</Text>
-            </View>
-            <View style={styles.saveBox}>
-                <Icon name='camera' size={25}/>
-                <TouchableOpacity onPress={test}><Text>아기 정보 저장</Text></TouchableOpacity>
-            </View>
-        </View>
-        <View style={styles.main2}>
-            <View style={styles.bestBox}>
-                <View style={styles.titleBox}>
-                    <Text>출산 준비물 리스트 인기글</Text>
-                    <Icon name='plus' size={15} style={styles.plus}/>
-                </View>
-                <Text style={styles.text}>1. 글</Text>
-                <Text style={styles.text}>2. 글</Text>
-                <Text style={styles.text}>3. 글</Text>
-            </View>
-            <View style={styles.best2Box}>
-                <View style={styles.titleBox}>
-                    <Text>맘스톡 인기글</Text>
-                    <Icon name='plus' size={15} style={styles.plus} />
-                </View>
-                <Text style={styles.text}>1. 글</Text>
-                <Text style={styles.text}>2. 글</Text>
-                <Text style={styles.text}>3. 글</Text>
-            </View>
-        </View>
-        <View style={styles.footer}>
-            <View style={styles.footerHeader}>
-                <View style={styles.titleBox2}>
-                    <Text>맘스정보</Text>
-                    <Icon name='plus' size={15} style={styles.plus}/>
-                </View>
-            </View>
-            <View style={styles.main3Main}>
-                <FlatList data={DATA} renderItem={renderItem}
-                    keyExtractor={item => item.id} horizontal={true}>
-                </FlatList>
-            </View>
-        </View>
+       <FlatList data={DATA} renderItem={renderItem}
+            keyExtractor={item => item.id}>
+        </FlatList>
     </View>
   )
 }

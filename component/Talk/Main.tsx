@@ -62,9 +62,9 @@ const Main = ({navigation}:any) => {
 
     const List = ():any => {
         switch(true){
-            case filter[0] === true: return <Talk1/>
-            case filter[1] === true: return <Talk2/>
-            case filter[2] === true: return <Talk3/>
+            case filter[0] === true: return <Talk1 navigation={navigation}/>
+            case filter[1] === true: return <Talk2 navigation={navigation}/>
+            case filter[2] === true: return <Talk3 navigation={navigation}/>
         }
     }
     const filter_func = (e) => {
@@ -93,7 +93,7 @@ const Main = ({navigation}:any) => {
             </TouchableOpacity>
         </View>
         <List />
-        <TouchableOpacity style={styles.footer} onPress={()=>navigation.navigate(' ')}>
+        <TouchableOpacity style={styles.footer} onPress={()=>navigation.navigate('총 예산')}>
             <Icon name="pencil" size={22} style={{color: 'white'}}/>
         </TouchableOpacity>
     </View>

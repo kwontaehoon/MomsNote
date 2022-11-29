@@ -91,7 +91,6 @@ const styles = StyleSheet.create({
         height: '59%',
         marginLeft: 10,
         marginRight: 10,
-        borderBottomWidth: 1,
     },
     main3TitleBox:{
         height: '20%',

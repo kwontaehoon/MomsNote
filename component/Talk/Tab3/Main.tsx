@@ -92,13 +92,8 @@ const Talk3 = ({navigation}: any) => {
 
   const [filter, setFilter] = useState([true, false, false, false]);
 
-  const test = () => {
-    console.log('test');
-    navigation.navigate(' ');
-  }
-
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.mainBox} onPress={test}>
+    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('tt')}>
         
     </TouchableOpacity>
   ); 

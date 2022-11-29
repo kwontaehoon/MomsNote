@@ -78,10 +78,6 @@ const Talk1 = ({navigation}: any) => {
 
   const [filter, setFilter] = useState([true, false, false, false]);
 
-  const test = () => {
-    console.log('test');
-    navigation.navigate('Talk1Sub');
-  }
 
   const renderItem = ({ item }) => (
     <View style={styles.headerFilterBox}>
@@ -90,7 +86,7 @@ const Talk1 = ({navigation}: any) => {
   );
 
   const renderItem2 = ({ item }) => (
-    <TouchableOpacity style={styles.mainBox} onPress={test}>
+    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('TalkTab1Detail')}>
       <Text>{item.title}</Text>
     </TouchableOpacity>
   ); 
