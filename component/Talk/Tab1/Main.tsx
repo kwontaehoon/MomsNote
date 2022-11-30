@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 const styles = StyleSheet.create({
   container:{
-    height: '83%',
+    height: '92%',
     backgroundColor: 'white',
   },
   header:{
@@ -14,11 +14,16 @@ const styles = StyleSheet.create({
   headerFilterBox:{
     height: 40,
     borderWidth: 1,
+    borderColor: '#EEEEEE',
     margin: 10,
-    borderRadius: 16,
-    padding: 10,
+    borderRadius: 20,
+    paddingTop: 8,
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingBottom: 8,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'white',
   },
   header2:{
     height: '7%',
@@ -95,7 +100,7 @@ const Talk1 = ({navigation}: any) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <FlatList data={DATA} renderItem={renderItem}
-          keyExtractor={item => item.id} horizontal={true}>
+          keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
         </FlatList>
       </View>
       <View style={styles.header2}>
@@ -107,7 +112,7 @@ const Talk1 = ({navigation}: any) => {
       </View>
       <View style={styles.main}>
         <FlatList data={DATA} renderItem={renderItem2}
-          keyExtractor={item => item.id}>
+          keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
         </FlatList>
       </View>
      </View>

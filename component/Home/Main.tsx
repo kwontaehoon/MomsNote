@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
     },
     DDayBox:{
         width: '50%',
-        
     },
     main3:{
         backgroundColor: 'white',
@@ -81,7 +80,7 @@ const styles = StyleSheet.create({
     },
     titleBox:{
         flexDirection: 'row',
-        height: '25%'
+        height: '25%',
     },
     title:{
         width: '50%',
@@ -98,16 +97,18 @@ const styles = StyleSheet.create({
     },
     main4:{
         backgroundColor: 'white',
-        borderWidth: 1,
-        height: 200,  
+        height: 300,
     },
     main4Box:{
-
+        height: '20%',
+        paddingLeft: 20,
+        paddingRight: 20,
     },
-
+    main4Box2:{
+    },
     albumBox:{
         width: 140,
-        height: 160,
+        height: '80%',
         margin: 10,
         padding: 5,
     },
@@ -150,14 +151,14 @@ const Home = ({navigation}:any) => {
         {
             id: '2',
         },
-      ];
+    ];
     
 
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
             <View style={styles.header}>
                 <View style={styles.headerBox}>
-                    <Icon name='bell-o' size={22} style={{marginRight: 18}} />
+                    <Icon name='bell-o' size={22} style={{marginRight: 18}} onPress={()=>navigation.navigate('추가 정보 입력')}/>
                     <Icon name='user-o' size={22} onPress={()=>navigation.navigate('마이페이지')}/>
                 </View>
             </View>
@@ -174,7 +175,7 @@ const Home = ({navigation}:any) => {
                     <View style={styles.main2Box2}><Text style={{fontSize: 20}}>별똥이</Text></View>
                     <View style={styles.main2Box2}>
                         <View style={styles.DDayBox}><Text style={{color: '#FE9000', fontWeight: 'bold', fontSize: 22}}>D-183 (24주차 1일)</Text></View>
-                        <View style={[styles.DDayBox, {alignItems: 'flex-end'}]}><Icon2 name='download' size={24}/></View>                        
+                        <View style={[styles.DDayBox, {alignItems: 'flex-end'}]}><Icon2 name='download' size={22}/></View>                        
                     </View>
                     <View style={styles.main2Box2}><Text style={{color: '#9E9E9E'}}>예정일: 202년 10월 31일</Text></View>
                 </View>
@@ -207,9 +208,17 @@ const Home = ({navigation}:any) => {
                 </View>
             </View>
             <View style={styles.main4}>
+                <View style={styles.main4Box}>
+                    <View style={[styles.titleBox, {height: '100%'}]}>
+                        <View style={styles.title}><Text style={{fontSize: 20, fontWeight: 'bold'}}>맘스 정보</Text></View>
+                        <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E'}}>+ 더보기</Text></View>
+                    </View>
+                </View>
+                <View style={styles.main4Box2}>
                 <FlatList data={DATA2} renderItem={renderItem2}
                         keyExtractor={item => item.id} horizontal={true}>
                 </FlatList>
+                </View>
             </View>
             
 

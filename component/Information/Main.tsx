@@ -1,68 +1,32 @@
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
+import Tab1 from './Tab1/Main'
+import Tab2 from './Tab2/Main'
 
 const styles = StyleSheet.create({
   container:{
-    borderWidth: 1,
     height: '92%',
+    backgroundColor: 'white',
   },
   header:{
-    borderWidth: 1,
-    height: '6%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row'
-  },
-  headerBox:{
-    position: 'absolute',
-    right: 0,
-    flexDirection: 'row'
-  },
-  iconBox:{
-    margin: 5,
-  },
-  header2:{
-    borderWidth: 1,
-    height: '10%',
+    height: '8%',
     flexDirection: 'row',
   },
-  header2Box:{
-    justifyContent: 'center',
+  headerBox:{
     alignItems: 'center',
-    width: '50%',
-    borderWidth: 1,
+    justifyContent: 'center',
+    borderBottomWidth: 2,
   },
-  header3:{
-    borderWidth: 1,
+  main:{
     height: '10%',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  header4:{
-    borderWidth: 1,
-    height: '8%',
-  },
-  header4FilterBox:{
-    borderWidth: 1,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 5,
-    padding: 10,
-  },
-  main:{
-    borderWidth: 1,
-    height: '66%',
-  },
-  mainBox:{
-    borderWidth: 1,
-    width: '100%',
-    height: 180,
   }
 })
-const Information = () => {
+const Information = ({navigation}) => {
 
   const DATA = [
     {
@@ -111,49 +75,34 @@ const Information = () => {
     id: '5',
     content: '제목5'
   }
-  ]
+  ];
 
-  const renderItem = ({ item }) => (
-    <View style={styles.header4FilterBox}>
-        <TouchableOpacity><Text>{item.title}</Text></TouchableOpacity>
-    </View>
-  );
+  const [filter, setFilter] = useState([true, false]);
 
-  const renderItem2 = ({ item }) => (
-    <TouchableOpacity style={styles.mainBox}>
-        <Text>{item.content}</Text>
-    </TouchableOpacity>
-  );
+  const filter_func = (e) => {
+    let arr = [false, false];
+    arr[e] = true;
+    setFilter(arr);
+  }
+
+  const List = ({navigation}):any => {
+    switch(true){
+        case filter[0] === true: return <Tab1 navigation={navigation}/>
+        case filter[1] === true: return <Tab2 navigation={navigation}/>
+      }
+  }
 
   return (
     <View style={styles.container}>
         <View style={styles.header}>
-          <Text>맘스 정보</Text>
-          <View style={styles.headerBox}>
-                <View style={styles.iconBox}><Icon2 name='search1' size={22}/></View>
-                <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
-                <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
-            </View>
+            <TouchableOpacity style={[styles.headerBox, {width: '50%', borderBottomColor: filter[0] ? 'orange' : '#BDBDBD'}]} onPress={()=>filter_func(0)}>
+                <Text style={{fontWeight: 'bold', fontSize: 18, color: filter[0] ? 'orange' : '#BDBDBD'}}>행사 정보</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.headerBox, {width: '50%', borderBottomColor: filter[1] ? 'orange' : '#BDBDBD'}]} onPress={()=>filter_func(1)}>
+                <Text style={{fontWeight: 'bold', fontSize: 18, color: filter[1] ? 'orange' : '#BDBDBD'}}>Q&A</Text>
+            </TouchableOpacity>
         </View>
-        <View style={styles.header2}>
-          <View style={styles.header2Box}><Text>행사 정보</Text></View>
-          <View style={styles.header2Box}><Text>Q&A</Text></View>
-        </View>
-        <View style={styles.header3}>
-          <View><Text>스크롤</Text></View>
-        </View>
-        <View style={styles.header4}>
-          <FlatList data={DATA} renderItem={renderItem}
-            keyExtractor={item => item.id} horizontal={true}
-            showsHorizontalScrollIndicator={false}>
-          </FlatList>
-        </View>
-        <View style={styles.main}>
-          <FlatList data={Content} renderItem={renderItem2}
-            keyExtractor={item => item.id}
-            showsHorizontalScrollIndicator={false}>
-          </FlatList>
-        </View>
+        <List navigation={navigation}/>
     </View>
   )
 }

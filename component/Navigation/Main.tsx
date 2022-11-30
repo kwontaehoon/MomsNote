@@ -3,29 +3,23 @@ import { View, Text, StyleSheet, LogBox, TouchableOpacity } from 'react-native'
 import { NavigationContainer, TabActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import AddPage from '../Default/AddPage'
 import Dday from '../Dday/Main'
 import Home from '../Home/Main'
-import Talk1Detail from '../Talk/tab1/Tab1Detail'
-import TalkRegister from '../Talk/Register/Main'
-import TalkCategories from '../Talk/Register/Categories'
 import Information from '../Information/Main'
+import InformationTab1Detail from '../Information/Tab1/Detail';
 import Materials from '../Materials/Main'
-import Budget from '../Materials/budget/Main'
+import Budget from '../Materials/Budget/Main'
 import Talk from '../Talk/Main'
-import TalkTab1Detail from '../Talk/Tab1/Tab1Detail'
-import TaklTab2 from '../Talk/Tab2/Main'
+import TalkTab1Detail from '../Talk/Tab1/Detail'
 import TalkTab3Detail from '../Talk/Tab3/Tab3Detail'
 import MyPage from '../MyPage/MyPage'
-import MyPageInquiry from '../MyPage/Inquiry/Main'
-import MyPageInquiryDetail from '../MyPage/Inquiry/InquiryDetail'
-import MyPageNotice from '../MyPage/Notice/Main' // 공지사항
-import MyPageNoticeDetail from '../MyPage/Notice/NoticeDetail' // 공지사항 내용
-import MyPageEdit from '../MyPage/Edit/Main' // 내 정보 수정
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/SimpleLineIcons'
 import Icon3 from 'react-native-vector-icons/Feather'
 import Icon4 from 'react-native-vector-icons/AntDesign'
 import Icon5 from 'react-native-vector-icons/Feather'
+import Icon6 from 'react-native-vector-icons/Entypo'
 import Register from '../Talk/Register/Main';
 
 LogBox.ignoreAllLogs();
@@ -34,20 +28,20 @@ const styles = StyleSheet.create({
     header:{
         height: 100,
         flexDirection: 'row',
-      },
-      headerBox:{
+    },
+    headerBox:{
         width: '50%',
         flexDirection: 'row',
         alignItems: 'center',
         paddingRight: 15,
-      },
-      iconBox:{
+    },
+    iconBox:{
         marginRight: 12,
-      },
+    },
 })
 
 
-const Navigation = () => {
+const Navigation = ({navigation}) => {
     const Stack = createStackNavigator();
     const Tab = createBottomTabNavigator();
   
@@ -74,6 +68,10 @@ const Navigation = () => {
                             </View>
                         )}}
                         />
+                    <Stack.Screen 
+                        name="추가 정보 입력"
+                        component={AddPage}
+                        />
                </Stack.Navigator>
                
           )}
@@ -82,9 +80,17 @@ const Navigation = () => {
           {()=>(
                <Stack.Navigator>
                     <Stack.Screen 
-                        name="TalkMain"
+                        name="맘스톡"
                         component={Talk}
-                        options={{headerShown: false}}
+                        options={{headerRight: () => (
+                            <View style={styles.header}>
+                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
+                                    <View style={styles.iconBox}><Icon4 name='search1' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
+                                </View>
+                            </View>
+                        )}}
                         />
                     <Stack.Screen 
                         name="TalkTab1Detail"
@@ -104,7 +110,7 @@ const Navigation = () => {
                         options={{headerShown: false}}
                         />
                     <Stack.Screen 
-                        name="tt"
+                        name="맘스톡 서치"
                         component={TalkTab3Detail}
                         options={{title: ''}}
                         />
@@ -119,12 +125,12 @@ const Navigation = () => {
                         name="출산준비물"
                         component={Materials}
                         options={{
-                            headerRight: () => (
+                            headerRight: ({navigation}) => (
                                 <View style={styles.header}>
                                     <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
                                         <View style={styles.iconBox}><Icon5 name='refresh-cw' size={22}/></View>
                                         <View style={styles.iconBox}><Icon4 name='download' size={22}/></View>
-                                        <View style={styles.iconBox}><Icon4 name='search1' size={22}/></View>
+                                        <View style={styles.iconBox}><Icon4 name='search1' size={22} onPress={()=>navigation.navigate('맘스톡 서치')}/></View>
                                         <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
                                         <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
                                     </View>
@@ -135,17 +141,42 @@ const Navigation = () => {
                     <Stack.Screen 
                         name="총 예산"
                         component={Budget}
-                        />
+                    />
+                    <Stack.Screen 
+                        name="출산준비물 검색"
+                        component={Budget}
+                    />
                </Stack.Navigator>   
           )}
           </Tab.Screen>
-          <Tab.Screen name="맘스" options={{tabBarIcon: ({color}) => (<Icon name='bullhorn' size={22} color={color}/>)}}>
+          <Tab.Screen name="맘스정보" options={{tabBarIcon: ({color}) => (<Icon name='bullhorn' size={22} color={color}/>)}}>
           {()=>(
                <Stack.Navigator>
                     <Stack.Screen 
-                        name="맘스정보"
+                        name="맘스 정보"
                         component={Information}
+                        options={{headerRight: () => (
+                            <View style={styles.header}>
+                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
+                                    <View style={styles.iconBox}><Icon4 name='search1' size={22} onPress={()=>navigation.navigate('맘스톡 서치')}/></View>
+                                    <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
+                                </View>
+                            </View>
+                        )}}
                         />
+                    <Stack.Screen 
+                        name="InformationTab1Detail"
+                        component={InformationTab1Detail}
+                        options={{title: '', headerRight: () => (
+                            <View style={styles.header}>
+                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
+                                    <View style={styles.iconBox}><Icon3 name='share-2' size={22} onPress={()=>navigation.navigate('맘스톡 서치')}/></View>
+                                    <View style={styles.iconBox}><Icon6 name='dots-three-vertical' size={22}/></View>
+                                </View>
+                            </View>
+                        )}}
+                    />
                </Stack.Navigator>   
           )}
           </Tab.Screen>
