@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 const styles = StyleSheet.create({
@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
     editBox:{
         borderWidth: 1,
         borderColor: 'lightgrey',
-        borderRadius: 10,
-        padding: 4
+        borderRadius: 20,
+        padding: 10
     },
     main:{
         height: '39%',
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 
     }
 })
-const Main = () => {
+const Main = ({navigation}) => {
   return (
     <View style={styles.container}>
         <View style={styles.header}>
@@ -71,7 +71,7 @@ const Main = () => {
                 <View style={styles.infoBox}><Text style={{fontSize: 20, fontWeight : 'bold'}}>닉네임</Text></View>
             </View>
             <View style={styles.headerBox2}>
-                <View style={styles.editBox}><Text>내 정보 수정</Text></View>
+                <TouchableOpacity style={styles.editBox} onPress={()=>navigation.navigate('내 정보 수정')}><Text>내 정보 수정</Text></TouchableOpacity>
             </View>
         </View>
         <View style={{backgroundColor: '#F5F5F5', height: '2%'}}></View>
@@ -79,7 +79,7 @@ const Main = () => {
             <View style={styles.mainBox}><Text style={{fontWeight: 'bold'}}>내 활동 관리</Text></View>
             <View style={styles.mainBox2}><Text>내가 쓴 게시물</Text></View>
             <View style={styles.mainBox2}><Text>내가 쓴 댓글</Text></View>
-            <View style={styles.mainBox2}><Text>추천한 게시물</Text></View>
+            <View style={styles.mainBox2}><Text onPress={()=>navigation.navigate('추천 게시물')}>추천한 게시물</Text></View>
             <View style={styles.mainBox2}><Text>신청한 체험단</Text></View>
         </View>
         <View style={{backgroundColor: '#F5F5F5', height: '2%'}}></View>
@@ -87,8 +87,8 @@ const Main = () => {
             <View style={styles.mainBox}><Text style={{fontWeight: 'bold'}}>고객센터</Text></View>
             <View style={styles.mainBox2}><Text>어플 이용 가이드</Text></View>
             <View style={styles.mainBox2}><Text>카카오톡 초대</Text></View>
-            <View style={styles.mainBox2}><Text>공지사항</Text></View>
-            <View style={styles.mainBox2}><Text>1:1 문의</Text></View>
+            <View style={styles.mainBox2}><Text onPress={()=>navigation.navigate('공지사항')}>공지사항</Text></View>
+            <View style={styles.mainBox2}><Text onPress={()=>navigation.navigate('1:1 문의')}>1:1 문의</Text></View>
         </View>
         <View style={styles.main3}></View>
         <View style={{backgroundColor: '#F5F5F5', height: '8%'}}></View>

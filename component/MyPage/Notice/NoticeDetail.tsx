@@ -6,16 +6,16 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 const styles = StyleSheet.create({
     container:{
         height: '92%',
+        backgroundColor: 'white',
     },
     header:{
         height: '12%',
-        borderWidth: 1,
         justifyContent: 'center',
         paddingLeft: 10,
+        backgroundColor: '#F5F5F5',
     },
     main:{
         height: '88%',
-        borderWidth: 1,
     },
     mainBox:{
         padding: 10,

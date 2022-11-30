@@ -6,21 +6,11 @@ import Icon2 from 'react-native-vector-icons/Feather'
 
 const styles = StyleSheet.create({
     container:{
-        marginTop: getStatusBarHeight(),
         height: '89%',
         backgroundColor: '#FFF8E1',
     },
     container2:{
 
-    },
-    header:{
-        height: 100,
-    },
-    headerBox:{
-        flexDirection: 'row',
-        paddingTop: 20,
-        paddingRight: 25,
-        justifyContent: 'flex-end',
     },
     main:{
         height: 340,
@@ -156,12 +146,6 @@ const Home = ({navigation}:any) => {
 
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
-            <View style={styles.header}>
-                <View style={styles.headerBox}>
-                    <Icon name='bell-o' size={22} style={{marginRight: 18}} onPress={()=>navigation.navigate('추가 정보 입력')}/>
-                    <Icon name='user-o' size={22} onPress={()=>navigation.navigate('마이페이지')}/>
-                </View>
-            </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <View style={styles.photoBox}><Text></Text></View>

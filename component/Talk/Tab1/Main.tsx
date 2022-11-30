@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header:{
-    height: '10%',
+    height: '12%',
     backgroundColor: '#F5F5F5',
   },
   headerFilterBox:{
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   main:{
-    height: '75%',
+    height: '73%',
     borderWidth: 1,
   },
   mainBox:{
@@ -56,37 +56,46 @@ const Talk1 = ({navigation}: any) => {
 
   const DATA = [
     {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      id: '0',
       title: '전체'
     },
     {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      id: '1',
       title: '자유게시판'
     },
     {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
+      id: '2',
       title: '일상이야기'
     },
     {
-        id: '1',
-        title: '임신정보'
+      id: '3',
+      title: '임신정보'
     },
     {
-        id: '2',
-        title: '고민상담'
+      id: '4',
+      title: '고민상담'
     },
     {
-        id: '3',
-        title: '질문게시판'
+      id: '5',
+      title: '질문게시판'
     }
   ];
 
   const [filter, setFilter] = useState([true, false, false, false]);
 
+  const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
+    let arr = Array.from({length: 4}, () => {return false});
+    arr[e] = !arr[e];
+    setFilter(arr);
+  }
 
   const renderItem = ({ item }) => (
-    <View style={styles.headerFilterBox}>
-        <TouchableOpacity><Text>{item.title}</Text></TouchableOpacity>
+    <View style={{justifyContent: 'center'}}>
+      <View style={[styles.headerFilterBox, {backgroundColor: filter[item.id] ? '#FEA100' : 'white'}]}>
+        <TouchableOpacity onPress={()=>change(item.id)}>
+          <Text style={{color: filter[item.id] ? 'white' : 'black', fontWeight: '400'}}>{item.title}</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 

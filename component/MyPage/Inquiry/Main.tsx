@@ -6,11 +6,10 @@ import Icon2 from 'react-native-vector-icons/AntDesign'
 import Inquiry from './Inquiry'
 import Inquiry2 from './Inquiry2'
 
-// 1:1문의
-
 const styles = StyleSheet.create({
     container:{
         height: '92%',
+        backgroundColor: 'white',
     },
     header:{
         height: '10%',

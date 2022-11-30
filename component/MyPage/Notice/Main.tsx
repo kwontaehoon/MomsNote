@@ -1,11 +1,12 @@
 import React from 'react'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 const styles = StyleSheet.create({
     container:{
         height: '92%',
+        backgroundColor: 'white',
     },
     header:{
         height: '6%',
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
         padding: 10,
     }
 })
-const InquiryDetail = () => {
+const InquiryDetail = ({navigation}) => {
 
     const DATA = [
         {
@@ -62,10 +63,10 @@ const InquiryDetail = () => {
     ];
 
     const renderItem = ({ item }) => (
-        <View style={styles.mainBox}>
+        <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('공지사항2')}>
            <Text>공지사항</Text>
            <Text>2022/11/01</Text>
-        </View>
+        </TouchableOpacity>
       );
 
   return (
