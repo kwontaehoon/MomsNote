@@ -6,7 +6,7 @@ import Icon2 from 'react-native-vector-icons/Feather'
 
 const styles = StyleSheet.create({
     container:{
-        height: '89%',
+        height: '92%',
         backgroundColor: '#FFF8E1',
     },
     container2:{

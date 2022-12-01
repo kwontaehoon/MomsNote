@@ -18,16 +18,17 @@ const styles = StyleSheet.create({
         width: '75%',
         padding: 5,
         flexDirection: 'row',
+        alignItems: 'center',
     },
     profileBox:{
         borderWidth: 1,
-        width: '35%',
+        width: 72,
+        height: 72,
         borderRadius: 999,
     },
     infoBox:{
-        width: '83%',
         justifyContent: 'center',
-        paddingLeft: 8,
+        marginLeft: 10,
     },
     headerBox2:{
         width: '25%',
@@ -40,7 +41,10 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'lightgrey',
         borderRadius: 20,
-        padding: 10
+        paddingTop: 8,
+        paddingLeft: 15,
+        paddingRight: 15,
+        paddingBottom: 8,
     },
     main:{
         height: '39%',
@@ -50,13 +54,8 @@ const styles = StyleSheet.create({
         padding: 15,
         justifyContent: 'center',
     },
-    mainBox2:{
-        height: '20%',
-        padding: 15,
-        justifyContent: 'center',
-    },
     main2:{
-        height: '35%',
+        height: '39%',
     },
     main3:{
 
@@ -71,24 +70,26 @@ const Main = ({navigation}) => {
                 <View style={styles.infoBox}><Text style={{fontSize: 20, fontWeight : 'bold'}}>닉네임</Text></View>
             </View>
             <View style={styles.headerBox2}>
-                <TouchableOpacity style={styles.editBox} onPress={()=>navigation.navigate('내 정보 수정')}><Text>내 정보 수정</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.editBox} onPress={()=>navigation.navigate('내 정보 수정')}>
+                    <Text style={{fontSize: 12}}>내 정보 수정</Text>
+                </TouchableOpacity>
             </View>
         </View>
-        <View style={{backgroundColor: '#F5F5F5', height: '2%'}}></View>
+        <View style={{backgroundColor: '#F5F5F5', height: '1%'}}></View>
         <View style={styles.main}>
             <View style={styles.mainBox}><Text style={{fontWeight: 'bold'}}>내 활동 관리</Text></View>
-            <View style={styles.mainBox2}><Text>내가 쓴 게시물</Text></View>
-            <View style={styles.mainBox2}><Text>내가 쓴 댓글</Text></View>
-            <View style={styles.mainBox2}><Text onPress={()=>navigation.navigate('추천 게시물')}>추천한 게시물</Text></View>
-            <View style={styles.mainBox2}><Text>신청한 체험단</Text></View>
+            <View style={styles.mainBox}><Text style={{fontSize: 15}}>내가 쓴 게시물</Text></View>
+            <View style={styles.mainBox}><Text style={{fontSize: 15}}>내가 쓴 댓글</Text></View>
+            <View style={styles.mainBox}><Text style={{fontSize: 15}} onPress={()=>navigation.navigate('추천 게시물')}>추천한 게시물</Text></View>
+            <View style={styles.mainBox}><Text style={{fontSize: 15}}>신청한 체험단</Text></View>
         </View>
-        <View style={{backgroundColor: '#F5F5F5', height: '2%'}}></View>
+        <View style={{backgroundColor: '#F5F5F5', height: '1%'}}></View>
         <View style={styles.main2}>
             <View style={styles.mainBox}><Text style={{fontWeight: 'bold'}}>고객센터</Text></View>
-            <View style={styles.mainBox2}><Text>어플 이용 가이드</Text></View>
-            <View style={styles.mainBox2}><Text>카카오톡 초대</Text></View>
-            <View style={styles.mainBox2}><Text onPress={()=>navigation.navigate('공지사항')}>공지사항</Text></View>
-            <View style={styles.mainBox2}><Text onPress={()=>navigation.navigate('1:1 문의')}>1:1 문의</Text></View>
+            <View style={styles.mainBox}><Text style={{fontSize: 15}}>어플 이용 가이드</Text></View>
+            <View style={styles.mainBox}><Text style={{fontSize: 15}}>카카오톡 초대</Text></View>
+            <View style={styles.mainBox}><Text style={{fontSize: 15}} onPress={()=>navigation.navigate('공지사항')}>공지사항</Text></View>
+            <View style={styles.mainBox}><Text onPress={()=>navigation.navigate('1:1 문의')}>1:1 문의</Text></View>
         </View>
         <View style={styles.main3}></View>
         <View style={{backgroundColor: '#F5F5F5', height: '8%'}}></View>

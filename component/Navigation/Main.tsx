@@ -27,6 +27,10 @@ import NoticeDetail from '../MyPage/Notice/NoticeDetail';
 import Like from '../MyPage/Like/Main'
 import Edit from '../MyPage/Edit/Main'
 import Withdraw from '../MyPage/Withdraw/Main'
+import Setting from '..//MyPage/Setting/Main'
+import Block from '../MyPage/Setting/Block'
+import Term1 from '../MyPage/Setting/Terms1'
+import Term2 from '../MyPage/Setting/Terms2'
 
 LogBox.ignoreAllLogs();
 
@@ -69,6 +73,7 @@ const Navigation = () => {
                         name="Home"
                         component={Home}
                         options={({ navigation, route }) => ({
+                            title: '',
                             headerRight: () => (
                                 <View style={styles.header}>
                                 <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
@@ -82,13 +87,15 @@ const Navigation = () => {
                     <Stack.Screen 
                         name="마이페이지"
                         component={MyPage}
-                        options={{headerRight: () => (
-                            <View style={styles.header}>
-                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-                                    <View style={styles.iconBox}><Icon5 name='settings' size={22}/></View>
+                        options={({ navigation, route }) => ({
+                            headerRight: () => (
+                                <View style={styles.header}>
+                                    <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
+                                        <View style={styles.iconBox}><Icon5 name='settings' size={22} onPress={()=>navigation.navigate('설정')}/></View>
+                                    </View>
                                 </View>
-                            </View>
-                        )}}
+                            ),
+                          })}
                         />
                     <Stack.Screen 
                         name="추가 정보 입력"
@@ -118,6 +125,22 @@ const Navigation = () => {
                      <Stack.Screen 
                         name="회원탈퇴"
                         component={Withdraw}
+                    />
+                    <Stack.Screen 
+                        name="설정"
+                        component={Setting}
+                    />
+                    <Stack.Screen 
+                        name="차단한 사용자"
+                        component={Block}
+                    />
+                    <Stack.Screen 
+                        name="이용약관"
+                        component={Term1}
+                    />
+                    <Stack.Screen 
+                        name="개인정보처리방침"
+                        component={Term2}
                     />
                </Stack.Navigator>
                
@@ -164,7 +187,25 @@ const Navigation = () => {
                </Stack.Navigator>   
             )}
           </Tab.Screen>
-          <Tab.Screen name="D-280" component={Dday} options={{tabBarIcon: ({color}) => (<Icon name='calendar-o' size={22} color={color}/>)}}></Tab.Screen>
+          <Tab.Screen name="D-280" options={{tabBarIcon: ({color}) => (<Icon name='calendar-o' size={22} color={color}/>)}}>
+          {()=>(
+               <Stack.Navigator>
+                    <Stack.Screen 
+                        name="D-280"
+                        component={Dday}
+                        options={{headerRight: () => (
+                            <View style={styles.header}>
+                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
+                                    <View style={styles.iconBox}><Icon4 name='search1' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
+                                </View>
+                            </View>
+                        )}}
+                        />
+               </Stack.Navigator>   
+            )}
+          </Tab.Screen>
           <Tab.Screen name="출산" options={{tabBarIcon: ({color}) => (<Icon2 name='bag' size={22} color={color}/>)}}>
           {()=>(
                <Stack.Navigator>
