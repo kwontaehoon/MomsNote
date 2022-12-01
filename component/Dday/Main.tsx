@@ -8,24 +8,23 @@ import Talk2 from './Tab2/Main'
 
 const styles = StyleSheet.create({
     container:{
-        height: '92%',
-        backgroundColor: 'white',
-        borderWidth: 1,
+      height: '92%',
+      backgroundColor: 'white',
     },
     container2:{
 
     },
     headerIcon:{
-        margin: 5,
+      margin: 5,
     },
     header:{
-        height: 70,
-        flexDirection: 'row',
+      height: 70,
+      flexDirection: 'row',
     },
     headerBox:{
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderBottomWidth: 2,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderBottomWidth: 2,
     },
     header2:{
       borderBottomWidth: 1,
@@ -46,30 +45,10 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
-    footer:{
-        width: 60,
-        height: 60,
-        position: 'absolute',
-        bottom: 20,
-        right: 20,
-        borderRadius: 999,
-        backgroundColor: '#FEA100',
-        alignItems: 'center',
-        justifyContent: 'center',
-        shadowColor: "#000",
-        elevation: 5,
-    },
 })
 const Main = ({navigation}:any) => {
 
     const DATA = [
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: '전체'
-      },
-    ];
-
-    const DATA2 = [
       {
         id: '1',
         title: '전체'
@@ -121,7 +100,8 @@ const Main = ({navigation}:any) => {
     ];
 
     const [filter, setFilter] = useState([true, false, false]); // filter tab
-    const [week, setWeek] = useState([true, false, false, false, false, false]);
+    const [week, setWeek] = useState([true, false, false, false, false, false,
+    false, false, false, false, false, false]);
 
     const List = ():any => {
         switch(true){
@@ -129,15 +109,28 @@ const Main = ({navigation}:any) => {
             case filter[1] === true: return <Talk2 navigation={navigation}/>
         }
     }
-    const filter_func = (e) => {
-        let arr = [false, false, false];
-        arr[e] = true;
-        setFilter(arr);
+    const filter_func = (e) => { // filter tab 변경
+      let arr = [false, false];
+      arr[e] = true;
+      setFilter(arr);
+    }
+
+    const change = (e) => { // 몇 주차 border, 글자두께 변경
+      let arr = Array.from({length: 12}, ()=>{ return false});
+      arr[e] = !arr[e];
+      setWeek(arr);
     }
 
     const renderItem = ({ item }) => (
-      <View style={styles.container2}>
-          <View style={styles.header}>
+      <TouchableOpacity style={styles.scrollBox} onPress={()=>change(item.id)}>
+        <Text style={{fontSize: 16, padding: 3, fontWeight: week[item.id] ? 'bold' : '400',
+      color: week[item.id] ? 'black' : '#9E9E9E', borderBottomWidth: week[item.id] ? 2 : 0 }}>{item.id}주</Text>
+      </TouchableOpacity>
+    ); 
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
             <TouchableOpacity style={[styles.headerBox, {width: '50%', borderBottomColor: filter[0] ? 'orange' : '#BDBDBD'}]} onPress={()=>filter_func(0)}>
                 <Text style={{fontWeight: 'bold', fontSize: 18, color: filter[0] ? 'orange' : '#BDBDBD'}}>오늘의편지</Text>
             </TouchableOpacity>
@@ -148,26 +141,12 @@ const Main = ({navigation}:any) => {
         <View style={styles.header2}>
           <View style={styles.header2Box}><Text style={{fontSize: 16, fontWeight: 'bold'}}>임신주차</Text></View>
           <View style={styles.header2Box2}>
-            <FlatList data={DATA2} renderItem={renderItem2}
+            <FlatList data={DATA} renderItem={renderItem}
               keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
             </FlatList>
           </View>
         </View>
         <List />
-      </View>
-    );
-
-    const renderItem2 = ({ item }) => (
-      <View style={styles.scrollBox}>
-        <Text style={{fontSize: 16, padding: 3}}>{item.id}주</Text>
-      </View>
-    ); 
-
-  return (
-    <View style={styles.container}>
-        <FlatList data={DATA} renderItem={renderItem}
-            keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
-        </FlatList>
     </View>
   )
 }
