@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
@@ -6,10 +6,15 @@ import Icon2 from 'react-native-vector-icons/AntDesign'
 const styles = StyleSheet.create({
     container:{
         height: '92%',
+        backgroundColor: 'white'
+    },
+    container2:{
+
     },
     header:{
-        height: '12%',
-        
+        height: 80,
+        marginTop: 20,
+        paddingLeft: 15,
     },
     headerBox:{
         width: '40%',
@@ -25,16 +30,18 @@ const styles = StyleSheet.create({
     },
     infoBox:{
         width: '50%',
+        justifyContent: 'center',
     },
     infoSubBox:{
-        borderWidth: 1,
-        height: '50%',
+        height: 20,
         justifyContent: 'center',
-        alignItems: 'center',
+        marginLeft: 10,
     },
     
     main:{
-        height: '88%'
+        height: 600,
+        borderBottomWidth: 1,
+        borderColor: '#F5F5F5'
     },
     mainBox:{
         height: '13%',
@@ -46,9 +53,10 @@ const styles = StyleSheet.create({
         padding: 15,
     },
     mainBox3:{
-        borderWidth: 1,
+        borderBottomWidth: 1,
         height: '8%',
         flexDirection: 'row',
+        borderColor: '#F5F5F5',
     },
     likeBox:{
         width: '60%',
@@ -62,15 +70,33 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingRight: 10,
     },
-    mainBox4:{
-        borderWidth: 1,
-        height: '33%',
-        padding: 20,
+    footer:{
+        height: 60,
+        flexDirection: 'row'
     },
-    main4Box:{
-        borderWidth: 1,
-        height: 200,
+    footerBox:{
+        width: '18%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 15,
     },
+    footerBox2:{
+        width: '82%',
+        justifyContent: 'center',
+        padding: 15,
+    },
+    circleBox:{
+        borderWidth: 1,
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+    },
+    textBox:{
+        height: 40,
+        borderRadius: 25,
+        backgroundColor: '#F5F5F5',
+        paddingLeft: 15,
+    }
 })
 const Talk1Sub = () => {
 
@@ -79,52 +105,24 @@ const Talk1Sub = () => {
           id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
           title: '전체'
         },
-        {
-          id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-          title: '자유게시판'
-        },
-        {
-          id: '58694a0f-3da1-471f-bd96-145571e29d72',
-          title: '일상이야기'
-        },
-        {
-            id: '1',
-            title: '임신정보'
-        },
-        {
-            id: '2',
-            title: '고민상담'
-        },
-        {
-            id: '3',
-            title: '질문게시판'
-        }
     ];
 
     const renderItem = ({ item }) => (
-        <View style={styles.main4Box}>
-            
-        </View>
-      );
-
-
-  return (
-    <View style={styles.container}>
-
-        <View style={styles.header}>
+        <View style={styles.container2}>
+            <View style={styles.header}>
             <View style={styles.headerBox}>
                 <View style={styles.profileBox}>
                     <Text>이미지</Text>
                 </View>
                 <View style={styles.infoBox}>
                     <View style={styles.infoSubBox}><Text>별똥이맘</Text></View>
-                    <View style={styles.infoSubBox}><Text>9시간 전</Text></View>
+                    <View style={styles.infoSubBox}><Text style={{fontSize: 13, color: '#9E9E9E'}}>9시간 전</Text></View>
                 </View>
             </View>
         </View>
         <View style={styles.main}>
             <View style={styles.mainBox}>
-                <Text>제목</Text>
+                <Text style={{fontSize: 20, fontWeight: '400'}}>제목</Text>
             </View>
             <View style={styles.mainBox2}>
                 <Text>내용</Text>
@@ -140,10 +138,22 @@ const Talk1Sub = () => {
                     <Text>조회수 134</Text>
                 </View>
             </View>
-            <View style={styles.mainBox4}>
-            <FlatList data={DATA} renderItem={renderItem}
-                keyExtractor={item => item.id}>
-            </FlatList>
+        </View>
+        </View>
+      );
+
+
+  return (
+    <View style={styles.container}>
+        <FlatList data={DATA} renderItem={renderItem}
+            keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
+        </FlatList>
+        <View style={styles.footer}>
+            <View style={styles.footerBox}>
+                <View style={styles.circleBox}></View>
+            </View>
+            <View style={styles.footerBox2}>
+                <TextInput style={styles.textBox} placeholder='댓글을 입력해주세요.'></TextInput>
             </View>
         </View>
     </View>

@@ -95,6 +95,8 @@ const AddPage = () => {
 
     const [isChecked, setChecked] = useState(Array.from({length: 4}, ()=>{return false})); // check box
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
+    const [date, setDate] = useState(new Date())
+    const [open, setOpen] = useState(false)
 
     const change = (e) => { // 텍스트 밑줄 색상 변경
         let arr = Array.from({length: 4}, ()=>{return false});

@@ -31,6 +31,10 @@ import Setting from '..//MyPage/Setting/Main'
 import Block from '../MyPage/Setting/Block'
 import Term1 from '../MyPage/Setting/Terms1'
 import Term2 from '../MyPage/Setting/Terms2'
+import Test from '../Default/ImagePicker'
+import Test2 from  '../Default/DateTime'
+import Test3 from '../Default/Picker'
+import Test4 from '../Default/Modal'
 
 LogBox.ignoreAllLogs();
 
