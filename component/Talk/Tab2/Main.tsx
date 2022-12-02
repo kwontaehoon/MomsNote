@@ -31,8 +31,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   main:{
-    height: '88%',
-    borderWidth: 1,
+    height: '99%',
   },
   mainBox:{
     borderBottomWidth: 1,

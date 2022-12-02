@@ -111,6 +111,10 @@ const AddPage = () => {
             case e === 0 &&  arr[e] === true: arr = Array.from({length: 4}, ()=>{return false}); setChecked(arr); break;
             case e !== 0: arr[0] = false; arr[e] = !arr[e]; setChecked(arr); break;
         }
+        if(arr[1] === true && arr[2] === true && arr[3] === true){
+            arr = Array.from({length: 4}, ()=>{return true});
+            setChecked(arr);
+        }
     }
 
     const renderItem = ({ item }) => (

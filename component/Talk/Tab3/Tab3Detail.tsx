@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Modal } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
@@ -69,8 +69,43 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 10,
     },
+    modalContainer:{
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    modalView:{
+        width: '100%',
+        height: '100%',
+        margin: 20,
+        backgroundColor: "rgba(0,0,0,0.5)",
+        alignItems: "center",
+        justifyContent: 'center',
+        shadowColor: "#000",
+        elevation: 5,
+    },
+    modalContainer2:{
+        width: '80%',
+        height: 144,
+        backgroundColor: 'white',
+        marginBottom: 35,
+        borderRadius: 15
+    },
+    modalBox:{
+        height: '50%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modal:{
+        backgroundColor: '#FEA100',
+        width: '90%',
+        height: 44,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 3,
+        marginBottom: 3,
+    },
 })
-const Talk1Sub = () => {
+const Talk1Sub = ({navigation}) => {
 
     const DATA = [
         {
@@ -87,6 +122,14 @@ const Talk1Sub = () => {
     ];
 
     const [filter, setFilter] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const modal = (e) => {
+        if(e === 0){
+            navigation.navigate('신청 정보');
+        }
+        setModalVisible(!modalVisible);
+    }
 
     const renderItem = ({ item }:any) => (
         
@@ -100,10 +143,10 @@ const Talk1Sub = () => {
                     <Text style={{fontSize: 25}}>맘스노트 신규체험단 모집</Text>
                 </View>
                 <View style={styles.mainBox2}>
-                    <View style={styles.main2Box}>
+                    <View>
                         <View><Text style={{margin: 2}}>신청기간: 22.11.01 ~ 22.11.15</Text></View>
                         <View><Text style={{margin: 2}}>발표일자: 22.11.18</Text></View>
-                        <View><Text style={{margin: 2}}>등록기간: 22.12.01</Text></View>
+                        <View><Text style={{margin: 2}}>등록기간: 22.12.01 ~ 22.12.02</Text></View>
                     </View>
                 </View>
             </View>
@@ -143,34 +186,39 @@ const Talk1Sub = () => {
             )
         }
     }
-    const check = () => {
-        Alert.alert(
-            "체험단 신청을 하시려면 신청정보를 먼저 작성 하셔야합니다. 지금 작성하시겠습니까?",
-            "My Alert Msg",
-            [
-              {
-                text: "Cancel",
-                onPress: () => console.log("Cancel Pressed"),
-                style: "cancel"
-              },
-              { text: "OK", onPress: () => console.log("OK Pressed") }
-            ]
-          );
-    }
 
 
   return (
     <View style={styles.container}>
+         <Modal animationType="fade" transparent={true} visible={modalVisible}
+            onRequestClose={() => {
+            setModalVisible(!modalVisible)}}>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                    <View style={[styles.modalContainer2, {height: 220}]}>
+                        <View style={styles.modalBox}>
+                            <Text style={{fontSize: 16, paddingTop: 10}}>체험단 신청을 하시려면</Text>
+                            <Text style={{fontSize: 16, paddingTop: 5}}>신청정보를 먼저 작성하셔야 합니다.</Text>
+                            <Text style={{fontSize: 16, paddingTop: 5}}>지금 작성하시겠습니까?</Text>
+                        </View>
+                        <View style={styles.modalBox}>
+                            <TouchableOpacity style={styles.modal} onPress={()=>modal(0)}><Text style={{color: 'white', fontSize: 16}}>네</Text></TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>modal(1)}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
+                        </View>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id}>
         </FlatList>
         <View style={styles.footer}>
             <View style={[styles.footerBox, {width: '20%'}]}>
-                <Icon name='user' size={22}/>
+                <Icon2 name='like2' size={22} style={{color: 'orange'}}/>
                 <Text> 12</Text>
             </View>
             <View style={[styles.footerBox, {width: '5%', borderWidth: 0}]}></View>
-            <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={check}><Text style={{fontSize: 20, fontWeight: '500'}}>신청서 확인</Text></TouchableOpacity>
+            <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={modal}><Text style={{fontSize: 20, fontWeight: '500'}}>신청하기</Text></TouchableOpacity>
         </View>
     </View>
   )

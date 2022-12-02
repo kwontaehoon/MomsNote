@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList, Modal } from 'react-native'
 import Icon from 'react-native-vector-icons/Entypo'
 import Checkbox from 'expo-checkbox'
 
@@ -43,8 +43,43 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 50
     },
+    modalContainer:{
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    modalView:{
+        width: '100%',
+        height: '100%',
+        margin: 20,
+        backgroundColor: "rgba(0,0,0,0.5)",
+        alignItems: "center",
+        justifyContent: 'center',
+        shadowColor: "#000",
+        elevation: 5,
+    },
+    modalContainer2:{
+        width: '80%',
+        height: 220,
+        backgroundColor: 'white',
+        marginBottom: 35,
+        borderRadius: 15,
+    },
+    modalBox:{
+        height: '45%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modal:{
+        backgroundColor: '#FEA100',
+        width: '90%',
+        height: 44,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 3,
+        marginBottom: 3,
+    },
 })
-const Main = () => {
+const Main = ({navigation}) => {
     const DATA = [
         {
           id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -53,6 +88,13 @@ const Main = () => {
     ];
 
     const [isChecked, setCheck] = useState(false); // 체크박스
+    const [modalVisible, setModalVisible] = useState(false); // modal
+
+    const modal = (e) => {
+        if(isChecked === true){
+            setModalVisible(!modalVisible);
+        }
+    }
 
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
@@ -83,14 +125,31 @@ const Main = () => {
             </View>
             <TextInput style={styles.mainBox2} placeholder='탈퇴 사유를 작성해주세요.' multiline={true}/>
         </View>
-        <View style={[styles.main2, {backgroundColor: isChecked ? '#FEA100' : '#E0E0E0'}]}>
+        <TouchableOpacity style={[styles.main2, {backgroundColor: isChecked ? '#FEA100' : '#E0E0E0'}]} onPress={modal}>
             <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>회원탈퇴</Text>
-        </View>
+        </TouchableOpacity>
     </View>
       );
       
   return (
     <View style={styles.container}>
+        <Modal animationType="fade" transparent={true} visible={modalVisible}
+            onRequestClose={() => {
+            setModalVisible(!modalVisible)}}>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                    <View style={styles.modalContainer2}>
+                        <View style={styles.modalBox}>
+                            <Text style={{fontSize: 16, paddingTop: 10}}>정말로 회원탈퇴를 하시겠습니까?</Text>
+                        </View>
+                        <View style={styles.modalBox}>
+                        <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>회원탈퇴</Text></TouchableOpacity>
+                           <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={modal}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        </Modal>
         <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
         </FlatList>

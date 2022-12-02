@@ -93,7 +93,7 @@ const Talk3 = ({navigation}: any) => {
   const [filter, setFilter] = useState([true, false, false, false]);
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('tt')}>
+    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('체험단 상세페이지')}>
         
     </TouchableOpacity>
   ); 

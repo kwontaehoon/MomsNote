@@ -13,6 +13,8 @@ import Budget from '../Materials/Budget/Main'
 import Talk from '../Talk/Main'
 import TalkTab1Detail from '../Talk/Tab1/Detail'
 import TalkTab3Detail from '../Talk/Tab3/Tab3Detail'
+import Categories from '../Talk/Register/Categories'
+import Apply from '../Talk/Tab3/Apply'
 import MyPage from '../MyPage/Main'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/SimpleLineIcons'
@@ -31,10 +33,11 @@ import Setting from '..//MyPage/Setting/Main'
 import Block from '../MyPage/Setting/Block'
 import Term1 from '../MyPage/Setting/Terms1'
 import Term2 from '../MyPage/Setting/Terms2'
-import Test from '../Default/ImagePicker'
-import Test2 from  '../Default/DateTime'
-import Test3 from '../Default/Picker'
-import Test4 from '../Default/Modal'
+import ImagePicker from '../Default/ImagePicker'
+import DateTime from  '../Default/DateTime'
+import Picker from '../Default/Picker'
+import Modal from '../Default/Modal'
+
 
 LogBox.ignoreAllLogs();
 
@@ -181,13 +184,22 @@ const Navigation = () => {
                     <Stack.Screen 
                         name="총 예산"
                         component={Register}
-                        options={{headerShown: false}}
-                        />
+                        options={{headerShown: false}}/>
                     <Stack.Screen 
                         name="맘스톡 서치"
                         component={TalkTab3Detail}
-                        options={{title: ''}}
-                        />
+                        options={{title: ''}}/>
+                    <Stack.Screen 
+                        name="카테고리 선택"
+                        component={Categories}/>
+                    <Stack.Screen 
+                        name="체험단 상세페이지"
+                        component={TalkTab3Detail}
+                        options={{title: ''}}/>
+                    <Stack.Screen 
+                        name="신청 정보"
+                        component={Apply}
+                        options={{title: '', headerShown: false}}/>
                </Stack.Navigator>   
             )}
           </Tab.Screen>
