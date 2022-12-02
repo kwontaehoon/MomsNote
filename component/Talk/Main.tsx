@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
 })
 const Main = ({navigation}:any) => {
 
-    const [modalVisible, setModalVisible] = useState(false); // modal
+    const [modalVisible, setModalVisible] = useState(false); // imodal
     const [filter, setFilter] = useState([true, false, false]); // tab
 
     const List = ():any => {

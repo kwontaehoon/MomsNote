@@ -37,6 +37,7 @@ import ImagePicker from '../Default/ImagePicker'
 import DateTime from  '../Default/DateTime'
 import Picker from '../Default/Picker'
 import Modal from '../Default/Modal'
+import Slide from '../Default/Slide'
 
 
 LogBox.ignoreAllLogs();
@@ -78,7 +79,7 @@ const Navigation = () => {
                <Stack.Navigator>
                     <Stack.Screen 
                         name="Home"
-                        component={Home}
+                        component={Slide}
                         options={({ navigation, route }) => ({
                             title: '',
                             headerRight: () => (

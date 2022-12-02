@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 144,
+        height: 220,
         backgroundColor: 'white',
         marginBottom: 35,
         borderRadius: 15
@@ -94,15 +94,33 @@ const Main = ({navigation}) => {
     ];
 
     const [isEnabled, setIsEnabled] = useState(Array.from({length: 3}, () => { return false })); // 스위치 토글
+    console.log('isenabled: ', isEnabled);
     const [clockDisplay, setClockDisplay] = useState(false); // 시작 종료 시간 display
-    const [modalVisible, setModalVisible] = useState(false); // modal
+    const [modalVisible, setModalVisible] = useState(false); // 알람 끄기 modal
+    const [modalVisible2, setModalVisible2] = useState(false); // 로그아웃 modal
 
     const modal = (e) => {
-        setModalVisible(!modalVisible);
+        console.log('e: ', e);
+        let arr = [...isEnabled];
+        let arr2 = [1, 2, 3];
+        if(e === 0){
+            arr[2] === false;
+            console.log('arr: ', arr[2]);
+
+            setIsEnabled(arr);
+            setModalVisible(!modalVisible);
+        }else{
+            setModalVisible(!modalVisible);
+        }
     }
 
     const toggleSwitch = (e) => {
         let arr = [...isEnabled];
+
+        if(e === 2 && isEnabled[2] === true){
+            setModalVisible(!modalVisible);
+            return;
+        }
         if(e === 1 && isEnabled[1] === true){
             arr[1] = false;
             arr[2] = false;  
@@ -122,8 +140,8 @@ const Main = ({navigation}) => {
                     <View style={styles.mainBoxSub}><Text style={styles.text}>마케팅 수신 동의</Text></View>
                     <View style={[styles.mainBoxSub, {alignItems: 'flex-end'}]}>
                         <Switch
-                            trackColor={{ false: "#767577", true: "#81b0ff" }}
-                            thumbColor={isEnabled[0] ? "#f5dd4b" : "#f4f3f4"}
+                            trackColor={{ false: "#767577", true: "#FEA100" }}
+                            thumbColor={isEnabled[0] ? "white" : "#f4f3f4"}
                             ios_backgroundColor="#3e3e3e"
                             onValueChange={()=>toggleSwitch(0)}
                             value={isEnabled[0]}/>
@@ -133,8 +151,8 @@ const Main = ({navigation}) => {
                     <View style={styles.mainBoxSub}><Text style={styles.text}>활동 알림 받기</Text></View>
                     <View style={[styles.mainBoxSub, {alignItems: 'flex-end'}]}>
                         <Switch
-                            trackColor={{ false: "#767577", true: "#81b0ff" }}
-                            thumbColor={isEnabled[1] ? "#f5dd4b" : "#f4f3f4"}
+                            trackColor={{ false: "#767577", true: "#FEA100" }}
+                            thumbColor={isEnabled[1] ? "white" : "#f4f3f4"}
                             ios_backgroundColor="#3e3e3e"
                             onValueChange={()=>toggleSwitch(1)}
                             value={isEnabled[1]}/>
@@ -144,8 +162,8 @@ const Main = ({navigation}) => {
                     <View style={styles.mainBoxSub}><Text style={[styles.text, {color: isEnabled[1] ? 'black' : '#BDBDBD'}]}>알림금지 시간 설정</Text></View>
                     <View style={[styles.mainBoxSub, {alignItems: 'flex-end'}]}>
                         <Switch
-                            trackColor={{ false: isEnabled[1] ? "#767577" : "#BDBDBD", true: "#81b0ff" }}
-                            thumbColor={isEnabled[2] ? "#f5dd4b" : "#f4f3f4"}
+                            trackColor={{ false: isEnabled[1] ? "#767577" : "#BDBDBD", true: "#FEA100" }}
+                            thumbColor={isEnabled[2] ? "white" : "#f4f3f4"}
                             ios_backgroundColor="#3e3e3e"
                             onValueChange={()=>toggleSwitch(2)}
                             value={isEnabled[2]}
@@ -190,7 +208,7 @@ const Main = ({navigation}) => {
                     <View style={[styles.mainBoxSub, {alignItems: 'flex-end'}]}><Text style={{fontSize: 13, color: '#9E9E9E'}}>현재 1.0.1 / 최신 1.0.2</Text></View>
                 </View>
                 <View style={styles.mainBox}>
-                    <View style={styles.mainBoxSub}><Text style={styles.text}>로그아웃</Text></View>
+                    <View style={styles.mainBoxSub}><Text style={styles.text} onPress={()=>setModalVisible2(!modalVisible2)}>로그아웃</Text></View>
                 </View>
             </View>
         </View>
@@ -205,12 +223,29 @@ const Main = ({navigation}) => {
                 <View style={styles.modalView}>
                     <View style={[styles.modalContainer2, {height: 220}]}>
                         <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, paddingTop: 10}}>게시글 내용을 입력해주세요.</Text>
-                            <Text style={{fontSize: 16, paddingTop: 5}}>해당 내용을 임시저장하시겠습니까?</Text>
+                            <Text style={{fontSize: 16, paddingTop: 10}}>알림을 끄시면 체험단 선정 알림을</Text>
+                            <Text style={{fontSize: 16, paddingTop: 5}}>받으실 수 없습니다.</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>게시글 불러오기</Text></TouchableOpacity>
-                           <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={modal}><Text style={{color: 'black', fontSize: 16}}>새로 작성하기</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.modal} onPress={()=>modal(0)}><Text style={{color: 'white', fontSize: 16}}>알림 끄기</Text></TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>modal(1)}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+        <Modal animationType="fade" transparent={true} visible={modalVisible2}
+            onRequestClose={() => {
+            setModalVisible2(!modalVisible2)}}>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                    <View style={styles.modalContainer2}>
+                        <View style={[styles.modalBox, {height: '45%'}]}>
+                            <Text style={{fontSize: 16, paddingTop: 10}}>로그아웃 하시겠습니까?</Text>
+                        </View>
+                        <View style={styles.modalBox}>
+                            <TouchableOpacity style={styles.modal} onPress={()=>navigation.navigate('')}><Text style={{color: 'white', fontSize: 16}}>로그아웃</Text></TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModalVisible2(!modalVisible2)}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
                         </View>
                     </View>
                 </View>
