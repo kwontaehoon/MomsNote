@@ -25,12 +25,32 @@ const styles = StyleSheet.create({
     main2:{
 
     },
+    dot:{
+      backgroundColor: '#D9D9D9',
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+      marginLeft: 3,
+      marginRight: 3,
+      marginTop: 3,
+      marginBottom: 3
+    },
+    dotActive:{
+      backgroundColor: '#000',
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+      marginLeft: 3,
+      marginRight: 3,
+      marginTop: 3,
+      marginBottom: 3
+    },
     footer:{
-        height: 56,
-        backgroundColor: '#FEA100',
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
+      height: 56,
+      backgroundColor: '#FEA100',
+      borderRadius: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
 })
 const InquiryDetail = () => {
@@ -52,40 +72,15 @@ const InquiryDetail = () => {
 
   return (
     <View style={styles.container}>
-        <View style={styles.header}><Text style={{color: '#757575', fontSize: 16}} onPress={()=>setPage(3)}>건너뛰기</Text></View>
+        <View style={styles.header}><Text style={{color: '#757575', fontSize: 16}} onPress={()=>setPage(2)}>건너뛰기</Text></View>
         <View style={styles.main}>
-            <Slick showsButtons={true} loop={false} index={page} dot={
-            <View
-              style={{
-                backgroundColor: '#D9D9D9',
-                width: 8,
-                height: 8,
-                borderRadius: 4,
-                marginLeft: 3,
-                marginRight: 3,
-                marginTop: 3,
-                marginBottom: 3
-              }}
-            />
-          }
-          activeDot={
-            <View
-              style={{
-                backgroundColor: '#000',
-                width: 8,
-                height: 8,
-                borderRadius: 4,
-                marginLeft: 3,
-                marginRight: 3,
-                marginTop: 3,
-                marginBottom: 3
-              }}
-            />
-          }
-          onResponderRelease={()=>{
-            console.log('aa');
-            console.log(page);
-          }}
+            <Slick showsButtons={false} loop={false} index={page}
+            dot={<View style={styles.dot}/>}
+            activeDot={<View style={styles.dotActive}/>}
+            onScrollBeginDrag	= {()=>{
+              console.log('aa');
+              console.log(page);
+            }}
           
         >
                 <View testID="Page1" style={styles.header2}>

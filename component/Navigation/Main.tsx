@@ -40,7 +40,7 @@ import Modal from '../Default/Modal'
 import Slide from '../Default/Slide'
 
 
-LogBox.ignoreAllLogs();
+// LogBox.ignoreAllLogs();
 
 const styles = StyleSheet.create({
     header:{
