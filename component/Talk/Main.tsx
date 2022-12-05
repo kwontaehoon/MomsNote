@@ -95,7 +95,7 @@ const Main = ({navigation}:any) => {
     }
     const modal = (e) => {
         setModalVisible(!modalVisible);
-        navigation.navigate('총 예산');
+        navigation.navigate('글쓰기');
     }
 
   return (
@@ -130,7 +130,7 @@ const Main = ({navigation}:any) => {
             </TouchableOpacity>
         </View>
         <List />
-        <TouchableOpacity style={styles.footer} onPress={()=>write()}>
+        <TouchableOpacity style={styles.footer} onPress={write}>
             <Icon name="pencil" size={22} style={{color: 'white'}}/>
         </TouchableOpacity>
     </View>

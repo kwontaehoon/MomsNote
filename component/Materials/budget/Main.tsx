@@ -38,11 +38,6 @@ const Talk1Sub = () => {
         }
     ];
 
-    const renderItem = ({ item }) => (
-        <View style={styles.main4Box}>
-            
-        </View>
-      );
 
 
   return (

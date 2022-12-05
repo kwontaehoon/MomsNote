@@ -81,10 +81,10 @@ const Talk1 = ({navigation}: any) => {
     }
   ];
 
-  const [filter, setFilter] = useState([true, false, false, false]);
+  const [filter, setFilter] = useState([true, false, false, false, false, false]);
 
   const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
-    let arr = Array.from({length: 4}, () => {return false});
+    let arr = Array.from({length: 6}, () => {return false});
     arr[e] = !arr[e];
     setFilter(arr);
   }
@@ -100,7 +100,7 @@ const Talk1 = ({navigation}: any) => {
   );
 
   const renderItem2 = ({ item }) => (
-    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('TalkTab1Detail')}>
+    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('Talk1Tab1Detail')}>
       <Text>{item.title}</Text>
     </TouchableOpacity>
   ); 

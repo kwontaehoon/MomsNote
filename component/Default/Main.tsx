@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import Slick from 'react-native-slick'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 
@@ -61,11 +61,15 @@ const InquiryDetail = () => {
     const List = () => {
         if(page === 3){
             return(
-                <View style={styles.footer}><Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>시작하기</Text></View>
+                <View style={styles.footer}>
+                  <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>시작하기</Text>
+                </View>
             )
         }else{
             return(
-                <View style={styles.footer}><Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>다음</Text></View>
+                <TouchableOpacity style={styles.footer} onPress={()=>setPage(page+1)}>
+                  <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>다음</Text>
+                </TouchableOpacity>
             )
         }
     }
@@ -77,9 +81,8 @@ const InquiryDetail = () => {
             <Slick showsButtons={false} loop={false} index={page}
             dot={<View style={styles.dot}/>}
             activeDot={<View style={styles.dotActive}/>}
-            onScrollBeginDrag	= {()=>{
-              console.log('aa');
-              console.log(page);
+            renderPagination={(index, total, context):any=>{
+              setPage(context.state.index);
             }}
           
         >

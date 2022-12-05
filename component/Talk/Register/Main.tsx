@@ -6,11 +6,13 @@ import { getStatusBarHeight } from "react-native-status-bar-height"
 const styles = StyleSheet.create({
     container:{
         marginTop: getStatusBarHeight(),
-        height: '90%',
         backgroundColor: 'white',
     },
+    container2:{
+
+    },
     header:{
-        height: '8%',
+        height: 60,
         flexDirection: 'row',
     },
     headerBox:{
@@ -18,7 +20,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     header2:{
-        height: '8%',
+        padding: 10,
+        height: 60,
         backgroundColor: '#FEECB3',
         flexDirection: 'row',
     },
@@ -29,7 +32,7 @@ const styles = StyleSheet.create({
     },
     profileBox:{
         borderWidth: 1,
-        width: '17%',
+        width: 30,
         borderRadius: 999,
     },
     infoBox:{
@@ -44,65 +47,63 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    main:{
-        height: '16%',
-        flexDirection: 'row',
-        padding: 5,
+    header3:{
+        padding: 15,
     },
-    mainBox:{
-        width: '30%',
-        alignItems: 'center',
+    header3Box:{
+    },
+    titleBox:{
+        height: 40,
         justifyContent: 'center',
     },
-    cameraBox:{
+    filterBox:{
+        height: 60,
+    },
+    filter:{
+        height: 40,
+        borderWidth: 1,
+        borderColor: '#EEEEEE',
+        margin: 10,
+        borderRadius: 20,
+        paddingTop: 8,
+        paddingLeft: 16,
+        paddingRight: 16,
+        paddingBottom: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+    },
+    textBox:{
+        borderWidth: 1,
+        borderColor: '#EEEEEE',
+        height: 48,
+        marginTop: 20,
+        paddingLeft: 10,
+    },
+    textBox2:{
+        borderWidth: 1,
+        borderColor: '#EEEEEE',
+        height: 200,
+        marginTop: 20,
+        paddingBottom: 150,
+        paddingLeft: 10,
+    },
+    main:{
+        padding: 15,
+    },
+    
+    mainBox:{
+        marginBottom: 20,
+    },
+    albumBox:{
         borderWidth: 1,
         borderColor: '#E0E0E0',
-        width: '70%',
-        height: '70%',
-        padding: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 10,
-    },
-    mainBox2:{
-        width: '70%',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    main2:{
-        height: '9%',
-        flexDirection: 'row',
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-        borderColor: 'black',
-        marginLeft: 10,
-        marginRight: 10,
-    },
-    main2Box:{
-        width: '85%',
-        justifyContent: 'center',
-        paddingLeft: 10,
-    },
-    main2Box2:{
-        width: '15%',
+        borderRadius: 5,
+        width: 80,
+        height: 80,
+        marginTop: 20,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    main3:{
-        height: '59%',
-        marginLeft: 10,
-        marginRight: 10,
-    },
-    main3TitleBox:{
-        height: '20%',
-        borderBottomWidth: 1,
-        paddingLeft: 10,
-        paddingTop: 10,
-    },
-    main3ContentBox:{
-        height: '70%',
-        paddingLeft: 10,
-        paddingTop: 10,
     },
     modalContainer:{
         justifyContent: "center",
@@ -147,8 +148,45 @@ const Register = ({navigation}) => {
     const content2 = ['이미지는 최대 7장 업로드 가능합니다.', '동영상은 최대 1개만 업로드 가능합니다.'];
     const content3 = ['작성 중이던 게시글을 취소합니다. 해당 내용을 임시 저장하시겠습니까?'];
 
+    const DATA = [
+        {
+          id: '0',
+          title: '전체'
+        },
+    ];
+
+    const DATA2 = [
+        {
+            id: '0',
+            title: '자유게시판'
+        },
+        {
+            id: '1',
+            title: '일상이야기'
+          },
+        {
+            id: '2',
+            title: '임신정보'
+        },
+        {
+            id: '3',
+            title: '고민 상담'
+        },
+        {
+            id: '4',
+            title: '질문 게시판'
+        },
+    ];
+
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible2, setModalVisible2] = useState(false);
+    const [filter, setFilter] = useState(Array.from({length: 5}, () => {return false}));
+
+    const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
+        let arr = Array.from({length: 5}, () => {return false});
+        arr[e] = !arr[e];
+        setFilter(arr);
+    }
 
 
     const cencel = (e) => {
@@ -162,6 +200,66 @@ const Register = ({navigation}) => {
         navigation.goBack();
     }
 
+    const renderItem = ({ item }) => (
+        <View style={styles.container2}>
+        <View style={styles.header}>
+                <View style={[styles.headerBox, {width: '20%'}]}><Text style={{fontSize: 15}} onPress={()=>cencel(0)}>취소</Text></View>
+                <View style={[styles.headerBox, {width: '60%'}]}><Text style={{fontSize: 25, fontWeight: 'bold'}}>맘스톡 등록</Text></View>
+                <View style={[styles.headerBox, {width: '20%'}]}><Text style={{color: '#FE7000', fontSize: 15}} onPress={()=>complete(0)}>완료</Text></View>
+            </View>
+            <View style={styles.header2}>
+                <View style={styles.header2Box}>
+                    <View style={styles.profileBox}></View>
+                    <View style={styles.infoBox}><Text style={{fontSize: 20, fontWeight : 'bold'}}>별똥이맘</Text></View>
+                </View>
+                <View style={styles.header2Box2}>
+                    <View><Text>임신 몇주차</Text></View>
+                </View>
+            </View>
+            <View style={styles.header3}>
+                <View style={styles.header3Box}>
+                    <View style={styles.titleBox}><Text style={{fontSize: 16, color: '#424242'}}>카테고리</Text></View>
+                    <View style={styles.filterBox}>
+                        <FlatList data={DATA2} renderItem={renderItem2}
+                            keyExtractor={item => item.id} showsHorizontalScrollIndicator={false} horizontal={true}>
+                        </FlatList>
+                    </View>
+                </View>
+            </View>
+            <View style={styles.main}>
+                <View style={styles.mainBox}>
+                    <Text style={{fontSize: 16, color: '#424242'}}>제목</Text>
+                    <TextInput style={styles.textBox} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'}></TextInput>
+                </View>
+                <View style={styles.mainBox}>
+                    <Text style={{fontSize: 16, color: '#424242'}}>내용</Text>
+                    <TextInput style={styles.textBox2} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'}></TextInput>
+                </View>
+                <View style={styles.mainBox}>
+                    <Text style={{fontSize: 16, color: '#424242'}}>이미지 첨부</Text>
+                    <View style={styles.albumBox}>
+                        <Icon name='camera' size={22} />
+                        <Text style={{paddingTop: 5, color: '#9E9E9E'}}>0/7</Text>
+                    </View>
+                </View>
+                <View style={styles.mainBox}>
+                    <Text style={{fontSize: 16, color: '#424242'}}>동영상 첨부</Text>
+                    <View style={styles.albumBox}>
+                        <Icon name='camera' size={22} />
+                        <Text style={{padding: 5, color: '#9E9E9E'}}>0/7</Text>
+                    </View>
+                </View>
+            </View>
+        </View>
+    );
+
+    const renderItem2 = ({ item }) => (
+        <TouchableOpacity style={[styles.filter, {backgroundColor: filter[item.id] ? '#FEA100' : 'white'}]} onPress={()=>change(item.id)}>
+            <Text style={{color: filter[item.id] ? 'white' : 'black', fontWeight: '400'}}>{item.title}</Text>
+        </TouchableOpacity>
+    );
+
+    
     return (
         <View style={styles.container}>
             <Modal animationType="fade" transparent={true} visible={modalVisible}
@@ -196,39 +294,10 @@ const Register = ({navigation}) => {
                     </View>
                 </View>
             </Modal>
-            <View style={styles.header}>
-                <View style={[styles.headerBox, {width: '20%'}]}><Text style={{fontSize: 15}} onPress={()=>cencel(0)}>취소</Text></View>
-                <View style={[styles.headerBox, {width: '60%'}]}><Text style={{fontSize: 25, fontWeight: 'bold'}}>맘스톡 등록</Text></View>
-                <View style={[styles.headerBox, {width: '20%'}]}><Text style={{color: '#FE7000', fontSize: 15}} onPress={()=>complete(0)}>완료</Text></View>
-            </View>
-            <View style={styles.header2}>
-                <View style={styles.header2Box}>
-                    <View style={styles.profileBox}></View>
-                    <View style={styles.infoBox}><Text style={{fontSize: 20, fontWeight : 'bold'}}>별똥이맘</Text></View>
-                </View>
-                <View style={styles.header2Box2}>
-                    <View><Text>임신 몇주차</Text></View>
-                </View>
-            </View>
-            <View style={styles.main}>
-                <View style={styles.mainBox}>
-                    <View style={styles.cameraBox}>
-                        <Icon name='camera' size={20} />
-                        <Text>0/8</Text>
-                    </View>
-                </View>
-                <View style={styles.mainBox2}>
-                    <Text>이미지 파일은 최대 7개,  동영상 파일은 최대 1개까지 등록이 가능합니다.</Text>
-                </View>
-            </View>
-            <View style={styles.main2}>
-                <View style={styles.main2Box}><Text>카테고리 선택</Text></View>
-                <TouchableOpacity style={styles.main2Box2} onPress={()=>navigation.navigate("카테고리 선택")}><Icon name='angle-right' size={20}/></TouchableOpacity>
-            </View>
-            <SafeAreaView style={styles.main3}>
-                <View style={styles.main3TitleBox}><TextInput  placeholder='제목을 입력해주세요.'></TextInput></View>
-                <View style={styles.main3ContentBox}><TextInput  placeholder='게시글 내용을 작성해주세요.'></TextInput></View>
-            </SafeAreaView>
+
+            <FlatList data={DATA} renderItem={renderItem}
+                keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
+            </FlatList>
         </View>
   )
 }
