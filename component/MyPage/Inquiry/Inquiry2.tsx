@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     }
     
 })
-const Inquiry3 = () => {
+const Inquiry3 = ({navigation}) => {
 
   const DATA = [
     {
@@ -59,11 +59,11 @@ const Inquiry3 = () => {
   ];
 
   const renderItem = ({ item }) => (
-    <View style={styles.mainBox}>
+    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('문의 상세')}>
         <View style={[styles.headerBox, {width: '20%'}]}><Text>대기중</Text></View>
         <View style={[styles.headerBox, {width: '60%'}]}><Text>문의 제목</Text></View>
         <View style={[styles.headerBox, {width: '20%'}]}><Text>2022.11.01</Text></View>
-    </View>
+    </TouchableOpacity>
   );
 
   return (

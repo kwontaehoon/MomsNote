@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, SafeAreaView, Modal } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, SafeAreaView, Modal, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon2 from 'react-native-vector-icons/AntDesign'
 import { getStatusBarHeight } from "react-native-status-bar-height"
+import * as ImagePicker from 'expo-image-picker';
 
 const styles = StyleSheet.create({
     container:{
@@ -63,7 +65,7 @@ const styles = StyleSheet.create({
         height: 40,
         borderWidth: 1,
         borderColor: '#EEEEEE',
-        margin: 10,
+        margin: 5,
         borderRadius: 20,
         paddingTop: 8,
         paddingLeft: 16,
@@ -91,19 +93,41 @@ const styles = StyleSheet.create({
     main:{
         padding: 15,
     },
-    
     mainBox:{
         marginBottom: 20,
     },
-    albumBox:{
+    album:{
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    albumLeft:{
         borderWidth: 1,
         borderColor: '#E0E0E0',
         borderRadius: 5,
         width: 80,
         height: 80,
-        marginTop: 20,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    albumRight:{
+        
+    },
+    filter2:{
+        padding: 15,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    close:{
+        position: 'absolute',
+        right: 7,
+        top: 7,
+        width: 20,
+        height: 20,
+        borderRadius: 10,
+        zIndex: 999,
+        backgroundColor: '#757575',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     modalContainer:{
         justifyContent: "center",
@@ -180,7 +204,9 @@ const Register = ({navigation}) => {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible2, setModalVisible2] = useState(false);
-    const [filter, setFilter] = useState(Array.from({length: 5}, () => {return false}));
+    const [filter, setFilter] = useState(Array.from({length: 5}, () => {return false})); // 카테고리
+    const [image, setImage] = useState([]); // image
+    console.log('image: ', image);
 
     const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
         let arr = Array.from({length: 5}, () => {return false});
@@ -188,6 +214,27 @@ const Register = ({navigation}) => {
         setFilter(arr);
     }
 
+    const pickImage = async () => {
+        let arr = [];
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+        console.log(result);
+        
+  
+      if (!result.canceled) {
+        arr = [...image];
+        arr.push({
+            id: image.length,
+            image: result.assets[0].uri
+        });
+        setImage(arr);
+      }
+    };
 
     const cencel = (e) => {
         setModalVisible(!modalVisible);
@@ -198,6 +245,10 @@ const Register = ({navigation}) => {
     const modal = (e) => {
         setModalVisible(!modalVisible);
         navigation.goBack();
+    }
+
+    const close = () => {
+        
     }
 
     const renderItem = ({ item }) => (
@@ -235,18 +286,32 @@ const Register = ({navigation}) => {
                     <Text style={{fontSize: 16, color: '#424242'}}>내용</Text>
                     <TextInput style={styles.textBox2} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'}></TextInput>
                 </View>
-                <View style={styles.mainBox}>
+                <View style={styles.mainBox} >
                     <Text style={{fontSize: 16, color: '#424242'}}>이미지 첨부</Text>
-                    <View style={styles.albumBox}>
-                        <Icon name='camera' size={22} />
-                        <Text style={{paddingTop: 5, color: '#9E9E9E'}}>0/7</Text>
+                    <View style={styles.album}>
+                        <TouchableOpacity style={styles.albumLeft} onPress={pickImage}>
+                            <Icon name='camera' size={22}/>
+                            <Text>{image.length}/7</Text>
+                        </TouchableOpacity>
+                        <View style={styles.albumRight}>
+                        <FlatList data={image} renderItem={renderItem3}
+                            keyExtractor={item => item.id} showsVerticalScrollIndicator={false} horizontal={true}>
+                        </FlatList>
+                        </View>
                     </View>
                 </View>
-                <View style={styles.mainBox}>
+                <View style={styles.mainBox} >
                     <Text style={{fontSize: 16, color: '#424242'}}>동영상 첨부</Text>
-                    <View style={styles.albumBox}>
-                        <Icon name='camera' size={22} />
-                        <Text style={{padding: 5, color: '#9E9E9E'}}>0/7</Text>
+                    <View style={styles.album}>
+                        <TouchableOpacity style={styles.albumLeft} onPress={pickImage}>
+                            <Icon name='camera' size={22}/>
+                            <Text>{image.length}/7</Text>
+                        </TouchableOpacity>
+                        <View style={styles.albumRight}>
+                        <FlatList data={image} renderItem={renderItem3}
+                            keyExtractor={item => item.id} showsVerticalScrollIndicator={false} horizontal={true}>
+                        </FlatList>
+                        </View>
                     </View>
                 </View>
             </View>
@@ -257,6 +322,15 @@ const Register = ({navigation}) => {
         <TouchableOpacity style={[styles.filter, {backgroundColor: filter[item.id] ? '#FEA100' : 'white'}]} onPress={()=>change(item.id)}>
             <Text style={{color: filter[item.id] ? 'white' : 'black', fontWeight: '400'}}>{item.title}</Text>
         </TouchableOpacity>
+    );
+
+    const renderItem3 = ({ item }) => (
+        <View style={styles.filter2}>
+            <TouchableOpacity style={styles.close} onPress={()=>close()}>
+                <Icon2 name='close' size={16} style={{color: 'white'}}/>
+            </TouchableOpacity>
+            <Image source={{ uri: item.image }} style={{ width: 80, height: 80, borderRadius: 5,}} />
+        </View>
     );
 
     

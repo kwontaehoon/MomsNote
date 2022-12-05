@@ -1,6 +1,7 @@
-import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import Icon from 'react-native-vector-icons/Feather'
+import * as ImagePicker from 'expo-image-picker';
 
 const styles = StyleSheet.create({
     container:{
@@ -21,14 +22,26 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     profileBox:{
-        borderWidth: 1,
         width: 72,
         height: 72,
-        borderRadius: 999,
+        borderRadius: 36,
     },
     infoBox:{
         justifyContent: 'center',
         marginLeft: 10,
+    },
+    cameraBox:{
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        width: 24,
+        height: 24,
+        borderWidth: 1,
+        borderRadius: 12,
+        borderColor: '#FEB401',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
     },
     headerBox2:{
         width: '25%',
@@ -62,12 +75,38 @@ const styles = StyleSheet.create({
     }
 })
 const Main = ({navigation}) => {
+
+
+    const [image, setImage] = useState(null);
+
+    const pickImage = async () => {
+      // No permissions request is necessary for launching the image library
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
   return (
     <View style={styles.container}>
         <View style={styles.header}>
             <View style={styles.headerBox}>
-                <View style={styles.profileBox}></View>
-                <View style={styles.infoBox}><Text style={{fontSize: 20, fontWeight : 'bold'}}>닉네임</Text></View>
+                <View style={styles.profileBox}>
+                    <Image source={{ uri: image }} style={{ width: 72, height: 72, borderRadius: 36}}/>
+                    <TouchableOpacity style={styles.cameraBox} onPress={pickImage}>
+                        <Icon name='camera' size={14} style={{color: '#FEB401'}}/>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.infoBox}>
+                    <Text style={{fontSize: 20, fontWeight : 'bold'}}>닉네임</Text>
+                </View>
             </View>
             <View style={styles.headerBox2}>
                 <TouchableOpacity style={styles.editBox} onPress={()=>navigation.navigate('내 정보 수정')}>

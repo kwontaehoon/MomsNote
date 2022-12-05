@@ -5,18 +5,19 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 const styles = StyleSheet.create({
     container:{
-        height: '92%',
+        height: '100%',
         backgroundColor: 'white',
+        padding: 15,
     },
     header:{
         height: '6%',
     },
     main:{
-        borderWidth: 1,
         height: '94%',
     },
     mainBox:{
-        borderWidth: 1,
+        borderTopWidth: 1,
+        borderColor: '#EEEEEE',
         height: 80,
         padding: 10,
     }

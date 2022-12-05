@@ -5,7 +5,7 @@ import Checkbox from 'expo-checkbox'
 
 const styles = StyleSheet.create({
     container:{
-        height: '92%',
+        height: '100%',
         backgroundColor: 'white',
     },
     container2:{
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     mainBox2:{
         borderWidth: 1,
         borderColor: '#EEEEEE',
-        height: 140,
+        height: 150,
         padding: 15,
         paddingBottom: 100,
     },

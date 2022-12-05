@@ -10,6 +10,17 @@ import Detail from './Detail'
 import Modal from '../Default/Modal'
 import Talk1Tab1Detail from '../Talk/Tab1/Detail'
 import Register from '../Talk/Register/Main'
+import Inquiry from '../MyPage/Inquiry/Main'
+import Notice from '../MyPage/Notice/Main'
+import NoticeDetail from '../MyPage/Notice/NoticeDetail'
+import Like from '../MyPage/Like/Main'
+import Edit from '../MyPage/Edit/Main'
+import Withdraw from '../MyPage/Withdraw/Main'
+import Setting from '..//MyPage/Setting/Main'
+import Block from '../MyPage/Setting/Block'
+import Term1 from '../MyPage/Setting/Terms1'
+import Term2 from '../MyPage/Setting/Terms2'
+import InquiryDetail from '../MyPage/Inquiry/InquiryDetail'
 
 LogBox.ignoreAllLogs();
 
@@ -48,6 +59,14 @@ const Navigation = () => {
             <Stack.Screen name="추가 정보 입력" component={AddPage} options={{title: '추가 정보 입력'}}/>
             <Stack.Screen name="Talk1Tab1Detail" component={Talk1Tab1Detail} options={{title: ''}}/>
             <Stack.Screen name="글쓰기" component={Register} options={{title: '', headerShown: false}} />
+            <Stack.Screen name="1:1 문의" component={Inquiry} />
+            <Stack.Screen name="문의 상세" component={InquiryDetail} />
+            <Stack.Screen name="공지사항" component={Notice} />
+            <Stack.Screen name="공지사항2" component={NoticeDetail} options={{title: '공지사항'}} />
+            <Stack.Screen name="추천 게시물" component={Like} />
+            <Stack.Screen name="내 정보 수정" component={Edit} />
+            <Stack.Screen name="회원탈퇴" component={Withdraw} />
+            
         </Stack.Navigator>
       </NavigationContainer>
   )

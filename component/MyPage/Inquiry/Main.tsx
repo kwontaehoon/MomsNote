@@ -8,8 +8,9 @@ import Inquiry2 from './Inquiry2'
 
 const styles = StyleSheet.create({
     container:{
-        height: '92%',
+        height: '100%',
         backgroundColor: 'white',
+        paddingBottom: 20,
     },
     header:{
         height: '10%',
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
         borderBottomColor: '#ddd'
     },
 })
-const Main = () => {
+const Main = ({navigation}) => {
 
     const [filter, setFilter] = useState(true);
     console.log('filter: ', filter);
@@ -31,8 +32,8 @@ const Main = () => {
 
     const List = ():any => {
         switch(filter){
-            case true: return <Inquiry />
-            case false: return <Inquiry2 />
+            case true: return <Inquiry navigation={navigation}/>
+            case false: return <Inquiry2 navigation={navigation}/>
         }
     }
 

@@ -25,7 +25,8 @@ import Block from '../MyPage/Setting/Block'
 import Term1 from '../MyPage/Setting/Terms1'
 import Term2 from '../MyPage/Setting/Terms2'
 import AddPage from '../Default/AddPage'
-
+import Picker from '../Default/Picker'
+import ImagePicker from '../Default/ImagePicker'
 const styles = StyleSheet.create({
     header:{
         height: 100,
@@ -40,13 +41,6 @@ const styles = StyleSheet.create({
     iconBox:{
         marginRight: 15,
     },
-
-    header2:{
-        width: 300,
-        borderWidth: 1,
-        height: 50,
-        
-    }
 })
 function MainScreen() {
 
@@ -111,21 +105,70 @@ function MainScreen() {
                </Stack.Navigator>   
             )}
           </Tab.Screen>
-      <Tab.Screen
-        name="Dday"
-        component={Dday}
-        options={{tabBarIcon: ({color}) => (<Icon name='calendar-o' size={22} color={color}/>)}}
-      />
-      <Tab.Screen
-        name="출산준비물"
-        component={Materials}
-        options={{tabBarIcon: ({color}) => (<Icon2 name='bag' size={22} color={color}/>)}}
-      />
-      <Tab.Screen
-        name="맘스정보"
-        component={Information}
-        options={{tabBarIcon: ({color}) => (<Icon name='bullhorn' size={22} color={color}/>)}}
-      />
+
+      <Tab.Screen name="D-280" options={{tabBarIcon: ({color}) => (<Icon name='calendar-o' size={22} color={color}/>)}}>
+        {()=>(
+               <Stack.Navigator>
+                    <Stack.Screen 
+                        name="D-280"
+                        component={Dday}
+                        options={{headerRight: () => (
+                            <View style={styles.header}>
+                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
+                                    <View style={styles.iconBox}><Icon4 name='search1' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
+                                </View>
+                            </View>
+                        )}}
+                        />
+               </Stack.Navigator>   
+        )}
+      </Tab.Screen>
+
+      <Tab.Screen name="출산" options={{tabBarIcon: ({color}) => (<Icon2 name='bag' size={22} color={color}/>)}}>
+      {()=>(
+               <Stack.Navigator>
+                    <Stack.Screen 
+                        name="출산준비물"
+                        component={Materials}
+                        options={({ navigation, route }) => ({
+                            headerRight: () => (
+                                <View style={styles.header}>
+                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
+                                    <View style={styles.iconBox}><Icon5 name='refresh-cw' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon4 name='download' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon4 name='search1' size={22} onPress={()=>navigation.navigate('출산준비물 검색')}/></View>
+                                    <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
+                                </View>
+                            </View>
+                            ),
+                          })}
+                        />
+               </Stack.Navigator>   
+          )}
+      </Tab.Screen>
+
+      <Tab.Screen name="맘스정보" options={{tabBarIcon: ({color}) => (<Icon name='bullhorn' size={22} color={color}/>)}}>
+        {()=>(
+               <Stack.Navigator>
+                    <Stack.Screen 
+                        name="맘스 정보"
+                        component={Information}
+                        options={{headerRight: () => (
+                            <View style={styles.header}>
+                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
+                                    <View style={styles.iconBox}><Icon4 name='search1' size={22} onPress={()=>navigation.navigate('맘스톡 서치')}/></View>
+                                    <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
+                                </View>
+                            </View>
+                        )}}
+                        />
+               </Stack.Navigator>   
+          )}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 }

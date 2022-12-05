@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
 import { View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon2 from 'react-native-vector-icons/Ionicons'
 import Checkbox from 'expo-checkbox';
 
 const styles = StyleSheet.create({
@@ -33,71 +34,62 @@ const styles = StyleSheet.create({
   },
   main:{
     height: '84%',
+    padding: 10,
   },
   mainBox:{
-    height: 500,
-    borderWidth: 1,
     marginBottom: 10,
+    backgroundColor: '#F5F5F5'
   },
   mainBox2:{
     flexDirection: 'row',
     padding: 15,
-    borderBottomWidth: 1,
+    alignItems: 'center',
   },
   titleBox:{
     width: '50%',
     justifyContent: 'center'
   },
-  mainBox3:{
-    borderWidth: 1,
+  arrowBox:{
+    position: 'absolute',
+    right: 15,
+  },
+  main3:{
+    height: 450,
+    alignItems: 'center',
+  },
+  main3Box:{
+    backgroundColor: 'white',
+    width: '90%',
+    borderRadius: 10,
     height: 400,
+    marginTop: 10,
+    borderWidth: 1,
+  },
+  main3BoxHeader:{
+    height: 44,
+    flexDirection: 'row',
+    borderWidth: 1,
   },
   filterBox:{
-    height: 35,
-    flexDirection: 'row',
-  },
-  filter:{
-    width: '43%',
-    justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row',
-  },
-  listBox:{
+    justifyContent: 'center',
     borderWidth: 1,
-    height: 50,
-    flexDirection: 'row',
+    
   },
-  list:{
-    width: '43%',
-    alignItems: 'center',
-    justifyContent: 'center',
+  filterSub:{
+    paddingLeft: 8,
+    paddingTop: 2,
+    paddingbottom: 2,
+    paddingRight: 8,
+    borderWidth: 1,
+    marginRight: 3,
   },
   checkbox: {
-    margin: 8,
-    width: 18,
-    height: 18,
+    width: 24,
+    height: 24,
+    marginRight: 8,
     borderRadius: 3,
     borderColor: '#E0E0E0',
-  },
-  type:{
-    flexDirection: 'row',
-  },
-  typeBox:{
-    width: 36,
-    height: 20,
-    alignItems:'center',
-    justifyContent: 'center',
-    marginRight: 5,
-    borderRadius: 3,
-    backgroundColor: '#5291EF'
-  },
-  brand:{
-    width: 120,
-    height: 32,
-    backgroundColor: '#F5F5F5',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 3,
   },
   footer:{
     width: '100%',
@@ -129,53 +121,137 @@ const Navigation = ({navigation}:any) => {
 
   const DATA = [
     {
-      id: '1',
+      id: '0',
       title: '산모용품 (0/13)',
+      color: '#FFADAD'
+    },
+    {
+      id: '1',
+      title: '수유용품 (0/13)',
+      color: '#FFADAD'
+    },
+    {
+      id: '2',
+      title: '위생용품 (0/13)',
+      color: '#FFADAD'
+    },
+    {
+      id: '3',
+      title: '목욕용품 (0/13)',
+      color: '#FFADAD'
+    },
+    {
+      id: '4',
+      title: '침구류 (0/13)',
+      color: '#FFADAD'
+    },
+    {
+      id: '5',
+      title: '아기용품 (0/13)',
+      color: '#FFADAD'
+    },
+    {
+      id: '6',
+      title: '발육용품 (0/13)',
+      color: '#FFADAD'
+    },
+    {
+      id: '7',
+      title: '가전용품 (0/13)',
       color: '#FFADAD'
     },
 
   ];
 
-  const [list, setList] = useState(Array.from({ length: 7 }, () => { return false}));
+  const DATA2 = [
+    {
+      id: '0',
+      title: '산모용품 (0/13)',
+      color: '#FFADAD'
+      
+    },
+    {
+      id: '1',
+      title: '수유용품 (0/13)',
+      color: '#FFADAD'
+    },
+    {
+      id: '2',
+      title: '위생용품 (0/13)',
+      color: '#FFADAD'
+    },
+    {
+      id: '3',
+      title: '목욕용품 (0/13)',
+      color: '#FFADAD'
+    }
+  ];
+
+  const [list, setList] = useState(Array.from({ length: 8 }, () => { return false}));
   console.log('list: ', list);
-  const [isChecked, setChecked] = useState(false); // check box
+  const [isChecked, setChecked] = useState(Array.from({length: DATA2.length}, ()=>{ return false })); // check box
+
+  const arrow = (e) => { // arrow 누르면 서브페이지 display
+    let arr = [...list];
+    arr[e] = !arr[e];
+    setList(arr);
+  }
+
+  const change = (e) => { // check box
+    let arr = [...isChecked];
+    arr[e] = !arr[e];
+    setChecked(arr);
+}
+
+  const List = (e:any) => {
+    let number = list.findIndex((x, index, arr)=>{ return x; })
+    console.log('number: ', number);
+
+    return (
+      <View style={styles.main3Box}>
+        <View style={[styles.main3BoxHeader, {marginBottom: 10}]}>
+          <View style={[styles.filterBox, {width: '15%'}]}><Text>구매</Text></View>
+          <View style={[styles.filterBox, {width: '45%'}]}><Text>품목</Text></View>
+          <View style={[styles.filterBox, {width: '40%'}]}><Text>브랜드</Text></View>
+        </View>
+        <FlatList data={DATA2} renderItem={renderItem2}
+            keyExtractor={item => item.id} showsHorizontalScrollIndicator={false}>
+        </FlatList>
+      </View>
+    )
+
+  }
 
   const renderItem = ({ item }) => (
     <View style={styles.mainBox}>
         <View style={[styles.mainBox2]}>
-            <View style={[styles.titleBox]}><Text>{item.title}</Text></View>
-            <TouchableOpacity style={[styles.titleBox, {alignItems: 'flex-end'}]}
-            onPress={()=>setList(!list)}><Icon name="angle-down" size={22} /></TouchableOpacity>
-        </View>
-        <View style={[styles.mainBox3, {display: list ? 'flex' : 'none'}]}>
-          <View style={styles.filterBox}>
-            <View style={[styles.filter, {width: '14%'}]}><Text>구매</Text></View>
-            <View style={styles.filter}><Text>품목</Text></View>
-            <View style={styles.filter}><Text>브랜드</Text></View>
-          </View>
-          <View style={styles.listBox}>
-            <View style={[styles.list, {width: '14%'}]}>
-            <Checkbox
-              style={styles.checkbox}
-              value={isChecked}
-              onValueChange={setChecked}
-              color={isChecked ? '#FEB401' : undefined}
-            />
-            </View>
-            <View style={[styles.list, {alignItems: 'flex-start'}]}>
-              <View style={styles.type}>
-                <View style={styles.typeBox}><Text style={{color: 'white'}}>권장</Text></View>
-                <View style={{paddingTop: 1,}}><Text>산모 패드</Text></View>
-              </View>
-            </View>
-            <View style={styles.list}>
-              <View style={styles.brand}>
-                <Icon name='plus' size={14} style={{color: '#757575'}}></Icon>
-              </View>
-            </View>
-          </View>
+            <Icon name='camera' size={22}/>
+            <View style={[styles.titleBox, {marginLeft: 5}]}><Text>{item.title}</Text></View>
+            <TouchableOpacity style={styles.arrowBox}
+              onPress={()=>arrow(item.id)}><Icon name="angle-down" size={22} />
+            </TouchableOpacity>
+        </View> 
+        <View style={[styles.main3, {display: list[item.id] ? 'flex' : 'none'}]}>
+          <List id={item.id}/>
         </View>
     </View>
+  );
+
+  const renderItem2 = ({ item }) => (
+      <View style={[styles.main3BoxHeader]}>
+          <View style={[styles.filterBox, {width: '15%'}]}>
+          <Checkbox
+              style={styles.checkbox}
+              value={isChecked[item.id]}
+              onValueChange={()=>change(item.id)}
+              color={isChecked[item.id] ? '#FEB401' : undefined}/>
+          </View>
+          <View style={[styles.filterBox, {width: '45%', flexDirection: 'row', justifyContent: 'flex-start'}]}>
+            <View style={styles.filterSub}><Text style={{fontSize: 12}}>필수</Text></View>
+            <Text>품목</Text>
+          </View>
+          <View style={[styles.filterBox, {width: '40%'}]}><Text>브랜드</Text></View>
+      </View>
   ); 
 
   return (
@@ -186,7 +262,7 @@ const Navigation = ({navigation}:any) => {
             <Text>전체 (5/37)</Text>
           </View>
           <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-            <View style={[styles.iconBox, {marginRight: 10}]}><Icon name='filter' size={22} /></View>
+            <View style={[styles.iconBox, {marginRight: 10}]}><Icon2 name='filter' size={22} /></View>
             <View style={[styles.iconBox, {marginRight: 10}]}><Icon name='ellipsis-v' size={22} style={{marginLeft: 10}}/></View>
           </View>
         </View>

@@ -9,7 +9,7 @@ import Tab3 from './Tab3/Main'
 
 const styles = StyleSheet.create({
     container:{
-        height: '92%',
+        height: '100%',
         backgroundColor: 'white',
     },
     headerIcon:{
