@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import SelectDropdown from 'react-native-select-dropdown'
 
 const styles = StyleSheet.create({
   container:{
@@ -11,19 +12,12 @@ const styles = StyleSheet.create({
     height: '5%',
     backgroundColor: '#F5F5F5',
   },
-  headerFilterBox:{
-    height: 40,
-    borderWidth: 1,
-    margin: 10,
-    borderRadius: 16,
-    padding: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   header2:{
     height: '7%',
     flexDirection: 'row',
-    padding: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 5,
     backgroundColor: '#F5F5F5',
   },
   header2FilterBox:{
@@ -89,6 +83,8 @@ const Talk1 = ({navigation}: any) => {
     }
   ];
 
+  const Filter = ['최신순', '인기순', '추천순'];
+
   const [filter, setFilter] = useState([true, false, false, false]);
 
   const test = () => {
@@ -110,8 +106,18 @@ const Talk1 = ({navigation}: any) => {
     <View style={styles.container}>
       <View style={styles.header}></View>
       <View style={styles.header2}>
-        <View style={styles.header2FilterBox}><Text>0 건</Text></View>
-        <View style={[styles.header2FilterBox, {alignItems: 'flex-end'}]}><Icon name='filter' size={22} /></View>
+        <View style={[styles.header2FilterBox, {paddingBottom: 5}]}><Text style={{fontSize: 16}}>0 건</Text></View>
+        <View style={[styles.header2FilterBox, {alignItems: 'flex-end'}]}>
+        <SelectDropdown data={Filter} defaultValue={Filter[0]} buttonStyle={{width: 100, height: 30, backgroundColor: '#F5F5F5'}}
+          buttonTextStyle={{fontSize: 13}} rowTextStyle={{fontSize: 14}}
+	        onSelect={(selectedItem, index) => {
+		          console.log(selectedItem, index)
+          	}}
+            renderDropdownIcon={isOpened => {
+              return <Icon name={isOpened ? 'angle-up' : 'angle-down'} color={'#444'} size={18} />;
+            }}
+            />
+        </View>
       </View>
       <View style={styles.main}>
         <FlatList data={DATA} renderItem={renderItem}

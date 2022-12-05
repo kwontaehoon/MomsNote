@@ -27,6 +27,8 @@ import Term2 from '../MyPage/Setting/Terms2'
 import AddPage from '../Default/AddPage'
 import Picker from '../Default/Picker'
 import ImagePicker from '../Default/ImagePicker'
+import Svg from '../Default/Svg2'
+
 const styles = StyleSheet.create({
     header:{
         height: 100,
@@ -56,7 +58,7 @@ function MainScreen() {
                <Stack.Navigator>
                     <Stack.Screen 
                         name="Home"
-                        component={Home}
+                        component={Svg}
                         options={({ navigation, route }) => ({
                             title: '',
                             headerRight: () => (

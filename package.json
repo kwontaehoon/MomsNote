@@ -28,7 +28,8 @@
     "react-native-slick": "^1.6.0",
     "react-native-status-bar-height": "^2.6.0",
     "react-native-web": "~0.18.9",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "react-native-svg": "13.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
