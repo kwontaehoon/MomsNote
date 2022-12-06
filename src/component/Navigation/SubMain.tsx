@@ -28,6 +28,7 @@ import AddPage from '../Default/AddPage'
 import CaptureRef from '../Test/CaptureRef';
 import PictureSave from '../Test/PictureSave';
 import Post from '../Test/Post'
+import DateTime from '../Test/DateTime';
 
 
 const styles = StyleSheet.create({
@@ -59,7 +60,7 @@ function MainScreen() {
                <Stack.Navigator>
                     <Stack.Screen 
                         name="Home"
-                        component={Post}
+                        component={DateTime}
                         options={({ navigation, route }) => ({
                             title: '',
                             headerRight: () => (
