@@ -1,40 +1,29 @@
 import React, { useState } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
-import { View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Modal} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/Ionicons'
 import Checkbox from 'expo-checkbox';
 import { WithLocalSvg } from "react-native-svg"
 import material1 from '../../../public/assets/svg/material1.svg'
 import Red from '../../../public/assets/svg/Red.svg'
-// import material2 from '../../assets/svg/material2.svg'
-// import material3 from '../../assets/svg/material3.svg'
-// import material4 from '../../assets/svg/material4.svg'
-// import material5 from '../../assets/svg/material5.svg'
-// import material6 from '../../assets/svg/material6.svg'
-// import material7 from '../../assets/svg/material7.svg'
-// import material8 from '../../assets/svg/material8.svg'
+import material2 from '../../../public/assets/svg/material2.svg'
+import material3 from '../../../public/assets/svg/material3.svg'
+import material4 from '../../../public/assets/svg/material4.svg'
+import material5 from '../../../public/assets/svg/material5.svg'
+import material6 from '../../../public/assets/svg/material6.svg'
+import material7 from '../../../public/assets/svg/material7.svg'
+import material8 from '../../../public/assets/svg/material8.svg'
 
 const styles = StyleSheet.create({
   container:{
     height: '92%',
     backgroundColor: 'white',
   },
-  header:{
-    height: '8%',
-    flexDirection: 'row',
-  },
-  headerBox:{
-    width: '50%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 15,
-    paddingRight: 15,
-  },
   iconBox:{
     margin: 5,
   },
-  header2:{
+  header:{
     height: '2%',
     backgroundColor: '#F5F5F5'
   },
@@ -42,17 +31,25 @@ const styles = StyleSheet.create({
     height: '8%',
     flexDirection: 'row',
   },
+  header3Box:{
+    width: '50%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
   main:{
-    height: '84%',
+    height: '80%',
   },
   mainBox:{
     backgroundColor: '#F5F5F5',
     borderTopWidth: 1,
-    borderColor: '#F5F5F5'
+    borderColor: '#F5F5F5',
+    
   },
   mainBox2:{
     flexDirection: 'row',
-    padding: 15,
+    padding: 20,
     alignItems: 'center',
   },
   titleBox:{
@@ -64,26 +61,22 @@ const styles = StyleSheet.create({
     right: 15,
   },
   main3:{
-    height: 450,
     alignItems: 'center',
+    padding: 10
   },
   main3Box:{
     backgroundColor: 'white',
     width: '90%',
     borderRadius: 10,
-    height: 400,
-    marginTop: 10,
-
   },
   main3BoxHeader:{
     height: 44,
     flexDirection: 'row',
-    borderWidth: 1,
+    marginBottom: 7
   },
   filterBox:{
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
   },
   filterSub:{
     paddingLeft: 8,
@@ -103,7 +96,6 @@ const styles = StyleSheet.create({
   footer:{
     width: '100%',
     height: '10%',
-    borderWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -114,7 +106,7 @@ const styles = StyleSheet.create({
   },
   footerBox:{
     width: '95%',
-    height: '80%',
+    height: 52,
     backgroundColor: '#F5F5F5',
     borderRadius: 3,
     flexDirection: 'row',
@@ -123,10 +115,51 @@ const styles = StyleSheet.create({
   budgetBox:{
     width: '50%',
     justifyContent: 'center',
-  }
+  },
+  modalContainer:{
+    justifyContent: "center",
+    alignItems: "center",
+},
+modalView:{
+    width: '100%',
+    height: '100%',
+    margin: 20,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    alignItems: "center",
+    justifyContent: 'center',
+    shadowColor: "#000",
+    elevation: 5,
+},
+modalContainer2:{
+    width: '80%',
+    height: 144,
+    backgroundColor: 'white',
+    marginBottom: 35,
+    borderRadius: 15,
+},
+modalBox:{
+    height: '40%',
+    justifyContent: 'center',
+    alignItems: 'center',
+},
+modalBoxSub:{
+  flexDirection: 'row',
+  paddingLeft: 30,
+  height: '20%',
+  alignItems: 'center',
+},
+modal:{
+    backgroundColor: '#FEA100',
+    width: '90%',
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 4,
+    marginBottom: 7,
+},
 })
 
-const Navigation = ({navigation}:any) => {
+const Navigation = ({navigation}) => {
 
   const DATA = [
     {
@@ -200,6 +233,8 @@ const Navigation = ({navigation}:any) => {
   const [list, setList] = useState(Array.from({ length: 8 }, () => { return false}));
   console.log('list: ', list);
   const [isChecked, setChecked] = useState(Array.from({length: DATA2.length}, ()=>{ return false })); // check box
+  const [isChecked2, setChecked2] = useState(false); // check box 선택시 체크 팝업에서의 check box
+  const [modalVisible, setModalVisible] = useState(false);
 
   const arrow = (e) => { // arrow 누르면 서브페이지 display
     let arr = [...list];
@@ -208,18 +243,23 @@ const Navigation = ({navigation}:any) => {
   }
 
   const change = (e) => { // check box
+    setModalVisible(!modalVisible);
     let arr = [...isChecked];
     arr[e] = !arr[e];
     setChecked(arr);
-}
+  }
+  
+  const complete = () => {
+    setModalVisible(!modalVisible);
+  }
 
-  const List = (e:any) => {
+  const List = (e) => {
     let number = list.findIndex((x, index, arr)=>{ return x; })
     console.log('number: ', number);
 
     return (
       <View style={styles.main3Box}>
-        <View style={[styles.main3BoxHeader, {marginBottom: 10}]}>
+        <View style={styles.main3BoxHeader}>
           <View style={[styles.filterBox, {width: '15%'}]}><Text>구매</Text></View>
           <View style={[styles.filterBox, {width: '45%'}]}><Text>품목</Text></View>
           <View style={[styles.filterBox, {width: '40%'}]}><Text>브랜드</Text></View>
@@ -229,14 +269,13 @@ const Navigation = ({navigation}:any) => {
         </FlatList>
       </View>
     )
-
   }
 
   const renderItem = ({ item }) => (
     <View style={styles.mainBox}>
         <View style={styles.mainBox2}>
-         <WithLocalSvg width={22} height={20} asset={`material${1}`}/>
-            <View style={[styles.titleBox, {marginLeft: 5}]}><Text>{item.title}</Text></View>
+          <Icon name="camera" size={22} />
+            <View style={[styles.titleBox, {marginLeft: 8}]}><Text>{item.title}</Text></View>
             <TouchableOpacity style={styles.arrowBox}
               onPress={()=>arrow(item.id)}><Icon name="angle-down" size={22} />
             </TouchableOpacity>
@@ -270,12 +309,44 @@ const Navigation = ({navigation}:any) => {
 
   return (
     <View style={styles.container}>
-        <View style={styles.header2}></View>
+
+<Modal animationType="fade" transparent={true} visible={modalVisible}
+            onRequestClose={() => {
+            setModalVisible(!modalVisible)}}>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                    <View style={[styles.modalContainer2, {height: 326}]}>
+                        <View style={styles.modalBox}>
+                            <Text style={{fontSize: 18, paddingTop: 10}}>선택하신 품목을 구매 완료로</Text>
+                            <Text style={{fontSize: 18, paddingTop: 3}}>체크 하시겠습니까?</Text>
+                            <Text style={{fontSize: 14, paddingTop: 10, color: '#757575'}}>구매 완료 시 출산준비리스트 구매율로 합산되어</Text>
+                            <Text style={{fontSize: 14, color: '#757575'}}>다른 사용자들의 구매에 도움이 됩니다.</Text>
+                        </View>
+                        <View style={styles.modalBoxSub}>
+                                <View>
+                                <Checkbox
+                                  style={styles.checkbox}
+                                  value={isChecked2}
+                                  onValueChange={setChecked2}
+                                  color={isChecked2 ? '#2196F3' : undefined}/>
+                                </View>
+                                <Text style={{color: '#424242'}}>다시 표시하지 않겠습니다.</Text>
+                          </View>
+                        <View style={styles.modalBox}>
+                            <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>구매 완료</Text></TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={complete}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+
+        <View style={styles.header}/>
         <View style={styles.header3}>
-          <View style={styles.headerBox}>
+          <View style={styles.header3Box}>
             <Text>전체 (5/37)</Text>
           </View>
-          <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
+          <View style={[styles.header3Box, {justifyContent: 'flex-end'}]}>
             <View style={[styles.iconBox, {marginRight: 10}]}><Icon2 name='filter' size={22} /></View>
             <View style={[styles.iconBox, {marginRight: 10}]}><Icon name='ellipsis-v' size={22} style={{marginLeft: 10}}/></View>
           </View>
@@ -289,7 +360,7 @@ const Navigation = ({navigation}:any) => {
           <View style={styles.footerBox}>
             <View style={styles.budgetBox}><Text>총 예산: 0000원</Text></View>
             <View style={[styles.budgetBox, {alignItems: 'flex-end'}]}>
-              <TouchableOpacity onPress={()=> navigation.navigate('총 예산')}><Text>  자세히 보기  <Icon name='angle-right' size={15}/></Text></TouchableOpacity>
+              <TouchableOpacity onPress={()=> navigation.navigate('총 예산')}><Text>자세히 보기  <Icon name='angle-right' size={15}/></Text></TouchableOpacity>
             </View>
           </View>
         </View>

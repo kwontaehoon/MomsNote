@@ -196,7 +196,7 @@ const AddPage = () => {
   return (
     <View style={styles.container}>
        <FlatList data={DATA} renderItem={renderItem}
-          keyExtractor={item => item.id}>
+          keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
         </FlatList>
     </View>
   )

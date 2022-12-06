@@ -25,10 +25,8 @@ import Block from '../MyPage/Setting/Block'
 import Term1 from '../MyPage/Setting/Terms1'
 import Term2 from '../MyPage/Setting/Terms2'
 import AddPage from '../Default/AddPage'
-import Picker from '../Default/Picker'
-import ImagePicker from '../Default/ImagePicker'
-import SvgTest from '../Default/Svg2'
-import Login from '../Default/Login'
+import CaptureRef from '../Test/CaptureRef';
+
 
 const styles = StyleSheet.create({
     header:{
@@ -59,7 +57,7 @@ function MainScreen() {
                <Stack.Navigator>
                     <Stack.Screen 
                         name="Home"
-                        component={SvgTest}
+                        component={CaptureRef}
                         options={({ navigation, route }) => ({
                             title: '',
                             headerRight: () => (

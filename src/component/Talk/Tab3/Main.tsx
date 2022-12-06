@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import SelectDropdown from 'react-native-select-dropdown'
+import DropDownPicker from 'react-native-dropdown-picker'
 
 const styles = StyleSheet.create({
   container:{
@@ -108,7 +108,7 @@ const Talk3 = ({navigation}: any) => {
       <View style={styles.header2}>
         <View style={[styles.header2FilterBox, {paddingBottom: 5}]}><Text style={{fontSize: 16}}>0 건</Text></View>
         <View style={[styles.header2FilterBox, {alignItems: 'flex-end'}]}>
-        <SelectDropdown data={Filter} defaultValue={Filter[0]} buttonStyle={{width: 100, height: 30, backgroundColor: '#F5F5F5'}}
+        {/* <SelectDropdown data={Filter} defaultValue={Filter[0]} buttonStyle={{width: 100, height: 30, backgroundColor: '#F5F5F5'}}
           buttonTextStyle={{fontSize: 13}} rowTextStyle={{fontSize: 14}}
 	        onSelect={(selectedItem, index) => {
 		          console.log(selectedItem, index)
@@ -116,7 +116,7 @@ const Talk3 = ({navigation}: any) => {
             renderDropdownIcon={isOpened => {
               return <Icon name={isOpened ? 'angle-up' : 'angle-down'} color={'#444'} size={18} />;
             }}
-            />
+            /> */}
         </View>
       </View>
       <View style={styles.main}>
