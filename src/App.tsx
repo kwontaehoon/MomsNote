@@ -1,7 +1,7 @@
 import React from 'react'
 import Navigation from './component/Navigation/Main'
 import { StatusBar  } from 'expo-status-bar'
-import DefalutPage from './component/Default/Main'
+import DefalutPage from './component/Default/Login'
 
 const App = () => {
   

@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
 })
-const InquiryDetail = () => {
+const Main = () => {
 
     const [page, setPage] = useState(0); // 해당 페이지
     console.log('page: ', page);
@@ -61,9 +61,9 @@ const InquiryDetail = () => {
     const List = () => {
         if(page === 3){
             return(
-                <View style={styles.footer}>
+                <TouchableOpacity style={styles.footer}>
                   <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>시작하기</Text>
-                </View>
+                </TouchableOpacity>
             )
         }else{
             return(
@@ -107,10 +107,9 @@ const InquiryDetail = () => {
                 </View>
             </Slick>
         </View>
-       
         <List/>
     </View>
   )
 }
 
-export default InquiryDetail
+export default Main

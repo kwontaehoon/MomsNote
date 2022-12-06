@@ -21,6 +21,8 @@ import Block from '../MyPage/Setting/Block'
 import Term1 from '../MyPage/Setting/Terms1'
 import Term2 from '../MyPage/Setting/Terms2'
 import InquiryDetail from '../MyPage/Inquiry/InquiryDetail'
+import BrendSelect from '../Materials/Brend/Main'
+import Login from '../Default/Login'
 
 LogBox.ignoreAllLogs();
 
@@ -55,6 +57,9 @@ const Navigation = () => {
       <NavigationContainer>
         <Stack.Navigator>
             <Stack.Screen name="main" component={SubMain} options={{headerShown: false}}/>
+
+
+            <Stack.Screen name="로그인 페이지" component={Login} options={{headerShown: false}}/>
             <Stack.Screen name="맘스톡" component={Talk} options={{title: '맘스톡'}}/>
             <Stack.Screen name="추가 정보 입력" component={AddPage} options={{title: '추가 정보 입력'}}/>
             <Stack.Screen name="Talk1Tab1Detail" component={Talk1Tab1Detail} options={{title: ''}}/>
@@ -66,7 +71,7 @@ const Navigation = () => {
             <Stack.Screen name="추천 게시물" component={Like} />
             <Stack.Screen name="내 정보 수정" component={Edit} />
             <Stack.Screen name="회원탈퇴" component={Withdraw} />
-            
+            <Stack.Screen name="브랜드 선택" component={BrendSelect} options={{title: '', headerShown: false}}/>
         </Stack.Navigator>
       </NavigationContainer>
   )

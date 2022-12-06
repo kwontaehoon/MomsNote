@@ -4,6 +4,16 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/Ionicons'
 import Checkbox from 'expo-checkbox';
+import { WithLocalSvg } from "react-native-svg"
+import material1 from '../../../public/assets/svg/material1.svg'
+import Red from '../../../public/assets/svg/Red.svg'
+// import material2 from '../../assets/svg/material2.svg'
+// import material3 from '../../assets/svg/material3.svg'
+// import material4 from '../../assets/svg/material4.svg'
+// import material5 from '../../assets/svg/material5.svg'
+// import material6 from '../../assets/svg/material6.svg'
+// import material7 from '../../assets/svg/material7.svg'
+// import material8 from '../../assets/svg/material8.svg'
 
 const styles = StyleSheet.create({
   container:{
@@ -29,16 +39,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5'
   },
   header3:{
-    height: '6%',
+    height: '8%',
     flexDirection: 'row',
   },
   main:{
     height: '84%',
-    padding: 10,
   },
   mainBox:{
-    marginBottom: 10,
-    backgroundColor: '#F5F5F5'
+    backgroundColor: '#F5F5F5',
+    borderTopWidth: 1,
+    borderColor: '#F5F5F5'
   },
   mainBox2:{
     flexDirection: 'row',
@@ -63,7 +73,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 400,
     marginTop: 10,
-    borderWidth: 1,
+
   },
   main3BoxHeader:{
     height: 44,
@@ -74,7 +84,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    
   },
   filterSub:{
     paddingLeft: 8,
@@ -123,7 +132,8 @@ const Navigation = ({navigation}:any) => {
     {
       id: '0',
       title: '산모용품 (0/13)',
-      color: '#FFADAD'
+      color: '#FFADAD',
+      icon: 'material1'
     },
     {
       id: '1',
@@ -224,8 +234,8 @@ const Navigation = ({navigation}:any) => {
 
   const renderItem = ({ item }) => (
     <View style={styles.mainBox}>
-        <View style={[styles.mainBox2]}>
-            <Icon name='camera' size={22}/>
+        <View style={styles.mainBox2}>
+         <WithLocalSvg width={22} height={20} asset={`material${1}`}/>
             <View style={[styles.titleBox, {marginLeft: 5}]}><Text>{item.title}</Text></View>
             <TouchableOpacity style={styles.arrowBox}
               onPress={()=>arrow(item.id)}><Icon name="angle-down" size={22} />
@@ -250,7 +260,11 @@ const Navigation = ({navigation}:any) => {
             <View style={styles.filterSub}><Text style={{fontSize: 12}}>필수</Text></View>
             <Text>품목</Text>
           </View>
-          <View style={[styles.filterBox, {width: '40%'}]}><Text>브랜드</Text></View>
+          <View style={[styles.filterBox, {width: '40%'}]}>
+            <View style={{width: 24, height: 24, borderRadius: 12,backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
+              <Icon name="plus" size={10} style={{color: 'white'}} onPress={()=>navigation.navigate('브랜드 선택')}/>
+            </View>
+          </View>
       </View>
   ); 
 
