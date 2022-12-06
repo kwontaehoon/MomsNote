@@ -26,6 +26,8 @@ import Term1 from '../MyPage/Setting/Terms1'
 import Term2 from '../MyPage/Setting/Terms2'
 import AddPage from '../Default/AddPage'
 import CaptureRef from '../Test/CaptureRef';
+import PictureSave from '../Test/PictureSave';
+import Post from '../Test/Post'
 
 
 const styles = StyleSheet.create({
@@ -57,7 +59,7 @@ function MainScreen() {
                <Stack.Navigator>
                     <Stack.Screen 
                         name="Home"
-                        component={CaptureRef}
+                        component={Post}
                         options={({ navigation, route }) => ({
                             title: '',
                             headerRight: () => (

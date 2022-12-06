@@ -22,6 +22,9 @@ import Term2 from '../MyPage/Setting/Terms2'
 import InquiryDetail from '../MyPage/Inquiry/InquiryDetail'
 import BrendSelect from '../Materials/Brend/Main'
 import Login from '../Default/Login'
+import Talk3Detail from '../Talk/Tab3/Tab3Detail'
+import Apply from '../Talk/Tab3/Apply'
+import Post from '../Talk/Tab3/Post'
 
 LogBox.ignoreAllLogs();
 
@@ -71,6 +74,9 @@ const Navigation = () => {
             <Stack.Screen name="내 정보 수정" component={Edit} />
             <Stack.Screen name="회원탈퇴" component={Withdraw} />
             <Stack.Screen name="브랜드 선택" component={BrendSelect} options={{title: '', headerShown: false}}/>
+            <Stack.Screen name="체험단 상세페이지" component={Talk3Detail} options={{title: ''}}/>
+            <Stack.Screen name="신청 정보" component={Apply}  options={{title: '', headerShown: false}}/>
+            <Stack.Screen name="주소 찾기" component={Post}  options={{title: ''}}/>
         </Stack.Navigator>
       </NavigationContainer>
   )

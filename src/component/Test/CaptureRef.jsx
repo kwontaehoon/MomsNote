@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { View, Text, Button, Image, StyleSheet } from 'react-native'
 import ViewShot from "react-native-view-shot";
+import * as MediaLibrary from 'expo-media-library';
+
 
 const styles = StyleSheet.create({
     container:{
@@ -9,7 +11,7 @@ const styles = StyleSheet.create({
     },
     main:{
         borderWidth: 1,
-        height: '60%',
+        height: '50%',
     },
     box:{
         width: 400,
@@ -19,6 +21,7 @@ const styles = StyleSheet.create({
     captureView:{
         borderWidth: 1,
         height: 200,
+        backgroundColor: 'pink'
     },
     image:{
         width: 400,
@@ -38,11 +41,30 @@ const CaptureRef = () => {
             setTest(uri);
           });
     }
+    
+    const save = async() => {
+        let { status } = await MediaLibrary.requestPermissionsAsync();
+        const asset = await MediaLibrary.createAssetAsync(test);
+        console.log('status: ', status);
+        console.log('asset: ', asset);
+
+        if(status === 'granted'){
+            const kwon = await MediaLibrary.getAlbumAsync('DCIM');
+            console.log('kwon: ', kwon);
+            const album = await MediaLibrary.getAlbumAsync('맘스노트');
+            console.log('album: ', album);
+
+            MediaLibrary.createAlbumAsync('맘스노트', asset, true);
+            // MediaLibrary.createAlbumAsync('맘스노트', asset, true);
+            // const asset = await MediaLibrary.createAssetAsync(test);
+        }
+       
+    }
 
   return (
     <View style={styles.container}>
         <ViewShot ref={ref} options={{ fileName: "Your-File-Name", width: 400, height: 400, format: "png", quality: 1 }} style={styles.captureView}>
-                <Text>gggggggggg</Text>
+                <Text>g</Text>
                 <Text>aa</Text>
                 <Text>bb</Text>
         </ViewShot>
@@ -52,6 +74,8 @@ const CaptureRef = () => {
             </View>
         </View>
         <Button title='캡쳐' onPress={capture}></Button>
+        <Button title='저장' onPress={save}></Button>
+        
     </View>
   )
 }

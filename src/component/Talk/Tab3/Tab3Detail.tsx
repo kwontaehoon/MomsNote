@@ -6,7 +6,7 @@ import Icon2 from 'react-native-vector-icons/AntDesign'
 
 const styles = StyleSheet.create({
     container:{
-        height: '92%',
+        height: '100%',
         backgroundColor: 'white',
     },
     container2:{

@@ -7,7 +7,7 @@ import Checkbox from 'expo-checkbox'
 const styles = StyleSheet.create({
     container:{
         marginTop: getStatusBarHeight(),
-        height: '90%',
+        height: '100%',
         backgroundColor: 'white',
     },
     container2:{
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         height: 52,
         paddingLeft: 10,
+        justifyContent: 'center'
     },
     certificateBox:{
         borderWidth: 1,
@@ -50,6 +51,11 @@ const styles = StyleSheet.create({
         paddingLeft: 16,
         paddingRight: 16,
         paddingBottom: 8,
+    },
+    postBox:{
+        position: 'absolute',
+        right: 15,
+        bottom: 15,
     },
     checkbox: {
         width: 18,
@@ -121,8 +127,8 @@ const Withdraw = ({navigation}) => {
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>배송지</Text>
                     <View>
-                        <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력'></TextInput>
-                        <View style={[styles.certificateBox, {borderWidth: 0}]}><Icon name='right' size={15}/></View>
+                        <View style={styles.textBox}><Text onPress={()=>navigation.navigate('주소 찾기')}>주소 검색하기</Text></View>
+                        <View style={styles.postBox}><Icon name='right' size={15} onPress={()=>navigation.navigate('주소 찾기')}/></View>
                     </View>
                     <TextInput style={styles.textBox} placeholder='상세주소 입력'></TextInput>
                 </View>
