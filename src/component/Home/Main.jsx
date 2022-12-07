@@ -30,7 +30,19 @@ const styles = StyleSheet.create({
         height: '60%',
         justifyContent: 'center',
         alignItems: 'center',
+        borderWidth: 1,
     },
+    bubble:{
+        width: 250,
+        height: 30,
+        position: 'absolute',
+        zIndex: 999,
+        borderRadius: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        transtion: '1s',
+    },  
     imageBox:{
         width: '90%',
         height: '90%',
@@ -68,6 +80,7 @@ const styles = StyleSheet.create({
     },
     main3Box2:{
         width: '50%',
+   
     },
     titleBox:{
         flexDirection: 'row',
@@ -113,6 +126,23 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    triangle:{
+        width: 0,
+        height: 0,
+        backgroundColor: "transparent",
+        borderStyle: "solid",
+        borderLeftWidth: 25,
+        borderRightWidth: 5,
+        borderBottomWidth: 20,
+        borderLeftColor: "transparent",
+        borderRightColor: "transparent",
+        borderBottomColor: "white",
+        position: 'absolute',
+        zIndex: 999,
+        bottom: -10,
+        right: 40,
+        transform: [{ rotate: "180deg" }],
+    },
 })
 const Home = ({navigation}) => {
 
@@ -145,8 +175,8 @@ const Home = ({navigation}) => {
     ];
 
     const ref = useRef();
-    const [test, setTest] = useState();
-    console.log('test: ', test);
+    const [test, setTest] = useState(); // 캡쳐 uri
+    const [bubble, setBubble] = useState([true, false, false, false]);
 
     useEffect(()=>{
         console.log('useEffect');
@@ -179,6 +209,15 @@ const Home = ({navigation}) => {
             setTest(uri);
           });
     }
+    const bubbleRandom = () => {
+        let number = bubble.indexOf(true);
+        console.log('number: ', number);
+        let arr = Array.from({length: 4}, ()=>{return false});
+        if(number === 3){ number = -1 }
+        arr[number+1] = !arr[number+1];
+        setBubble(arr); 
+
+    }
 
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
@@ -188,7 +227,25 @@ const Home = ({navigation}) => {
                     <Text style={{color: '#212121', fontSize: 32, fontWeight: '700'}}>별똥이</Text>
                 </View>
                 <View style={styles.mainBox2}>
-                    <View style={styles.imageBox}><WithLocalSvg width={300} height={300} asset={mainImage}/></View>
+
+                    <View style={[styles.bubble, {top: 20, right: 20, display: bubble[0] ? 'flex' : 'none'}]}>
+                        <View style={styles.triangle}></View>
+                        <Text>아무말이나 하고싶어요</Text>
+                    </View>
+                    <View style={[styles.bubble, {top: 10, right: 70, display: bubble[1] ? 'flex' : 'none'}]}>
+                        <View style={[styles.triangle, {display: bubble[1] ? 'flex' : 'none'}]}></View>
+                        <Text>출산리스트 맘스토크 체험단</Text>
+                    </View>
+                    <View style={[styles.bubble, {top: 60, right: 60, display: bubble[2] ? 'flex' : 'none'}]}>
+                        <View style={styles.triangle}></View>
+                        <Text>First Item Second Item</Text>
+                    </View>
+                    <View style={[styles.bubble, {top: 40, right: 80, display: bubble[3] ? 'flex' : 'none'}]}>
+                        <View style={styles.triangle}></View>
+                        <Text>IDENITIDENITIDENITIDENIT</Text>
+                    </View>
+
+                    <View style={styles.imageBox}><WithLocalSvg width={300} height={300} asset={mainImage} onPress={bubbleRandom}/></View>
                 </View>
                 <View style={styles.mainBox3}>
                     <View style={styles.mainBox3Sub}>
@@ -217,7 +274,7 @@ const Home = ({navigation}) => {
                             <View style={styles.content}><Text>글3</Text></View>
                         </View>
                     </View>
-                    <View style={[styles.main3Box2, {width: '0.2%', borderWidth: 1, borderColor: '#EEEEEE'}]}></View>
+                    {/* <View style={[styles.main3Box2, {width: '0.2%', borderWidth: 1, borderColor: '#EEEEEE'}]}></View> */}
                     <View style={styles.main3Box2}>
                         <View style={styles.titleBox}>
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>맘스 토크</Text></View>

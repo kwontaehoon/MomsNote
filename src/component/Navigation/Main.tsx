@@ -27,6 +27,7 @@ import Post from '../Talk/Tab3/Post'
 import Setting from '../MyPage/Setting/Main'
 import TalkTab1Detail from '../Talk/Tab1/Detail'
 
+
 LogBox.ignoreAllLogs();
 
 const styles = StyleSheet.create({
@@ -90,7 +91,6 @@ const Navigation = () => {
                                 </View>
                             </View>
                         )}}/>
-
         </Stack.Navigator>
       </NavigationContainer>
   )

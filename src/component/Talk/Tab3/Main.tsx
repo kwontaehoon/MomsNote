@@ -22,16 +22,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header2:{
-    height: '7%',
+    height: 50,
     flexDirection: 'row',
-    paddingLeft: 15,
-    paddingRight: 15,
-    paddingBottom: 5,
     backgroundColor: '#F5F5F5',
   },
   header2FilterBox:{
-    width: '50%',
-    justifyContent: 'flex-end',
+    width: '68%',
+    justifyContent: 'center',
+    paddingLeft: 20,
+  },
+  InputBox:{
+    borderWidth: 1,
+    borderColor: '#F5F5F5',
+    backgroundColor: '#F5F5F5',
+    borderRadius: 0,
   },
   main:{
     height: '88%',
@@ -93,6 +97,14 @@ const Talk3 = ({navigation}: any) => {
     }
   ];
 
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+        {label: '1', value: '1'},
+        {label: '2', value: '2'},
+        {label: '3', value: '3'},
+        {label: '4', value: '4'}
+  ]);
   const Filter = ['최신순', '인기순', '추천순'];
   const [filter, setFilter] = useState([true, false, false, false]);
 
@@ -107,16 +119,9 @@ const Talk3 = ({navigation}: any) => {
       <View style={styles.header}></View>
       <View style={styles.header2}>
         <View style={[styles.header2FilterBox, {paddingBottom: 5}]}><Text style={{fontSize: 16}}>0 건</Text></View>
-        <View style={[styles.header2FilterBox, {alignItems: 'flex-end'}]}>
-        {/* <SelectDropdown data={Filter} defaultValue={Filter[0]} buttonStyle={{width: 100, height: 30, backgroundColor: '#F5F5F5'}}
-          buttonTextStyle={{fontSize: 13}} rowTextStyle={{fontSize: 14}}
-	        onSelect={(selectedItem, index) => {
-		          console.log(selectedItem, index)
-          	}}
-            renderDropdownIcon={isOpened => {
-              return <Icon name={isOpened ? 'angle-up' : 'angle-down'} color={'#444'} size={18} />;
-            }}
-            /> */}
+        <View style={[styles.header2FilterBox, {width: '32%'}]}>
+          <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순'
+              placeholderStyle={{color: '#9E9E9E', paddingLeft: 17, fontSize: 13}} textStyle={{fontSize: 15}} setOpen={setOpen} setValue={setValue} setItems={setItems} max={2} min={2}/>
         </View>
       </View>
       <View style={styles.main}>

@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
         height: 400,
         backgroundColor: '#F5F5F5',
         padding: 20,
-        borderWidth: 2,
     },
     footerBox:{
         height: 40,
@@ -60,7 +59,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     footerBox2:{
-
+        borderWidth: 1,
     },
     InputBox:{
         borderWidth: 1,

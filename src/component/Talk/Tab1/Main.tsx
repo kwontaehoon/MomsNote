@@ -32,11 +32,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
   },
   header2FilterBox:{
-    width: '50%',
-    justifyContent: 'flex-end',
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
+    width: '68%',
+    justifyContent: 'center',
+    paddingLeft: 20,
+  },
+  InputBox:{
+    borderWidth: 1,
+    borderColor: '#F5F5F5',
+    backgroundColor: '#F5F5F5',
+    borderRadius: 0,
   },
   header3:{
     height: '8%',
@@ -84,6 +88,14 @@ const Talk1 = ({navigation}: any) => {
       title: '질문게시판'
     }
   ];
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+        {label: '1', value: '1'},
+        {label: '2', value: '2'},
+        {label: '3', value: '3'},
+        {label: '4', value: '4'}
+  ]);
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
   const Filter = ['최신순', '인기순', '추천순']
@@ -118,17 +130,10 @@ const Talk1 = ({navigation}: any) => {
         </FlatList>
       </View>
       <View style={styles.header2}>
-        <View style={[styles.header2FilterBox, {paddingBottom: 16}]}><Text style={{fontSize: 16}}>0 건</Text></View>
-        <View style={[styles.header2FilterBox, {alignItems: 'flex-end'}]}>
-          {/* <SelectDropdown data={Filter} defaultValue={Filter[0]} buttonStyle={{width: 100, height: 30, backgroundColor: '#F5F5F5'}}
-          buttonTextStyle={{fontSize: 13}} rowTextStyle={{fontSize: 14}}
-	        onSelect={(selectedItem, index) => {
-		          console.log(selectedItem, index)
-          	}}
-            renderDropdownIcon={isOpened => {
-              return <Icon name={isOpened ? 'angle-up' : 'angle-down'} color={'#444'} size={18} />;
-            }}
-            /> */}
+        <View style={styles.header2FilterBox}><Text style={{fontSize: 16}}>0 건</Text></View>
+        <View style={[styles.header2FilterBox, {width: '32%'}]}>
+          <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순'
+              placeholderStyle={{color: '#9E9E9E', paddingLeft: 17, fontSize: 13}} textStyle={{fontSize: 15}} setOpen={setOpen} setValue={setValue} setItems={setItems} max={2} min={2}/>
         </View>
       </View>
       <View style={styles.header3}>

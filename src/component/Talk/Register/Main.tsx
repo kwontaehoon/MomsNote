@@ -98,24 +98,37 @@ const styles = StyleSheet.create({
     },
     album:{
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     albumLeft:{
-        borderWidth: 1,
         borderColor: '#E0E0E0',
         borderRadius: 5,
-        width: 80,
+        width: '20%',
         height: 80,
         justifyContent: 'center',
         alignItems: 'center',
+        borderWidth: 1,
     },
     albumRight:{
-        
+        width: '80%',
     },
     filter2:{
-        padding: 15,
+        padding: 10,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    start:{
+        position: 'absolute',
+        top: 20,
+        left: 20,
+        borderWidth: 2,
+        borderColor: 'white',
+        borderRadius: 999,
+        zIndex: 999,
+        width: 40,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     close:{
         position: 'absolute',
@@ -201,12 +214,13 @@ const Register = ({navigation}) => {
             title: '질문 게시판'
         },
     ];
-
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible2, setModalVisible2] = useState(false);
     const [filter, setFilter] = useState(Array.from({length: 5}, () => {return false})); // 카테고리
     const [image, setImage] = useState([]); // image
     console.log('image: ', image);
+    const [video, setVideo] = useState([]);
+    console.log('Video: ', video);
 
     const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
         let arr = Array.from({length: 5}, () => {return false});
@@ -218,12 +232,12 @@ const Register = ({navigation}) => {
         let arr = [];
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
           aspect: [4, 3],
           quality: 1,
         });
-        console.log(result);
+        console.log('result: ', result.assets);
         
   
       if (!result.canceled) {
@@ -236,6 +250,30 @@ const Register = ({navigation}) => {
       }
     };
 
+    const pickVideo = async () => {
+        let arr = [];
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+        console.log('result: ', result.assets);
+        
+  
+      if (!result.canceled) {
+        arr = [];
+        arr.push({
+            id: video.length,
+            image: result.assets[0].uri
+        });
+        setVideo(arr);
+      }
+    };
+
+    
+
     const cencel = (e) => {
         setModalVisible(!modalVisible);
     }
@@ -247,8 +285,15 @@ const Register = ({navigation}) => {
         navigation.goBack();
     }
 
-    const close = () => {
-        
+    const close = (id, name) => {
+        let arr = [];
+        if(name === 'video'){
+            setVideo(arr);
+        }else{
+            
+            const arr2 = image.filter((x, index)=> {return id !== index});
+            setImage(arr2);
+        }
     }
 
     const renderItem = ({ item }) => (
@@ -295,7 +340,7 @@ const Register = ({navigation}) => {
                         </TouchableOpacity>
                         <View style={styles.albumRight}>
                         <FlatList data={image} renderItem={renderItem3}
-                            keyExtractor={item => item.id} showsVerticalScrollIndicator={false} horizontal={true}>
+                            keyExtractor={item => item.id} showsHorizontalScrollIndicator={false} horizontal={true}>
                         </FlatList>
                         </View>
                     </View>
@@ -303,13 +348,13 @@ const Register = ({navigation}) => {
                 <View style={styles.mainBox} >
                     <Text style={{fontSize: 16, color: '#424242'}}>동영상 첨부</Text>
                     <View style={styles.album}>
-                        <TouchableOpacity style={styles.albumLeft} onPress={pickImage}>
+                        <TouchableOpacity style={styles.albumLeft} onPress={pickVideo}>
                             <Icon name='camera' size={22}/>
-                            <Text>{image.length}/7</Text>
+                            <Text>{video.length}/1</Text>
                         </TouchableOpacity>
                         <View style={styles.albumRight}>
-                        <FlatList data={image} renderItem={renderItem3}
-                            keyExtractor={item => item.id} showsVerticalScrollIndicator={false} horizontal={true}>
+                        <FlatList data={video} renderItem={renderItem4}
+                            keyExtractor={item => item.id} showsHorizontalScrollIndicator={false} horizontal={true}>
                         </FlatList>
                         </View>
                     </View>
@@ -326,10 +371,24 @@ const Register = ({navigation}) => {
 
     const renderItem3 = ({ item }) => (
         <View style={styles.filter2}>
-            <TouchableOpacity style={styles.close} onPress={()=>close()}>
+            <TouchableOpacity style={styles.close} onPress={()=>close(item.id, 'image')}>
                 <Icon2 name='close' size={16} style={{color: 'white'}}/>
             </TouchableOpacity>
             <Image source={{ uri: item.image }} style={{ width: 80, height: 80, borderRadius: 5,}} />
+        </View>
+    );
+
+    const renderItem4 = ({ item }) => (
+        <View style={styles.filter2}>
+            <TouchableOpacity style={styles.close} onPress={()=>close(item.id, 'video')}>
+                <Icon2 name='close' size={16} style={{color: 'white'}}/>
+            </TouchableOpacity>
+            <View>
+                <Image source={{ uri: item.image }} style={{ width: 80, height: 80, borderRadius: 5,}}/>
+                <View style={styles.start}>
+                    <Icon name='play' size={17} style={{color: 'white'}}/>
+                </View>
+            </View>
         </View>
     );
 

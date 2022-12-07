@@ -17,6 +17,7 @@ import MyPage from '../MyPage/Main'
 import Video from '../Test/Video'
 import Register from '../Talk/Register/Main';
 import ImagePicker from '../Test/ImagePicker'
+import FlatList from '../Test/FlateList'
 
 const styles = StyleSheet.create({
     header:{
@@ -47,9 +48,10 @@ function MainScreen() {
                <Stack.Navigator>
                     <Stack.Screen 
                         name="Home"
-                        component={ImagePicker}
+                        component={Home}
                         options={({ navigation, route }) => ({
                             title: '',
+                            headerStyle:{backgroundColor: '#FEECB3'},
                             headerRight: () => (
                                 <View style={styles.header}>
                                 <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
