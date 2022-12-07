@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet, LogBox, TouchableOpacity, NavigatorIOS } from 'react-native'
 import { NavigationContainer, TabActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import SubMain from './SubMain'
 import AddPage from '../Default/AddPage'
 import Talk from '../Talk/Main'
@@ -15,7 +15,6 @@ import NoticeDetail from '../MyPage/Notice/NoticeDetail'
 import Like from '../MyPage/Like/Main'
 import Edit from '../MyPage/Edit/Main'
 import Withdraw from '../MyPage/Withdraw/Main'
-import Setting from '..//MyPage/Setting/Main'
 import Block from '../MyPage/Setting/Block'
 import Term1 from '../MyPage/Setting/Terms1'
 import Term2 from '../MyPage/Setting/Terms2'
@@ -25,6 +24,8 @@ import Login from '../Default/Login'
 import Talk3Detail from '../Talk/Tab3/Tab3Detail'
 import Apply from '../Talk/Tab3/Apply'
 import Post from '../Talk/Tab3/Post'
+import Setting from '../MyPage/Setting/Main'
+import TalkTab1Detail from '../Talk/Tab1/Detail'
 
 LogBox.ignoreAllLogs();
 
@@ -64,7 +65,6 @@ const Navigation = () => {
             <Stack.Screen name="로그인 페이지" component={Login} options={{headerShown: false}}/>
             <Stack.Screen name="맘스톡" component={Talk} options={{title: '맘스톡'}}/>
             <Stack.Screen name="추가 정보 입력" component={AddPage} options={{title: '추가 정보 입력'}}/>
-            <Stack.Screen name="Talk1Tab1Detail" component={Talk1Tab1Detail} options={{title: ''}}/>
             <Stack.Screen name="글쓰기" component={Register} options={{title: '', headerShown: false}} />
             <Stack.Screen name="1:1 문의" component={Inquiry} />
             <Stack.Screen name="문의 상세" component={InquiryDetail} />
@@ -77,6 +77,20 @@ const Navigation = () => {
             <Stack.Screen name="체험단 상세페이지" component={Talk3Detail} options={{title: ''}}/>
             <Stack.Screen name="신청 정보" component={Apply}  options={{title: '', headerShown: false}}/>
             <Stack.Screen name="주소 찾기" component={Post}  options={{title: ''}}/>
+            <Stack.Screen name="설정" component={Setting}/>
+            <Stack.Screen name="차단한 사용자" component={Block}/>
+            <Stack.Screen name="이용약관" component={Term1}/>
+            <Stack.Screen name="개인정보처리방침" component={Term2}/>
+            <Stack.Screen name="맘스토크 상세내용" component={Talk1Tab1Detail}
+                            options={{title: '', headerRight: () => (
+                            <View style={styles.header}>
+                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
+                                    <View style={styles.iconBox}><Icon name='search' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
+                                </View>
+                            </View>
+                        )}}/>
+
         </Stack.Navigator>
       </NavigationContainer>
   )

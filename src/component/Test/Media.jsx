@@ -1,6 +1,6 @@
 import * as MediaLibrary from 'expo-media-library'
 import React from 'react'
-import { Button, View, } from 'react-native'
+import { Button, View } from 'react-native'
 
 export default class App extends React.Component {
   _mediaLibraryAsync = async () => {

@@ -5,58 +5,47 @@ import Icon2 from 'react-native-vector-icons/AntDesign'
 
 const styles = StyleSheet.create({
     container:{
-        height: '92%',
-        backgroundColor: 'white'
+        height: '100%',
+        backgroundColor: 'white',
     },
     container2:{
 
     },
     header:{
-        height: 80,
-        marginTop: 20,
-        paddingLeft: 15,
-    },
-    headerBox:{
-        width: '40%',
-        height: '100%',
         flexDirection: 'row',
+        height: 70,
+        alignItems: 'flex-end',
+        paddingLeft: 20,
+        borderTopWidth: 1,
+        borderColor: '#F5F5F5',
     },
     profileBox:{
+        width: 40,
+        height: 40,
+        borderRadius: 20,
         borderWidth: 1,
-        width: '50%',
-        borderRadius: 999,
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     infoBox:{
-        width: '50%',
-        justifyContent: 'center',
+        height: 42,
+        marginLeft: 7,
     },
-    infoSubBox:{
-        height: 20,
-        justifyContent: 'center',
-        marginLeft: 10,
-    },
-    
     main:{
-        height: 600,
-        borderBottomWidth: 1,
-        borderColor: '#F5F5F5'
+        height: 800,
     },
     mainBox:{
-        height: '13%',
-        justifyContent: 'center',
-        padding: 15,
+        height: '10%',
+        padding: 20,
     },
     mainBox2:{
-        height: '46%',
-        padding: 15,
+        height: '41%',
+        padding: 20,
+        borderWidth: 1,
     },
     mainBox3:{
-        borderBottomWidth: 1,
-        height: '8%',
+        height: '10%',
         flexDirection: 'row',
         borderColor: '#F5F5F5',
+        borderWidth: 1,
     },
     likeBox:{
         width: '60%',
@@ -68,34 +57,29 @@ const styles = StyleSheet.create({
         width: '40%',
         alignItems: 'flex-end',
         justifyContent: 'center',
-        paddingRight: 10,
+        paddingRight: 20,
     },
     footer:{
         height: 60,
-        flexDirection: 'row'
-    },
-    footerBox:{
-        width: '18%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 15,
-    },
-    footerBox2:{
-        width: '82%',
-        justifyContent: 'center',
-        padding: 15,
-    },
-    circleBox:{
+        flexDirection: 'row',
         borderWidth: 1,
+        alignItems: 'center',
+        padding: 20,
+    },
+    profileBox2:{
         width: 40,
         height: 40,
+        borderWidth: 1,
         borderRadius: 20,
     },
-    textBox:{
+    textInput:{
+        borderRadius: 99,
+        width: 306,
+        borderWidth: 1,
         height: 40,
-        borderRadius: 25,
-        backgroundColor: '#F5F5F5',
-        paddingLeft: 15,
+        borderColor: '#EEEEEE',
+        marginLeft: 12,
+        paddingLeft: 12,
     }
 })
 const Talk1Sub = () => {
@@ -110,35 +94,31 @@ const Talk1Sub = () => {
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
             <View style={styles.header}>
-            <View style={styles.headerBox}>
-                <View style={styles.profileBox}>
-                    <Text>이미지</Text>
-                </View>
+                <View style={styles.profileBox}></View>
                 <View style={styles.infoBox}>
-                    <View style={styles.infoSubBox}><Text>별똥이맘</Text></View>
-                    <View style={styles.infoSubBox}><Text style={{fontSize: 13, color: '#9E9E9E'}}>9시간 전</Text></View>
+                    <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>별똥이맘</Text>
+                    <Text style={{color: '#9E9E9E', fontSize: 13}}>9시간전</Text>
                 </View>
             </View>
-        </View>
-        <View style={styles.main}>
-            <View style={styles.mainBox}>
-                <Text style={{fontSize: 20, fontWeight: '400'}}>제목</Text>
-            </View>
-            <View style={styles.mainBox2}>
-                <Text>내용</Text>
-            </View>
-            <View style={styles.mainBox3}>
-                <View style={styles.likeBox}>
-                    <Icon name='user' size={22} style={{paddingLeft: 10}}/>
-                    <Text> 추천 13</Text>
-                    <Icon name='user' size={22} style={{paddingLeft: 10}}/>
-                    <Text> 댓글 5</Text>
+            <View style={styles.main}>
+                <View style={styles.mainBox}>
+                    <Text style={{fontSize: 20, fontWeight: '400'}}>제목</Text>
                 </View>
-                <View style={styles.lookupBox}>
-                    <Text>조회수 134</Text>
+                <View style={styles.mainBox2}>
+                    <Text>내용</Text>
+                </View>
+                <View style={styles.mainBox3}>
+                    <View style={styles.likeBox}>
+                        <Icon name='user' size={22} style={{paddingLeft: 10}}/>
+                        <Text> 추천 13</Text>
+                        <Icon name='user' size={22} style={{paddingLeft: 10}}/>
+                        <Text> 댓글 5</Text>
+                    </View>
+                    <View style={styles.lookupBox}>
+                        <Text>조회수 134</Text>
+                    </View>
                 </View>
             </View>
-        </View>
         </View>
       );
 
@@ -146,15 +126,11 @@ const Talk1Sub = () => {
   return (
     <View style={styles.container}>
         <FlatList data={DATA} renderItem={renderItem}
-            keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
+            keyExtractor={item => item.id}>
         </FlatList>
         <View style={styles.footer}>
-            <View style={styles.footerBox}>
-                <View style={styles.circleBox}></View>
-            </View>
-            <View style={styles.footerBox2}>
-                <TextInput style={styles.textBox} placeholder='댓글을 입력해주세요.'></TextInput>
-            </View>
+            <View style={styles.profileBox2}></View>
+            <TextInput style={styles.textInput} placeholder='댓글을 입력해주세요.' placeholderTextColor={'#BDBDBD'}></TextInput>
         </View>
     </View>
   )

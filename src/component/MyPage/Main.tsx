@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
         width: 72,
         height: 72,
         borderRadius: 36,
+        borderWidth: 1,
     },
     infoBox:{
         justifyContent: 'center',

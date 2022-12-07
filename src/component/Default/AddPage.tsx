@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Platform } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Checkbox from 'expo-checkbox'
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 const styles = StyleSheet.create({
     container:{
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
         height: '100%',
         alignItems: 'center',
         justifyContent: 'center',
+        zIndex: 888,
     },
     main4:{
         height: 170,
@@ -64,7 +66,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     main5Box2Sub:{
-        width: '50%',
+        width: '90%',
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
         borderRadius: 3,
     }
 })
-const AddPage = () => {
+const AddPage = ({navigation}) => {
 
     const DATA = [
         {
@@ -94,6 +96,39 @@ const AddPage = () => {
 
     const [isChecked, setChecked] = useState(Array.from({length: 4}, ()=>{return false})); // check box
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
+
+    const [date, setDate] = useState(new Date(1598051730000));
+    const [date2, setDate2] = useState('');
+    console.log('date2: ', date2);
+    const [mode, setMode] = useState('date');
+    const [show, setShow] = useState(false);
+
+    const onChange = (event, selectedDate) => {
+        console.log('selectDate: ', selectedDate);
+
+        const Year = selectedDate.getFullYear();
+        const Month = selectedDate.getMonth();
+        const Date = selectedDate.getDate();
+
+        console.log(Year);
+        console.log(Month);
+        console.log(Date);
+        setShow(false);
+        setDate2(`${Year}년 ${Month}월 ${Date}일`);
+
+      };
+    
+      const showMode = (currentMode) => {
+        if (Platform.OS === 'android') {
+          setShow(true);
+          // for iOS, add a button that closes the picker
+        }
+        setMode(currentMode);
+      };
+    
+      const showDatepicker = () => {
+        showMode('date');
+      };
 
     const change = (e) => { // 텍스트 밑줄 색상 변경
         let arr = Array.from({length: 4}, ()=>{return false});
@@ -133,7 +168,7 @@ const AddPage = () => {
                 <View>
                     <TextInput placeholder='날짜 선택' style={[styles.textBox, {borderColor: bottomColor[2] ? '#FEB401' : '#EEEEEE'}]}
                     onFocus={()=>change(2)}></TextInput>
-                    <View style={styles.main3Box}><Icon name='calendar' size={17} /></View>
+                    <View style={styles.main3Box}><Icon name='calendar' size={17} onPress={showDatepicker}/></View>
                 </View>
             </View>
             <View style={styles.main4}>
@@ -160,7 +195,7 @@ const AddPage = () => {
                             color={isChecked[1] ? '#FEB401' : undefined}/>
                         <Text>맘스노트 이용악관 동의(필수)</Text>
                     </View>
-                    <View style={[styles.main5Box2Sub, {justifyContent: 'flex-end', paddingRight: 10}]}><Icon name='angle-right' size={15} /></View>
+                    <View style={[styles.main5Box2Sub, {justifyContent: 'flex-end', paddingRight: 10, width: '10%'}]}><Icon name='angle-right' size={15} /></View>
                 </View>
                 <View style={styles.main5Box2}>
                     <View style={styles.main5Box2Sub}>
@@ -169,9 +204,9 @@ const AddPage = () => {
                             value={isChecked[2]}
                             onValueChange={()=>change2(2)}
                             color={isChecked[2] ? '#FEB401' : undefined}/>
-                        <Text>맘스노트 이용악관 동의(필수)</Text>
+                        <Text>개인정보 수집 이용 동의(필수)</Text>
                     </View>
-                    <View style={[styles.main5Box2Sub, {justifyContent: 'flex-end', paddingRight: 10}]}><Icon name='angle-right' size={15} /></View>
+                    <View style={[styles.main5Box2Sub, {justifyContent: 'flex-end', paddingRight: 10, width: '10%'}]}><Icon name='angle-right' size={15} /></View>
                 </View>
                 <View style={styles.main5Box2}>
                     <View style={styles.main5Box2Sub}>
@@ -180,9 +215,9 @@ const AddPage = () => {
                             value={isChecked[3]}
                             onValueChange={()=>change2(3)}
                             color={isChecked[3] ? '#FEB401' : undefined}/>
-                        <Text>맘스노트 이용악관 동의(필수)</Text>
+                        <Text>마케팅정보 메일, SNS 수신동의(선택)</Text>
                     </View>
-                    <View style={[styles.main5Box2Sub, {justifyContent: 'flex-end', paddingRight: 10}]}><Icon name='angle-right' size={15} /></View>
+                    <View style={[styles.main5Box2Sub, {justifyContent: 'flex-end', paddingRight: 10, width: '10%'}]}><Icon name='angle-right' size={15} /></View>
                 </View>
             </View>
             <View style={styles.footer}>
@@ -195,6 +230,16 @@ const AddPage = () => {
 
   return (
     <View style={styles.container}>
+        {show && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode={mode}
+            is24Hour={true}
+            onChange={onChange}
+            style={{width: 100, height: 100, backgroundColor: 'blue'}}
+          />
+        )}
        <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
         </FlatList>

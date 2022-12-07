@@ -14,22 +14,9 @@ import Dday from '../Dday/Main'
 import Materials from '../Materials/Main'
 import Information from '../Information/Main'
 import MyPage from '../MyPage/Main'
-import Inquiry from '../MyPage/Inquiry/Main';
-import Notice from '../MyPage/Notice/Main'
-import NoticeDetail from '../MyPage/Notice/NoticeDetail';
-import Like from '../MyPage/Like/Main'
-import Edit from '../MyPage/Edit/Main'
-import Withdraw from '../MyPage/Withdraw/Main'
-import Setting from '..//MyPage/Setting/Main'
-import Block from '../MyPage/Setting/Block'
-import Term1 from '../MyPage/Setting/Terms1'
-import Term2 from '../MyPage/Setting/Terms2'
-import AddPage from '../Default/AddPage'
-import CaptureRef from '../Test/CaptureRef';
-import PictureSave from '../Test/PictureSave';
-import Post from '../Test/Post'
-import DateTime from '../Test/DateTime';
-
+import Video from '../Test/Video'
+import Register from '../Talk/Register/Main';
+import ImagePicker from '../Test/ImagePicker'
 
 const styles = StyleSheet.create({
     header:{
@@ -60,7 +47,7 @@ function MainScreen() {
                <Stack.Navigator>
                     <Stack.Screen 
                         name="Home"
-                        component={DateTime}
+                        component={ImagePicker}
                         options={({ navigation, route }) => ({
                             title: '',
                             headerRight: () => (

@@ -35,7 +35,8 @@
     "react-native-view-shot": "3.4.0",
     "react-native-web": "~0.18.9",
     "react-native-webview": "^11.25.0",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "expo-sms": "~11.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

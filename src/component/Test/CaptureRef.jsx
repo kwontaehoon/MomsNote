@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     captureView:{
         borderWidth: 1,
         height: 200,
-        backgroundColor: 'pink'
+        backgroundColor: 'white'
     },
     image:{
         width: 400,

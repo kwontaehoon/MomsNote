@@ -1,61 +1,62 @@
-import React from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import React, { useState, useRef, useEffect } from 'react'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/Feather'
+import * as MediaLibrary from 'expo-media-library'
+import ViewShot from 'react-native-view-shot'
+import { WithLocalSvg } from "react-native-svg"
+import mainImage from '../../../public/assets/svg/main.svg'
+
 
 const styles = StyleSheet.create({
     container:{
         height: '92%',
-        backgroundColor: '#FFF8E1',
+        backgroundColor: 'white',
     },
     container2:{
 
     },
     main:{
-        height: 340,
-        padding: 15,
-    },
-    mainBox:{
-        padding: 15,
-        backgroundColor: 'white',
-        shadowColor: "#000",
-        elevation: 5,
-    },
-    photoBox:{
-        height: '70%',
-        justifyContent: 'center',
-        alignItems: 'center',
+        height: 500,
+        padding: 20,
         backgroundColor: '#FEECB3',
     },
-    infoBox:{
-        height: '30%',
+    mainBox:{
+        height: '20%',
+        justifyContent: 'center',
+    },
+    mainBox2:{
+        height: '60%',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 10,
     },
-    main2:{
-        height: 180,
-        padding: 15,
-    },
-    main2Box:{
-        padding: 20,
-        backgroundColor: 'white',
-        shadowColor: "#000",
-        elevation: 5,
-        height: '100%',
-        borderRadius: 10,
-    },
-    main2Box2:{
-        height: '33.4%',
-        flexDirection: 'row',
+    imageBox:{
+        width: '90%',
+        height: '90%',
         alignItems: 'center',
+        justifyContent: 'center',
     },
-    DDayBox:{
-        width: '50%',
+    mainBox3:{
+        height: '20%',
+        flexDirection: 'row',
+    },
+    mainBox3Sub:{
+        width: '30%',
+        justifyContent: 'center',
+    },
+    captureBox:{
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: '#FFF8E1',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    DdayBox:{
+        alignItems: 'flex-end',
     },
     main3:{
-        backgroundColor: 'white',
         height: 250,
         paddingTop: 40,
         paddingBottom: 40,
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 })
-const Home = ({navigation}:any) => {
+const Home = ({navigation}) => {
 
     const DATA = [
         {
@@ -142,28 +143,67 @@ const Home = ({navigation}:any) => {
             id: '2',
         },
     ];
+
+    const ref = useRef();
+    const [test, setTest] = useState();
+    console.log('test: ', test);
+
+    useEffect(()=>{
+        console.log('useEffect');
+        // save();
+    }, [test]);
+
+    const save = async() => {
+
+        if(test !== undefined){
+            let { status } = await MediaLibrary.requestPermissionsAsync();
+            const asset = await MediaLibrary.createAssetAsync(test);
+            // console.log('status: ', status);
+            // console.log('asset: ', asset);
     
+            if(status === 'granted'){
+                const kwon = await MediaLibrary.getAlbumAsync('DCIM');
+                // console.log('kwon: ', kwon);
+                const album = await MediaLibrary.getAlbumAsync('맘스노트');
+                // console.log('album: ', album);
+    
+                MediaLibrary.createAlbumAsync('맘스노트', asset, true);
+                // const asset = await MediaLibrary.createAssetAsync(test);
+            }
+        }
+    }
+
+    const capture = async() => {
+        ref.current.capture().then(uri => {
+            console.log("do something with ", uri);
+            setTest(uri);
+          });
+    }
 
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
-            <View style={styles.main}>
+            <ViewShot style={[styles.main]} ref={ref} options={{ fileName: "Your-File-Name", width: 500, height: 500, format: "png", quality: 1 }}>
                 <View style={styles.mainBox}>
-                    <View style={styles.photoBox}><Text></Text></View>
-                    <View style={styles.infoBox}>
-                        <Text>우리 아기와 함께한 97일</Text>
-                    </View>
+                    <Text style={{color: '#424242', fontSize: 18}}>2022년 12월 02일</Text>
+                    <Text style={{color: '#212121', fontSize: 32, fontWeight: '700'}}>별똥이</Text>
                 </View>
-            </View>
-            <View style={styles.main2}>
-                <View style={styles.main2Box}>
-                    <View style={styles.main2Box2}><Text style={{fontSize: 20}}>별똥이</Text></View>
-                    <View style={styles.main2Box2}>
-                        <View style={styles.DDayBox}><Text style={{color: '#FE9000', fontWeight: 'bold', fontSize: 22}}>D-183 (24주차 1일)</Text></View>
-                        <View style={[styles.DDayBox, {alignItems: 'flex-end'}]}><Icon2 name='download' size={22}/></View>                        
-                    </View>
-                    <View style={styles.main2Box2}><Text style={{color: '#9E9E9E'}}>예정일: 202년 10월 31일</Text></View>
+                <View style={styles.mainBox2}>
+                    <View style={styles.imageBox}><WithLocalSvg width={300} height={300} asset={mainImage}/></View>
                 </View>
-            </View>
+                <View style={styles.mainBox3}>
+                    <View style={styles.mainBox3Sub}>
+                        <TouchableOpacity style={styles.captureBox} onPress={capture}>
+                            <Icon2 name='download' size={22} style={{color: '#FE9000'}} />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={[styles.mainBox3Sub, {width: '70%'}]}>
+                        <View style={styles.DdayBox}>
+                            <Text style={{color: '#FE9000', fontSize: 24, fontWeight: '700', marginBottom: 3}}>D-183 (45주차 3일)</Text>
+                            <Text style={{color: '#424242', fontSize: 15}}>예정일 : 2022년 10월 31일</Text>
+                        </View>
+                    </View>
+                </View> 
+            </ViewShot>
             <View style={styles.main3}>
                 <View style={styles.main3Box}>
                     <View style={styles.main3Box2}>

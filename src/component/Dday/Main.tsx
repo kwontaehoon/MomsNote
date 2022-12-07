@@ -99,7 +99,7 @@ const Main = ({navigation}:any) => {
       },
     ];
 
-    const [filter, setFilter] = useState([true, false, false]); // filter tab
+    const [filter, setFilter] = useState([true, false]); // filter tab
     const [week, setWeek] = useState([true, false, false, false, false, false,
     false, false, false, false, false, false]);
 

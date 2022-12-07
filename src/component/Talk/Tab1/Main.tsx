@@ -105,7 +105,7 @@ const Talk1 = ({navigation}: any) => {
   );
 
   const renderItem2 = ({ item }) => (
-    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('Talk1Tab1Detail')}>
+    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용')}>
       <Text>{item.title}</Text>
     </TouchableOpacity>
   ); 

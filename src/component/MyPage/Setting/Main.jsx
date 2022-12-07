@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Switch, Modal } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Switch, Modal, Platform } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 const styles = StyleSheet.create({
     container:{
-        height: '92%',
+        height: '100%',
         backgroundColor: 'white',
     },
     container2:{
@@ -94,19 +95,23 @@ const Main = ({navigation}) => {
     ];
 
     const [isEnabled, setIsEnabled] = useState(Array.from({length: 3}, () => { return false })); // 스위치 토글
-    console.log('isenabled: ', isEnabled);
     const [clockDisplay, setClockDisplay] = useState(false); // 시작 종료 시간 display
     const [modalVisible, setModalVisible] = useState(false); // 알람 끄기 modal
     const [modalVisible2, setModalVisible2] = useState(false); // 로그아웃 modal
 
-    const modal = (e) => {
-        console.log('e: ', e);
-        let arr = [...isEnabled];
-        let arr2 = [1, 2, 3];
-        if(e === 0){
-            arr[2] === false;
-            console.log('arr: ', arr[2]);
+    const [date, setDate] = useState(new Date(1598051730000));
+    const [mode, setMode] = useState('time');
+    const [show, setShow] = useState(false);
+    const [clock, setClock] = useState('start');
 
+    const [alarmStart, setAlarmStart] = useState('22:00');
+    const [alarmEnd, setAlarmEnd] = useState('07:00')
+
+    const modal = (e) => {
+        let arr = [...isEnabled];
+        if(e === 0){
+            arr[1] = false;
+            arr[2] = false;
             setIsEnabled(arr);
             setModalVisible(!modalVisible);
         }else{
@@ -128,9 +133,41 @@ const Main = ({navigation}) => {
             arr[e] = !arr[e];
         }
         setIsEnabled(arr);
-
-       
     }
+  
+    const onChange = (event, selectedDate) => {
+        // console.log(selectedDate.format("YYYY.MM.DD HH:mm"));
+        console.log('selectedDate: ', selectedDate);
+
+        let Hours = selectedDate.getHours();
+        let Minutes = selectedDate.getMinutes();
+        
+        Hours = Hours < 10 ? `0${Hours}` : Hours;
+        Minutes = Minutes < 10 ? `0${Minutes}` : Minutes;
+       
+        
+        setShow(false);
+        if(clock === 'start'){
+            setAlarmStart(`${Hours}:${Minutes}`);
+        }else setAlarmEnd(`${Hours}:${Minutes}`);
+    };
+  
+    const showMode = (currentMode) => {
+      if (Platform.OS === 'android') {
+        setShow(false);
+        // for iOS, add a button that closes the picker
+      } 
+      setMode(currentMode);
+    };
+  
+    const showTimepicker = (e) => {
+        showMode('time');
+        setShow(true);
+
+        if(e === 0){
+            setClock('start');
+        }else setClock('end');
+    };
 
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
@@ -173,13 +210,13 @@ const Main = ({navigation}) => {
                 <View style={[styles.mainBox, {display: isEnabled[2] ? 'flex' : 'none'}]}>
                     <View style={styles.mainBoxSub}><Text style={styles.text}>시작시간</Text></View>
                     <View style={[styles.mainBoxSub, {alignItems: 'flex-end'}]}>
-                        <View style={styles.clockBox}><Text style={styles.text}>22:00</Text></View>
+                        <TouchableOpacity style={styles.clockBox} onPress={()=>showTimepicker(0)}><Text style={styles.text}>{alarmStart}</Text></TouchableOpacity>
                     </View>
                 </View>
                 <View style={[styles.mainBox, {display: isEnabled[2] ? 'flex' : 'none'}]}>
                     <View style={styles.mainBoxSub}><Text style={styles.text}>종료 시간</Text></View>
                     <View style={[styles.mainBoxSub, {alignItems: 'flex-end'}]}>
-                        <View style={styles.clockBox}><Text style={styles.text}>07:00</Text></View>
+                        <TouchableOpacity style={styles.clockBox} onPress={()=>showTimepicker(1)}><Text style={styles.text}>{alarmEnd}</Text></TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -251,6 +288,18 @@ const Main = ({navigation}) => {
                 </View>
             </View>
         </Modal>
+
+        {show && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode={mode}
+            is24Hour={true}
+            onChange={onChange}
+            style={{width: 100, height: 100, backgroundColor: 'blue'}}
+          />
+        )}
+        
         <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
         </FlatList>
