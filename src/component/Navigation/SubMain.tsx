@@ -15,9 +15,9 @@ import Materials from '../Materials/Main'
 import Information from '../Information/Main'
 import MyPage from '../MyPage/Main'
 import Video from '../Test/Video'
-import Register from '../Talk/Register/Main';
 import ImagePicker from '../Test/ImagePicker'
 import FlatList from '../Test/FlateList'
+import DropDown from '../Test/DropDown'
 
 const styles = StyleSheet.create({
     header:{
@@ -132,7 +132,7 @@ function MainScreen() {
                                     <View style={styles.iconBox}><Icon5 name='refresh-cw' size={22}/></View>
                                     <View style={styles.iconBox}><Icon4 name='download' size={22}/></View>
                                     <View style={styles.iconBox}><Icon4 name='search1' size={22} onPress={()=>navigation.navigate('출산준비물 검색')}/></View>
-                                    <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon name='bell-o' size={22} onPress={()=>navigation.navigate('출산준비물 알림')}/></View>
                                     <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
                                 </View>
                             </View>

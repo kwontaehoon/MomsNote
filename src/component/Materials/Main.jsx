@@ -119,8 +119,8 @@ const styles = StyleSheet.create({
   modalContainer:{
     justifyContent: "center",
     alignItems: "center",
-},
-modalView:{
+  },
+  modalView:{
     width: '100%',
     height: '100%',
     margin: 20,
@@ -129,26 +129,26 @@ modalView:{
     justifyContent: 'center',
     shadowColor: "#000",
     elevation: 5,
-},
-modalContainer2:{
+  },
+  modalContainer2:{
     width: '80%',
     height: 144,
     backgroundColor: 'white',
     marginBottom: 35,
     borderRadius: 15,
-},
-modalBox:{
+  },
+  modalBox:{
     height: '40%',
     justifyContent: 'center',
     alignItems: 'center',
-},
-modalBoxSub:{
-  flexDirection: 'row',
-  paddingLeft: 30,
-  height: '20%',
-  alignItems: 'center',
-},
-modal:{
+  },
+  modalBoxSub:{
+    flexDirection: 'row',
+    paddingLeft: 30,
+    height: '20%',
+    alignItems: 'center',
+  },
+  modal:{
     backgroundColor: '#FEA100',
     width: '90%',
     height: 44,
@@ -156,7 +156,7 @@ modal:{
     justifyContent: 'center',
     borderRadius: 4,
     marginBottom: 7,
-},
+  },
 })
 
 const Navigation = ({navigation}) => {

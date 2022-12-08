@@ -7,11 +7,27 @@ const styles = StyleSheet.create({
     height: '92%',
     backgroundColor: 'white',
   },
-  header:{
-    height: '8%',
+  container2:{
+
   },
-  header2:{
-    height: '8%',
+  header:{
+    borderBottomWidth: 1,
+    borderColor: '#EEEEEE',
+    height: 100,
+  },
+  headerBox:{
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerBox2:{
+    height: 50,
+  },
+  scrollBox:{
+    width: 70,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   main:{
     height: '84%',
@@ -26,51 +42,93 @@ const Talk1 = ({navigation}: any) => {
 
   const DATA = [
     {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      id: '1',
       title: '전체'
     },
     {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: '자유게시판'
+      id: '2',
+      title: '전체'
     },
     {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: '일상이야기'
+      id: '3',
+      title: '전체'
     },
     {
-        id: '1',
-        title: '임신정보'
+      id: '4',
+      title: '전체'
     },
     {
-        id: '2',
-        title: '고민상담'
+      id: '5',
+      title: '전체'
     },
     {
-        id: '3',
-        title: '질문게시판'
-    }
+      id: '6',
+      title: '전체'
+    },
+    {
+      id: '7',
+      title: '전체'
+    },
+    {
+      id: '8',
+      title: '전체'
+    },
+    {
+      id: '9',
+      title: '전체'
+    },
+    {
+      id: '10',
+      title: '전체'
+    },
+    {
+      id: '11',
+      title: '전체'
+    },
+    {
+      id: '12',
+      title: '전체'
+    },
   ];
 
-  const [filter, setFilter] = useState([true, false, false, false]);
+  const [filter, setFilter] = useState([true, false]); // filter tab
+    const [week, setWeek] = useState([true, false, false, false, false, false,
+    false, false, false, false, false, false]);
 
+    const change = (e) => { // 몇 주차 border, 글자두께 변경
+      let arr = Array.from({length: 12}, ()=>{ return false});
+      arr[e] = !arr[e];
+      setWeek(arr);
+    }
+
+    const List = () => {
+      return(
+        <View><Text>등록된 행사정보가 없습니다.</Text></View>
+      )
+    }
 
   const renderItem = ({ item }) => (
-    <View style={styles.headerFilterBox}>
-        <TouchableOpacity><Text>{item.title}</Text></TouchableOpacity>
-    </View>
+    <TouchableOpacity style={styles.scrollBox} onPress={()=>change(item.id)}>
+      <Text style={{fontSize: 16, padding: 3, fontWeight: week[item.id] ? 'bold' : '400',
+        color: week[item.id] ? 'black' : '#9E9E9E', borderBottomWidth: week[item.id] ? 2 : 0 }}>{item.id}주</Text>
+    </TouchableOpacity>
+  );
+
+  const renderItem2 = ({ item }) => (
+    <View style={styles.container2}></View>
   );
 
   return (
     <View style={styles.container}>
-        <View style={styles.header}>
-
+       <View style={styles.header}>
+          <View style={styles.headerBox}><Text style={{fontSize: 16, fontWeight: 'bold'}}>임신주차</Text></View>
+          <View style={styles.headerBox2}>
+            <FlatList data={DATA} renderItem={renderItem}
+              keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
+            </FlatList>
+          </View>
         </View>
-        <View style={styles.header2}>
-
-        </View>
-        <TouchableOpacity style={styles.main} onPress={()=>navigation.navigate('InformationTab1Detail')}>
-            <Text>등록된 행사정보가 없습니다.</Text>
-        </TouchableOpacity>
+        <List />
      </View>
   )
 }

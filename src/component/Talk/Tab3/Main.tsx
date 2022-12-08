@@ -5,26 +5,16 @@ import DropDownPicker from 'react-native-dropdown-picker'
 
 const styles = StyleSheet.create({
   container:{
-    height: '83%',
+    height: '91%',
     backgroundColor: 'white',
   },
   header:{
-    height: '5%',
-    backgroundColor: '#F5F5F5',
-  },
-  headerFilterBox:{
-    height: 40,
-    borderWidth: 1,
-    margin: 10,
-    borderRadius: 16,
-    padding: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: 10,
   },
   header2:{
     height: 50,
     flexDirection: 'row',
-    backgroundColor: '#F5F5F5',
+    backgroundColor: 'white',
   },
   header2FilterBox:{
     width: '68%',
@@ -33,12 +23,11 @@ const styles = StyleSheet.create({
   },
   InputBox:{
     borderWidth: 1,
-    borderColor: '#F5F5F5',
-    backgroundColor: '#F5F5F5',
+    borderColor: 'white',
     borderRadius: 0,
   },
   main:{
-    height: '88%',
+    height: '90%',
     borderWidth: 1,
   },
   mainBox:{
@@ -128,6 +117,7 @@ const Talk3 = ({navigation}: any) => {
         <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id}>
         </FlatList>
+        {/* <Text>모집중인 체험단이 없습니다.</Text> */}
       </View>
      </View>
   )

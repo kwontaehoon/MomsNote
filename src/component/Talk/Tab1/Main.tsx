@@ -5,11 +5,11 @@ import DropDownPicker from 'react-native-dropdown-picker'
 
 const styles = StyleSheet.create({
   container:{
-    height: '92%',
+    height: '91%',
     backgroundColor: 'white',
   },
   header:{
-    height: '12%',
+    height: '10%',
     backgroundColor: '#F5F5F5',
   },
   headerFilterBox:{
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   main:{
-    height: '72%',
+    height: '74%',
     padding: 10,
   },
   mainBox:{

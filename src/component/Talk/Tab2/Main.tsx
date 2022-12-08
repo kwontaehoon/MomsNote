@@ -5,11 +5,11 @@ import DropDownPicker from 'react-native-dropdown-picker'
 
 const styles = StyleSheet.create({
   container:{
-    height: '83%',
+    height: '82%',
     backgroundColor: 'white',
   },
   header:{
-    height: '5%',
+    height: 10,
     backgroundColor: '#F5F5F5',
   },
   header2:{
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,
   },
   main:{
-    height: '99%',
+    height: '100%',
   },
   mainBox:{
     borderBottomWidth: 1,
@@ -100,14 +100,9 @@ const Talk1 = ({navigation}: any) => {
 
   const [filter, setFilter] = useState([true, false, false, false]);
 
-  const test = () => {
-    console.log('test');
-    navigation.navigate('Talk1Sub');
-  }
-
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.mainBox} onPress={test}>
-        <View style={styles.mainBox2}><Text style={{fontSize: 18,}}>{item.title}</Text></View>
+    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('출산리스트 공유 상세내용')}>
+        <View style={styles.mainBox2}><Text style={{fontSize: 18}}>{item.title}</Text></View>
         <View style={styles.mainBox3}>
             <View style={styles.infoBox}><Text style={{color: '#9E9E9E'}}>닉네임 추천 3 댓글 0</Text></View>
             <View style={styles.clockBox}><Text style={{color: '#9E9E9E'}}>12시간전</Text></View>

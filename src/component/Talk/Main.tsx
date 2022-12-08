@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         margin: 5,
     },
     header:{
-        height: '8%',
+        height: 60,
         flexDirection: 'row',
     },
     headerBox:{
@@ -95,7 +95,7 @@ const Main = ({navigation}:any) => {
     }
     const modal = (e) => {
         setModalVisible(!modalVisible);
-        navigation.navigate('글쓰기');
+        filter[0] === true ? navigation.navigate('글쓰기') : navigation.navigate('출산리스트 공유 등록');
     }
 
   return (
@@ -107,8 +107,8 @@ const Main = ({navigation}:any) => {
                 <View style={styles.modalView}>
                     <View style={[styles.modalContainer2, {height: 220}]}>
                         <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, paddingTop: 10}}>게시글 내용을 입력해주세요.</Text>
-                            <Text style={{fontSize: 16, paddingTop: 5}}>해당 내용을 임시저장하시겠습니까?</Text>
+                            <Text style={{fontSize: 16, paddingTop: 10}}>작성 중이던 게시글이 존재합니다.</Text>
+                            <Text style={{fontSize: 16, paddingTop: 5}}>임시저장된 게시글을 불러오시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
                             <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>게시글 불러오기</Text></TouchableOpacity>
@@ -130,7 +130,7 @@ const Main = ({navigation}:any) => {
             </TouchableOpacity>
         </View>
         <List />
-        <TouchableOpacity style={styles.footer} onPress={write}>
+        <TouchableOpacity style={[styles.footer, {display: filter[2] ? 'none' : 'flex'}]} onPress={write}>
             <Icon name="pencil" size={22} style={{color: 'white'}}/>
         </TouchableOpacity>
     </View>

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Modal } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/Feather'
@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
         height: '60%',
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 1,
     },
     bubble:{
         width: 250,
@@ -143,6 +142,50 @@ const styles = StyleSheet.create({
         right: 40,
         transform: [{ rotate: "180deg" }],
     },
+    modalContainer:{
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    modalView:{
+        width: '100%',
+        height: '100%',
+        backgroundColor: "rgba(0,0,0,0.5)",
+        alignItems: "center",
+        justifyContent: 'center',
+        shadowColor: "#000",
+        elevation: 5,
+    },
+    modalContainer2:{
+        width: '80%',
+        backgroundColor: 'white',
+        marginBottom: 35,
+        borderRadius: 15,
+    },
+    modalBox:{
+        height: '15%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalBox2:{
+        height: '16%',
+        justifyContent: 'center',
+        paddingLeft: 30,
+    },
+    modalBox3:{
+        height: '38%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    modal:{
+        width: '90%',
+        height: 44,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 4,
+        marginBottom: 7,
+        borderColor: '#FE7000',
+        borderWidth: 1,
+    },
 })
 const Home = ({navigation}) => {
 
@@ -176,7 +219,12 @@ const Home = ({navigation}) => {
 
     const ref = useRef();
     const [test, setTest] = useState(); // 캡쳐 uri
-    const [bubble, setBubble] = useState([true, false, false, false]);
+    const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
+    const [modalVisible, setModalVisible] = useState(false);
+
+    useEffect(()=>{
+        // setModalVisible(!modalVisible);
+    }, []);
 
     useEffect(()=>{
         console.log('useEffect');
@@ -205,17 +253,17 @@ const Home = ({navigation}) => {
 
     const capture = async() => {
         ref.current.capture().then(uri => {
-            console.log("do something with ", uri);
             setTest(uri);
           });
     }
     const bubbleRandom = () => {
         let number = bubble.indexOf(true);
-        console.log('number: ', number);
         let arr = Array.from({length: 4}, ()=>{return false});
         if(number === 3){ number = -1 }
         arr[number+1] = !arr[number+1];
         setBubble(arr); 
+    }
+    const complete = () => { // modal
 
     }
 
@@ -229,19 +277,19 @@ const Home = ({navigation}) => {
                 <View style={styles.mainBox2}>
 
                     <View style={[styles.bubble, {top: 20, right: 20, display: bubble[0] ? 'flex' : 'none'}]}>
-                        <View style={styles.triangle}></View>
+                        <View style={[styles.triangle, {borderBottomColor: bubble[0] ? 'white' : 'transparent'}]}></View>
                         <Text>아무말이나 하고싶어요</Text>
                     </View>
                     <View style={[styles.bubble, {top: 10, right: 70, display: bubble[1] ? 'flex' : 'none'}]}>
-                        <View style={[styles.triangle, {display: bubble[1] ? 'flex' : 'none'}]}></View>
+                        <View style={[styles.triangle, {borderBottomColor: bubble[1] ? 'white' : 'transparent'}]}></View>
                         <Text>출산리스트 맘스토크 체험단</Text>
                     </View>
                     <View style={[styles.bubble, {top: 60, right: 60, display: bubble[2] ? 'flex' : 'none'}]}>
-                        <View style={styles.triangle}></View>
+                        <View style={[styles.triangle, {borderBottomColor: bubble[2] ? 'white' : 'transparent'}]}></View>
                         <Text>First Item Second Item</Text>
                     </View>
                     <View style={[styles.bubble, {top: 40, right: 80, display: bubble[3] ? 'flex' : 'none'}]}>
-                        <View style={styles.triangle}></View>
+                        <View style={[styles.triangle, {borderBottomColor: bubble[3] ? 'white' : 'transparent'}]}></View>
                         <Text>IDENITIDENITIDENITIDENIT</Text>
                     </View>
 
@@ -315,6 +363,44 @@ const Home = ({navigation}) => {
     
   return (
     <View style={styles.container}>
+
+        <Modal animationType="fade" transparent={true} visible={modalVisible}
+            onRequestClose={() => {
+            setModalVisible(!modalVisible)}}>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                    <View style={[styles.modalContainer2, {height: 400}]}>
+                        <View style={styles.modalBox}>
+                            <Text style={{fontSize: 16, paddingTop: 10, color: '#212121', fontWeight: '600'}}>원하는 출산준비물 리스트를 선택해주세요.</Text>
+                        </View>
+                        <View style={styles.modalBox2}>
+                            <View style={{flexDirection: 'row'}}>
+                                <Text style={{color: '#212121', fontWeight: '600', fontSize: 15}}>실제맘 추천 리스트 :</Text>
+                                <Text> 많은 임산부들이 추천한 품</Text>
+                            </View>
+                            <Text>목을 필수, 권장, 선택 항목으로 나눠서 알기 쉽게</Text>
+                            <Text>보여준답니다.</Text>
+                        </View>
+                        <View style={styles.modalBox2}>
+                            <View style={{flexDirection: 'row'}}>
+                                <Text style={{color: '#212121', fontWeight: '600', fontSize: 15}}>직접 작성 :</Text>
+                                <Text> 카테고리만 기본 제공하며, 필요한 품</Text>
+                            </View>
+                            <Text>목을 직접 작성할 수 있어요.</Text>
+                        </View>
+                        <View style={[styles.modalBox2, {height: '15%'}]}>
+                            <Text style={{color: '#757575'}}>Tip! 초보엄마라면 추천 리스트를 바탕으로 나에게</Text>
+                            <Text style={{color: '#757575'}}>맞는 출산 준비물 리스트를 작성해 보세요.</Text>
+                        </View>
+                        <View style={styles.modalBox3}>
+                            <TouchableOpacity style={styles.modal}><Text style={{color: '#FE7000', fontSize: 15, fontWeight: '500'}}>실제맘 추천 리스트</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.modal} onPress={()=> setModalVisible(!modalVisible)}><Text style={{color: '#FE7000', fontSize: 16, fontWeight: '500'}}>직접 작성</Text></TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+
        <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id}>
         </FlatList>

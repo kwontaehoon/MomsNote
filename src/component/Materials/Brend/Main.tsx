@@ -161,7 +161,6 @@ const Main = ({navigation}) => {
         {label: '4', value: '4'}
     ]);
     const [modalVisible, setModalVisible] = useState(false);
-    const [modalVisible2, setModalVisible2] = useState(false);
 
     const complete = () => {
         console.log('complete')

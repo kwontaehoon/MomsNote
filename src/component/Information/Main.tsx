@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header:{
-    height: '8%',
+    height: 60,
     flexDirection: 'row',
   },
   headerBox:{

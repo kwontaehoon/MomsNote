@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 
@@ -6,37 +6,40 @@ import Constants from 'expo-constants';
 import DropDownPicker from 'react-native-dropdown-picker'
 
 export default function App() {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(['italy', 'spain', 'barcelona', 'finland']);
+  const [items, setItems] = useState([
+    {label: 'Spain', value: 'spain'},
+    {label: 'Madrid', value: 'madrid', parent: 'spain'},
+    {label: 'Barcelona', value: 'barcelona', parent: 'spain'},
+
+    {label: 'Italy', value: 'italy'},
+    {label: 'Rome', value: 'rome', parent: 'italy'},
+
+    {label: 'Finland', value: 'finland'}
+  ]);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.paragraph}>
-        React native dropdown picker
-      </Text>
+    <View style={{
+      backgroundColor: '#171717',
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: 15
+    }}>
       <DropDownPicker
-          items={[
-              {label: 'English', value: 'en'},
-              {label: 'Deutsch', value: 'de'},
-              {label: 'French', value: 'fr'},
-          ]}
-          defaultIndex={0}
-          containerStyle={{height: 40}}
-          onChangeItem={item => console.log(item.label, item.value)}
+        open={open}
+        value={value}
+        items={items}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+
+        theme="DARK"
+        multiple={true}
+        mode="BADGE"
+        badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#ecf0f1',
-    padding: 8,
-  },
-  paragraph: {
-    margin: 24,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-});

@@ -217,10 +217,9 @@ const Register = ({navigation}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible2, setModalVisible2] = useState(false);
     const [filter, setFilter] = useState(Array.from({length: 5}, () => {return false})); // 카테고리
+    console.log('filter: ', filter);
     const [image, setImage] = useState([]); // image
-    console.log('image: ', image);
-    const [video, setVideo] = useState([]);
-    console.log('Video: ', video);
+    const [video, setVideo] = useState([]); // video
 
     const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
         let arr = Array.from({length: 5}, () => {return false});
@@ -286,22 +285,23 @@ const Register = ({navigation}) => {
     }
 
     const close = (id, name) => {
+        console.log('id: ', id);
         let arr = [];
         if(name === 'video'){
             setVideo(arr);
         }else{
-            
-            const arr2 = image.filter((x, index)=> {return id !== index});
+            const arr2 = image.filter((x, index) => {return x.image !== id});
+            console.log('arr2: ', arr2);
             setImage(arr2);
         }
     }
 
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
-        <View style={styles.header}>
-                <View style={[styles.headerBox, {width: '20%'}]}><Text style={{fontSize: 15}} onPress={()=>cencel(0)}>취소</Text></View>
-                <View style={[styles.headerBox, {width: '60%'}]}><Text style={{fontSize: 25, fontWeight: 'bold'}}>맘스톡 등록</Text></View>
-                <View style={[styles.headerBox, {width: '20%'}]}><Text style={{color: '#FE7000', fontSize: 15}} onPress={()=>complete(0)}>완료</Text></View>
+            <View style={styles.header}>
+                    <View style={[styles.headerBox, {width: '20%'}]}><Text style={{fontSize: 16}} onPress={()=>cencel(0)}>취소</Text></View>
+                    <View style={[styles.headerBox, {width: '60%'}]}><Text style={{fontSize: 25, fontWeight: 'bold'}}>글쓰기</Text></View>
+                    <View style={[styles.headerBox, {width: '20%'}]}><Text style={{color: '#FE7000', fontSize: 16, fontWeight: '600'}} onPress={()=>complete(0)}>완료</Text></View>
             </View>
             <View style={styles.header2}>
                 <View style={styles.header2Box}>
@@ -371,7 +371,7 @@ const Register = ({navigation}) => {
 
     const renderItem3 = ({ item }) => (
         <View style={styles.filter2}>
-            <TouchableOpacity style={styles.close} onPress={()=>close(item.id, 'image')}>
+            <TouchableOpacity style={styles.close} onPress={()=>close(item.image, 'image')}>
                 <Icon2 name='close' size={16} style={{color: 'white'}}/>
             </TouchableOpacity>
             <Image source={{ uri: item.image }} style={{ width: 80, height: 80, borderRadius: 5,}} />
@@ -380,7 +380,7 @@ const Register = ({navigation}) => {
 
     const renderItem4 = ({ item }) => (
         <View style={styles.filter2}>
-            <TouchableOpacity style={styles.close} onPress={()=>close(item.id, 'video')}>
+            <TouchableOpacity style={styles.close} onPress={()=>close(item.image, 'video')}>
                 <Icon2 name='close' size={16} style={{color: 'white'}}/>
             </TouchableOpacity>
             <View>
@@ -402,7 +402,7 @@ const Register = ({navigation}) => {
                 <View style={styles.modalView}>
                     <View style={[styles.modalContainer2, {height: 220}]}>
                         <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, paddingTop: 10}}>게시글 내용을 입력해주세요.</Text>
+                            <Text style={{fontSize: 16, paddingTop: 10}}>작성 중인 게시글을 취소합니다.</Text>
                             <Text style={{fontSize: 16, paddingTop: 5}}>해당 내용을 임시저장하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
