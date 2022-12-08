@@ -18,6 +18,8 @@ import Video from '../Test/Video'
 import ImagePicker from '../Test/ImagePicker'
 import FlatList from '../Test/FlateList'
 import DropDown from '../Test/DropDown'
+import Animation from '../Test/animation'
+import Animation2 from '../Test/animation2'
 
 const styles = StyleSheet.create({
     header:{
@@ -88,7 +90,7 @@ function MainScreen() {
                <Stack.Navigator>
                     <Stack.Screen 
                         name="Home"
-                        component={Home}
+                        component={Animation2}
                         options={({ navigation, route }) => ({
                             title: '',
                             headerStyle:{backgroundColor: '#FEECB3'},
