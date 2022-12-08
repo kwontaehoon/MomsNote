@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Modal } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Modal, SafeAreaView, StatusBar } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/Feather'
@@ -7,6 +7,7 @@ import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
 import { WithLocalSvg } from "react-native-svg"
 import mainImage from '../../../public/assets/svg/main.svg'
+import { useIsFocused } from '@react-navigation/native'
 
 
 const styles = StyleSheet.create({
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
         paddingBottom: 40,
         paddingLeft: 20,
         paddingRight: 20,
+        backgroundColor: 'white',
     },
     main3Box:{
         flexDirection: 'row',
@@ -172,7 +174,7 @@ const styles = StyleSheet.create({
         paddingLeft: 30,
     },
     modalBox3:{
-        height: '38%',
+        height: '30%',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -185,6 +187,25 @@ const styles = StyleSheet.create({
         marginBottom: 7,
         borderColor: '#FE7000',
         borderWidth: 1,
+    },
+    saveModalBox:{
+        width: '100%',
+        height: 40,
+        position: 'absolute',
+        zIndex: 1,
+        bottom: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    saveModal:{
+        width: '90%',
+        height: 40,
+        backgroundColor: 'black',
+        opacity: 0.7,
+        borderRadius: 10,
+        justifyContent: 'center',
+        paddingLeft: 20,
+        
     },
 })
 const Home = ({navigation}) => {
@@ -219,20 +240,21 @@ const Home = ({navigation}) => {
 
     const ref = useRef();
     const [test, setTest] = useState(); // 캡쳐 uri
+    console.log('test: ', test);
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
     const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(()=>{
-        // setModalVisible(!modalVisible);
+        setModalVisible(!modalVisible);
     }, []);
 
     useEffect(()=>{
         console.log('useEffect');
-        // save();
+            save();
     }, [test]);
 
     const save = async() => {
-
+       
         if(test !== undefined){
             let { status } = await MediaLibrary.requestPermissionsAsync();
             const asset = await MediaLibrary.createAssetAsync(test);
@@ -249,11 +271,15 @@ const Home = ({navigation}) => {
                 // const asset = await MediaLibrary.createAssetAsync(test);
             }
         }
+        setTest(undefined);
     }
 
     const capture = async() => {
+        setTest('1');
+
         ref.current.capture().then(uri => {
             setTest(uri);
+            console.log('캡쳐끝남');
           });
     }
     const bubbleRandom = () => {
@@ -265,6 +291,14 @@ const Home = ({navigation}) => {
     }
     const complete = () => { // modal
 
+    }
+
+    const FocusAwareStatusBar = () => {
+        const isFocused = useIsFocused();
+        
+        return isFocused ? <StatusBar backgroundColor='#FEECB3' /> : null;
+
+        
     }
 
     const renderItem = ({ item }) => (
@@ -297,7 +331,7 @@ const Home = ({navigation}) => {
                 </View>
                 <View style={styles.mainBox3}>
                     <View style={styles.mainBox3Sub}>
-                        <TouchableOpacity style={styles.captureBox} onPress={capture}>
+                        <TouchableOpacity style={[styles.captureBox, {display: test === undefined ? 'flex' : 'none'}]} onPress={capture}>
                             <Icon2 name='download' size={22} style={{color: '#FE9000'}} />
                         </TouchableOpacity>
                     </View>
@@ -362,8 +396,9 @@ const Home = ({navigation}) => {
     );
     
   return (
-    <View style={styles.container}>
-
+    <SafeAreaView style={[styles.container, {backgroundColor: '#FEECB3'}]}>
+        
+      <FocusAwareStatusBar />
         <Modal animationType="fade" transparent={true} visible={modalVisible}
             onRequestClose={() => {
             setModalVisible(!modalVisible)}}>
@@ -372,6 +407,10 @@ const Home = ({navigation}) => {
                     <View style={[styles.modalContainer2, {height: 400}]}>
                         <View style={styles.modalBox}>
                             <Text style={{fontSize: 16, paddingTop: 10, color: '#212121', fontWeight: '600'}}>원하는 출산준비물 리스트를 선택해주세요.</Text>
+                        </View>
+                        <View style={styles.modalBox3}>
+                            <TouchableOpacity style={styles.modal}><Text style={{color: '#FE7000', fontSize: 15, fontWeight: '500'}}>실제맘 추천 리스트</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.modal} onPress={()=> setModalVisible(!modalVisible)}><Text style={{color: '#FE7000', fontSize: 16, fontWeight: '500'}}>직접 작성</Text></TouchableOpacity>
                         </View>
                         <View style={styles.modalBox2}>
                             <View style={{flexDirection: 'row'}}>
@@ -389,22 +428,26 @@ const Home = ({navigation}) => {
                             <Text>목을 직접 작성할 수 있어요.</Text>
                         </View>
                         <View style={[styles.modalBox2, {height: '15%'}]}>
-                            <Text style={{color: '#757575'}}>Tip! 초보엄마라면 추천 리스트를 바탕으로 나에게</Text>
-                            <Text style={{color: '#757575'}}>맞는 출산 준비물 리스트를 작성해 보세요.</Text>
-                        </View>
-                        <View style={styles.modalBox3}>
-                            <TouchableOpacity style={styles.modal}><Text style={{color: '#FE7000', fontSize: 15, fontWeight: '500'}}>실제맘 추천 리스트</Text></TouchableOpacity>
-                            <TouchableOpacity style={styles.modal} onPress={()=> setModalVisible(!modalVisible)}><Text style={{color: '#FE7000', fontSize: 16, fontWeight: '500'}}>직접 작성</Text></TouchableOpacity>
+                            <View style={{flexDirection: 'row'}}>
+                                <Text style={{color: '#EF1E1E'}}>Tip! </Text>
+                                <Text style={{color: '#757575'}}>초보엄마라면 추천 리스트를 바탕으로 나에게</Text>
+                            </View>
+                            <Text style={{color: '#757575'}}>맞는 출산준비물 리스트를 작성해 보세요.</Text>
                         </View>
                     </View>
                 </View>
             </View>
         </Modal>
 
-       <FlatList data={DATA} renderItem={renderItem}
+        <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id}>
         </FlatList>
-    </View>
+        <View style={[styles.saveModalBox, {display: 'flex'}]}>
+            <View style={styles.saveModal}>
+                <Text style={{color: 'white'}}>출산 리스트가 내 앨범에 저장되었습니다.</Text>
+            </View>
+        </View>
+    </SafeAreaView>
   )
 }
 

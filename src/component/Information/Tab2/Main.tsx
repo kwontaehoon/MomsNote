@@ -6,16 +6,12 @@ const styles = StyleSheet.create({
     container:{
       height: '91%',
       backgroundColor: 'white',
-      borderWidth: 2,
     },
     container2:{
 
     },
     header:{
-      height: 200,
-      borderWidth: 1,
-      justifyContent: 'center',
-      marginLeft: 5,
+      height: 100,
     },
     headerBox:{
       justifyContent: 'center',
@@ -35,8 +31,7 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
     },
     main:{
-      height: 300,
-      borderWidth: 1,
+      height: 700,
     },
     mainBox:{
       height: '33.4%',
@@ -95,12 +90,12 @@ const Talk1 = ({navigation}: any) => {
   const renderItem = ({ item }) => (
     <View style={styles.container2}>
       <View style={styles.header}>
-        {/* <FlatList data={DATA2} renderItem={renderItem2}
+        <FlatList data={DATA2} renderItem={renderItem2}
           keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
-        </FlatList> */}
+        </FlatList>
       </View>
       <View style={styles.main}>
-        {/* <View style={styles.mainBox}>
+        <View style={styles.mainBox}>
             <View style={styles.titleBox}><Text>임신상담</Text></View>
             <View style={styles.contentBox}><Text>등록된 Q&A가 없습니다.</Text>
             </View>
@@ -112,23 +107,23 @@ const Talk1 = ({navigation}: any) => {
         <View style={styles.mainBox}>
             <View style={styles.titleBox}><Text>육아상담</Text></View>
             <View style={styles.contentBox}><Text>등록된 Q&A가 없습니다.</Text></View>
-        </View> */}
+        </View>
       </View>
     </View>
   );
 
   const renderItem2 = ({ item }) => (
     <View style={styles.headerBox}>
-    <View style={[styles.headerFilterBox, {backgroundColor: filter[item.id] ? '#FEA100' : 'white'}]}>
-        <TouchableOpacity onPress={()=>change(item.id)}><Text style={{color: filter[item.id] ? 'white' : 'black', fontWeight: '400'}}>{item.title}</Text></TouchableOpacity>
-    </View>
+      <View style={[styles.headerFilterBox, {backgroundColor: filter[item.id] ? '#FEA100' : 'white'}]}>
+          <TouchableOpacity onPress={()=>change(item.id)}><Text style={{color: filter[item.id] ? 'white' : 'black', fontWeight: '400'}}>{item.title}</Text></TouchableOpacity>
+      </View>
     </View>
   );
 
   return (
     <View style={styles.container}>
        <FlatList data={DATA} renderItem={renderItem}
-          keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
+          keyExtractor={item => item.id}>
         </FlatList>
      </View>
   )

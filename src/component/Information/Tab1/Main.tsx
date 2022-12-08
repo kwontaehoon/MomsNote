@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#EEEEEE',
     height: 100,
+    borderWidth: 1,
   },
   headerBox:{
     height: 50,
@@ -29,11 +30,45 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  main:{
-    height: '84%',
-    backgroundColor: '#F5F5F5',
+  header2:{
+    justifyContent: 'center',
+    height: 100,
+    backgroundColor: '#F5F5F5'
+  },
+  header2Box:{
+
+  },
+  header2FilterBox:{
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#EEEEEE',
+    margin: 5,
+    borderRadius: 20,
+    paddingTop: 8,
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingBottom: 8,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  main:{
+    height: '68%',
+  },
+  mainBox:{
+    borderWidth: 1,
+    height: 150,
+    flexDirection: 'row',
+    padding: 15,
+    borderColor: '#F5F5F5',
+  },
+  imageBox:{
+    borderWidth: 1,
+    width: '35%',
+  },
+  contentBox:{
+    borderWidth: 1,
+    width: '65%',
   },
 })
 
@@ -41,6 +76,16 @@ const styles = StyleSheet.create({
 const Talk1 = ({navigation}: any) => {
 
   const DATA = [
+    {
+      id: '1',
+      title: '전체'
+    },
+    {
+      id: '2',
+      title: '전체'
+    },
+  ];
+  const DATA2 = [
     {
       id: '1',
       title: '전체'
@@ -91,9 +136,26 @@ const Talk1 = ({navigation}: any) => {
     },
   ];
 
-  const [filter, setFilter] = useState([true, false]); // filter tab
+  const DATA3 = [
+    {
+        id: '0',
+        title: '전체'
+    },
+    {
+        id: '1',
+        title: '특가할인'
+    },
+    {
+        id: '2',
+        title: '박람회'
+    },
+  ];
+
+    const [filter, setFilter] = useState([true, false]); // filter tab
     const [week, setWeek] = useState([true, false, false, false, false, false,
     false, false, false, false, false, false]);
+    const [filter2, setFilter2] = useState([true, false, false, false]);
+
 
     const change = (e) => { // 몇 주차 border, 글자두께 변경
       let arr = Array.from({length: 12}, ()=>{ return false});
@@ -101,32 +163,62 @@ const Talk1 = ({navigation}: any) => {
       setWeek(arr);
     }
 
+    const change2 = (e) => { // 카테고리 배경색상, 글자 색상 변경
+      let arr = Array.from({length: 4}, () => {return false});
+      arr[e] = !arr[e];
+      setFilter2(arr);
+    }
+
     const List = () => {
       return(
-        <View><Text>등록된 행사정보가 없습니다.</Text></View>
+        <View style={styles.main}>
+          <FlatList data={DATA} renderItem={renderItem}
+              keyExtractor={item => item.id}>
+          </FlatList>
+        </View>
       )
     }
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }) => ( // 행사정보
+      <View style={styles.mainBox}>
+          <View style={styles.imageBox}></View>
+          <View style={styles.contentBox}></View>
+      </View>
+  );
+
+  const renderItem2 = ({ item }) => ( // 임신주차
     <TouchableOpacity style={styles.scrollBox} onPress={()=>change(item.id)}>
       <Text style={{fontSize: 16, padding: 3, fontWeight: week[item.id] ? 'bold' : '400',
         color: week[item.id] ? 'black' : '#9E9E9E', borderBottomWidth: week[item.id] ? 2 : 0 }}>{item.id}주</Text>
     </TouchableOpacity>
   );
 
-  const renderItem2 = ({ item }) => (
-    <View style={styles.container2}></View>
+  const renderItem3 = ({ item }) => ( // filter Box
+    <View style={styles.header2}>
+        <View style={[styles.header2FilterBox, {backgroundColor: filter2[item.id] ? '#FEA100' : 'white'}]}>
+          <TouchableOpacity onPress={()=>change2(item.id)}><Text style={{color: filter2[item.id] ? 'white' : 'black'}}>{item.title}</Text></TouchableOpacity>
+        </View>
+    </View>
   );
+
+  
+
+ 
 
   return (
     <View style={styles.container}>
        <View style={styles.header}>
-          <View style={styles.headerBox}><Text style={{fontSize: 16, fontWeight: 'bold'}}>임신주차</Text></View>
+          <View style={styles.headerBox}><Text style={{fontSize: 16, fontWeight: '600'}}>2022년</Text></View>
           <View style={styles.headerBox2}>
-            <FlatList data={DATA} renderItem={renderItem}
+            <FlatList data={DATA2} renderItem={renderItem2}
               keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
             </FlatList>
           </View>
+        </View>
+        <View style={styles.header2}>
+          <FlatList data={DATA3} renderItem={renderItem3}
+              keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
+          </FlatList>
         </View>
         <List />
      </View>

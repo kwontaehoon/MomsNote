@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, SafeAreaView, StatusBar } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import Talk1 from './Tab1/Main'
@@ -129,7 +129,8 @@ const Main = ({navigation}:any) => {
     ); 
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={[styles.container, {backgroundColor: 'white'}]}>
+      <StatusBar backgroundColor={'white'} />
       <View style={styles.header}>
             <TouchableOpacity style={[styles.headerBox, {width: '50%', borderBottomColor: filter[0] ? 'orange' : '#BDBDBD'}]} onPress={()=>filter_func(0)}>
                 <Text style={{fontWeight: 'bold', fontSize: 18, color: filter[0] ? 'orange' : '#BDBDBD'}}>오늘의편지</Text>
@@ -140,14 +141,14 @@ const Main = ({navigation}:any) => {
         </View>
         <View style={styles.header2}>
           <View style={styles.header2Box}><Text style={{fontSize: 16, fontWeight: 'bold'}}>임신주차</Text></View>
-          <View style={styles.header2Box2}>
+          <View style={styles.header2Box2}> 
             <FlatList data={DATA} renderItem={renderItem}
               keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
             </FlatList>
           </View>
         </View>
         <List />
-    </View>
+    </SafeAreaView>
   )
 }
 

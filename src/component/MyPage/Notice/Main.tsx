@@ -10,16 +10,17 @@ const styles = StyleSheet.create({
         padding: 15,
     },
     header:{
-        height: '6%',
+        height: '3%',
     },
     main:{
-        height: '94%',
+        height: '97%',
     },
     mainBox:{
         borderTopWidth: 1,
         borderColor: '#EEEEEE',
         height: 80,
         padding: 10,
+        justifyContent: 'center'
     }
 })
 const InquiryDetail = ({navigation}) => {
@@ -53,14 +54,6 @@ const InquiryDetail = ({navigation}) => {
             id: '4',
             title: '질문게시판'
         },
-        {
-            id: '5',
-            title: '질문게시판'
-        },
-        {
-            id: '6',
-            title: '질문게시판'
-        }
     ];
 
     const renderItem = ({ item }) => (

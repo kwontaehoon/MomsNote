@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -6,8 +6,8 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 // 문의내역
 const styles = StyleSheet.create({
     container:{
-      height: '90%',
-      backgroundColor: 'white'
+      height: '95%',
+      backgroundColor: 'white',  
     },
     header:{
       height: '6%',

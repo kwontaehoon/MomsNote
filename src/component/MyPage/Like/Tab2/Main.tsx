@@ -12,11 +12,12 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   mainBox:{
-    borderBottomWidth: 1,
+    borderWidth: 1,
     height: 100,
     flexDirection: 'row',
   },
   mainBoxSub:{
+    width: '85%',
     justifyContent: 'center',
   },
 })
@@ -70,7 +71,7 @@ const Talk1 = ({navigation}: any) => {
 
   const renderItem2 = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('TalkTab1Detail')}>
-      <View style={[styles.mainBoxSub, {width: '85%', borderWidth: 1,}]}>
+      <View style={styles.mainBoxSub}>
         <Text style={{marginBottom: 5}}>제목</Text>
         <Text>내용</Text>
       </View>

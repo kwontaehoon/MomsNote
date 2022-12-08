@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
     },
     header:{
-        height: '10%',
+        height: 60,
         flexDirection: 'row',
     },
     headerBox:{

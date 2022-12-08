@@ -1,22 +1,23 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 const styles = StyleSheet.create({
     container:{
-        height: '91%',
+        height: '92%',
         backgroundColor: 'white',
     },
     container2:{
 
     },
     main:{
-        height: 620,
+        height: 560,
         padding: 20,
         paddingTop: 40,
     },
     mainBox:{
-        height: 150,
+        height: 140,
     },
     textBox:{
         borderBottomWidth: 2,
@@ -24,10 +25,10 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     mainBox2:{
-        height: 120,
+        height: 100,
     },
     mainBox3:{
-        height: 120,
+        height: 100,
     },
     main3Box:{
         position: 'absolute',
@@ -49,12 +50,9 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: '#757575',
     },
-
     footer:{
-        height: 100,
+        height: 160,
         alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 10,
     },
     footerBox:{
         width: '90%',
@@ -69,15 +67,49 @@ const styles = StyleSheet.create({
 
 const Talk1 = ({navigation}: any) => {
 
-    const [isChecked, setChecked] = useState(Array.from({length: 4}, ()=>{return false})); // check box
-    const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
-
     const DATA = [
         {
           id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
           title: '전체'
         }
     ];
+
+    const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
+
+    const [date, setDate] = useState(new Date(1598051730000));
+    const [date2, setDate2] = useState('');
+    console.log('date2: ', date2);
+    const [mode, setMode] = useState('date');
+    const [show, setShow] = useState(false);
+
+    const onChange = (event, selectedDate) => {
+        console.log('selectDate: ', selectedDate);
+
+        const Year = selectedDate.getFullYear();
+        const Month = selectedDate.getMonth();
+        const Date = selectedDate.getDate();
+
+        console.log(Year);
+        console.log(Month);
+        console.log(Date);
+        setShow(false);
+        setDate2(`${Year}년 ${Month}월 ${Date}일`);
+
+      };
+    
+      const showMode = (currentMode) => {
+        if (Platform.OS === 'android') {
+          setShow(true);
+          // for iOS, add a button that closes the picker
+        }
+        setMode(currentMode);
+      };
+    
+      const showDatepicker = () => {
+        showMode('date');
+      };
+
+   
 
     const change = (e) => { // 텍스트 밑줄 색상 변경
         let arr = Array.from({length: 4}, ()=>{return false});
@@ -104,7 +136,7 @@ const Talk1 = ({navigation}: any) => {
                     <View>
                         <TextInput placeholder='날짜 선택' style={[styles.textBox, {borderColor: bottomColor[2] ? '#FEB401' : '#EEEEEE'}]}
                         onFocus={()=>change(2)}></TextInput>
-                        <View style={styles.main3Box}><Icon name='calendar' size={17} /></View>
+                        <View style={styles.main3Box}><Icon name='calendar' size={17} onPress={showDatepicker} style={{position: 'absolute', zIndex: 999}}/></View>
                     </View>
                 </View>
                 <View style={styles.mainBox4}>
@@ -127,6 +159,15 @@ const Talk1 = ({navigation}: any) => {
 
   return (
     <View style={styles.container}>
+        {show && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode={mode}
+            is24Hour={true}
+            onChange={onChange}
+          />
+        )}
        <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id}>
         </FlatList>

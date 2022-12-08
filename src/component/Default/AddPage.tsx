@@ -118,17 +118,17 @@ const AddPage = ({navigation}) => {
 
       };
     
-      const showMode = (currentMode) => {
+    const showMode = (currentMode) => {
         if (Platform.OS === 'android') {
           setShow(true);
           // for iOS, add a button that closes the picker
         }
         setMode(currentMode);
-      };
+    };
     
-      const showDatepicker = () => {
+    const showDatepicker = () => {
         showMode('date');
-      };
+    };
 
     const change = (e) => { // 텍스트 밑줄 색상 변경
         let arr = Array.from({length: 4}, ()=>{return false});
@@ -168,7 +168,7 @@ const AddPage = ({navigation}) => {
                 <View>
                     <TextInput placeholder='날짜 선택' style={[styles.textBox, {borderColor: bottomColor[2] ? '#FEB401' : '#EEEEEE'}]}
                     onFocus={()=>change(2)}></TextInput>
-                    <View style={styles.main3Box}><Icon name='calendar' size={17} onPress={showDatepicker}/></View>
+                    <View style={styles.main3Box}><Icon name='calendar' size={17} onPress={showDatepicker} style={{position: 'absolute', zIndex: 999}}/></View>
                 </View>
             </View>
             <View style={styles.main4}>
@@ -237,7 +237,6 @@ const AddPage = ({navigation}) => {
             mode={mode}
             is24Hour={true}
             onChange={onChange}
-            style={{width: 100, height: 100, backgroundColor: 'blue'}}
           />
         )}
        <FlatList data={DATA} renderItem={renderItem}

@@ -42,7 +42,47 @@ function MainScreen() {
 
 
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false, tabBarStyle:{ height: 60, position: 'absolute', paddingBottom: 7}, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 12}}}>
+    <Tab.Navigator initialRouteName='홈' screenOptions={{ headerShown: false, tabBarStyle:{ height: 60, position: 'absolute', paddingBottom: 7}, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 12}}}>
+      <Tab.Screen name="맘스 톡" options={{tabBarIcon: ({color}) => (<Icon3 name='message-square' size={22} color={color}/>)}}>
+          {()=>(
+               <Stack.Navigator>
+                    <Stack.Screen 
+                        name="맘스톡"
+                        component={Talk}
+                        options={{headerRight: () => (
+                            <View style={styles.header}>
+                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
+                                    <View style={styles.iconBox}><Icon4 name='search1' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
+                                </View>
+                            </View>
+                        )}}
+                        />
+               </Stack.Navigator>   
+            )}
+          </Tab.Screen>
+
+          <Tab.Screen name="Dday" options={{tabBarIcon: ({color}) => (<Icon name='calendar-o' size={22} color={color}/>)}}>
+        {()=>(
+               <Stack.Navigator>
+                    <Stack.Screen 
+                        name="D-280"
+                        component={Dday}
+                        options={{headerRight: () => (
+                            <View style={styles.header}>
+                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
+                                    <View style={styles.iconBox}><Icon4 name='search1' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
+                                </View>
+                            </View>
+                        )}}
+                        />
+               </Stack.Navigator>   
+        )}
+      </Tab.Screen>
+
       <Tab.Screen name="홈" options={{tabBarIcon: ({color}) => (<Icon2 name='home' size={22} color={color}/>)}}>
         {()=>(
                <Stack.Navigator>
@@ -79,45 +119,9 @@ function MainScreen() {
                
           )}
         </Tab.Screen>
-       <Tab.Screen name="맘스톡" options={{tabBarIcon: ({color}) => (<Icon3 name='message-square' size={22} color={color}/>)}}>
-          {()=>(
-               <Stack.Navigator>
-                    <Stack.Screen 
-                        name="맘스톡"
-                        component={Talk}
-                        options={{headerRight: () => (
-                            <View style={styles.header}>
-                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-                                    <View style={styles.iconBox}><Icon4 name='search1' size={22}/></View>
-                                    <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
-                                    <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
-                                </View>
-                            </View>
-                        )}}
-                        />
-               </Stack.Navigator>   
-            )}
-          </Tab.Screen>
+       
 
-      <Tab.Screen name="D-280" options={{tabBarIcon: ({color}) => (<Icon name='calendar-o' size={22} color={color}/>)}}>
-        {()=>(
-               <Stack.Navigator>
-                    <Stack.Screen 
-                        name="D-280"
-                        component={Dday}
-                        options={{headerRight: () => (
-                            <View style={styles.header}>
-                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-                                    <View style={styles.iconBox}><Icon4 name='search1' size={22}/></View>
-                                    <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
-                                    <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
-                                </View>
-                            </View>
-                        )}}
-                        />
-               </Stack.Navigator>   
-        )}
-      </Tab.Screen>
+      
 
       <Tab.Screen name="출산" options={{tabBarIcon: ({color}) => (<Icon2 name='bag' size={22} color={color}/>)}}>
       {()=>(

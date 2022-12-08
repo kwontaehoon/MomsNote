@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 
     },
     header:{
-        height: 70,
+        height: 60,
         flexDirection: 'row',
       },
     headerBox:{
