@@ -34,6 +34,7 @@ import Talk2Detail from '../Talk/Tab2/Tab2Detail'
 import Talk2Register from '../Talk/Tab2/Register/Main'
 import Categoires from '../Talk/Tab2/Register/Categoires'
 import Initial from '../Default/Main'
+import Budget from '../Materials/Budget/Main' 
 
 LogBox.ignoreAllLogs();
 
@@ -127,6 +128,7 @@ const Navigation = () => {
                                 </View>
                             )}}/>
             <Stack.Screen name="출산준비물 알림" component={Notice2} options={{title: '알림'}}/>
+            <Stack.Screen name="총 예산" component={Budget}/>
         </Stack.Navigator>
       </NavigationContainer>
   )

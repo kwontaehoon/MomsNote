@@ -7,39 +7,20 @@ import DropDownPicker from 'react-native-dropdown-picker'
 
 export default function App() {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(['italy', 'spain', 'barcelona', 'finland']);
+  const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-    {label: 'Spain', value: 'spain'},
-    {label: 'Madrid', value: 'madrid', parent: 'spain'},
-    {label: 'Barcelona', value: 'barcelona', parent: 'spain'},
-
-    {label: 'Italy', value: 'italy'},
-    {label: 'Rome', value: 'rome', parent: 'italy'},
-
-    {label: 'Finland', value: 'finland'}
+      {label: '산모 용품', value: '1'},
+      {label: '수유 용품', value: '2'},
+      {label: '위생 용품', value: '3'},
+      {label: '목욕 용품', value: '4'},
+      {label: '목욕 용품', value: '4'}
   ]);
 
   return (
-    <View style={{
-      backgroundColor: '#171717',
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingHorizontal: 15
-    }}>
-      <DropDownPicker
-        open={open}
-        value={value}
-        items={items}
-        setOpen={setOpen}
-        setValue={setValue}
-        setItems={setItems}
-
-        theme="DARK"
-        multiple={true}
-        mode="BADGE"
-        badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
-      />
+    <View>
+      <DropDownPicker open={open} value={value} items={items} placeholder='카데고리 선택(필수)' style={{backgroundColor: 'red'}} textStyle={{fontSize: 18}} dropDownContainerStyle={{backgroundColor: 'green'}}
+      labelStyle={{backgroundColor: 'blue'}}
+          placeholderStyle={{}} setOpen={setOpen} setValue={setValue} setItems={setItems} max={2} min={2}/>
     </View>
   );
 }
