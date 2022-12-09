@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Modal, SafeAreaView, StatusBar } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Modal, SafeAreaView, StatusBar, Animated } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/Feather'
 import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
 import { WithLocalSvg } from "react-native-svg"
+
 import mainImage from '../../../public/assets/svg/main.svg'
+
 import { useIsFocused } from '@react-navigation/native'
 
 
@@ -240,9 +242,9 @@ const Home = ({navigation}) => {
 
     const ref = useRef();
     const [test, setTest] = useState(); // 캡쳐 uri
-    console.log('test: ', test);
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
     const [modalVisible, setModalVisible] = useState(false);
+    const animation = useRef(new Animated.Value(0)).current;
 
     useEffect(()=>{
         setModalVisible(!modalVisible);
@@ -250,7 +252,7 @@ const Home = ({navigation}) => {
 
     useEffect(()=>{
         console.log('useEffect');
-            save();
+        save();
     }, [test]);
 
     const save = async() => {
@@ -275,6 +277,7 @@ const Home = ({navigation}) => {
     }
 
     const capture = async() => {
+        opacity_ani();
         setTest('1');
 
         ref.current.capture().then(uri => {
@@ -282,12 +285,26 @@ const Home = ({navigation}) => {
             console.log('캡쳐끝남');
           });
     }
+
     const bubbleRandom = () => {
         let number = bubble.indexOf(true);
         let arr = Array.from({length: 4}, ()=>{return false});
         if(number === 3){ number = -1 }
         arr[number+1] = !arr[number+1];
         setBubble(arr); 
+    }
+    const opacity_ani = () => {
+        Animated.timing(animation, {
+            toValue: 1,
+            useNativeDriver: true,
+            duration: 1500,
+        }).start(()=>{
+            Animated.timing(animation, {
+                toValue: 0,
+                useNativeDriver: true,
+                duration: 1500,
+            }).start();
+        });
     }
     const complete = () => { // modal
 
@@ -442,11 +459,11 @@ const Home = ({navigation}) => {
         <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id}>
         </FlatList>
-        <View style={[styles.saveModalBox, {display: 'flex'}]}>
+        <Animated.View style={[styles.saveModalBox, {opacity: animation}]}>
             <View style={styles.saveModal}>
                 <Text style={{color: 'white'}}>출산 리스트가 내 앨범에 저장되었습니다.</Text>
             </View>
-        </View>
+        </Animated.View>
     </SafeAreaView>
   )
 }

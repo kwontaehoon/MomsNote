@@ -1,9 +1,16 @@
 import React, { useState } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Modal} from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/Ionicons'
+import Icon3 from 'react-native-vector-icons/Feather'
 import Checkbox from 'expo-checkbox';
+import BrendModal from './BrendModal'
+import CheckboxModal from './CheckBoxModal';
+import NoticeModal from './NoticeModal';
+import GuideModal from './GuideModal'
+import ResetModal from './ResetModal'
+import ResetModal2 from './ResetModal2'
 import { WithLocalSvg } from "react-native-svg"
 import material1 from '../../../public/assets/svg/material1.svg'
 import Red from '../../../public/assets/svg/Red.svg'
@@ -62,12 +69,13 @@ const styles = StyleSheet.create({
   },
   main3:{
     alignItems: 'center',
-    padding: 10
+    padding: 0,
   },
   main3Box:{
     backgroundColor: 'white',
     width: '90%',
     borderRadius: 10,
+    padding: 5,
   },
   main3BoxHeader:{
     height: 44,
@@ -79,18 +87,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   filterSub:{
+    height: 20,
     paddingLeft: 8,
     paddingTop: 2,
     paddingbottom: 2,
     paddingRight: 8,
-    borderWidth: 1,
-    marginRight: 3,
+    marginRight: 5,
+    marginLeft: 5,
+    borderRadius: 10,
   },
   checkbox: {
     width: 24,
     height: 24,
-    marginRight: 8,
     borderRadius: 3,
+    marginRight: 5,
     borderColor: '#E0E0E0',
   },
   footer:{
@@ -116,50 +126,11 @@ const styles = StyleSheet.create({
     width: '50%',
     justifyContent: 'center',
   },
-  modalContainer:{
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalView:{
-    width: '100%',
-    height: '100%',
-    margin: 20,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    alignItems: "center",
-    justifyContent: 'center',
-    shadowColor: "#000",
-    elevation: 5,
-  },
-  modalContainer2:{
-    width: '80%',
-    height: 144,
-    backgroundColor: 'white',
-    marginBottom: 35,
-    borderRadius: 15,
-  },
-  modalBox:{
-    height: '40%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalBoxSub:{
-    flexDirection: 'row',
-    paddingLeft: 30,
-    height: '20%',
-    alignItems: 'center',
-  },
-  modal:{
-    backgroundColor: '#FEA100',
-    width: '90%',
-    height: 44,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 4,
-    marginBottom: 7,
-  },
 })
 
-const Navigation = ({navigation}) => {
+const Navigation = ({navigation, route}) => {
+
+  console.log('Material Route: ', route.params);
 
   const DATA = [
     {
@@ -209,32 +180,40 @@ const Navigation = ({navigation}) => {
   const DATA2 = [
     {
       id: '0',
-      title: '산모용품 (0/13)',
-      color: '#FFADAD'
+      title: '산모 패드',
+      color: '올인원 샴푸 바디워시',
+      option: '필수',
       
     },
     {
       id: '1',
-      title: '수유용품 (0/13)',
-      color: '#FFADAD'
+      title: '수유 브라',
+      color: '#FFADAD',
+      option: '권장',
     },
     {
       id: '2',
-      title: '위생용품 (0/13)',
-      color: '#FFADAD'
+      title: '손목 보호대',
+      color: '#FFADAD',
+      option: '선택',
     },
     {
       id: '3',
-      title: '목욕용품 (0/13)',
-      color: '#FFADAD'
+      title: '양말',
+      color: '#FFADAD',
+      option: '선택',
     }
   ];
 
   const [list, setList] = useState(Array.from({ length: 8 }, () => { return false}));
   console.log('list: ', list);
   const [isChecked, setChecked] = useState(Array.from({length: DATA2.length}, ()=>{ return false })); // check box
-  const [isChecked2, setChecked2] = useState(false); // check box 선택시 체크 팝업에서의 check box
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false); // check box 선택시 모달
+  const [modalVisible2, setModalVisible2] = useState(false); // 브랜드 추가 모달
+  const [modalVisible3, setModalVisible3] = useState(false); // 브랜드 적용됐는지 확인 모달
+  const [modalVisible4, setModalVisible4] = useState(false); // 구매가이드 모달
+  const [modalVisible5, setModalVisible5] = useState(true); // 초기화 모달
+  const [modalVisible6, setModalVisible6] = useState(false); // 추천 리스트 변경 확인 모달
 
   const arrow = (e) => { // arrow 누르면 서브페이지 display
     let arr = [...list];
@@ -248,9 +227,13 @@ const Navigation = ({navigation}) => {
     arr[e] = !arr[e];
     setChecked(arr);
   }
-  
-  const complete = () => {
-    setModalVisible(!modalVisible);
+
+  const optionBox = (e) => {
+    switch(e){
+      case '필수': return ( <View style={[styles.filterSub, {backgroundColor: '#E57373'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>필수</Text></View> )
+      case '권장': return ( <View style={[styles.filterSub, {backgroundColor: '#5291EF'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>권장</Text></View> )
+      case '선택': return ( <View style={[styles.filterSub, {backgroundColor: '#83D46F'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>선택</Text></View> )
+    }
   }
 
   const List = (e) => {
@@ -260,9 +243,9 @@ const Navigation = ({navigation}) => {
     return (
       <View style={styles.main3Box}>
         <View style={styles.main3BoxHeader}>
-          <View style={[styles.filterBox, {width: '15%'}]}><Text>구매</Text></View>
-          <View style={[styles.filterBox, {width: '45%'}]}><Text>품목</Text></View>
-          <View style={[styles.filterBox, {width: '40%'}]}><Text>브랜드</Text></View>
+          <View style={[styles.filterBox, {width: 50}]}><Text>구매</Text></View>
+          <View style={[styles.filterBox, {width: 157}]}><Text>품목</Text></View>
+          <View style={[styles.filterBox, {width: '41%'}]}><Text>브랜드</Text></View>
         </View>
         <FlatList data={DATA2} renderItem={renderItem2}
             keyExtractor={item => item.id} showsHorizontalScrollIndicator={false}>
@@ -288,20 +271,21 @@ const Navigation = ({navigation}) => {
 
   const renderItem2 = ({ item }) => (
       <View style={[styles.main3BoxHeader]}>
-          <View style={[styles.filterBox, {width: '15%'}]}>
+          <View style={[styles.filterBox, {width: 50}]}>
           <Checkbox
               style={styles.checkbox}
               value={isChecked[item.id]}
               onValueChange={()=>change(item.id)}
               color={isChecked[item.id] ? '#FEB401' : undefined}/>
           </View>
-          <View style={[styles.filterBox, {width: '45%', flexDirection: 'row', justifyContent: 'flex-start'}]}>
-            <View style={styles.filterSub}><Text style={{fontSize: 12}}>필수</Text></View>
-            <Text>품목</Text>
+          <View style={[styles.filterBox, {width: 157, flexDirection: 'row', justifyContent: 'flex-start'}]}>
+            {/* <View style={styles.filterSub}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>필수</Text></View> */}
+            {optionBox(item.option)}
+            <Text>{item.title}</Text>
           </View>
-          <View style={[styles.filterBox, {width: '40%'}]}>
+          <View style={[styles.filterBox, {width: '41%'}]}>
             <View style={{width: 24, height: 24, borderRadius: 12,backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
-              <Icon name="plus" size={10} style={{color: 'white'}} onPress={()=>navigation.navigate('브랜드 선택')}/>
+              <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(!modalVisible2)}/>
             </View>
           </View>
       </View>
@@ -310,36 +294,14 @@ const Navigation = ({navigation}) => {
   return (
     <View style={styles.container}>
 
-<Modal animationType="fade" transparent={true} visible={modalVisible}
-            onRequestClose={() => {
-            setModalVisible(!modalVisible)}}>
-            <View style={styles.modalContainer}>
-                <View style={styles.modalView}>
-                    <View style={[styles.modalContainer2, {height: 326}]}>
-                        <View style={styles.modalBox}>
-                            <Text style={{fontSize: 18, paddingTop: 10}}>선택하신 품목을 구매 완료로</Text>
-                            <Text style={{fontSize: 18, paddingTop: 3}}>체크 하시겠습니까?</Text>
-                            <Text style={{fontSize: 14, paddingTop: 10, color: '#757575'}}>구매 완료 시 출산준비리스트 구매율로 합산되어</Text>
-                            <Text style={{fontSize: 14, color: '#757575'}}>다른 사용자들의 구매에 도움이 됩니다.</Text>
-                        </View>
-                        <View style={styles.modalBoxSub}>
-                                <View>
-                                <Checkbox
-                                  style={styles.checkbox}
-                                  value={isChecked2}
-                                  onValueChange={setChecked2}
-                                  color={isChecked2 ? '#2196F3' : undefined}/>
-                                </View>
-                                <Text style={{color: '#424242'}}>다시 표시하지 않겠습니다.</Text>
-                          </View>
-                        <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>구매 완료</Text></TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={complete}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </View>
-        </Modal>
+        <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+        <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
+        <NoticeModal modalVisible3={modalVisible3} setModalVisible={setModalVisible3}/>
+        <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4}/>
+        <ResetModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
+        <ResetModal2 modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
+        
+        
 
         <View style={styles.header}/>
         <View style={styles.header3}>

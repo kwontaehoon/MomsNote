@@ -20,6 +20,7 @@ import FlatList from '../Test/FlateList'
 import DropDown from '../Test/DropDown'
 import Animation from '../Test/animation'
 import Animation2 from '../Test/animation2'
+import Svg2 from '../Test/Svg2'
 
 const styles = StyleSheet.create({
     header:{
@@ -90,7 +91,7 @@ function MainScreen() {
                <Stack.Navigator>
                     <Stack.Screen 
                         name="Home"
-                        component={Animation2}
+                        component={Home}
                         options={({ navigation, route }) => ({
                             title: '',
                             headerStyle:{backgroundColor: '#FEECB3'},
@@ -135,7 +136,6 @@ function MainScreen() {
                             headerRight: () => (
                                 <View style={styles.header}>
                                 <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-                                    <View style={styles.iconBox}><Icon5 name='refresh-cw' size={22}/></View>
                                     <View style={styles.iconBox}><Icon4 name='download' size={22}/></View>
                                     <View style={styles.iconBox}><Icon4 name='search1' size={22} onPress={()=>navigation.navigate('출산준비물 검색')}/></View>
                                     <View style={styles.iconBox}><Icon name='bell-o' size={22} onPress={()=>navigation.navigate('출산준비물 알림')}/></View>
