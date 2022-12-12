@@ -126,7 +126,7 @@ const Main = ({modalVisible2, setModalVisible2, navigation}) => {
         <View style={styles.mainBox}>
            
         </View>
-      );
+    );
 
   return (
     <Modal animationType="fade" transparent={true} visible={modalVisible2}

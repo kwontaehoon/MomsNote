@@ -30,7 +30,16 @@ const styles = StyleSheet.create({
     footer:{
         borderWidth: 1,
         height: 300,
-    }
+    },
+
+    scrollBox:{
+        position: 'absolute',
+        borderWidth: 1,
+        backgroundColor: 'green',
+        width: 300,
+        height: 300,
+        zIndex: 999,
+    },
     
 })
 
@@ -59,17 +68,17 @@ const Main = ({navigation}) => {
         },
         {
           id: '2',
-          title: '위생용품 (0/13)',
+          title: '목욕용품 (0/13)',
           color: '#FFADAD'
         },
         {
             id: '3',
-            title: '위생용품 (0/13)',
+            title: '침구류 (0/13)',
             color: '#FFADAD'
         },
         {
             id: '4',
-            title: '위생용품 (0/13)',
+            title: '아기의류 (0/13)',
             color: '#FFADAD'
         },
     ];
@@ -97,11 +106,24 @@ const Main = ({navigation}) => {
         </View>
     );
 
+    const renderItem3 = ({ item }) => (
+        <TouchableOpacity style={{height: 130, borderWidth: 1}}>
+            <Text>{item.title}</Text>
+        </TouchableOpacity>
+    );
+
   return (
     <View style={styles.container}>
         <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
         </FlatList>
+
+        <View style={styles.scrollBox}>
+
+                <FlatList data={DATA2} renderItem={renderItem3}
+                    keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
+                </FlatList>
+        </View>
     </View>
   )
 }

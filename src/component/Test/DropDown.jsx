@@ -4,7 +4,13 @@ import Constants from 'expo-constants';
 
 // You can import from local files
 import DropDownPicker from 'react-native-dropdown-picker'
-
+const stlyes = StyleSheet.create({
+  container:{
+    borderWidth: 1,
+    backgroundColor: 'red',
+    height: 100,
+  }
+})
 export default function App() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -17,10 +23,11 @@ export default function App() {
   ]);
 
   return (
-    <View>
-      <DropDownPicker open={open} value={value} items={items} placeholder='카데고리 선택(필수)' style={{backgroundColor: 'red'}} textStyle={{fontSize: 18}} dropDownContainerStyle={{backgroundColor: 'green'}}
-      labelStyle={{backgroundColor: 'blue'}}
-          placeholderStyle={{}} setOpen={setOpen} setValue={setValue} setItems={setItems} max={2} min={2}/>
+    <View style={stlyes.container}>
+      <DropDownPicker open={open} value={value} items={items} placeholder='카데고리 선택(필수)' style={{backgroundColor: 'red'}} 
+          textStyle={{fontSize: 18}} dropDownContainerStyle={{backgroundColor: 'green'}}
+          labelStyle={{backgroundColor: 'blue'}} maxHeight={100}
+          placeholderStyle={{}} setOpen={setOpen} setValue={setValue} setItems={setItems}/>
     </View>
   );
 }

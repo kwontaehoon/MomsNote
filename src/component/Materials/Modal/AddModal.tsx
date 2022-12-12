@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, FlatList } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import DropDownPicker from 'react-native-dropdown-picker'
 
@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 144,
         backgroundColor: 'white',
         marginBottom: 35,
         borderRadius: 15,
@@ -29,23 +28,36 @@ const styles = StyleSheet.create({
     header:{
         height: '25%',
         alignItems: 'center',
-        justifyContent: 'center',
     },
     closeBox:{
         position: 'absolute',
         right: 15,
         alignItems: 'flex-end',
         justifyContent: 'center',
-        zIndex: 10
+        zIndex: 1
     },
     main:{
         height: '50%',
-        
     },
+    
     mainBox:{
-        height: '45%',
+        width: 278,
+        height: 44,
         borderColor: '#EEEEEE',
         borderWidth: 1,
+    },
+    scrollBox:{
+        position: 'absolute',
+        height: 300,
+        width: 278,
+        top: '47%',
+        left: '15%',
+        backgroundColor: 'white',
+        zIndex: 999
+    },
+    listBox:{
+        borderWidth: 1,
+        height: 65,
     },
     dropDownBox:{
         height: '100%',
@@ -66,15 +78,44 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({modalVisible8, setModalVisible8}) => {
 
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
-    const [items, setItems] = useState([
-        {label: '산모 용품', value: '1'},
-        {label: '수유 용품', value: '2'},
-        {label: '위생 용품', value: '3'},
-        {label: '목욕 용품', value: '4'},
-        {label: '목욕 용품', value: '4'}
-    ]);
+    const DATA = [
+        {
+            id: '0',
+            title: '산모 용품',
+        },
+        {
+            id: '1',
+            title: '수유 용품',
+        },
+        {
+            id: '2',
+            title: '위생 용품',
+        },
+        {
+            id: '3',
+            title: '목욕 용품',
+        },
+        {
+            id: '4',
+            title: '침구류',
+        },
+        {
+            id: '5',
+            title: '아기 의류',
+        },
+        {
+            id: '6',
+            title: '발육 용품',
+        },
+        {
+            id: '7',
+            title: '가전 용품',
+        }
+    ];
+
+    const renderItem = ({ item }) => (
+        <View style={styles.listBox}><Text>{item.title}</Text></View>
+    );
     
 
   return (
@@ -82,18 +123,25 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8}) => {
             onRequestClose={() => {
             setModalVisible8(!modalVisible8)}}>
             <View style={styles.modalContainer}>
+                
                 <View style={styles.modalView}>
+                <View style={styles.scrollBox}>
+                                    <FlatList data={DATA} renderItem={renderItem}
+                                        keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
+                                    </FlatList>
+                                </View>
                     <View style={[styles.modalContainer2, {height: 294}]}>
                         <View style={styles.header}>
                             <TouchableOpacity style={styles.closeBox} onPress={()=>setModalVisible8(!modalVisible8)}><Icon name='close' size={24}/></TouchableOpacity>
                             <Text style={{color: '#212121', fontSize: 18, fontWeight: '500'}}>품목 추가</Text>
                         </View>
                         <View style={styles.main}>
-                            <View style={styles.mainBox}>
-                            <DropDownPicker open={open} value={value} items={items} placeholder='카데고리 선택(필수)' style={styles.dropDownBox}
-                                dropDownContainerStyle={{borderWidth: 0, borderRadius: 0}} listItemContainerStyle={{height: 52, borderWidth: 2,}}
-                                setOpen={setOpen} setValue={setValue} setItems={setItems} maxHeight={220}/>
-                            </View>
+                            <View style={styles.mainBox}></View>
+                            {/* <View style={styles.scrollBox}>
+                                <FlatList data={DATA} renderItem={renderItem}
+                                    keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
+                                </FlatList>
+                            </View> */}
                             <View style={{height: 10}}></View>
                             <TextInput style={[styles.mainBox, {paddingLeft: 15, position: 'relative', zIndex: -999}]} placeholder='품목 명' placeholderTextColor={'#9E9E9E'}></TextInput>
                         </View>

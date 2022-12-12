@@ -6,7 +6,7 @@ import Home from '../Navigation/SubMain'
 
 const Main = () => {
 
-    const arr = 3;
+    const arr = 2;
 
     switch(arr){
         case 1: return(<Start />);

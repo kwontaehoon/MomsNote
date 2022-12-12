@@ -22,6 +22,7 @@ import Animation from '../Test/animation'
 import Animation2 from '../Test/animation2'
 import Svg2 from '../Test/Svg2'
 import Budget from '../Materials/Budget/Main'
+import ModalFlatList from '../Test/ModalFlatList'
 
 const styles = StyleSheet.create({
     header:{
