@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 
@@ -54,13 +54,24 @@ const styles = StyleSheet.create({
   mainBox:{
     borderTopWidth: 1,
     borderColor: '#EEEEEE',
-    height: 100,
-    padding: 10,
+    height: 110,
+    paddingTop: 15,
+    paddingLeft: 10,
+    paddingBottom: 15,
+    paddingRight: 10,
+    flexDirection: 'row',
   },
+  mainBoxSub:{
+    width: '25%', 
+  },
+  mainBoxSub2:{
+    flexDirection: 'row',
+    paddingTop: 4,
+  }
 })
 
 
-const Talk1 = ({navigation}: any) => {
+const Talk1 = ({navigation, info}) => {
 
   const DATA = [
     {
@@ -88,6 +99,8 @@ const Talk1 = ({navigation}: any) => {
       title: '질문게시판'
     }
   ];
+
+  console.log('talk1 info: ', info);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
@@ -117,8 +130,21 @@ const Talk1 = ({navigation}: any) => {
   );
 
   const renderItem2 = ({ item }) => (
-    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용')}>
-      <Text>{item.title}</Text>
+    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', item)}>
+        <View style={styles.mainBoxSub}>
+          <Image source={require('../../../../public/assets/testimage.png')} />
+        </View>
+        <View style={[styles.mainBoxSub, {width: '50%'}]}>
+          <Text style={{fontSize: 15, paddingTop: 2}}>{item.title} </Text>
+          <View style={styles.mainBoxSub2}>
+            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{item.userId} </Text>
+            <Text style={{color: '#9E9E9E'}}>{item.recommend}</Text>
+            <Text style={{fontSize: 13, color: '#9E9E9E'}}>댓글 갯수</Text>
+          </View>
+        </View>
+        <View style={[styles.mainBoxSub, {width: '25%', justifyContent: 'center', alignItems: 'center'}]}>
+          <Text style={{color: '#9E9E9E', fontSize: 12}}>{item.boardDate}</Text>
+        </View>
     </TouchableOpacity>
   ); 
 
@@ -130,19 +156,26 @@ const Talk1 = ({navigation}: any) => {
         </FlatList>
       </View>
       <View style={styles.header2}>
-        <View style={styles.header2FilterBox}><Text style={{fontSize: 16}}>0 건</Text></View>
+        <View style={styles.header2FilterBox}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={{fontSize: 16, fontWeight: '600'}}>{info.length}</Text>
+            <Text style={{fontSize: 16}}> 건</Text>
+          </View>
+        </View>
         <View style={[styles.header2FilterBox, {width: '32%'}]}>
           <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순'
               placeholderStyle={{color: '#9E9E9E', paddingLeft: 17, fontSize: 13}} textStyle={{fontSize: 15}} setOpen={setOpen} setValue={setValue} setItems={setItems} max={2} min={2}/>
         </View>
       </View>
-      <View style={styles.header3}>
+      <View style={[styles.header3, {display: info.length === 0 ? 'none' : 'flex'}]}>
         <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] 5주차 맘 입덧 질문있어요 슬라이딩 ~</Text>
       </View>
       <View style={styles.main}>
-        <FlatList data={DATA} renderItem={renderItem2}
+        {info.length !== 0 ?
+        <FlatList data={info} renderItem={renderItem2}
           keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
-        </FlatList>
+        </FlatList> : 
+        <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}
       </View>
      </View>
   )

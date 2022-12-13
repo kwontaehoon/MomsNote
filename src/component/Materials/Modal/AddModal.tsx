@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, FlatList } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
+import Icon2 from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 
 const styles = StyleSheet.create({
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
     },
     closeBox:{
         position: 'absolute',
-        right: 15,
+        right: 10,
         alignItems: 'flex-end',
         justifyContent: 'center',
         zIndex: 1
@@ -45,10 +46,18 @@ const styles = StyleSheet.create({
         height: 44,
         borderColor: '#EEEEEE',
         borderWidth: 1,
+        justifyContent: 'center',
+        paddingLeft: 15
+    },
+    arrowBox:{
+        position: 'absolute',
+        right: 15,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     scrollBox:{
         position: 'absolute',
-        height: 300,
+        height: 200,
         width: 278,
         top: '47%',
         left: '15%',
@@ -57,7 +66,9 @@ const styles = StyleSheet.create({
     },
     listBox:{
         borderWidth: 1,
-        height: 65,
+        height: 52,
+        justifyContent: 'center',
+        paddingLeft: 15,
     },
     dropDownBox:{
         height: '100%',
@@ -113,9 +124,20 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8}) => {
         }
     ];
 
+    const [title, setTitle] = useState('카테고리 선택(필수)');
+    const [titleDisplay, setTitleDisplay] = useState(false); // 품목 리스트 display
+    console.log(titleDisplay);
+
     const renderItem = ({ item }) => (
-        <View style={styles.listBox}><Text>{item.title}</Text></View>
+        <TouchableOpacity style={styles.listBox} onPress={()=>{setTitle(item.title), setTitleDisplay(false)}}>
+            <Text>{item.title}</Text>
+        </TouchableOpacity>
     );
+
+    const arrowIcon = () => {
+        if(!titleDisplay){return(<Icon2 name='angle-down' size={22}/>)
+        }else return(<Icon2 name='angle-up' size={22}/>)
+    }
     
 
   return (
@@ -123,11 +145,10 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8}) => {
             onRequestClose={() => {
             setModalVisible8(!modalVisible8)}}>
             <View style={styles.modalContainer}>
-                
                 <View style={styles.modalView}>
-                <View style={styles.scrollBox}>
-                                    <FlatList data={DATA} renderItem={renderItem}
-                                        keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
+                <View style={[styles.scrollBox, {display: titleDisplay ? 'flex' : 'none'}]}>
+                                    <FlatList data={DATA} renderItem={renderItem} initialNumToRender={4} 
+                                        keyExtractor={item => item.id}>
                                     </FlatList>
                                 </View>
                     <View style={[styles.modalContainer2, {height: 294}]}>
@@ -136,12 +157,10 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8}) => {
                             <Text style={{color: '#212121', fontSize: 18, fontWeight: '500'}}>품목 추가</Text>
                         </View>
                         <View style={styles.main}>
-                            <View style={styles.mainBox}></View>
-                            {/* <View style={styles.scrollBox}>
-                                <FlatList data={DATA} renderItem={renderItem}
-                                    keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
-                                </FlatList>
-                            </View> */}
+                            <View style={styles.mainBox}>
+                                <TouchableOpacity style={styles.arrowBox} onPress={()=>setTitleDisplay(!titleDisplay)}>{arrowIcon()}</TouchableOpacity>
+                                <Text>{title}</Text>
+                            </View>
                             <View style={{height: 10}}></View>
                             <TextInput style={[styles.mainBox, {paddingLeft: 15, position: 'relative', zIndex: -999}]} placeholder='품목 명' placeholderTextColor={'#9E9E9E'}></TextInput>
                         </View>

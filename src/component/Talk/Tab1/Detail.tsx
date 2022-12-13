@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -31,21 +32,22 @@ const styles = StyleSheet.create({
     },
     main:{
         height: 800,
+        borderBottomWidth: 1,
+        borderColor: '#EEEEEE'
     },
     mainBox:{
-        height: '10%',
+        height: 70,
         padding: 20,
     },
     mainBox2:{
-        height: '41%',
+        height: 300,
         padding: 20,
-        borderWidth: 1,
     },
     mainBox3:{
-        height: '10%',
+        height: 50,
         flexDirection: 'row',
         borderColor: '#F5F5F5',
-        borderWidth: 1,
+        borderBottomWidth: 1,
     },
     likeBox:{
         width: '60%',
@@ -59,12 +61,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingRight: 20,
     },
+    mainBox4:{
+        height: 200
+    },
     footer:{
         height: 60,
         flexDirection: 'row',
         borderWidth: 1,
         alignItems: 'center',
         padding: 20,
+        borderColor: '#F5F5F5'
     },
     profileBox2:{
         width: 40,
@@ -75,14 +81,13 @@ const styles = StyleSheet.create({
     textInput:{
         borderRadius: 99,
         width: 306,
-        borderWidth: 1,
         height: 40,
-        borderColor: '#EEEEEE',
         marginLeft: 12,
         paddingLeft: 12,
+        backgroundColor: '#F5F5F5'
     }
 })
-const Talk1Sub = () => {
+const Talk1Sub = ({route}) => {
 
     const DATA = [
         {
@@ -91,32 +96,47 @@ const Talk1Sub = () => {
         },
     ];
 
+    console.log('route: ', route.params);
+    const info = route.params;
+
+    const [comment, setComment] = useState([]);
+
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
             <View style={styles.header}>
                 <View style={styles.profileBox}></View>
                 <View style={styles.infoBox}>
-                    <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>별똥이맘</Text>
-                    <Text style={{color: '#9E9E9E', fontSize: 13}}>9시간전</Text>
+                    <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{info.userId}</Text>
+                    <Text style={{color: '#9E9E9E', fontSize: 13}}>{info.boardDate}</Text>
                 </View>
             </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
-                    <Text style={{fontSize: 20, fontWeight: '400'}}>제목</Text>
+                    <Text style={{fontSize: 20, fontWeight: '400'}}>{info.title}</Text>
                 </View>
                 <View style={styles.mainBox2}>
-                    <Text>내용</Text>
+                    <Text>{info.contents}</Text>
                 </View>
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
-                        <Icon name='user' size={22} style={{paddingLeft: 10}}/>
-                        <Text> 추천 13</Text>
-                        <Icon name='user' size={22} style={{paddingLeft: 10}}/>
-                        <Text> 댓글 5</Text>
+                        <Icon name='user' size={20} style={{paddingLeft: 10}}/>
+                        <Text style={{color: '#9E9E9E', fontSize: 13}}> 추천 13</Text>
+                        <Icon name='user' size={20} style={{paddingLeft: 10}}/>
+                        <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 5</Text>
                     </View>
                     <View style={styles.lookupBox}>
-                        <Text>조회수 134</Text>
+                        <Text style={{fontSize: 13, color: '#9E9E9E'}}>조회수 134</Text>
                     </View>
+                </View>
+                <View style={styles.mainBox4}>
+                    {comment.length !== 0 ?
+                    <View style={styles.commentBox}>
+                        <Text></Text>
+                    </View> :
+                    <View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 60}}>
+                        <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
+                        <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
+                    </View>}
                 </View>
             </View>
         </View>

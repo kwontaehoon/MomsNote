@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -7,9 +8,6 @@ const styles = StyleSheet.create({
     container:{
         height: '100%',
         backgroundColor: 'white',
-    },
-    container2:{
-
     },
     header:{
         flexDirection: 'row',
@@ -30,22 +28,47 @@ const styles = StyleSheet.create({
         marginLeft: 7,
     },
     main:{
-        height: 800,
+        borderBottomWidth: 1,
+        borderColor: '#EEEEEE'
     },
     mainBox:{
-        height: '10%',
+        height: 70,
         padding: 20,
     },
     mainBox2:{
-        height: '41%',
+        height: 60,
         padding: 20,
-        borderWidth: 1,
     },
     mainBox3:{
-        height: '10%',
+        padding: 20,
+        borderWidth: 3,
+        height: 500,
+    },
+    listBox:{
+        borderWidth: 1,
+    },
+    listHeader:{
+        borderWidth: 1,
+        height: 60,
+        backgroundColor: '#FEECB3',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 15,
+    },
+    arrowBox:{
+        position: 'absolute',
+        right: 15,
+        borderWidth: 1,
+    },
+    listMain:{
+        backgroundColor: 'red',
+        height: '40%',
+    },
+    mainBox4:{
+        height: 30,
         flexDirection: 'row',
         borderColor: '#F5F5F5',
-        borderWidth: 1,
+        borderBottomWidth: 1,
     },
     likeBox:{
         width: '60%',
@@ -53,11 +76,22 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingLeft: 10,
     },
+    list2:{
+        borderWidth: 1,
+        height: 30,
+    },
+    listFooter:{
+        borderWidth: 1,
+    },
     lookupBox:{
         width: '40%',
         alignItems: 'flex-end',
         justifyContent: 'center',
         paddingRight: 20,
+    },
+    mainBox5:{
+        height: 500,
+        backgroundColor: 'orange'
     },
     footer:{
         height: 60,
@@ -65,6 +99,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         alignItems: 'center',
         padding: 20,
+        borderColor: '#F5F5F5'
     },
     profileBox2:{
         width: 40,
@@ -75,14 +110,13 @@ const styles = StyleSheet.create({
     textInput:{
         borderRadius: 99,
         width: 306,
-        borderWidth: 1,
         height: 40,
-        borderColor: '#EEEEEE',
         marginLeft: 12,
         paddingLeft: 12,
+        backgroundColor: '#F5F5F5'
     }
 })
-const Talk1Sub = () => {
+const Talk1Sub = ({route}) => {
 
     const DATA = [
         {
@@ -91,34 +125,108 @@ const Talk1Sub = () => {
         },
     ];
 
+    const DATA2 = [
+        {
+          id: '0',
+          title: '전체'
+        },
+        {
+          id: '1',
+          title: '자유게시판'
+        },
+        {
+          id: '2',
+          title: '일상이야기'
+        },
+        {
+          id: '3',
+          title: '임신정보'
+        },
+        {
+          id: '4',
+          title: '고민상담'
+        },
+        {
+          id: '5',
+          title: '질문게시판'
+        }
+      ];
+
+    console.log('route: ', route.params);
+    const info = route.params;
+
+    const [comment, setComment] = useState([]); // 댓글 데이터
+
     const renderItem = ({ item }) => (
-        <View style={styles.container2}>
+        <View>
             <View style={styles.header}>
                 <View style={styles.profileBox}></View>
                 <View style={styles.infoBox}>
-                    <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>별똥이맘</Text>
-                    <Text style={{color: '#9E9E9E', fontSize: 13}}>9시간전</Text>
+                    <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{info.userId}</Text>
+                    <Text style={{color: '#9E9E9E', fontSize: 13}}>{info.boardDate}</Text>
                 </View>
             </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
-                    <Text style={{fontSize: 20, fontWeight: '400'}}>제목</Text>
+                    <Text style={{fontSize: 20, fontWeight: '400'}}>{info.title}</Text>
                 </View>
                 <View style={styles.mainBox2}>
-                    <Text>내용</Text>
+                    <Text>{info.contents}</Text>
                 </View>
                 <View style={styles.mainBox3}>
-                    <View style={styles.likeBox}>
-                        <Icon name='user' size={22} style={{paddingLeft: 10}}/>
-                        <Text> 추천 13</Text>
-                        <Icon name='user' size={22} style={{paddingLeft: 10}}/>
-                        <Text> 댓글 5</Text>
-                    </View>
-                    <View style={styles.lookupBox}>
-                        <Text>조회수 134</Text>
+
+                    <View style={styles.listBox}>
+                        <View style={styles.listHeader}>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <Text style={{fontSize: 15, fontWeight: '600'}}>{info.userId}</Text>
+                                <Text style={{fontSize: 15}}> 님의 출산준비물</Text>
+                            </View>
+                        </View>
+                        {/* <View style={[styles.listHeader, {height: 70, backgroundColor: '#FFADAD', alignItems: 'flex-start'}]}>
+                            <View style={styles.arrowBox}><Icon name='angle-down' size={22}/></View>
+                            <Text style={{fontSize: 15}}>산모용품 (5/13)</Text>
+                        </View> */}
+                        {/* <View style={[styles.listHeader, {backgroundColor: 'white', flexDirection: 'row'}]}>
+                            <View style={{width: '33.4%', alignItems: 'center'}}><Text>구매</Text></View>
+                            <View style={{width: '33.4%', alignItems: 'center'}}><Text>품목</Text></View>
+                            <View style={{width: '33.4%', alignItems: 'center'}}><Text>가격</Text></View>
+                        </View> */}
+                        <View style={styles.listMain}>
+                            <FlatList data={DATA2} renderItem={renderItem2}
+                                keyExtractor={item => item.id}>
+                            </FlatList>
+                        </View>
+                        <View style={[styles.listFooter]}></View>
                     </View>
                 </View>
+                <View style={styles.mainBox4}>
+                    <View style={styles.likeBox}>
+                        <Icon name='user' size={20} style={{paddingLeft: 10}}/>
+                        <Text style={{color: '#9E9E9E', fontSize: 13}}> 추천 13</Text>
+                        <Icon name='user' size={20} style={{paddingLeft: 10}}/>
+                        <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 5</Text>
+                    </View>
+                    <View style={styles.lookupBox}>
+                        <Text style={{fontSize: 13, color: '#9E9E9E'}}>조회수 134</Text>
+                    </View>
+                </View>
+                <View style={styles.mainBox5}>
+                    {comment.length !== 0 ?
+                    <View style={styles.commentBox}>
+                        <Text></Text>
+                    </View> :
+                    <View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 60}}>
+                        <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
+                        <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
+                    </View>}
+                </View>
             </View>
+        </View>
+      );
+
+      const renderItem2 = ({ item }) => (
+        <View style={styles.list2}>
+            <Text>{item.title}</Text>
         </View>
       );
 

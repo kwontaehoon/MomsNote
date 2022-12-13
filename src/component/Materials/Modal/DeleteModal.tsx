@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, FlatList } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
+import Icon2 from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
+import Checkbox from 'expo-checkbox'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -20,32 +22,82 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 144,
         backgroundColor: 'white',
         marginBottom: 35,
         borderRadius: 15,
         padding: 20,
     },
     header:{
-        height: 54,
+        height: 50,
         alignItems: 'center',
-        justifyContent: 'center',
     },
     closeBox:{
         position: 'absolute',
-        right: 15,
+        right: 10,
         alignItems: 'flex-end',
         justifyContent: 'center',
-        zIndex: 10,
+        zIndex: 1
     },
     main:{
-        height: 54,
+
     },
-    dropDownBox:{
-        height: '100%',
-        borderRadius: 0,
+    mainBox:{
+        width: 278,
+        height: 44,
+        borderColor: '#EEEEEE',
         borderWidth: 1,
-        borderColor: '#EEEEEE'
+        justifyContent: 'center',
+        paddingLeft: 15,
+    },
+    arrowBox:{
+        position: 'absolute',
+        right: 15,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    scrollBox:{
+        width: 278,
+        height: 242,
+    },
+    listTitle:{
+        marginTop: 15,
+        height: 40,
+        flexDirection: 'row',
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: '#EEEEEE',
+    },
+    listTitleBox:{
+        width: '25%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    listBox:{
+        height: 52,
+        flexDirection: 'row',
+        backgroundColor: '#FAFAFA',
+    },
+    listContent:{
+        width: '20%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    checkbox: {
+        width: 24,
+        height: 24,
+        borderRadius: 3,
+        marginRight: 5,
+        borderColor: '#E0E0E0',
+    },
+    filterSub:{
+        height: 20,
+        paddingLeft: 8,
+        paddingTop: 2,
+        paddingbottom: 2,
+        paddingRight: 8,
+        marginRight: 5,
+        marginLeft: 5,
+        borderRadius: 2,
     },
     footer:{
         height: 44,
@@ -54,47 +106,111 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 4,
         position: 'relative',
-        zIndex: -999,
+        zIndex: -999
     },
 
 })
 
-const CheckBoxModal = ({modalVisible9, setModalVisible9}) => {
+const CheckBoxModal = ({modalVisible8, setModalVisible8}) => {
 
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
-    const [items, setItems] = useState([
-        {label: '산모 용품', value: '1'},
-        {label: '수유 용품', value: '2'},
-        {label: '위생 용품', value: '3'},
-        {label: '목욕 용품', value: '4'},
-        {label: '목욕 용품', value: '4'}
-    ]);
+    const DATA = [
+        {
+            id: '0',
+            title: '산모 패드',
+            color: '올인원 샴푸 바디워시',
+            option: '필수',
+            
+        },
+        {
+            id: '1',
+            title: '수유 브라',
+            color: '#FFADAD',
+            option: '권장',
+        },
+        {
+            id: '2',
+            title: '손목 보호대',
+            color: '#FFADAD',
+            option: '선택',
+        },
+        {
+            id: '3',
+            title: '양말',
+            color: '#FFADAD',
+            option: '선택',
+        }
+    ];
+
+    const [title, setTitle] = useState('카테고리 선택(필수)');
+    const [titleDisplay, setTitleDisplay] = useState(false); // 품목 리스트 display
+    const [isChecked, setChecked] = useState(Array.from({length: DATA.length}, ()=>{ return false })); // check box
+
+    const change = (e) => { // check box
+        let arr = [...isChecked];
+        arr[e] = !arr[e];
+        setChecked(arr);
+      }
+
+    const optionBox = (e) => {
+        switch(e){
+          case '필수': return ( <View style={[styles.filterSub, {backgroundColor: '#E57373'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>필수</Text></View> )
+          case '권장': return ( <View style={[styles.filterSub, {backgroundColor: '#5291EF'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>권장</Text></View> )
+          case '선택': return ( <View style={[styles.filterSub, {backgroundColor: '#83D46F'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>선택</Text></View> )
+        }
+    }
+
+    const renderItem = ({ item }) => (
+        <TouchableOpacity style={styles.listBox} onPress={()=>{setTitle(item.title), setTitleDisplay(false)}}>
+            <View style={styles.listContent}>
+            <Checkbox
+              style={styles.checkbox}
+              value={isChecked[item.id]}
+              onValueChange={()=>change(item.id)}
+              color={isChecked[item.id] ? '#FEB401' : undefined}/></View>
+            <View style={[styles.listContent, {width: '20%'}]}>{optionBox(item.option)}</View>
+            <View style={[styles.listContent, {width: '60%', alignItems: 'flex-start'}]}><Text>산모 패드</Text></View>
+        </TouchableOpacity>
+    );
+
+    const arrowIcon = () => {
+        return titleDisplay ? <Icon2 name='angle-down' size={22}/> : <Icon2 name='angle-up' size={22}/>
+    }
     
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modalVisible9}
+    <Modal animationType="fade" transparent={true} visible={modalVisible8}
             onRequestClose={() => {
-            setModalVisible9(!modalVisible9)}}>
+            setModalVisible8(!modalVisible8)}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
-                    <View style={[styles.modalContainer2, {height: 222}]}>
-                        <View style={styles.header}>
-                            <TouchableOpacity style={styles.closeBox} onPress={()=>setModalVisible9(!modalVisible9)}><Icon name='close' size={24}/></TouchableOpacity>
-                            <Text style={{color: '#212121', fontSize: 18, fontWeight: '500'}}>품목 추가</Text>
-                        </View>
-                        <View style={styles.main}>
-                            <DropDownPicker open={open} value={value} items={items} placeholder='카데고리 선택(필수)' style={styles.dropDownBox}
-                                dropDownContainerStyle={{borderWidth: 0, borderRadius: 0}} listItemContainerStyle={{height: 52, borderWidth: 2,}}
-                                setOpen={setOpen} setValue={setValue} setItems={setItems} maxHeight={220}/>
-                        </View>
-                        <View style={[styles.footer, {backgroundColor: '#E0E0E0'}]}>
-                            <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>적용</Text>
-                        </View>
+                    <View style={[styles.modalContainer2]}>
+                    <View style={styles.header}>
+                <TouchableOpacity style={styles.closeBox} onPress={()=>setModalVisible8(!modalVisible8)}><Icon name='close' size={24}/></TouchableOpacity>
+                 <Text style={{color: '#212121', fontSize: 18, fontWeight: '500'}}>품목 삭제</Text>
+            </View>
+            <View style={styles.main}>
+                <View style={styles.mainBox}>
+                    <TouchableOpacity style={styles.arrowBox} onPress={()=>setTitleDisplay(!titleDisplay)}>{arrowIcon()}</TouchableOpacity>
+                    <Text>{title}</Text>
+                </View>
+
+                <View style={[styles.scrollBox, {display: titleDisplay ? 'flex' : 'none'}]}>
+                    <View style={styles.listTitle}>
+                        <View style={styles.listTitleBox}><Text>선택</Text></View>
+                        <View style={[styles.listTitleBox, {width: '75%'}]}><Text>품목</Text></View>
                     </View>
+                    <FlatList data={DATA} renderItem={renderItem}
+                        keyExtractor={item => item.id}>
+                    </FlatList>
                 </View>
             </View>
-        </Modal>
+            <View style={[styles.footer, {backgroundColor: '#E0E0E0'}]}>
+                <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>적용</Text>
+            </View>
+        </View>
+    </View>
+    </View>
+    </Modal>
   )
 }
 

@@ -10,6 +10,7 @@ import { WithLocalSvg } from "react-native-svg"
 import mainImage from '../../../public/assets/svg/main.svg'
 
 import { useIsFocused } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
 
 
 const styles = StyleSheet.create({
@@ -240,6 +241,8 @@ const Home = ({navigation}) => {
         },
     ];
 
+    const count = useSelector((state)=>state.counter.value);
+
     const ref = useRef();
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
@@ -251,7 +254,6 @@ const Home = ({navigation}) => {
     }, []);
 
     useEffect(()=>{
-        console.log('useEffect');
         save();
     }, [test]);
 
@@ -260,17 +262,26 @@ const Home = ({navigation}) => {
         if(test !== undefined){
             let { status } = await MediaLibrary.requestPermissionsAsync();
             const asset = await MediaLibrary.createAssetAsync(test);
-            // console.log('status: ', status);
-            // console.log('asset: ', asset);
-    
+            // const moms = await MediaLibrary.getAlbumAsync('맘스노트');
+
+            console.log('status: ', status);
+            console.log('asset: ', asset);
+            // console.log('moms: ', moms);
+           
+            
             if(status === 'granted'){
-                const kwon = await MediaLibrary.getAlbumAsync('DCIM');
-                // console.log('kwon: ', kwon);
-                const album = await MediaLibrary.getAlbumAsync('맘스노트');
-                // console.log('album: ', album);
+                // const kwon = await MediaLibrary.getAlbumAsync('DCIM');
+                // const moms = await MediaLibrary.getAlbumAsync('맘스노트');
+                // if(moms === null){
+                //     MediaLibrary.createAlbumAsync('맘스노트', asset);
+                // }
+                // MediaLibrary.addAssetsToAlbumAsync(moms, moms.id);
+                // MediaLibrary.migrateAlbumIfNeededAsync(moms.id);
+                // const album = await MediaLibrary.getAlbumAsync('맘스노트');
+                // // console.log('album: ', album);
     
-                MediaLibrary.createAlbumAsync('맘스노트', asset, true);
-                // const asset = await MediaLibrary.createAssetAsync(test);
+                // MediaLibrary.createAlbumAsync('맘스노트', asset);
+                // // const asset = await MediaLibrary.createAssetAsync(test);
             }
         }
         setTest(undefined);
@@ -282,7 +293,6 @@ const Home = ({navigation}) => {
 
         ref.current.capture().then(uri => {
             setTest(uri);
-            console.log('캡쳐끝남');
           });
     }
 
@@ -312,15 +322,12 @@ const Home = ({navigation}) => {
 
     const FocusAwareStatusBar = () => {
         const isFocused = useIsFocused();
-        
         return isFocused ? <StatusBar backgroundColor='#FEECB3' /> : null;
-
-        
     }
 
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
-            <ViewShot style={[styles.main]} ref={ref} options={{ fileName: "Your-File-Name", width: 500, height: 500, format: "png", quality: 1 }}>
+            <ViewShot style={[styles.main]} ref={ref} options={{ fileName: "MomsNote", format: "png", quality: 1 }}>
                 <View style={styles.mainBox}>
                     <Text style={{color: '#424242', fontSize: 18}}>2022년 12월 02일</Text>
                     <Text style={{color: '#212121', fontSize: 32, fontWeight: '700'}}>별똥이</Text>

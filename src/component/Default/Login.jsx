@@ -10,7 +10,8 @@ import Logo from '../../../public/assets/svg/Logo.svg'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
 import * as AppleAuthentication from 'expo-apple-authentication'
-import { useSelector } from 'react-redux'
+import * as Linking from 'expo-linking';
+
 
 const styles = StyleSheet.create({
     container:{
@@ -60,18 +61,15 @@ const Main = ({navigation}) => {
     WebBrowser.maybeCompleteAuthSession();
     const [request, response, promptAsync] = Google.useAuthRequest({
         expoClientId: '444409448687-jjajg2r5i863i00st8npnvs8e704gop2.apps.googleusercontent.com',
+        // expo: https://auth.expo.io/@gju04195/Project1Type
         iosClientId: '444409448687-r6mi5mhrcc1hifm978d7t4lqaia89tps.apps.googleusercontent.com',
-        androidClientId: '',
-        // webClientId: 'GOOGLE_GUID.apps.googleusercontent.com',
+        androidClientId: '444409448687-617ta8ugivu8ekfeh1fuiq6nsup96vc9.apps.googleusercontent.com',
       });
 
-    const count = useSelector((state)=>state.counter.value);
-    console.log('count: ', count);
-
-    
     React.useEffect(() => {
         if (response?.type === 'success') {
         const { authentication } = response;
+        console.log('Google: ', authentication);
         setGoogleToken((prevState) => ({
             ...prevState,
             sns: 'Google',

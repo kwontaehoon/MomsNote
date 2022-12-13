@@ -30,16 +30,16 @@ const styles = StyleSheet.create({
   },
   main:{
     height: '100%',
+    padding: 15,
   },
   mainBox:{
     borderBottomWidth: 1,
-    height: 100,
-    padding: 15,
+    height: 80,
+    borderColor: '#F5F5F5'
   },
   mainBox2:{
     height: '50%',
     justifyContent: 'center',
-    paddingLeft: 5
   },
   mainBox3:{
     height: '50%',
@@ -47,8 +47,7 @@ const styles = StyleSheet.create({
   },
   infoBox:{
     width: '50%',
-    paddingLeft: 5,
-
+    flexDirection: 'row'
   },
   clockBox:{
     width: '50%',
@@ -58,7 +57,7 @@ const styles = StyleSheet.create({
 })
 
 
-const Talk1 = ({navigation}: any) => {
+const Talk1 = ({navigation, info}) => {
 
   const DATA = [
     {
@@ -87,6 +86,7 @@ const Talk1 = ({navigation}: any) => {
     }
   ];
 
+  console.log('talk2: ', info);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
@@ -101,10 +101,15 @@ const Talk1 = ({navigation}: any) => {
   const [filter, setFilter] = useState([true, false, false, false]);
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('출산리스트 공유 상세내용')}>
+    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', item)}>
         <View style={styles.mainBox2}><Text style={{fontSize: 18}}>{item.title}</Text></View>
         <View style={styles.mainBox3}>
-            <View style={styles.infoBox}><Text style={{color: '#9E9E9E'}}>닉네임 추천 3 댓글 0</Text></View>
+            <View style={styles.infoBox}>
+              <Text style={{color: '#9E9E9E'}}>{item.userId} </Text>
+              <Text></Text>
+              <Text>{item.recommend}</Text>
+              <Text></Text>
+            </View>
             <View style={styles.clockBox}><Text style={{color: '#9E9E9E'}}>12시간전</Text></View>
         </View>
     </TouchableOpacity>
@@ -114,14 +119,19 @@ const Talk1 = ({navigation}: any) => {
     <View style={styles.container}>
       <View style={styles.header}></View>
       <View style={styles.header2}>
-        <View style={[styles.header2FilterBox, {paddingBottom: 5}]}><Text style={{fontSize: 16}}>0 건</Text></View>
+        <View style={[styles.header2FilterBox, {paddingBottom: 5}]}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={{fontSize: 16, fontWeight: '600'}}>{info.length}</Text>
+            <Text style={{fontSize: 16}}> 건</Text>
+          </View>
+        </View>
         <View style={[styles.header2FilterBox, {width: '32%'}]}>
           <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순'
               placeholderStyle={{color: '#9E9E9E', paddingLeft: 17, fontSize: 13}} textStyle={{fontSize: 15}} setOpen={setOpen} setValue={setValue} setItems={setItems} max={2} min={2}/>
         </View>
       </View>
       <View style={styles.main}>
-        <FlatList data={DATA} renderItem={renderItem}
+        <FlatList data={info} renderItem={renderItem}
           keyExtractor={item => item.id}>
         </FlatList>
       </View>

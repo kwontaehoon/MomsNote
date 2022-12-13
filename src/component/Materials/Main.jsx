@@ -217,8 +217,8 @@ const Navigation = ({navigation, route}) => {
   const [modalVisible5, setModalVisible5] = useState(false); // 초기화 모달
   const [modalVisible6, setModalVisible6] = useState(false); // 추천 리스트 변경 확인 모달
   const [modalVisible7, setModalVisible7] = useState(false); // 더보기
-  const [modalVisible8, setModalVisible8] = useState(true); // 품목 추가
-  const [modalVisible9, setModalVisible9] = useState(false); // 품목 삭제
+  // const [modalVisible8, setModalVisible8] = useState(false); // 품목 추가
+  // const [modalVisible9, setModalVisible9] = useState(false); // 품목 삭제
 
   const arrow = (e) => { // arrow 누르면 서브페이지 display
     let arr = [...list];
@@ -323,8 +323,8 @@ const Navigation = ({navigation, route}) => {
         <ResetModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
         <ResetModal2 modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
         <DotModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible7={modalVisible7} setModalVisible7={setModalVisible7}/>
-        <AddModal modalVisible8={modalVisible8} setModalVisible8={setModalVisible8}/>
-        <DeleteModal modalVisible9={modalVisible9} setModalVisible9={setModalVisible9}/>
+        {/* <AddModal modalVisible8={modalVisible8} setModalVisible8={setModalVisible8}/>
+        <DeleteModal modalVisible9={modalVisible9} setModalVisible9={setModalVisible9}/> */}
         
         
         <FlatList data={DATA3} renderItem={renderItem3}

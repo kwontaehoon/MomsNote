@@ -24,13 +24,14 @@ const Main = ({navigation}) => {
       source={{ uri: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`}}
       onMessage={event => {
         const data = event.nativeEvent.url;
+        console.log('Kakao: ',event.nativeEvent);
         const exp = 'code=';
         const error = 'error=';
         const condition = data.indexOf(exp);
         const condition2 = data.indexOf(error);
 
         if (condition !== -1) {   
-            console.log(data.substring(condition + exp.length));
+            // console.log(data.substring(condition + exp.length));
             navigation.navigate('초기접근', data.substring(condition + exp.length));
 
         }else if(condition2 !== -1){
