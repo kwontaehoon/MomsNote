@@ -10,6 +10,7 @@
       "image": "./public/assets/splash.png",
       "resizeMode": "cover"
     },
+    // "plugins": ["expo-apple-authentication"],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -17,12 +18,13 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ios.test"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./public/assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#FFFFFF",
       }
     },
     "web": {

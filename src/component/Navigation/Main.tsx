@@ -34,7 +34,8 @@ import Talk2Detail from '../Talk/Tab2/Tab2Detail'
 import Talk2Register from '../Talk/Tab2/Register/Main'
 import Categoires from '../Talk/Tab2/Register/Categoires'
 import Initial from '../Default/Main'
-import Budget from '../Materials/Budget/Main' 
+import Budget from '../Materials/Budget/Main'
+import KakaoWebView from '../Default/KakaoWebView'
 
 LogBox.ignoreAllLogs();
 
@@ -88,6 +89,8 @@ const Navigation = () => {
             <Stack.Screen name="초기접근" component={Initial} options={{headerShown: false}}/>
 
             <Stack.Screen name="main" component={SubMain} options={{headerShown: false}}/>
+
+            <Stack.Screen name="카카오 로그인" component={KakaoWebView} options={{headerShown: false}}/>
 
 
             <Stack.Screen name="로그인 페이지" component={Login} options={{headerShown: false}}/>
