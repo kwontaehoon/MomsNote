@@ -10,7 +10,9 @@ import { WithLocalSvg } from "react-native-svg"
 import mainImage from '../../../public/assets/svg/main.svg'
 
 import { useIsFocused } from '@react-navigation/native'
-import { useSelector } from 'react-redux'
+
+import { useSelector, useDispatch } from 'react-redux'
+import { getList } from '../../Redux/Slices/CounterSlice'
 
 
 const styles = StyleSheet.create({
@@ -241,14 +243,23 @@ const Home = ({navigation}) => {
         },
     ];
 
-    const count = useSelector((state)=>state.counter.data);
+    const count = useSelector(state => { return state.counter.data; });
     console.log('count: ', count);
+    const dispatch = useDispatch();
+    
+    useEffect(()=>{
+        console.log('useEffect');
+        dispatch(getList());
+    }, []);
 
     const ref = useRef();
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
     const [modalVisible, setModalVisible] = useState(false);
     const animation = useRef(new Animated.Value(0)).current;
+
+    const [info, setInfo] = useState();
+    console.log('info: ', info);
 
     useEffect(()=>{
         setModalVisible(!modalVisible);
@@ -330,6 +341,7 @@ const Home = ({navigation}) => {
         <View style={styles.container2}>
             <ViewShot style={[styles.main]} ref={ref} options={{ fileName: "MomsNote", format: "png", quality: 1 }}>
                 <View style={styles.mainBox}>
+                    <Text>{count[0].id}</Text>
                     <Text style={{color: '#424242', fontSize: 18}}>2022년 12월 02일</Text>
                     <Text style={{color: '#212121', fontSize: 32, fontWeight: '700'}}>별똥이</Text>
                 </View>
@@ -420,7 +432,7 @@ const Home = ({navigation}) => {
         </View>
     );
     
-  return (
+  return count.length !== 0 ? (
     <SafeAreaView style={[styles.container, {backgroundColor: '#FEECB3'}]}>
         
       <FocusAwareStatusBar />
@@ -473,7 +485,7 @@ const Home = ({navigation}) => {
             </View>
         </Animated.View>
     </SafeAreaView>
-  )
+  ) : ''
 }
 
 export default Home
