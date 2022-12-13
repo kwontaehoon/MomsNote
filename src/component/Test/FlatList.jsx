@@ -7,9 +7,6 @@ const styles = StyleSheet.create({
         height: '92%',
         borderWidth: 2,
     },
-    container2:{
-
-    },
     header:{
         height: 400,
         borderWidth: 1,
@@ -86,7 +83,7 @@ const Main = ({navigation}) => {
     
 
     const renderItem = ({ item }) => (
-        <View style={styles.container2}>
+        <View>
             <View style={styles.header}></View>
             <View style={styles.main}>
                 <View style={styles.mainBox}></View>

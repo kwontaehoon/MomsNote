@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   mainBoxSub:{
-    width: '25%', 
+    width: '25%',
   },
   mainBoxSub2:{
     flexDirection: 'row',
@@ -142,7 +142,7 @@ const Talk1 = ({navigation, info}) => {
             <Text style={{fontSize: 13, color: '#9E9E9E'}}>댓글 갯수</Text>
           </View>
         </View>
-        <View style={[styles.mainBoxSub, {width: '25%', justifyContent: 'center', alignItems: 'center'}]}>
+        <View style={[styles.mainBoxSub, {justifyContent: 'center', alignItems: 'flex-end'}]}>
           <Text style={{color: '#9E9E9E', fontSize: 12}}>{item.boardDate}</Text>
         </View>
     </TouchableOpacity>

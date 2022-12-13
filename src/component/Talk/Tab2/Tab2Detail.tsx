@@ -41,11 +41,10 @@ const styles = StyleSheet.create({
     },
     mainBox3:{
         padding: 20,
-        borderWidth: 3,
-        height: 500,
     },
     listBox:{
         borderWidth: 1,
+        height: 400,
     },
     listHeader:{
         borderWidth: 1,
@@ -61,8 +60,12 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     listMain:{
-        backgroundColor: 'red',
-        height: '40%',
+        position: 'absolute',
+        borderWidth: 1,
+        backgroundColor: 'green',
+        width: 300,
+        height: 300,
+        zIndex: 999,
     },
     mainBox4:{
         height: 30,
@@ -78,10 +81,11 @@ const styles = StyleSheet.create({
     },
     list2:{
         borderWidth: 1,
-        height: 30,
+        height: 60,
     },
     listFooter:{
         borderWidth: 1,
+
     },
     lookupBox:{
         width: '40%',
@@ -182,6 +186,13 @@ const Talk1Sub = ({route}) => {
                                 <Text style={{fontSize: 15}}> 님의 출산준비물</Text>
                             </View>
                         </View>
+
+                        {/* <View style={styles.listMain}>
+                            <FlatList data={DATA2} renderItem={renderItem2}
+                                keyExtractor={item => item.id}>
+                            </FlatList>
+                        </View> */}
+
                         {/* <View style={[styles.listHeader, {height: 70, backgroundColor: '#FFADAD', alignItems: 'flex-start'}]}>
                             <View style={styles.arrowBox}><Icon name='angle-down' size={22}/></View>
                             <Text style={{fontSize: 15}}>산모용품 (5/13)</Text>
@@ -191,11 +202,7 @@ const Talk1Sub = ({route}) => {
                             <View style={{width: '33.4%', alignItems: 'center'}}><Text>품목</Text></View>
                             <View style={{width: '33.4%', alignItems: 'center'}}><Text>가격</Text></View>
                         </View> */}
-                        <View style={styles.listMain}>
-                            <FlatList data={DATA2} renderItem={renderItem2}
-                                keyExtractor={item => item.id}>
-                            </FlatList>
-                        </View>
+                        
                         <View style={[styles.listFooter]}></View>
                     </View>
                 </View>

@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
+import { WithLocalSvg } from "react-native-svg"
+import like from '../../../../public/assets/svg/like.svg'
 
 const styles = StyleSheet.create({
   container:{
@@ -102,15 +104,15 @@ const Talk1 = ({navigation, info}) => {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', item)}>
-        <View style={styles.mainBox2}><Text style={{fontSize: 18}}>{item.title}</Text></View>
+        <View style={styles.mainBox2}><Text style={{fontSize: 15}}>{item.title}</Text></View>
         <View style={styles.mainBox3}>
             <View style={styles.infoBox}>
-              <Text style={{color: '#9E9E9E'}}>{item.userId} </Text>
-              <Text></Text>
-              <Text>{item.recommend}</Text>
-              <Text></Text>
+              <Text style={{color: '#9E9E9E', fontSize: 13}}>{item.userId} </Text>
+              <Text style={{marginTop: 2}}><WithLocalSvg width={13} height={13} asset={like}/></Text>
+              <Text style={{color: '#9E9E9E', fontSize: 13}}> {item.recommend} </Text>
+              <Text style={{marginTop: 2}}><WithLocalSvg width={13} height={13} asset={like}/></Text>
             </View>
-            <View style={styles.clockBox}><Text style={{color: '#9E9E9E'}}>12시간전</Text></View>
+            <View style={styles.clockBox}><Text style={{color: '#9E9E9E', fontSize: 12}}>12시간전</Text></View>
         </View>
     </TouchableOpacity>
   ); 

@@ -241,7 +241,8 @@ const Home = ({navigation}) => {
         },
     ];
 
-    const count = useSelector((state)=>state.counter.value);
+    const count = useSelector((state)=>state.counter.data);
+    console.log('count: ', count);
 
     const ref = useRef();
     const [test, setTest] = useState(); // 캡쳐 uri

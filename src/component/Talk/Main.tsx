@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal, StatusBar } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Talk1 from './Tab1/Main'
 import Talk2 from './Tab2/Main'
 import Talk3 from './Tab3/Main'
+import axios from 'axios'
 
 const styles = StyleSheet.create({
     container:{
@@ -73,6 +74,14 @@ const styles = StyleSheet.create({
     },
 })
 const Main = ({navigation}:any) => {
+
+    useEffect(()=>{
+        async function b(){
+            const response = await axios.get('http://192.168.1.140:4000/api/test');
+            console.log('response: ', response.data);
+          }
+          b();
+    }, [])
 
     const [modalVisible, setModalVisible] = useState(false); // imodal
     const [filter, setFilter] = useState([true, false, false]); // tab
