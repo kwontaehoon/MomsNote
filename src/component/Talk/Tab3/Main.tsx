@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 
@@ -28,12 +28,24 @@ const styles = StyleSheet.create({
   },
   main:{
     height: '90%',
-    borderWidth: 1,
+    padding: 10,
+    position: 'relative',
+    zIndex: -100,
   },
   mainBox:{
-    borderBottomWidth: 1,
-    height: 100,
+    width: '50%',
+    height: 260,
     padding: 10,
+  },
+  imageBox:{
+    height: '70%',
+  },
+  contentBox:{
+    height: '30%'
+  },
+  content:{
+    height: '33.4%',
+    justifyContent: 'center'
   },
   mainBox2:{
     height: '50%',
@@ -47,7 +59,6 @@ const styles = StyleSheet.create({
   infoBox:{
     width: '50%',
     paddingLeft: 5,
-
   },
   clockBox:{
     width: '50%',
@@ -61,29 +72,17 @@ const Talk3 = ({navigation}: any) => {
 
   const DATA = [
     {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba1',
       title: '전체'
     },
     {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: '자유게시판'
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba2',
+      title: '전체'
     },
     {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: '일상이야기'
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba3',
+      title: '전체'
     },
-    {
-        id: '1',
-        title: '임신정보'
-    },
-    {
-        id: '2',
-        title: '고민상담'
-    },
-    {
-        id: '3',
-        title: '질문게시판'
-    }
   ];
 
   const [open, setOpen] = useState(false);
@@ -96,10 +95,53 @@ const Talk3 = ({navigation}: any) => {
   ]);
   const Filter = ['최신순', '인기순', '추천순'];
   const [filter, setFilter] = useState([true, false, false, false]);
+  const [info, setInfo] = useState([ // 체험 게시판 테이블
+    {
+      experienceId: '1',
+      boardId: '',
+      maxPeople: 10, // 모집인원
+      applicationStartDate: '22.12.01',
+      applicationEndDate: '22.12.05',
+      registrationStartDate: '22.11.01',
+      registrationEndDate: '22.11.04',
+      openDate: '22.11.18',
+    },{
+      experienceId: '2',
+      boardId: '', 
+      maxPeople: 20,
+      applicationStartDate: '22.12.01',
+      applicationEndDate: '22.12.05',
+      registrationStartDate: '22.11.01',
+      registrationEndDate: '22.11.04',
+      openDate: '22.11.18',
+    },{
+      experienceId: '3',
+      boardId: '',
+      maxPeople: 30,
+      applicationStartDate: '22.12.01',
+      applicationEndDate: '22.12.05',
+      registrationStartDate: '22.11.01',
+      registrationEndDate: '22.11.04',
+      openDate: '22.11.18',
+    }
+  ]);
+
+  const [info2, setInfo2] = useState([ // 체험단 신청 테이블
+    {
+      status: '0'
+    }
+  ])
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('체험단 상세페이지')}>
-        
+    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('체험단 상세페이지', item)}>
+      <View style={styles.imageBox}>
+        <Image source={require('../../../../public/assets/testimage.png')} style={{width: '100%', height: '100%', borderRadius: 8}} />
+      </View>
+      <View style={styles.contentBox}>
+        <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>{item.applicationEndDate}일 남음</Text></View>
+        <View style={styles.content}><Text style={{fontWeight: '500'}}>체험단 제목 체험단 제목</Text></View>
+        <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>신청 10명/모집 {item.maxPeople}명</Text></View>
+      </View>
     </TouchableOpacity>
   ); 
 
@@ -110,14 +152,15 @@ const Talk3 = ({navigation}: any) => {
         <View style={[styles.header2FilterBox, {paddingBottom: 5}]}><Text style={{fontSize: 16}}>0 건</Text></View>
         <View style={[styles.header2FilterBox, {width: '32%'}]}>
           <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순'
-              placeholderStyle={{color: '#9E9E9E', paddingLeft: 17, fontSize: 13}} textStyle={{fontSize: 15}} setOpen={setOpen} setValue={setValue} setItems={setItems} max={2} min={2}/>
+              placeholderStyle={{color: '#9E9E9E', paddingLeft: 17, fontSize: 13}} textStyle={{fontSize: 15}} setOpen={setOpen} setValue={setValue} setItems={setItems}
+            />
         </View>
       </View>
       <View style={styles.main}>
-        <FlatList data={DATA} renderItem={renderItem}
-          keyExtractor={item => item.id}>
-        </FlatList>
-        {/* <Text>모집중인 체험단이 없습니다.</Text> */}
+        {info.length !== 0 ? <FlatList data={info} renderItem={renderItem} numColumns={2}
+          keyExtractor={item => item.experienceId}>
+          </FlatList>:
+          <View style={{marginTop: 100, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>모집중인 체험단이 없습니다.</Text></View>}
       </View>
      </View>
   )

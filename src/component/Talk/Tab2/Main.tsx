@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon2 from 'react-native-vector-icons/AntDesign'
+import Icon3 from 'react-native-vector-icons/Ionicons'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { WithLocalSvg } from "react-native-svg"
 import like from '../../../../public/assets/svg/like.svg'
@@ -108,9 +110,10 @@ const Talk1 = ({navigation, info}) => {
         <View style={styles.mainBox3}>
             <View style={styles.infoBox}>
               <Text style={{color: '#9E9E9E', fontSize: 13}}>{item.userId} </Text>
-              <Text style={{marginTop: 2}}><WithLocalSvg width={13} height={13} asset={like}/></Text>
+              <Icon2 name='like2' size={13}/>
               <Text style={{color: '#9E9E9E', fontSize: 13}}> {item.recommend} </Text>
-              <Text style={{marginTop: 2}}><WithLocalSvg width={13} height={13} asset={like}/></Text>
+              <Icon3 name='chatbox-outline' size={13}/>
+              <Text style={{color: '#9E9E9E', fontSize: 13}}> {item.recommend} </Text>
             </View>
             <View style={styles.clockBox}><Text style={{color: '#9E9E9E', fontSize: 12}}>12시간전</Text></View>
         </View>

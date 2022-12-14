@@ -341,7 +341,6 @@ const Home = ({navigation}) => {
         <View style={styles.container2}>
             <ViewShot style={[styles.main]} ref={ref} options={{ fileName: "MomsNote", format: "png", quality: 1 }}>
                 <View style={styles.mainBox}>
-                    <Text>{count[0].id}</Text>
                     <Text style={{color: '#424242', fontSize: 18}}>2022년 12월 02일</Text>
                     <Text style={{color: '#212121', fontSize: 32, fontWeight: '700'}}>별똥이</Text>
                 </View>

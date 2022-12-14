@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios'
 
 const styles = StyleSheet.create({
     container:{
@@ -92,11 +93,29 @@ const Register = ({navigation}) => {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible2, setModalVisible2] = useState(false);
+    const [modal2Content, setModal2Content] = useState(''); // 완료시 모달 내용
+    const [info, setInfo] = useState( // post info
+        {
+            title: '',
+            content: '',
+            imageFile: [],
+            video: [],
+        }
+    );
+    console.log('info: ', info);
+    
 
-    const cencel = (e) => {
-        setModalVisible(!modalVisible);
+    const submit = async() => {
+        await axios.post(`http://192.168.1.140:4000/post/test`, {
+            info: info
+        })
     }
-    const complete = (e) => {
+    const complete = () => {
+        switch(true){
+            case info.title === '': setModal2Content('제목을 입력해주세요.'); break;
+            case info.content === '': setModal2Content('게시글 내용을 입력해주세요.'); break;
+            default: submit(), navigation.goBack(); return;
+        }
         setModalVisible2(!modalVisible2);
     }
     const modal = (e) => {
@@ -107,9 +126,9 @@ const Register = ({navigation}) => {
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
             <View style={styles.header}>
-                    <View style={[styles.headerBox, {width: '20%'}]}><Text style={{fontSize: 16}} onPress={()=>cencel(0)}>취소</Text></View>
+                    <View style={[styles.headerBox, {width: '20%'}]}><Text style={{fontSize: 16}} onPress={()=>setModalVisible(!modalVisible)}>취소</Text></View>
                     <View style={[styles.headerBox, {width: '60%'}]}><Text style={{fontSize: 25, fontWeight: 'bold'}}>출산리스트 공유 등록</Text></View>
-                    <View style={[styles.headerBox, {width: '20%'}]}><Text style={{color: '#FE7000', fontSize: 16, fontWeight: '600'}} onPress={()=>complete(0)}>완료</Text></View>
+                    <View style={[styles.headerBox, {width: '20%'}]}><Text style={{color: '#FE7000', fontSize: 16, fontWeight: '600'}} onPress={()=>complete()}>완료</Text></View>
             </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
@@ -123,8 +142,18 @@ const Register = ({navigation}) => {
                     <View style={styles.mainBox2Sub}><Text style={{color: '#424242', fontSize: 16}}>나의 출산리스트 보기</Text></View>
                     <View style={[styles.mainBox2Sub, {width: '20%', alignItems: 'flex-end'}]}><Icon name='angle-right' size={25} onPress={()=>navigation.navigate('출산리스트')}/></View>
                 </View>
-                <TextInput style={styles.mainBox2} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'}></TextInput>
-                <TextInput style={[styles.mainBox2, {height: 220, paddingBottom: 180}]} placeholder='게시글 내용을 작성해주세요.' placeholderTextColor={'#BDBDBD'}></TextInput>
+                <TextInput style={styles.mainBox2} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'}
+                    onChangeText={(e) =>
+                        setInfo((prevState) => ({
+                            ...prevState,
+                            title: e
+                        }))}></TextInput>
+                <TextInput style={[styles.mainBox2, {height: 220, paddingBottom: 180}]} placeholder='게시글 내용을 작성해주세요.' placeholderTextColor={'#BDBDBD'}
+                    onChangeText={(e) =>
+                        setInfo((prevState) => ({
+                            ...prevState,
+                            content: e
+                        }))}></TextInput>
             </View>
         </View>
     );
@@ -143,7 +172,7 @@ const Register = ({navigation}) => {
                                 <Text style={{fontSize: 16, paddingTop: 5}}>해당 내용을 임시저장하시겠습니까?</Text>
                             </View>
                             <View style={styles.modalBox}>
-                                <TouchableOpacity style={styles.modal} onPress={cencel}><Text style={{color: 'white', fontSize: 16}}>네</Text></TouchableOpacity>
+                                <TouchableOpacity style={styles.modal} onPress={()=>{submit(), setModalVisible(!modalVisible), navigation.goBack()}}><Text style={{color: 'white', fontSize: 16}}>네</Text></TouchableOpacity>
                                 <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={modal}><Text style={{color: 'black', fontSize: 16}}>아니요</Text></TouchableOpacity>
                             </View>
                         </View>
@@ -156,7 +185,7 @@ const Register = ({navigation}) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
-                        <View style={styles.modalBox}><Text style={{fontSize: 16, paddingTop: 10}}>게시글 내용을 입력해주세요.</Text></View>
+                        <View style={styles.modalBox}><Text style={{fontSize: 16, paddingTop: 10}}>{modal2Content}</Text></View>
                         <View style={styles.modalBox}>
                             <TouchableOpacity style={styles.modal} onPress={complete}><Text style={{color: 'white', fontSize: 16}}>확인</Text></TouchableOpacity>
                         </View>

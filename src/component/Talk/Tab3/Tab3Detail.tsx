@@ -105,7 +105,10 @@ const styles = StyleSheet.create({
         marginBottom: 3,
     },
 })
-const Talk1Sub = ({navigation}) => {
+const Talk1Sub = ({navigation, route}) => {
+
+    console.log('route: ', route.params);
+    const info = route.params;
 
     const DATA = [
         {
@@ -139,14 +142,14 @@ const Talk1Sub = ({navigation}) => {
             </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
-                    <Text style={{color: '#9E9E9E'}}>신청인원 36 / 모집인원 10</Text>
+                    <Text style={{color: '#9E9E9E', marginBottom: 3}}>신청 36명/모집 {info.maxPeople}명</Text>
                     <Text style={{fontSize: 25}}>맘스노트 신규체험단 모집</Text>
                 </View>
                 <View style={styles.mainBox2}>
                     <View>
-                        <View><Text style={{margin: 2}}>신청기간: 22.11.01 ~ 22.11.15</Text></View>
-                        <View><Text style={{margin: 2}}>발표일자: 22.11.18</Text></View>
-                        <View><Text style={{margin: 2}}>등록기간: 22.12.01 ~ 22.12.02</Text></View>
+                        <View><Text style={{margin: 2, fontSize: 15}}>신청기간: {info.applicationStartDate} ~ {info.applicationEndDate}</Text></View>
+                        <View><Text style={{margin: 2, fontSize: 15}}>발표일자: {info.openDate}</Text></View>
+                        <View><Text style={{margin: 2, fontSize: 15}}>등록기간: {info.registrationStartDate} ~ {info.registrationEndDate}</Text></View>
                     </View>
                 </View>
             </View>

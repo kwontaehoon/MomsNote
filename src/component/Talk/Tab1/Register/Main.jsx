@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios'
 
 const styles = StyleSheet.create({
     container:{
@@ -181,9 +182,7 @@ const styles = StyleSheet.create({
 })
 const Register = ({navigation}) => {
 
-    const content = ['카테고리를 선택해주세요.', '제목을 입력해주세요.', '게시글 내용을 입력해주세요.'];
-    const content2 = ['이미지는 최대 7장 업로드 가능합니다.', '동영상은 최대 1개만 업로드 가능합니다.'];
-    const content3 = ['작성 중이던 게시글을 취소합니다. 해당 내용을 임시 저장하시겠습니까?'];
+    const content = ['카테고리를 선택해주세요.', '제목을 입력해주세요.', '게시글 내용을 입력해주세요.', '이미지는 최대 7장 업로드 가능합니다.', '동영상은 최대 1개만 업로드 가능합니다.'];
 
     const DATA = [
         {
@@ -214,12 +213,26 @@ const Register = ({navigation}) => {
             title: '질문 게시판'
         },
     ];
-    const [modalVisible, setModalVisible] = useState(false);
-    const [modalVisible2, setModalVisible2] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false); // 완료시 모달창
+    const [modalVisible2, setModalVisible2] = useState(false); // 취소시 모달창
+    const [modal2Content, setModal2Content] = useState(''); // 완료시 모달 내용
     const [filter, setFilter] = useState(Array.from({length: 5}, () => {return false})); // 카테고리
-    console.log('filter: ', filter);
-    const [image, setImage] = useState([]); // image
-    const [video, setVideo] = useState([]); // video
+
+    const [info, setInfo] = useState( // post info
+        {
+            title: '',
+            content: '',
+            imageFile: [],
+            video: [],
+        }
+    );
+    console.log('info: ', info);
+
+    const submit = async() => {
+        await axios.post(`http://192.168.1.140:4000/post/test`, {
+            info: info
+        })
+   }
 
     const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
         let arr = Array.from({length: 5}, () => {return false});
@@ -228,6 +241,10 @@ const Register = ({navigation}) => {
     }
 
     const pickImage = async () => {
+        if(info.imageFile.length === 7){
+            setModal2Content('이미지는 최대 7장 업로드 가능합니다.');
+            setModalVisible2(!modalVisible2); return;
+        }
         let arr = [];
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -236,20 +253,24 @@ const Register = ({navigation}) => {
           aspect: [4, 3],
           quality: 1,
         });
-        console.log('result: ', result.assets);
-        
+        console.log('result: ', result.assets[0].uri);
+            
   
       if (!result.canceled) {
-        arr = [...image];
-        arr.push({
-            id: image.length,
-            image: result.assets[0].uri
-        });
-        setImage(arr);
+        arr = [...info.imageFile];
+        arr.push(result.assets[0].uri);
+        setInfo((prevState) => ({
+            ...prevState,
+            imageFile: arr
+        }))
       }
     };
 
     const pickVideo = async () => {
+        if(info.video.length === 1){
+            setModal2Content('동영상은 최대 1개만 업로드 가능합니다.');
+            setModalVisible2(!modalVisible2); return;
+        }
         let arr = [];
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -258,50 +279,52 @@ const Register = ({navigation}) => {
           aspect: [4, 3],
           quality: 1,
         });
-        console.log('result: ', result.assets);
+        console.log('result: ', result.assets[0].uri);
         
   
       if (!result.canceled) {
-        arr = [];
-        arr.push({
-            id: video.length,
-            image: result.assets[0].uri
-        });
-        setVideo(arr);
+        arr = [result.assets[0].uri];
+        setInfo((prevState) => ({
+            ...prevState,
+            video: arr
+        }))
       }
     };
 
-    
-
-    const cencel = (e) => {
-        setModalVisible(!modalVisible);
-    }
-    const complete = (e) => {
+    const complete = () => {
+        switch(true){
+            case filter.filter(x => x===true).length === 0: setModal2Content('카테고리를 선택해주세요.'); break;
+            case info.title === '': setModal2Content('제목을 입력해주세요.'); break;
+            case info.content === '': setModal2Content('게시글 내용을 입력해주세요.'); break;
+            default: submit(), navigation.goBack(); return;
+        }
         setModalVisible2(!modalVisible2);
-    }
-    const modal = (e) => {
-        setModalVisible(!modalVisible);
-        navigation.goBack();
     }
 
     const close = (id, name) => {
         console.log('id: ', id);
         let arr = [];
         if(name === 'video'){
-            setVideo(arr);
+            setInfo((prevState) => ({
+                ...prevState,
+                video: arr
+            }))
         }else{
-            const arr2 = image.filter((x, index) => {return x.image !== id});
+            const arr2 = info.imageFile.filter((x, index) => {return x.image !== id});
             console.log('arr2: ', arr2);
-            setImage(arr2);
+            setInfo((prevState) => ({
+                ...prevState,
+                imageFile: arr2
+            }))
         }
     }
 
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
             <View style={styles.header}>
-                    <View style={[styles.headerBox, {width: '20%'}]}><Text style={{fontSize: 16}} onPress={()=>cencel(0)}>취소</Text></View>
+                    <View style={[styles.headerBox, {width: '20%'}]}><Text style={{fontSize: 16}} onPress={()=>setModalVisible(!modalVisible)}>취소</Text></View>
                     <View style={[styles.headerBox, {width: '60%'}]}><Text style={{fontSize: 25, fontWeight: 'bold'}}>글쓰기</Text></View>
-                    <View style={[styles.headerBox, {width: '20%'}]}><Text style={{color: '#FE7000', fontSize: 16, fontWeight: '600'}} onPress={()=>complete(0)}>완료</Text></View>
+                    <View style={[styles.headerBox, {width: '20%'}]}><Text style={{color: '#FE7000', fontSize: 16, fontWeight: '600'}} onPress={complete}>완료</Text></View>
             </View>
             <View style={styles.header2}>
                 <View style={styles.header2Box}>
@@ -325,21 +348,31 @@ const Register = ({navigation}) => {
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, color: '#424242'}}>제목</Text>
-                    <TextInput style={styles.textBox} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'}></TextInput>
+                    <TextInput style={styles.textBox} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'}
+                    onChangeText={(e) =>
+                        setInfo((prevState) => ({
+                            ...prevState,
+                            title: e
+                        }))}></TextInput>
                 </View>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, color: '#424242'}}>내용</Text>
-                    <TextInput style={styles.textBox2} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'}></TextInput>
+                    <TextInput style={styles.textBox2} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'}
+                    onChangeText={(e)=>
+                        setInfo((prevState) => (
+                            {...prevState,
+                            content: e
+                        }))}></TextInput>
                 </View>
                 <View style={styles.mainBox} >
                     <Text style={{fontSize: 16, color: '#424242'}}>이미지 첨부</Text>
                     <View style={styles.album}>
                         <TouchableOpacity style={styles.albumLeft} onPress={pickImage}>
                             <Icon name='camera' size={22}/>
-                            <Text>{image.length}/7</Text>
+                            <Text>{info.imageFile.length}/7</Text>
                         </TouchableOpacity>
                         <View style={styles.albumRight}>
-                        <FlatList data={image} renderItem={renderItem3}
+                        <FlatList data={info.imageFile} renderItem={renderItem3}
                             keyExtractor={item => item.id} showsHorizontalScrollIndicator={false} horizontal={true}>
                         </FlatList>
                         </View>
@@ -350,10 +383,10 @@ const Register = ({navigation}) => {
                     <View style={styles.album}>
                         <TouchableOpacity style={styles.albumLeft} onPress={pickVideo}>
                             <Icon name='camera' size={22}/>
-                            <Text>{video.length}/1</Text>
+                            <Text>{info.video.length}/1</Text>
                         </TouchableOpacity>
                         <View style={styles.albumRight}>
-                        <FlatList data={video} renderItem={renderItem4}
+                        <FlatList data={info.video} renderItem={renderItem4}
                             keyExtractor={item => item.id} showsHorizontalScrollIndicator={false} horizontal={true}>
                         </FlatList>
                         </View>
@@ -374,7 +407,7 @@ const Register = ({navigation}) => {
             <TouchableOpacity style={styles.close} onPress={()=>close(item.image, 'image')}>
                 <Icon2 name='close' size={16} style={{color: 'white'}}/>
             </TouchableOpacity>
-            <Image source={{ uri: item.image }} style={{ width: 80, height: 80, borderRadius: 5,}} />
+            <Image source={{ uri: item }} style={{ width: 80, height: 80, borderRadius: 5,}} />
         </View>
     );
 
@@ -384,7 +417,7 @@ const Register = ({navigation}) => {
                 <Icon2 name='close' size={16} style={{color: 'white'}}/>
             </TouchableOpacity>
             <View>
-                <Image source={{ uri: item.image }} style={{ width: 80, height: 80, borderRadius: 5,}}/>
+                <Image source={{ uri: item }} style={{ width: 80, height: 80, borderRadius: 5,}}/>
                 <View style={styles.start}>
                     <Icon name='play' size={17} style={{color: 'white'}}/>
                 </View>
@@ -402,12 +435,14 @@ const Register = ({navigation}) => {
                 <View style={styles.modalView}>
                     <View style={[styles.modalContainer2, {height: 220}]}>
                         <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, paddingTop: 10}}>작성 중인 게시글을 취소합니다.</Text>
+                            <Text style={{fontSize: 16, paddingTop: 10}}>작성 중인 내용이 존재합니다.</Text>
                             <Text style={{fontSize: 16, paddingTop: 5}}>해당 내용을 임시저장하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal} onPress={cencel}><Text style={{color: 'white', fontSize: 16}}>네</Text></TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={modal}><Text style={{color: 'black', fontSize: 16}}>아니요</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.modal} onPress={()=>{submit(), setModalVisible(!modalVisible), navigation.goBack()}}><Text style={{color: 'white', fontSize: 16}}>네</Text></TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModalVisible(!modalVisible), navigation.goBack();}}>
+                                <Text style={{color: 'black', fontSize: 16}}>아니요</Text>
+                            </TouchableOpacity>
                         </View>
                         </View>
                     </View>
@@ -419,7 +454,7 @@ const Register = ({navigation}) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
-                        <View style={styles.modalBox}><Text style={{fontSize: 16, paddingTop: 10}}>게시글 내용을 입력해주세요.</Text></View>
+                        <View style={styles.modalBox}><Text style={{fontSize: 16, paddingTop: 10}}>{modal2Content}</Text></View>
                         <View style={styles.modalBox}>
                             <TouchableOpacity style={styles.modal} onPress={complete}><Text style={{color: 'white', fontSize: 16}}>확인</Text></TouchableOpacity>
                         </View>

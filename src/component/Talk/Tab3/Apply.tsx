@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'r
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/AntDesign'
 import Checkbox from 'expo-checkbox'
+import axios from 'axios'
 
 const styles = StyleSheet.create({
     container:{
@@ -75,7 +76,11 @@ const styles = StyleSheet.create({
 
 
 })
-const Withdraw = ({navigation}) => {
+const Withdraw = ({navigation, route}) => {
+
+    console.log('route: ', route.params);
+    const address = route.params;
+    console.log('address: ', address);
 
     const DATA = [
         {
@@ -86,6 +91,24 @@ const Withdraw = ({navigation}) => {
 
     const [isChecked, setChecked] = useState(Array.from({length: 3}, ()=>{return false})); // check box
     console.log('isChecked: ', isChecked);
+    const [info, setInfo] = useState( // post info
+        {
+            name: '',
+            phoneNumber: '',
+            blogUrl: '',
+            instaUrl: '',
+            youtubeUrl: '',
+            address: '',
+        }
+    );
+    console.log('info: ', info);
+
+
+    const submit = async() => {
+        await axios.post(`http://192.168.1.140:4000/post/test`, {
+            info: info
+        })
+    }
 
     const change = (e) => { // 텍스트 밑줄 색상 변경
         let arr = [...isChecked];
@@ -101,6 +124,7 @@ const Withdraw = ({navigation}) => {
         }
     }
     
+    
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
             <View style={styles.header}>
@@ -110,24 +134,41 @@ const Withdraw = ({navigation}) => {
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>이름</Text>
-                    <TextInput style={styles.textBox} placeholder='이름 입력'></TextInput>
+                    <TextInput style={styles.textBox} placeholder='이름 입력'
+                        onChangeText={(e) => setInfo((prevState) => ({
+                            ...prevState, name: e
+                        }))}></TextInput>
                 </View>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>연락처</Text>
-                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)'></TextInput>
+                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)'
+                         onChangeText={(e) => setInfo((prevState) => ({
+                            ...prevState, phoneNumber: e
+                        }))}></TextInput>
                     <View style={styles.certificateBox}><Text style={{fontWeight: '500'}}>인증요청</Text></View>
                 </View>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>SNS 계정</Text>
                     <Text style={{color: '#757575', marginTop: 5}}>리뷰에 사용할 계정을 하나 이상 입력해주세요.</Text>
-                    <TextInput style={styles.textBox} placeholder='네이버 블로그'></TextInput>
-                    <TextInput style={styles.textBox} placeholder='인스타그램'></TextInput>
-                    <TextInput style={styles.textBox} placeholder='유튜브'></TextInput>
+                    <TextInput style={styles.textBox} placeholder='네이버 블로그'
+                        onChangeText={(e) => setInfo((prevState) => ({
+                            ...prevState, blogUrl: e
+                        }))}></TextInput>
+                    <TextInput style={styles.textBox} placeholder='인스타그램'
+                        onChangeText={(e) => setInfo((prevState) => ({
+                            ...prevState, instaUrl: e
+                        }))}></TextInput>
+                    <TextInput style={styles.textBox} placeholder='유튜브'
+                        onChangeText={(e) => setInfo((prevState) => ({
+                            ...prevState, youtubeUrl: e
+                        }))}></TextInput>
                 </View>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>배송지</Text>
                     <View>
-                        <View style={styles.textBox}><Text onPress={()=>navigation.navigate('주소 찾기')}>주소 검색하기</Text></View>
+                        <View style={styles.textBox}>
+                            {address === undefined ? <Text>주소 검색하기</Text> : <Text>{address}</Text>}
+                        </View>
                         <View style={styles.postBox}><Icon name='right' size={15} onPress={()=>navigation.navigate('주소 찾기')}/></View>
                     </View>
                     <TextInput style={styles.textBox} placeholder='상세주소 입력'></TextInput>
