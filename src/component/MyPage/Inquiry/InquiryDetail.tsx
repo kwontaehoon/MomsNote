@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -9,53 +9,60 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     header:{
-        height: '10%',
-        flexDirection: 'row'
+        backgroundColor: '#F5F5F5',
+        height: 80,
+        padding: 20,
+        justifyContent: 'center',
+        borderTopWidth: 1,
+        borderColor: '#E0E0E0'
     },
-    headerBox:{
-        width: '50%',
-        height: '100%',
-        justifyContent: 'flex-end'
+    statusBox:{
+        position: 'absolute',
+        right: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     main:{
-        height: '40%',
-        borderWidth: 1,
-        padding: 10,
+        borderBottomWidth: 1,
+        padding: 20,
+        borderColor: '#EEEEEE'
     },
     main2:{
-        height: '40%',
-        borderWidth: 1,
-        padding: 10,
-    }
+        justifyContent: 'center',
+        padding: 20,
+    },
+    main2Box:{
+    },
 })
-const InquiryDetail = () => {
+const InquiryDetail = ({route}) => {
+
+    console.log('route: ', route.params);
+
+    const renderItem = ({ item }) => (
+        <View>
+        <View style={styles.header}>
+            <View style={styles.statusBox}><Text style={{color: '#757575'}}>{item.status}</Text></View>
+            <Text style={{fontSize: 15, fontWeight: '600', marginBottom: 3, color: '#424242'}}>{item.title}</Text>
+            <Text style={{color: '#9E9E9E'}}>{item.inquiryDate}</Text>
+        </View>
+        <View style={styles.main}>
+            <Text>{item.contents}</Text>
+        </View>
+        <View style={styles.main2}>
+            <View style={styles.main2Box}>
+                <Text style={{fontWeight: '600', fontSize: 15}}>답변 내용</Text>
+                <View style={[styles.statusBox, {right: 0}]}><Text style={{color: '#757575'}}>{item.answerDate}</Text></View>
+            </View>
+            <Text style={{marginTop: 5}}>내용</Text>
+        </View>
+        </View>
+      );
+
   return (
     <View style={styles.container}>
-        <View style={styles.header}>
-            <View style={[styles.headerBox, {paddingLeft: 10}]}>
-                <Text style={{color: '#757575'}}>대기중</Text>
-            </View>
-            <View style={[styles.headerBox, {paddingRight: 10, alignItems: 'flex-end'}]}>
-                <Text style={{color: '#9E9E9E'}}>2022.11.01 14:00</Text>
-            </View>
-        </View>
-        <View style={styles.main}>
-            <View><Text>문의 제목입니다.</Text></View>
-            <View><Text>문의 내용입니다.</Text></View>
-        </View>
-
-        <View style={styles.header}>
-            <View style={[styles.headerBox, {paddingLeft: 10}]}>
-                <Text style={{color: '#757575'}}>대기중</Text>
-            </View>
-            <View style={[styles.headerBox, {paddingRight: 10, alignItems: 'flex-end'}]}>
-                <Text style={{color: '#9E9E9E'}}>2022.11.01 14:00</Text>
-            </View>
-        </View>
-        <View style={styles.main}>
-            <View><Text>문의 제목입니다.</Text></View>
-            <View><Text>문의 내용입니다.</Text></View>
-        </View>
+        <FlatList data={[route.params]} renderItem={renderItem}
+          keyExtractor={item => item.title}>
+        </FlatList>
     </View>
   )
 }

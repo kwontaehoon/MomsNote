@@ -125,7 +125,8 @@ const Talk1Sub = ({navigation, route}) => {
     ];
 
     const [filter, setFilter] = useState(false);
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false); // 체험단 신청정보 입력 -> asnyc storage
+    const [modalVisible2, setModalVisible2] = useState(false); // 체험단 신청완료
 
     const modal = (e) => {
         if(e === 0){
@@ -212,6 +213,23 @@ const Talk1Sub = ({navigation, route}) => {
                     </View>
                 </View>
             </Modal>
+
+            <Modal animationType="fade" transparent={true} visible={modalVisible2}
+            onRequestClose={() => {
+            setModalVisible2(!modalVisible2)}}>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                    <View style={styles.modalContainer2}>
+                        <View style={styles.modalBox}><Text style={{fontSize: 16, paddingTop: 10}}>체험단 신청이 완료되었습니다.</Text></View>
+                        <View style={styles.modalBox}>
+                            <TouchableOpacity style={styles.modal} onPress={()=>setModalVisible2(!modalVisible2)}><Text style={{color: 'white', fontSize: 16}}>확인</Text></TouchableOpacity>
+                        </View>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+
         <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id}>
         </FlatList>

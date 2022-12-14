@@ -105,8 +105,8 @@ const Main = ({navigation}:any) => {
 
     const List = ():any => {
         switch(true){
-            case filter[0] === true: return <Talk1 navigation={navigation}/>
-            case filter[1] === true: return <Talk2 navigation={navigation}/>
+            case filter[0] === true: return <Talk1 navigation={navigation} week={week}/>
+            case filter[1] === true: return <Talk2 navigation={navigation} week={week}/>
         }
     }
     const filter_func = (e) => { // filter tab 변경
@@ -116,15 +116,16 @@ const Main = ({navigation}:any) => {
     }
 
     const change = (e) => { // 몇 주차 border, 글자두께 변경
+      console.log('e: ', e);
       let arr = Array.from({length: 12}, ()=>{ return false});
       arr[e] = !arr[e];
       setWeek(arr);
     }
 
     const renderItem = ({ item }) => (
-      <TouchableOpacity style={styles.scrollBox} onPress={()=>change(item.id)}>
-        <Text style={{fontSize: 16, padding: 3, fontWeight: week[item.id] ? 'bold' : '400',
-      color: week[item.id] ? 'black' : '#9E9E9E', borderBottomWidth: week[item.id] ? 2 : 0 }}>{item.id}주</Text>
+      <TouchableOpacity style={styles.scrollBox} onPress={()=>change(item.id-1)}>
+        <Text style={{fontSize: 16, padding: 3, fontWeight: week[item.id-1] ? 'bold' : '400',
+      color: week[item.id-1] ? 'black' : '#9E9E9E', borderBottomWidth: week[item.id-1] ? 2 : 0 }}>{item.id}주</Text>
       </TouchableOpacity>
     ); 
 

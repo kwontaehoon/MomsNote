@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -9,47 +9,41 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     header:{
-        height: '12%',
-        justifyContent: 'center',
-        paddingLeft: 10,
         backgroundColor: '#F5F5F5',
+        height: 80,
+        padding: 20,
+        justifyContent: 'center',
+        borderTopWidth: 1,
+        borderColor: '#E0E0E0'
     },
     main:{
-        height: '88%',
+        justifyContent: 'center',
+        padding: 20,
     },
-    mainBox:{
-        padding: 10,
-    }
 })
-const NoticeDetail = () => {
+const InquiryDetail = ({route}) => {
 
-    const DATA = [
-        {
-          id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-          title: '전체'
-        },
-    ];
+    console.log('route: ', route.params);
 
     const renderItem = ({ item }) => (
-        <View style={styles.mainBox}>
-           <Text>안녕하세요. 맘스노트 관리자입니다.</Text>
+        <View>
+        <View style={styles.header}>
+            <Text style={{fontSize: 15, fontWeight: '600', marginBottom: 3, color: '#424242'}}>{item.title}</Text>
+            <Text style={{color: '#9E9E9E'}}>{item.inquiryDate}</Text>
+        </View>
+            <View style={styles.main}>
+                <Text>{item.contents}</Text>
+            </View>
         </View>
       );
 
-
   return (
     <View style={styles.container}>
-        <View style={styles.header}>
-            <Text style={{fontWeight: 'bold', fontSize: 17, marginBottom: 2}}>맘스노트 11월 4주차 공지사항</Text>
-            <Text style={{color: '#9E9E9E'}}>2022/11/01</Text>
-        </View>
-        <View style={styles.main}>
-            <FlatList data={DATA} renderItem={renderItem}
-                keyExtractor={item => item.id} >
-            </FlatList>
-        </View>
+        <FlatList data={[route.params]} renderItem={renderItem}
+          keyExtractor={item => item.title}>
+        </FlatList>
     </View>
   )
 }
 
-export default NoticeDetail
+export default InquiryDetail

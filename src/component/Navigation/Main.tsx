@@ -36,6 +36,9 @@ import Categoires from '../Talk/Tab2/Register/Categoires'
 import Initial from '../Default/Main'
 import Budget from '../Materials/Budget/Main'
 import KakaoWebView from '../Default/KakaoWebView'
+import DdayDetail from '../Dday/Tab1/Detail'
+import DdayDetail2 from '../Dday/Tab2/Detail'
+import Experience from '../MyPage/Experience/Main'
 
 LogBox.ignoreAllLogs();
 
@@ -132,6 +135,9 @@ const Navigation = () => {
                             )}}/>
             <Stack.Screen name="출산준비물 알림" component={Notice2} options={{title: '알림'}}/>
             <Stack.Screen name="총 예산" component={Budget}/>
+            <Stack.Screen name="오늘의편지 상세페이지" component={DdayDetail} options={{title: ''}}/>
+            <Stack.Screen name="이시기에는 상세페이지" component={DdayDetail2} options={{title: ''}}/>
+            <Stack.Screen name="신청한 체험단" component={Experience}/>
         </Stack.Navigator>
       </NavigationContainer>
   )

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/AntDesign'
 import Checkbox from 'expo-checkbox'
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         width: 70,
         height: 70,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     main:{
         padding: 15
@@ -72,7 +72,42 @@ const styles = StyleSheet.create({
         backgroundColor: '#E0E0E0',
         alignItems: 'center',
         justifyContent: 'center',
-    }
+    },
+    modalContainer:{
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    modalView:{
+        width: '100%',
+        height: '100%',
+        margin: 20,
+        backgroundColor: "rgba(0,0,0,0.5)",
+        alignItems: "center",
+        justifyContent: 'center',
+        shadowColor: "#000",
+        elevation: 5,
+    },
+    modalContainer2:{
+        width: '80%',
+        height: 144,
+        backgroundColor: 'white',
+        marginBottom: 35,
+        borderRadius: 15
+    },
+    modalBox:{
+        height: '50%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modal:{
+        backgroundColor: '#FEA100',
+        width: '90%',
+        height: 44,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 3,
+        marginBottom: 3,
+    },
 
 
 })
@@ -91,6 +126,10 @@ const Withdraw = ({navigation, route}) => {
 
     const [isChecked, setChecked] = useState(Array.from({length: 3}, ()=>{return false})); // check box
     console.log('isChecked: ', isChecked);
+    const [modalVisible, setModalVisible] = useState(false); // 체험단 나가기 모달
+    const [modalContent, setModalContent] = useState('');
+    const [modalVisible2, setModalVisible2] = useState(false); // 체험단 신청 취소 누르면 모달
+    const [modalContent2, setModalContent2] = useState('');
     const [info, setInfo] = useState( // post info
         {
             name: '',
@@ -123,13 +162,31 @@ const Withdraw = ({navigation, route}) => {
             setChecked(arr);
         }
     }
+
+    // const complete2 = () => {
+    //     switch(true){
+    //         case filter.filter(x => x===true).length === 0: setModal2Content('카테고리를 선택해주세요.'); break;
+    //         case info.title === '': setModal2Content('제목을 입력해주세요.'); break;
+    //         case info.content === '': setModal2Content('게시글 내용을 입력해주세요.'); break;
+    //         default: submit(), navigation.goBack(); return;
+    //     }
+    //     setModalVisible2(!modalVisible2);
+    // }
+
+    const complete = () => {
+        
+        return(
+            <View style={styles.buttonBox}><Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text></View>
+        )
+    }
+
     
     
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
             <View style={styles.header}>
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>신청 정보</Text>
-                <View style={styles.headerBox}><Icon name='close' size={20} onPress={()=>navigation.goBack()}/></View>
+                <View style={styles.headerBox}><Icon name='close' size={20} onPress={()=>setModalVisible(!modalVisible)}/></View>
             </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
@@ -139,13 +196,16 @@ const Withdraw = ({navigation, route}) => {
                             ...prevState, name: e
                         }))}></TextInput>
                 </View>
-                <View style={styles.mainBox}>
+                <View>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>연락처</Text>
                     <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)'
-                         onChangeText={(e) => setInfo((prevState) => ({
-                            ...prevState, phoneNumber: e
-                        }))}></TextInput>
+                         onChangeText={(e) => setInfo((prevState) => ({...prevState, phoneNumber: e}))}>
+                    </TextInput>
                     <View style={styles.certificateBox}><Text style={{fontWeight: '500'}}>인증요청</Text></View>
+                </View>
+                <View style={styles.mainBox}>
+                    <TextInput style={styles.textBox} placeholder='인증번호 입력'></TextInput>
+                    <View style={styles.certificateBox}><Text style={{fontWeight: '500'}}>인증완료</Text></View>
                 </View>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>SNS 계정</Text>
@@ -199,7 +259,8 @@ const Withdraw = ({navigation, route}) => {
                     <View style={{position: 'absolute', right: 0, width: 20, height: '100%', justifyContent :'center'}}><Icon name='right' size={12} style={{color: '#616161'}}/></View>
                 </View>
                 <View style={[styles.mainBox, {alignItems: 'center'}]}>
-                    <View style={styles.buttonBox}><Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text></View>
+                    {/* <View style={styles.buttonBox}><Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text></View> */}
+                    {complete()}
                 </View>
             </View>
         </View>
@@ -207,6 +268,40 @@ const Withdraw = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
+
+        <Modal animationType="fade" transparent={true} visible={modalVisible}
+                onRequestClose={() => {
+                setModalVisible(!modalVisible)}}>
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalView}>
+                        <View style={[styles.modalContainer2, {height: 220}]}>
+                            <View style={styles.modalBox}>
+                                <Text style={{fontSize: 16, paddingTop: 10}}>작성 중인 내용이 존재합니다.</Text>
+                                <Text style={{fontSize: 16, paddingTop: 5}}>해당 내용을 임시저장하시겠습니까?</Text>
+                            </View>
+                            <View style={styles.modalBox}>
+                                <TouchableOpacity style={styles.modal} onPress={()=>{setModalVisible(!modalVisible), navigation.goBack()}}><Text style={{color: 'white', fontSize: 16}}>네</Text></TouchableOpacity>
+                                <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModalVisible(!modalVisible)}><Text style={{color: 'black', fontSize: 16}}>아니요</Text></TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+            <Modal animationType="fade" transparent={true} visible={modalVisible2}
+            onRequestClose={() => {
+            setModalVisible2(!modalVisible2)}}>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                    <View style={styles.modalContainer2}>
+                        <View style={styles.modalBox}><Text style={{fontSize: 16, paddingTop: 10}}></Text></View>
+                        <View style={styles.modalBox}>
+                            <TouchableOpacity style={styles.modal} onPress={complete}><Text style={{color: 'white', fontSize: 16}}>확인</Text></TouchableOpacity>
+                        </View>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
        <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id} showsHorizontalScrollIndicator={false}>
         </FlatList>

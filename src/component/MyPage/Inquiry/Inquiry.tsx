@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
+import axios from 'axios'
 
 // 문의하기
 const styles = StyleSheet.create({
@@ -55,12 +56,14 @@ const styles = StyleSheet.create({
       backgroundColor: '#FEA100',
     }
 })
-const Inquiry2 = () => {
+const Inquiry2 = ({filter, setFilter}) => {
 
-  const [title, setTitle] = useState('');
-  console.log('title: ', title);
-  const [content, setContent] = useState('');
-  console.log('content: ', content);
+  const [info, setInfo] = useState(
+    {
+      title: '',
+      content: '',
+    }
+  );
 
   const DATA = [
     {
@@ -69,25 +72,37 @@ const Inquiry2 = () => {
     },
   ];
 
+  const submit = async() => {
+    await axios.post(`http://192.168.1.140:4000/post/test`, {
+        info: info
+    })
+  }
+
   const renderItem = ({ item }) => (
     <View style={styles.container2}>
         <View style={styles.header}>
-          <View style={styles.headerBox}><Text style={{fontWeight: 'bold'}}>제목</Text></View>
+          <View style={styles.headerBox}><Text style={{fontWeight: 'bold', fontSize: 15}}>제목</Text></View>
           <View style={styles.headerBox2}>
             <TextInput style={styles.inputBox} placeholder='문의제목 입력' placeholderTextColor={'#BDBDBD'}
-            onChangeText={setTitle}></TextInput>
+              onChangeText={(e) => setInfo((prevState) => ({ ...prevState, title: e}))}> 
+             </TextInput>
           </View>
         </View>
         <View style={styles.header2}>
-          <View style={styles.header2Box}><Text style={{fontWeight: 'bold'}}>내용</Text></View>
+          <View style={styles.header2Box}><Text style={{fontWeight: 'bold', fontSize: 15}}>내용</Text></View>
           <View style={styles.header2Box2}>
-            <TextInput style={[styles.inputBox, {height: 340, paddingBottom: 275}]} placeholder='문의내용 입력' placeholderTextColor={'#BDBDBD'}
-            onChangeText={setContent} cursorColor={'#BDBDBD'}></TextInput>
+            <TextInput style={[styles.inputBox, {height: 340, paddingBottom: 290}]} placeholder='문의내용 입력' placeholderTextColor={'#BDBDBD'}
+               onChangeText={(e) => setInfo((prevState) => ({ ...prevState, content: e}))}> 
+              </TextInput>
           </View>
         </View>
-        <View style={[styles.footer, {backgroundColor: title.length !== 0 && content.length !== 0 ? '#FEA100' : '#E0E0E0'}]}>
+        
+        {info.title.length === 0 && info.content.length === 0 ? 
+        <View style={[styles.footer, {backgroundColor: '#E0E0E0'}]}>
           <Text style={{fontSize: 18, fontWeight: '600', color: 'white'}}>문의하기</Text>
-        </View>
+        </View> : <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=> {submit(), setFilter(!filter)}}>
+          <Text style={{fontSize: 18, fontWeight: '600', color: 'white'}}>문의하기</Text>
+        </TouchableOpacity>}
     </View>
   );
 

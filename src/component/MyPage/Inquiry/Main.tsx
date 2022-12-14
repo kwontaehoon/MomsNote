@@ -27,12 +27,10 @@ const styles = StyleSheet.create({
 const Main = ({navigation}) => {
 
     const [filter, setFilter] = useState(true);
-    console.log('filter: ', filter);
-
 
     const List = ():any => {
         switch(filter){
-            case true: return <Inquiry navigation={navigation}/>
+            case true: return <Inquiry filter={filter} setFilter={setFilter}/>
             case false: return <Inquiry2 navigation={navigation}/>
         }
     }

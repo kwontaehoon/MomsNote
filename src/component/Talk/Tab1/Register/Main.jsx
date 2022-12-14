@@ -232,7 +232,7 @@ const Register = ({navigation}) => {
         await axios.post(`http://192.168.1.140:4000/post/test`, {
             info: info
         })
-   }
+    }
 
     const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
         let arr = Array.from({length: 5}, () => {return false});
@@ -349,20 +349,14 @@ const Register = ({navigation}) => {
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, color: '#424242'}}>제목</Text>
                     <TextInput style={styles.textBox} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'}
-                    onChangeText={(e) =>
-                        setInfo((prevState) => ({
-                            ...prevState,
-                            title: e
-                        }))}></TextInput>
+                        onChangeText={(e) => setInfo((prevState) => ({ ...prevState, title: e}))}> 
+                    </TextInput>
                 </View>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, color: '#424242'}}>내용</Text>
                     <TextInput style={styles.textBox2} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'}
-                    onChangeText={(e)=>
-                        setInfo((prevState) => (
-                            {...prevState,
-                            content: e
-                        }))}></TextInput>
+                     onChangeText={(e) => setInfo((prevState) => ({ ...prevState, content: e}))}> 
+                     </TextInput>
                 </View>
                 <View style={styles.mainBox} >
                     <Text style={{fontSize: 16, color: '#424242'}}>이미지 첨부</Text>

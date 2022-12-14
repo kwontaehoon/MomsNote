@@ -1,76 +1,85 @@
-import React from 'react'
+import React, { useState, useEffect} from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
+import axios from 'axios'
 
 const styles = StyleSheet.create({
     container:{
         height: '100%',
         backgroundColor: 'white',
-        padding: 15,
-    },
-    header:{
-        height: '3%',
     },
     main:{
-        height: '97%',
-    },
-    mainBox:{
-        borderTopWidth: 1,
-        borderColor: '#EEEEEE',
         height: 80,
-        padding: 10,
-        justifyContent: 'center'
+        borderTopWidth: 1,
+        borderColor: '#F5F5F5',
+        justifyContent: 'center',
+        padding: 20,
     }
 })
 const InquiryDetail = ({navigation}) => {
 
-    const DATA = [
+
+    const [info, setInfo] = useState([
         {
-          id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-          title: '전체'
+          inquiryId: 1,
+          title: '문의사항 제목',
+          contents: '문의사항 내용입니다',
+          status: '대기중',
+          answerDate: '2022.05.21',
+          inquiryDate: '2022.05.21'
+        },{
+          inquiryId: 2,
+          title: '문의사항 입니다.....',
+          contents: '문의사항 내용.....',
+          status: '답변완료',
+          answerDate: '2022.05.01',
+          inquiryDate: '2022.05.01'
+        },{
+          inquiryId: 3,
+          title: 'Setting up the development',
+          contents: 'contents',
+          status: '대기중',
+          answerDate: '2022.06.26',
+          inquiryDate: '2022.06.26'
+        },{
+          inquiryId: 4,
+          title: 'This page will help',
+          contents: 'ccccccccccccccccccccccc',
+          status: '답변완료',
+          answerDate: '2022.11.01',
+          inquiryDate: '2022.11.01'
         },
-        {
-          id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-          title: '자유게시판'
-        },
-        {
-          id: '58694a0f-3da1-471f-bd96-145571e29d72',
-          title: '일상이야기'
-        },
-        {
-            id: '1',
-            title: '임신정보'
-        },
-        {
-            id: '2',
-            title: '고민상담'
-        },
-        {
-            id: '3',
-            title: '질문게시판'
-        },
-        {
-            id: '4',
-            title: '질문게시판'
-        },
-    ];
+      ]);
+      console.log('info: ', info);
+
+    useEffect(()=>{
+        get();
+      });
+    
+      const get = async() => {
+        try{
+          const response = await axios.get('http://192.168.1.140:4000/test');
+          if(response.status === 200){
+              console.log('response: ', response.data);
+          }
+        }catch(error){
+          console.log('error: ', error);
+        }
+      }
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('공지사항2')}>
-           <Text>공지사항</Text>
-           <Text>2022/11/01</Text>
+        <TouchableOpacity style={styles.main} onPress={()=>navigation.navigate('공지사항2', item)}>
+           <Text style={{fontSize: 15, fontWeight: '600', marginBottom: 3, color: '#424242'}}>{item.title}</Text>
+            <Text style={{color: '#9E9E9E'}}>{item.inquiryDate}</Text>
         </TouchableOpacity>
       );
 
   return (
     <View style={styles.container}>
-        <View style={styles.header}></View>
-        <View style={styles.main}>
-        <FlatList data={DATA} renderItem={renderItem}
-          keyExtractor={item => item.id} >
+        <FlatList data={info} renderItem={renderItem}
+          keyExtractor={item => item.title} >
         </FlatList>
-        </View>
     </View>
   )
 }

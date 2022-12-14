@@ -8,34 +8,16 @@ const styles = StyleSheet.create({
     height: '91%',
     backgroundColor: 'white',
   },
-  header:{
-    height: 10,
-  },
-  header2:{
-    height: 50,
-    flexDirection: 'row',
-    backgroundColor: 'white',
-  },
-  header2FilterBox:{
-    width: '68%',
-    justifyContent: 'center',
-    paddingLeft: 20,
-  },
-  InputBox:{
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 0,
-  },
   main:{
     height: '90%',
-    padding: 10,
-    position: 'relative',
-    zIndex: -100,
+    padding: 15,
+    marginTop: 20,
   },
   mainBox:{
     width: '50%',
     height: 260,
     padding: 10,
+    opacity: 0.5,
   },
   imageBox:{
     height: '70%',
@@ -70,31 +52,6 @@ const styles = StyleSheet.create({
 
 const Talk3 = ({navigation}: any) => {
 
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba1',
-      title: '전체'
-    },
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba2',
-      title: '전체'
-    },
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba3',
-      title: '전체'
-    },
-  ];
-
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-        {label: '1', value: '1'},
-        {label: '2', value: '2'},
-        {label: '3', value: '3'},
-        {label: '4', value: '4'}
-  ]);
-  const Filter = ['최신순', '인기순', '추천순'];
-  const [filter, setFilter] = useState([true, false, false, false]);
   const [info, setInfo] = useState([ // 체험 게시판 테이블
     {
       experienceId: '1',
@@ -126,16 +83,10 @@ const Talk3 = ({navigation}: any) => {
     }
   ]);
 
-  const [info2, setInfo2] = useState([ // 체험단 신청 테이블
-    {
-      status: '0'
-    }
-  ])
-
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('체험단 상세페이지', item)}>
       <View style={styles.imageBox}>
-        <Image source={require('../../../../public/assets/testimage.png')} style={{width: '100%', height: '100%', borderRadius: 8}} />
+        <Image source={require('../../../../../public/assets/testimage.png')} style={{width: '100%', height: '100%', borderRadius: 8}} />
       </View>
       <View style={styles.contentBox}>
         <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>{item.applicationEndDate}일 남음</Text></View>
@@ -147,15 +98,6 @@ const Talk3 = ({navigation}: any) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}></View>
-      <View style={styles.header2}>
-        <View style={[styles.header2FilterBox, {paddingBottom: 5}]}><Text style={{fontSize: 16}}>0 건</Text></View>
-        <View style={[styles.header2FilterBox, {width: '32%'}]}>
-          <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순'
-              placeholderStyle={{color: '#9E9E9E', paddingLeft: 17, fontSize: 13}} textStyle={{fontSize: 15}} setOpen={setOpen} setValue={setValue} setItems={setItems}
-            />
-        </View>
-      </View>
       <View style={styles.main}>
         {info.length !== 0 ? <FlatList data={info} renderItem={renderItem} numColumns={2}
           keyExtractor={item => item.experienceId}>
