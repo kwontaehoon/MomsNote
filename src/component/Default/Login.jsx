@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, Button } from 'react-native'
 import Slick from 'react-native-slick'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import { WithLocalSvg } from "react-native-svg"
@@ -47,10 +47,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 })
-const Main = ({navigation}) => {
+const Main = ({navigation, route}) => {
     
+    const [code, setCode] = useState();
+    const client_id = '7d1cb1e652f5ee8aaffc2e7ce0547c9b';
+    console.log('code: ', code);
+    useEffect(()=>{
+        console.log('route: ', route);
+        if(route !== undefined){
+            setCode(route.params);
+        }
+    }, [route])
+
     const [googleToken, setGoogleToken] = useState([]);
-    console.log('googleToken: ', googleToken.token);
+    console.log('googleToken: ', googleToken);
 
     const [kakaoToken, setKakaoToken] = useState([]);
     console.log('kakaoToken: ', kakaoToken);
@@ -70,11 +80,7 @@ const Main = ({navigation}) => {
         if (response?.type === 'success') {
         const { authentication } = response;
         console.log('Google: ', authentication);
-        setGoogleToken((prevState) => ({
-            ...prevState,
-            sns: 'Google',
-            token: authentication.accessToken
-          }))
+        setGoogleToken(authentication.accessToken)
         }
     }, [response]);
 
@@ -137,6 +143,11 @@ const Main = ({navigation}) => {
                 <View style={styles.iconBox}><WithLocalSvg width={22} height={20} asset={apple}/></View>
                 <Text style={{color: 'white', fontWeight: '400'}}>Apple로 시작하기</Text>
             </TouchableOpacity>  */}
+            <Button
+        title="Open URL with an in-app browser"
+        onPress={() => WebBrowser.openBrowserAsync(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${client_id}&redirect_uri=http://192.168.1.140:19000&code=${code}`)}
+        style={styles.button}
+      />
         </View>
     </View>
   )
