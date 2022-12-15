@@ -21,7 +21,7 @@ const Main = ({navigation}) => {
     <WebView
       style={styles.container}
       injectedJavaScript={runFirst}
-      source={{ uri: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`}}
+      source={{ uri: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`}}
       onMessage={event => {
         const data = event.nativeEvent.url;
         console.log('Kakao: ', event.nativeEvent);
