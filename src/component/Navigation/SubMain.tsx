@@ -6,8 +6,6 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/SimpleLineIcons'
 import Icon3 from 'react-native-vector-icons/Feather'
 import Icon4 from 'react-native-vector-icons/AntDesign'
-import Icon5 from 'react-native-vector-icons/Feather'
-import Icon6 from 'react-native-vector-icons/Entypo'
 import Home from '../Home/Main'
 import Talk from '../Talk/Main'
 import Dday from '../Dday/Main'
@@ -56,15 +54,17 @@ function MainScreen() {
                     <Stack.Screen 
                         name="맘스톡"
                         component={Talk}
-                        options={{headerRight: () => (
+                        options={({ navigation, route }) => ({
+                          headerRight: () => (
                             <View style={styles.header}>
                                 <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-                                    <View style={styles.iconBox}><Icon4 name='search1' size={22}/></View>
-                                    <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
-                                    <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon4 name='search1' size={22} onPress={()=>navigation.navigate('검색')}/></View>
+                                    <View style={styles.iconBox}><Icon name='bell-o' size={22} onPress={()=>navigation.navigate('알림')}/></View>
+                                    <View style={styles.iconBox}><Icon name='user-o' size={22} onPress={()=>navigation.navigate('마이페이지')}/></View>
                                 </View>
                             </View>
-                        )}}
+                          ),
+                        })}
                         />
                </Stack.Navigator>   
             )}
@@ -76,16 +76,17 @@ function MainScreen() {
                     <Stack.Screen 
                         name="D-280"
                         component={Dday}
-                        options={{headerRight: () => (
+                        options={({ navigation, route }) => ({
+                          headerRight: () => (
                             <View style={styles.header}>
-                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-                                    <View style={styles.iconBox}><Icon4 name='search1' size={22}/></View>
-                                    <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
-                                    <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
-                                </View>
+                            <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
+                                <View style={styles.iconBox}><Icon4 name='search1' size={22} onPress={()=>navigation.navigate('검색')}/></View>
+                                <View style={styles.iconBox}><Icon name='bell-o' size={22} onPress={()=>navigation.navigate('알림')}/></View>
+                                <View style={styles.iconBox}><Icon name='user-o' size={22} onPress={()=>navigation.navigate('마이페이지')}/></View>
                             </View>
-                        )}}
-                        />
+                        </View>
+                          ),
+                        })}/>
                </Stack.Navigator>   
         )}
       </Tab.Screen>
@@ -109,19 +110,6 @@ function MainScreen() {
                             ),
                           })}
                         />
-                    <Stack.Screen 
-                        name="마이페이지"
-                        component={MyPage}
-                        options={({ navigation, route }) => ({
-                            headerRight: () => (
-                                <View style={styles.header}>
-                                    <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-                                        <View style={styles.iconBox}><Icon5 name='settings' size={22} onPress={()=>navigation.navigate('설정')}/></View>
-                                    </View>
-                                </View>
-                            ),
-                          })}
-                        />
                </Stack.Navigator>
                
           )}
@@ -141,9 +129,9 @@ function MainScreen() {
                                 <View style={styles.header}>
                                 <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
                                     <View style={styles.iconBox}><Icon4 name='download' size={22}/></View>
-                                    <View style={styles.iconBox}><Icon4 name='search1' size={22} onPress={()=>navigation.navigate('출산준비물 검색')}/></View>
-                                    <View style={styles.iconBox}><Icon name='bell-o' size={22} onPress={()=>navigation.navigate('출산준비물 알림')}/></View>
-                                    <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
+                                    <View style={styles.iconBox}><Icon4 name='search1' size={22} onPress={()=>navigation.navigate('검색')}/></View>
+                                    <View style={styles.iconBox}><Icon name='bell-o' size={22} onPress={()=>navigation.navigate('알림')}/></View>
+                                    <View style={styles.iconBox}><Icon name='user-o' size={22} onPress={()=>navigation.navigate('마이페이지')}/></View>
                                 </View>
                             </View>
                             ),
@@ -159,15 +147,17 @@ function MainScreen() {
                     <Stack.Screen 
                         name="맘스 정보"
                         component={Information}
-                        options={{headerRight: () => (
+                        options={({ navigation, route }) => ({
+                          headerRight: () => (
                             <View style={styles.header}>
-                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-                                    <View style={styles.iconBox}><Icon4 name='search1' size={22} onPress={()=>navigation.navigate('맘스톡 서치')}/></View>
-                                    <View style={styles.iconBox}><Icon name='bell-o' size={22}/></View>
-                                    <View style={styles.iconBox}><Icon name='user-o' size={22}/></View>
-                                </View>
+                            <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
+                                <View style={styles.iconBox}><Icon4 name='search1' size={22} onPress={()=>navigation.navigate('맘스톡 서치')}/></View>
+                                <View style={styles.iconBox}><Icon name='bell-o' size={22} onPress={()=>navigation.navigate('알림')}/></View>
+                                <View style={styles.iconBox}><Icon name='user-o' size={22} onPress={()=>navigation.navigate('마이페이지')}/></View>
                             </View>
-                        )}}
+                        </View>
+                          ),
+                        })}
                         />
                </Stack.Navigator>   
           )}

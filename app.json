@@ -23,7 +23,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./public/assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF",
+        "backgroundColor": "#FFFFFF"
       },
       "package": "com.android.test"
     },

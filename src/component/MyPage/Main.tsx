@@ -5,7 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 const styles = StyleSheet.create({
     container:{
-        height: '92%',
+        height: '100%',
         backgroundColor: 'white'
     },
     header:{
