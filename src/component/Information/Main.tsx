@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import Tab1 from './Tab1/Main'
 import Tab2 from './Tab2/Main'
+import Tab3 from './Tab3/Main'
+import Tab4 from './Tab4/Main'
 
 const styles = StyleSheet.create({
   container:{
@@ -16,6 +18,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   headerBox:{
+    width: '25%',
     alignItems: 'center',
     justifyContent: 'center',
     borderBottomWidth: 2,
@@ -55,32 +58,10 @@ const Information = ({navigation}) => {
     }
   ];
 
-  const Content = [{
-    id: '1',
-    content: '제목1'
-  },
-  {
-    id: '2',
-    content: '제목2'
-  },
-  {
-    id: '3',
-    content: '제목3'
-  },
-  {
-    id: '4',
-    content: '제목4'
-  },
-  {
-    id: '5',
-    content: '제목5'
-  }
-  ];
-
-  const [filter, setFilter] = useState([true, false]);
+  const [filter, setFilter] = useState([true, false, false, false]);
 
   const filter_func = (e) => {
-    let arr = [false, false];
+    let arr = Array.from({length: 4}, () => {return false})
     arr[e] = true;
     setFilter(arr);
   }
@@ -89,17 +70,25 @@ const Information = ({navigation}) => {
     switch(true){
         case filter[0] === true: return <Tab1 navigation={navigation}/>
         case filter[1] === true: return <Tab2 navigation={navigation}/>
+        case filter[2] === true: return <Tab3 navigation={navigation}/>
+        case filter[3] === true: return <Tab4 navigation={navigation}/>
       }
   }
 
   return (
     <View style={styles.container}>
         <View style={styles.header}>
-            <TouchableOpacity style={[styles.headerBox, {width: '50%', borderBottomColor: filter[0] ? 'orange' : '#BDBDBD'}]} onPress={()=>filter_func(0)}>
-                <Text style={{fontWeight: 'bold', fontSize: 18, color: filter[0] ? 'orange' : '#BDBDBD'}}>행사 정보</Text>
+            <TouchableOpacity style={[styles.headerBox, {borderBottomColor: filter[0] ? 'orange' : '#ECEFF1'}]} onPress={()=>filter_func(0)}>
+                <Text style={{fontWeight: 'bold', fontSize: 16, color: filter[0] ? 'orange' : '#BDBDBD'}}>맘스가이드</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.headerBox, {width: '50%', borderBottomColor: filter[1] ? 'orange' : '#BDBDBD'}]} onPress={()=>filter_func(1)}>
-                <Text style={{fontWeight: 'bold', fontSize: 18, color: filter[1] ? 'orange' : '#BDBDBD'}}>Q&A</Text>
+            <TouchableOpacity style={[styles.headerBox, {borderBottomColor: filter[1] ? 'orange' : '#ECEFF1'}]} onPress={()=>filter_func(1)}>
+                <Text style={{fontWeight: 'bold', fontSize: 16, color: filter[1] ? 'orange' : '#BDBDBD'}}>행사 정보</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.headerBox, {borderBottomColor: filter[2] ? 'orange' : '#ECEFF1'}]} onPress={()=>filter_func(2)}>
+                <Text style={{fontWeight: 'bold', fontSize: 16, color: filter[2] ? 'orange' : '#BDBDBD'}}>정부지원혜택</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.headerBox, {borderBottomColor: filter[3] ? 'orange' : '#ECEFF1'}]} onPress={()=>filter_func(3)}>
+                <Text style={{fontWeight: 'bold', fontSize: 16, color: filter[3] ? 'orange' : '#BDBDBD'}}>Q&A</Text>
             </TouchableOpacity>
         </View>
         <List navigation={navigation}/>

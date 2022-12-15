@@ -56,6 +56,24 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     scrollBox:{
+        position: 'absolute',
+        height: 200,
+        width: 278,
+        top: '51%',
+        left: '15%',
+        backgroundColor: 'white',
+        zIndex: 999,
+        shadowColor: "#000",
+        elevation: 5,
+        borderWidth: 1,
+        borderColor: '#EEEEEE'
+    },
+    listBox:{
+        height: 52,
+        justifyContent: 'center',
+        paddingLeft: 15,
+    },
+    scrollBox2:{
         width: 278,
         height: 242,
     },
@@ -72,7 +90,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    listBox:{
+    listBox2:{
         height: 52,
         flexDirection: 'row',
         backgroundColor: '#FAFAFA',
@@ -111,7 +129,7 @@ const styles = StyleSheet.create({
 
 })
 
-const CheckBoxModal = ({modalVisible8, setModalVisible8}) => {
+const CheckBoxModal = ({modalVisible9, setModalVisible9}) => {
 
     const DATA = [
         {
@@ -141,9 +159,18 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8}) => {
         }
     ];
 
-    const [title, setTitle] = useState('카테고리 선택(필수)');
-    const [titleDisplay, setTitleDisplay] = useState(false); // 품목 리스트 display
+    const [titleDisplay, setTitleDisplay] = useState(0); // 품목 리스트 display
     const [isChecked, setChecked] = useState(Array.from({length: DATA.length}, ()=>{ return false })); // check box
+    const [info, setInfo] = useState({
+        title: '카테고리 선택(필수)',
+        content: ''
+    })
+
+    const submit = async() => {
+        await axios.post(`http://192.168.1.140:4000/post/test`, {
+            info: info
+        })
+    }
 
     const change = (e) => { // check box
         let arr = [...isChecked];
@@ -159,8 +186,22 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8}) => {
         }
     }
 
+    const filter = () => {
+        switch(titleDisplay){
+            case 0: setTitleDisplay(1); return;
+            case 1: setTitleDisplay(0); return;
+            case 2: setTitleDisplay(1); return;
+        }
+    }
+
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.listBox} onPress={()=>{setTitle(item.title), setTitleDisplay(false)}}>
+        <TouchableOpacity style={styles.listBox} onPress={()=>{setInfo((prevState) => ({ ...prevState, title: item.title})), setTitleDisplay(2)}}>
+            <Text>{item.title}</Text>
+        </TouchableOpacity>
+    );
+
+    const renderItem2 = ({ item }) => (
+        <TouchableOpacity style={styles.listBox2} onPress={()=>{setInfo((prevState) => ({ ...prevState, title: item.title}))}}>
             <View style={styles.listContent}>
             <Checkbox
               style={styles.checkbox}
@@ -173,33 +214,39 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8}) => {
     );
 
     const arrowIcon = () => {
-        return titleDisplay ? <Icon2 name='angle-down' size={22}/> : <Icon2 name='angle-up' size={22}/>
+        if(titleDisplay !== 1){return(<Icon2 name='angle-down' size={22}/>)
+        }else return(<Icon2 name='angle-up' size={22}/>)
     }
     
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modalVisible8}
+    <Modal animationType="fade" transparent={true} visible={modalVisible9}
             onRequestClose={() => {
-            setModalVisible8(!modalVisible8)}}>
+            setModalVisible9(!modalVisible9)}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
+                <View style={[styles.scrollBox, {display: titleDisplay === 1 ? 'flex' : 'none'}]}>
+                    <FlatList data={DATA} renderItem={renderItem}
+                        keyExtractor={item => item.id}>
+                    </FlatList>
+                </View>
                     <View style={[styles.modalContainer2]}>
                     <View style={styles.header}>
-                <TouchableOpacity style={styles.closeBox} onPress={()=>setModalVisible8(!modalVisible8)}><Icon name='close' size={24}/></TouchableOpacity>
+                <TouchableOpacity style={styles.closeBox} onPress={()=>setModalVisible9(!modalVisible9)}><Icon name='close' size={24}/></TouchableOpacity>
                  <Text style={{color: '#212121', fontSize: 18, fontWeight: '500'}}>품목 삭제</Text>
             </View>
             <View style={styles.main}>
-                <View style={styles.mainBox}>
-                    <TouchableOpacity style={styles.arrowBox} onPress={()=>setTitleDisplay(!titleDisplay)}>{arrowIcon()}</TouchableOpacity>
-                    <Text>{title}</Text>
-                </View>
+                <TouchableOpacity style={styles.mainBox} onPress={filter}>
+                    <View style={styles.arrowBox}>{arrowIcon()}</View>
+                    <Text>{info.title}</Text>
+                </TouchableOpacity>
 
-                <View style={[styles.scrollBox, {display: titleDisplay ? 'flex' : 'none'}]}>
+                <View style={[styles.scrollBox2, {display: titleDisplay === 2 ? 'flex' : 'none'}]}>
                     <View style={styles.listTitle}>
                         <View style={styles.listTitleBox}><Text>선택</Text></View>
                         <View style={[styles.listTitleBox, {width: '75%'}]}><Text>품목</Text></View>
                     </View>
-                    <FlatList data={DATA} renderItem={renderItem}
+                    <FlatList data={DATA} renderItem={renderItem2}
                         keyExtractor={item => item.id}>
                     </FlatList>
                 </View>

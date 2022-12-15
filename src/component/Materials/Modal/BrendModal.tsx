@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/Ionicons'
 import DropDownPicker from 'react-native-dropdown-picker'
+import axios from 'axios'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -122,6 +123,15 @@ const Main = ({modalVisible2, setModalVisible2, navigation}) => {
         },
     ];
 
+    
+    const [info, setInfo] = useState([
+        {
+            needsBrandId: 1,
+            brandName: '',
+            productName: '',
+            price: '',
+        }
+    ])
     const renderItem = ({ item }) => (
         <View style={styles.mainBox}>
            

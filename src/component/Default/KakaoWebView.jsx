@@ -25,22 +25,21 @@ const Main = ({navigation}) => {
       onMessage={event => {
         const data = event.nativeEvent.url;
         console.log('Kakao: ', event.nativeEvent);
-        const exp = 'code=';
-        const error = 'error=';
         console.log('data: ', data);
-        console.log(typeof(data));
-        const condition = data.indexOf(exp);
-        console.log('condition', condition);
-        // const condition2 = data.indexOf(error);
-        // console.log('condition2: ', condition2);
+        let error = '';
+        let condition = '';
 
-        // if (condition !== -1) {   
-        //     console.log(data.substring(condition + exp.length));
-        //     navigation.navigate('로그인 페이지', data.substring(condition + exp.length));
+        if(data !== null){
+          condition = data.indexOf('code=');
+          error = data.indexOf('error=');
+        }
+      
+        if (data !== null && condition !== -1) {   
+            navigation.navigate('로그인 페이지', data.substring(condition + 5));
 
-        // }else if(condition2 !== -1){
-        //     navigation.goBack();
-        // }
+        }else if(error !== -1){
+            navigation.goBack();
+        }
        
       }}
     />

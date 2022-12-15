@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, FlatList } 
 import Icon from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
+import axios from 'axios'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
         borderColor: '#EEEEEE',
         borderWidth: 1,
         justifyContent: 'center',
-        paddingLeft: 15
+        paddingLeft: 15,
     },
     arrowBox:{
         position: 'absolute',
@@ -59,13 +60,16 @@ const styles = StyleSheet.create({
         position: 'absolute',
         height: 200,
         width: 278,
-        top: '47%',
+        top: '46.5%',
         left: '15%',
         backgroundColor: 'white',
-        zIndex: 999
+        zIndex: 999,
+        shadowColor: "#000",
+        elevation: 5,
+        borderWidth: 1,
+        borderColor: '#EEEEEE'
     },
     listBox:{
-        borderWidth: 1,
         height: 52,
         justifyContent: 'center',
         paddingLeft: 15,
@@ -124,12 +128,22 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8}) => {
         }
     ];
 
-    const [title, setTitle] = useState('카테고리 선택(필수)');
     const [titleDisplay, setTitleDisplay] = useState(false); // 품목 리스트 display
-    console.log(titleDisplay);
+    const [info, setInfo] = useState({
+        title: '카테고리 선택(필수)',
+        content: ''
+    })
+    console.log('title: ', info.title);
+    console.log('content: ', info.content.length);
+
+    const submit = async() => {
+        await axios.post(`http://192.168.1.140:4000/post/test`, {
+            info: info
+        })
+    }
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.listBox} onPress={()=>{setTitle(item.title), setTitleDisplay(false)}}>
+        <TouchableOpacity style={styles.listBox} onPress={()=>{setInfo((prevState) => ({ ...prevState, title: item.title})), setTitleDisplay(false)}}>
             <Text>{item.title}</Text>
         </TouchableOpacity>
     );
@@ -157,16 +171,23 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8}) => {
                             <Text style={{color: '#212121', fontSize: 18, fontWeight: '500'}}>품목 추가</Text>
                         </View>
                         <View style={styles.main}>
-                            <View style={styles.mainBox}>
-                                <TouchableOpacity style={styles.arrowBox} onPress={()=>setTitleDisplay(!titleDisplay)}>{arrowIcon()}</TouchableOpacity>
-                                <Text>{title}</Text>
-                            </View>
+                            <TouchableOpacity style={styles.mainBox} onPress={()=>setTitleDisplay(!titleDisplay)}>
+                                <View style={styles.arrowBox}>{arrowIcon()}</View>
+                                <Text>{info.title}</Text>
+                            </TouchableOpacity>
                             <View style={{height: 10}}></View>
-                            <TextInput style={[styles.mainBox, {paddingLeft: 15, position: 'relative', zIndex: -999}]} placeholder='품목 명' placeholderTextColor={'#9E9E9E'}></TextInput>
+                            <TextInput style={[styles.mainBox, {paddingLeft: 15, position: 'relative', zIndex: -999}]} placeholder='품목 명' placeholderTextColor={'#9E9E9E'}
+                                onChangeText={(e) => setInfo((prevState) => ({ ...prevState, content: e}))}></TextInput>
                         </View>
-                        <View style={[styles.footer, {backgroundColor: '#E0E0E0'}]}>
-                            <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>추가하기</Text>
-                        </View>
+                        {info.title !== '카테고리 선택(필수)' && info.content.length !== 0 ?
+                            <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>setModalVisible8(!modalVisible8)}>
+                                <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>추가하기</Text>
+                            </TouchableOpacity> : 
+                            
+                            <View style={[styles.footer, {backgroundColor: '#E0E0E0'}]}>
+                                <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>추가하기</Text>
+                            </View>
+                        }
                     </View>
                 </View>
             </View>

@@ -10,7 +10,6 @@
       "image": "./public/assets/splash.png",
       "resizeMode": "cover"
     },
-    // "plugins": ["expo-apple-authentication"],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -25,10 +24,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./public/assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF",
-      }
+      },
+      "package": "com.android.test"
     },
     "web": {
       "favicon": "./public/assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e04d238e-ab3e-4716-a437-d9b984254c03"
+      }
     }
   }
 }

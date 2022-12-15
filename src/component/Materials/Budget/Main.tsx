@@ -7,21 +7,13 @@ const styles = StyleSheet.create({
     container:{
         borderWidth: 1,
         height: '100%',
-        backgroundColor: 'white'
-    },
-    header:{
-      borderWidth: 1,
-      backgroundColor: '#F5F5F5',
-      height: 10,
     },
     main:{
-      borderWidth: 1,
+      paddingTop: 10,
       height: '70%',
+      backgroundColor: 'white'
     },
-    container2:{
-      borderWidth: 1,
-    },
-    header2:{
+    mainBox:{
       height: 50,
       backgroundColor: 'yellow',
       justifyContent: 'center',
@@ -30,76 +22,87 @@ const styles = StyleSheet.create({
     arrowBox:{
       position: 'absolute',
       right: 15,
-      borderWidth: 1,
       width: 30,
       height: 30,
+      alignItems: 'center',
+      justifyContent: 'center'
     },
     main2:{
-      backgroundColor: 'pink',
+      backgroundColor: 'green',
       flexDirection: 'row'
     },
     main2Box:{
       borderWidth: 1,
-      height: 100
+      height: 40
     },
+    main2Box2:{
 
+    },
     footer:{
       borderWidth: 1,
-      height: '29%',
+      height: '30%',
     },
 })
 const Talk1Sub = () => {
 
-    const DATA = [
-        {
-          id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-          title: '전체'
-        },
-        {
-          id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba2',
-          title: '전체2'
-        },
-    ];
+  const DATA = [
+    {
+      id: '0',
+      title: '산모용품 (0/13)',
+      color: '#FFADAD',
+      icon: 'material1'
+    },
+    {
+      id: '1',
+      title: '수유용품 (0/13)',
+      color: '#FFD6A5'
+    },
+    {
+      id: '2',
+      title: '위생용품 (0/13)',
+      color: '#FFADAD'
+    },
+    {
+      id: '3',
+      title: '목욕용품 (0/13)',
+      color: '#FFADAD'
+    },
+    {
+      id: '4',
+      title: '침구류 (0/13)',
+      color: '#FFADAD'
+    },
+    {
+      id: '5',
+      title: '아기용품 (0/13)',
+      color: '#FFADAD'
+    },
+    {
+      id: '6',
+      title: '발육용품 (0/13)',
+      color: '#FFADAD'
+    },
+    {
+      id: '7',
+      title: '가전용품 (0/13)',
+      color: '#FFADAD'
+    },
 
-    const DATA2 = [
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba1',
-        title: '전체'
-      },
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba2',
-        title: '전체2'
-      },
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba3',
-        title: '전체2'
-      },
   ];
 
     const renderItem = ({ item }) => (
-      <View style={styles.container2}>
-          <View style={styles.header2}>
-              <View style={styles.arrowBox}></View>
-              <Text>산모용품 (5/13)</Text>
+      <View>
+          <View style={[styles.mainBox, {backgroundColor: item.color}]}>
+              <View style={styles.arrowBox}><Icon name='angle-down' size={22}/></View>
+              <Text style={{fontSize: 15}}>{item.title}</Text>
           </View>
-          <View style={styles.main2}>
-            <FlatList data={DATA2} renderItem={renderItem2}
-                keyExtractor={item => item.id}>
-            </FlatList>
-          </View>
-      </View>
-    );
-
-    const renderItem2 = ({ item }) => (
-      <View style={styles.main2Box}>
-          
       </View>
     );
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}></View>
       <View style={styles.main}>
+        <View></View>
         <FlatList data={DATA} renderItem={renderItem}
               keyExtractor={item => item.id}>
         </FlatList>

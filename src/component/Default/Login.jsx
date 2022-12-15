@@ -11,6 +11,7 @@ import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
 import * as AppleAuthentication from 'expo-apple-authentication'
 import * as Linking from 'expo-linking';
+import axios from 'axios'
 
 
 const styles = StyleSheet.create({
@@ -49,15 +50,23 @@ const styles = StyleSheet.create({
 })
 const Main = ({navigation, route}) => {
     
-    const [code, setCode] = useState();
     const client_id = '7d1cb1e652f5ee8aaffc2e7ce0547c9b';
-    console.log('code: ', code);
     useEffect(()=>{
-        console.log('route: ', route);
         if(route !== undefined){
-            setCode(route.params);
+            get();
         }
     }, [route])
+
+    const get = async() => {
+        try{
+            const response = await axios.get(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${client_id}&redirect_uri=http://192.168.1.140:19000&code=${route.params}`);
+            if(response.status === 200){
+                console.log('response: ', response.data.id_token);
+            }
+        }catch(error){
+            console.log('error: ', error);
+        }
+    }
 
     const [googleToken, setGoogleToken] = useState([]);
     console.log('googleToken: ', googleToken);
@@ -78,9 +87,9 @@ const Main = ({navigation, route}) => {
 
     React.useEffect(() => {
         if (response?.type === 'success') {
-        const { authentication } = response;
-        console.log('Google: ', authentication);
-        setGoogleToken(authentication.accessToken)
+            const { authentication } = response;
+            console.log('Google: ', authentication);
+            setGoogleToken(authentication.accessToken)
         }
     }, [response]);
 
@@ -143,11 +152,6 @@ const Main = ({navigation, route}) => {
                 <View style={styles.iconBox}><WithLocalSvg width={22} height={20} asset={apple}/></View>
                 <Text style={{color: 'white', fontWeight: '400'}}>Apple로 시작하기</Text>
             </TouchableOpacity>  */}
-            <Button
-        title="Open URL with an in-app browser"
-        onPress={() => WebBrowser.openBrowserAsync(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${client_id}&redirect_uri=http://192.168.1.140:19000&code=${code}`)}
-        style={styles.button}
-      />
         </View>
     </View>
   )

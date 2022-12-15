@@ -39,6 +39,7 @@ import KakaoWebView from '../Default/KakaoWebView'
 import DdayDetail from '../Dday/Tab1/Detail'
 import DdayDetail2 from '../Dday/Tab2/Detail'
 import Experience from '../MyPage/Experience/Main'
+import Info2Detail from '../Information/Tab2/Detail'
 
 LogBox.ignoreAllLogs();
 
@@ -138,6 +139,7 @@ const Navigation = () => {
             <Stack.Screen name="오늘의편지 상세페이지" component={DdayDetail} options={{title: ''}}/>
             <Stack.Screen name="이시기에는 상세페이지" component={DdayDetail2} options={{title: ''}}/>
             <Stack.Screen name="신청한 체험단" component={Experience}/>
+            <Stack.Screen name="행사정보 상세페이지" component={Info2Detail} options={{title: ''}}/>
         </Stack.Navigator>
       </NavigationContainer>
   )

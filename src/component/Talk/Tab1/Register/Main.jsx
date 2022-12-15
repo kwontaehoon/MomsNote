@@ -182,8 +182,6 @@ const styles = StyleSheet.create({
 })
 const Register = ({navigation}) => {
 
-    const content = ['카테고리를 선택해주세요.', '제목을 입력해주세요.', '게시글 내용을 입력해주세요.', '이미지는 최대 7장 업로드 가능합니다.', '동영상은 최대 1개만 업로드 가능합니다.'];
-
     const DATA = [
         {
           id: '0',
