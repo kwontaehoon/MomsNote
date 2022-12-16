@@ -63,9 +63,11 @@ const styles = StyleSheet.create({
         position: 'absolute',
         borderWidth: 1,
         backgroundColor: 'green',
-        width: 300,
+        width: '90%',
         height: 300,
         zIndex: 999,
+        left: '5%',
+        top: '10%'
     },
     mainBox4:{
         height: 30,
@@ -81,7 +83,7 @@ const styles = StyleSheet.create({
     },
     list2:{
         borderWidth: 1,
-        height: 60,
+        height: 80,
     },
     listFooter:{
         borderWidth: 1,
@@ -187,11 +189,7 @@ const Talk1Sub = ({route}) => {
                             </View>
                         </View>
 
-                        {/* <View style={styles.listMain}>
-                            <FlatList data={DATA2} renderItem={renderItem2}
-                                keyExtractor={item => item.id}>
-                            </FlatList>
-                        </View> */}
+                        
 
                         {/* <View style={[styles.listHeader, {height: 70, backgroundColor: '#FFADAD', alignItems: 'flex-start'}]}>
                             <View style={styles.arrowBox}><Icon name='angle-down' size={22}/></View>
@@ -240,6 +238,11 @@ const Talk1Sub = ({route}) => {
 
   return (
     <View style={styles.container}>
+        <View style={styles.listMain}>
+            <FlatList data={DATA2} renderItem={renderItem2}
+                keyExtractor={item => item.id}>
+            </FlatList>
+        </View>
         <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id}>
         </FlatList>

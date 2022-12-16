@@ -2,10 +2,6 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
-import DeleteModal from './Modal/DeleteModal'
-import ShareModal from './Modal/ShareModal'
-import ShareModal2 from './Modal/ShareModal2'
-import ConfirmModal from './Modal/ConfirmModal'
 
 const styles = StyleSheet.create({
     container:{
@@ -114,11 +110,6 @@ const Talk1Sub = () => {
 
   const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
   console.log('list: ', list);
-  const [modalVisible, setModalVisible] = useState(false); // 품목 삭제
-  const [modalVisible2, setModalVisible2] = useState(false); // 공유 확인 유무 
-  const [modalVisible3, setModalVisible3] = useState(true); // 공유 작성
-  const [modalVisible4, setModalVisible4] = useState(false); // 공유 등록 확인
-
 
   const arrow = (e) => { // arrow 누르면 서브페이지 display
     let arr = [...list];
@@ -162,11 +153,6 @@ const Talk1Sub = () => {
 
   return (
     <View style={styles.container}>
-
-      <DeleteModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
-      <ShareModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} />
-      <ShareModal2 modalVisible3={modalVisible3} setModalVisible3={setModalVisible3} />
-      <ConfirmModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} />
 
       <View style={styles.main}>
         <View></View>

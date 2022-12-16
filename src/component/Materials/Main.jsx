@@ -15,6 +15,7 @@ import ResetModal2 from './Modal/ResetModal2'
 import DotModal from './Modal/DotModal'
 import AddModal from './Modal/AddModal'
 import DeleteModal from './Modal/DeleteModal'
+import Filter from './Modal/Filter'
 import { WithLocalSvg } from "react-native-svg"
 import material1 from '../../../public/assets/svg/material1.svg'
 import Red from '../../../public/assets/svg/Red.svg'
@@ -218,7 +219,8 @@ const Navigation = ({navigation, route}) => {
   const [modalVisible6, setModalVisible6] = useState(false); // 추천 리스트 변경 확인 모달
   const [modalVisible7, setModalVisible7] = useState(false); // 더보기
   const [modalVisible8, setModalVisible8] = useState(false); // 품목 추가
-  const [modalVisible9, setModalVisible9] = useState(true); // 품목 삭제
+  const [modalVisible9, setModalVisible9] = useState(false); // 품목 삭제
+  const [modalVisible10, setModalVisible10] = useState(true); // 정렬
 
   const arrow = (e) => { // arrow 누르면 서브페이지 display
     let arr = [...list];
@@ -325,6 +327,7 @@ const Navigation = ({navigation, route}) => {
         <DotModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible7={modalVisible7} setModalVisible7={setModalVisible7}/>
         <AddModal modalVisible8={modalVisible8} setModalVisible8={setModalVisible8}/>
         <DeleteModal modalVisible9={modalVisible9} setModalVisible9={setModalVisible9}/>
+        <Filter modalVisible10={modalVisible10} setModalVisible10={setModalVisible10} />
         
         
         <FlatList data={DATA3} renderItem={renderItem3}

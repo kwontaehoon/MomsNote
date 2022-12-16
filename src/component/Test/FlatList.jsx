@@ -19,9 +19,13 @@ const styles = StyleSheet.create({
     mainBox:{
         borderWidth: 1,
         width: '50%',
+        overflow: 'hidden',
+        position: 'relative',
+        zIndex: 999
     },
     mainBox2:{
         width: 100,
+        height: 100,
         borderWidth: 1,
     },
     footer:{
@@ -114,13 +118,6 @@ const Main = ({navigation}) => {
         <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
         </FlatList>
-
-        <View style={styles.scrollBox}>
-
-                <FlatList data={DATA2} renderItem={renderItem3}
-                    keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
-                </FlatList>
-        </View>
     </View>
   )
 }

@@ -41,6 +41,7 @@ import Experience from '../MyPage/Experience/Main'
 import Info2Detail from '../Information/Tab2/Detail'
 import MyPage from '../MyPage/Main'
 import Alarm from '../Navigation/Alarm'
+import Compare from '../Talk/Tab2/Compare'
 
 
 LogBox.ignoreAllLogs();
@@ -113,6 +114,7 @@ const Navigation = () => {
             <Stack.Screen name="체험단 상세페이지" component={Talk3Detail} options={{title: ''}}/>
             <Stack.Screen name="출산리스트 공유 상세내용" component={Talk2Detail} options={{title: ''}}/>
             <Stack.Screen name="출산리스트 공유 등록" component={Talk2Register} options={{title: '', headerShown: false}}/>
+            <Stack.Screen name="출산리스트 비교" component={Compare}/>
             <Stack.Screen name="출산리스트" component={Categoires}/>
             <Stack.Screen name="신청 정보" component={Apply}  options={{title: '', headerShown: false}}/>
             <Stack.Screen name="주소 찾기" component={Post}  options={{title: ''}}/>

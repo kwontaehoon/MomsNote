@@ -47,13 +47,13 @@ function MainScreen() {
 
 
   return (
-    <Tab.Navigator initialRouteName='홈' screenOptions={{ headerShown: false, tabBarStyle:{ height: 60, position: 'absolute', paddingBottom: 7}, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
+    <Tab.Navigator initialRouteName='맘스 톡' screenOptions={{ headerShown: false, tabBarStyle:{ height: 60, position: 'absolute', paddingBottom: 7}, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
       <Tab.Screen name="맘스 톡" options={{tabBarIcon: ({color}) => (<Icon3 name='message-square' size={22} color={color}/>)}}>
           {()=>(
                <Stack.Navigator>
                     <Stack.Screen 
                         name="맘스톡"
-                        component={Talk}
+                        component={FlatList}
                         options={({ navigation, route }) => ({
                           headerRight: () => (
                             <View style={styles.header}>
@@ -70,7 +70,7 @@ function MainScreen() {
             )}
           </Tab.Screen>
 
-          <Tab.Screen name="Dday" options={{tabBarIcon: ({color}) => (<Icon name='calendar-o' size={22} color={color}/>)}}>
+          <Tab.Screen name="D-260" options={{tabBarIcon: ({color}) => (<Icon name='calendar-o' size={22} color={color}/>)}}>
         {()=>(
                <Stack.Navigator>
                     <Stack.Screen 
