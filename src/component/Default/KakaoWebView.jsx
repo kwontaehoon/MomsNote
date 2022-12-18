@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
 const Main = ({navigation}) => {
 
     const REST_API_KEY = '7d1cb1e652f5ee8aaffc2e7ce0547c9b'
-    const REDIRECT_URI = 'http://192.168.1.140:19000'
+    // const REDIRECT_URI = 'http://192.168.1.140:19000'
+    const REDIRECT_URI = 'http://192.168.219.102:19000'
 
     const runFirst = `window.ReactNativeWebView.postMessage("this is message from web")`;
 

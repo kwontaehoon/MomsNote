@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal } from 'react-native'
+import Google from '../../../public/assets/svg/google.svg';
+import Chat from '../../../public/assets/svg/Chat.svg';
 
 const styles = StyleSheet.create({
     container:{
@@ -88,7 +90,10 @@ const Main = ({navigation}) => {
 
     const renderItem = ({ item }) => (
         <View>
-            <View style={styles.header}></View>
+            <View style={styles.header}>
+                <Google width={50} height={50} fill={'red'}/>
+                <Chat width={200} height={200} fill={'blue'} />
+            </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}></View>
                 <View style={styles.mainBox}>

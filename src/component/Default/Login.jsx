@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, Button } 
 import Slick from 'react-native-slick'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import { WithLocalSvg } from "react-native-svg"
-import kakao from '../../../public/assets/svg/kakao.svg'
-import apple from '../../../public/assets/svg/apple.svg'
-import google from '../../../public/assets/svg/google.svg'
+import Kakao from '../../../public/assets/svg/kakao.svg'
+import Apple from '../../../public/assets/svg/apple.svg'
+import GoogleIcon from '../../../public/assets/svg/google.svg'
 import Logo from '../../../public/assets/svg/Logo.svg'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
@@ -58,6 +58,7 @@ const Main = ({navigation, route}) => {
     }, [route])
 
     const get = async() => {
+        console.log('get');
         try{
             const response = await axios.get(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${client_id}&redirect_uri=http://192.168.1.140:19000&code=${route.params}`);
             const response2 = await axios.get(`https://kapi.kakao.com/v1/user/access_token_info`, {
@@ -142,20 +143,20 @@ const Main = ({navigation, route}) => {
   return (
     <View style={styles.container}>
         <View style={styles.header}>
-            <WithLocalSvg width={230} height={112} asset={Logo}/>
+            <Logo width={230} height={112}/>
         </View>
         <View style={styles.footer}>
             <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#FEE500'}]} onPress={()=>navigation.navigate('카카오 로그인')}>
-                <View style={styles.iconBox}><WithLocalSvg width={22} height={20} asset={kakao}/></View>
+                <View style={styles.iconBox}><Kakao width={22} height={20}/></View>
                 <Text style={{color: '#212121', fontWeight: '400'}}>카카오톡으로 시작하기</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#FFFFFF'}]} onPress={()=>promptAsync()}>
-                <View style={styles.iconBox}><WithLocalSvg width={22} height={20} asset={google}/></View>
+                <View style={styles.iconBox}><GoogleIcon width={22} height={20}/></View>
                 <Text style={{color: '#212121', fontWeight: '400'}}>Google로 시작하기</Text>
             </TouchableOpacity>
             <IosLogin />
             {/* <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#000000'}]}>
-                <View style={styles.iconBox}><WithLocalSvg width={22} height={20} asset={apple}/></View>
+                <View style={styles.iconBox}><Apple width={22} height={20}/></View>
                 <Text style={{color: 'white', fontWeight: '400'}}>Apple로 시작하기</Text>
             </TouchableOpacity>  */}
         </View>
