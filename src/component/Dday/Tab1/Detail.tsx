@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         width: '40%',
         alignItems: 'flex-end',
         justifyContent: 'center',
-        paddingRight: 20,
+        paddingRight: 20
     },
     mainBox4:{
         height: 200
