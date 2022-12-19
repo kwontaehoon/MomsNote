@@ -42,9 +42,7 @@ const AxiosPost = () => {
     }
 
     const req4 = async() => {
-        var data = JSON.stringify({
-            "sort": "개인정보처리방침"
-          });
+        var data = {sort: "개인정보처리방침"};
           
           var config = {
             method: 'get',
@@ -65,8 +63,8 @@ const AxiosPost = () => {
     }
 
     const req5 = async() => {
-        console.log('req4');
-        var data = JSON.stringify({
+        console.log('req5');
+        const data = JSON.stringify({
             "username": "google_1234567890"
           });
           
@@ -87,13 +85,32 @@ const AxiosPost = () => {
             console.log(error);
           });
     }
+    
+    const req6 = async() => {
+      console.log('req6');
+      const data = { username: "google_1234567890" };
+
+      await axios({
+        method: 'post',
+        url: 'https://momsnote.net/login',
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        data : data
+    }).then(function(response){
+        console.log(response.data);
+    }).catch((error) => {
+        console.log('error: ', error);
+    })
+    }
   return (
     <View style={{marginTop: 40}}>
         <Button title='Query' onPress={req}></Button>
         <Button title='Body' onPress={req2}></Button>
         <Button title='Get' onPress={req3}></Button>
         <Button title='Get2' onPress={req4}></Button>
-        <Button title='테스트' onPress={req5}></Button>
+        <Button title='postman 코드' onPress={req5}></Button>
+        <Button title='postman 응용' onPress={req6}></Button>
     </View>
   )
 }

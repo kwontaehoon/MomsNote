@@ -50,35 +50,10 @@ const styles = StyleSheet.create({
 })
 const Main = ({navigation, route}) => {
     
-    const client_id = '7d1cb1e652f5ee8aaffc2e7ce0547c9b';
-    useEffect(()=>{
-        if(route !== undefined){
-            get();
-        }
-    }, [route])
-
-    const get = async() => {
-        console.log('get');
-        try{
-            const response = await axios.get(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${client_id}&redirect_uri=http://192.168.1.140:19000&code=${route.params}`);
-            console.log(response.data);
-            const response2 = await axios.get(`https://kapi.kakao.com/v1/user/access_token_info`, {
-                 headers: `Authorization: Bearer ${response.data.access_token}`
-            })
-            console.log('response2: ', response2.data);
-            setKakaoToken(response2.data.id);
-            if(response.status === 200 && response2.status === 200){
-               console.log('success');
-            }
-        }catch(error){
-            console.log('error: ', error);
-        }
-    }
-
 
     const [googleToken, setGoogleToken] = useState([]);
     console.log('googleToken: ', googleToken);
-
+    
     const [kakaoToken, setKakaoToken] = useState([]);
     console.log('kakaoToken: ', kakaoToken);
 
@@ -96,13 +71,20 @@ const Main = ({navigation, route}) => {
     React.useEffect(() => {
         if (response?.type === 'success') {
             const { authentication } = response;
-            console.log('Google: ', authentication);
-            setGoogleToken(authentication.accessToken);
-
-            // https://www.googleapis.com/oauth2/v3/userinfo?access_token=''
-            
+            // console.log('Google: ', authentication);
+            GoogleGetId(authentication.accessToken);
         }
     }, [response]);
+
+    const GoogleGetId = async(googleAccessToken) => {
+        await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${googleAccessToken}`) 
+        .then(function(response){
+            setGoogleToken(response.data.sub);
+            navigation.navigate('추가 정보 입력', ['google', response.data.sub]);
+        }).catch(function(error){
+            console.log('error');
+        })
+    }
 
     const IosLogin = () => {
         if(Platform.OS === 'ios'){

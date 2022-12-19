@@ -13,7 +13,7 @@ export const getList = createAsyncThunk("counterSlice/async", async () => {
 
 // export const getMomsTalk = createAsyncThunk("counterSlice/async", async () => {
 //   try{
-//     const response = await axios.get('http://192.168.219.106:4000/test');
+//     const response = await axios.get('https://momsnote.net/api/board/list');
 //     return response.data;
 //   }catch(error){
 //     console.log('error: ', error);

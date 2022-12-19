@@ -5,14 +5,14 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/Feather'
 import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
-import { WithLocalSvg } from "react-native-svg"
+import axios from 'axios'
 
 import MainImage from '../../../public/assets/svg/main.svg'
 
 import { useIsFocused } from '@react-navigation/native'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { getList } from '../../Redux/Slices/CounterSlice'
+import { getBoard } from '../../Redux/Slices/BoardSlice'
 
 
 const styles = StyleSheet.create({
@@ -245,13 +245,13 @@ const Home = ({navigation}) => {
         },
     ];
 
-    const count = useSelector(state => { return state.counter.data; });
+    const count = useSelector(state => { return state.board.data; });
     console.log('count: ', count);
     const dispatch = useDispatch();
     
     useEffect(()=>{
         console.log('useEffect');
-        dispatch(getList());
+        dispatch(getBoard());
     }, []);
 
     useEffect(()=>{

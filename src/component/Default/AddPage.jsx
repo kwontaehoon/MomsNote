@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         borderRadius: 3,
     }
 })
-const AddPage = ({navigation}) => {
+const AddPage = ({navigatio, route}) => {
 
     const DATA = [
         {
@@ -93,6 +93,9 @@ const AddPage = ({navigation}) => {
         },
     ];
 
+    console.log('route: ', route.params[0]);
+    console.log('route: ', route.params[1]);
+
     const [isChecked, setChecked] = useState(Array.from({length: 4}, ()=>{return false})); // check box
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
 
@@ -100,13 +103,13 @@ const AddPage = ({navigation}) => {
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const [info, setInfo] = useState({
-        username: 'google_1234567890',
+        username: `${route.params[0]}_${route.params[1]}`,
         nickname: '11',
         email: '11',
         dueDate: '11',
         babyName: '11',
         provider: '11',
-        providerId: '1234567890',
+        providerId: `${route.params[1]}`,
         marketingFlage: '1'
     })
     console.log('info: ', info);
