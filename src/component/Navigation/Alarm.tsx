@@ -5,7 +5,9 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 const Main = () => {
   return (
-    <View></View>
+    <View>
+      <Text>알림</Text>
+    </View>
   )
 }
 

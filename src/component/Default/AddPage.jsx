@@ -77,11 +77,10 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     footerBox:{
-        width: '90%',
+        width: '100%',
         height: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#FEA100',
         borderRadius: 3,
     }
 })
@@ -97,25 +96,35 @@ const AddPage = ({navigation}) => {
     const [isChecked, setChecked] = useState(Array.from({length: 4}, ()=>{return false})); // check box
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
 
-    const [date, setDate] = useState(new Date(1598051730000));
-    const [date2, setDate2] = useState('');
-    console.log('date2: ', date2);
+    const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
+    const [info, setInfo] = useState({
+        username: 'google_1234567890',
+        nickname: '11',
+        email: '11',
+        dueDate: '11',
+        babyName: '11',
+        provider: '11',
+        providerId: '1234567890',
+        marketingFlage: '1'
+    })
+    console.log('info: ', info);
+
+    const submit = async() => {
+        await axios.post(`http://momsnote.net/signup`, {
+            info: info
+        })
+    }
 
     const onChange = (event, selectedDate) => {
-        console.log('selectDate: ', selectedDate);
 
         const Year = selectedDate.getFullYear();
-        const Month = selectedDate.getMonth();
+        const Month = selectedDate.getMonth()+1;
         const Date = selectedDate.getDate();
 
-        console.log(Year);
-        console.log(Month);
-        console.log(Date);
         setShow(false);
-        setDate2(`${Year}년 ${Month}월 ${Date}일`);
-
+        setInfo((prevState) => ({ ...prevState, dueDate: `${Year}-${Month}-${Date}`}))
       };
     
     const showMode = (currentMode) => {
@@ -156,18 +165,18 @@ const AddPage = ({navigation}) => {
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>닉네임</Text>
                 <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.(특수문자 제외)</Text>
                     <TextInput placeholder='닉네임 입력' style={[styles.textBox, {borderColor: bottomColor[0] ? '#FEB401' : '#EEEEEE'}]}
-                    onFocus={()=>change(0)}></TextInput>
+                    onFocus={()=>change(0)} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, nickname: e}))}></TextInput>
             </View>
             <View style={styles.main2}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>이메일</Text>
                 <TextInput placeholder='이메일 입력' style={[styles.textBox, {borderColor: bottomColor[1] ? '#FEB401' : '#EEEEEE'}]}
-                onFocus={()=>change(1)}></TextInput>
+                onFocus={()=>change(1)} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, email: e}))}></TextInput>
             </View>
             <View style={styles.main3}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>출산 예정일</Text>
                 <View>
                     <TextInput placeholder='날짜 선택' style={[styles.textBox, {borderColor: bottomColor[2] ? '#FEB401' : '#EEEEEE'}]}
-                    onFocus={()=>change(2)}></TextInput>
+                    onFocus={()=>change(2)} value={info.dueDate}></TextInput>
                     <View style={styles.main3Box}><Icon name='calendar' size={17} onPress={showDatepicker} style={{position: 'absolute', zIndex: 999}}/></View>
                 </View>
             </View>
@@ -175,7 +184,7 @@ const AddPage = ({navigation}) => {
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>태명</Text>
                 <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.(특수문자 제외)</Text>
                 <TextInput placeholder='태명 입력' style={[styles.textBox, {borderColor: bottomColor[3] ? '#FEB401' : '#EEEEEE'}]}
-                onFocus={()=>change(3)}></TextInput>
+                onFocus={()=>change(3)} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, babyName: e}))}></TextInput>
             </View>
             <View style={styles.main5}>
                 <View style={styles.main5Box}>
@@ -221,9 +230,10 @@ const AddPage = ({navigation}) => {
                 </View>
             </View>
             <View style={styles.footer}>
-                <View style={styles.footerBox}>
+                {(isChecked[1] && isChecked[2]) || isChecked[0] ? <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#FEA100'}]} onPress={submit}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>완료</Text>
-                </View>
+                </TouchableOpacity> : <View style={[styles.footerBox, {backgroundColor: '#E0E0E0'}]}>
+                <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>완료</Text></View>}
             </View>
         </View>
       );

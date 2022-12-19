@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 
+import Like from '../../../../public/assets/svg/like.svg'
+import Chat from '../../../../public/assets/svg/Chat.svg'
+
 const styles = StyleSheet.create({
   container:{
     height: '91%',
@@ -45,24 +48,36 @@ const styles = StyleSheet.create({
   header3:{
     height: '8%',
     justifyContent: 'center',
-    paddingLeft: 10,
+    paddingLeft: 20,
+    borderBottomWidth: 1,
+    borderColor: '#EEEEEE',
+    position: 'relative',
+    zIndex: -100,
   },
   main:{
     height: '74%',
-    padding: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    position: 'relative',
+    zIndex: -100,
   },
   mainBox:{
-    borderTopWidth: 1,
+    borderBottomWidth: 1,
     borderColor: '#EEEEEE',
-    height: 110,
-    paddingTop: 15,
-    paddingLeft: 10,
-    paddingBottom: 15,
-    paddingRight: 10,
+    height: 100,
+    alignItems: 'center',
     flexDirection: 'row',
   },
   mainBoxSub:{
-    width: '25%',
+    justifyContent: 'center',
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  dateBox:{
+    position: 'absolute',
+    right: 10,
+    top: 50,
+
   },
   mainBoxSub2:{
     flexDirection: 'row',
@@ -71,7 +86,7 @@ const styles = StyleSheet.create({
 })
 
 
-const Talk1 = ({navigation, info}) => {
+const Talk1 = ({navigation}) => {
 
   const DATA = [
     {
@@ -100,7 +115,6 @@ const Talk1 = ({navigation, info}) => {
     }
   ];
 
-  console.log('talk1 info: ', info);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
@@ -110,8 +124,44 @@ const Talk1 = ({navigation, info}) => {
         {label: '4', value: '4'}
   ]);
 
+  const [info, setInfo] = useState([
+    {
+        boardId: 1,
+        cateGory: '맘스토크',
+        subcategory: '출산리스트',
+        userId: '별똥맘',
+        title: '5주차 맘 입덧 질문있어요',
+        contents: '내용입니다.',
+        recommend: '3',
+        hits: '55',
+        boardDate: '2022-12-13',
+        image: '../../../../public/assets/testimage.png'
+     },{
+        boardId: 2,
+        cateGory: '맘스토크',
+        subcategory: '출산리스트',
+        userId: '동글이',
+        title: '좋은 정보 많이 공유해요~',
+        contents: '내용입니다2.',
+        recommend: '3',
+        hits: '55',
+        boardDate: '2022-12-13',
+        image: ''
+     },{
+        boardId: 3,
+        cateGory: '맘스토크',
+        subcategory: '출산리스트',
+        userId: '가양이',
+        title: '출산전 꼭! 읽어야할 임산부 필수글',
+        contents: '내용입니다3.',
+        recommend: '3',
+        hits: '55',
+        boardDate: '2022-12-13',
+        image: '../../../../public/assets/testimage.png'
+    }
+]); // 맘스톡 정보
+
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
-  const Filter = ['최신순', '인기순', '추천순']
 
   const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
     let arr = Array.from({length: 6}, () => {return false});
@@ -131,18 +181,21 @@ const Talk1 = ({navigation, info}) => {
 
   const renderItem2 = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', item)}>
-        <View style={styles.mainBoxSub}>
-          <Image source={require('../../../../public/assets/testimage.png')} />
-        </View>
-        <View style={[styles.mainBoxSub, {width: '50%'}]}>
+        { item.image === '' ?<View style={styles.mainBoxSub}>
+          <Image source={require('../../../../public/assets/testimage.png')} style={{width: 68, height: 68}}/>
+          </View> : <View></View>
+        }
+        <View style={[styles.mainBoxSub, {width: '55%', justifyContent: 'flex-start', paddingTop: 5}]}>
           <Text style={{fontSize: 15, paddingTop: 2}}>{item.title} </Text>
           <View style={styles.mainBoxSub2}>
             <Text style={{fontSize: 13, color: '#9E9E9E'}}>{item.userId} </Text>
-            <Text style={{color: '#9E9E9E'}}>{item.recommend}</Text>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}>댓글 갯수</Text>
+            <Like width={12} height={17} />
+            <Text style={{color: '#9E9E9E'}}> {item.recommend}  </Text>
+            <Chat width={12} height={17} />
+            <Text style={{fontSize: 13, color: '#9E9E9E'}}> {item.hits}</Text>
           </View>
         </View>
-        <View style={[styles.mainBoxSub, {justifyContent: 'center', alignItems: 'flex-end'}]}>
+        <View style={[styles.dateBox, {justifyContent: 'center', alignItems: 'flex-end'}]}>
           <Text style={{color: '#9E9E9E', fontSize: 12}}>{item.boardDate}</Text>
         </View>
     </TouchableOpacity>
@@ -173,7 +226,7 @@ const Talk1 = ({navigation, info}) => {
       <View style={styles.main}>
         {info.length !== 0 ?
         <FlatList data={info} renderItem={renderItem2}
-          keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
+          keyExtractor={item => item.title} showsVerticalScrollIndicator={false}>
         </FlatList> : 
         <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}
       </View>

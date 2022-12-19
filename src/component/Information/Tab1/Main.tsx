@@ -50,20 +50,17 @@ const styles = StyleSheet.create({
   mainBox:{
     borderBottomWidth: 1,
     borderColor: '#EEEEEE',
-    height: 110,
+    height: 70,
     paddingTop: 15,
     paddingLeft: 10,
     paddingBottom: 15,
     paddingRight: 10,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   mainBoxSub:{
     width: '50%',
   },
-  mainBoxSub2:{
-    flexDirection: 'row',
-    paddingTop: 4,
-  }
 })
 
 
@@ -127,8 +124,7 @@ const Talk1 = ({navigation}) => {
         recommend: '3',
         hits: '55',
         boardDate: '2022-12-13'
-    }
-    ,{
+    },{
       boardId: 3,
       cateGory: '맘스토크',
       subcategory: '출산리스트',
@@ -138,7 +134,17 @@ const Talk1 = ({navigation}) => {
       recommend: '3',
       hits: '55',
       boardDate: '2022-12-13'
-  }
+    },{
+      boardId: 3,
+      cateGory: '맘스토크',
+      subcategory: '출산리스트',
+      userId: '가양이',
+      title: '출산전 꼭! 읽어야할 임산부 필수글',
+      contents: '내용입니다3.',
+      recommend: '3',
+      hits: '55',
+      boardDate: '2022-12-13'
+    }
 ]);
 
   useEffect(()=>{
@@ -170,12 +176,7 @@ const Talk1 = ({navigation}) => {
   const renderItem2 = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', item)}>
         <View style={[styles.mainBoxSub, {width: '50%'}]}>
-          <Text style={{fontSize: 15, paddingTop: 2}}>{item.title} </Text>
-          <View style={styles.mainBoxSub2}>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{item.userId} </Text>
-            <Text style={{color: '#9E9E9E'}}>{item.recommend}</Text>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}>댓글 갯수</Text>
-          </View>
+          <Text style={{fontSize: 15}}>{item.title} </Text>
         </View>
         <View style={[styles.mainBoxSub, {justifyContent: 'center', alignItems: 'flex-end'}]}>
           <Text style={{color: '#9E9E9E', fontSize: 12}}>{item.boardDate}</Text>

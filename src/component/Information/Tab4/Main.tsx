@@ -71,14 +71,6 @@ const Talk1 = ({navigation}: any) => {
     },
   ];
 
-  useEffect(()=>{
-    async function b(){
-        const response = await axios.get('http://192.168.1.140:4000/api/test');
-        console.log('response: ', response.data);
-      }
-      b();
-}, [])
-
     const [filter, setFilter] = useState([true, false, false, false]);
     const [info, setInfo] = useState([
         {
@@ -114,7 +106,27 @@ const Talk1 = ({navigation}: any) => {
             qnaDate: '',
         },
     ]);
-    console.log('info: ', info);
+    const [info2, setInfo2] = useState();
+    console.log('info2: ', info2);
+    const [info3, setInfo3] = useState();
+    console.log('info3: ', info3);
+
+    useEffect(()=>{
+        async function b(){
+
+            const arr = info.filter(x => x.category === '임신상담');
+            console.log('arr: ', arr);
+            const arr2 = info.filter(x => x.category === '출산상담');
+            setInfo2(arr);
+            setInfo3(arr2);
+
+            const response = await axios.get('http://192.168.1.140:4000/api/test');
+            console.log('response: ', response.data);
+    
+            
+          }
+          b();
+    }, [])
 
 
     const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
@@ -124,31 +136,47 @@ const Talk1 = ({navigation}: any) => {
     }
 
     const List = () => { // 임신상담 필터링
-        const arr = info.filter(x => x.category === '임신상담');
-        console.log('임신상담: ', arr);
+        let arr = [];
+        
+        info2.filter(x => {
+            arr.push(
+                <>
+                    <View style={styles.contentBox}>
+                        <View style={{padding: 5}}><Text></Text></View>
+                        <View style={{justifyContent: 'center'}}><Text>{x.qnaQ}</Text></View>
+                    </View>
+                    <View style={[styles.contentBox, {backgroundColor: '#F5F5F5'}]}>
+                        <View style={{padding: 5}}><Text>A</Text></View>
+                        <View style={{justifyContent: 'center'}}><Text>{x.qnaA}</Text></View>
+                    </View>
+                </>
+            )
+        })
+        console.log('info222222222222222222222: ', info2);
+        return arr;
 
-        return(
-            <>
-                <View style={styles.contentBox}>
-                    <View style={{padding: 5}}><Text>Q</Text></View>
-                    <View style={{justifyContent: 'center'}}><Text>{item.qnaQ}</Text></View>
-                </View>
-                <View style={[styles.contentBox, {backgroundColor: '#F5F5F5', display: item.qnaA.length === 0 ? 'none' : 'flex'}]}>
-                    <View style={{padding: 5}}><Text>A</Text></View>
-                    <View style={{justifyContent: 'center'}}><Text>{item.qnaA}</Text></View>
-                </View>
-            </>
-        )
+        // return(
+        //     <>
+        //         <View style={styles.contentBox}>
+        //             <View style={{padding: 5}}><Text></Text></View>
+        //             <View style={{justifyContent: 'center'}}><Text>{item.qnaQ}</Text></View>
+        //         </View>
+        //         <View style={[styles.contentBox, {backgroundColor: '#F5F5F5'}]}>
+        //             <View style={{padding: 5}}><Text>A</Text></View>
+        //             <View style={{justifyContent: 'center'}}><Text>{item.qnaA}</Text></View>
+        //         </View>
+        //     </>
+        // )
     }
     const List2 = () => { // 출산상담 필터링
-        const arr = info.filter(x => x.category === '출산상담');
-        console.log('출산상담: ', arr);
+        
     }
 
     const renderItem = ({ item }) => (
         <View style={styles.mainBox}>
+            {/* <View style={styles.titleBox}><Text style={{fontSize: 16,  fontWeight: '700'}}>임신상담</Text></View> */}
             <List />
-            <List2 />
+            {/* <List2 /> */}
         </View>
     );
 
@@ -160,7 +188,7 @@ const Talk1 = ({navigation}: any) => {
         </View>
     );
 
-    return (
+    return info2 !== undefined ? (
         <View style={styles.container}>
             <View style={styles.header}>
                 <FlatList data={DATA2} renderItem={renderItem2}
@@ -168,13 +196,12 @@ const Talk1 = ({navigation}: any) => {
                 </FlatList>
             </View>
             <View style={styles.main}>
-            <View style={styles.titleBox}><Text style={{fontSize: 16,  fontWeight: '700'}}>임신상담</Text></View>
                 <FlatList data={info} renderItem={renderItem}
                     keyExtractor={item => item.qnaId}>
                 </FlatList>
             </View>
         </View>
-    )
+    ) : <View></View>
     }
 
 export default Talk1

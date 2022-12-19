@@ -7,7 +7,7 @@ import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
 import { WithLocalSvg } from "react-native-svg"
 
-import mainImage from '../../../public/assets/svg/main.svg'
+import MainImage from '../../../public/assets/svg/main.svg'
 
 import { useIsFocused } from '@react-navigation/native'
 
@@ -77,16 +77,17 @@ const styles = StyleSheet.create({
         height: 250,
         paddingTop: 40,
         paddingBottom: 40,
-        paddingLeft: 20,
-        paddingRight: 20,
+        paddingLeft: 10,
+        paddingRight: 10,
         backgroundColor: 'white',
     },
     main3Box:{
         flexDirection: 'row',
+        padding: 3,
     },
     main3Box2:{
         width: '50%',
-   
+        padding: 3,
     },
     titleBox:{
         flexDirection: 'row',
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
         height: '75%',
     },
     content:{
-        height: '33.4%',
+        height: '30.4%',
         justifyContent: 'center',
         paddingLeft: 10,
     },
@@ -115,21 +116,22 @@ const styles = StyleSheet.create({
         paddingRight: 20,
     },
     main4Box2:{
+        height: 196,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     albumBox:{
-        width: 140,
-        height: '80%',
+        width: 156,
         margin: 10,
         padding: 5,
     },
     albumPhoto:{
-        height: '80%',
+        height: 156,
         borderWidth: 1,
         borderRadius: 10,
     },
     albumTitle:{
-        height: '20%',
-        alignItems: 'center',
+        height: 30,
         justifyContent: 'center',
     },
     triangle:{
@@ -252,14 +254,47 @@ const Home = ({navigation}) => {
         dispatch(getList());
     }, []);
 
+    useEffect(()=>{
+        async function b(){
+            const response = await axios.get('http://192.168.1.140:4000/api/test');
+            console.log('response: ', response.data);
+          }
+          b();
+    }, [])
+
     const ref = useRef();
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
     const [modalVisible, setModalVisible] = useState(false);
     const animation = useRef(new Animated.Value(0)).current;
 
-    const [info, setInfo] = useState();
-    console.log('info: ', info);
+    const [info, setInfo] = useState([
+        {
+            title: '저와 준비물 비교해 보아요'
+        },{
+            title: '별똥이 출산 준비물 이예요'
+        },{
+            title: '별똥이 DDay 입니다'
+        }
+    ]);
+    const [info2, setInfo2] = useState([
+        {
+            title: '저와 준비물 비교해 보아요'
+        },{
+            title: '별똥이 출산 준비물 이예요'
+        },{
+            title: '별똥이 DDay 입니다'
+        }
+    ]);
+    const [info3, setInfo3] = useState([
+        {
+            imgae: ''
+        },{
+            image: '',
+        },{
+            image: ''
+        }
+    ]);
 
     useEffect(()=>{
         setModalVisible(!modalVisible);
@@ -328,6 +363,7 @@ const Home = ({navigation}) => {
             }).start();
         });
     }
+
     const complete = () => { // modal
 
     }
@@ -363,7 +399,7 @@ const Home = ({navigation}) => {
                         <Text>IDENITIDENITIDENITIDENIT</Text>
                     </View>
 
-                    <View style={styles.imageBox}><WithLocalSvg width={300} height={300} asset={mainImage} onPress={bubbleRandom}/></View>
+                    <View style={styles.imageBox}><MainImage width={300} height={300} onPress={bubbleRandom}/></View>
                 </View>
                 <View style={styles.mainBox3}>
                     <View style={styles.mainBox3Sub}>
@@ -384,25 +420,60 @@ const Home = ({navigation}) => {
                     <View style={styles.main3Box2}>
                         <View style={styles.titleBox}>
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>출산 리스트</Text></View>
-                            <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E'}}>+ 더보기</Text></View>
+                            <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>+ 더보기</Text></View>
                         </View>
-                        <View style={styles.contentBox}>
-                            <View style={styles.content}><Text>글1</Text></View>
-                            <View style={styles.content}><Text>글2</Text></View>
-                            <View style={styles.content}><Text>글3</Text></View>
-                        </View>
+                        {info.length !== 0 ? <View style={styles.contentBox}>
+                            <View style={styles.content}>
+                                <View style={{flexDirection: 'row'}}>
+                                    <Text style={{fontWeight: '700'}}>1 </Text>
+                                    <Text> {info[0].title}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.content}>
+                                <View style={{flexDirection: 'row'}}>
+                                    <Text style={{fontWeight: '700'}}>2 </Text>
+                                    <Text> {info[1].title}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.content}>
+                                <View style={{flexDirection: 'row'}}>
+                                    <Text style={{fontWeight: '700'}}>3 </Text>
+                                    <Text> {info[2].title}</Text>
+                                </View>
+                            </View>
+                        </View> : <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
+                            <Text style={{color: '#757575'}}>등록된</Text>
+                            <Text style={{color: '#757575'}}>게시물이 없습니다.</Text>
+                        </View>}
                     </View>
-                    {/* <View style={[styles.main3Box2, {width: '0.2%', borderWidth: 1, borderColor: '#EEEEEE'}]}></View> */}
-                    <View style={styles.main3Box2}>
+                    <View style={[styles.main3Box2, {borderLeftWidth: 1, borderColor: '#EEEEEE',}]}>
                         <View style={styles.titleBox}>
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>맘스 토크</Text></View>
-                            <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E'}}>+ 더보기</Text></View>
+                            <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>+ 더보기</Text></View>
                         </View>
-                        <View style={styles.contentBox}>
-                            <View style={styles.content}><Text>글1</Text></View>
-                            <View style={styles.content}><Text>글2</Text></View>
-                            <View style={styles.content}><Text>글3</Text></View>
-                        </View>
+                        {info.length === 0 ? <View style={styles.contentBox}>
+                            <View style={styles.content}>
+                                <View style={{flexDirection: 'row'}}>
+                                    <Text style={{fontWeight: '700'}}>1 </Text>
+                                    <Text> {info[0].title}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.content}>
+                                <View style={{flexDirection: 'row'}}>
+                                    <Text style={{fontWeight: '700'}}>2 </Text>
+                                    <Text> {info[1].title}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.content}>
+                                <View style={{flexDirection: 'row'}}>
+                                    <Text style={{fontWeight: '700'}}>3 </Text>
+                                    <Text> {info[2].title}</Text>
+                                </View>
+                            </View>
+                        </View> : <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
+                            <Text style={{color: '#757575'}}>등록된</Text>
+                            <Text style={{color: '#757575'}}>게시물이 없습니다.</Text>
+                        </View>}
                     </View>
                 </View>
             </View>
@@ -410,13 +481,13 @@ const Home = ({navigation}) => {
                 <View style={styles.main4Box}>
                     <View style={[styles.titleBox, {height: '100%'}]}>
                         <View style={styles.title}><Text style={{fontSize: 20, fontWeight: 'bold'}}>맘스 정보</Text></View>
-                        <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E'}}>+ 더보기</Text></View>
+                        <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>+ 더보기</Text></View>
                     </View>
                 </View>
                 <View style={styles.main4Box2}>
-                <FlatList data={DATA2} renderItem={renderItem2}
+                {info3.length === 0 ?<FlatList data={DATA2} renderItem={renderItem2}
                         keyExtractor={item => item.id} horizontal={true}>
-                </FlatList>
+                </FlatList> : <View><Text style={{color: '#757575'}}>새로운 정보가 없습니다.</Text></View>}
                 </View>
             </View>
             

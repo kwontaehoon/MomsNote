@@ -116,7 +116,7 @@ const Talk1Sub = () => {
   console.log('list: ', list);
   const [modalVisible, setModalVisible] = useState(false); // 품목 삭제
   const [modalVisible2, setModalVisible2] = useState(false); // 공유 확인 유무 
-  const [modalVisible3, setModalVisible3] = useState(true); // 공유 작성
+  const [modalVisible3, setModalVisible3] = useState(false); // 공유 작성
   const [modalVisible4, setModalVisible4] = useState(false); // 공유 등록 확인
 
 
@@ -193,9 +193,9 @@ const Talk1Sub = () => {
           <Text style={{color: '#616161'}}>ㄴ 구매 예정 금액</Text>
         </View>
       </View>
-      <View style={styles.buttonBox}>
+      <TouchableOpacity style={styles.buttonBox} onPress={()=>setModalVisible3(!modalVisible3)}>
         <Text style={{color: 'white', fontWeight: '600', fontSize: 16}}>출산 리스트 게시판 공유</Text>
-      </View>
+      </TouchableOpacity>
     </View>
   )
 }

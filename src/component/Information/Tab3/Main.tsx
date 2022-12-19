@@ -39,8 +39,9 @@ const styles = StyleSheet.create({
   },
   mainBox:{
     borderBottomWidth: 1,
-    height: 80,
-    borderColor: '#F5F5F5'
+    height: 60,
+    borderColor: '#F5F5F5',
+    justifyContent: 'center',
   },
   mainBox2:{
     height: '50%',
@@ -55,9 +56,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   clockBox:{
-    width: '50%',
     alignItems: 'flex-end',
-    paddingRight: 5,
+    position: 'absolute',
+    right: 0,
   },
 })
 
@@ -144,16 +145,7 @@ const Talk1 = ({navigation}) => {
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', item)}>
         <View style={styles.mainBox2}><Text style={{fontSize: 15}}>{item.title}</Text></View>
-        <View style={styles.mainBox3}>
-            <View style={styles.infoBox}>
-              <Text style={{color: '#9E9E9E', fontSize: 13}}>{item.userId} </Text>
-              <Icon2 name='like2' size={13}/>
-              <Text style={{color: '#9E9E9E', fontSize: 13}}> {item.recommend} </Text>
-              <Icon3 name='chatbox-outline' size={13}/>
-              <Text style={{color: '#9E9E9E', fontSize: 13}}> {item.recommend} </Text>
-            </View>
-            <View style={styles.clockBox}><Text style={{color: '#9E9E9E', fontSize: 12}}>12시간전</Text></View>
-        </View>
+        <View style={styles.clockBox}><Text style={{color: '#9E9E9E', fontSize: 12}}>12시간전</Text></View>
     </TouchableOpacity>
   ); 
 

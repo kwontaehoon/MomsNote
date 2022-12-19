@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 const CheckBoxModal = ({modalVisible10, setModalVisible10}) => {
 
     const [filter, setFilter] = useState(false); // 체크, 폰트 색상
-    console.log(modalVisible10);
+    console.log('filter: ', filter);
 
   return (
     <Modal animationType="slide" transparent={true} visible={modalVisible10}
@@ -57,11 +57,11 @@ const CheckBoxModal = ({modalVisible10, setModalVisible10}) => {
                        <View style={styles.main}>
                             <View style={styles.mainBox}><Text style={{fontSize: 15}}>정렬</Text></View>
                             <TouchableOpacity style={styles.mainBox2} onPress={()=>{setFilter(!filter), setModalVisible10(!modalVisible10)}}>
-                                <View style={styles.checkBox}><Text><Icon name='check' size={20} style={{color: filter ? '#212121' : '#FE7000'}}/></Text></View>
+                                <View style={styles.checkBox}><Icon name='check' size={20} style={{color: filter ? '#212121' : '#FE7000', display: filter ? 'none' : 'flex'}}/></View>
                                 <Text style={{fontSize: 18, color: filter ? '#212121' : '#FE7000'}}>필수품목 순</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.mainBox2} onPress={()=>{setFilter(!filter), setModalVisible10(!modalVisible10)}}>
-                                <View style={styles.checkBox}><Text><Icon name='check' size={20} style={{color: filter ? '#FE7000' : '#212121'}}/></Text></View>
+                                <View style={styles.checkBox}><Icon name='check' size={20} style={{color: filter ? '#FE7000' : '#212121', display: filter ? 'flex' : 'none'}}/></View>
                                 <Text style={{fontSize: 18, color: filter ? '#FE7000' : '#212121'}}>구매 순</Text>
                             </TouchableOpacity>
                        </View>

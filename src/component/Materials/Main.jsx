@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/Ionicons'
 import Icon3 from 'react-native-vector-icons/Feather'
@@ -16,16 +16,17 @@ import DotModal from './Modal/DotModal'
 import AddModal from './Modal/AddModal'
 import DeleteModal from './Modal/DeleteModal'
 import Filter from './Modal/Filter'
-import { WithLocalSvg } from "react-native-svg"
-import material1 from '../../../public/assets/svg/material1.svg'
-import Red from '../../../public/assets/svg/Red.svg'
-import material2 from '../../../public/assets/svg/material2.svg'
-import material3 from '../../../public/assets/svg/material3.svg'
-import material4 from '../../../public/assets/svg/material4.svg'
-import material5 from '../../../public/assets/svg/material5.svg'
-import material6 from '../../../public/assets/svg/material6.svg'
-import material7 from '../../../public/assets/svg/material7.svg'
-import material8 from '../../../public/assets/svg/material8.svg'
+
+import More from '../../../public/assets/svg/More.svg'
+import Sort from '../../../public/assets/svg/Sort.svg'
+import Material1 from '../../../public/assets/svg/1.svg'
+import Material2 from '../../../public/assets/svg/2.svg'
+import Material3 from '../../../public/assets/svg/3.svg'
+import Material4 from '../../../public/assets/svg/4.svg'
+import Material5 from '../../../public/assets/svg/5.svg'
+import Material6 from '../../../public/assets/svg/6.svg'
+import Material7 from '../../../public/assets/svg/7.svg'
+import Material8 from '../../../public/assets/svg/8.svg'
 
 const styles = StyleSheet.create({
   container:{
@@ -131,43 +132,58 @@ const Navigation = ({navigation, route}) => {
       id: '0',
       title: '산모용품 (0/13)',
       color: '#FFADAD',
-      icon: 'material1'
+      icon: require('../../../public/assets/baby1.png'),
+      svg: Material1
     },
     {
       id: '1',
       title: '수유용품 (0/13)',
-      color: '#FFADAD'
+      color: '#FFADAD',
+      icon: 'Material2'
     },
     {
       id: '2',
       title: '위생용품 (0/13)',
-      color: '#FFADAD'
+      color: '#FFADAD',
+      icon: 'Material2'
     },
     {
       id: '3',
       title: '목욕용품 (0/13)',
-      color: '#FFADAD'
+      color: '#FFADAD',
+      icon: 'Material3'
     },
     {
       id: '4',
       title: '침구류 (0/13)',
-      color: '#FFADAD'
+      color: '#FFADAD',
+      icon: 'Material4'
     },
     {
       id: '5',
       title: '아기용품 (0/13)',
-      color: '#FFADAD'
+      color: '#FFADAD',
+      icon: 'Material5'
     },
     {
       id: '6',
       title: '발육용품 (0/13)',
-      color: '#FFADAD'
+      color: '#FFADAD',
+      icon: 'Material6'
     },
     {
       id: '7',
       title: '가전용품 (0/13)',
-      color: '#FFADAD'
+      color: '#FFADAD',
+      icon: 'Material7'
     },
+    {
+      id: '8',
+      title: '가전용품 (0/13)',
+      color: '#FFADAD',
+      icon: 'Material8'
+    },
+    
 
   ];
 
@@ -220,7 +236,7 @@ const Navigation = ({navigation, route}) => {
   const [modalVisible7, setModalVisible7] = useState(false); // 더보기
   const [modalVisible8, setModalVisible8] = useState(false); // 품목 추가
   const [modalVisible9, setModalVisible9] = useState(false); // 품목 삭제
-  const [modalVisible10, setModalVisible10] = useState(true); // 정렬
+  const [modalVisible10, setModalVisible10] = useState(false); // 정렬
 
   const arrow = (e) => { // arrow 누르면 서브페이지 display
     let arr = [...list];
@@ -265,10 +281,10 @@ const Navigation = ({navigation, route}) => {
     <View style={styles.container2}>
         <View style={styles.header}>
           <View style={styles.headerBox}>
-            <Icon2 name='filter' size={22} style={{paddingRight: 30}}/>
-            <Icon4 name='dots-three-vertical' size={22} style={{marginRight: 10}} onPress={()=>setModalVisible7(!modalVisible7)}/>
+            <Sort style={{paddingRight: 50}} onPress={()=>setModalVisible10(!modalVisible10)}/>
+            <More onPress={()=>setModalVisible7(!modalVisible7)}/>
           </View>
-          <Text>전체 (5/37)</Text>
+          <Text style={{fontSize: 16, fontWeight: '600'}}>전체 (5/37)</Text>
         </View>
         <View style={styles.main}>
           <FlatList data={DATA} renderItem={renderItem}
@@ -282,7 +298,7 @@ const Navigation = ({navigation, route}) => {
   const renderItem = ({ item }) => (
     <View style={styles.mainBox}>
         <View style={styles.mainBox2}>
-          <Icon name="camera" size={22} />
+          <Image source={item.icon} width={20} height={20}/>
             <View style={[styles.titleBox, {marginLeft: 8}]}><Text>{item.title}</Text></View>
             <TouchableOpacity style={styles.arrowBox}
               onPress={()=>arrow(item.id)}>{list[item.id] ? <Icon name="angle-up" size={22}/> : <Icon name='angle-down' size={22}/>}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, ActivityIndicator } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import { WebView } from 'react-native-webview';
 
@@ -13,8 +13,7 @@ const styles = StyleSheet.create({
 const Main = ({navigation}) => {
 
     const REST_API_KEY = '7d1cb1e652f5ee8aaffc2e7ce0547c9b'
-    // const REDIRECT_URI = 'http://192.168.1.140:19000'
-    const REDIRECT_URI = 'http://192.168.219.102:19000'
+    const REDIRECT_URI = 'http://192.168.1.140:19000'
 
     const runFirst = `window.ReactNativeWebView.postMessage("this is message from web")`;
 
@@ -32,14 +31,16 @@ const Main = ({navigation}) => {
 
         if(data !== null){
           condition = data.indexOf('code=');
+          console.log('condition: ', condition);
           error = data.indexOf('error=');
+          console.log('error: ', error);
         }
       
         if (data !== null && condition !== -1) {   
-            navigation.navigate('로그인 페이지', data.substring(condition + 5));
+            navigation.navigate('추가 정보 입력', data.substring(condition + 5));
 
-        }else if(error !== -1){
-            navigation.goBack();
+        // }else if(error !== -1){
+        //     navigation.goBack();
         }
        
       }}

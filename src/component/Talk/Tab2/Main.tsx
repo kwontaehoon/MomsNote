@@ -35,6 +35,8 @@ const styles = StyleSheet.create({
   main:{
     height: '100%',
     padding: 15,
+    position: 'relative',
+    zIndex: -100,
   },
   mainBox:{
     borderBottomWidth: 1,
@@ -132,7 +134,7 @@ const Talk1 = ({navigation, info}) => {
         </View>
         <View style={[styles.header2FilterBox, {width: '32%'}]}>
           <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순'
-              placeholderStyle={{color: '#9E9E9E', paddingLeft: 17, fontSize: 13}} textStyle={{fontSize: 15}} setOpen={setOpen} setValue={setValue} setItems={setItems} max={2} min={2}/>
+              placeholderStyle={{color: '#9E9E9E', paddingLeft: 17, fontSize: 13}} textStyle={{fontSize: 15}} setOpen={setOpen} setValue={setValue} setItems={setItems}/>
         </View>
       </View>
       <View style={styles.main}>

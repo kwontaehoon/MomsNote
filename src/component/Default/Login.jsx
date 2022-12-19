@@ -61,6 +61,7 @@ const Main = ({navigation, route}) => {
         console.log('get');
         try{
             const response = await axios.get(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${client_id}&redirect_uri=http://192.168.1.140:19000&code=${route.params}`);
+            console.log(response.data);
             const response2 = await axios.get(`https://kapi.kakao.com/v1/user/access_token_info`, {
                  headers: `Authorization: Bearer ${response.data.access_token}`
             })
@@ -96,7 +97,10 @@ const Main = ({navigation, route}) => {
         if (response?.type === 'success') {
             const { authentication } = response;
             console.log('Google: ', authentication);
-            setGoogleToken(authentication.accessToken)
+            setGoogleToken(authentication.accessToken);
+
+            // https://www.googleapis.com/oauth2/v3/userinfo?access_token=''
+            
         }
     }, [response]);
 

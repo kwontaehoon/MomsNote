@@ -7,6 +7,8 @@ import Talk2 from './Tab2/Main'
 import Talk3 from './Tab3/Main'
 import axios from 'axios'
 
+import Pencil from '../../../public/assets/svg/pencil.svg'
+
 const styles = StyleSheet.create({
     container:{
         height: '92%',
@@ -172,7 +174,7 @@ const Main = ({navigation}:any) => {
         </View>
         <List />
         <TouchableOpacity style={[styles.footer, {display: filter[2] ? 'none' : 'flex'}]} onPress={write}>
-            <Icon name="pencil" size={22} style={{color: 'white'}}/>
+            <Pencil />
         </TouchableOpacity>
     </View>
   )

@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput } from 'react-native'
+import React, { useState, useRef } from 'react'
+import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, Animated } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import axios from 'axios'
 
@@ -69,18 +69,40 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({modalVisible3, setModalVisible3}) => {
 
+    ``
+
     const [info, setInfo] = useState({
         title: '',
         content: ''
     })
 
+    const animation = useRef(new Animated.Value(0)).current;
+
+    const opacity_ani = () => {
+        Animated.timing(animation, {
+            toValue: 1,
+            useNativeDriver: true,
+            duration: 1500,
+        }).start(()=>{
+            Animated.timing(animation, {
+                toValue: 0,
+                useNativeDriver: true,
+                duration: 1500,
+            }).start();
+        });
+    }
+
     const submit = async() => {
-        console.log('a');
-        info.title.length === 0 && info.content.length === 0 ? 'animation' : 
-        await axios.post(`http://192.168.1.140:4000/post/test`, {
-            info: info
-        })
-       
+        if(info.title === '' && info.content === ''){
+            opacity_ani();
+        }else{
+        // info.title.length === 0 && info.content.length === 0 ? 'animation' : 
+        // await axios.post(`http://192.168.1.140:4000/post/test`, {
+        //     info: info
+        // })
+        setModalVisible3(!modalVisible3);
+    }
+    
     }
 
 
@@ -94,9 +116,9 @@ const CheckBoxModal = ({modalVisible3, setModalVisible3}) => {
                        <View style={styles.main}>
                             <View style={styles.mainBox}><Text style={{fontSize: 15}}>출산 리스트 공유</Text></View>
                             <View style={styles.mainBox2}>
-                                <View style={styles.noticeModal}>
+                                <Animated.View style={[styles.noticeModal, {opacity: animation}]}>
                                     <View style={styles.notice}><Text style={{color: 'white', fontSize: 13, fontWeight: '500'}}>제목과 내용은 필수 항목입니다.</Text></View>
-                                </View>
+                                </Animated.View>
                                 <TextInput style={styles.textInput} placeholder='글 제목' placeholderTextColor='#9E9E9E'  onChangeText={(e) => setInfo((prevState) => ({ ...prevState, title: e}))}></TextInput>
                                 <TextInput style={[styles.textInput, {marginTop: 10, height: 200, paddingBottom: 140}]} placeholder='간단한 내용을 입력해주세요.' placeholderTextColor='#9E9E9E'
                                     onChangeText={(e) => setInfo((prevState) => ({ ...prevState, content: e}))}>
