@@ -63,36 +63,8 @@ const styles = StyleSheet.create({
 })
 
 
-const Talk1 = ({navigation, info}) => {
+const Talk1 = ({navigation}) => {
 
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: '전체'
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: '자유게시판'
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: '일상이야기'
-    },
-    {
-        id: '1',
-        title: '임신정보'
-    },
-    {
-        id: '2',
-        title: '고민상담'
-    },
-    {
-        id: '3',
-        title: '질문게시판'
-    }
-  ];
-
-  console.log('talk2: ', info);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
@@ -101,10 +73,39 @@ const Talk1 = ({navigation, info}) => {
         {label: '3', value: '3'},
         {label: '4', value: '4'}
   ]);
-
-  const Filter = ['최신순', '인기순', '추천순'];
-
-  const [filter, setFilter] = useState([true, false, false, false]);
+  const [info, setInfo] = useState([
+    {
+        boardId: 1,
+        cateGory: '맘스토크',
+        subcategory: '출산리스트',
+        userId: '별똥맘',
+        title: '5주차 맘 입덧 질문있어요',
+        contents: '내용입니다.',
+        recommend: '3',
+        hits: '55',
+        boardDate: '2022-12-13'
+     },{
+        boardId: 2,
+        cateGory: '맘스토크',
+        subcategory: '출산리스트',
+        userId: '동글이',
+        title: '좋은 정보 많이 공유해요~',
+        contents: '내용입니다2.',
+        recommend: '3',
+        hits: '55',
+        boardDate: '2022-12-13'
+     },{
+        boardId: 3,
+        cateGory: '맘스토크',
+        subcategory: '출산리스트',
+        userId: '가양이',
+        title: '출산전 꼭! 읽어야할 임산부 필수글',
+        contents: '내용입니다3.',
+        recommend: '3',
+        hits: '55',
+        boardDate: '2022-12-13'
+    }
+]); // 맘스톡 정보
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', item)}>
@@ -129,7 +130,7 @@ const Talk1 = ({navigation, info}) => {
         <View style={[styles.header2FilterBox, {paddingBottom: 5}]}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={{fontSize: 16, fontWeight: '600'}}></Text>
-            <Text style={{fontSize: 16}}> 건</Text>
+            <Text style={{fontSize: 16}}>{info.length} 건</Text>
           </View>
         </View>
         <View style={[styles.header2FilterBox, {width: '32%'}]}>

@@ -202,8 +202,8 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.header}>
                 <Back onPress={()=>navigation.goBack()}/>
                 <View style={styles.headerBar}>
-                    <Share style={{marginRight: 8}}/>
-                    <More onPress={()=>setModal(!modal)}/>
+                    <Share style={{marginRight: 12}}/>
+                    <More style={{marginRight: 5}} onPress={()=>setModal(!modal)}/>
                 </View>
             </View>
             <View style={styles.header2}>

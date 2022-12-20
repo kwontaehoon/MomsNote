@@ -108,7 +108,7 @@ const AddPage = ({navigatio, route}) => {
         email: '11',
         dueDate: '11',
         babyName: '11',
-        provider: '11',
+        provider: `${route.params[0]}`,
         providerId: `${route.params[1]}`,
         marketingFlage: '1'
     })

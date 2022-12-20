@@ -125,16 +125,7 @@ function MainScreen() {
                         name="출산준비물"
                         component={Materials}
                         options={({ navigation, route }) => ({
-                            headerRight: () => (
-                                <View style={styles.header}>
-                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-                                    <View style={styles.iconBox}><Icon4 name='download' size={22}/></View>
-                                    <View style={styles.iconBox}><Icon4 name='search1' size={22} onPress={()=>navigation.navigate('검색')}/></View>
-                                    <View style={styles.iconBox}><Icon name='bell-o' size={22} onPress={()=>navigation.navigate('알림')}/></View>
-                                    <View style={styles.iconBox}><Icon name='user-o' size={22} onPress={()=>navigation.navigate('마이페이지')}/></View>
-                                </View>
-                            </View>
-                            ),
+                            headerShown: false
                           })}
                         />
                </Stack.Navigator>   

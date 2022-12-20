@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
 })
 
 
-const Talk1 = ({navigation, boardInfo}) => {
+const Talk1 = ({navigation}) => {
 
   const DATA = [
     {
@@ -115,11 +115,6 @@ const Talk1 = ({navigation, boardInfo}) => {
     }
   ];
 
-  useEffect(()=>{
-    const arr = boardInfo.filter(x => x.category === '맘스 토크');
-    setInfo(arr);
-  }, [boardInfo]);
-
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
@@ -129,7 +124,42 @@ const Talk1 = ({navigation, boardInfo}) => {
         {label: '4', value: '4'}
   ]);
 
-  const [info, setInfo] = useState([]);
+  const [info, setInfo] = useState([
+    {
+        boardId: 1,
+        cateGory: '맘스토크',
+        subcategory: '출산리스트',
+        userId: '별똥맘',
+        title: '5주차 맘 입덧 질문있어요',
+        contents: '내용입니다.',
+        recommend: '3',
+        hits: '55',
+        boardDate: '2022-12-13',
+        image: ''
+     },{
+        boardId: 2,
+        cateGory: '맘스토크',
+        subcategory: '출산리스트',
+        userId: '동글이',
+        title: '좋은 정보 많이 공유해요~',
+        contents: '내용입니다2.',
+        recommend: '3',
+        hits: '55',
+        boardDate: '2022-12-13',
+        image: '',
+     },{
+        boardId: 3,
+        cateGory: '맘스토크',
+        subcategory: '출산리스트',
+        userId: '가양이',
+        title: '출산전 꼭! 읽어야할 임산부 필수글',
+        contents: '내용입니다3.',
+        recommend: '3',
+        hits: '55',
+        boardDate: '2022-12-13',
+        image: '',
+    }
+]); // 맘스톡 정보
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
 

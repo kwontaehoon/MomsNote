@@ -9,7 +9,7 @@ import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { getBoard } from '../../Redux/Slices/BoardSlice'
 
-import Pencil from '../../../public/assets/svg/pencil.svg'
+import Pencil from '../../../public/assets/svg/Pencil.svg'
 
 const styles = StyleSheet.create({
     container:{
@@ -88,56 +88,23 @@ const Main = ({navigation}:any) => {
     // }, [])
 
     const board = useSelector(state => { return state.board.data; });
+    console.log('board: ', board);
     const dispatch = useDispatch();
     
     useEffect(()=>{
-        console.log('useEffect');
         dispatch(getBoard());
     }, []);
     
 
     const [modalVisible, setModalVisible] = useState(false); // imodal
     const [filter, setFilter] = useState([true, false, false]); // tab
-    const [info2, setInfo2] = useState([
-        {
-            boardId: 1,
-            cateGory: '맘스토크',
-            subcategory: '출산리스트',
-            userId: '별똥맘',
-            title: '5주차 맘 입덧 질문있어요',
-            contents: '내용입니다.',
-            recommend: '3',
-            hits: '55',
-            boardDate: '2022-12-13'
-         },{
-            boardId: 2,
-            cateGory: '맘스토크',
-            subcategory: '출산리스트',
-            userId: '동글이',
-            title: '좋은 정보 많이 공유해요~',
-            contents: '내용입니다2.',
-            recommend: '3',
-            hits: '55',
-            boardDate: '2022-12-13'
-         },{
-            boardId: 3,
-            cateGory: '맘스토크',
-            subcategory: '출산리스트',
-            userId: '가양이',
-            title: '출산전 꼭! 읽어야할 임산부 필수글',
-            contents: '내용입니다3.',
-            recommend: '3',
-            hits: '55',
-            boardDate: '2022-12-13'
-        }
-    ]); // 맘스톡 정보
 
     const List = ():any => {
 
         switch(true){
-            case filter[0] === true: return <Talk1 navigation={navigation} boardInfo={board}/>
-            case filter[1] === true: return <Talk2 navigation={navigation} boardInfo={board}/>
-            case filter[2] === true: return <Talk3 navigation={navigation} boardInfo={board}/>
+            case filter[0] === true: return <Talk1 navigation={navigation} />
+            case filter[1] === true: return <Talk2 navigation={navigation} />
+            case filter[2] === true: return <Talk3 navigation={navigation} />
         }
     }
 
@@ -187,7 +154,7 @@ const Main = ({navigation}:any) => {
         </View>
         <List />
         <TouchableOpacity style={[styles.footer, {display: filter[2] ? 'none' : 'flex'}]} onPress={write}>
-            <Pencil />
+            <Pencil fill='white'/>
         </TouchableOpacity>
     </View>
   )

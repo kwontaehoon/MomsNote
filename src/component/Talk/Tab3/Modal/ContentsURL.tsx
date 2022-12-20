@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     },
     closeBox:{
         position: 'absolute',
-        right: 20,
+        right: 10,
     },
     main:{
         height: '64%',

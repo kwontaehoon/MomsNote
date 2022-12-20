@@ -77,13 +77,32 @@ const Main = ({navigation, route}) => {
     }, [response]);
 
     const GoogleGetId = async(googleAccessToken) => {
-        await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${googleAccessToken}`) 
-        .then(function(response){
+        try{
+            const response = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${googleAccessToken}`);
             setGoogleToken(response.data.sub);
-            navigation.navigate('추가 정보 입력', ['google', response.data.sub]);
-        }).catch(function(error){
-            console.log('error');
-        })
+            const response2 = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/login',
+                headers: { 
+                'Content-Type': 'application/json'
+                },
+                data : {
+                    username: `google_${response.data.sub}`
+                }
+            })
+            response2.data.status !== 'success' ?  navigation.navigate('추가 정보 입력', ['google', response.data.sub]) : navigation.navigate('main');
+
+
+        }catch(error){
+            console.log('error: ', error);
+        }
+        // await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${googleAccessToken}`) 
+        // .then(function(response){
+        //     setGoogleToken(response.data.sub);
+        //     navigation.navigate('추가 정보 입력', ['google', response.data.sub]);
+        // }).catch(function(error){
+        //     console.log('error');
+        // })
     }
 
     const IosLogin = () => {

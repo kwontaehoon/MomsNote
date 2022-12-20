@@ -23,15 +23,20 @@ const Main = ({navigation}) => {
 
       try{
         const response = await axios.get(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI2}&code=${kakaoAcceess}`);
-        console.log(response.data);
         const response2 = await axios.get(`https://kapi.kakao.com/v1/user/access_token_info`, {
              headers: `Authorization: Bearer ${response.data.access_token}`
         })
-        console.log('response2: ', response2.data.id);
-        if(response.status === 200 && response2.status === 200){
-           console.log('success');
-           navigation.navigate('추가 정보 입력', ['kakao', response2.data.id]);
-        }
+        const response3 = await axios({
+          method: 'post',
+          url: 'https://momsnote.net/login',
+          headers: { 
+            'Content-Type': 'application/json'
+          },
+          data: {
+            username: `google_${response2.data.id}`
+          }
+        });
+        response3.data.status !== 'success' ?  navigation.navigate('추가 정보 입력', ['google', response2.data.id]) : navigation.navigate('main');
     }catch(error){
         console.log('error: ', error);
     }

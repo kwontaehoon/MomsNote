@@ -502,7 +502,7 @@ const Home = ({navigation}) => {
         </View>
     );
     
-  return count.length !== 0 ? (
+  return (
     <SafeAreaView style={[styles.container, {backgroundColor: '#FEECB3'}]}>
         
       <FocusAwareStatusBar />
@@ -555,7 +555,7 @@ const Home = ({navigation}) => {
             </View>
         </Animated.View>
     </SafeAreaView>
-  ) : ''
+  )
 }
 
 export default Home

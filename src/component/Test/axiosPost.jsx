@@ -44,13 +44,54 @@ const AxiosPost = () => {
     }
 
     const req4 = async() => {
+      console.log('req6');
+      await axios({
+        method: 'post',
+        url: 'https://momsnote.net/exp',
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        data : {
+          order: "new",
+          count: 5,
+          page: 1
+      }
+    }).then(function(response){
+        console.log(response.data);
+    }).catch((error) => {
+        console.log('error: ', error);
+    })
+    }
+
+    const req5 = async() => {
+        console.log('req5');
+
+      try{
+      const response = await axios({
+            method: 'post',
+            url: 'https://momsnote.net/login',
+            headers: { 
+              'Content-Type': 'application/json'
+            },
+            data: {
+              username: "google_1234567890"
+            }
+          });
+          console.log('response: ', response.data);
+      }catch(error){
+
+      }
+          
+    }
+
+    const req6 = async() => {
       var data = JSON.stringify({
-        "boardId": 19
+        "sort": "개인정보처리방침"
       });
       
       var config = {
-        method: 'post',
-        url: 'https://momsnote.net/exp/details',
+        method: 'get',
+        url: 'https://momsnote.net/policy',
         headers: { 
           'Content-Type': 'application/json'
         },
@@ -64,49 +105,8 @@ const AxiosPost = () => {
       .catch(function (error) {
         console.log(error);
       });
-      
-    }
-
-    const req5 = async() => {
-        console.log('req5');
-        const data = JSON.stringify({
-            "username": "google_1234567890"
-          });
-          
-          var config = {
-            method: 'post',
-            url: 'https://momsnote.net/login',
-            headers: { 
-              'Content-Type': 'application/json'
-            },
-            data : data
-          };
-          
-          axios(config)
-          .then(function (response) {
-            console.log(JSON.stringify(response.data));
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
     }
     
-    const req6 = async() => {
-      console.log('req6');
-      await axios({
-        method: 'post',
-        url: 'https://momsnote.net/exp',
-        data : {
-          order: "new",
-          count: 5,
-          page: 1
-      }
-    }).then(function(response){
-        console.log(response.data);
-    }).catch((error) => {
-        console.log('error: ', error);
-    })
-    }
   return (
     <View style={{marginTop: 40}}>
         <Button title='Query' onPress={req}></Button>
@@ -115,11 +115,11 @@ const AxiosPost = () => {
         <View style={{height: 30}}></View>
         <Button title='Get' onPress={req3}></Button>
         <View style={{height: 30}}></View>
-        <Button title='Get2' onPress={req4}></Button>
+        <Button title='postman 코드' onPress={req4}></Button>
         <View style={{height: 30}}></View>
-        <Button title='postman 코드' onPress={req5}></Button>
+        <Button title='postman 응용' onPress={req5}></Button>
         <View style={{height: 30}}></View>
-        <Button title='postman 응용' onPress={req6}></Button>
+        <Button title='테스트' onPress={req6}></Button>
     </View>
   )
 }

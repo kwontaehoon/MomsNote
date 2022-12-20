@@ -76,10 +76,9 @@ const Talk3 = ({navigation}: any) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-        {label: '1', value: '1'},
-        {label: '2', value: '2'},
-        {label: '3', value: '3'},
-        {label: '4', value: '4'}
+        {label: '최신순', value: '1'},
+        {label: '인기순', value: '2'},
+        {label: '마감임박', value: '3'},
   ]);
 
   const [info, setInfo] = useState([]);
@@ -87,7 +86,7 @@ const Talk3 = ({navigation}: any) => {
 
   useEffect(()=>{
     const b = async() => {
-      await axios({
+      const response = await axios({
         method: 'post',
         url: 'https://momsnote.net/exp',
         data : {
@@ -95,12 +94,9 @@ const Talk3 = ({navigation}: any) => {
           count: 5,
           page: 1
       }
-    }).then(function(response){
-        setInfo(response.data);
-    }).catch((error) => {
-        console.log('error: ', error);
-    })
-      }
+    });
+    setInfo(response.data);
+    }
       b();
   }, []);
 
