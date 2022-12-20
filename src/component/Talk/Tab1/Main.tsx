@@ -117,7 +117,6 @@ const Talk1 = ({navigation, boardInfo}) => {
 
   useEffect(()=>{
     const arr = boardInfo.filter(x => x.category === '맘스 토크');
-    console.log('arr: ', arr);
     setInfo(arr);
   }, [boardInfo]);
 

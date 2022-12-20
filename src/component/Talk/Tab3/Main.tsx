@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Modal } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
+import axios from 'axios'
 
 const styles = StyleSheet.create({
   container:{
@@ -70,20 +71,7 @@ const styles = StyleSheet.create({
 
 const Talk3 = ({navigation}: any) => {
 
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba1',
-      title: '전체'
-    },
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba2',
-      title: '전체'
-    },
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba3',
-      title: '전체'
-    },
-  ];
+
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -93,44 +81,28 @@ const Talk3 = ({navigation}: any) => {
         {label: '3', value: '3'},
         {label: '4', value: '4'}
   ]);
-  const Filter = ['최신순', '인기순', '추천순'];
-  const [filter, setFilter] = useState([true, false, false, false]);
-  const [info, setInfo] = useState([ // 체험 게시판 테이블
-    {
-      experienceId: '1',
-      boardId: '',
-      maxPeople: 10, // 모집인원
-      applicationStartDate: '22.12.01',
-      applicationEndDate: '22.12.05',
-      registrationStartDate: '22.11.01',
-      registrationEndDate: '22.11.04',
-      openDate: '22.11.18',
-    },{
-      experienceId: '2',
-      boardId: '', 
-      maxPeople: 20,
-      applicationStartDate: '22.12.01',
-      applicationEndDate: '22.12.05',
-      registrationStartDate: '22.11.01',
-      registrationEndDate: '22.11.04',
-      openDate: '22.11.18',
-    },{
-      experienceId: '3',
-      boardId: '',
-      maxPeople: 30,
-      applicationStartDate: '22.12.01',
-      applicationEndDate: '22.12.05',
-      registrationStartDate: '22.11.01',
-      registrationEndDate: '22.11.04',
-      openDate: '22.11.18',
-    }
-  ]);
 
-  const [info2, setInfo2] = useState([ // 체험단 신청 테이블
-    {
-      status: '0'
-    }
-  ])
+  const [info, setInfo] = useState([]);
+  console.log('info: ', info);
+
+  useEffect(()=>{
+    const b = async() => {
+      await axios({
+        method: 'post',
+        url: 'https://momsnote.net/exp',
+        data : {
+          order: "new",
+          count: 5,
+          page: 1
+      }
+    }).then(function(response){
+        setInfo(response.data);
+    }).catch((error) => {
+        console.log('error: ', error);
+    })
+      }
+      b();
+  }, []);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('체험단 상세페이지', item)}>
@@ -139,8 +111,8 @@ const Talk3 = ({navigation}: any) => {
       </View>
       <View style={styles.contentBox}>
         <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>{item.applicationEndDate}일 남음</Text></View>
-        <View style={styles.content}><Text style={{fontWeight: '500'}}>체험단 제목 체험단 제목</Text></View>
-        <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>신청 10명/모집 {item.maxPeople}명</Text></View>
+        <View style={styles.content}><Text style={{fontWeight: '500'}}>{item.title}</Text></View>
+        <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>신청 {item.appCount}명/모집 {item.maxPeople}명</Text></View>
       </View>
     </TouchableOpacity>
   ); 
@@ -149,7 +121,7 @@ const Talk3 = ({navigation}: any) => {
     <View style={styles.container}>
       <View style={styles.header}></View>
       <View style={styles.header2}>
-        <View style={[styles.header2FilterBox, {paddingBottom: 5}]}><Text style={{fontSize: 16}}>0 건</Text></View>
+        <View style={[styles.header2FilterBox, {paddingBottom: 5}]}><Text style={{fontSize: 16}}>{info.length} 건</Text></View>
         <View style={[styles.header2FilterBox, {width: '32%'}]}>
           <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순'
               placeholderStyle={{color: '#9E9E9E', paddingLeft: 17, fontSize: 13}} textStyle={{fontSize: 15}} setOpen={setOpen} setValue={setValue} setItems={setItems}
@@ -157,8 +129,8 @@ const Talk3 = ({navigation}: any) => {
         </View>
       </View>
       <View style={styles.main}>
-        {info.length !== 0 ? <FlatList data={info} renderItem={renderItem} numColumns={2}
-          keyExtractor={item => item.experienceId}>
+        {info.length !== 0 ? <FlatList data={info} renderItem={renderItem} numColumns={2} showsVerticalScrollIndicator={false}
+          keyExtractor={item => item.appCount}>
           </FlatList>:
           <View style={{marginTop: 100, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>모집중인 체험단이 없습니다.</Text></View>}
       </View>

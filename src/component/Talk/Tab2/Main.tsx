@@ -128,7 +128,7 @@ const Talk1 = ({navigation, info}) => {
       <View style={styles.header2}>
         <View style={[styles.header2FilterBox, {paddingBottom: 5}]}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{fontSize: 16, fontWeight: '600'}}>{info.length}</Text>
+            <Text style={{fontSize: 16, fontWeight: '600'}}></Text>
             <Text style={{fontSize: 16}}> 건</Text>
           </View>
         </View>

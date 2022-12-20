@@ -1,9 +1,16 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/AntDesign'
 import Checkbox from 'expo-checkbox'
 import axios from 'axios'
+import Modal from './Modal/AuthComplete'
+import Modal2 from './Modal/AuthFail'
+import Modal3 from './Modal/AuthReady'
+import Modal4 from './Modal/Cencel'
+import Modal5 from './Modal/CencelConfirm'
+import Modal6 from './Modal/Save'
+
 
 const styles = StyleSheet.create({
     container:{
@@ -108,8 +115,6 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         marginBottom: 3,
     },
-
-
 })
 const Withdraw = ({navigation, route}) => {
 
@@ -124,20 +129,28 @@ const Withdraw = ({navigation, route}) => {
         },
     ];
 
-    const [isChecked, setChecked] = useState(Array.from({length: 3}, ()=>{return false})); // check box
+    const [isChecked, setChecked] = useState(Array.from({length: 3}, ()=>{ return false })); // check box
     console.log('isChecked: ', isChecked);
-    const [modalVisible, setModalVisible] = useState(false); // 체험단 나가기 모달
-    const [modalContent, setModalContent] = useState('');
-    const [modalVisible2, setModalVisible2] = useState(false); // 체험단 신청 취소 누르면 모달
-    const [modalContent2, setModalContent2] = useState('');
+
+    const [modal, setModal] = useState(false); // 핸드폰 인증 완료
+    const [modal2, setModal2] = useState(false); // 핸드폰 인증 실패
+    const [modal3, setModal3] = useState(false); // 핸드폰 인증 이미 완료
+    const [modal4, setModal4] = useState(false); // 취소
+    const [modal5, setModal5] = useState(false); // 취소 확인
+    const [modal6, setModal6] = useState(false); // 임시 저장
+    
     const [info, setInfo] = useState( // post info
         {
-            name: '',
-            phoneNumber: '',
+            userId: 0,
+            applicationId: 0,
+            memberName: '',
+            tel: '',
+            address: route.params,
+            addressDetails: '',
+            expreienceId: 0,
             blogUrl: '',
             instaUrl: '',
             youtubeUrl: '',
-            address: '',
         }
     );
     console.log('info: ', info);
@@ -172,21 +185,12 @@ const Withdraw = ({navigation, route}) => {
     //     }
     //     setModalVisible2(!modalVisible2);
     // }
-
-    const complete = () => {
-        
-        return(
-            <View style={styles.buttonBox}><Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text></View>
-        )
-    }
-
-    
     
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
             <View style={styles.header}>
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>신청 정보</Text>
-                <View style={styles.headerBox}><Icon name='close' size={20} onPress={()=>setModalVisible(!modalVisible)}/></View>
+                <TouchableOpacity style={styles.headerBox}><Icon name='close' size={20} onPress={()=>navigation.goBack()}/></TouchableOpacity>
             </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
@@ -199,7 +203,7 @@ const Withdraw = ({navigation, route}) => {
                 <View>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>연락처</Text>
                     <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)'
-                         onChangeText={(e) => setInfo((prevState) => ({...prevState, phoneNumber: e}))}>
+                         onChangeText={(e) => setInfo((prevState) => ({...prevState, tel: e}))}>
                     </TextInput>
                     <View style={styles.certificateBox}><Text style={{fontWeight: '500'}}>인증요청</Text></View>
                 </View>
@@ -215,13 +219,11 @@ const Withdraw = ({navigation, route}) => {
                             ...prevState, blogUrl: e
                         }))}></TextInput>
                     <TextInput style={styles.textBox} placeholder='인스타그램'
-                        onChangeText={(e) => setInfo((prevState) => ({
-                            ...prevState, instaUrl: e
-                        }))}></TextInput>
+                        onChangeText={(e) => setInfo((prevState) => ({ ...prevState, instaUrl: e }))}>
+                    </TextInput>
                     <TextInput style={styles.textBox} placeholder='유튜브'
-                        onChangeText={(e) => setInfo((prevState) => ({
-                            ...prevState, youtubeUrl: e
-                        }))}></TextInput>
+                        onChangeText={(e) => setInfo((prevState) => ({ ...prevState, youtubeUrl: e }))}>
+                    </TextInput>
                 </View>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>배송지</Text>
@@ -231,7 +233,7 @@ const Withdraw = ({navigation, route}) => {
                         </View>
                         <View style={styles.postBox}><Icon name='right' size={15} onPress={()=>navigation.navigate('주소 찾기')}/></View>
                     </View>
-                    <TextInput style={styles.textBox} placeholder='상세주소 입력'></TextInput>
+                    <TextInput style={styles.textBox} placeholder='상세주소 입력' onChangeText={(e) => setInfo((prevState) => ({ ...prevState, addressDetails: e }))}></TextInput>
                 </View>
                 <View style={[styles.mainBox, {flexDirection: 'row', borderBottomWidth: 1, height: 40, borderColor: '#EEEEEE', marginBottom: 15}]}>
                 <Checkbox
@@ -259,8 +261,8 @@ const Withdraw = ({navigation, route}) => {
                     <View style={{position: 'absolute', right: 0, width: 20, height: '100%', justifyContent :'center'}}><Icon name='right' size={12} style={{color: '#616161'}}/></View>
                 </View>
                 <View style={[styles.mainBox, {alignItems: 'center'}]}>
-                    {/* <View style={styles.buttonBox}><Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text></View> */}
-                    {complete()}
+                    {isChecked[0] ? <View style={[styles.buttonBox, {backgroundColor: '#FEA100'}]}><Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text></View>
+                    : <View style={styles.buttonBox}><Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text></View>}
                 </View>
             </View>
         </View>
@@ -269,38 +271,12 @@ const Withdraw = ({navigation, route}) => {
   return (
     <View style={styles.container}>
 
-        <Modal animationType="fade" transparent={true} visible={modalVisible}
-                onRequestClose={() => {
-                setModalVisible(!modalVisible)}}>
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalView}>
-                        <View style={[styles.modalContainer2, {height: 220}]}>
-                            <View style={styles.modalBox}>
-                                <Text style={{fontSize: 16, paddingTop: 10}}>작성 중인 내용이 존재합니다.</Text>
-                                <Text style={{fontSize: 16, paddingTop: 5}}>해당 내용을 임시저장하시겠습니까?</Text>
-                            </View>
-                            <View style={styles.modalBox}>
-                                <TouchableOpacity style={styles.modal} onPress={()=>{setModalVisible(!modalVisible), navigation.goBack()}}><Text style={{color: 'white', fontSize: 16}}>네</Text></TouchableOpacity>
-                                <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModalVisible(!modalVisible)}><Text style={{color: 'black', fontSize: 16}}>아니요</Text></TouchableOpacity>
-                            </View>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
-            <Modal animationType="fade" transparent={true} visible={modalVisible2}
-            onRequestClose={() => {
-            setModalVisible2(!modalVisible2)}}>
-            <View style={styles.modalContainer}>
-                <View style={styles.modalView}>
-                    <View style={styles.modalContainer2}>
-                        <View style={styles.modalBox}><Text style={{fontSize: 16, paddingTop: 10}}></Text></View>
-                        <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal} onPress={complete}><Text style={{color: 'white', fontSize: 16}}>확인</Text></TouchableOpacity>
-                        </View>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
+        <Modal modal={modal} setModal={setModal}/>
+        <Modal2 modal2={modal2} setModal2={setModal2} />
+        <Modal3 modal3={modal3} setModal3={setModal3} />
+        <Modal4 navigation={navigation} modal4={modal4} setModal4={setModal4} />
+        <Modal5 modal5={modal5} setModal5={setModal5} />
+        <Modal6 navigation={navigation}modal6={modal6} setModal6={setModal6} />
 
        <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id} showsHorizontalScrollIndicator={false}>

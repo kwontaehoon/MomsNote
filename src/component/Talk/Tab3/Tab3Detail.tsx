@@ -3,14 +3,12 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Modal } from
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
+import ContentsURL from './Modal/ContentsURL'
 
 const styles = StyleSheet.create({
     container:{
         height: '100%',
         backgroundColor: 'white',
-    },
-    container2:{
-        borderWidth: 1,
     },
     header:{
         height: 250,
@@ -36,7 +34,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5F5F5'
     },
     main3:{
-        height: 380,
+        height: 500,
+        borderWidth: 1,
     },
     main3Box:{
         height: 56,
@@ -53,13 +52,14 @@ const styles = StyleSheet.create({
         height: 100,
     },
     main3Box3:{
-        borderWidth: 1,
+        borderWidth: 2,
         height: 100,
     },
     footer:{
         height: '12%',
         flexDirection: 'row',
         padding: 10,
+        justifyContent: 'center'
     },
     footerBox:{
         borderWidth: 1,
@@ -68,6 +68,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 10,
+    },
+    footerBox2:{
+        width: '95%',
+        height: 48,
+        backgroundColor: '#FEA100',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 4
     },
     modalContainer:{
         justifyContent: "center",
@@ -127,17 +135,11 @@ const Talk1Sub = ({navigation, route}) => {
     const [filter, setFilter] = useState(false);
     const [modalVisible, setModalVisible] = useState(false); // 체험단 신청정보 입력 -> asnyc storage
     const [modalVisible2, setModalVisible2] = useState(false); // 체험단 신청완료
-
-    const modal = (e) => {
-        if(e === 0){
-            navigation.navigate('신청 정보');
-        }
-        setModalVisible(!modalVisible);
-    }
+    const [modalVisible3, setModalVisible3] = useState(true); // 컨텐츠 URL 등록
 
     const renderItem = ({ item }:any) => (
         
-        <View style={styles.container2}>
+        <View>
             <View style={styles.header}>
 
             </View>
@@ -206,8 +208,8 @@ const Talk1Sub = ({navigation, route}) => {
                             <Text style={{fontSize: 16, paddingTop: 5}}>지금 작성하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal} onPress={()=>modal(0)}><Text style={{color: 'white', fontSize: 16}}>네</Text></TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>modal(1)}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>네</Text></TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
                         </View>
                         </View>
                     </View>
@@ -229,18 +231,22 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
             </Modal>
 
+            <ContentsURL modalVisible3={modalVisible3} setModalVisible3={setModalVisible3}/>
 
         <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id}>
         </FlatList>
-        <View style={styles.footer}>
+        {!filter ? <View style={styles.footer}>
             <View style={[styles.footerBox, {width: '20%'}]}>
                 <Icon2 name='like2' size={22} style={{color: 'orange'}}/>
                 <Text> 12</Text>
             </View>
             <View style={[styles.footerBox, {width: '5%', borderWidth: 0}]}></View>
-            <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={modal}><Text style={{fontSize: 20, fontWeight: '500'}}>신청하기</Text></TouchableOpacity>
-        </View>
+            <TouchableOpacity style={[styles.footerBox, {width: '75%'}]}><Text style={{fontSize: 20, fontWeight: '500'}}>신청하기</Text></TouchableOpacity>
+        </View> :
+        <View style={styles.footer}>
+            <View style={styles.footerBox2}><Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>컨텐츠 등록</Text></View>
+        </View>}
     </View>
   )
 }

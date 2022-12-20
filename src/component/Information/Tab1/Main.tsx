@@ -147,13 +147,13 @@ const Talk1 = ({navigation}) => {
     }
 ]);
 
-  useEffect(()=>{
-    async function b(){
-        const response = await axios.get('http://192.168.1.140:4000/api/test');
-        console.log('response: ', response.data);
-      }
-      b();
-  }, [])
+  // useEffect(()=>{
+  //   async function b(){
+  //       const response = await axios.get('http://192.168.1.140:4000/api/test');
+  //       console.log('response: ', response.data);
+  //     }
+  //     b();
+  // }, [])
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
 
