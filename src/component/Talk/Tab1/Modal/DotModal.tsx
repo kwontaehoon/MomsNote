@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
     modalView:{
         width: '100%',
         height: '100%',
-        margin: 20,
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: "center",
         justifyContent: 'flex-end',
@@ -22,7 +21,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
     },
     main:{
-        height: 144,
+        height: 124,
         backgroundColor: '#424242',
         borderRadius: 10,
     },
@@ -45,7 +44,7 @@ const styles = StyleSheet.create({
     }
 })
 
-const CheckBoxModal = ({modal, setModal}) => {
+const CheckBoxModal = ({modal, setModal, modal2, setModal2, modal3, setModal3}) => {
 
   return (
     <Modal animationType="slide" transparent={true} visible={modal}
@@ -53,10 +52,10 @@ const CheckBoxModal = ({modal, setModal}) => {
             setModal(!modal)}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
-                    <View style={[styles.modalContainer2, {height: 250}]}>
+                    <View style={styles.modalContainer2}>
                        <View style={styles.main}>
-                            <TouchableOpacity style={styles.mainBox}><Text style={{color: '#1E88E5', fontWeight: '600', fontSize: 20}}>차단하기</Text></TouchableOpacity>
-                            <TouchableOpacity style={styles.mainBox}><Text style={{color: '#1E88E5', fontWeight: '600', fontSize: 20}}>신고하기</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.mainBox} onPress={()=>{setModal(!modal), setModal2(!modal2)}}><Text style={{color: '#1E88E5', fontWeight: '600', fontSize: 20}}>차단하기</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.mainBox} onPress={()=>{setModal(!modal), setModal3(!modal3)}}><Text style={{color: '#1E88E5', fontWeight: '600', fontSize: 20}}>신고하기</Text></TouchableOpacity>
                        </View>
                        <View style={{height: 10}}></View>
                        <TouchableOpacity style={styles.footer} onPress={()=>setModal(!modal)}>

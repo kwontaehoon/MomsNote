@@ -256,7 +256,7 @@ const Home = ({navigation}) => {
 
     useEffect(()=>{
         async function b(){
-            const response = await axios.get('http://192.168.1.140:4000/api/test');
+            const response = await axios.get('https://my-json-server.typicode.com/typicode/demo/posts');
             console.log('response: ', response.data);
           }
           b();

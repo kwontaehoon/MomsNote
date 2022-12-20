@@ -93,7 +93,7 @@ const Main = ({modal2, setModal2}) => {
             setModal2(!modal2)}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
-                    <View style={[styles.modalContainer2, {height: 220}]}>
+                    <View style={styles.modalContainer2}>
                         <View style={styles.modalBox}>
                             <Text style={{fontSize: 16, paddingTop: 10}}>사용자를 차단하시면 게시물과 댓글을 볼</Text>
                             <Text style={{fontSize: 16, paddingTop: 5}}>수 없습니다. 그래도 차단하시겠습니까?</Text>

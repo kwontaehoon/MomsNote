@@ -42,6 +42,7 @@ import Info2Detail from '../Information/Tab2/Detail'
 import MyPage from '../MyPage/Main'
 import Alarm from '../Navigation/Alarm'
 import Compare from '../Talk/Tab2/Compare'
+import Gallery from '../Talk/Tab1/Modal/Gallery';
 
 
 LogBox.ignoreAllLogs();
@@ -66,22 +67,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         height: 50,
         
-    },
-    searchBox:{
-        backgroundColor: '#F5F5F5',
-        width: '100%',
-        height: '80%',
-        marginRight: 16,
-        flexDirection: 'row',
-        borderRadius: 4
-    },
-    iconBox2:{
-        width: '15%',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    textInputBox:{
-        width: '85%',
     }
     
 })
@@ -123,21 +108,9 @@ const Navigation = () => {
             <Stack.Screen name="이용약관" component={Term1}/>
             <Stack.Screen name="개인정보처리방침" component={Term2}/>
             <Stack.Screen name="맘스토크 상세내용" component={Talk1Tab1Detail}
-                            options={{title: '', headerRight: () => (
-                            <View style={styles.header}>
-                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-                                    <View style={styles.iconBox}><Icon2 name='share-social-outline' size={22}/></View>
-                                    <View style={styles.iconBox}><Icon3 name='dots-three-vertical' size={20}/></View>
-                                </View>
-                            </View>
-                        )}}/>
-            <Stack.Screen name="검색" component={Search}
-                            options={{title: '', headerRight: () => (
-                                <View style={styles.searchBox}>
-                                    <View style={styles.iconBox2}><Icon4 name='search1' size={16} style={{color: '#424242'}}/></View>
-                                    <TextInput style={styles.textInputBox} placeholder='검색하실 단어를 입력해주세요.'></TextInput>
-                                </View>
-                            )}}/>
+                            options={{title: '', headerShown: false}}/>
+
+            <Stack.Screen name="검색" component={Search} options={{title: '', headerShown: false}}/>
             <Stack.Screen name="알림" component={Alarm}/>
             <Stack.Screen name="총 예산" component={Budget}/>
             <Stack.Screen name="오늘의편지 상세페이지" component={DdayDetail} options={{title: ''}}/>
@@ -154,6 +127,7 @@ const Navigation = () => {
                                     </View>
                                 ),
                             })}/>
+            <Stack.Screen name="갤러리" component={Gallery} options={{title: '', headerShown: false}}/>
         </Stack.Navigator>
       </NavigationContainer>
   )

@@ -42,15 +42,12 @@ const AxiosPost = () => {
     }
 
     const req4 = async() => {
-        var data = {sort: "개인정보처리방침"};
-          
           var config = {
             method: 'get',
             url: 'https://momsnote.net/policy',
             headers: { 
               'Content-Type': 'application/json'
             },
-            data : data
           };
           
           axios(config)

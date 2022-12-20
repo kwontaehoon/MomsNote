@@ -54,9 +54,9 @@ const NoticeModal = ({modal4, setModal4}) => {
                         <View style={[styles.modalBox, {height: '45%'}]}>
                             <Text style={{fontSize: 16, paddingTop: 10}}>신고가 접수되었습니다.</Text>
                         </View>
-                        <TouchableOpacity style={styles.modalBox} onPress={()=>setModal4(!modal4)}>
-                            <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>확인</Text></TouchableOpacity>
-                        </TouchableOpacity>
+                        <View style={styles.modalBox}>
+                            <TouchableOpacity style={styles.modal} onPress={()=>setModal4(!modal4)}><Text style={{color: 'white', fontSize: 16}}>확인</Text></TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </View>

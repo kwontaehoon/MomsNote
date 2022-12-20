@@ -6,6 +6,8 @@ import Talk1 from './Tab1/Main'
 import Talk2 from './Tab2/Main'
 import Talk3 from './Tab3/Main'
 import axios from 'axios'
+import { useSelector, useDispatch } from 'react-redux'
+import { getBoard } from '../../Redux/Slices/BoardSlice'
 
 import Pencil from '../../../public/assets/svg/pencil.svg'
 
@@ -77,17 +79,26 @@ const styles = StyleSheet.create({
 })
 const Main = ({navigation}:any) => {
 
+    // useEffect(()=>{
+    //     async function b(){
+    //         const response = await axios.get('http://192.168.1.140:4000/api/test');
+    //         console.log('response: ', response.data);
+    //       }
+    //       b();
+    // }, [])
+
+    const board = useSelector(state => { return state.board.data; });
+    const dispatch = useDispatch();
+    
     useEffect(()=>{
-        async function b(){
-            const response = await axios.get('http://192.168.1.140:4000/api/test');
-            console.log('response: ', response.data);
-          }
-          b();
-    }, [])
+        console.log('useEffect');
+        dispatch(getBoard());
+    }, []);
+    
 
     const [modalVisible, setModalVisible] = useState(false); // imodal
     const [filter, setFilter] = useState([true, false, false]); // tab
-    const [info, setInfo] = useState([
+    const [info2, setInfo2] = useState([
         {
             boardId: 1,
             cateGory: '맘스토크',
@@ -122,12 +133,14 @@ const Main = ({navigation}:any) => {
     ]); // 맘스톡 정보
 
     const List = ():any => {
+
         switch(true){
-            case filter[0] === true: return <Talk1 navigation={navigation} info={info}/>
-            case filter[1] === true: return <Talk2 navigation={navigation} info={info}/>
-            case filter[2] === true: return <Talk3 navigation={navigation} info={info}/>
+            case filter[0] === true: return <Talk1 navigation={navigation} boardInfo={board}/>
+            case filter[1] === true: return <Talk2 navigation={navigation} boardInfo={board}/>
+            case filter[2] === true: return <Talk3 navigation={navigation} boardInfo={board}/>
         }
     }
+
     const filter_func = (e) => {
         let arr = [false, false, false];
         arr[e] = true;

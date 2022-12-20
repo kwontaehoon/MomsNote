@@ -53,7 +53,7 @@ function MainScreen() {
                <Stack.Navigator>
                     <Stack.Screen 
                         name="맘스톡"
-                        component={AxiosPost}
+                        component={Talk}
                         options={({ navigation, route }) => ({
                           headerRight: () => (
                             <View style={styles.header}>

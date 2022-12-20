@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
 
 })
 
-const CheckBoxModal = ({modal3, setModal3}) => {
+const CheckBoxModal = ({modal3, setModal3, modal4, setModal4}) => {
 
     const DATA = [
         {
@@ -176,7 +176,7 @@ const CheckBoxModal = ({modal3, setModal3}) => {
                             </TextInput>
                         </View>
                         {info.title !== '카테고리 선택(필수)' && info.content.length !== 0 ?
-                            <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>setModal3(!modal3)}>
+                            <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>{setModal3(!modal3), setModal4(!modal4), setInfo((prevState) => ({ ...prevState, content: ''}))}}>
                                 <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>신고하기</Text>
                             </TouchableOpacity> : 
                             

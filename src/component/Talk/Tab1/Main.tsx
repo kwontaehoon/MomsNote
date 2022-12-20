@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
 })
 
 
-const Talk1 = ({navigation}) => {
+const Talk1 = ({navigation, boardInfo}) => {
 
   const DATA = [
     {
@@ -115,6 +115,12 @@ const Talk1 = ({navigation}) => {
     }
   ];
 
+  useEffect(()=>{
+    const arr = boardInfo.filter(x => x.category === '맘스 토크');
+    console.log('arr: ', arr);
+    setInfo(arr);
+  }, [boardInfo]);
+
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
@@ -124,42 +130,7 @@ const Talk1 = ({navigation}) => {
         {label: '4', value: '4'}
   ]);
 
-  const [info, setInfo] = useState([
-    {
-        boardId: 1,
-        cateGory: '맘스토크',
-        subcategory: '출산리스트',
-        userId: '별똥맘',
-        title: '5주차 맘 입덧 질문있어요',
-        contents: '내용입니다.',
-        recommend: '3',
-        hits: '55',
-        boardDate: '2022-12-13',
-        image: '../../../../public/assets/testimage.png'
-     },{
-        boardId: 2,
-        cateGory: '맘스토크',
-        subcategory: '출산리스트',
-        userId: '동글이',
-        title: '좋은 정보 많이 공유해요~',
-        contents: '내용입니다2.',
-        recommend: '3',
-        hits: '55',
-        boardDate: '2022-12-13',
-        image: ''
-     },{
-        boardId: 3,
-        cateGory: '맘스토크',
-        subcategory: '출산리스트',
-        userId: '가양이',
-        title: '출산전 꼭! 읽어야할 임산부 필수글',
-        contents: '내용입니다3.',
-        recommend: '3',
-        hits: '55',
-        boardDate: '2022-12-13',
-        image: '../../../../public/assets/testimage.png'
-    }
-]); // 맘스톡 정보
+  const [info, setInfo] = useState([]);
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
 
@@ -181,9 +152,9 @@ const Talk1 = ({navigation}) => {
 
   const renderItem2 = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', item)}>
-        { item.image === '' ?<View style={styles.mainBoxSub}>
+        { item.image !== '' ? <View style={styles.mainBoxSub}>
           <Image source={require('../../../../public/assets/testimage.png')} style={{width: 68, height: 68}}/>
-          </View> : <View></View>
+          </View> : ''
         }
         <View style={[styles.mainBoxSub, {width: '55%', justifyContent: 'flex-start', paddingTop: 5}]}>
           <Text style={{fontSize: 15, paddingTop: 2}}>{item.title} </Text>

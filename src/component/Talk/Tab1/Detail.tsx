@@ -7,20 +7,31 @@ import Modal from './Modal/DotModal'
 import Modal2 from './Modal/Block'
 import Modal3 from './Modal/Declare'
 import Modal4 from './Modal/DelareConfirm'
-import Modal5 from './Modal/Gallery'
 
 import Chat from '../../../../public/assets/svg/Chat.svg'
 import Like from '../../../../public/assets/svg/like.svg'
+import Back from '../../../../public/assets/svg/Back.svg'
+import More from '../../../../public/assets/svg/More.svg'
+import Share from '../../../../public/assets/svg/Share.svg'
 
 const styles = StyleSheet.create({
     container:{
-        height: '100%',
+        height: '96%',
         backgroundColor: 'white',
-    },
-    container2:{
-
+        marginTop: getStatusBarHeight(),
     },
     header:{
+        height: 60,
+        justifyContent: 'center',
+        padding: 20,
+    },
+    headerBar:{
+        position: 'absolute',
+        right: 20,
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
+    header2:{
         flexDirection: 'row',
         height: 70,
         alignItems: 'flex-end',
@@ -135,7 +146,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
     }
 })
-const Talk1Sub = ({route}) => {
+const Talk1Sub = ({navigation, route}) => {
 
     const info = [route.params];
     console.log('info: ', info);
@@ -144,12 +155,11 @@ const Talk1Sub = ({route}) => {
     const [modal, setModal] = useState(false); // dot 모달
     const [modal2, setModal2] = useState(false); // 차단하기
     const [modal3, setModal3] = useState(false); // 차단 확인
-    const [modal4, setModal4] = useState(false); // 신고하기
-    const [modal5, setModal5] = useState(false); // 신고 확인
+    const [modal4, setModal4] = useState(false); // 신고 확인
     const animation = useRef(new Animated.Value(0)).current;
 
     const ImageBox = () => {
-        console.log('이미지길이', info[0].image);
+        console.log('이미지길이: ', info[0].image.length);
 
         let arr = [];
         info.filter((x, index)=>{
@@ -158,10 +168,10 @@ const Talk1Sub = ({route}) => {
 
         return(
             <View style={styles.mainBox2ImageBox2}>
-                <View style={styles.image2}></View>
+                <TouchableOpacity style={styles.image2} onPress={()=>navigation.navigate('갤러리')}></TouchableOpacity>
                 <View style={styles.image2}></View>
                 <View style={styles.image2}>
-                    <Image source={require('../../../../public/assets/testimage.png')} style={{width: '100%', height: '100%'}} resizeMode='stretch' />
+                    <Image source={require('../../../../public/assets/testimage.png')} style={{width: '100%', height: '100%'}} />
                     <View style={{position: 'absolute', top: '40%', left: '40%'}}><Text style={{color: 'white', fontSize: 20, fontWeight: '600'}}>+2</Text></View>
                 </View>
             </View>
@@ -188,8 +198,15 @@ const Talk1Sub = ({route}) => {
     }
 
     const renderItem = ({ item }) => (
-        <View style={styles.container2}>
+        <View>
             <View style={styles.header}>
+                <Back onPress={()=>navigation.goBack()}/>
+                <View style={styles.headerBar}>
+                    <Share style={{marginRight: 8}}/>
+                    <More onPress={()=>setModal(!modal)}/>
+                </View>
+            </View>
+            <View style={styles.header2}>
                 <View style={styles.profileBox}></View>
                 <View style={styles.infoBox}>
                     <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{item.userId}</Text>
@@ -237,11 +254,10 @@ const Talk1Sub = ({route}) => {
             <View style={styles.alarm}><Text style={{color: 'white', fontSize: 13, fontWeight: '500'}}>차단하였습니다.</Text></View>
         </Animated.View>
 
-        <Modal modal={modal} setModal={setModal} />
-        <Modal2 modal2={modal2} setModal2={setModal2} />
-        <Modal3 modal3={modal3} setModal3={setModal3} />
+        <Modal modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3}/>
+        <Modal2 modal2={modal2} setModal2={setModal2} modal={modal} setModal={setModal}/>
+        <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4}/>
         <Modal4 modal4={modal4} setModal4={setModal4} />
-        <Modal5 modal5={modal5} setModal5={setModal5} />
 
         <FlatList data={info} renderItem={renderItem}
             keyExtractor={item => item.id}>
