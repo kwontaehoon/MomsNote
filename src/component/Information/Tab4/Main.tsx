@@ -51,10 +51,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingTop: 25,
         paddingBottom: 25,
-        borderWidth: 1,
+        borderBottomWidth: 1,
         padding: 15,
         borderColor: '#F5F5F5',
-        alignItems: 'center',
     },
   })
 
@@ -84,46 +83,47 @@ const Talk1 = ({navigation}: any) => {
   ];
 
     const [filter, setFilter] = useState([true, false, false]); // 서브 카테고리
-    
-    const [info, setInfo] = useState([
-        {
-            qnaId: '1',
-            category: '임신상담',
-            qnaQ: '임신 중 어떤 운동이 좋을까요?',
-            qnaA: '수영 혹은 임신부를 위한 체조나 요가를 추천 드려요. 가볍게 30분씩 걸으시는 것도 추천드립니다.',
-            qnaDate: '',
-        }, {
-            qnaId: '3',
-            category: '임신상담',
-            qnaQ: '임신 중에 공항검색기 통과 괜찮나요?',
-            qnaA: '공항 검색기 통과 시에 방사선 노출이 있지만, 매우 적은 용량이기 때문에 태아에 미치는 영향은 거의 없습니다. 그러나 자주 방사능에 노출되는 것은 바람직하지 않습니다. 공항 검색기 통과 시에 임산부인 것을 밝히면, 공항 검색기 통과를 제외 한 검사를 받으실 수 있습니다.',
-            qnaDate: '',
-        },{
-            qnaId: '2',
-            category: '출산상담',
-            qnaQ: '출산 후 한약을 복용해도 괜찮을까요?',
-            qnaA: '전문의와 상의 후에 전문한의원에서 모유수유를 전제로 진료상담을 통해 복용하실 것을 권고드립니다.',
-            qnaDate: '',
-        }, {
-            qnaId: '4',
-            category: '출산상담',
-            qnaQ: '커피는 아예 마시면 안 되나요?',
-            qnaA: '엄마가 먹는 음식으로 아기에게 직접적인 영향을 주는 것은 아닙니다. 엄마가 먹는 음식은 일단 엄마가 소화, 흡수하고 영양분응로 모유를 통해 아기에게 전달이 되는 것이니까요. 현재 알려진 커피에 대한 부분은 많이 먹게 되면 아기가 보채거나 잠을 잘 못잘 수 있다고 하지만 하루 한 두 잔 정도는 괜찮습니다. 아기에게 수유한 직후에 드시면 더욱 좋구요.',
-            qnaDate: '',
+
+    const [info, setInfo] = useState([]);
+    console.log('임신상담 info: ', info);
+    const [info2, setInfo2] = useState([]);
+    console.log('출산상담: ', info2);
+
+    const [infoDisplay, setInfoDisplay] = useState([]);
+    console.log('infoDisplay: ', infoDisplay);
+    const [info2Display, setInfo2Display] = useState([]);
+    console.log('info2Display: ', info2Display);
+
+
+    useEffect(()=>{
+        const Pregnant = async() => {
+          const response = await axios({
+            method: 'post',
+            url: 'https://momsnote.net/api/qna/list',
+            data : {
+              category: "임신상담",
+          }
+        });
+        setInfo(response.data);
+        setInfoDisplay(Array.from({length: response.data.length}, () => {return false}));
         }
-    ]);
-    const [filter2, setFilter2] = useState(Array.from({length: info.length}, () => {return false}));
-    console.log('filter2: ', filter2);
+        Pregnant();
+      }, []);
 
-
-    // useEffect(()=>{
-    //     async function b(){
-    //         const response = await axios.get('http://192.168.1.140:4000/api/test');
-    //         console.log('response: ', response.data);
-    //       }
-    //       b();
-    // }, [])
-
+    useEffect(()=>{
+        const Pregnant2 = async() => {
+          const response = await axios({
+            method: 'post',
+            url: 'https://momsnote.net/api/qna/list',
+            data : {
+              category: "출산상담",
+          }
+        });
+        setInfo2(response.data);
+        setInfo2Display(Array.from({length: response.data.length}, () => {return false}));
+        }
+        Pregnant2();
+    }, []);
 
     const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
         let arr = Array.from({length: 3}, () => {return false});
@@ -131,17 +131,31 @@ const Talk1 = ({navigation}: any) => {
         setFilter(arr);
     }
 
+    const answer = (category, index) => {
+        console.log(category, index);
+        let arr = [];
+        if(category === '임신상담'){
+            arr = [...infoDisplay];
+            arr[index] = !arr[index];
+            setInfoDisplay(arr);
+        }else{
+            arr = [...info2Display];
+            arr[index] = !arr[index];
+            setInfo2Display(arr);
+        }
+    }
+
     const List = () => { // 임신상담 필터링
         const pregnantComfirm = [];
-        info.filter(x => {
+        info.filter((x, index) => {
             if(x.category === '임신상담'){
                 pregnantComfirm.push(
                     <>
-                    <View style={styles.contentBox}>
-                        <View style={{marginRight: 10}}><Q /></View>
+                    <TouchableOpacity style={styles.contentBox} onPress={()=>answer(x.category, index)}>
+                        <View style={{marginRight: 10}}><Q fill='#F5F5F5'/></View>
                         <Text>{x.qnaQ}</Text>
-                    </View>
-                    <View style={[styles.contentBox, {backgroundColor: '#F5F5F5'}]}>
+                    </TouchableOpacity>
+                    <View style={[styles.contentBox, {backgroundColor: '#F5F5F5', display: infoDisplay[index] ? 'flex' : 'none'}]}>
                         <View style={{marginRight: 10}}><A /></View>
                         <Text style={{width: '92%'}}>{x.qnaA}</Text>
                     </View>
@@ -154,15 +168,15 @@ const Talk1 = ({navigation}: any) => {
 
     const List2 = () => { // 출산상담 필터링
         const pregnantComfirm = [];
-        info.filter(x => {
+        info2.filter((x, index) => {
             if(x.category === '출산상담'){
                 pregnantComfirm.push(
                     <>
-                    <View style={styles.contentBox}>
+                    <TouchableOpacity style={styles.contentBox} onPress={()=>answer(x.category, index)}>
                         <View style={{marginRight: 10}}><Q /></View>
                         <Text>{x.qnaQ}</Text>
-                    </View>
-                    <View style={[styles.contentBox, {backgroundColor: '#F5F5F5'}]}>
+                    </TouchableOpacity>
+                    <View style={[styles.contentBox, {backgroundColor: '#F5F5F5', display: info2Display[index] ? 'flex' : 'none'}]}>
                         <View style={{marginRight: 10}}><A /></View>
                         <Text style={{width: '92%'}}>{x.qnaA}</Text>
                     </View>
@@ -194,16 +208,16 @@ const Talk1 = ({navigation}: any) => {
         </View>
     );
 
-    return info !== undefined ? (
+    return info !== undefined && info2 !== undefined ? (
         <View style={styles.container}>
             <View style={styles.header}>
                 <FlatList data={DATA2} renderItem={renderItem2}
-                keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
+                    keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
                 </FlatList>
             </View>
             <View style={styles.main}>
                 <FlatList data={DATA} renderItem={renderItem}
-                    keyExtractor={item => item.qnaId}>
+                    keyExtractor={item => String(item.qnaId)}>
                 </FlatList>
             </View>
         </View>

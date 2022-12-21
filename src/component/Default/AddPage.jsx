@@ -4,6 +4,7 @@ import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Checkbox from 'expo-checkbox'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Calendar from '../../../public/assets/svg/Calendar.svg'
 
@@ -87,6 +88,8 @@ const styles = StyleSheet.create({
     }
 })
 const AddPage = ({navigation, route}) => {
+
+    // console.log('AsyncStorage: ', AsyncStorage.getItem());
 
     const DATA = [
         {

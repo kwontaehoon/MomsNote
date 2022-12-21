@@ -71,16 +71,20 @@ const styles = StyleSheet.create({
 const Gallery = ({navigation, route}) => {
 
   console.log('이미지 길이: ', route.params);
+  const saveName = route.params.split('|');
+  console.log('saveName: ', saveName);
 
   const List = () => {
     let arr = [];
-
-    return(
-      <View testID="Hello" style={styles.slide1}>
+    saveName.filter((x, index)=>{
+      console.log('x: ', x);
+      arr.push(
+        <View testID="Hello" style={styles.slide1}>
           <Text style={styles.text}>z</Text>
-      </View>
-    )
-    
+        </View>
+      )
+    })
+     return arr;    
   }
 
   return(
@@ -93,6 +97,7 @@ const Gallery = ({navigation, route}) => {
         <Slick style={styles.wrapper} showsButtons={false} dot={<View style={styles.dot}/>} activeDot={<View style={styles.dotActive}/>}>
             
             <List />
+          
         </Slick>
         
         </View>

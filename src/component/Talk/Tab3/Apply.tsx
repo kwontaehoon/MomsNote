@@ -141,7 +141,6 @@ const Withdraw = ({navigation, route}) => {
     
     const [info, setInfo] = useState( // post info
         {
-            userId: 0,
             applicationId: 0,
             memberName: '',
             tel: '',
@@ -157,9 +156,12 @@ const Withdraw = ({navigation, route}) => {
 
 
     const submit = async() => {
-        await axios.post(`http://192.168.1.140:4000/post/test`, {
-            info: info
-        })
+        const response = await axios({
+            method: 'post',
+            url: 'https://momsnote.net/application/info',
+            data : info
+        });
+        setInfo(response.data);
     }
 
     const change = (e) => { // 텍스트 밑줄 색상 변경

@@ -53,7 +53,7 @@ const InquiryDetail = ({route}) => {
                 <Text style={{fontWeight: '600', fontSize: 15}}>답변 내용</Text>
                 <View style={[styles.statusBox, {right: 0}]}><Text style={{color: '#757575'}}>{item.answerDate}</Text></View>
             </View>
-            <Text style={{marginTop: 5}}>내용</Text>
+            <Text style={{marginTop: 5}}></Text>
         </View>
         </View>
       );

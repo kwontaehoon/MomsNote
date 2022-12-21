@@ -69,17 +69,18 @@ const AxiosPost = () => {
       try{
       const response = await axios({
             method: 'post',
-            url: 'https://momsnote.net/login',
+            url: 'https://momsnote.net/api/inquiry/write',
             headers: { 
               'Content-Type': 'application/json'
             },
             data: {
-              username: "google_1234567890"
+              title: "사용자 신고",
+              contents: "다른 사용자를 신고하고 싶은데 어떻게 하나요?"
             }
           });
           console.log('response: ', response.data);
       }catch(error){
-
+        console.log('error: ', error);
       }
           
     }

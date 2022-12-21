@@ -24,12 +24,12 @@ const styles = StyleSheet.create({
     headerBox:{
       alignItems: 'center',
       justifyContent: 'center',
-      borderBottomWidth: 2,
+      borderColor: '#EEEEEE',
+      borderBottomWidth: 1,
     },
     header2:{
       borderBottomWidth: 1,
       borderColor: '#EEEEEE',
-      height: 100,
     },
     header2Box:{
       height: 50,

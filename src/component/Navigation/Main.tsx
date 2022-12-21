@@ -42,7 +42,9 @@ import Info2Detail from '../Information/Tab2/Detail'
 import MyPage from '../MyPage/Main'
 import Alarm from '../Navigation/Alarm'
 import Compare from '../Talk/Tab2/Compare'
-import Gallery from '../Talk/Tab1/Modal/Gallery';
+import Gallery from '../Talk/Tab1/Modal/Gallery'
+import Government from '../Information/Tab3/Detail'
+import GuideDetail from '../Information/Tab1/Detail'
 
 
 LogBox.ignoreAllLogs();
@@ -107,8 +109,9 @@ const Navigation = () => {
             <Stack.Screen name="차단한 사용자" component={Block}/>
             <Stack.Screen name="이용약관" component={Term1}/>
             <Stack.Screen name="개인정보처리방침" component={Term2}/>
-            <Stack.Screen name="맘스토크 상세내용" component={Talk1Tab1Detail}
-                            options={{title: '', headerShown: false}}/>
+            <Stack.Screen name="맘스토크 상세내용" component={Talk1Tab1Detail} options={{title: '', headerShown: false}}/>
+            <Stack.Screen name="맘스가이드 상세내용" component={GuideDetail} options={{title: '', headerShown: false}}/>
+            <Stack.Screen name="정부지원혜택 상세내용" component={Government} options={{title: '', headerShown: false}}/>
 
             <Stack.Screen name="검색" component={Search} options={{title: '', headerShown: false}}/>
             <Stack.Screen name="알림" component={Alarm}/>
@@ -116,7 +119,7 @@ const Navigation = () => {
             <Stack.Screen name="오늘의편지 상세페이지" component={DdayDetail} options={{title: ''}}/>
             <Stack.Screen name="이시기에는 상세페이지" component={DdayDetail2} options={{title: ''}}/>
             <Stack.Screen name="신청한 체험단" component={Experience}/>
-            <Stack.Screen name="행사정보 상세페이지" component={Info2Detail} options={{title: ''}}/>
+            <Stack.Screen name="행사정보 상세페이지" component={Info2Detail} options={{title: '', headerShown: false}}/>
             <Stack.Screen name="마이페이지" component={MyPage}
                             options={({ navigation, route }) => ({
                                 headerRight: () => (

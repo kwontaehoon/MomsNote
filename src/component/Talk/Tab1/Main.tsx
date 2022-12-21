@@ -124,7 +124,8 @@ const Talk1 = ({navigation}) => {
 ]);
 
   const [info, setInfo] = useState([
-    {
+    { 
+        id: '0',
         boardId: 1,
         cateGory: '맘스토크',
         subcategory: '출산리스트',
@@ -136,6 +137,7 @@ const Talk1 = ({navigation}) => {
         boardDate: '2022-12-13',
         savedName: 'Baba India1.jpeg|Baba India2.jpeg'
      },{
+        id: '1',
         boardId: 2,
         cateGory: '맘스토크',
         subcategory: '출산리스트',
@@ -147,6 +149,7 @@ const Talk1 = ({navigation}) => {
         boardDate: '2022-12-13',
         savedName: 'Baba India2.jpeg'
      },{
+        id: '2',
         boardId: 3,
         cateGory: '맘스토크',
         subcategory: '출산리스트',
@@ -158,16 +161,17 @@ const Talk1 = ({navigation}) => {
         boardDate: '2022-12-13',
         savedName: 'Baba India1.jpeg|Baba India2.jpeg|d'
     },{
-      boardId: 3,
-      cateGory: '맘스토크',
-      subcategory: '출산리스트',
-      userId: '양천이',
-      title: '출산전 꼭! 읽어야할 임산부 필수글',
-      contents: '내용입니다3.',
-      recommend: '3',
-      hits: '55',
-      boardDate: '2022-12-13',
-      savedName: ''
+        id: '3',
+        boardId: 3,
+        cateGory: '맘스토크',
+        subcategory: '출산리스트',
+        userId: '양천이',
+        title: '출산전 꼭! 읽어야할 임산부 필수글',
+        contents: '내용입니다3.',
+        recommend: '3',
+        hits: '55',
+        boardDate: '2022-12-13',
+        savedName: null
   }
 ]); // 맘스톡 정보
 
@@ -191,7 +195,7 @@ const Talk1 = ({navigation}) => {
 
   const renderItem2 = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', item)}>
-        { item.savedName !== '' ? <View style={styles.mainBoxSub}>
+        { item.savedName !== null ? <View style={styles.mainBoxSub}>
           <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: 68, height: 68}}/>
           </View> : ''
         }
@@ -236,7 +240,7 @@ const Talk1 = ({navigation}) => {
       <View style={styles.main}>
         {info.length !== 0 ?
         <FlatList data={info} renderItem={renderItem2}
-          keyExtractor={item => item.title} showsVerticalScrollIndicator={false}>
+          keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
         </FlatList> : 
         <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}
       </View>

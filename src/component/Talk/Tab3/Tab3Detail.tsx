@@ -135,7 +135,7 @@ const Talk1Sub = ({navigation, route}) => {
     const [filter, setFilter] = useState(false);
     const [modalVisible, setModalVisible] = useState(false); // 체험단 신청정보 입력 -> asnyc storage
     const [modalVisible2, setModalVisible2] = useState(false); // 체험단 신청완료
-    const [modalVisible3, setModalVisible3] = useState(true); // 컨텐츠 URL 등록
+    const [modalVisible3, setModalVisible3] = useState(false); // 컨텐츠 URL 등록
 
     const renderItem = ({ item }:any) => (
         
@@ -242,7 +242,7 @@ const Talk1Sub = ({navigation, route}) => {
                 <Text> 12</Text>
             </View>
             <View style={[styles.footerBox, {width: '5%', borderWidth: 0}]}></View>
-            <TouchableOpacity style={[styles.footerBox, {width: '75%'}]}><Text style={{fontSize: 20, fontWeight: '500'}}>신청하기</Text></TouchableOpacity>
+            <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={()=>navigation.navigate('신청 정보')}><Text style={{fontSize: 20, fontWeight: '500'}}>신청하기</Text></TouchableOpacity>
         </View> :
         <View style={styles.footer}>
             <View style={styles.footerBox2}><Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>컨텐츠 등록</Text></View>

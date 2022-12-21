@@ -60,10 +60,11 @@ const Inquiry2 = ({filter, setFilter}) => {
 
   const [info, setInfo] = useState(
     {
-      title: '',
-      content: '',
+      title: "",
+      contents: "",
     }
   );
+  console.log('1:1문의 작성: ', info);
 
   const DATA = [
     {
@@ -73,9 +74,19 @@ const Inquiry2 = ({filter, setFilter}) => {
   ];
 
   const submit = async() => {
-    await axios.post(`http://192.168.1.140:4000/post/test`, {
-        info: info
-    })
+    try{
+      const response = await axios({
+            method: 'post',
+            url: 'https://momsnote.net/api/inquiry/write',
+            headers: { 
+              'Content-Type': 'application/json'
+            },
+            data: info
+          });
+          console.log('response: ', response.data);
+      }catch(error){
+        console.log('error: ', error);
+      }
   }
 
   const renderItem = ({ item }) => (
@@ -97,10 +108,10 @@ const Inquiry2 = ({filter, setFilter}) => {
           </View>
         </View>
         
-        {info.title.length === 0 && info.content.length === 0 ? 
+        {info.title.length === 0 && info.contents.length === 0 ? 
         <View style={[styles.footer, {backgroundColor: '#E0E0E0'}]}>
           <Text style={{fontSize: 18, fontWeight: '600', color: 'white'}}>문의하기</Text>
-        </View> : <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=> {submit(), setFilter(!filter)}}>
+        </View> : <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={submit}>
           <Text style={{fontSize: 18, fontWeight: '600', color: 'white'}}>문의하기</Text>
         </TouchableOpacity>}
     </View>

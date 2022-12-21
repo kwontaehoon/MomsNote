@@ -47,8 +47,7 @@ const styles = StyleSheet.create({
     },
     main:{
         height: 800,
-        borderBottomWidth: 1,
-        borderColor: '#EEEEEE'
+        borderWidth: 1,
     },
     mainBox:{
         height: 70,
@@ -90,58 +89,6 @@ const styles = StyleSheet.create({
         borderColor: '#F5F5F5',
         borderBottomWidth: 1,
     },
-    likeBox:{
-        width: '60%',
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    lookupBox:{
-        width: '40%',
-        alignItems: 'flex-end',
-        justifyContent: 'center',
-        paddingRight: 20,
-    },
-    mainBox4:{
-        height: 200
-    },
-    footer:{
-        height: 60,
-        flexDirection: 'row',
-        borderWidth: 1,
-        alignItems: 'center',
-        padding: 20,
-        borderColor: '#F5F5F5'
-    },
-    profileBox2:{
-        width: 40,
-        height: 40,
-        borderWidth: 1,
-        borderRadius: 20,
-    },
-    textInput:{
-        borderRadius: 99,
-        width: 306,
-        height: 40,
-        marginLeft: 12,
-        paddingLeft: 12,
-        backgroundColor: '#F5F5F5'
-    },
-    alarmBox:{
-        width: '100%',
-        height: 40,
-        bottom: 90,
-        position: 'absolute',
-        alignItems: 'center',
-        opacity: 0.7,
-    },
-    alarm:{
-        width: '90%',
-        height: '100%',
-        borderRadius: 5,
-        paddingLeft: 15,
-        justifyContent: 'center',
-        backgroundColor: 'black',
-    }
 })
 const Talk1Sub = ({navigation, route}) => {
 
@@ -210,33 +157,12 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 3}}>{item.title}</Text>
-                    <Text>일정: {item.eventStartDate} ~ {item.eventEndDate}</Text>
+                    <Text>일정: {item.boardDate}</Text>
                 </View>
                 <View style={styles.mainBox2}>
                     <Text>{item.contents}</Text>
                 </View>
                 {item.savedName === null ? '' : ImageBox()}
-                <View style={styles.mainBox3}>
-                    <View style={styles.likeBox}>
-                        <Like width={16} height={16}/>
-                        <Text style={{color: '#9E9E9E', fontSize: 13, paddingRight: 10}}> 추천 13</Text>
-                        <Chat width={16} height={16}/>
-                        <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 5</Text>
-                    </View>
-                    <View style={styles.lookupBox}>
-                        <Text style={{fontSize: 13, color: '#9E9E9E'}}>조회수 134</Text>
-                    </View>
-                </View>
-                <View style={styles.mainBox4}>
-                    {comment.length !== 0 ?
-                    <View style={styles.commentBox}>
-                        <Text></Text>
-                    </View> :
-                    <View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 60}}>
-                        <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
-                        <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
-                    </View>}
-                </View>
             </View>
         </View>
       );
@@ -244,18 +170,9 @@ const Talk1Sub = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-
-        {/* <Animated.View style={styles.alarmBox}>
-            <View style={styles.alarm}><Text style={{color: 'white', fontSize: 13, fontWeight: '500'}}>차단하였습니다.</Text></View>
-        </Animated.View> */}
-
         <FlatList data={info} renderItem={renderItem}
             keyExtractor={item => item.id}>
         </FlatList>
-        <View style={styles.footer}>
-            <View style={styles.profileBox2}></View>
-            <TextInput style={styles.textInput} placeholder='댓글을 입력해주세요.' placeholderTextColor={'#BDBDBD'}></TextInput>
-        </View>
     </View>
   )
 }

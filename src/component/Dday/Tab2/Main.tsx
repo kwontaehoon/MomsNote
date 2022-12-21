@@ -5,9 +5,11 @@ import axios from 'axios'
 
 const styles = StyleSheet.create({
   container:{
-    height: 500,
-    backgroundColor: '#F5F5F5',
-    padding: 20,
+    height: '76%',
+    backgroundColor: 'white',
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 20,
   },
   main:{
     height: 90,
@@ -32,63 +34,28 @@ const styles = StyleSheet.create({
 
 const Talk1 = ({navigation, week}: any) => {
 
-    useEffect(()=>{
-      get();
-      const weekNumber = week.findIndex(x => x === true);
-      const b = info.filter(x => x.dDayWeek === weekNumber+1);
-      setInfo(b);
-    },[]);
+  const [info, setInfo] = useState([]);
+  console.log('오늘의편지 info: ', info);
+  console.log('week: ', week);
 
     useEffect(()=>{
-      // 주차에 맞게 filter링
-    }, [week])
-
-    const get = async() => {
-      console.log('req3');
-      try{
-          const response = await axios.get('http://192.168.1.140:4000/test');
-          if(response.status === 200){
-              console.log('response: ', response.data);
-          }
-      }catch(error){
-          console.log('error: ', error);
+      const Government = async() => {
+        const response = await axios({
+          method: 'post',
+          url: 'https://momsnote.net/api/period/list',
+          data : {
+            subcategory: `${week.findIndex(x => x === true)+1}주`
+        }
+      });
+      setInfo(response.data);
       }
-  }
-
-    const [info, setInfo] = useState([
-      {
-        dDayId: '1',
-        dDayWeek: 1,
-        dDayTitle: '이 시기의 아기',
-        dDayContens: '1번 내용',
-        dDayImage: '',
-      },{
-        dDayId: '2',
-        dDayWeek: 1,
-        dDayTitle: '이 시기의 엄마',
-        dDayContens: '2번 내용',
-        dDayImage: '',
-      },{
-        dDayId: '3',
-        dDayWeek: 2,
-        dDayTitle: '엄마를 위한 어드바이스',
-        dDayContens: '3번 내용',
-        dDayImage: '',
-      },{
-        dDayId: '4',
-        dDayWeek: 2,
-        dDayTitle: '아빠를 위한 어드바이스',
-        dDayContens: '4번 내용',
-        dDayImage: '5',
-      },
-      
-    ]);
-    console.log('info: ', info);
+      Government();
+    }, []);
     
     const renderItem = ({ item }) => (
            <TouchableOpacity style={styles.main} onPress={()=>navigation.navigate('이시기에는 상세페이지', item)}>
               <View style={styles.mainBox}><Text>사진</Text></View>
-              <View style={styles.mainBox2}><Text style={{fontSize: 15}}>{item.dDayTitle}</Text></View>
+              <View style={styles.mainBox2}><Text style={{fontSize: 15}}>{item.title}</Text></View>
           </TouchableOpacity>
     );
 

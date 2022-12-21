@@ -52,77 +52,78 @@ const styles = StyleSheet.create({
 
 const Talk1 = ({navigation}: any) => {
 
-  const DATA = [
-    {
-      id: '1',
-      title: '전체'
-    },
-    {
-      id: '2',
-      title: '전체'
-    },
-  ];
   const DATA2 = [
     {
-      id: '1',
+      id: 0,
       title: '전체'
     },
     {
-      id: '2',
+      id: 1,
       title: '전체'
     },
     {
-      id: '3',
+      id: 2,
       title: '전체'
     },
     {
-      id: '4',
+      id: 3,
       title: '전체'
     },
     {
-      id: '5',
+      id: 4,
       title: '전체'
     },
     {
-      id: '6',
+      id: 5,
       title: '전체'
     },
     {
-      id: '7',
+      id: 6,
       title: '전체'
     },
     {
-      id: '8',
+      id: 7,
       title: '전체'
     },
     {
-      id: '9',
+      id: 8,
       title: '전체'
     },
     {
-      id: '10',
+      id: 9,
       title: '전체'
     },
     {
-      id: '11',
+      id: 10,
       title: '전체'
     },
     {
-      id: '12',
+      id: 11,
       title: '전체'
     },
   ];
 
     const [week, setWeek] = useState([true, false, false, false, false, false,
     false, false, false, false, false, false]);
+    const [info, setInfo] = useState([]);
+    console.log('행사정보 info: ', info);
 
     useEffect(()=>{
-      async function b(){
-          const response = await axios.get('http://192.168.1.140:4000/api/test');
-          console.log('response: ', response.data);
+      const EventBoard = async() => {
+        const subcategory = week.findIndex(x => x === true);
+        const response = await axios({
+          method: 'post',
+          url: 'https://momsnote.net/api/eventboard/list',
+          data : {
+            subcategory: `${subcategory+1}월`,
+            count: 5,
+            page: 1
         }
-        b();
-    }, [])
+      });
+      setInfo(response.data);
+      }
+      EventBoard();
+    }, [week]);
 
     const change = (e) => { // 몇 주차 border, 글자두께 변경
       let arr = Array.from({length: 12}, ()=>{ return false});
@@ -132,15 +133,15 @@ const Talk1 = ({navigation}: any) => {
 
   const renderItem = ({ item }) => ( // 행사정보
       <TouchableOpacity style={styles.main2} onPress={()=>navigation.navigate('행사정보 상세페이지', item)}>
-          <View style={styles.dateBox}><Text>10.20(목) ~ 10.23(일)</Text></View>
-          <Text style={{fontWeight: '500'}}>[여수] kbc</Text>
+          <View style={styles.dateBox}><Text>{item.eventStartDate} ~ {item.eventEndDate}</Text></View>
+          <Text style={{fontWeight: '500'}}>{item.title}</Text>
       </TouchableOpacity>
   );
 
   const renderItem2 = ({ item }) => ( // 임신주차
     <TouchableOpacity style={styles.scrollBox} onPress={()=>change(item.id)}>
       <Text style={{fontSize: 16, padding: 3, fontWeight: week[item.id] ? 'bold' : '400',
-        color: week[item.id] ? 'black' : '#9E9E9E', borderBottomWidth: week[item.id] ? 2 : 0 }}>{item.id}주</Text>
+        color: week[item.id] ? 'black' : '#9E9E9E', borderBottomWidth: week[item.id] ? 2 : 0 }}>{item.id+1}월</Text>
     </TouchableOpacity>
   );
 
@@ -155,8 +156,8 @@ const Talk1 = ({navigation}: any) => {
           </View>
         </View>
         <View style={styles.main}>
-          <FlatList data={DATA} renderItem={renderItem}
-              keyExtractor={item => item.id}>
+          <FlatList data={info} renderItem={renderItem}
+              keyExtractor={item => item.boardId}>
           </FlatList>
         </View>
      </View>

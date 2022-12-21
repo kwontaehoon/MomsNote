@@ -98,7 +98,6 @@ const styles = StyleSheet.create({
         width: '60%',
         flexDirection: 'row',
         alignItems: 'center',
-        paddingLeft: 10,
     },
     lookupBox:{
         width: '40%',
@@ -152,6 +151,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     const info = [route.params];
     console.log('info: ', info);
+    console.log(info[0].savaName === undefined);
 
     const [comment, setComment] = useState([]);
     const [modal, setModal] = useState(false); // dot 모달
@@ -161,7 +161,7 @@ const Talk1Sub = ({navigation, route}) => {
     const animation = useRef(new Animated.Value(0)).current;
 
     const ImageBox = () => {
-        console.log('이미지길이: ', info[0].savedName.split('|').length);
+        console.log('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')
 
         switch(info[0].savedName.split('|').length){
             case 1: return(
@@ -171,17 +171,17 @@ const Talk1Sub = ({navigation, route}) => {
             )
             case 2: return(
                 <View style={styles.mainBox2ImageBox2}>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리')}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image2}/>
                     </TouchableOpacity>
-                    <View style={styles.imageBox}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[1]}`}} style={styles.image2}/>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             )
             case 3: return(
                 <View style={styles.mainBox2ImageBox2}>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리')}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image2}/>
                     </TouchableOpacity>
                     <View style={styles.imageBox}>
@@ -231,7 +231,7 @@ const Talk1Sub = ({navigation, route}) => {
                 <Back onPress={()=>navigation.goBack()}/>
                 <View style={styles.headerBar}>
                     <Share style={{marginRight: 12}}/>
-                    <More style={{marginRight: 5}} onPress={()=>setModal(!modal)}/>
+                    <More style={{marginRight: 5}} onPress={()=>setModal(!modal)}/> 
                 </View>
             </View>
             <View style={styles.header2}>
@@ -248,7 +248,7 @@ const Talk1Sub = ({navigation, route}) => {
                 <View style={styles.mainBox2}>
                     <Text>{item.contents}</Text>
                 </View>
-                {ImageBox()}
+                {item.savedName === null ? <View></View> : ImageBox()}
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
                         <Like width={16} height={16}/>
