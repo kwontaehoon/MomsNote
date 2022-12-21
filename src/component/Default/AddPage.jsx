@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Checkbox from 'expo-checkbox'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
+import Calendar from '../../../public/assets/svg/Calendar.svg'
+
 const styles = StyleSheet.create({
     container:{
         height: '100%',
@@ -84,7 +86,7 @@ const styles = StyleSheet.create({
         borderRadius: 3,
     }
 })
-const AddPage = ({navigatio, route}) => {
+const AddPage = ({navigation, route}) => {
 
     const DATA = [
         {
@@ -104,13 +106,13 @@ const AddPage = ({navigatio, route}) => {
     const [show, setShow] = useState(false);
     const [info, setInfo] = useState({
         username: `${route.params[0]}_${route.params[1]}`,
-        nickname: '11',
-        email: '11',
-        dueDate: '11',
-        babyName: '11',
+        nickname: '',
+        email: '',
+        dueDate: '',
+        babyName: '',
         provider: `${route.params[0]}`,
         providerId: `${route.params[1]}`,
-        marketingFlage: '1'
+        marketingFlag: '1'
     })
     console.log('info: ', info);
 
@@ -178,9 +180,10 @@ const AddPage = ({navigatio, route}) => {
             <View style={styles.main3}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>출산 예정일</Text>
                 <View>
-                    <TextInput placeholder='날짜 선택' style={[styles.textBox, {borderColor: bottomColor[2] ? '#FEB401' : '#EEEEEE'}]}
-                    onFocus={()=>change(2)} value={info.dueDate}></TextInput>
-                    <View style={styles.main3Box}><Icon name='calendar' size={17} onPress={showDatepicker} style={{position: 'absolute', zIndex: 999}}/></View>
+                    <TextInput placeholder='날짜 선택' style={[styles.textBox, {borderColor: bottomColor[2] ? '#FEB401' : '#EEEEEE'}]} editable={false}
+                        onFocus={showDatepicker} value={info.dueDate}>
+                    </TextInput>
+                    <View style={styles.main3Box}><Calendar onPress={showDatepicker}/></View>
                 </View>
             </View>
             <View style={styles.main4}>

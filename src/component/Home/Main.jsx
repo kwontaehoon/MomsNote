@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Modal, SafeAreaView, StatusBar, Animated } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, SafeAreaView, StatusBar, Animated } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/Feather'
 import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
 import axios from 'axios'
+import Modal from './Modal/ListSelect'
 
 import MainImage from '../../../public/assets/svg/main.svg'
 
@@ -96,15 +97,14 @@ const styles = StyleSheet.create({
     title:{
         width: '50%',
         justifyContent: 'center',
-        padding: 5
     },
     contentBox:{
         height: '75%',
     },
     content:{
-        height: '30.4%',
+        height: '28.4%',
         justifyContent: 'center',
-        paddingLeft: 10,
+        paddingTop: 15,
     },
     main4:{
         backgroundColor: 'white',
@@ -151,49 +151,14 @@ const styles = StyleSheet.create({
         right: 40,
         transform: [{ rotate: "180deg" }],
     },
-    modalContainer:{
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    modalView:{
-        width: '100%',
-        height: '100%',
-        backgroundColor: "rgba(0,0,0,0.5)",
-        alignItems: "center",
-        justifyContent: 'center',
-        shadowColor: "#000",
-        elevation: 5,
-    },
-    modalContainer2:{
-        width: '80%',
-        backgroundColor: 'white',
-        marginBottom: 35,
-        borderRadius: 15,
-    },
-    modalBox:{
-        height: '15%',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    modalBox2:{
-        height: '16%',
-        justifyContent: 'center',
-        paddingLeft: 30,
-    },
-    modalBox3:{
-        height: '30%',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    modal:{
+    saveModal:{
         width: '90%',
-        height: 44,
-        alignItems: 'center',
+        height: 40,
+        backgroundColor: 'black',
+        opacity: 0.7,
+        borderRadius: 10,
         justifyContent: 'center',
-        borderRadius: 4,
-        marginBottom: 7,
-        borderColor: '#FE7000',
-        borderWidth: 1,
+        paddingLeft: 20,
     },
     saveModalBox:{
         width: '100%',
@@ -203,16 +168,6 @@ const styles = StyleSheet.create({
         bottom: 20,
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    saveModal:{
-        width: '90%',
-        height: 40,
-        backgroundColor: 'black',
-        opacity: 0.7,
-        borderRadius: 10,
-        justifyContent: 'center',
-        paddingLeft: 20,
-        
     },
 })
 const Home = ({navigation}) => {
@@ -265,7 +220,7 @@ const Home = ({navigation}) => {
     const ref = useRef();
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modal, setModal] = useState(true); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
 
     const [info, setInfo] = useState([
@@ -295,10 +250,6 @@ const Home = ({navigation}) => {
             image: ''
         }
     ]);
-
-    useEffect(()=>{
-        setModalVisible(!modalVisible);
-    }, []);
 
     useEffect(()=>{
         save();
@@ -505,46 +456,9 @@ const Home = ({navigation}) => {
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: '#FEECB3'}]}>
         
-      <FocusAwareStatusBar />
-        <Modal animationType="fade" transparent={true} visible={modalVisible}
-            onRequestClose={() => {
-            setModalVisible(!modalVisible)}}>
-            <View style={styles.modalContainer}>
-                <View style={styles.modalView}>
-                    <View style={[styles.modalContainer2, {height: 400}]}>
-                        <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, paddingTop: 10, color: '#212121', fontWeight: '600'}}>원하는 출산준비물 리스트를 선택해주세요.</Text>
-                        </View>
-                        <View style={styles.modalBox3}>
-                            <TouchableOpacity style={styles.modal}><Text style={{color: '#FE7000', fontSize: 15, fontWeight: '500'}}>실제맘 추천 리스트</Text></TouchableOpacity>
-                            <TouchableOpacity style={styles.modal} onPress={()=> setModalVisible(!modalVisible)}><Text style={{color: '#FE7000', fontSize: 16, fontWeight: '500'}}>직접 작성</Text></TouchableOpacity>
-                        </View>
-                        <View style={styles.modalBox2}>
-                            <View style={{flexDirection: 'row'}}>
-                                <Text style={{color: '#212121', fontWeight: '600', fontSize: 15}}>실제맘 추천 리스트 :</Text>
-                                <Text> 많은 임산부들이 추천한 품</Text>
-                            </View>
-                            <Text>목을 필수, 권장, 선택 항목으로 나눠서 알기 쉽게</Text>
-                            <Text>보여준답니다.</Text>
-                        </View>
-                        <View style={styles.modalBox2}>
-                            <View style={{flexDirection: 'row'}}>
-                                <Text style={{color: '#212121', fontWeight: '600', fontSize: 15}}>직접 작성 :</Text>
-                                <Text> 카테고리만 기본 제공하며, 필요한 품</Text>
-                            </View>
-                            <Text>목을 직접 작성할 수 있어요.</Text>
-                        </View>
-                        <View style={[styles.modalBox2, {height: '15%'}]}>
-                            <View style={{flexDirection: 'row'}}>
-                                <Text style={{color: '#EF1E1E'}}>Tip! </Text>
-                                <Text style={{color: '#757575'}}>초보엄마라면 추천 리스트를 바탕으로 나에게</Text>
-                            </View>
-                            <Text style={{color: '#757575'}}>맞는 출산준비물 리스트를 작성해 보세요.</Text>
-                        </View>
-                    </View>
-                </View>
-            </View>
-        </Modal>
+        <FocusAwareStatusBar />
+
+        <Modal modal={modal} setModal={setModal} />
 
         <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id}>

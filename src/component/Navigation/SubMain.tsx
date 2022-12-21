@@ -11,7 +11,6 @@ import Talk from '../Talk/Main'
 import Dday from '../Dday/Main'
 import Materials from '../Materials/Main'
 import Information from '../Information/Main'
-import MyPage from '../MyPage/Main'
 import Video from '../Test/Video'
 import ImagePicker from '../Test/ImagePicker'
 import FlatList from '../Test/FlatList'
@@ -23,6 +22,10 @@ import Budget from '../Materials/Budget/Main'
 import ModalFlatList from '../Test/ModalFlatList'
 import AxiosPost from '../Test/AxiosPost'
 import Wrap from '../Test/Wrap'
+
+import Search from '../../../public/assets/svg/Search.svg'
+import Bell from '../../../public/assets/svg/Bell.svg'
+import MyPage from '../../../public/assets/svg/MyPage.svg'
 
 const styles = StyleSheet.create({
     header:{
@@ -58,9 +61,9 @@ function MainScreen() {
                           headerRight: () => (
                             <View style={styles.header}>
                                 <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-                                    <View style={styles.iconBox}><Icon4 name='search1' size={22} onPress={()=>navigation.navigate('검색')}/></View>
-                                    <View style={styles.iconBox}><Icon name='bell-o' size={22} onPress={()=>navigation.navigate('알림')}/></View>
-                                    <View style={styles.iconBox}><Icon name='user-o' size={22} onPress={()=>navigation.navigate('마이페이지')}/></View>
+                                    <View style={styles.iconBox}><Search onPress={()=>navigation.navigate('검색')}/></View>
+                                    <View style={styles.iconBox}><Bell onPress={()=>navigation.navigate('알림')}/></View>
+                                    <View style={styles.iconBox}><MyPage onPress={()=>navigation.navigate('마이페이지')}/></View>
                                 </View>
                             </View>
                           ),

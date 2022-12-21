@@ -85,13 +85,13 @@ const AxiosPost = () => {
     }
 
     const req6 = async() => {
-      var data = JSON.stringify({
-        "sort": "개인정보처리방침"
+      const data = JSON.stringify({
+        "inquiryId": 4
       });
       
       var config = {
         method: 'get',
-        url: 'https://momsnote.net/policy',
+        url: 'https://momsnote.net/api/inquiry/read',
         headers: { 
           'Content-Type': 'application/json'
         },

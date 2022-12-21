@@ -85,7 +85,7 @@ const Talk3 = ({navigation}: any) => {
   console.log('info: ', info);
 
   useEffect(()=>{
-    const b = async() => {
+    const exp = async() => {
       const response = await axios({
         method: 'post',
         url: 'https://momsnote.net/exp',
@@ -97,13 +97,13 @@ const Talk3 = ({navigation}: any) => {
     });
     setInfo(response.data);
     }
-      b();
+    exp();
   }, []);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('체험단 상세페이지', item)}>
       <View style={styles.imageBox}>
-        <Image source={require('../../../../public/assets/testimage.png')} style={{width: '100%', height: '100%', borderRadius: 8}} />
+        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} />
       </View>
       <View style={styles.contentBox}>
         <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>{item.applicationEndDate}일 남음</Text></View>
@@ -120,8 +120,7 @@ const Talk3 = ({navigation}: any) => {
         <View style={[styles.header2FilterBox, {paddingBottom: 5}]}><Text style={{fontSize: 16}}>{info.length} 건</Text></View>
         <View style={[styles.header2FilterBox, {width: '32%'}]}>
           <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순'
-              placeholderStyle={{color: '#9E9E9E', paddingLeft: 17, fontSize: 13}} textStyle={{fontSize: 15}} setOpen={setOpen} setValue={setValue} setItems={setItems}
-            />
+              placeholderStyle={{paddingLeft: 17, fontSize: 13}} textStyle={{paddingLeft: 16, fontSize: 13}} setOpen={setOpen} setValue={setValue} setItems={setItems}/>
         </View>
       </View>
       <View style={styles.main}>

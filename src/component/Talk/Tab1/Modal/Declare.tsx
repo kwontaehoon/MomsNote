@@ -125,7 +125,7 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4}) => {
 
     const [titleDisplay, setTitleDisplay] = useState(false); // 품목 리스트 display
     const [info, setInfo] = useState({
-        title: '카테고리 선택(필수)',
+        title: '신고 사유',
         content: ''
     })
     console.log('title: ', info.title);
@@ -171,11 +171,11 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4}) => {
                                 <Text>{info.title}</Text>
                             </TouchableOpacity>
                             
-                            <TextInput style={[styles.mainBox2, {paddingLeft: 15, position: 'relative', zIndex: -999}]} placeholder='품목 명' placeholderTextColor={'#9E9E9E'}
+                            <TextInput style={[styles.mainBox2, {paddingLeft: 15, position: 'relative', zIndex: -999}]} placeholder='신고사유를 상세하게 적어주세요.' placeholderTextColor={'#9E9E9E'}
                                 onChangeText={(e) => setInfo((prevState) => ({ ...prevState, content: e}))}>
                             </TextInput>
                         </View>
-                        {info.title !== '카테고리 선택(필수)' && info.content.length !== 0 ?
+                        {info.title !== '신고 사유' && info.content.length !== 0 ?
                             <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>{setModal3(!modal3), setModal4(!modal4), setInfo((prevState) => ({ ...prevState, content: ''}))}}>
                                 <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>신고하기</Text>
                             </TouchableOpacity> : 

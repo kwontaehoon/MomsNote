@@ -86,7 +86,7 @@ const Main = ({modalVisible3, setModalVisible3}) => {
             <View style={styles.modalView}>
                 <View style={styles.modalContainer2}>
                     <View style={styles.header}>
-                        <TouchableOpacity style={styles.closeBox} onPress={()=>setModalVisible3(!modalVisible3)}><Close /></TouchableOpacity>
+                        <TouchableOpacity style={styles.closeBox} onPress={()=>setModalVisible3(!modalVisible3)}><Close fill={'black'}/></TouchableOpacity>
                         <Text style={{fontSize: 18, fontWeight: '600', marginBottom: 3}}>컨텐츠 URL 등록</Text>
                         <Text>본인의 해당 SNS 링크를 입력해주세요.</Text>
                     </View>

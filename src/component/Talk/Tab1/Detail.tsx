@@ -9,7 +9,7 @@ import Modal3 from './Modal/Declare'
 import Modal4 from './Modal/DelareConfirm'
 
 import Chat from '../../../../public/assets/svg/Chat.svg'
-import Like from '../../../../public/assets/svg/like.svg'
+import Like from '../../../../public/assets/svg/Like.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
 import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'
@@ -63,24 +63,26 @@ const styles = StyleSheet.create({
     },
     mainBox2ImageBox:{
         height: 400,
-        borderWidth: 1,
         padding: 10,
         justifyContent: 'center',
         alignItems: 'center',
     },
     mainBox2ImageBox2:{
-        borderWidth: 1,
         height: 150,
         flexDirection: 'row',
         padding: 10,
     },
     image:{
-        borderWidth: 1,
-        width: '90%',
-        height: '90%',
+        width: '95%',
+        height: '95%',
+        borderRadius: 4,
     },
     image2:{
-        borderWidth: 1,
+        width: '100%',
+        height: '100%',
+        borderRadius: 4,
+    },
+    imageBox:{
         width: '31%',
         height: 114,
         borderRadius: 4,
@@ -159,28 +161,54 @@ const Talk1Sub = ({navigation, route}) => {
     const animation = useRef(new Animated.Value(0)).current;
 
     const ImageBox = () => {
-        console.log('이미지길이: ', info[0].image.length);
+        console.log('이미지길이: ', info[0].savedName.split('|').length);
 
-        let arr = [];
-        info.filter((x, index)=>{
-            console.log(x);
-        });
-
-        return(
-            <View style={styles.mainBox2ImageBox2}>
-                <TouchableOpacity style={styles.image2} onPress={()=>navigation.navigate('갤러리')}></TouchableOpacity>
-                <View style={styles.image2}></View>
-                <View style={styles.image2}>
-                    <Image source={require('../../../../public/assets/testimage.png')} style={{width: '100%', height: '100%'}} />
-                    <View style={{position: 'absolute', top: '40%', left: '40%'}}><Text style={{color: 'white', fontSize: 20, fontWeight: '600'}}>+2</Text></View>
+        switch(info[0].savedName.split('|').length){
+            case 1: return(
+                <TouchableOpacity style={styles.mainBox2ImageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
+                    <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image}/>
+                </TouchableOpacity>
+            )
+            case 2: return(
+                <View style={styles.mainBox2ImageBox2}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리')}>
+                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image2}/>
+                    </TouchableOpacity>
+                    <View style={styles.imageBox}>
+                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[1]}`}} style={styles.image2}/>
+                    </View>
                 </View>
-            </View>
-        )
-        // return(
-        //     <View style={styles.mainBox2ImageBox}>
-        //         <Image source={require('../../../../public/assets/testimage.png')} style={styles.image} resizeMethod='resize'/>
-        //     </View>
-        // )
+            )
+            case 3: return(
+                <View style={styles.mainBox2ImageBox2}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리')}>
+                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image2}/>
+                    </TouchableOpacity>
+                    <View style={styles.imageBox}>
+                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[1]}`}} style={styles.image2}/>
+                    </View>
+                    <View style={styles.imageBox}>
+                        <Image source={{uri: `https://reactnative.dev/img/tiny_logo.png`}} style={styles.image2}/>
+                    </View>
+                </View>
+            )
+            default: return(
+                <View style={styles.mainBox2ImageBox2}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리')}>
+                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image2}/>
+                    </TouchableOpacity>
+                    <View style={styles.imageBox}>
+                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[1]}`}} style={styles.image2}/>
+                    </View>
+                    <View style={styles.imageBox}>
+                        <Image source={{uri: `https://reactnative.dev/img/tiny_logo.png`}} style={styles.image2}/>
+                        <View style={{position: 'absolute', top: '40%', left: '40%'}}><Text style={{color: 'white', fontSize: 20, fontWeight: '600'}}>+{info[0].savedName.split('|').length-3}</Text></View>
+                    </View>
+                </View>
+            )
+        }
+       
+        
     }
 
     const opacity_ani = () => {
