@@ -9,7 +9,7 @@ import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { getBoard } from '../../Redux/Slices/BoardSlice'
 
-import Pencil from '../../../public/assets/svg/Pencil.svg'
+import Pencil from '../../../public/assets/svg/pencil.svg'
 
 const styles = StyleSheet.create({
     container:{

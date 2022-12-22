@@ -371,7 +371,7 @@ const Home = ({navigation}) => {
                     <View style={styles.main3Box2}>
                         <View style={styles.titleBox}>
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>출산 리스트</Text></View>
-                            <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>+ 더보기</Text></View>
+                            <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡')}>+ 더보기</Text></View>
                         </View>
                         {info.length !== 0 ? <View style={styles.contentBox}>
                             <View style={styles.content}>
@@ -400,7 +400,7 @@ const Home = ({navigation}) => {
                     <View style={[styles.main3Box2, {borderLeftWidth: 1, borderColor: '#EEEEEE',}]}>
                         <View style={styles.titleBox}>
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>맘스 토크</Text></View>
-                            <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>+ 더보기</Text></View>
+                            <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡')}>+ 더보기</Text></View>
                         </View>
                         {info.length === 0 ? <View style={styles.contentBox}>
                             <View style={styles.content}>

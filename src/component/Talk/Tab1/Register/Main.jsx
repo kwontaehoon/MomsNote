@@ -214,6 +214,7 @@ const Register = ({navigation}) => {
     const [modalVisible, setModalVisible] = useState(false); // 완료시 모달창
     const [modalVisible2, setModalVisible2] = useState(false); // 취소시 모달창
     const [modal2Content, setModal2Content] = useState(''); // 완료시 모달 내용
+    
     const [filter, setFilter] = useState(Array.from({length: 5}, () => {return false})); // 카테고리
 
     const [info, setInfo] = useState( // post info
@@ -225,12 +226,6 @@ const Register = ({navigation}) => {
         }
     );
     console.log('info: ', info);
-
-    const submit = async() => {
-        await axios.post(`http://192.168.1.140:4000/post/test`, {
-            info: info
-        })
-    }
 
     const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
         let arr = Array.from({length: 5}, () => {return false});
@@ -289,7 +284,7 @@ const Register = ({navigation}) => {
       }
     };
 
-    const complete = () => {
+    const complete = async() => {
         switch(true){
             case filter.filter(x => x===true).length === 0: setModal2Content('카테고리를 선택해주세요.'); break;
             case info.title === '': setModal2Content('제목을 입력해주세요.'); break;
@@ -297,6 +292,22 @@ const Register = ({navigation}) => {
             default: submit(), navigation.goBack(); return;
         }
         setModalVisible2(!modalVisible2);
+    }
+
+    const submit = async() => {
+        try{
+          const response = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/api/inquiry/write',
+                headers: { 
+                  'Content-Type': 'application/json'
+                },
+                data: info
+              });
+              console.log('response: ', response.data);
+          }catch(error){
+            console.log('error: ', error);
+          }
     }
 
     const close = (id, name) => {

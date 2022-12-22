@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 
 import Like from '../../../../public/assets/svg/Like.svg'
-import Chat from '../../../../public/assets/svg/Chat.svg'
+import Chat from '../../../../public/assets/svg/chat.svg'
 
 const styles = StyleSheet.create({
   container:{

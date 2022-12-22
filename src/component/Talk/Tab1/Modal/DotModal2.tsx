@@ -45,21 +45,21 @@ const styles = StyleSheet.create({
     }
 })
 
-const CheckBoxModal = ({modal, setModal, modal2, setModal2, modal3, setModal3}) => {
+const CheckBoxModal = ({modal5, setModal5}) => {
 
   return (
-    <Modal animationType="slide" transparent={true} visible={modal}
+    <Modal animationType="slide" transparent={true} visible={modal5}
             onRequestClose={() => {
-            setModal(!modal)}}>
+            setModal5(!modal5)}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
                        <View style={styles.main}>
-                            <TouchableOpacity style={styles.mainBox} onPress={()=>{setModal(!modal), setModal2(!modal2)}}><Text style={{color: '#1E88E5', fontSize: 20}}>차단하기</Text></TouchableOpacity>
-                            <TouchableOpacity style={styles.mainBox} onPress={()=>{setModal(!modal), setModal3(!modal3)}}><Text style={{color: '#1E88E5', fontSize: 20}}>신고하기</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.mainBox}><Text style={{color: '#1E88E5', fontSize: 20}}>게시글 수정</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.mainBox}><Text style={{color: '#F23737', fontSize: 20}}>삭제하기</Text></TouchableOpacity>
                        </View>
                        <View style={{height: 10}}></View>
-                       <TouchableOpacity style={styles.footer} onPress={()=>setModal(!modal)}>
+                       <TouchableOpacity style={styles.footer} onPress={()=>setModal5(!modal5)}>
                             <Text style={{color: '#1E88E5', fontWeight: '600', fontSize: 20}}>취소</Text>
                         </TouchableOpacity>
                     </View>

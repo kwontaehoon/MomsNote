@@ -5,7 +5,9 @@ import Icon2 from 'react-native-vector-icons/AntDesign'
 import Icon3 from 'react-native-vector-icons/Ionicons'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { WithLocalSvg } from "react-native-svg"
-import like from '../../../../public/assets/svg/like.svg'
+
+import Like from '../../../../public/assets/svg/Like.svg'
+import Chat from '../../../../public/assets/svg/chat.svg'
 
 const styles = StyleSheet.create({
   container:{
@@ -34,31 +36,24 @@ const styles = StyleSheet.create({
   },
   main:{
     height: '100%',
-    padding: 15,
     position: 'relative',
     zIndex: -100,
   },
   mainBox:{
-    borderBottomWidth: 1,
+    borderWidth: 1,
     height: 80,
-    borderColor: '#F5F5F5'
-  },
-  mainBox2:{
-    height: '50%',
+    borderColor: '#F5F5F5',
     justifyContent: 'center',
-  },
-  mainBox3:{
-    height: '50%',
-    flexDirection: 'row',
+    padding: 15,
   },
   infoBox:{
-    width: '50%',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginTop: 5,
   },
   clockBox:{
-    width: '50%',
-    alignItems: 'flex-end',
-    paddingRight: 5,
+    position: 'absolute',
+    right: 15,
+    bottom: 20,
   },
 })
 
@@ -109,17 +104,16 @@ const Talk1 = ({navigation}) => {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', item)}>
-        <View style={styles.mainBox2}><Text style={{fontSize: 15}}>{item.title}</Text></View>
-        <View style={styles.mainBox3}>
-            <View style={styles.infoBox}>
+        <View style={styles.clockBox}><Text style={{color: '#9E9E9E', fontSize: 12}}>12시간전</Text></View>
+        <Text>{item.title}</Text>
+        <View style={styles.infoBox}>
               <Text style={{color: '#9E9E9E', fontSize: 13}}>{item.userId} </Text>
-              <Icon2 name='like2' size={13}/>
+              <Like fill='#9E9E9E' width={13} height={17}/>
               <Text style={{color: '#9E9E9E', fontSize: 13}}> {item.recommend} </Text>
-              <Icon3 name='chatbox-outline' size={13}/>
+              <Chat fill='#9E9E9E' width={13} height={17}/>
               <Text style={{color: '#9E9E9E', fontSize: 13}}> {item.recommend} </Text>
-            </View>
-            <View style={styles.clockBox}><Text style={{color: '#9E9E9E', fontSize: 12}}>12시간전</Text></View>
         </View>
+
     </TouchableOpacity>
   ); 
 

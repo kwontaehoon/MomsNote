@@ -21,7 +21,7 @@ import ViewShot from 'react-native-view-shot'
 
 import More from '../../../public/assets/svg/More.svg'
 import Sort from '../../../public/assets/svg/Sort.svg'
-import Download from '../../../public/assets/svg/Download.svg'
+import Download from '../../../public/assets/svg/download.svg'
 import Search from '../../../public/assets/svg/Search.svg'
 import Bell from '../../../public/assets/svg/Bell.svg'
 import MyPage from '../../../public/assets/svg/MyPage.svg'

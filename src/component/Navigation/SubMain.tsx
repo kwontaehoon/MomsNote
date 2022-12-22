@@ -106,8 +106,8 @@ function MainScreen() {
                             headerRight: () => (
                                 <View style={styles.header}>
                                 <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-                                    <View style={styles.iconBox}><Icon name='bell-o' size={22} onPress={()=>navigation.navigate('추가 정보 입력')}/></View>
-                                    <View style={styles.iconBox}><Icon name='user-o' size={22} onPress={()=>navigation.navigate('마이페이지')}/></View>
+                                    <View style={styles.iconBox}><Bell onPress={()=>navigation.navigate('추가 정보 입력')}/></View>
+                                    <View style={styles.iconBox}><MyPage onPress={()=>navigation.navigate('마이페이지')}/></View>
                                 </View>
                             </View>
                             ),

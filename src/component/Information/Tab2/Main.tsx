@@ -102,6 +102,7 @@ const Talk1 = ({navigation}: any) => {
       title: '전체'
     },
   ];
+  const date = new Date().getFullYear();
 
     const [week, setWeek] = useState([true, false, false, false, false, false,
     false, false, false, false, false, false]);
@@ -110,12 +111,17 @@ const Talk1 = ({navigation}: any) => {
 
     useEffect(()=>{
       const EventBoard = async() => {
-        const subcategory = week.findIndex(x => x === true);
+        let subcategory = week.findIndex(x => x === true);
+        if(subcategory-9 < 0){
+          subcategory = '0' + (subcategory+1);
+        } else subcategory += 1;
+
         const response = await axios({
           method: 'post',
           url: 'https://momsnote.net/api/eventboard/list',
           data : {
-            subcategory: `${subcategory+1}월`,
+            start: `${new Date().getFullYear()}-${subcategory}`,
+            end: `${new Date().getFullYear()}-${subcategory}`,
             count: 5,
             page: 1
         }

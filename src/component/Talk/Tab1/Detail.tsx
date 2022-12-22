@@ -7,8 +7,9 @@ import Modal from './Modal/DotModal'
 import Modal2 from './Modal/Block'
 import Modal3 from './Modal/Declare'
 import Modal4 from './Modal/DelareConfirm'
+import Modal5 from './Modal/DotModal2'
 
-import Chat from '../../../../public/assets/svg/Chat.svg'
+import Chat from '../../../../public/assets/svg/chat.svg'
 import Like from '../../../../public/assets/svg/Like.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
 import More from '../../../../public/assets/svg/More.svg'
@@ -154,14 +155,14 @@ const Talk1Sub = ({navigation, route}) => {
     console.log(info[0].savaName === undefined);
 
     const [comment, setComment] = useState([]);
-    const [modal, setModal] = useState(false); // dot 모달
+    const [modal, setModal] = useState(false); // dot 모달 다른사람게시판 차단 및 신고
     const [modal2, setModal2] = useState(false); // 차단하기
     const [modal3, setModal3] = useState(false); // 차단 확인
     const [modal4, setModal4] = useState(false); // 신고 확인
+    const [modal5, setModal5] = useState(false) // dot2 모달 본인게시판 수정 및 삭제
     const animation = useRef(new Animated.Value(0)).current;
 
     const ImageBox = () => {
-        console.log('zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')
 
         switch(info[0].savedName.split('|').length){
             case 1: return(
@@ -184,12 +185,12 @@ const Talk1Sub = ({navigation, route}) => {
                     <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image2}/>
                     </TouchableOpacity>
-                    <View style={styles.imageBox}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[1]}`}} style={styles.image2}/>
-                    </View>
-                    <View style={styles.imageBox}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
                         <Image source={{uri: `https://reactnative.dev/img/tiny_logo.png`}} style={styles.image2}/>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             )
             default: return(
@@ -197,13 +198,13 @@ const Talk1Sub = ({navigation, route}) => {
                     <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리')}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image2}/>
                     </TouchableOpacity>
-                    <View style={styles.imageBox}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[1]}`}} style={styles.image2}/>
-                    </View>
-                    <View style={styles.imageBox}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
                         <Image source={{uri: `https://reactnative.dev/img/tiny_logo.png`}} style={styles.image2}/>
                         <View style={{position: 'absolute', top: '40%', left: '40%'}}><Text style={{color: 'white', fontSize: 20, fontWeight: '600'}}>+{info[0].savedName.split('|').length-3}</Text></View>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             )
         }
@@ -286,6 +287,7 @@ const Talk1Sub = ({navigation, route}) => {
         <Modal2 modal2={modal2} setModal2={setModal2} modal={modal} setModal={setModal}/>
         <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4}/>
         <Modal4 modal4={modal4} setModal4={setModal4} />
+        <Modal5 modal5={modal5} setModal5={setModal5}/>
 
         <FlatList data={info} renderItem={renderItem}
             keyExtractor={item => item.id}>

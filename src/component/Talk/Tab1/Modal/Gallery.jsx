@@ -1,7 +1,8 @@
 import React from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, Image } from 'react-native'
 import Slick from 'react-native-slick'
 import { getStatusBarHeight } from "react-native-status-bar-height"
+import Swiper from 'react-native-swiper'
 
 import Close from '../../../../../public/assets/svg/Close.svg'
 
@@ -23,23 +24,14 @@ const styles = StyleSheet.create({
   main:{
     height: '80%',
   },
-  slide1: {
+  mainBox: {
     height: 500,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#9DD6EB'
   },
-  slide2: {
-    height: 500,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#97CAE5'
-  },
-  slide3: {
-    height: 500,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#92BBD9'
+  image:{
+    width: '100%',
+    height: '100%',
   },
   text: {
     color: '#fff',
@@ -51,8 +43,8 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    marginLeft: 3,
-    marginRight: 3,
+    marginLeft: 8,
+    marginRight: 8,
     marginTop: 3,
     marginBottom: 3
   },
@@ -61,8 +53,8 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    marginLeft: 3,
-    marginRight: 3,
+    marginLeft: 8,
+    marginRight: 8,
     marginTop: 3,
     marginBottom: 3
   },
@@ -74,19 +66,6 @@ const Gallery = ({navigation, route}) => {
   const saveName = route.params.split('|');
   console.log('saveName: ', saveName);
 
-  const List = () => {
-    let arr = [];
-    saveName.filter((x, index)=>{
-      console.log('x: ', x);
-      arr.push(
-        <View testID="Hello" style={styles.slide1}>
-          <Text style={styles.text}>z</Text>
-        </View>
-      )
-    })
-     return arr;    
-  }
-
   return(
     <View style={styles.container}>
         <View style={styles.header}>
@@ -94,11 +73,16 @@ const Gallery = ({navigation, route}) => {
         </View>
         <View style={styles.main}>
 
-        <Slick style={styles.wrapper} showsButtons={false} dot={<View style={styles.dot}/>} activeDot={<View style={styles.dotActive}/>}>
-            
-            <List />
-          
-        </Slick>
+      <Swiper style={styles.wrapper} showsButtons={false} dot={<View style={styles.dot}/>} activeDot={<View style={styles.dotActive}/>}>
+        {saveName.map((x) => {
+          return(
+            <View style={styles.mainBox}>
+              <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image} key={x}/>
+            </View>
+          )}
+      )}
+        
+      </Swiper>
         
         </View>
     </View>

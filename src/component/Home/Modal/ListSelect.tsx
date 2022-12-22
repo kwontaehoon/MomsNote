@@ -48,7 +48,7 @@ const Main = ({modal, setModal}) => {
     <View style={styles.modalContainer}>
         <View style={styles.modalView}>
             <View style={styles.modalContainer2}>
-               <View style={[styles.modalBox, {alignItems: 'center', height: 50}]}>
+               <View style={[styles.modalBox, {alignItems: 'center', justifyContent: 'flex-start', height: 50}]}>
                     <Text style={{fontSize: 16, fontWeight: '600'}}>원하는 출산 준비물 리스트를 선택해주세요.</Text>
                </View>
                <View style={styles.modalBox2}>

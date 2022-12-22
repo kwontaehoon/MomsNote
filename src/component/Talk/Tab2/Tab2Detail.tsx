@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
@@ -41,63 +41,61 @@ const styles = StyleSheet.create({
     },
     mainBox3:{
         padding: 20,
+        borderWidth: 1,
     },
     listBox:{
         borderWidth: 1,
-        height: 400,
     },
     listHeader:{
-        borderWidth: 1,
-        height: 60,
+        height: 40,
         backgroundColor: '#FEECB3',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 15,
     },
     arrowBox:{
         position: 'absolute',
         right: 15,
-        borderWidth: 1,
-    },
-    listMain:{
-        position: 'absolute',
-        borderWidth: 1,
-        backgroundColor: 'green',
-        width: '90%',
-        height: 300,
-        zIndex: 999,
-        left: '5%',
-        top: '10%'
     },
     mainBox4:{
-        height: 30,
-        flexDirection: 'row',
+        height: 100,
+        justifyContent: 'flex-end',
         borderColor: '#F5F5F5',
         borderBottomWidth: 1,
+        paddingBottom: 20,
     },
     likeBox:{
         width: '60%',
         flexDirection: 'row',
-        alignItems: 'center',
-        paddingLeft: 10,
-    },
-    list2:{
-        borderWidth: 1,
-        height: 80,
-    },
-    listFooter:{
-        borderWidth: 1,
-
+        alignItems: 'flex-end',
     },
     lookupBox:{
-        width: '40%',
-        alignItems: 'flex-end',
-        justifyContent: 'center',
-        paddingRight: 20,
+        position: 'absolute',
+        right: 20,
+        bottom: 20,
     },
+
+    listMain:{
+        height: 56,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#EEEEEE',
+        paddingLeft: 15,
+        paddingRight: 15
+    },
+    listMain2:{
+        flexDirection: 'row',
+        borderBottomWidth: 2,
+        borderColor: '#F5F5F5'
+    },
+    filterBox:{
+        width: '33.4%',
+        height: 30,
+        alignItems: 'center',
+        justifyContent: 'center'
+      },
+    
     mainBox5:{
-        height: 500,
-        backgroundColor: 'orange'
+        height: 300,
     },
     footer:{
         height: 60,
@@ -131,37 +129,116 @@ const Talk1Sub = ({route}) => {
         },
     ];
 
-    const DATA2 = [
-        {
-          id: '0',
-          title: '전체'
-        },
-        {
-          id: '1',
-          title: '자유게시판'
-        },
-        {
-          id: '2',
-          title: '일상이야기'
-        },
-        {
-          id: '3',
-          title: '임신정보'
-        },
-        {
-          id: '4',
-          title: '고민상담'
-        },
-        {
-          id: '5',
-          title: '질문게시판'
-        }
-      ];
-
     console.log('route: ', route.params);
     const info = route.params;
 
+    const [info2, setInfo2] = useState([
+        {
+          id: 1,
+          title: '산모패드',
+          brand: '마더스베이비',
+          price: '39,000'
+        },{
+          id: 1,
+          title: '산모패드',
+          brand: '마더스베이비',
+          price: '39,800'
+        },{
+          id: 1,
+          title: '산모패드',
+          brand: '마더스베이비',
+          price: '31,000'
+        },{
+          id: 1,
+          title: '산모패드',
+          brand: '마더스베이비',
+          price: '29,000'
+        },
+      ])
+    const [info3, setInfo3] = useState([
+        {
+          id: '0',
+          title: '산모용품 (0/13)',
+          icon: require('../../../../public/assets/image/1.png'),
+        },
+        {
+          id: '1',
+          title: '수유용품 (0/13)',
+          icon: require('../../../../public/assets/image/2.png'),
+        },
+        {
+          id: '2',
+          title: '위생용품 (0/13)',
+          icon: require('../../../../public/assets/image/3.png'),
+        },
+        {
+          id: '3',
+          title: '목욕용품 (0/13)',
+          icon: require('../../../../public/assets/image/4.png'),
+        },
+        {
+          id: '4',
+          title: '침구류 (0/13)',
+          icon: require('../../../../public/assets/image/5.png'),
+        },
+        {
+          id: '5',
+          title: '아기의류 (0/13)',
+          color: '#FFADAD',
+          icon: require('../../../../public/assets/image/6.png'),
+        },
+        {
+          id: '6',
+          title: '발육용품 (0/13)',
+          icon: require('../../../../public/assets/image/7.png'),
+        },
+        {
+          id: '7',
+          title: '가전용품 (0/13)',
+          color: '#FFADAD',
+          icon: require('../../../../public/assets/image/8.png'),
+        },
+        {
+          id: '8',
+          title: '놀이용품 (0/13)',
+          icon: require('../../../../public/assets/image/9.png'),
+        },
+    ]);
+
     const [comment, setComment] = useState([]); // 댓글 데이터
+    const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
+    console.log('list: ', list);
+
+    const List = () => {
+        let arr = [];
+        info3.map(x => {
+            arr.push(
+                <>
+                    <View style={styles.listMain}>
+                        <TouchableOpacity style={styles.arrowBox}
+                            onPress={()=>arrow(x.id)}>{list[x.id] ? <Icon name="angle-up" size={22}/> : <Icon name='angle-down' size={22}/>}
+                        </TouchableOpacity>
+                        <Image source={x.icon} width={20} height={20}/>
+                        <Text style={{fontSize: 15}}>{x.title}</Text>
+                    </View>
+                    <View style={styles.listMain2}>
+                        <View style={styles.filterBox}><Text>품목</Text></View>
+                        <View style={styles.filterBox}><Text>브랜드</Text></View>
+                        <View style={styles.filterBox}><Text>금액</Text></View>
+                    </View>
+                </>
+            )
+        })
+        return arr;
+    }
+
+    const arrow = (e) => { // arrow 누르면 서브페이지 display
+        let arr = [...list];
+        arr[e] = !arr[e];
+        setList(arr);
+    }
+
+    
 
     const renderItem = ({ item }) => (
         <View>
@@ -180,7 +257,6 @@ const Talk1Sub = ({route}) => {
                     <Text>{info.contents}</Text>
                 </View>
                 <View style={styles.mainBox3}>
-
                     <View style={styles.listBox}>
                         <View style={styles.listHeader}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -188,20 +264,7 @@ const Talk1Sub = ({route}) => {
                                 <Text style={{fontSize: 15}}> 님의 출산준비물</Text>
                             </View>
                         </View>
-
-                        
-
-                        {/* <View style={[styles.listHeader, {height: 70, backgroundColor: '#FFADAD', alignItems: 'flex-start'}]}>
-                            <View style={styles.arrowBox}><Icon name='angle-down' size={22}/></View>
-                            <Text style={{fontSize: 15}}>산모용품 (5/13)</Text>
-                        </View> */}
-                        {/* <View style={[styles.listHeader, {backgroundColor: 'white', flexDirection: 'row'}]}>
-                            <View style={{width: '33.4%', alignItems: 'center'}}><Text>구매</Text></View>
-                            <View style={{width: '33.4%', alignItems: 'center'}}><Text>품목</Text></View>
-                            <View style={{width: '33.4%', alignItems: 'center'}}><Text>가격</Text></View>
-                        </View> */}
-                        
-                        <View style={[styles.listFooter]}></View>
+                        <List />
                     </View>
                 </View>
                 <View style={styles.mainBox4}>
@@ -229,20 +292,8 @@ const Talk1Sub = ({route}) => {
         </View>
       );
 
-      const renderItem2 = ({ item }) => (
-        <View style={styles.list2}>
-            <Text>{item.title}</Text>
-        </View>
-      );
-
-
   return (
     <View style={styles.container}>
-        <View style={styles.listMain}>
-            <FlatList data={DATA2} renderItem={renderItem2}
-                keyExtractor={item => item.id}>
-            </FlatList>
-        </View>
         <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id}>
         </FlatList>
