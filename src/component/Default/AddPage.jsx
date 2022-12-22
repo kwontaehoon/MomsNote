@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Checkbox from 'expo-checkbox'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
 
 import Calendar from '../../../public/assets/svg/Calendar.svg'
 
@@ -102,6 +103,7 @@ const AddPage = ({navigation, route}) => {
     console.log('route: ', route.params[1]);
 
     const [isChecked, setChecked] = useState(Array.from({length: 4}, ()=>{return false})); // check box
+    console.log(isChecked[3]);
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
 
     const [date, setDate] = useState(new Date());
@@ -115,14 +117,15 @@ const AddPage = ({navigation, route}) => {
         babyName: '',
         provider: `${route.params[0]}`,
         providerId: `${route.params[1]}`,
-        marketingFlag: '1'
+        marketingFlag: Number(`${isChecked[3] ? 1 : 0}`)
     })
     console.log('info: ', info);
 
     const submit = async() => {
-        await axios.post(`http://momsnote.net/signup`, {
+        const response = await axios.post(`http://momsnote.net/signup`, {
             info: info
         })
+        console.log(response.data);
     }
 
     const onChange = (event, selectedDate) => {

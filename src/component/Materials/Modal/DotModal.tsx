@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
-import Checkbox from 'expo-checkbox'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -51,7 +50,7 @@ const CheckBoxModal = ({modalVisible5, setModalVisible5, modalVisible7, setModal
     const [isChecked, setChecked] = useState(false); // check box 선택시 체크 팝업에서의 check box
 
   return (
-    <Modal animationType="slide" transparent={true} visible={modalVisible7}
+    <Modal animationType="fade" transparent={true} visible={modalVisible7} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible7(!modalVisible7)}}>
             <View style={styles.modalContainer}>

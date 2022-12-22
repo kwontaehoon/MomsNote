@@ -1,8 +1,9 @@
 import React from 'react'
-import { Text, View, StyleSheet, Image } from 'react-native'
+import { Text, View, StyleSheet, Image, StatusBar } from 'react-native'
 import Slick from 'react-native-slick'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Swiper from 'react-native-swiper'
+import { useIsFocused } from '@react-navigation/native'
 
 import Close from '../../../../../public/assets/svg/Close.svg'
 
@@ -62,12 +63,20 @@ const styles = StyleSheet.create({
 
 const Gallery = ({navigation, route}) => {
 
+  const FocusAwareStatusBar = () => {
+    const isFocused = useIsFocused();
+    return isFocused ? <StatusBar backgroundColor='black' barStyle={'white'} /> : null;
+  }
+
   console.log('이미지 길이: ', route.params);
   const saveName = route.params.split('|');
   console.log('saveName: ', saveName);
 
   return(
     <View style={styles.container}>
+
+      <FocusAwareStatusBar />
+
         <View style={styles.header}>
           <View style={styles.closeBox}><Close onPress={()=>navigation.goBack()}/></View>
         </View>

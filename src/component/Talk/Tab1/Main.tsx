@@ -40,10 +40,8 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   InputBox:{
-    borderWidth: 1,
-    borderColor: '#F5F5F5',
+    borderWidth: 0,
     backgroundColor: '#F5F5F5',
-    borderRadius: 0,
   },
   header3:{
     height: '8%',
@@ -116,7 +114,7 @@ const Talk1 = ({navigation}) => {
   ];
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState('1');
   const [items, setItems] = useState([
     {label: '최신순', value: '1'},
     {label: '인기순', value: '2'},
@@ -203,7 +201,7 @@ const Talk1 = ({navigation}) => {
           <Text style={{fontSize: 15, paddingTop: 2}}>{item.title} </Text>
           <View style={styles.mainBoxSub2}>
             <Text style={{fontSize: 13, color: '#9E9E9E'}}>{item.userId} </Text>
-            <View><Like width={12} height={17} fill='#9E9E9E'/></View>
+            <Like width={12} height={17} fill='#9E9E9E'/>
             <Text style={{color: '#9E9E9E'}}> {item.recommend}  </Text>
             <Chat width={12} height={17} fill='#9E9E9E'/>
             <Text style={{fontSize: 13, color: '#9E9E9E'}}> {item.hits}</Text>
@@ -231,7 +229,8 @@ const Talk1 = ({navigation}) => {
         </View>
         <View style={[styles.header2FilterBox, {width: '32%'}]}>
           <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순'
-              placeholderStyle={{paddingLeft: 17, fontSize: 13}} textStyle={{paddingLeft: 16, fontSize: 13}} setOpen={setOpen} setValue={setValue} setItems={setItems}/>
+              textStyle={{fontSize: 13}} dropDownContainerStyle={{backgroundColor: '#FAFAFA', borderWidth: 1, borderColor: '#F5F5F5'}}
+              setOpen={setOpen} setValue={setValue} setItems={setItems} labelStyle={{paddingLeft: 18}}/>
         </View>
       </View>
       <View style={[styles.header3, {display: info.length === 0 ? 'none' : 'flex'}]}>

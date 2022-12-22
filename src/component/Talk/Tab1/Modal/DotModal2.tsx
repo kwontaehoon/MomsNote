@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
-import Checkbox from 'expo-checkbox'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -48,15 +47,15 @@ const styles = StyleSheet.create({
 const CheckBoxModal = ({modal5, setModal5}) => {
 
   return (
-    <Modal animationType="slide" transparent={true} visible={modal5}
+    <Modal animationType="slide" transparent={true} visible={modal5} statusBarTranslucent={true}
             onRequestClose={() => {
             setModal5(!modal5)}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
                        <View style={styles.main}>
-                            <TouchableOpacity style={styles.mainBox}><Text style={{color: '#1E88E5', fontSize: 20}}>게시글 수정</Text></TouchableOpacity>
-                            <TouchableOpacity style={styles.mainBox}><Text style={{color: '#F23737', fontSize: 20}}>삭제하기</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.mainBox}><Text style={{color: '#1E88E5', fontWeight: '600', fontSize: 20}}>게시글 수정</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.mainBox}><Text style={{color: '#F23737', fontWeight: '600', fontSize: 20}}>삭제하기</Text></TouchableOpacity>
                        </View>
                        <View style={{height: 10}}></View>
                        <TouchableOpacity style={styles.footer} onPress={()=>setModal5(!modal5)}>

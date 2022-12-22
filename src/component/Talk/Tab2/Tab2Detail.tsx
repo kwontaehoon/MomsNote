@@ -4,6 +4,9 @@ import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 
+import Chat from '../../../../public/assets/svg/chat.svg'
+import Like from '../../../../public/assets/svg/Like.svg'
+
 const styles = StyleSheet.create({
     container:{
         height: '100%',
@@ -62,6 +65,7 @@ const styles = StyleSheet.create({
         borderColor: '#F5F5F5',
         borderBottomWidth: 1,
         paddingBottom: 20,
+        paddingLeft: 15,
     },
     likeBox:{
         width: '60%',
@@ -269,9 +273,9 @@ const Talk1Sub = ({route}) => {
                 </View>
                 <View style={styles.mainBox4}>
                     <View style={styles.likeBox}>
-                        <Icon name='user' size={20} style={{paddingLeft: 10}}/>
-                        <Text style={{color: '#9E9E9E', fontSize: 13}}> 추천 13</Text>
-                        <Icon name='user' size={20} style={{paddingLeft: 10}}/>
+                        <Like width={16} height={16} fill='#9E9E9E'/>
+                        <Text style={{color: '#9E9E9E', fontSize: 13, paddingRight: 10}}> 추천 13</Text>
+                        <Chat width={16} height={16}/>
                         <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 5</Text>
                     </View>
                     <View style={styles.lookupBox}>

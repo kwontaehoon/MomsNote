@@ -6,14 +6,13 @@ import * as ImagePicker from 'expo-image-picker';
 const styles = StyleSheet.create({
     container:{
         height: '100%',
-        backgroundColor: 'white'
     },
     header:{
-        height: '15%',
+        height: '13%',
         flexDirection: 'row',
-        marginTop: 10,
         paddingLeft: 10,
         paddingRight: 10,
+        backgroundColor: 'white',
     },
     headerBox:{
         width: '75%',
@@ -22,27 +21,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     profileBox:{
-        width: 72,
-        height: 72,
         borderRadius: 36,
-        borderWidth: 1,
     },
     infoBox:{
         justifyContent: 'center',
         marginLeft: 10,
-    },
-    cameraBox:{
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-        width: 24,
-        height: 24,
-        borderWidth: 1,
-        borderRadius: 12,
-        borderColor: '#FEB401',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'white',
     },
     headerBox2:{
         width: '25%',
@@ -60,25 +43,19 @@ const styles = StyleSheet.create({
         paddingRight: 15,
         paddingBottom: 8,
     },
-    main:{
-        height: '39%',
-    },
     mainBox:{
-        height: '20%',
+        height: 52,
         padding: 15,
         justifyContent: 'center',
-    },
-    main2:{
-        height: '39%',
-    },
-    main3:{
+        backgroundColor: 'white',
 
-    }
+    },
 })
 const Main = ({navigation}) => {
 
 
     const [image, setImage] = useState(null);
+    console.log('image: ', image);
 
     const pickImage = async () => {
       // No permissions request is necessary for launching the image library
@@ -99,12 +76,10 @@ const Main = ({navigation}) => {
     <View style={styles.container}>
         <View style={styles.header}>
             <View style={styles.headerBox}>
-                <View style={styles.profileBox}>
-                    <Image source={{ uri: image }} style={{ width: 72, height: 72, borderRadius: 36}}/>
-                    <TouchableOpacity style={styles.cameraBox} onPress={pickImage}>
-                        <Icon name='camera' size={14} style={{color: '#FEB401'}}/>
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity style={styles.profileBox} onPress={pickImage}>
+                    {image === null ? <Image source={require('../../../public/assets/image/baby1.png')} onPress={pickImage}/>
+                    :  <Image source={{ uri: image }} style={{ width: 72, height: 72, borderRadius: 36}}/>}
+                </TouchableOpacity>
                 <View style={styles.infoBox}>
                     <Text style={{fontSize: 20, fontWeight : 'bold'}}>닉네임</Text>
                 </View>

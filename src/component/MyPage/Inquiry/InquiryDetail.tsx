@@ -30,8 +30,10 @@ const styles = StyleSheet.create({
     main2:{
         justifyContent: 'center',
         padding: 20,
+        borderWidth: 1,
     },
     main2Box:{
+
     },
 })
 const InquiryDetail = ({route}) => {
@@ -40,21 +42,21 @@ const InquiryDetail = ({route}) => {
 
     const renderItem = ({ item }) => (
         <View>
-        <View style={styles.header}>
-            <View style={styles.statusBox}><Text style={{color: '#757575'}}>{item.status}</Text></View>
-            <Text style={{fontSize: 15, fontWeight: '600', marginBottom: 3, color: '#424242'}}>{item.title}</Text>
-            <Text style={{color: '#9E9E9E'}}>{item.inquiryDate}</Text>
-        </View>
-        <View style={styles.main}>
-            <Text>{item.contents}</Text>
-        </View>
-        <View style={styles.main2}>
-            <View style={styles.main2Box}>
-                <Text style={{fontWeight: '600', fontSize: 15}}>답변 내용</Text>
-                <View style={[styles.statusBox, {right: 0}]}><Text style={{color: '#757575'}}>{item.answerDate}</Text></View>
+            <View style={styles.header}>
+                <View style={styles.statusBox}><Text style={{color: '#757575'}}>{item.status}</Text></View>
+                <Text style={{fontSize: 15, fontWeight: '600', marginBottom: 3, color: '#424242'}}>{item.title}</Text>
+                <Text style={{color: '#9E9E9E'}}>{item.inquiryDate}</Text>
             </View>
-            <Text style={{marginTop: 5}}></Text>
-        </View>
+            <View style={styles.main}>
+                <Text>{item.contents}</Text>
+            </View>
+            {item.answerDate !== null ? <View style={styles.main2}>
+                <View style={styles.main2Box}>
+                    <Text style={{fontWeight: '600', fontSize: 15}}>답변 내용</Text>
+                    <View style={[styles.statusBox, {right: 0}]}><Text style={{color: '#757575'}}>{item.answerDate}</Text></View>
+                </View>
+                <Text style={{marginTop: 5}}></Text>
+            </View> : <View></View>}
         </View>
       );
 

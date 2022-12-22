@@ -47,12 +47,12 @@ const styles = StyleSheet.create({
     },
     main:{
         height: 800,
-        borderBottomWidth: 1,
-        borderColor: '#EEEEEE'
     },
     mainBox:{
-        height: 70,
+        height: 90,
         padding: 20,
+        borderWidth: 1,
+        borderColor: '#EEEEEE'
     },
     mainBox2:{
         padding: 20,

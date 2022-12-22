@@ -21,28 +21,29 @@ const styles = StyleSheet.create({
 })
 const Terms1 = () => {
 
-  // useEffect(()=>{
-  //   async function b(){
-  //       const response = await axios.get('http://192.168.1.140:4000/api/test');
-  //       console.log('response: ', response.data);
-  //     }
-  //     b();
-  // }, [])
+  const [info, setInfo] = useState();
 
-  const [info, setInfo] = useState({
-    policyId: 1,
-    pollicy_sort: '개인정보처리방침',
-    contents: '개인정보처리방침입니다.',
-    policy_date: '2022-12-07'
-  })
+  useEffect(()=>{
+    const terms = async() => {
+      const response = await axios({
+        method: 'post',
+        url: 'https://momsnote.net/policy',
+        data : {
+          sort: "이용약관",
+      }
+    });
+    setInfo(response.data);
+    }
+    terms();
+  }, []);
 
   return (
     <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={{fontSize: 24, fontWeight: '700'}}>{info.pollicy_sort}</Text>
+          <Text style={{fontSize: 24, fontWeight: '700'}}>맘스노트 개인정보처리방침</Text>
         </View>
         <View style={styles.main}>
-          <Text style={{fontSize: 16}}>{info.contents}</Text>
+          <Text style={{fontSize: 16}}>{info}</Text>
         </View>
     </View>
   )

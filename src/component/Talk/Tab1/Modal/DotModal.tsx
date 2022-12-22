@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 const CheckBoxModal = ({modal, setModal, modal2, setModal2, modal3, setModal3}) => {
 
   return (
-    <Modal animationType="slide" transparent={true} visible={modal}
+    <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
             onRequestClose={() => {
             setModal(!modal)}}>
             <View style={styles.modalContainer}>

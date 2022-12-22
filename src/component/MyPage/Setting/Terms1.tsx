@@ -16,33 +16,36 @@ const styles = StyleSheet.create({
     },
     main:{
       height: '88%',
-      padding: 10,
+      padding: 20,
     },
 })
 const Terms1 = () => {
 
-  // useEffect(()=>{
-  //   async function b(){
-  //       const response = await axios.get('http://192.168.1.140:4000/api/test');
-  //       console.log('response: ', response.data);
-  //     }
-  //     b();
-  // }, [])
+  
 
-  const [info, setInfo] = useState({
-    policyId: 1,
-    pollicy_sort: '이용약관',
-    contents: '이용약관입니다.',
-    policy_date: '2022-12-07'
-  })
+  useEffect(()=>{
+    const terms = async() => {
+      const response = await axios({
+        method: 'post',
+        url: 'https://momsnote.net/policy',
+        data : {
+          sort: "이용약관",
+      }
+    });
+    setInfo(response.data);
+    }
+    terms();
+  }, []);
+
+  const [info, setInfo] = useState();
 
   return (
     <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={{fontSize: 24, fontWeight: '700'}}>{info.pollicy_sort}</Text>
+          <Text style={{fontSize: 24, fontWeight: '700'}}>맘스노트 이용약관</Text>
         </View>
         <View style={styles.main}>
-          <Text style={{fontSize: 16}}>{info.contents}</Text>
+          <Text style={{fontSize: 16}}>{info}</Text>
         </View>
     </View>
   )

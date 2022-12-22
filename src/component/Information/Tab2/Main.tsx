@@ -107,7 +107,7 @@ const Talk1 = ({navigation}: any) => {
     const [week, setWeek] = useState([true, false, false, false, false, false,
     false, false, false, false, false, false]);
     const [info, setInfo] = useState([]);
-    console.log('행사정보 info: ', info);
+    console.log('행사정보 info: ', info.length);
 
     useEffect(()=>{
       const EventBoard = async() => {
@@ -137,14 +137,17 @@ const Talk1 = ({navigation}: any) => {
       setWeek(arr);
     }
 
-  const renderItem = ({ item }) => ( // 행사정보
-      <TouchableOpacity style={styles.main2} onPress={()=>navigation.navigate('행사정보 상세페이지', item)}>
+  const renderItem = ({ item }) => (
+    <>
+      {info.length !== 0 ? <TouchableOpacity style={styles.main2} onPress={()=>navigation.navigate('행사정보 상세페이지', item)}>
           <View style={styles.dateBox}><Text>{item.eventStartDate} ~ {item.eventEndDate}</Text></View>
           <Text style={{fontWeight: '500'}}>{item.title}</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> : <View style={styles.main2}><Text>gg</Text></View>}
+
+    </>
   );
 
-  const renderItem2 = ({ item }) => ( // 임신주차
+  const renderItem2 = ({ item }) => (
     <TouchableOpacity style={styles.scrollBox} onPress={()=>change(item.id)}>
       <Text style={{fontSize: 16, padding: 3, fontWeight: week[item.id] ? 'bold' : '400',
         color: week[item.id] ? 'black' : '#9E9E9E', borderBottomWidth: week[item.id] ? 2 : 0 }}>{item.id+1}월</Text>

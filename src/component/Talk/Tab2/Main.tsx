@@ -29,10 +29,8 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   InputBox:{
-    borderWidth: 1,
-    borderColor: '#F5F5F5',
+    borderWidth: 0,
     backgroundColor: '#F5F5F5',
-    borderRadius: 0,
   },
   main:{
     height: '100%',
@@ -61,13 +59,12 @@ const styles = StyleSheet.create({
 const Talk1 = ({navigation}) => {
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState('1');
   const [items, setItems] = useState([
-        {label: '1', value: '1'},
-        {label: '2', value: '2'},
-        {label: '3', value: '3'},
-        {label: '4', value: '4'}
-  ]);
+    {label: '최신순', value: '1'},
+    {label: '인기순', value: '2'},
+    {label: '마감임박', value: '3'},
+]);
   const [info, setInfo] = useState([
     {
         boardId: 1,
@@ -109,7 +106,7 @@ const Talk1 = ({navigation}) => {
         <View style={styles.infoBox}>
               <Text style={{color: '#9E9E9E', fontSize: 13}}>{item.userId} </Text>
               <Like fill='#9E9E9E' width={13} height={17}/>
-              <Text style={{color: '#9E9E9E', fontSize: 13}}> {item.recommend} </Text>
+              <Text style={{color: '#9E9E9E', fontSize: 13}}> {item.recommend}  </Text>
               <Chat fill='#9E9E9E' width={13} height={17}/>
               <Text style={{color: '#9E9E9E', fontSize: 13}}> {item.recommend} </Text>
         </View>
@@ -128,8 +125,9 @@ const Talk1 = ({navigation}) => {
           </View>
         </View>
         <View style={[styles.header2FilterBox, {width: '32%'}]}>
-          <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순'
-              placeholderStyle={{color: '#9E9E9E', paddingLeft: 17, fontSize: 13}} textStyle={{fontSize: 15}} setOpen={setOpen} setValue={setValue} setItems={setItems}/>
+        <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순'
+              textStyle={{fontSize: 13}} dropDownContainerStyle={{backgroundColor: '#FAFAFA', borderWidth: 1, borderColor: '#F5F5F5'}}
+              setOpen={setOpen} setValue={setValue} setItems={setItems} labelStyle={{paddingLeft: 18}}/>
         </View>
       </View>
       <View style={styles.main}>

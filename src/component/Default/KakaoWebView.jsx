@@ -22,10 +22,11 @@ const Main = ({navigation}) => {
     const kakaoTokenId = async(kakaoAcceess) => {
 
       try{
-        const response = await axios.get(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI2}&code=${kakaoAcceess}`);
+        const response = await axios.get(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${kakaoAcceess}`);
         const response2 = await axios.get(`https://kapi.kakao.com/v1/user/access_token_info`, {
              headers: `Authorization: Bearer ${response.data.access_token}`
         })
+        console.log(response2.data);
         const response3 = await axios({
           method: 'post',
           url: 'https://momsnote.net/login',
@@ -36,7 +37,7 @@ const Main = ({navigation}) => {
             username: `google_${response2.data.id}`
           }
         });
-        response3.data.status !== 'success' ?  navigation.navigate('추가 정보 입력', ['google', response2.data.id]) : navigation.navigate('main');
+        response3.data.status !== 'success' ?  navigation.navigate('추가 정보 입력', ['kakao', response2.data.id]) : navigation.navigate('main');
     }catch(error){
         console.log('error: ', error);
     }
@@ -47,7 +48,7 @@ const Main = ({navigation}) => {
     <WebView
       style={styles.container}
       injectedJavaScript={runFirst}
-      source={{ uri: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI2}&response_type=code`}}
+      source={{ uri: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`}}
       onMessage={event => {
         const data = event.nativeEvent.url;
         console.log('Kakao: ', event.nativeEvent);
