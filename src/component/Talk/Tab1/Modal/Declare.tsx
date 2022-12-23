@@ -125,16 +125,27 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4}) => {
 
     const [titleDisplay, setTitleDisplay] = useState(false); // 품목 리스트 display
     const [info, setInfo] = useState({
-        title: '신고 사유',
-        content: ''
-    })
-    console.log('title: ', info.title);
-    console.log('content: ', info.content.length);
+        sort: '',
+        boardId: '',
+        reason: '신고 사유',
+        reasonDetails: ''
+    });
+    console.log('신고하기: ', info);
 
     const submit = async() => {
-        await axios.post(`http://192.168.1.140:4000/post/test`, {
-            info: info
-        })
+        try{
+            const response = await axios({
+                  method: 'post',
+                  url: 'https://momsnote.net/api/report/board',
+                  headers: { 
+                      'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
+                    },
+                    data: info
+                });
+                console.log('response: ', response.data);
+            }catch(error){
+              console.log('error: ', error);
+            }
     }
 
     const renderItem = ({ item }) => (
@@ -175,7 +186,7 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4}) => {
                                 onChangeText={(e) => setInfo((prevState) => ({ ...prevState, content: e}))}>
                             </TextInput>
                         </View>
-                        {info.title !== '신고 사유' && info.content.length !== 0 ?
+                        {info.reason !== '신고 사유' && info.reasonDetails.length !== 0 ?
                             <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>{setModal3(!modal3), setModal4(!modal4), setInfo((prevState) => ({ ...prevState, content: ''}))}}>
                                 <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>신고하기</Text>
                             </TouchableOpacity> : 

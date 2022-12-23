@@ -7,12 +7,14 @@ import Modal3 from './Modal/Declare'
 import Modal4 from './Modal/DelareConfirm'
 import Modal5 from './Modal/DotModal2'
 import Comment from './Comment'
+import axios from 'axios'
 
 import Chat from '../../../../public/assets/svg/chat.svg'
 import Like from '../../../../public/assets/svg/Like.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
 import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'
+import Close from '../../../../public/assets/svg/Close.svg'
 
 const styles = StyleSheet.create({
     container:{
@@ -50,7 +52,6 @@ const styles = StyleSheet.create({
         marginLeft: 7,
     },
     main:{
-        height: 800,
         borderBottomWidth: 1,
         borderColor: '#EEEEEE'
     },
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
         height: 50,
         flexDirection: 'row',
         borderColor: '#F5F5F5',
-        borderBottomWidth: 1,
+        borderWidth: 1,
         paddingLeft: 20,
         alignItems: 'center'
     },
@@ -105,41 +106,35 @@ const styles = StyleSheet.create({
         right: 20,
     },
     mainBox4:{
-        height: 200,
-        padding: 20,
-        paddingTop: 30,
+        padding: 10,
     },
-    commentBox:{
-        borderWidth: 1,
-        height: 70,
-
-    },
-    commentProfile:{
-        height: 40,
-        borderWidth: 1,
+    commentRes:{
+        width: '100%',
+        height: 50,
         flexDirection: 'row',
+        paddingLeft: 15,
         alignItems: 'center',
+        backgroundColor: '#F5F5F5',
     },
-    dotBox:{
-
+    closeBox:{
+        position: 'absolute',
+        right: 15,
     },
     footer:{
         width: '100%',
+        paddingTop: 10,
         height: 70,
         flexDirection: 'row',
         borderWidth: 1,
         borderColor: '#F5F5F5',
-        position: 'absolute',
-        bottom: 0,
         justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: 'white',
     },
-    profileBox2:{
-        width: 40,
-        height: 40,
-        borderWidth: 1,
-        borderRadius: 20,
+    regisButton:{
+        position: 'absolute',
+        right: '8%',
+        top: 22,
+        zIndex: 999,
     },
     textInput:{
         borderRadius: 99,
@@ -170,15 +165,58 @@ const Talk1Sub = ({navigation, route}) => {
 
     const info = [route.params];
     console.log('info: ', info);
-    console.log(info[0].savaName === undefined);
 
-    const [comment, setComment] = useState([]);
+    const [comment, setComment] = useState([]); // 댓글 정보
+    console.log('comment: ', comment);
+    const [insert, setInsert] = useState(
+        {
+            boardId: null,
+            contents: '',
+            ref: null,
+            level: 0
+        }
+    ); // 댓글 입력
+    console.log('insert: ', insert);
     const [modal, setModal] = useState(false); // dot 모달 다른사람게시판 차단 및 신고
     const [modal2, setModal2] = useState(false); // 차단하기
     const [modal3, setModal3] = useState(false); // 차단 확인
     const [modal4, setModal4] = useState(false); // 신고 확인
     const [modal5, setModal5] = useState(false) // dot2 모달 본인게시판 수정 및 삭제
     const animation = useRef(new Animated.Value(0)).current;
+
+    useEffect(()=>{
+        const commentInfo = async() => {
+        try{
+          const response = await axios({
+            method: 'post',
+            url: 'https://momsnote.net/api/comments/list',
+            data : {
+              boardId: 1
+          }
+        });
+        setComment(response.data);
+        }catch(error){
+            console.log('error: ', error);
+        }}
+        commentInfo();
+      }, []);
+
+    const commentRegister = async() => {
+        try{
+            const response = await axios({
+                  method: 'post',
+                  url: 'https://momsnote.net/api/comments/write',
+                  headers: { 
+                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE3NzUwMzAsImV4cCI6MTY3NDM2NzAzMH0.sXaK1MqIIiSpnF-xGkY-TRIu-O-ndUa1QuG9HFkGrMM', 
+                    'Content-Type': 'application/json'
+                  },
+                  data: insert
+                });
+                console.log('response: ', response.data);
+            }catch(error){
+              console.log('error: ', error);
+            }
+    }
 
     const ImageBox = () => {
 
@@ -273,8 +311,8 @@ const Talk1Sub = ({navigation, route}) => {
                     </View>
                 </View>
                 <View style={styles.mainBox4}>
-                    {comment.length === 0 ?
-                    <Comment />:
+                    {comment.length !== 0 ?
+                    <Comment info={comment} insert={insert} setInsert={setInsert}/>:
                     <View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 60}}>
                         <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
                         <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
@@ -309,9 +347,21 @@ const Talk1Sub = ({navigation, route}) => {
         <FlatList data={info} renderItem={renderItem}
             keyExtractor={item => item.id}>
         </FlatList>
+        <View style={[styles.commentRes, {display: insert.level === 0 ? 'none' : 'flex'}]}>
+            <View style={styles.closeBox}><Close width={20} fill='#757575' onPress={()=>setInsert((prevState) => ({...prevState, level: 0}))}/></View>
+            <Text style={{fontSize: 15}}>@축복이</Text>
+            <Text style={{color: '#757575'}}> 님에게 답변 남기기</Text>
+        </View>
         <View style={styles.footer}>
-            <View style={styles.profileBox2}></View>
-            <TextInput style={styles.textInput} placeholder='댓글을 입력해주세요.' placeholderTextColor={'#BDBDBD'}></TextInput>
+            <View style={styles.profileBox}></View>
+            <View style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]}><Text style={{color: '#1E88E5', fontWeight: '600'}} onPress={commentRegister}>등록</Text></View>
+            <TextInput style={styles.textInput} placeholder='댓글을 입력해주세요.' onChangeText={
+                (e)=> insert.level !== 0 ? setInsert((prevState) => ({...prevState, contents: e})) :
+                setInsert((prevState) => ({...prevState,
+                    boardId: info[0].boardId,
+                    contents: e,
+                    ref: 0,
+                    level: 0}))} placeholderTextColor={'#BDBDBD'}></TextInput>
         </View>
     </View>
   )

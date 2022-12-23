@@ -316,7 +316,6 @@ const Register = ({navigation}) => {
         }
         console.log('data: ', data);
        
-
         try{
           const response = await axios({
                 method: 'post',

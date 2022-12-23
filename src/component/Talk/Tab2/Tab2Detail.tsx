@@ -118,14 +118,12 @@ const styles = StyleSheet.create({
     },
     footer:{
         width: '100%',
+        paddingTop: 10,
         height: 70,
         flexDirection: 'row',
         borderWidth: 1,
         borderColor: '#F5F5F5',
-        position: 'absolute',
-        bottom: 0,
         justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: 'white',
     },
     profileBox2:{
