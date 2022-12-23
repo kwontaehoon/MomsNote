@@ -6,13 +6,28 @@ import Icon2 from 'react-native-vector-icons/AntDesign'
 
 import Chat from '../../../../public/assets/svg/chat.svg'
 import Like from '../../../../public/assets/svg/Like.svg'
+import Back from '../../../../public/assets/svg/Back.svg'
+import More from '../../../../public/assets/svg/More.svg'
+import Share from '../../../../public/assets/svg/Share.svg'
 
 const styles = StyleSheet.create({
     container:{
-        height: '100%',
+        height: '97%',
         backgroundColor: 'white',
+        marginTop: getStatusBarHeight(),
     },
     header:{
+        height: 60,
+        justifyContent: 'center',
+        padding: 20,
+    },
+    headerBar:{
+        position: 'absolute',
+        right: 20,
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
+    header2:{
         flexDirection: 'row',
         height: 70,
         alignItems: 'flex-end',
@@ -102,12 +117,16 @@ const styles = StyleSheet.create({
         height: 300,
     },
     footer:{
-        height: 60,
+        width: '100%',
+        height: 70,
         flexDirection: 'row',
         borderWidth: 1,
+        borderColor: '#F5F5F5',
+        position: 'absolute',
+        bottom: 0,
+        justifyContent: 'center',
         alignItems: 'center',
-        padding: 20,
-        borderColor: '#F5F5F5'
+        backgroundColor: 'white',
     },
     profileBox2:{
         width: 40,
@@ -122,9 +141,9 @@ const styles = StyleSheet.create({
         marginLeft: 12,
         paddingLeft: 12,
         backgroundColor: '#F5F5F5'
-    }
+    },
 })
-const Talk1Sub = ({route}) => {
+const Talk1Sub = ({navigation, route}) => {
 
     const DATA = [
         {
@@ -246,7 +265,7 @@ const Talk1Sub = ({route}) => {
 
     const renderItem = ({ item }) => (
         <View>
-            <View style={styles.header}>
+            <View style={styles.header2}>
                 <View style={styles.profileBox}></View>
                 <View style={styles.infoBox}>
                     <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{info.userId}</Text>
@@ -270,6 +289,7 @@ const Talk1Sub = ({route}) => {
                         </View>
                         <List />
                     </View>
+                    <TouchableOpacity style={{width: '100%', height: 50, borderWidth: 1,}}></TouchableOpacity>
                 </View>
                 <View style={styles.mainBox4}>
                     <View style={styles.likeBox}>
@@ -298,6 +318,13 @@ const Talk1Sub = ({route}) => {
 
   return (
     <View style={styles.container}>
+         <View style={styles.header}>
+                <Back onPress={()=>navigation.goBack()}/>
+                <View style={styles.headerBar}>
+                    <Share style={{marginRight: 12}}/>
+                    <More style={{marginRight: 5}} onPress={()=>setModal(!modal)}/> 
+                </View>
+        </View>
         <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id}>
         </FlatList>

@@ -8,6 +8,7 @@ import Talk3 from './Tab3/Main'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { getBoard } from '../../Redux/Slices/BoardSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Pencil from '../../../public/assets/svg/pencil.svg'
 
@@ -79,14 +80,6 @@ const styles = StyleSheet.create({
 })
 const Main = ({navigation}:any) => {
 
-    // useEffect(()=>{
-    //     async function b(){
-    //         const response = await axios.get('http://192.168.1.140:4000/api/test');
-    //         console.log('response: ', response.data);
-    //       }
-    //       b();
-    // }, [])
-
     const board = useSelector(state => { return state.board.data; });
     console.log('board: ', board);
     const dispatch = useDispatch();
@@ -94,6 +87,8 @@ const Main = ({navigation}:any) => {
     useEffect(()=>{
         dispatch(getBoard());
     }, []);
+
+    console.log(AsyncStorage.getAllKeys());
     
 
     const [modalVisible, setModalVisible] = useState(false); // imodal
@@ -146,7 +141,7 @@ const Main = ({navigation}:any) => {
                 <Text style={{fontWeight: 'bold', fontSize: 18, color: filter[0] ? 'orange' : '#BDBDBD'}}>맘스 토크</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.headerBox, {width: '50%', borderBottomColor: filter[1] ? 'orange' : '#BDBDBD'}]} onPress={()=>filter_func(1)}>
-                <Text style={{fontWeight: 'bold', fontSize: 18, color: filter[1] ? 'orange' : '#BDBDBD'}}>출산리스트공유</Text>
+                <Text style={{fontWeight: 'bold', fontSize: 18, color: filter[1] ? 'orange' : '#BDBDBD'}}>출산리스트 공유</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.headerBox, {width: '25%', borderBottomColor: filter[2] ? 'orange' : '#BDBDBD'}]} onPress={()=>filter_func(2)}>
                 <Text style={{fontWeight: 'bold', fontSize: 18, color: filter[2] ? 'orange' : '#BDBDBD'}}>체험단</Text>

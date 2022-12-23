@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Modal } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
-import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import ContentsURL from './Modal/ContentsURL'
+import axios from 'axios'
 
 const styles = StyleSheet.create({
     container:{
@@ -132,10 +131,34 @@ const Talk1Sub = ({navigation, route}) => {
         }
     ];
 
+    const [likeCount, setLikeCount] = useState();
     const [filter, setFilter] = useState(false);
     const [modalVisible, setModalVisible] = useState(false); // 체험단 신청정보 입력 -> asnyc storage
     const [modalVisible2, setModalVisible2] = useState(false); // 체험단 신청완료
     const [modalVisible3, setModalVisible3] = useState(false); // 컨텐츠 URL 등록
+
+    useEffect(()=>{
+        const exp = async() => {
+        try{
+          const response = await axios({
+            method: 'post',
+            url: 'https://momsnote.net/api/board/recommend/flag',
+            headers: { 
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1OTE0OTIsImV4cCI6MTY3NDE4MzQ5Mn0.d8GpqvEmnnrUZKumuL4OPzp7wSGXiTo47hGkCSM2HO0', 
+                'Content-Type': 'application/json'
+              },
+            data : {
+              boardId: 23,
+          }
+        });
+        console.log('response: ', response.data);
+        setLikeCount(response.data);
+        }catch(error){
+            console.log('error: ', error);
+        }
+        }
+        exp();
+      }, []);
 
     const renderItem = ({ item }:any) => (
         
@@ -239,7 +262,7 @@ const Talk1Sub = ({navigation, route}) => {
         {!filter ? <View style={styles.footer}>
             <View style={[styles.footerBox, {width: '20%'}]}>
                 <Icon2 name='like2' size={22} style={{color: 'orange'}}/>
-                <Text> 12</Text>
+                <Text style={{fontSize: 16, fontWeight: '500'}}> {likeCount}</Text>
             </View>
             <View style={[styles.footerBox, {width: '5%', borderWidth: 0}]}></View>
             <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={()=>navigation.navigate('신청 정보')}><Text style={{fontSize: 20, fontWeight: '500'}}>신청하기</Text></TouchableOpacity>

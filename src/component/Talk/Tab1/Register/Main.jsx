@@ -5,6 +5,7 @@ import Icon2 from 'react-native-vector-icons/AntDesign'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios'
+import * as FileSystem from 'expo-file-system';
 
 const styles = StyleSheet.create({
     container:{
@@ -182,12 +183,7 @@ const styles = StyleSheet.create({
 })
 const Register = ({navigation}) => {
 
-    const DATA = [
-        {
-          id: '0',
-          title: '전체'
-        },
-    ];
+    const DATA = [{ id: '0', title: '전체' }];
 
     const DATA2 = [
         {
@@ -216,16 +212,20 @@ const Register = ({navigation}) => {
     const [modal2Content, setModal2Content] = useState(''); // 완료시 모달 내용
     
     const [filter, setFilter] = useState(Array.from({length: 5}, () => {return false})); // 카테고리
+    
 
     const [info, setInfo] = useState( // post info
         {
             title: '',
-            content: '',
+            contents: '',
+            files: '',
             imageFile: [],
             video: [],
         }
     );
     console.log('info: ', info);
+    
+
 
     const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
         let arr = Array.from({length: 5}, () => {return false});
@@ -288,21 +288,43 @@ const Register = ({navigation}) => {
         switch(true){
             case filter.filter(x => x===true).length === 0: setModal2Content('카테고리를 선택해주세요.'); break;
             case info.title === '': setModal2Content('제목을 입력해주세요.'); break;
-            case info.content === '': setModal2Content('게시글 내용을 입력해주세요.'); break;
+            case info.contents === '': setModal2Content('게시글 내용을 입력해주세요.'); break;
             default: submit(), navigation.goBack(); return;
         }
         setModalVisible2(!modalVisible2);
     }
 
     const submit = async() => {
+
+        let data = new FormData();
+        data.append('category', '맘스 토크');
+        data.append('subcategory', DATA2[filter.findIndex(x => x === true)].title);
+        data.append('title', info.title);
+        data.append('contents', info.contents);
+        // data.append('files', {uri: info.video, name: 'board.mp4', type: 'video/mp4'});
+
+        if(info.imageFile !== undefined){
+            info.imageFile.filter(x => {
+                return data.append('files', {uri: x, name: 'board.jpg', type: 'image/jpeg'});
+            })
+        }
+
+        if(info.video !== undefined){
+            info.video.filter(x => {
+                return data.append('files', {uri: x, name: 'board.mp4', type: 'video/mp4'});
+            })
+        }
+        console.log('data: ', data);
+       
+
         try{
           const response = await axios({
                 method: 'post',
-                url: 'https://momsnote.net/api/inquiry/write',
+                url: 'https://momsnote.net/api/board/write',
                 headers: { 
-                  'Content-Type': 'application/json'
-                },
-                data: info
+                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
+                  },
+                data: data
               });
               console.log('response: ', response.data);
           }catch(error){
@@ -364,7 +386,7 @@ const Register = ({navigation}) => {
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, color: '#424242'}}>내용</Text>
                     <TextInput style={styles.textBox2} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'}
-                     onChangeText={(e) => setInfo((prevState) => ({ ...prevState, content: e}))}> 
+                     onChangeText={(e) => setInfo((prevState) => ({ ...prevState, contents: e}))}> 
                      </TextInput>
                 </View>
                 <View style={styles.mainBox} >

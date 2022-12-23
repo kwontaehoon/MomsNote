@@ -97,27 +97,42 @@ const Register = ({navigation}) => {
     const [info, setInfo] = useState( // post info
         {
             title: '',
-            content: '',
-            imageFile: [],
-            video: [],
+            contents: '',
         }
     );
     console.log('info: ', info);
     
-
-    const submit = async() => {
-        await axios.post(`http://192.168.1.140:4000/post/test`, {
-            info: info
-        })
-    }
     const complete = () => {
         switch(true){
             case info.title === '': setModal2Content('제목을 입력해주세요.'); break;
-            case info.content === '': setModal2Content('게시글 내용을 입력해주세요.'); break;
+            case info.contents === '': setModal2Content('게시글 내용을 입력해주세요.'); break;
             default: submit(), navigation.goBack(); return;
         }
         setModalVisible2(!modalVisible2);
     }
+
+    const submit = async() => {
+
+        let data = new FormData();
+        data.append('category', '출산리스트');
+        data.append('title', info.title);
+        data.append('contents', info.contents);
+
+        try{
+          const response = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/api/board/write',
+                headers: { 
+                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
+                  },
+                data: data
+              });
+              console.log('response: ', response.data);
+          }catch(error){
+            console.log('error: ', error);
+          }
+    }
+
     const modal = (e) => {
         setModalVisible(!modalVisible);
         navigation.goBack();
@@ -152,7 +167,7 @@ const Register = ({navigation}) => {
                     onChangeText={(e) =>
                         setInfo((prevState) => ({
                             ...prevState,
-                            content: e
+                            contents: e
                         }))}></TextInput>
             </View>
         </View>

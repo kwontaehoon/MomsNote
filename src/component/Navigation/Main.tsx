@@ -2,10 +2,6 @@ import React from 'react'
 import { View, Text, StyleSheet, LogBox, TouchableOpacity, TextInput } from 'react-native'
 import { NavigationContainer, TabActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import Icon2 from 'react-native-vector-icons/Ionicons'
-import Icon3 from 'react-native-vector-icons/Entypo'
-import Icon4 from 'react-native-vector-icons/AntDesign'
 import Icon5 from 'react-native-vector-icons/Feather'
 import SubMain from './SubMain'
 import AddPage from '../Default/AddPage'
@@ -99,7 +95,7 @@ const Navigation = () => {
             <Stack.Screen name="내 정보 수정" component={Edit} />
             <Stack.Screen name="회원탈퇴" component={Withdraw} />
             <Stack.Screen name="체험단 상세페이지" component={Talk3Detail} options={{title: ''}}/>
-            <Stack.Screen name="출산리스트 공유 상세내용" component={Talk2Detail} options={{title: ''}}/>
+            <Stack.Screen name="출산리스트 공유 상세내용" component={Talk2Detail} options={{title: '', headerShown: false}}/>
             <Stack.Screen name="출산리스트 공유 등록" component={Talk2Register} options={{title: '', headerShown: false}}/>
             <Stack.Screen name="출산리스트 비교" component={Compare}/>
             <Stack.Screen name="출산리스트" component={Categoires}/>
@@ -131,6 +127,7 @@ const Navigation = () => {
                                 ),
                             })}/>
             <Stack.Screen name="갤러리" component={Gallery} options={{title: '', headerShown: false}}/>
+
         </Stack.Navigator>
       </NavigationContainer>
   )

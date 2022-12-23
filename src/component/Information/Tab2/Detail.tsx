@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderColor: '#F5F5F5',
         borderBottomWidth: 1,
+        paddingLeft: 20,
     },
     likeBox:{
         width: '60%',
@@ -218,7 +219,7 @@ const Talk1Sub = ({navigation, route}) => {
                 {item.savedName === null ? '' : ImageBox()}
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
-                        <Like width={16} height={16}/>
+                    <Like width={16} height={16} fill='#9E9E9E'/>
                         <Text style={{color: '#9E9E9E', fontSize: 13, paddingRight: 10}}> 추천 13</Text>
                         <Chat width={16} height={16}/>
                         <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 5</Text>

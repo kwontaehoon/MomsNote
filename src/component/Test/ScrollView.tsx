@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal, ScrollView } from 'react-native'
 import Google from '../../../public/assets/svg/google.svg';
 import Chat from '../../../public/assets/svg/chat.svg';
 
@@ -88,46 +88,27 @@ const Main = ({navigation}) => {
 
     
 
-    const renderItem = ({ item }) => (
-        <View>
-            <View style={styles.header}>
-                <Google width={50} height={50} fill={'red'}/>
-                <Chat width={200} height={200} fill={'blue'} />
-            </View>
-            <View style={styles.main}>
-                <View style={styles.mainBox}>
-                    <FlatList data={DATA} renderItem={renderItem3} numColumns={3}
-                        keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
-                    </FlatList>
-                </View>
-                <View style={styles.mainBox}>
-                    <FlatList data={DATA2} renderItem={renderItem2}
-                        keyExtractor={item => item.id} showsVerticalScrollIndicator={false} horizontal={true}>
-                    </FlatList>
-                </View>
-            </View>
-            <View style={styles.footer}></View>
-        </View>
-      );
+   
 
-    const renderItem2 = ({ item }) => (
+    const renderItem = ({ item }) => (
         <View style={styles.mainBox2}>
             <Text>{item.id}</Text>
         </View>
     );
 
-    const renderItem3 = ({ item }) => (
-        <TouchableOpacity style={{height: 130, borderWidth: 1}}>
-            <Text>{item.title}</Text>
-        </TouchableOpacity>
-    );
-
   return (
-    <View style={styles.container}>
-        <FlatList data={DATA} renderItem={renderItem}
-            keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
-        </FlatList>
-    </View>
+    <ScrollView style={styles.container}>
+        <View style={{height: 200, borderWidth: 1}}></View>
+        <View style={{height: 200, borderWidth: 1, position: 'absolute', zIndex: 999}}>
+            <FlatList data={DATA2} renderItem={renderItem}
+                keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
+            </FlatList>
+        </View>
+        <View style={{height: 200, borderWidth: 1}}></View>
+        <View style={{height: 200, borderWidth: 1}}></View>
+        <View style={{height: 200, borderWidth: 1}}></View>
+      
+    </ScrollView>
   )
 }
 

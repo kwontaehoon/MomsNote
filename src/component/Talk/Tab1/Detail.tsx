@@ -1,13 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
-import Icon from 'react-native-vector-icons/FontAwesome'
-import Icon2 from 'react-native-vector-icons/AntDesign'
 import Modal from './Modal/DotModal'
 import Modal2 from './Modal/Block'
 import Modal3 from './Modal/Declare'
 import Modal4 from './Modal/DelareConfirm'
 import Modal5 from './Modal/DotModal2'
+import Comment from './Comment'
 
 import Chat from '../../../../public/assets/svg/chat.svg'
 import Like from '../../../../public/assets/svg/Like.svg'
@@ -17,7 +16,7 @@ import Share from '../../../../public/assets/svg/Share.svg'
 
 const styles = StyleSheet.create({
     container:{
-        height: '96%',
+        height: '97%',
         backgroundColor: 'white',
         marginTop: getStatusBarHeight(),
     },
@@ -106,15 +105,35 @@ const styles = StyleSheet.create({
         right: 20,
     },
     mainBox4:{
-        height: 200
+        height: 200,
+        padding: 20,
+        paddingTop: 30,
+    },
+    commentBox:{
+        borderWidth: 1,
+        height: 70,
+
+    },
+    commentProfile:{
+        height: 40,
+        borderWidth: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    dotBox:{
+
     },
     footer:{
-        height: 60,
+        width: '100%',
+        height: 70,
         flexDirection: 'row',
         borderWidth: 1,
+        borderColor: '#F5F5F5',
+        position: 'absolute',
+        bottom: 0,
+        justifyContent: 'center',
         alignItems: 'center',
-        padding: 20,
-        borderColor: '#F5F5F5'
+        backgroundColor: 'white',
     },
     profileBox2:{
         width: 40,
@@ -124,7 +143,7 @@ const styles = StyleSheet.create({
     },
     textInput:{
         borderRadius: 99,
-        width: 306,
+        width: '80%',
         height: 40,
         marginLeft: 12,
         paddingLeft: 12,
@@ -227,13 +246,6 @@ const Talk1Sub = ({navigation, route}) => {
 
     const renderItem = ({ item }) => (
         <View>
-            <View style={styles.header}>
-                <Back onPress={()=>navigation.goBack()}/>
-                <View style={styles.headerBar}>
-                    <Share style={{marginRight: 12}}/>
-                    <More style={{marginRight: 5}} onPress={()=>setModal(!modal)}/> 
-                </View>
-            </View>
             <View style={styles.header2}>
                 <View style={styles.profileBox}></View>
                 <View style={styles.infoBox}>
@@ -261,10 +273,8 @@ const Talk1Sub = ({navigation, route}) => {
                     </View>
                 </View>
                 <View style={styles.mainBox4}>
-                    {comment.length !== 0 ?
-                    <View style={styles.commentBox}>
-                        <Text></Text>
-                    </View> :
+                    {comment.length === 0 ?
+                    <Comment />:
                     <View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 60}}>
                         <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
                         <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
@@ -287,6 +297,14 @@ const Talk1Sub = ({navigation, route}) => {
         <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4}/>
         <Modal4 modal4={modal4} setModal4={setModal4} />
         <Modal5 modal5={modal5} setModal5={setModal5}/>
+
+        <View style={styles.header}>
+                <Back onPress={()=>navigation.goBack()}/>
+                <View style={styles.headerBar}>
+                    <Share style={{marginRight: 12}}/>
+                    <More style={{marginRight: 5}} onPress={()=>setModal(!modal)}/> 
+                </View>
+        </View>
 
         <FlatList data={info} renderItem={renderItem}
             keyExtractor={item => item.id}>
