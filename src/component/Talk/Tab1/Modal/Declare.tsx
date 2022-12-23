@@ -98,7 +98,9 @@ const styles = StyleSheet.create({
 
 })
 
-const CheckBoxModal = ({modal3, setModal3, modal4, setModal4}) => {
+const CheckBoxModal = ({modal3, setModal3, modal4, setModal4, boardId}) => {
+
+    console.log('boardId: ', info)
 
     const DATA = [
         {
@@ -119,13 +121,13 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4}) => {
         },
         {
             id: '4',
-            title: '??',
+            title: '기타',
         },
     ];
 
     const [titleDisplay, setTitleDisplay] = useState(false); // 품목 리스트 display
     const [info, setInfo] = useState({
-        sort: '',
+        sort: 'board',
         boardId: '',
         reason: '신고 사유',
         reasonDetails: ''
@@ -149,7 +151,7 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4}) => {
     }
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.listBox} onPress={()=>{setInfo((prevState) => ({ ...prevState, title: item.title})), setTitleDisplay(false)}}>
+        <TouchableOpacity style={styles.listBox} onPress={()=>{setInfo((prevState) => ({ ...prevState, reason: item.title})), setTitleDisplay(false)}}>
             <Text>{item.title}</Text>
         </TouchableOpacity>
     );
@@ -179,11 +181,11 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4}) => {
                         <View style={styles.main}>
                             <TouchableOpacity style={styles.mainBox} onPress={()=>setTitleDisplay(!titleDisplay)}>
                                 <View style={styles.arrowBox}>{arrowIcon()}</View>
-                                <Text>{info.title}</Text>
+                                <Text>{info.reason}</Text>
                             </TouchableOpacity>
                             
                             <TextInput style={[styles.mainBox2, {paddingLeft: 15, position: 'relative', zIndex: -999}]} placeholder='신고사유를 상세하게 적어주세요.' placeholderTextColor={'#9E9E9E'}
-                                onChangeText={(e) => setInfo((prevState) => ({ ...prevState, content: e}))}>
+                                onChangeText={(e) => setInfo((prevState) => ({ ...prevState, reasonDetails: e}))}>
                             </TextInput>
                         </View>
                         {info.reason !== '신고 사유' && info.reasonDetails.length !== 0 ?

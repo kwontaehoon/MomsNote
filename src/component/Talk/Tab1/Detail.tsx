@@ -332,7 +332,7 @@ const Talk1Sub = ({navigation, route}) => {
 
         <Modal modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3}/>
         <Modal2 modal2={modal2} setModal2={setModal2} modal={modal} setModal={setModal}/>
-        <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4}/>
+        <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4} boardId={info[0].boardId}/>
         <Modal4 modal4={modal4} setModal4={setModal4} />
         <Modal5 modal5={modal5} setModal5={setModal5}/>
 
