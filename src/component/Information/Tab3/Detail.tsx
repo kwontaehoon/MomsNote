@@ -1,11 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
-import Icon from 'react-native-vector-icons/FontAwesome'
-import Icon2 from 'react-native-vector-icons/AntDesign'
+import moment from 'moment'
 
-import Chat from '../../../../public/assets/svg/Chat.svg'
-import Like from '../../../../public/assets/svg/Like.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
 import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'
@@ -157,7 +154,7 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 3}}>{item.title}</Text>
-                    <Text>일정: {item.boardDate}</Text>
+                    <Text>일정: {moment(item.boardDate).format("YY.MM.DD")}</Text>
                 </View>
                 <View style={styles.mainBox2}>
                     <Text>{item.contents}</Text>

@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
 
 const NoticeModal = ({modal4, setModal4}) => {
 
-    console.log('modal4: ', modal4);
   return (
     <Modal animationType="fade" transparent={true} visible={modal4}
             onRequestClose={() => {

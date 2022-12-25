@@ -152,7 +152,7 @@ const Talk1 = ({navigation}: any) => {
                 pregnantComfirm.push(
                     <>
                     <TouchableOpacity style={styles.contentBox} onPress={()=>answer(x.category, index)}>
-                        <View style={{marginRight: 10}}><Q fill='#F5F5F5'/></View>
+                        <View style={{marginRight: 10}}>{infoDisplay[index] ? <Q fill='black'/> : <Q fill='#BDBDBD'/>}</View>
                         <Text>{x.qnaQ}</Text>
                     </TouchableOpacity>
                     <View style={[styles.contentBox, {backgroundColor: '#F5F5F5', display: infoDisplay[index] ? 'flex' : 'none'}]}>
@@ -173,7 +173,7 @@ const Talk1 = ({navigation}: any) => {
                 pregnantComfirm.push(
                     <>
                     <TouchableOpacity style={styles.contentBox} onPress={()=>answer(x.category, index)}>
-                        <View style={{marginRight: 10}}><Q /></View>
+                        <View style={{marginRight: 10}}>{info2Display[index] ? <Q fill='black'/> : <Q fill='#BDBDBD'/>}</View>
                         <Text>{x.qnaQ}</Text>
                     </TouchableOpacity>
                     <View style={[styles.contentBox, {backgroundColor: '#F5F5F5', display: info2Display[index] ? 'flex' : 'none'}]}>

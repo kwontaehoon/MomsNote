@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Checkbox from 'expo-checkbox'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Calendar from '../../../public/assets/svg/Calendar.svg'
 
@@ -119,6 +120,8 @@ const AddPage = ({navigation, route}) => {
     console.log('info: ', info);
 
     const submit = async() => {
+        AsyncStorage.setItem('userId', '5');
+        
         const response = await axios.post(`http://momsnote.net/signup`, {
             info: info
         })

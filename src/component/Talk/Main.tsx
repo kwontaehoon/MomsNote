@@ -8,7 +8,6 @@ import Talk3 from './Tab3/Main'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { getBoard } from '../../Redux/Slices/BoardSlice'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Pencil from '../../../public/assets/svg/Pencil.svg'
 
@@ -85,7 +84,6 @@ const Main = ({navigation}) => {
     const dispatch = useDispatch();
     
     useEffect(()=>{
-        // AsyncStorage.setItem('userId', '5');
         dispatch(getBoard());
     }, []);
 

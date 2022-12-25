@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Modal } from
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 import axios from 'axios'
+import moment from 'moment'
 
 const styles = StyleSheet.create({
   container:{
@@ -80,7 +81,7 @@ const Talk3 = ({navigation}: any) => {
   ]);
 
   const [info, setInfo] = useState([]);
-  console.log('info: ', info);
+  console.log('체험단 info: ', info);
 
   useEffect(()=>{
     const exp = async() => {
@@ -104,7 +105,7 @@ const Talk3 = ({navigation}: any) => {
         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} />
       </View>
       <View style={styles.contentBox}>
-        <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>{item.applicationEndDate}일 남음</Text></View>
+        <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>{moment(item.applicationEndDate).diff(moment(), "days")}일 남음</Text></View>
         <View style={styles.content}><Text style={{fontWeight: '500'}}>{item.title}</Text></View>
         <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>신청 {item.appCount}명/모집 {item.maxPeople}명</Text></View>
       </View>

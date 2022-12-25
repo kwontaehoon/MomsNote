@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Modal } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Modal, StatusBar } from 'react-native'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import ContentsURL from './Modal/ContentsURL'
 import axios from 'axios'
@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     },
     header:{
         height: 250,
-        backgroundColor: 'yellow'
+        backgroundColor: 'yellow',
     },
     main:{
         height: 220,
@@ -219,6 +219,9 @@ const Talk1Sub = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
+
+        <StatusBar translucent={true} />
+
          <Modal animationType="fade" transparent={true} visible={modalVisible}
             onRequestClose={() => {
             setModalVisible(!modalVisible)}}>

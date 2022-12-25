@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         marginBottom: 3,
     },
 })
-const Main = ({modal2, setModal2}) => {
+const Main = ({modal2, setModal2, userId, ani}) => {
 
     const submit = async() => {
         try{
@@ -98,7 +98,7 @@ const Main = ({modal2, setModal2}) => {
                     'Content-Type': 'application/json'
                 },
                 data: {
-                    blockUserId: 4
+                    blockUserId: userId
                 }
                 });
                 console.log('response: ', response.data);
@@ -119,7 +119,7 @@ const Main = ({modal2, setModal2}) => {
                             <Text style={{fontSize: 16, paddingTop: 5}}>수 없습니다. 그래도 차단하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}} onPress={()=>{submit(), setModal2(!modal2)}}>차단하기</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.modal} onPress={()=>{submit(), ani() ,setModal2(!modal2)}}><Text style={{color: 'white', fontSize: 16}}>차단하기</Text></TouchableOpacity>
                             <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModal2(!modal2)}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
                         </View>
                     </View>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import axios from 'axios'
-import Modal3 from './Modal/Declare'
 
 import Like from '../../../../public/assets/svg/like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
@@ -36,6 +35,28 @@ const styles = StyleSheet.create({
     },
 })
 const Comment = ({info, commentsId, setCommentsId, setInsert, modal5, setModal5}) => {
+
+    const [commentLike, setCommentLike] = useState();
+
+    useEffect(()=>{
+        const likeInfo = async() => {
+            try{
+                const response = await axios({
+                    method: 'post',
+                    url: 'https://momsnote.net/api/comments/recommend/flag',
+                    headers: { 
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1OTE0OTIsImV4cCI6MTY3NDE4MzQ5Mn0.d8GpqvEmnnrUZKumuL4OPzp7wSGXiTo47hGkCSM2HO0', 
+                        'Content-Type': 'application/json'
+                      },
+                    data:{ boardId : info[0].boardId }
+                });
+                setCommentLike(response.data);
+            }catch(error){
+                console.log('comment like axios error');
+            }
+        }
+        likeInfo();
+    }, []);
 
     const List = () => {
         let arr = [];

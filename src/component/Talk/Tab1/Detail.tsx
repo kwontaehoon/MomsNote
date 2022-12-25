@@ -13,6 +13,7 @@ import axios from 'axios'
 
 import Chat from '../../../../public/assets/svg/Chat.svg'
 import Like from '../../../../public/assets/svg/like.svg'
+import Like2 from '../../../../public/assets/svg/Heart-1.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
 import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'
@@ -152,7 +153,7 @@ const styles = StyleSheet.create({
         bottom: 90,
         position: 'absolute',
         alignItems: 'center',
-        opacity: 0.7,
+        zIndex: 999,
     },
     alarm:{
         width: '90%',
@@ -168,7 +169,6 @@ const Talk1Sub = ({navigation, route}) => {
     const info = [route.params];
     console.log('board info: ', info);
     const [comment, setComment] = useState([]); // 댓글 정보
-    console.log('comment: ', comment);
     const [commentsId, setCommentsId] = useState(); // 댓글 더보기에서 commentid 때매만듬
     const [insert, setInsert] = useState(
         {
@@ -178,6 +178,8 @@ const Talk1Sub = ({navigation, route}) => {
             level: 0
         }
     ); // 댓글 입력
+    const [boardLike, setBoardLike] = useState(); // 게시판 좋아요
+    console.log('board like: ', boardLike);
     const [modal, setModal] = useState(false); // dot 모달 다른사람게시판 차단 및 신고
     const [modal2, setModal2] = useState(false); // 차단하기
     const [modal3, setModal3] = useState(false); // 게시물 신고 하기
@@ -189,20 +191,40 @@ const Talk1Sub = ({navigation, route}) => {
 
     useEffect(()=>{
         const commentInfo = async() => {
-        try{
-          const response = await axios({
-            method: 'post',
-            url: 'https://momsnote.net/api/comments/list',
-            data : {
-              boardId: 1
-          }
-        });
-        setComment(response.data);
-        }catch(error){
-            console.log('error: ', error);
-        }}
+            try{
+            const response = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/api/comments/list',
+                data : { boardId: 1 }
+            });
+                setComment(response.data);
+            }catch(error){
+                console.log('comment axios error');
+            }
+        }
         commentInfo();
+
       }, []);
+
+    useEffect(()=>{
+        const likeInfo = async() => {
+            try{
+                const response = await axios({
+                    method: 'post',
+                    url: 'https://momsnote.net/api/board/recommend/flag',
+                    headers: { 
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1OTE0OTIsImV4cCI6MTY3NDE4MzQ5Mn0.d8GpqvEmnnrUZKumuL4OPzp7wSGXiTo47hGkCSM2HO0', 
+                        'Content-Type': 'application/json'
+                      },
+                    data:{ boardId : 55 }
+                });
+                setBoardLike(response.data);
+            }catch(error){
+                console.log('like axios error');
+            }
+        }
+        likeInfo();
+    }, [likeplus])
 
     const commentRegister = async() => {
         try{
@@ -214,6 +236,26 @@ const Talk1Sub = ({navigation, route}) => {
                     'Content-Type': 'application/json'
                   },
                   data: insert
+                });
+                console.log('response: ', response.data);
+            }catch(error){
+              console.log('error: ', error);
+            }
+    }
+
+    const likeplus = async() => {
+        try{
+            const response = await axios({
+                  method: 'post',
+                  url: 'https://momsnote.net/api/board/recommend',
+                  headers: { 
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
+                    'Content-Type': 'application/json'
+                  },
+                  data: {
+                    boardId: 55,
+                    type: 'plus'
+                  }
                 });
                 console.log('response: ', response.data);
             }catch(error){
@@ -304,8 +346,8 @@ const Talk1Sub = ({navigation, route}) => {
                 {item.savedName === null ? <View></View> : ImageBox()}
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
-                        <Like width={16} height={16} fill='#FE9000'/>
-                        <Text style={{color: '#9E9E9E', fontSize: 13, paddingRight: 10}}> 추천 {item.recommend}</Text>
+                        {boardLike == 0 ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000'/>}
+                        <Text style={{color: boardLike == 0 ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 {item.recommend}</Text>
                         <Chat width={16} height={16}/>
                         <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 {comment.length}</Text>
                     </View>
@@ -334,7 +376,7 @@ const Talk1Sub = ({navigation, route}) => {
         </Animated.View>
 
         <Modal modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3}/>
-        <Modal2 modal2={modal2} setModal2={setModal2} modal={modal} setModal={setModal}/>
+        <Modal2 modal2={modal2} setModal2={setModal2} userId={info[0].userId} ani={opacity_ani}/>
         <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4} boardId={info[0].boardId}/>
         <Modal4 modal4={modal4} setModal4={setModal4} />
         <Modal5 modal5={modal5} setModal5={setModal5} modal6={modal6} setModal6={setModal6}/>

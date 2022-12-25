@@ -113,11 +113,14 @@ const Talk1 = ({navigation}) => {
       title: '질문게시판'
     }
   ];
-
-  console.log(AsyncStorage.getAllKeys());
-  AsyncStorage.getItem('userId', (error, result) => {
-    console.log(result);
-  });
+  
+  // AsyncStorage.getItem('user_info', JSON.stringify({
+  //   'nickName': '',
+  //   'email: ': '',
+  //   'babyName': '',
+  // }), () => {
+  //   console.log('');
+  // });
   
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');
