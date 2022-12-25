@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, FlatList } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/FontAwesome'
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
 
 })
 
-const CheckBoxModal = ({modal3, setModal3, modal4, setModal4, boardId}) => {
+const CheckBoxModal = ({modal4, setModal4, modal6, setModal6, commentsId}) => {
 
     const DATA = [
         {
@@ -125,11 +125,15 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4, boardId}) => {
 
     const [titleDisplay, setTitleDisplay] = useState(false); // 품목 리스트 display
     const [info, setInfo] = useState({
-        sort: 'board',
-        boardId: boardId,
+        sort: 'comments',
+        commentsId: commentsId,
         reason: '신고 사유',
-        reasonDetails: ''
+        reasonDetails: '',
     });
+
+    useEffect(()=>{
+        setInfo((prevState) => ({ ...prevState, commentsId: commentsId}));
+    }, [commentsId]);
 
     const submit = async() => {
         try{
@@ -160,15 +164,15 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4, boardId}) => {
     
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modal3}
+    <Modal animationType="fade" transparent={true} visible={modal6}
             onRequestClose={() => {
-            setModal3(!modal3)}}>
+            setModal6(!modal6)}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     
                     <View style={[styles.modalContainer2, {height: 404}]}>
                         <View style={styles.header}>
-                            <TouchableOpacity style={styles.closeBox} onPress={()=>setModal3(!modal3)}><Icon name='close' size={24}/></TouchableOpacity>
+                            <TouchableOpacity style={styles.closeBox} onPress={()=>setModal6(!modal6)}><Icon name='close' size={24}/></TouchableOpacity>
                             <Text style={{color: '#212121', fontSize: 18, fontWeight: '500'}}>신고하기</Text>
                         </View>
                         <View style={styles.main}>
@@ -187,7 +191,7 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4, boardId}) => {
                             </TextInput>
                         </View>
                         {info.reason !== '신고 사유' && info.reasonDetails.length !== 0 ?
-                            <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>{ submit(), setModal3(!modal3), setModal4(!modal4), setInfo((prevState) => ({ ...prevState, content: ''}))}}>
+                            <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>{submit(), setModal6(!modal6), setModal4(!modal4), setInfo((prevState) => ({ ...prevState, content: ''}))}}>
                                 <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>신고하기</Text>
                             </TouchableOpacity> : 
                             

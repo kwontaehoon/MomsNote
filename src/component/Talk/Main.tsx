@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getBoard } from '../../Redux/Slices/BoardSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import Pencil from '../../../public/assets/svg/pencil.svg'
+import Pencil from '../../../public/assets/svg/Pencil.svg'
 
 const styles = StyleSheet.create({
     container:{
@@ -78,23 +78,25 @@ const styles = StyleSheet.create({
         marginBottom: 3,
     },
 })
-const Main = ({navigation}:any) => {
+const Main = ({navigation}) => {
 
     const board = useSelector(state => { return state.board.data; });
     console.log('board: ', board);
     const dispatch = useDispatch();
     
     useEffect(()=>{
+        // AsyncStorage.setItem('userId', '5');
         dispatch(getBoard());
     }, []);
 
-    console.log(AsyncStorage.getAllKeys());
+    ;
+
     
 
     const [modalVisible, setModalVisible] = useState(false); // imodal
     const [filter, setFilter] = useState([true, false, false]); // tab
 
-    const List = ():any => {
+    const List = () => {
 
         switch(true){
             case filter[0] === true: return <Talk1 navigation={navigation} />

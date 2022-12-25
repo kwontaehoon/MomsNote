@@ -26,7 +26,7 @@ import ScrollView from '../Test/ScrollView'
 
 import Search from '../../../public/assets/svg/Search.svg'
 import Bell from '../../../public/assets/svg/Bell.svg'
-import MyPage from '../../../public/assets/svg/MyPage.svg'
+import MyPage from '../../../public/assets/svg/Mypage.svg'
 
 const styles = StyleSheet.create({
     header:{

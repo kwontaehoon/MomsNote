@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import axios from 'axios'
+import Modal3 from './Modal/Declare'
 
-import Like from '../../../../public/assets/svg/Like.svg'
+import Like from '../../../../public/assets/svg/like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
 import More from '../../../../public/assets/svg/More.svg'
 
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
 
     },
 })
-const Comment = ({info, insert, setInsert}) => {
+const Comment = ({info, commentsId, setCommentsId, setInsert, modal5, setModal5}) => {
 
     const List = () => {
         let arr = [];
@@ -43,7 +44,7 @@ const Comment = ({info, insert, setInsert}) => {
             arr.push(
                 <View key={index}>
                     <View style={styles.box}>
-                        <View style={styles.dotBox}><More /></View>
+                        <TouchableOpacity style={styles.dotBox} onPress={()=>{setModal5(!modal5), setCommentsId(x.commentsId)}}><More /></TouchableOpacity>
                         <View style={styles.profileBox}></View>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             <Text style={{fontSize: 16, fontWeight: '600', paddingRight: 8}}>별똥이맘</Text>

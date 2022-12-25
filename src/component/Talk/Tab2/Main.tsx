@@ -6,8 +6,8 @@ import Icon3 from 'react-native-vector-icons/Ionicons'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { WithLocalSvg } from "react-native-svg"
 
-import Like from '../../../../public/assets/svg/Like.svg'
-import Chat from '../../../../public/assets/svg/chat.svg'
+import Like from '../../../../public/assets/svg/like.svg'
+import Chat from '../../../../public/assets/svg/Chat.svg'
 
 const styles = StyleSheet.create({
   container:{

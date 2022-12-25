@@ -6,11 +6,13 @@ import Modal2 from './Modal/Block'
 import Modal3 from './Modal/Declare'
 import Modal4 from './Modal/DelareConfirm'
 import Modal5 from './Modal/DotModal2'
+import Modal6 from './Modal/Declare2'
+
 import Comment from './Comment'
 import axios from 'axios'
 
-import Chat from '../../../../public/assets/svg/chat.svg'
-import Like from '../../../../public/assets/svg/Like.svg'
+import Chat from '../../../../public/assets/svg/Chat.svg'
+import Like from '../../../../public/assets/svg/like.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
 import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'
@@ -164,10 +166,10 @@ const styles = StyleSheet.create({
 const Talk1Sub = ({navigation, route}) => {
 
     const info = [route.params];
-    console.log('info: ', info);
-
+    console.log('board info: ', info);
     const [comment, setComment] = useState([]); // 댓글 정보
     console.log('comment: ', comment);
+    const [commentsId, setCommentsId] = useState(); // 댓글 더보기에서 commentid 때매만듬
     const [insert, setInsert] = useState(
         {
             boardId: null,
@@ -176,12 +178,13 @@ const Talk1Sub = ({navigation, route}) => {
             level: 0
         }
     ); // 댓글 입력
-    console.log('insert: ', insert);
     const [modal, setModal] = useState(false); // dot 모달 다른사람게시판 차단 및 신고
     const [modal2, setModal2] = useState(false); // 차단하기
-    const [modal3, setModal3] = useState(false); // 차단 확인
+    const [modal3, setModal3] = useState(false); // 게시물 신고 하기
     const [modal4, setModal4] = useState(false); // 신고 확인
     const [modal5, setModal5] = useState(false) // dot2 모달 본인게시판 수정 및 삭제
+    const [modal6, setModal6] = useState(false); // comment 신고 하기
+
     const animation = useRef(new Animated.Value(0)).current;
 
     useEffect(()=>{
@@ -301,18 +304,18 @@ const Talk1Sub = ({navigation, route}) => {
                 {item.savedName === null ? <View></View> : ImageBox()}
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
-                        <Like width={16} height={16} fill='#9E9E9E'/>
-                        <Text style={{color: '#9E9E9E', fontSize: 13, paddingRight: 10}}> 추천 13</Text>
+                        <Like width={16} height={16} fill='#FE9000'/>
+                        <Text style={{color: '#9E9E9E', fontSize: 13, paddingRight: 10}}> 추천 {item.recommend}</Text>
                         <Chat width={16} height={16}/>
-                        <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 5</Text>
+                        <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 {comment.length}</Text>
                     </View>
                     <View style={styles.lookupBox}>
-                        <Text style={{fontSize: 13, color: '#9E9E9E'}}>조회수 134</Text>
+                        <Text style={{fontSize: 13, color: '#9E9E9E'}}>조회수 {item.hits}</Text>
                     </View>
                 </View>
                 <View style={styles.mainBox4}>
                     {comment.length !== 0 ?
-                    <Comment info={comment} insert={insert} setInsert={setInsert}/>:
+                    <Comment info={comment} commentsId={commentsId} setCommentsId={setCommentsId} setInsert={setInsert} modal5={modal5} setModal5={setModal5}/>:
                     <View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 60}}>
                         <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
                         <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
@@ -334,7 +337,10 @@ const Talk1Sub = ({navigation, route}) => {
         <Modal2 modal2={modal2} setModal2={setModal2} modal={modal} setModal={setModal}/>
         <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4} boardId={info[0].boardId}/>
         <Modal4 modal4={modal4} setModal4={setModal4} />
-        <Modal5 modal5={modal5} setModal5={setModal5}/>
+        <Modal5 modal5={modal5} setModal5={setModal5} modal6={modal6} setModal6={setModal6}/>
+        <Modal6 modal4={modal4} setModal4={setModal4} modal6={modal6} setModal6={setModal6} commentsId={commentsId}/>
+        
+
 
         <View style={styles.header}>
                 <Back onPress={()=>navigation.goBack()}/>

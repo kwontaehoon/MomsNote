@@ -2,9 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import Icon2 from 'react-native-vector-icons/Ionicons'
 import Icon3 from 'react-native-vector-icons/Feather'
-import Icon4 from 'react-native-vector-icons/Entypo'
 import Checkbox from 'expo-checkbox';
 import BrendModal from './Modal/BrendModal'
 import CheckboxModal from './Modal/CheckBoxModal';
@@ -21,10 +19,10 @@ import ViewShot from 'react-native-view-shot'
 
 import More from '../../../public/assets/svg/More.svg'
 import Sort from '../../../public/assets/svg/Sort.svg'
-import Download from '../../../public/assets/svg/download.svg'
+import Download from '../../../public/assets/svg/Download.svg'
 import Search from '../../../public/assets/svg/Search.svg'
 import Bell from '../../../public/assets/svg/Bell.svg'
-import MyPage from '../../../public/assets/svg/MyPage.svg'
+import MyPage from '../../../public/assets/svg/Mypage.svg'
 
 
 const styles = StyleSheet.create({

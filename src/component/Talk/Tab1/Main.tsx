@@ -3,8 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 
-import Like from '../../../../public/assets/svg/Like.svg'
-import Chat from '../../../../public/assets/svg/chat.svg'
+import Like from '../../../../public/assets/svg/like.svg'
+import Chat from '../../../../public/assets/svg/Chat.svg'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
   container:{
@@ -113,6 +114,11 @@ const Talk1 = ({navigation}) => {
     }
   ];
 
+  console.log(AsyncStorage.getAllKeys());
+  AsyncStorage.getItem('userId', (error, result) => {
+    console.log(result);
+  });
+  
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');
   const [items, setItems] = useState([
@@ -127,7 +133,7 @@ const Talk1 = ({navigation}) => {
         boardId: 1,
         cateGory: '맘스토크',
         subcategory: '출산리스트',
-        userId: '별똥맘',
+        userId: 5,
         title: '5주차 맘 입덧 질문있어요',
         contents: '내용입니다.',
         recommend: '3',
@@ -139,7 +145,7 @@ const Talk1 = ({navigation}) => {
         boardId: 2,
         cateGory: '맘스토크',
         subcategory: '출산리스트',
-        userId: '동글이',
+        userId: 5,
         title: '좋은 정보 많이 공유해요~',
         contents: '내용입니다2.',
         recommend: '3',
@@ -151,7 +157,7 @@ const Talk1 = ({navigation}) => {
         boardId: 3,
         cateGory: '맘스토크',
         subcategory: '출산리스트',
-        userId: '가양이',
+        userId: 5,
         title: '출산전 꼭! 읽어야할 임산부 필수글',
         contents: '내용입니다3.',
         recommend: '3',
@@ -163,7 +169,7 @@ const Talk1 = ({navigation}) => {
         boardId: 3,
         cateGory: '맘스토크',
         subcategory: '출산리스트',
-        userId: '양천이',
+        userId: 5,
         title: '출산전 꼭! 읽어야할 임산부 필수글',
         contents: '내용입니다3.',
         recommend: '3',
