@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     dotBox:{
         position: 'absolute',
         right: 5,
-        top: 10
+        top: 10,
     },
     likeBox:{
         paddingLeft: 40,
@@ -34,12 +35,11 @@ const styles = StyleSheet.create({
 
     },
 })
-const Comment = ({info, commentsId, setCommentsId, setInsert, modal5, setModal5}) => {
+const Comment = ({info, commentsId, setCommentsId, setInsert, modal, setModal, recommendState, setRecommendState}) => {
 
-    console.log('comment info: ', info);
+    console.log('comment commentsId: ', commentsId);
 
-    const [commentLike, setCommentLike] = useState();
-    console.log('commentLike: ', commentLike);
+    const [commentLike, setCommentLike] = useState(); // 댓글 추천 여부
 
     useEffect(()=>{
         const likeInfo = async() => {
@@ -48,9 +48,9 @@ const Comment = ({info, commentsId, setCommentsId, setInsert, modal5, setModal5}
                     method: 'post',
                     url: 'https://momsnote.net/api/comments/recommend/flag',
                     headers: { 
-                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1OTE0OTIsImV4cCI6MTY3NDE4MzQ5Mn0.d8GpqvEmnnrUZKumuL4OPzp7wSGXiTo47hGkCSM2HO0', 
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
                         'Content-Type': 'application/json'
-                      },
+                    },
                     data: { boardId : info[0].boardId }
                 });
                 setCommentLike(response.data);
@@ -59,41 +59,68 @@ const Comment = ({info, commentsId, setCommentsId, setInsert, modal5, setModal5}
             }
         }
         likeInfo();
-    }, []);
+    }, [recommendState]);
+
+    const commentplus = async(id) => {
+
+        try{
+            const response = await axios({
+                  method: 'post',
+                  url: 'https://momsnote.net/api/comments/recommend',
+                  headers: { 
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
+                    'Content-Type': 'application/json'
+                  },
+                  data: {
+                    boardId: info[0].boardId,
+                    commentsId: id,
+                    type: 'plus'
+                  }
+                });
+                console.log('response: ', response.data);
+            }catch(error){
+              console.log('error: ', error);
+            }
+            setRecommendState(false);
+    }
 
     const List = () => {
         let arr = [];
         info.filter((x, index) => {
             if(x.step === 0){
-            arr.push(
-                <View key={index}>
-                    <View style={styles.box}>
-                        <TouchableOpacity style={styles.dotBox} onPress={()=>{setModal5(!modal5), setCommentsId(x.commentsId)}}><More /></TouchableOpacity>
-                        <View style={styles.profileBox}></View>
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <Text style={{fontSize: 16, fontWeight: '600', paddingRight: 8}}>별똥이맘</Text>
-                            <Text style={{fontSize: 13, fontWeight: '500', color: '#BDBDBD'}}>16분 전</Text>
+                arr.push(
+                    <View key={index}>
+                        <View style={styles.box}>
+                            <TouchableOpacity style={styles.dotBox} onPress={()=>{setModal(!modal), setCommentsId([x.userId, x.commentsId])}}><More /></TouchableOpacity>
+                            <View style={styles.profileBox}></View>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <Text style={{fontSize: 16, fontWeight: '600', paddingRight: 8}}>{x.nickname}</Text>
+                                <Text style={{fontSize: 13, fontWeight: '500', color: '#BDBDBD'}}>16분 전</Text>
+                            </View>
                         </View>
+                        <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10}}>{x.contents}</Text>
+                        <View style={styles.likeBox}>
+                            {commentLike.includes(x.commentsId) ? <Like2 width={16} height={16} fill='#FE9000'/>
+                            :
+                            <Like width={16} height={16} fill='#9E9E9E' onPress={()=>commentplus(x.commentsId)}/>}
+                            {commentLike.includes(x.commentsId) ? <Text style={{color: '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 {x.recommend}</Text>
+                            :
+                            <Text style={{color: '#9E9E9E', fontSize: 13, paddingRight: 10}}> 추천 {x.recommend}</Text>}
+                            <Text style={{color: '#9E9E9E', fontSize: 13, fontWeight: '500'}} onPress={
+                                    ()=>{
+                                        setInsert((prevState) => ({...prevState,
+                                        boardId: x.boardId,    
+                                        ref: x.ref,
+                                        level: 1
+                                    }))
+                                }
+                                }>댓글달기
+                            </Text> 
+                        </View>
+                        <List2 number={x.ref}/>
                     </View>
-                    <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10}}>{x.contents}</Text>
-                    <View style={styles.likeBox}>
-                        <Like width={16} height={16} fill='#9E9E9E'/>
-                        <Text style={{color: '#9E9E9E', fontSize: 13, paddingRight: 10}}> 추천 {x.recommend}</Text>
-                        <Text style={{color: '#9E9E9E', fontSize: 13, fontWeight: '500'}} onPress={
-                                ()=>{
-                                    setInsert((prevState) => ({...prevState,
-                                    boardId: x.boardId,    
-                                    ref: x.ref,
-                                    level: 1
-                                }))
-                            }
-                            }>댓글달기
-                        </Text>
-                    </View>
-                    <List2 number={x.ref}/>
-                </View>
-            )
-        }
+                )
+            }
         })
         return arr;
     }
@@ -104,15 +131,19 @@ const Comment = ({info, commentsId, setCommentsId, setInsert, modal5, setModal5}
             arr.push(
                 <View style={{paddingLeft: 27}} key={index}>
                     <View style={styles.box}>
-                        <View style={styles.dotBox}><More /></View>
+                        <TouchableOpacity style={styles.dotBox} onPress={()=>{setModal(!modal), setCommentsId([x.userId, x.commentsId])}}><More /></TouchableOpacity>
                         <View style={styles.profileBox}></View>
-                        <Text style={{fontSize: 16, fontWeight: '600', paddingRight: 8}}>별똥이맘</Text>
+                        <Text style={{fontSize: 16, fontWeight: '600', paddingRight: 8}}>{x.nickname}</Text>
                         <Text style={{fontSize: 13, fontWeight: '500', color: '#BDBDBD'}}>16분 전</Text>
                     </View>
                     <Text style={{paddingLeft: 45, marginBottom: 10}}>{x.contents}</Text>
                     <View style={styles.likeBox}>
-                        <TouchableOpacity><Like width={16} height={16} fill='#9E9E9E'/></TouchableOpacity>
-                        <Text style={{color: '#9E9E9E', fontSize: 13, paddingRight: 10}}> 추천 {x.recommend}</Text>
+                        {commentLike.includes(x.commentsId) ? <Like2 width={16} height={16} fill='#FE9000'/>
+                        :
+                        <Like width={16} height={16} fill='#9E9E9E' onPress={()=>commentplus(x.commentsId)}/>}
+                        {commentLike.includes(x.commentsId) ? <Text style={{color: '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 {x.recommend}</Text>
+                        :
+                        <Text style={{color: '#9E9E9E', fontSize: 13, paddingRight: 10}}> 추천 {x.recommend}</Text>}
                     </View>
                 </View>
             )
@@ -121,12 +152,12 @@ const Comment = ({info, commentsId, setCommentsId, setInsert, modal5, setModal5}
         return arr;
     }
 
-  return (
+  return commentLike !== undefined ?(
     <>
         <List />
         <View style={styles.commentRes}></View>
     </>
-  )
+  ): <View></View>
 }
 
 export default Comment

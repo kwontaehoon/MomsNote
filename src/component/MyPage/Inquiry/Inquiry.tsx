@@ -65,7 +65,6 @@ const Inquiry2 = ({filter, setFilter}) => {
     }
   );
   console.log('1:1문의 작성: ', info);
-  console.log('dd', info.contents === '');
 
   const DATA = [
     {
@@ -80,6 +79,7 @@ const Inquiry2 = ({filter, setFilter}) => {
             method: 'post',
             url: 'https://momsnote.net/api/inquiry/write',
             headers: { 
+              'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIwMzI1OTAsImV4cCI6MTY3NDYyNDU5MH0.ZK2gNgKokbKi_iZM52mC5c0ink21CW2W88-kOXVAAJc', 
               'Content-Type': 'application/json'
             },
             data: info

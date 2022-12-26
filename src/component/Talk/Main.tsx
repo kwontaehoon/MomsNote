@@ -103,12 +103,7 @@ const Main = ({navigation}) => {
     //     const a = await AsyncStorage.getItem('userId');
     //     console.log('a: ', a);
     // }
-    // test();
-    
-
-   
-
-    
+    // test();    
 
     const [modalVisible, setModalVisible] = useState(false); // imodal
     const [filter, setFilter] = useState([true, false, false]); // tab

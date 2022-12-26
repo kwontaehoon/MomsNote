@@ -100,6 +100,8 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({modal4, setModal4, modal6, setModal6, commentsId}) => {
 
+    console.log('댓글 신고: ', commentsId);
+
     const DATA = [
         {
             id: '0',
@@ -130,10 +132,11 @@ const CheckBoxModal = ({modal4, setModal4, modal6, setModal6, commentsId}) => {
         reason: '신고 사유',
         reasonDetails: '',
     });
+    console.log('info: ', info);
 
     useEffect(()=>{
         setInfo((prevState) => ({ ...prevState, commentsId: commentsId}));
-    }, [commentsId]);
+    }, []);
 
     const submit = async() => {
         try{

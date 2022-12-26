@@ -1,7 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
-import Icon from 'react-native-vector-icons/FontAwesome'
+import moment from 'moment'
 
 const styles = StyleSheet.create({
     container:{
@@ -30,7 +29,6 @@ const styles = StyleSheet.create({
     main2:{
         justifyContent: 'center',
         padding: 20,
-        borderWidth: 1,
     },
     main2Box:{
 
@@ -45,17 +43,18 @@ const InquiryDetail = ({route}) => {
             <View style={styles.header}>
                 <View style={styles.statusBox}><Text style={{color: '#757575'}}>{item.status}</Text></View>
                 <Text style={{fontSize: 15, fontWeight: '600', marginBottom: 3, color: '#424242'}}>{item.title}</Text>
-                <Text style={{color: '#9E9E9E'}}>{item.inquiryDate}</Text>
+                <Text style={{color: '#9E9E9E'}}>{moment(item.inquiryDate).format('YYYY/MM/DD')}</Text>
             </View>
             <View style={styles.main}>
                 <Text>{item.contents}</Text>
             </View>
-            {item.answerDate !== null ? <View style={styles.main2}>
+            {item.answerDate !== null ? 
+            <View style={styles.main2}>
                 <View style={styles.main2Box}>
                     <Text style={{fontWeight: '600', fontSize: 15}}>답변 내용</Text>
                     <View style={[styles.statusBox, {right: 0}]}><Text style={{color: '#757575'}}>{item.answerDate}</Text></View>
                 </View>
-                <Text style={{marginTop: 5}}></Text>
+                <Text style={{marginTop: 14, fontSize: 16}}>{item.answerContents}</Text>
             </View> : <View></View>}
         </View>
       );

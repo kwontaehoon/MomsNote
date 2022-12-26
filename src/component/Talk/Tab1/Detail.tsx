@@ -5,8 +5,8 @@ import Modal from './Modal/DotModal'
 import Modal2 from './Modal/Block'
 import Modal3 from './Modal/Declare'
 import Modal4 from './Modal/DelareConfirm'
-import Modal5 from './Modal/DotModal2'
 import Modal6 from './Modal/Declare2'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Comment from './Comment'
 import axios from 'axios'
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         height: 60,
         flexDirection: 'row',
         borderWidth: 1,
-        borderColor: '#F5F5F5',
+        // borderColor: '#F5F5F5',
         justifyContent: 'center',
         backgroundColor: 'white',
         alignItems: 'center'
@@ -167,25 +167,24 @@ const styles = StyleSheet.create({
 const Talk1Sub = ({navigation, route}) => {
 
     const info = [route.params];
-    console.log('board info: ', info);
+    const [recommendState, setRecommentState] = useState(); // 댓글 추천 누르면 axios post re-rendering
     const [comment, setComment] = useState([]); // 댓글 정보
-    const [commentsId, setCommentsId] = useState(); // 댓글 더보기에서 commentid 때매만듬
+    console.log('comment: ', comment);
+    const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
     const [insert, setInsert] = useState(
         {
             boardId: null,
             contents: '',
-            ref: null,
+            ref: 0,
             level: 0
         }
     ); // 댓글 입력
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요
-    console.log('board like: ', boardLike);
     const [modal, setModal] = useState(false); // dot 모달 다른사람게시판 차단 및 신고
     const [modal2, setModal2] = useState(false); // 차단하기
     const [modal3, setModal3] = useState(false); // 게시물 신고 하기
     const [modal4, setModal4] = useState(false); // 신고 확인
-    const [modal5, setModal5] = useState(false) // dot2 모달 본인게시판 수정 및 삭제
-    const [modal6, setModal6] = useState(false); // comment 신고 하기
+    const [modal6, setModal6] = useState(false); // comment 신고 하기 
 
     const animation = useRef(new Animated.Value(0)).current;
 
@@ -195,7 +194,11 @@ const Talk1Sub = ({navigation, route}) => {
             const response = await axios({
                 method: 'post',
                 url: 'https://momsnote.net/api/comments/list',
-                data : { boardId: 1 }
+                data : { 
+                    count: 5,
+                    page: 1,
+                    boardId: info[0].boardId
+                }
             });
                 setComment(response.data);
             }catch(error){
@@ -204,7 +207,7 @@ const Talk1Sub = ({navigation, route}) => {
         }
         commentInfo();
 
-      }, []);
+      }, [recommendState]);
 
     useEffect(()=>{
         const likeInfo = async() => {
@@ -224,7 +227,7 @@ const Talk1Sub = ({navigation, route}) => {
             }
         }
         likeInfo();
-    }, [likeplus])
+    }, [recommendState]);
 
     const commentRegister = async() => {
         try{
@@ -332,7 +335,7 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.header2}>
                 <View style={styles.profileBox}></View>
                 <View style={styles.infoBox}>
-                    <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{item.userId}</Text>
+                    <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{item.nickname}</Text>
                     <Text style={{color: '#9E9E9E', fontSize: 13}}>{item.boardDate}</Text>
                 </View>
             </View>
@@ -357,7 +360,7 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
                 <View style={styles.mainBox4}>
                     {comment.length !== 0 ?
-                    <Comment info={comment} commentsId={commentsId} setCommentsId={setCommentsId} setInsert={setInsert} modal5={modal5} setModal5={setModal5}/>:
+                    <Comment info={comment} commentsId={commentsId} setCommentsId={setCommentsId} setInsert={setInsert} modal={modal} setModal={setModal} recommendState={recommendState} setRecommendState={setRecommentState}/>:
                     <View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 60}}>
                         <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
                         <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
@@ -375,20 +378,18 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.alarm}><Text style={{color: 'white', fontSize: 13, fontWeight: '500'}}>차단하였습니다.</Text></View>
         </Animated.View>
 
-        <Modal modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3}/>
+        <Modal modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3} commentsId={commentsId} boardId={info[0].boardId}
+            modal6={modal6} setModal6={setModal6} recommendState={recommendState} setRecommendState={setRecommentState}/>
         <Modal2 modal2={modal2} setModal2={setModal2} userId={info[0].userId} ani={opacity_ani}/>
         <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4} boardId={info[0].boardId}/>
         <Modal4 modal4={modal4} setModal4={setModal4} />
-        <Modal5 modal5={modal5} setModal5={setModal5} modal6={modal6} setModal6={setModal6}/>
         <Modal6 modal4={modal4} setModal4={setModal4} modal6={modal6} setModal6={setModal6} commentsId={commentsId}/>
         
-
-
         <View style={styles.header}>
                 <Back onPress={()=>navigation.goBack()}/>
                 <View style={styles.headerBar}>
                     <Share style={{marginRight: 12}}/>
-                    <More style={{marginRight: 5}} onPress={()=>setModal(!modal)}/> 
+                    <More style={{marginRight: 5}} onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}/>
                 </View>
         </View>
 

@@ -17,6 +17,11 @@ const styles = StyleSheet.create({
       padding: 20,
       justifyContent: 'center'
     },
+    main2:{
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '80%',
+    },
     statusBox:{
       position: 'absolute',
       right: 20,
@@ -31,12 +36,18 @@ const styles = StyleSheet.create({
 const Inquiry3 = ({navigation}) => {
 
   const [info, setInfo] = useState([]);
+  console.log('문의내역 info: ', info);
 
   useEffect(()=>{
     const Inquiry = async() => {
       const response = await axios({
         method: 'post',
         url: 'https://momsnote.net/api/inquiry/list',
+        headers: { 
+          'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIwMzI1OTAsImV4cCI6MTY3NDYyNDU5MH0.ZK2gNgKokbKi_iZM52mC5c0ink21CW2W88-kOXVAAJc', 
+          'Content-Type': 'application/json'
+        },
+        data: {}
     });
     setInfo(response.data);
     }
@@ -53,9 +64,13 @@ const Inquiry3 = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      {info.length !== 0 ?
         <FlatList data={info} renderItem={renderItem} showsVerticalScrollIndicator={false}
-          keyExtractor={item => item.title}>
+          keyExtractor={item => String(item.inquiryId)}>
         </FlatList>
+        :
+        <View style={styles.main2}><Text style={{color: '#757575', fontSize: 16}}>문의하신 내역이 없습니다.</Text></View>
+      }
     </View>
   )
 }

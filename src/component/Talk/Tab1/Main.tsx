@@ -126,6 +126,7 @@ const Talk1 = ({navigation}) => {
         id: '0',
         boardId: 1,
         cateGory: '맘스토크',
+        nickname: '닉네임',
         subcategory: '출산리스트',
         userId: 5,
         title: '5주차 맘 입덧 질문있어요',
@@ -137,6 +138,7 @@ const Talk1 = ({navigation}) => {
      },{
         id: '1',
         boardId: 2,
+        nickname: '닉네임',
         cateGory: '맘스토크',
         subcategory: '출산리스트',
         userId: 5,
@@ -149,6 +151,7 @@ const Talk1 = ({navigation}) => {
      },{
         id: '2',
         boardId: 3,
+        nickname: '닉네임',
         cateGory: '맘스토크',
         subcategory: '출산리스트',
         userId: 5,
@@ -161,6 +164,7 @@ const Talk1 = ({navigation}) => {
     },{
         id: '3',
         boardId: 3,
+        nickname: '닉네임',
         cateGory: '맘스토크',
         subcategory: '출산리스트',
         userId: 5,
@@ -200,7 +204,7 @@ const Talk1 = ({navigation}) => {
         <View style={[styles.mainBoxSub, {width: '55%', justifyContent: 'flex-start', paddingTop: 5}]}>
           <Text style={{fontSize: 15, paddingTop: 2}}>{item.title} </Text>
           <View style={styles.mainBoxSub2}>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{item.userId} </Text>
+            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{item.nickname} </Text>
             <Like width={12} height={17} fill='#9E9E9E'/>
             <Text style={{color: '#9E9E9E'}}> {item.recommend}  </Text>
             <Chat width={12} height={17} fill='#9E9E9E'/>
