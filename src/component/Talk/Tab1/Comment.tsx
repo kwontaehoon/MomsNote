@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import axios from 'axios'
 
-import Like from '../../../../public/assets/svg/like.svg'
+import Like from '../../../../public/assets/svg/Like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
 import More from '../../../../public/assets/svg/More.svg'
 
@@ -36,7 +36,10 @@ const styles = StyleSheet.create({
 })
 const Comment = ({info, commentsId, setCommentsId, setInsert, modal5, setModal5}) => {
 
+    console.log('comment info: ', info);
+
     const [commentLike, setCommentLike] = useState();
+    console.log('commentLike: ', commentLike);
 
     useEffect(()=>{
         const likeInfo = async() => {
@@ -48,7 +51,7 @@ const Comment = ({info, commentsId, setCommentsId, setInsert, modal5, setModal5}
                         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1OTE0OTIsImV4cCI6MTY3NDE4MzQ5Mn0.d8GpqvEmnnrUZKumuL4OPzp7wSGXiTo47hGkCSM2HO0', 
                         'Content-Type': 'application/json'
                       },
-                    data:{ boardId : info[0].boardId }
+                    data: { boardId : info[0].boardId }
                 });
                 setCommentLike(response.data);
             }catch(error){
@@ -79,7 +82,7 @@ const Comment = ({info, commentsId, setCommentsId, setInsert, modal5, setModal5}
                         <Text style={{color: '#9E9E9E', fontSize: 13, fontWeight: '500'}} onPress={
                                 ()=>{
                                     setInsert((prevState) => ({...prevState,
-                                    boardId: x.boardId,
+                                    boardId: x.boardId,    
                                     ref: x.ref,
                                     level: 1
                                 }))

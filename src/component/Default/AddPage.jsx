@@ -120,7 +120,6 @@ const AddPage = ({navigation, route}) => {
     console.log('info: ', info);
 
     const submit = async() => {
-        AsyncStorage.setItem('userId', '5');
         
         const response = await axios.post(`http://momsnote.net/signup`, {
             info: info

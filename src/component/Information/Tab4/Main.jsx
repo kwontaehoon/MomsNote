@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, ImageBackground } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import axios from 'axios'
 
 import Q from '../../../../public/assets/svg/Q.svg'

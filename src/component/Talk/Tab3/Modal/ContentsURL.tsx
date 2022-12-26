@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '90%',
-        height: 560,
+        height: 540,
         backgroundColor: 'white',
         marginBottom: 35,
         borderRadius: 15,
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         paddingRight: 25,
     },
     header:{
-        height: '18%',
+        height: 80,
         justifyContent: 'center',
     },
     closeBox:{
@@ -38,18 +38,25 @@ const styles = StyleSheet.create({
         right: 10,
     },
     main:{
-        height: '64%',
+        height: 365,
     },
     mainBox:{
-        height: '16.6%',
-        justifyContent: 'center'
-    },
-    mainBox2:{
-        height: '16.6%',
         justifyContent: 'center',
+    },
+    titleBox:{
+        height: 60,
+        justifyContent: 'center',
+    },
+    contentBox:{
         borderWidth: 1,
         borderColor: '#EEEEEE',
-        paddingLeft: 20,
+        height: 50,
+        justifyContent: 'center',
+        padding: 15,
+        marginBottom: 10,
+    },
+    textInput:{
+
     },
     addBox:{
         position: 'absolute',
@@ -63,25 +70,122 @@ const styles = StyleSheet.create({
         borderColor: '#EEEEEE'
     },
     footer:{
-        height: '18%',
-        justifyContent: 'center',
-        alignItems: 'center',
-
-    },
-    footerBox:{
         width: '100%',
         backgroundColor: '#E0E0E0',
         height: 50,
         borderRadius: 4,
         alignItems: 'center',
-        justifyContent: 'center'
-    }
+        justifyContent: 'center',
+        marginTop: 10,
+    },
 })
 const Main = ({modalVisible3, setModalVisible3}) => {
+
+    const DATA = [
+        {
+          id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+          title: '전체'
+        },
+    ];
+
+    const [info, setInfo] = useState({
+        instagrem: '',
+        naver: '',
+        youtube: '',
+    });
+    console.log('url info: ', info);
+    const [urlAdd, setUrlAdd] = useState({
+        instagrem: false,
+        naver: false,
+        youtube: false
+    }); // 각 url 갯수
+
+
+    const renderItem = ({ item }) => (
+        <>
+            <View style={styles.mainBox}>
+                <View style={styles.titleBox}>
+                    { !urlAdd.instagrem ? 
+                        <TouchableOpacity style={styles.addBox} onPress={()=> setUrlAdd((prevState) => ({ ...prevState, instagrem: true}))}>
+                            <Text>추가+</Text>
+                        </TouchableOpacity>
+                        :
+                        <View style={styles.addBox}>
+                            <Text style={{color: '#BDBDBD'}}>추가+</Text>
+                        </View>
+                    }
+                    <Text style={{fontWeight: '600'}}>인스타그램</Text>
+                </View>
+                <View style={styles.contentBox}>
+                    <TextInput style={styles.textInput} placeholder='URL주소입력' placeholderTextColor={'#BDBDBD'}
+                        onChangeText={(e)=> setInfo((prevState) => ({ ...prevState, instagrem: e}))}>
+                    </TextInput>
+                </View>
+                <View style={[styles.contentBox, {display: urlAdd.instagrem ? 'flex' : 'none'}]}>
+                    <TextInput style={styles.textInput} placeholder='URL주소입력' placeholderTextColor={'#BDBDBD'}
+                        onChangeText={(e)=> setInfo((prevState) => ({ ...prevState, instagrem: e}))}>
+                    </TextInput>
+                </View>
+            </View>
+
+            <View style={styles.mainBox}>
+                <View style={styles.titleBox}>
+                    { !urlAdd.naver ? 
+                    <TouchableOpacity style={styles.addBox} onPress={()=> setUrlAdd((prevState) => ({ ...prevState, naver: true}))}>
+                        <Text>추가+</Text>
+                    </TouchableOpacity>
+                    :
+                    <View style={styles.addBox}>
+                        <Text style={{color: '#BDBDBD'}}>추가+</Text>
+                    </View>
+                    }
+                    <Text style={{fontWeight: '600'}}>네이버 블로그</Text>
+                </View>
+                <View style={styles.contentBox}>
+                    <TextInput style={styles.textInput} placeholder='URL주소입력' placeholderTextColor={'#BDBDBD'}
+                        onChangeText={(e)=> setInfo((prevState) => ({ ...prevState, naver: e}))}>
+                    </TextInput>
+                </View>
+                <View style={[styles.contentBox, {display: urlAdd.naver ? 'flex' : 'none'}]}>
+                    <TextInput style={styles.textInput} placeholder='URL주소입력' placeholderTextColor={'#BDBDBD'}
+                        onChangeText={(e)=> setInfo((prevState) => ({ ...prevState, naver: e}))}>
+                    </TextInput>
+                </View>
+            </View>
+
+            <View style={styles.mainBox}>
+                <View style={styles.titleBox}>
+                    { !urlAdd.youtube ? 
+                        <TouchableOpacity style={styles.addBox} onPress={()=> setUrlAdd((prevState) => ({ ...prevState, youtube: true}))}>
+                            <Text>추가+</Text>
+                        </TouchableOpacity>
+                        :
+                        <View style={styles.addBox}>
+                            <Text style={{color: '#BDBDBD'}}>추가+</Text>
+                        </View>
+                    }
+                    <Text style={{fontWeight: '600'}}>유튜브</Text>
+                </View>
+                <View style={styles.contentBox}>
+                    <TextInput style={styles.textInput} placeholder='URL주소입력' placeholderTextColor={'#BDBDBD'}
+                        onChangeText={(e)=> setInfo((prevState) => ({ ...prevState, youtube: e}))}>
+                    </TextInput>
+                </View>
+                <View style={[styles.contentBox, {display: urlAdd.youtube ? 'flex' : 'none'}]}>
+                    <TextInput style={styles.textInput} placeholder='URL주소입력' placeholderTextColor={'#BDBDBD'}
+                        onChangeText={(e)=> setInfo((prevState) => ({ ...prevState, youtube: e}))}>
+                    </TextInput>
+                </View>
+            </View>
+        </>
+      );
 
   return (
     <Modal animationType="fade" transparent={true} visible={modalVisible3}
         onRequestClose={() => {setModalVisible3(!modalVisible3)}}>
+
+
+
         <View style={styles.modalContainer}>
             <View style={styles.modalView}>
                 <View style={styles.modalContainer2}>
@@ -91,27 +195,20 @@ const Main = ({modalVisible3, setModalVisible3}) => {
                         <Text>본인의 해당 SNS 링크를 입력해주세요.</Text>
                     </View>
                     <View style={styles.main}>
-                        <View style={styles.mainBox}>
-                            <View style={styles.addBox}><Text>추가+</Text></View>
-                            <Text style={{fontWeight: '600'}}>인스타그램</Text>
-                        </View>
-                        <TextInput style={styles.mainBox2} placeholder='URL주소입력'></TextInput>
-                        <View style={styles.mainBox}>
-                            <View style={styles.addBox}><Text>추가+</Text></View>
-                            <Text style={{fontWeight: '600'}}>네이버 블로그</Text>
-                        </View>
-                        <TextInput style={styles.mainBox2} placeholder='URL주소입력'></TextInput>
-                        <View style={styles.mainBox}>
-                            <View style={styles.addBox}><Text>추가+</Text></View>
-                            <Text style={{fontWeight: '600'}}>유튜브</Text>
-                        </View>
-                        <TextInput style={styles.mainBox2} placeholder='URL주소입력'></TextInput>
+                        <FlatList data={DATA} renderItem={renderItem}
+                            keyExtractor={item => item.id} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+                        </FlatList>
                     </View>
+
+                    {info.instagrem == '' && info.naver == '' && info.youtube == '' ? 
                     <View style={styles.footer}>
-                        <View style={styles.footerBox}>
-                            <Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>등록 완료</Text>
-                        </View>
+                        <Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>등록 완료</Text>
+                    </View> :
+
+                    <View style={[styles.footer, {backgroundColor: '#FEA100'}]}>
+                        <Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>등록 완료</Text>
                     </View>
+                    }
                 </View>
             </View>
         </View>

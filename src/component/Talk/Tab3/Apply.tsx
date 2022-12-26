@@ -280,7 +280,7 @@ const Withdraw = ({navigation, route}) => {
         <Modal5 modal5={modal5} setModal5={setModal5} />
         <Modal6 navigation={navigation}modal6={modal6} setModal6={setModal6} />
 
-       <FlatList data={DATA} renderItem={renderItem}
+        <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id} showsHorizontalScrollIndicator={false}>
         </FlatList>
     </View>

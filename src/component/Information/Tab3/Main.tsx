@@ -5,7 +5,7 @@ import Icon2 from 'react-native-vector-icons/AntDesign'
 import Icon3 from 'react-native-vector-icons/Ionicons'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { WithLocalSvg } from "react-native-svg"
-import like from '../../../../public/assets/svg/like.svg'
+import like from '../../../../public/assets/svg/Like.svg'
 import axios from 'axios'
 
 const styles = StyleSheet.create({

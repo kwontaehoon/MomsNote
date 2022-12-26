@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 
 import Chat from '../../../../public/assets/svg/Chat.svg'
-import Like from '../../../../public/assets/svg/like.svg'
+import Like from '../../../../public/assets/svg/Like.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
 import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'

@@ -3,9 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 
-import Like from '../../../../public/assets/svg/like.svg'
+import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
   container:{
@@ -113,14 +112,6 @@ const Talk1 = ({navigation}) => {
       title: '질문게시판'
     }
   ];
-  
-  // AsyncStorage.getItem('user_info', JSON.stringify({
-  //   'nickName': '',
-  //   'email: ': '',
-  //   'babyName': '',
-  // }), () => {
-  //   console.log('');
-  // });
   
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');

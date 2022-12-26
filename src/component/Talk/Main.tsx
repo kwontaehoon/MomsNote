@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal, StatusBar } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import Talk1 from './Tab1/Main'
 import Talk2 from './Tab2/Main'
 import Talk3 from './Tab3/Main'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { getBoard } from '../../Redux/Slices/BoardSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import Pencil from '../../../public/assets/svg/Pencil.svg'
+import Pencil from '../../../public/assets/svg/pencil.svg'
 
 const styles = StyleSheet.create({
     container:{
@@ -87,7 +87,26 @@ const Main = ({navigation}) => {
         dispatch(getBoard());
     }, []);
 
-    ;
+    // useEffect(()=>{
+    //     AsyncStorage.setItem('nickname',JSON.stringify({'nickname': 'User1', 'phonenumber': '010-xxxx-xxxx'}), () => {
+    //         console.log('유저정보 저장 완료');
+    //     });
+
+    //     console.log('aaaaaaaaaaaaaaaaaaa', AsyncStorage.getItem('nickname', (error, result) =>{
+    //     const userInfo = JSON.parse(result);
+    //     console.log(userInfo.nickname);
+    // }));
+
+    // }, []);
+
+    // const test = async() => {
+    //     const a = await AsyncStorage.getItem('userId');
+    //     console.log('a: ', a);
+    // }
+    // test();
+    
+
+   
 
     
 

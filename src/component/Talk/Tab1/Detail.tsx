@@ -12,7 +12,7 @@ import Comment from './Comment'
 import axios from 'axios'
 
 import Chat from '../../../../public/assets/svg/Chat.svg'
-import Like from '../../../../public/assets/svg/like.svg'
+import Like from '../../../../public/assets/svg/Like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
 import More from '../../../../public/assets/svg/More.svg'
@@ -125,13 +125,13 @@ const styles = StyleSheet.create({
     },
     footer:{
         width: '100%',
-        paddingTop: 10,
-        height: 70,
+        height: 60,
         flexDirection: 'row',
         borderWidth: 1,
         borderColor: '#F5F5F5',
         justifyContent: 'center',
         backgroundColor: 'white',
+        alignItems: 'center'
     },
     regisButton:{
         position: 'absolute',
@@ -216,7 +216,7 @@ const Talk1Sub = ({navigation, route}) => {
                         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1OTE0OTIsImV4cCI6MTY3NDE4MzQ5Mn0.d8GpqvEmnnrUZKumuL4OPzp7wSGXiTo47hGkCSM2HO0', 
                         'Content-Type': 'application/json'
                       },
-                    data:{ boardId : 55 }
+                    data: { boardId : info[0].boardId }
                 });
                 setBoardLike(response.data);
             }catch(error){
@@ -253,7 +253,7 @@ const Talk1Sub = ({navigation, route}) => {
                     'Content-Type': 'application/json'
                   },
                   data: {
-                    boardId: 55,
+                    boardId: info[0].boardId,
                     type: 'plus'
                   }
                 });

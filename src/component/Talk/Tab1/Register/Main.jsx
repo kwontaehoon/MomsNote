@@ -5,7 +5,6 @@ import Icon2 from 'react-native-vector-icons/AntDesign'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios'
-import * as FileSystem from 'expo-file-system';
 
 const styles = StyleSheet.create({
     container:{

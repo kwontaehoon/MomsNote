@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
-import Icon from 'react-native-vector-icons/FontAwesome'
-import Icon2 from 'react-native-vector-icons/AntDesign'
 import Tab1 from './Tab1/Main'
 import Tab2 from './Tab2/Main'
 import Tab3 from './Tab3/Main'

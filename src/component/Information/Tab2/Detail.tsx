@@ -4,7 +4,7 @@ import { getStatusBarHeight } from "react-native-status-bar-height"
 import moment from 'moment'
 
 import Chat from '../../../../public/assets/svg/Chat.svg'
-import Like from '../../../../public/assets/svg/like.svg'
+import Like from '../../../../public/assets/svg/Like.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
 import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'

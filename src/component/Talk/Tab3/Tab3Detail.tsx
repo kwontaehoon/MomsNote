@@ -3,6 +3,10 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Modal, Statu
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import ContentsURL from './Modal/ContentsURL'
 import axios from 'axios'
+import moment from 'moment'
+
+import Like from '../../../../public/assets/svg/Like.svg'
+import Like2 from '../../../../public/assets/svg/Heart.svg'
 
 const styles = StyleSheet.create({
     container:{
@@ -33,8 +37,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5F5F5'
     },
     main3:{
-        height: 500,
-        borderWidth: 1,
+
     },
     main3Box:{
         height: 56,
@@ -47,12 +50,34 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     main3Box2:{
-        borderWidth: 1,
-        height: 100,
+        paddingTop: 20,
+        paddingBottom: 20,
     },
     main3Box3:{
-        borderWidth: 2,
-        height: 100,
+        paddingTop: 20,
+        paddingBottom: 20,
+    },
+    main3Box3Header:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+    },
+    main3Box3Main:{
+        flexDirection: 'row',
+    },
+    winBox:{
+        height: 50,
+        width: '50%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 15,
+        paddingRight: 15,
+    },
+    profileBox:{
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        borderWidth: 1,
     },
     footer:{
         height: '12%',
@@ -124,13 +149,6 @@ const Talk1Sub = ({navigation, route}) => {
         },
     ];
 
-    const DATA2 = [
-        {
-          id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-          title: '전체'
-        }
-    ];
-
     const [likeCount, setLikeCount] = useState();
     const [filter, setFilter] = useState(false);
     const [modalVisible, setModalVisible] = useState(false); // 체험단 신청정보 입력 -> asnyc storage
@@ -173,9 +191,9 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
                 <View style={styles.mainBox2}>
                     <View>
-                        <View><Text style={{margin: 2, fontSize: 15}}>신청기간: {info.applicationStartDate} ~ {info.applicationEndDate}</Text></View>
-                        <View><Text style={{margin: 2, fontSize: 15}}>발표일자: {info.openDate}</Text></View>
-                        <View><Text style={{margin: 2, fontSize: 15}}>등록기간: {info.registrationStartDate} ~ {info.registrationEndDate}</Text></View>
+                        <View><Text style={{margin: 2, fontSize: 15}}>신청기간: {moment(info.applicationStartDate).format('YY.MM.DD')} ~ {moment(info.applicationEndDate).format('YY.MM.DD')}</Text></View>
+                        <View><Text style={{margin: 2, fontSize: 15}}>발표일자: {moment(info.openDate).format('YY.MM.DD')}</Text></View>
+                        <View><Text style={{margin: 2, fontSize: 15}}>등록기간: {moment(info.registrationStartDate).format('YY.MM.DD')} ~ {moment(info.registrationEndDate).format('YY.MM.DD')}</Text></View>
                     </View>
                 </View>
             </View>
@@ -189,28 +207,39 @@ const Talk1Sub = ({navigation, route}) => {
                         <Text style={{fontWeight: 'bold', fontSize: 18, color: filter ? 'orange' : 'lightgrey'}}>선정 인원</Text>
                     </TouchableOpacity>
                 </View>
-                
-            <FlatList data={DATA2} renderItem={renderItem2}
-                keyExtractor={item => item.id}>
-            </FlatList>
+                <List />
             </View>
         </View>
       );
-
-    const renderItem2 = ({ item }:any) => (
-        <List item={item}/>
-    );
 
     const List = ({item}:any) => {
         switch(filter){
             case false : return (
                 <View style={styles.main3Box2}>
-                    <Text>체험정보</Text>
+                    <Text>체험정보 입니다.</Text>
                 </View>
             )
             case true : return (
                 <View style={styles.main3Box3}>
-                    <Text>선정인원</Text>
+                    <View style={styles.main3Box3Header}>
+                        <Text style={{fontSize: 20}}>축하합니다.</Text>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={{fontSize: 20, fontWeight: '500'}}>"맘스노트 신규 체험단" </Text>
+                            <Text style={{fontSize: 20}}>당첨자 리스트</Text>
+                        </View>
+                        <Text style={{color: '#757575', marginTop: 10}}>등록기간에 맞춰 컨텐츠 업로드 해주시기 바랍니다.</Text>
+                        <Text style={{color: '#757575'}}>체험 관련 상세 정보는 알림으로 발송됩니다.</Text>
+                    </View>
+                    <View style={styles.main3Box3Main}>
+                        <View style={styles.winBox}>
+                            <View style={styles.profileBox}></View>
+                            <Text> 닉네임 님</Text>
+                        </View>
+                        <View style={styles.winBox}>
+                            <View style={styles.profileBox}></View>
+                            <Text> 닉네임 님</Text>
+                        </View>
+                    </View>
                 </View>
             )
         }
@@ -260,18 +289,18 @@ const Talk1Sub = ({navigation, route}) => {
             <ContentsURL modalVisible3={modalVisible3} setModalVisible3={setModalVisible3}/>
 
         <FlatList data={DATA} renderItem={renderItem}
-          keyExtractor={item => item.id}>
+          keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
         </FlatList>
         {!filter ? <View style={styles.footer}>
-            <View style={[styles.footerBox, {width: '20%'}]}>
-                <Icon2 name='like2' size={22} style={{color: 'orange'}}/>
-                <Text style={{fontSize: 16, fontWeight: '500'}}> {likeCount}</Text>
-            </View>
-            <View style={[styles.footerBox, {width: '5%', borderWidth: 0}]}></View>
-            <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={()=>navigation.navigate('신청 정보')}><Text style={{fontSize: 20, fontWeight: '500'}}>신청하기</Text></TouchableOpacity>
+            {<View style={[styles.footerBox, {width: '20%'}]}>
+                <Like width={20} fill='#BDBDBD'/>
+                <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {likeCount}</Text>
+            </View>}
+            <View style={[styles.footerBox, {width: '3%', borderWidth: 0}]}></View>
+            <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={()=>navigation.navigate('신청 정보')}><Text style={{fontSize: 20, fontWeight: '500'}}>신청 정보 확인</Text></TouchableOpacity>
         </View> :
         <View style={styles.footer}>
-            <View style={styles.footerBox2}><Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>컨텐츠 등록</Text></View>
+            <TouchableOpacity style={styles.footerBox2} onPress={()=>setModalVisible3(!modalVisible3)}><Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>컨텐츠 등록</Text></TouchableOpacity>
         </View>}
     </View>
   )
