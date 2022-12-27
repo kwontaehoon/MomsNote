@@ -173,7 +173,9 @@ const Talk1Sub = ({navigation, route}) => {
     })
 
     const info = [route.params.item];
-    const [refresh, setRefresh] = useState();
+    console.log('info: ', info);
+    const [refresh, setRefresh] = useState(false);
+    console.log('refresh: ', refresh);
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const [comment, setComment] = useState([]); // 댓글 정보
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
@@ -234,27 +236,24 @@ const Talk1Sub = ({navigation, route}) => {
             }
         }
         likeInfo();
-        route.params.setRefresh('zz');
-    }, []);
+    }, [refresh]);
 
     const commentRegister = async() => { // 댓글 업데이트 필요
-        // try{
-        //     const response = await axios({ 
-        //           method: 'post',
-        //           url: 'https://momsnote.net/api/comments/write',
-        //           headers: { 
-        //             'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE3NzUwMzAsImV4cCI6MTY3NDM2NzAzMH0.sXaK1MqIIiSpnF-xGkY-TRIu-O-ndUa1QuG9HFkGrMM', 
-        //             'Content-Type': 'application/json'
-        //           },
-        //           data: insert
-        //         });
-        //         console.log('response: ', response.data);
-        //     }catch(error){
-        //       console.log('error: ', error);
-        //     }
-
-        setRefresh(null);
-        route.params.setRefresh('zz');
+        try{
+            const response = await axios({ 
+                  method: 'post',
+                  url: 'https://momsnote.net/api/comments/write',
+                  headers: { 
+                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE3NzUwMzAsImV4cCI6MTY3NDM2NzAzMH0.sXaK1MqIIiSpnF-xGkY-TRIu-O-ndUa1QuG9HFkGrMM', 
+                    'Content-Type': 'application/json'
+                  },
+                  data: insert
+                });
+                console.log('response: ', response.data);
+            }catch(error){
+              console.log('error: ', error);
+            }
+       setRefresh(insert.contents);
     }
 
     const likeplus = async() => {
@@ -281,7 +280,6 @@ const Talk1Sub = ({navigation, route}) => {
     }
 
     const ImageBox = () => {
-
         switch(info[0].savedName.split('|').length){
             case 1: return(
                 <TouchableOpacity style={styles.mainBox2ImageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
@@ -374,7 +372,7 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
                 <View style={styles.mainBox4}>
                     {comment.length !== 0 ?
-                    <Comment info={comment} commentsId={commentsId} setCommentsId={setCommentsId} setInsert={setInsert} modal={modal} setModal={setModal} recommendState={route.params.refresh} setRecommendState={route.params.setRefresh}/>:
+                    <Comment info={comment} refresh={refresh} setRefresh={setRefresh} setCommentsId={setCommentsId} setInsert={setInsert} modal={modal} setModal={setModal}/>:
                     <View style={{alignItems: 'center', justifyContent: 'center', height: 200}}>
                         <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
                         <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>

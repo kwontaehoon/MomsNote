@@ -35,12 +35,13 @@ const styles = StyleSheet.create({
 
     },
 })
-const Comment = ({info, commentsId, setCommentsId, setInsert, modal, setModal, recommendState, setRecommendState}) => {
+const Comment = ({info, refresh, setRefresh, setCommentsId, setInsert, modal, setModal}) => {
 
     const [commentLike, setCommentLike] = useState(); // 댓글 추천 여부
 
     useEffect(()=>{
         const likeInfo = async() => {
+            console.log('댓글 추천 여부 업데이트');
             try{
                 const response = await axios({
                     method: 'post',
@@ -57,7 +58,7 @@ const Comment = ({info, commentsId, setCommentsId, setInsert, modal, setModal, r
             }
         }
         likeInfo();
-    }, [recommendState]);
+    }, [refresh]);
 
     const commentplus = async(id) => {
 
@@ -79,7 +80,7 @@ const Comment = ({info, commentsId, setCommentsId, setInsert, modal, setModal, r
             }catch(error){
               console.log('error: ', error);
             }
-            setRecommendState(false);
+            setRefresh(id);
     }
 
     const List = () => {

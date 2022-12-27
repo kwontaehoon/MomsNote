@@ -5,7 +5,7 @@ import { getStatusBarHeight } from "react-native-status-bar-height"
 import Swiper from 'react-native-swiper'
 import { useIsFocused } from '@react-navigation/native'
 
-import Close from '../../../../../public/assets/svg/Close.svg'
+import Close from '../../../public/assets/svg/Close.svg'
 
 const styles = StyleSheet.create({
   wrapper: {},

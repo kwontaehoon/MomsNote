@@ -173,8 +173,6 @@ const Talk1 = ({navigation}) => {
     {label: '최신순', value: '1'}, {label: '인기순', value: '2'}, {label: '마감임박', value: '3'},
   ]);
 
-
-  const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
   const [info, setInfo] = useState([]); // 게시글 목록
   console.log('info: ', info);
@@ -286,7 +284,7 @@ const Talk1 = ({navigation}) => {
                         </View>
                         <View style={styles.modalBox}>
                             <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>게시글 불러오기</Text></TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModalVisible(!modalVisible), navigation.navigate('글쓰기', {refresh, setRefresh})}}>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModalVisible(!modalVisible), navigation.navigate('글쓰기', {setRefresh})}}>
                               <Text style={{color: 'black', fontSize: 16}}>새로 작성하기</Text>
                             </TouchableOpacity>
                         </View>

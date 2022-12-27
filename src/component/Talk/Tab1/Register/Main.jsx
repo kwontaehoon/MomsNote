@@ -182,8 +182,6 @@ const styles = StyleSheet.create({
 })
 const Register = ({navigation, route}) => {
 
-    console.log('register: ', route.params.refresh);
-
     const DATA = [{ id: '0', title: '전체' }];
 
     const DATA2 = [
@@ -211,7 +209,6 @@ const Register = ({navigation, route}) => {
     const [modalVisible, setModalVisible] = useState(false); // 완료시 모달창
     const [modalVisible2, setModalVisible2] = useState(false); // 취소시 모달창
     const [modal2Content, setModal2Content] = useState(''); // 완료시 모달 내용
-    const [refresh, setRefresh] = useState(false);
     const [filter, setFilter] = useState(Array.from({length: 5}, () => {return false})); // 카테고리
     
 
@@ -224,10 +221,8 @@ const Register = ({navigation, route}) => {
             video: [],
         }
     );
-    console.log('info: ', info);
+    console.log('info: ', info.imageFile);
     
-
-
     const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
         let arr = Array.from({length: 5}, () => {return false});
         arr[e] = !arr[e];
@@ -306,6 +301,7 @@ const Register = ({navigation, route}) => {
 
         if(info.imageFile !== undefined){
             info.imageFile.filter(x => {
+                console.log('x: ', x);
                 return data.append('files', {uri: x, name: 'board.jpg', type: 'image/jpeg'});
             })
         }
@@ -317,19 +313,20 @@ const Register = ({navigation, route}) => {
         }
         console.log('data: ', data);
        
-        try{
-          const response = await axios({
-                method: 'post',
-                url: 'https://momsnote.net/api/board/write',
-                headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
-                  },
-                data: data
-              });
-              console.log('response: ', response.data);
-          }catch(error){
-            console.log('error: ', error);
-          }
+        // try{
+        //   const response = await axios({
+        //         method: 'post',
+        //         url: 'https://momsnote.net/api/board/write',
+        //         headers: { 
+        //             'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
+        //           },
+        //         data: data
+        //       });
+        //       console.log('response: ', response.data);
+        //   }catch(error){
+        //     console.log('error: ', error);
+        //   }
+        route.params.setRefresh(info.contents);
     }
 
     const close = (id, name) => {
@@ -341,7 +338,7 @@ const Register = ({navigation, route}) => {
                 video: arr
             }))
         }else{
-            const arr2 = info.imageFile.filter((x, index) => {return x.image !== id});
+            const arr2 = info.imageFile.filter((x, index) => {return index !== id});
             console.log('arr2: ', arr2);
             setInfo((prevState) => ({
                 ...prevState,
@@ -427,9 +424,9 @@ const Register = ({navigation, route}) => {
         </TouchableOpacity>
     );
 
-    const renderItem3 = ({ item }) => (
+    const renderItem3 = ({ item, index }) => (
         <View style={styles.filter2}>
-            <TouchableOpacity style={styles.close} onPress={()=>close(item.image, 'image')}>
+            <TouchableOpacity style={styles.close} onPress={()=>close(index, 'image')}>
                 <Icon2 name='close' size={16} style={{color: 'white'}}/>
             </TouchableOpacity>
             <Image source={{ uri: item }} style={{ width: 80, height: 80, borderRadius: 5,}} />

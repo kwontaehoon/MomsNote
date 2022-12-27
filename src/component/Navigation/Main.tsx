@@ -38,7 +38,7 @@ import Info2Detail from '../Information/Tab2/Detail'
 import MyPage from '../MyPage/Main'
 import Alarm from '../Navigation/Alarm'
 import Compare from '../Talk/Tab2/Compare'
-import Gallery from '../Talk/Tab1/Modal/Gallery'
+import Gallery from '../Modal/Gallery'
 import Government from '../Information/Tab3/Detail'
 import GuideDetail from '../Information/Tab1/Detail'
 
