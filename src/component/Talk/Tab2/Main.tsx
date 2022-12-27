@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import Icon2 from 'react-native-vector-icons/AntDesign'
-import Icon3 from 'react-native-vector-icons/Ionicons'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
-import { WithLocalSvg } from "react-native-svg"
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
+import Pencil from '../../../../public/assets/svg/pencil.svg'
 
 const styles = StyleSheet.create({
   container:{
@@ -53,11 +50,60 @@ const styles = StyleSheet.create({
     right: 15,
     bottom: 20,
   },
+  footer:{
+    width: 60,
+    height: 60,
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    borderRadius: 999,
+    backgroundColor: '#FEA100',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: "#000",
+    elevation: 5,
+},
+  modalContainer:{
+      justifyContent: "center",
+      alignItems: "center",
+  },
+  modalView:{
+      width: '100%',
+      height: '100%',
+      margin: 20,
+      backgroundColor: "rgba(0,0,0,0.5)",
+      alignItems: "center",
+      justifyContent: 'center',
+      shadowColor: "#000",
+      elevation: 5,
+  },
+  modalContainer2:{
+      width: '80%',
+      height: 144,
+      backgroundColor: 'white',
+      marginBottom: 35,
+      borderRadius: 15
+  },
+  modalBox:{
+      height: '50%',
+      justifyContent: 'center',
+      alignItems: 'center',
+  },
+  modal:{
+      backgroundColor: '#FEA100',
+      width: '90%',
+      height: 44,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 3,
+      marginBottom: 3,
+  },
 })
 
 
 const Talk1 = ({navigation}) => {
 
+  const [modalVisible, setModalVisible] = useState(false); // 글쓰기 모달
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');
   const [items, setItems] = useState([
@@ -135,6 +181,30 @@ const Talk1 = ({navigation}) => {
           keyExtractor={item => item.id}>
         </FlatList>
       </View>
+      <TouchableOpacity style={styles.footer} onPress={()=> setModalVisible(!modalVisible)}>
+            <Pencil fill='white'/>
+      </TouchableOpacity>
+
+      <Modal animationType="fade" transparent={true} visible={modalVisible}
+            onRequestClose={() => {
+            setModalVisible(!modalVisible)}}>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                    <View style={[styles.modalContainer2, {height: 220}]}>
+                        <View style={styles.modalBox}>
+                            <Text style={{fontSize: 16, paddingTop: 10}}>작성 중이던 게시글이 존재합니다.</Text>
+                            <Text style={{fontSize: 16, paddingTop: 5}}>임시저장된 게시글을 불러오시겠습니까?</Text>
+                        </View>
+                        <View style={styles.modalBox}>
+                            <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>게시글 불러오기</Text></TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModalVisible(!modalVisible), navigation.navigate('출산리스트 공유 상세내용')}}>
+                              <Text style={{color: 'black', fontSize: 16}}>새로 작성하기</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        </Modal>
      </View>
   )
 }

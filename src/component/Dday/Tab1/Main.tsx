@@ -36,7 +36,7 @@ const Talk1 = ({navigation, week}: any) => {
 
   const [info, setInfo] = useState([]);
   console.log('오늘의편지 info: ', info);
-  console.log('week: ', week);
+  const [refresh, setRefresh] = useState(false); // 추천, 댓글 등록, 댓글 삭제 누르면 정보를 다시받아야해서 새로고침 state
 
     useEffect(()=>{
       const Government = async() => {
@@ -50,10 +50,10 @@ const Talk1 = ({navigation, week}: any) => {
       setInfo(response.data);
       }
       Government();
-    }, []);
+    }, [refresh]);
     
     const renderItem = ({ item }) => (
-           <TouchableOpacity style={styles.main} onPress={()=>navigation.navigate('오늘의편지 상세페이지', item)}>
+           <TouchableOpacity style={styles.main} onPress={()=>navigation.navigate('오늘의편지 상세페이지', {item, refresh, setRefresh})}>
               <View style={styles.mainBox}><Text>사진</Text></View>
               <View style={styles.mainBox2}><Text style={{fontSize: 15}}>{item.title}</Text></View>
           </TouchableOpacity>
@@ -62,7 +62,7 @@ const Talk1 = ({navigation, week}: any) => {
   return info.length !== 0 ? 
     <View style={styles.container}>
          <FlatList data={info} renderItem={renderItem}
-            keyExtractor={item => item.dDayId} showsVerticalScrollIndicator={false}>
+            keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
         </FlatList>
      </View> : <View style={{marginTop: 180, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
 }

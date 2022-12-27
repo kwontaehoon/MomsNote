@@ -1,17 +1,27 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
-import moment from 'moment'
+import Modal from '../../Modal/DotModal'
+import Modal2 from '../../Modal/Block'
+import Modal3 from '../../Modal/Declare'
+import Modal4 from '../../Modal/DelareConfirm'
+import Modal6 from '../../Modal/Declare2'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+import Comment from './Comment'
+import axios from 'axios'
 
 import Chat from '../../../../public/assets/svg/Chat.svg'
 import Like from '../../../../public/assets/svg/Like.svg'
+import Like2 from '../../../../public/assets/svg/Heart-1.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
 import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'
+import Close from '../../../../public/assets/svg/Close.svg'
 
 const styles = StyleSheet.create({
     container:{
-        height: '96%',
+        height: '97%',
         backgroundColor: 'white',
         marginTop: getStatusBarHeight(),
     },
@@ -26,32 +36,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
     },
-    header2:{
-        flexDirection: 'row',
-        height: 70,
-        alignItems: 'flex-end',
-        paddingLeft: 20,
-        borderTopWidth: 1,
-        borderColor: '#F5F5F5',
-    },
     profileBox:{
         width: 40,
         height: 40,
         borderRadius: 20,
         borderWidth: 1,
     },
-    infoBox:{
-        height: 42,
-        marginLeft: 7,
-    },
     main:{
-        height: 800,
+
     },
     mainBox:{
-        height: 90,
+        height: 70,
         padding: 20,
-        borderWidth: 1,
-        borderColor: '#EEEEEE'
     },
     mainBox2:{
         padding: 20,
@@ -87,40 +83,52 @@ const styles = StyleSheet.create({
         height: 50,
         flexDirection: 'row',
         borderColor: '#F5F5F5',
-        borderBottomWidth: 1,
+        borderWidth: 1,
         paddingLeft: 20,
+        alignItems: 'center'
     },
     likeBox:{
-        width: '60%',
         flexDirection: 'row',
         alignItems: 'center',
     },
     lookupBox:{
-        width: '40%',
-        alignItems: 'flex-end',
-        justifyContent: 'center',
-        paddingRight: 20,
+        position: 'absolute',
+        right: 20,
     },
     mainBox4:{
-        height: 200
+        padding: 10,
+    },
+    commentRes:{
+        width: '100%',
+        height: 50,
+        flexDirection: 'row',
+        paddingLeft: 15,
+        alignItems: 'center',
+        backgroundColor: '#F5F5F5',
+    },
+    closeBox:{
+        position: 'absolute',
+        right: 15,
     },
     footer:{
+        width: '100%',
         height: 60,
         flexDirection: 'row',
         borderWidth: 1,
-        alignItems: 'center',
-        padding: 20,
-        borderColor: '#F5F5F5'
+        borderColor: '#F5F5F5',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        alignItems: 'center'
     },
-    profileBox2:{
-        width: 40,
-        height: 40,
-        borderWidth: 1,
-        borderRadius: 20,
+    regisButton:{
+        position: 'absolute',
+        right: '8%',
+        top: 22,
+        zIndex: 999,
     },
     textInput:{
         borderRadius: 99,
-        width: 306,
+        width: '80%',
         height: 40,
         marginLeft: 12,
         paddingLeft: 12,
@@ -132,7 +140,7 @@ const styles = StyleSheet.create({
         bottom: 90,
         position: 'absolute',
         alignItems: 'center',
-        opacity: 0.7,
+        zIndex: 999,
     },
     alarm:{
         width: '90%',
@@ -145,10 +153,114 @@ const styles = StyleSheet.create({
 })
 const Talk1Sub = ({navigation, route}) => {
 
-    const info = [route.params];
+    const info = [route.params.item];
+    const [refresh, setRefresh] = useState(route.params.refresh);
     console.log('info: ', info);
+    const [comment, setComment] = useState([]); // 댓글 정보
+    console.log('comment: ', comment);
+    const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
+    const [insert, setInsert] = useState(
+        {
+            boardId: null,
+            contents: '',
+            ref: 0,
+            level: 0
+        }
+    ); // 댓글 입력
+    console.log('insert: ', insert);
+    const [boardLike, setBoardLike] = useState(); // 게시판 좋아요
+    console.log('boardLike: ', boardLike);
+    const [modal, setModal] = useState(false); // dot 모달 다른사람게시판 차단 및 신고
+    const [modal2, setModal2] = useState(false); // 차단하기
+    const [modal3, setModal3] = useState(false); // 게시물 신고 하기
+    const [modal4, setModal4] = useState(false); // 신고 확인
+    const [modal6, setModal6] = useState(false); // comment 신고 하기 
 
-    const [comment, setComment] = useState([]);
+    const animation = useRef(new Animated.Value(0)).current;
+
+    useEffect(()=>{
+        const commentInfo = async() => {
+            console.log('댓글 목록 여부 업데이트');
+            try{
+            const response = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/api/comments/list',
+                data : { 
+                    count: 5,
+                    page: 1,
+                    boardId: info[0].boardId
+                }
+            });
+                setComment(response.data);
+            }catch(error){
+                console.log('comment axios error');
+            }
+        }
+        commentInfo();
+
+      }, [refresh]);
+
+    useEffect(()=>{
+        console.log('게시물 추천 여부 업데이트');
+        const likeInfo = async() => {
+            try{
+                const response = await axios({
+                    method: 'post',
+                    url: 'https://momsnote.net/api/board/recommend/flag',
+                    headers: { 
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1OTE0OTIsImV4cCI6MTY3NDE4MzQ5Mn0.d8GpqvEmnnrUZKumuL4OPzp7wSGXiTo47hGkCSM2HO0', 
+                        'Content-Type': 'application/json'
+                      },
+                    data: { boardId : info[0].boardId }
+                });
+                setBoardLike(response.data);
+            }catch(error){
+                console.log('like axios error');
+            }
+        }
+        likeInfo();
+    }, [refresh]);
+
+    const commentRegister = async() => {
+        // try{
+        //     const response = await axios({ 
+        //           method: 'post',
+        //           url: 'https://momsnote.net/api/comments/write',
+        //           headers: { 
+        //             'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE3NzUwMzAsImV4cCI6MTY3NDM2NzAzMH0.sXaK1MqIIiSpnF-xGkY-TRIu-O-ndUa1QuG9HFkGrMM', 
+        //             'Content-Type': 'application/json'
+        //           },
+        //           data: insert
+        //         });
+        //         console.log('response: ', response.data);
+        //     }catch(error){
+        //       console.log('error: ', error);
+        //     }
+        setRefresh();
+        route.params.setRefresh();
+    }
+
+    const likeplus = async() => {
+        console.log('likeplus');
+        try{
+            const response = await axios({
+                  method: 'post',
+                  url: 'https://momsnote.net/api/board/recommend',
+                  headers: { 
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
+                    'Content-Type': 'application/json'
+                  },
+                  data: {
+                    boardId: info[0].boardId,
+                    type: 'plus'
+                  }
+                });
+                console.log('response: ', response.data);
+                setRefresh(false);
+            }catch(error){
+              console.log('error: ', error);
+            }
+    }
 
     const ImageBox = () => {
 
@@ -173,12 +285,12 @@ const Talk1Sub = ({navigation, route}) => {
                     <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image2}/>
                     </TouchableOpacity>
-                    <View style={styles.imageBox}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[1]}`}} style={styles.image2}/>
-                    </View>
-                    <View style={styles.imageBox}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
                         <Image source={{uri: `https://reactnative.dev/img/tiny_logo.png`}} style={styles.image2}/>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             )
             default: return(
@@ -186,53 +298,59 @@ const Talk1Sub = ({navigation, route}) => {
                     <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리')}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image2}/>
                     </TouchableOpacity>
-                    <View style={styles.imageBox}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[1]}`}} style={styles.image2}/>
-                    </View>
-                    <View style={styles.imageBox}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
                         <Image source={{uri: `https://reactnative.dev/img/tiny_logo.png`}} style={styles.image2}/>
                         <View style={{position: 'absolute', top: '40%', left: '40%'}}><Text style={{color: 'white', fontSize: 20, fontWeight: '600'}}>+{info[0].savedName.split('|').length-3}</Text></View>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             )
         }
+       
+        
+    }
+
+    const opacity_ani = () => {
+        Animated.timing(animation, {
+            toValue: 1,
+            useNativeDriver: true,
+            duration: 1500,
+        }).start(()=>{
+            Animated.timing(animation, {
+                toValue: 0,
+                useNativeDriver: true,
+                duration: 1500,
+            }).start();
+        });
     }
 
     const renderItem = ({ item }) => (
         <View>
-            <View style={styles.header}>
-                <Back onPress={()=>navigation.goBack()}/>
-                <View style={styles.headerBar}>
-                    <Share style={{marginRight: 12}}/>
-                    <More style={{marginRight: 5}}/>
-                </View>
-            </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
-                    <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 3}}>{item.title}</Text>
-                    <Text>일정: {moment(item.eventStartDate).format("YY.MM.DD")} ~ {moment(item.eventEndDate).format("YY.MM.DD")}</Text>
+                    <Text style={{fontSize: 20, fontWeight: '400'}}>{item.title}</Text>
                 </View>
                 <View style={styles.mainBox2}>
                     <Text>{item.contents}</Text>
                 </View>
-                {item.savedName === null ? '' : ImageBox()}
+                {item.savedName === null ? <View></View> : ImageBox()}
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
-                    <Like width={16} height={16} fill='#9E9E9E'/>
-                        <Text style={{color: '#9E9E9E', fontSize: 13, paddingRight: 10}}> 추천 13</Text>
+                        {boardLike == 0 ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000'/>}
+                        <Text style={{color: boardLike == 0 ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 {item.recommend}</Text>
                         <Chat width={16} height={16}/>
-                        <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 5</Text>
+                        <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 {item.commentsCount}</Text>
                     </View>
                     <View style={styles.lookupBox}>
-                        <Text style={{fontSize: 13, color: '#9E9E9E'}}>조회수 134</Text>
+                        <Text style={{fontSize: 13, color: '#9E9E9E'}}>조회수 {item.hits}</Text>
                     </View>
                 </View>
                 <View style={styles.mainBox4}>
                     {comment.length !== 0 ?
-                    <View style={styles.commentBox}>
-                        <Text></Text>
-                    </View> :
-                    <View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 60}}>
+                    <Comment info={comment} commentsId={commentsId} setCommentsId={setCommentsId} setInsert={setInsert} modal={modal} setModal={setModal} recommendState={refresh} setRecommendState={setRefresh}/>:
+                    <View style={{alignItems: 'center', justifyContent: 'center', height: 200}}>
                         <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
                         <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
                     </View>}
@@ -245,16 +363,44 @@ const Talk1Sub = ({navigation, route}) => {
   return (
     <View style={styles.container}>
 
-        {/* <Animated.View style={styles.alarmBox}>
+        <Animated.View style={[styles.alarmBox, {opacity: animation}]}>
             <View style={styles.alarm}><Text style={{color: 'white', fontSize: 13, fontWeight: '500'}}>차단하였습니다.</Text></View>
-        </Animated.View> */}
+        </Animated.View>
+
+        <Modal modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3} commentsId={commentsId} info={info}
+            modal6={modal6} setModal6={setModal6} setRecommendState={setRefresh}/>
+        <Modal2 modal2={modal2} setModal2={setModal2} userId={info[0].userId} ani={opacity_ani}/>
+        <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4} boardId={info[0].boardId}/>
+        <Modal4 modal4={modal4} setModal4={setModal4} />
+        <Modal6 modal4={modal4} setModal4={setModal4} modal6={modal6} setModal6={setModal6} commentsId={commentsId}/>
+        
+        <View style={styles.header}>
+                <Back onPress={()=>navigation.goBack()}/>
+                <View style={styles.headerBar}>
+                    <Share style={{marginRight: 12}}/>
+                    <More style={{marginRight: 5}} onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}/>
+                </View>
+        </View>
 
         <FlatList data={info} renderItem={renderItem}
-            keyExtractor={item => item.id}>
+            keyExtractor={item => String(item.boardId)}>
         </FlatList>
+        <View style={[styles.commentRes, {display: insert.level === 0 ? 'none' : 'flex'}]}>
+            <View style={styles.closeBox}><Close width={20} fill='#757575' onPress={()=>setInsert((prevState) => ({...prevState, level: 0}))}/></View>
+            <Text style={{fontSize: 15}}>@축복이</Text>
+            <Text style={{color: '#757575'}}> 님에게 답변 남기기</Text>
+        </View>
         <View style={styles.footer}>
-            <View style={styles.profileBox2}></View>
-            <TextInput style={styles.textInput} placeholder='댓글을 입력해주세요.' placeholderTextColor={'#BDBDBD'}></TextInput>
+            <View style={styles.profileBox}></View>
+            <View style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]}><Text style={{color: '#1E88E5', fontWeight: '600'}} onPress={()=>{commentRegister(),
+            setInsert((prevState) => ({...prevState, contents: ''})) }}>등록</Text></View>
+            <TextInput style={styles.textInput} value={insert.contents} placeholder='댓글을 입력해주세요.' onChangeText={
+                (e)=> insert.level !== 0 ? setInsert((prevState) => ({...prevState, contents: e})) :
+                setInsert((prevState) => ({...prevState,
+                    boardId: info[0].boardId,
+                    contents: e,
+                    ref: 0,
+                    level: 0}))} placeholderTextColor={'#BDBDBD'} onSubmitEditing={()=>{console.log('zz')}}></TextInput>
         </View>
     </View>
   )

@@ -52,7 +52,7 @@ const InquiryDetail = ({route}) => {
             <View style={styles.main2}>
                 <View style={styles.main2Box}>
                     <Text style={{fontWeight: '600', fontSize: 15}}>답변 내용</Text>
-                    <View style={[styles.statusBox, {right: 0}]}><Text style={{color: '#757575'}}>{item.answerDate}</Text></View>
+                    <View style={[styles.statusBox, {right: 0}]}><Text style={{color: '#757575'}}>{moment(item.answerDate).format('YYYY.MM.DD mm:ss')}</Text></View>
                 </View>
                 <Text style={{marginTop: 14, fontSize: 16}}>{item.answerContents}</Text>
             </View> : <View></View>}

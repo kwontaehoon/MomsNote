@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
     },
     main:{
         height: 800,
-        borderWidth: 1,
     },
     mainBox:{
         height: 70,

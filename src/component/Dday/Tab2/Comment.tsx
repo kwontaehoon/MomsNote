@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Keyboard } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -36,6 +36,8 @@ const styles = StyleSheet.create({
     },
 })
 const Comment = ({info, commentsId, setCommentsId, setInsert, modal, setModal, recommendState, setRecommendState}) => {
+
+    // console.log('comment commentsId: ', commentsId);
 
     const [commentLike, setCommentLike] = useState(); // 댓글 추천 여부
 
@@ -111,7 +113,7 @@ const Comment = ({info, commentsId, setCommentsId, setInsert, modal, setModal, r
                                         ref: x.ref,
                                         level: 1
                                     }))
-                                    setCommentsId(x.nickname);}
+                                }
                                 }>댓글달기
                             </Text> 
                         </View>

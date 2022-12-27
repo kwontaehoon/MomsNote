@@ -112,8 +112,8 @@ const Navigation = () => {
             <Stack.Screen name="검색" component={Search} options={{title: '', headerShown: false}}/>
             <Stack.Screen name="알림" component={Alarm}/>
             <Stack.Screen name="총 예산" component={Budget}/>
-            <Stack.Screen name="오늘의편지 상세페이지" component={DdayDetail} options={{title: ''}}/>
-            <Stack.Screen name="이시기에는 상세페이지" component={DdayDetail2} options={{title: ''}}/>
+            <Stack.Screen name="오늘의편지 상세페이지" component={DdayDetail} options={{title: '', headerShown: false}}/>
+            <Stack.Screen name="이시기에는 상세페이지" component={DdayDetail2} options={{title: '', headerShown: false}}/>
             <Stack.Screen name="신청한 체험단" component={Experience}/>
             <Stack.Screen name="행사정보 상세페이지" component={Info2Detail} options={{title: '', headerShown: false}}/>
             <Stack.Screen name="마이페이지" component={MyPage}

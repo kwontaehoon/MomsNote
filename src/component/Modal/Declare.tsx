@@ -125,7 +125,7 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4, boardId}) => {
 
     const [titleDisplay, setTitleDisplay] = useState(false); // 품목 리스트 display
     const [info, setInfo] = useState({
-        sort: 'board',
+        sort: '',
         boardId: boardId,
         reason: '신고 사유',
         reasonDetails: ''

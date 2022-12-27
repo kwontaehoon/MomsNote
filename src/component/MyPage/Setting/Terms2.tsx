@@ -29,7 +29,7 @@ const Terms1 = () => {
         method: 'post',
         url: 'https://momsnote.net/policy',
         data : {
-          sort: "이용약관",
+          sort: "개인정보처리방침",
       }
     });
     setInfo(response.data);

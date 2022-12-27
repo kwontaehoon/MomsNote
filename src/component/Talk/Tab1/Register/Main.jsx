@@ -180,7 +180,9 @@ const styles = StyleSheet.create({
     },
 
 })
-const Register = ({navigation}) => {
+const Register = ({navigation, route}) => {
+
+    console.log('register: ', route.params.refresh);
 
     const DATA = [{ id: '0', title: '전체' }];
 
@@ -209,7 +211,7 @@ const Register = ({navigation}) => {
     const [modalVisible, setModalVisible] = useState(false); // 완료시 모달창
     const [modalVisible2, setModalVisible2] = useState(false); // 취소시 모달창
     const [modal2Content, setModal2Content] = useState(''); // 완료시 모달 내용
-    
+    const [refresh, setRefresh] = useState(false);
     const [filter, setFilter] = useState(Array.from({length: 5}, () => {return false})); // 카테고리
     
 
