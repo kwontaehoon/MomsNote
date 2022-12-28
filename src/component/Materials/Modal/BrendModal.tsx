@@ -6,6 +6,8 @@ import Icon2 from 'react-native-vector-icons/Ionicons'
 import DropDownPicker from 'react-native-dropdown-picker'
 import axios from 'axios'
 
+import Arrow_Right from '../../../../public/assets/svg/Arrow-Right.svg'
+
 const styles = StyleSheet.create({
     modalContainer:{
         justifyContent: "center",
@@ -44,10 +46,18 @@ const styles = StyleSheet.create({
     main:{
         borderWidth: 1,
         height: '50%',
+        padding: 15,
     },
     mainBox:{
         height: 120,
         borderWidth: 1,
+        flexDirection: 'row',
+    },
+    mainBoxSub:{
+        borderWidth: 1,
+        width: '33.4%',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     footer:{
         borderWidth: 1,
@@ -93,46 +103,46 @@ const styles = StyleSheet.create({
 
 const Main = ({modalVisible2, setModalVisible2, navigation}) => {
 
-    const DATA = [
-        {
-          id: '0',
-          title: '산모용품 (0/13)',
-          color: '#FFADAD',
-          icon: 'material1'
-        },
-        {
-          id: '1',
-          title: '수유용품 (0/13)',
-          color: '#FFADAD'
-        },
-        {
-          id: '2',
-          title: '위생용품 (0/13)',
-          color: '#FFADAD'
-        },
-        {
-            id: '3',
-            title: '위생용품 (0/13)',
-            color: '#FFADAD'
-        },
-        {
-            id: '4',
-            title: '위생용품 (0/13)',
-            color: '#FFADAD'
-        },
-    ];
+    const [info, setInfo] = useState([]);
 
-    
-    const [info, setInfo] = useState([
-        {
-            needsBrandId: 1,
-            brandName: '',
-            productName: '',
-            price: '',
-        }
-    ])
+    useEffect(()=>{
+        const commentInfo = async() => {
+            try{
+            const response = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/api/needs/brand',
+                headers: { 
+                    'Content-Type': 'application/json'
+                  },
+                data : { 
+                  needsId: 11
+                }
+            });
+            setInfo(response.data);
+            }catch(error){
+                console.log('comment axios error:', error)
+            }
+        } 
+        commentInfo();
+      }, []);
+
     const renderItem = ({ item }) => (
         <View style={styles.mainBox}>
+            <View style={[styles.mainBoxSub, {width: '24%'}]}>
+                <Text>사진</Text>
+            </View>
+            <View style={[styles.mainBoxSub, {width: '40%', alignItems: 'flex-start'}]}>
+                <Text style={{fontWeight: '500', marginBottom: 3}}>[{item.brandName}]</Text>
+                <Text style={{marginBottom: 3}} ellipsizeMode='tail' numberOfLines={1}>{item.productName}</Text>
+                <Text style={{color: '#B5B5B5'}}>구매 344건</Text>
+            </View>
+            <View style={[styles.mainBoxSub, {width: '36%', alignItems: 'flex-end'}]}>
+                <Text>{item.price}원</Text>
+                <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                    <Text style={{fontWeight: '600', fontSize: 15, color: '#FEA100'}}>최저가 보기</Text>
+                    <Arrow_Right fill='red'  height={18}/>
+                </View>
+            </View>
            
         </View>
     );
@@ -150,7 +160,7 @@ const Main = ({modalVisible2, setModalVisible2, navigation}) => {
                     <Text style={{color: '#212121'}}>수유브라 Best</Text>
                 </View>
                 <View style={styles.main}>
-                    <FlatList data={DATA} renderItem={renderItem}
+                    <FlatList data={info} renderItem={renderItem}
                         keyExtractor={item => item.id}>
                     </FlatList>
                 </View>

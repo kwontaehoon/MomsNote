@@ -96,19 +96,19 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8}) => {
     const DATA = [
         {
             id: '0',
-            title: '산모 용품',
+            title: '산모용품',
         },
         {
             id: '1',
-            title: '수유 용품',
+            title: '수유용품',
         },
         {
             id: '2',
-            title: '위생 용품',
+            title: '위생용품',
         },
         {
             id: '3',
-            title: '목욕 용품',
+            title: '목욕용품',
         },
         {
             id: '4',
@@ -116,32 +116,48 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8}) => {
         },
         {
             id: '5',
-            title: '아기 의류',
+            title: '아기의류',
         },
         {
             id: '6',
-            title: '발육 용품',
+            title: '발육용품',
         },
         {
             id: '7',
-            title: '가전 용품',
+            title: '가전용품',
+        },
+        {
+            id: '8',
+            title: '놀이용품',
         }
     ];
 
     const [titleDisplay, setTitleDisplay] = useState(false); // 품목 리스트 display
     const [info, setInfo] = useState({
-        title: '카테고리 선택(필수)',
-        content: ''
-    })
-
-    const submit = async() => {
-        await axios.post(`http://192.168.1.140:4000/post/test`, {
-            info: info
-        })
+        category: '카테고리 선택(필수)',
+        grade: '추가',
+        needsName: ''
+    });
+    
+    const add = async() => {
+        try{
+            const response = await axios({
+                  method: 'post',
+                  url: 'https://momsnote.net/api/needs/add/needs',
+                  headers: { 
+                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+                    'Content-Type': 'application/json'
+                  },
+                  data: info
+                });
+                console.log('response: ', response.data);
+            }catch(error){
+              console.log('error: ', error);
+            }
     }
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.listBox} onPress={()=>{setInfo((prevState) => ({ ...prevState, title: item.title})), setTitleDisplay(false)}}>
+        <TouchableOpacity style={styles.listBox} onPress={()=>{setInfo((prevState) => ({ ...prevState, category: item.title})), setTitleDisplay(false)}}>
             <Text>{item.title}</Text>
         </TouchableOpacity>
     );
@@ -171,14 +187,14 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8}) => {
                         <View style={styles.main}>
                             <TouchableOpacity style={styles.mainBox} onPress={()=>setTitleDisplay(!titleDisplay)}>
                                 <View style={styles.arrowBox}>{arrowIcon()}</View>
-                                <Text>{info.title}</Text>
+                                <Text>{info.category}</Text>
                             </TouchableOpacity>
                             <View style={{height: 10}}></View>
                             <TextInput style={[styles.mainBox, {paddingLeft: 15, position: 'relative', zIndex: -999}]} placeholder='품목 명' placeholderTextColor={'#9E9E9E'}
-                                onChangeText={(e) => setInfo((prevState) => ({ ...prevState, content: e}))}></TextInput>
+                                onChangeText={(e) => setInfo((prevState) => ({ ...prevState, needsName: e}))}></TextInput>
                         </View>
-                        {info.title !== '카테고리 선택(필수)' && info.content.length !== 0 ?
-                            <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>setModalVisible8(!modalVisible8)}>
+                        {info.category !== '카테고리 선택(필수)' && info.needsName.length !== 0 ?
+                            <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>{add(), setModalVisible8(!modalVisible8)}}>
                                 <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>추가하기</Text>
                             </TouchableOpacity> : 
                             

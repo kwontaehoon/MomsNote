@@ -14,6 +14,8 @@ import DotModal from './Modal/DotModal'
 import AddModal from './Modal/AddModal'
 import DeleteModal from './Modal/DeleteModal'
 import Filter from './Modal/Filter'
+import FirstModal from '../Modal/First'
+import SecondModal from '../Modal/Second'
 import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
 import axios from 'axios'
@@ -198,19 +200,19 @@ const Navigation = ({navigation, route}) => {
   console.log('출산 준비물 리스트: ', info);
   const [list, setList] = useState(Array.from({ length: 9 }, () => { return true}));
   const [isChecked, setChecked] = useState(Array.from({length: 31}, ()=>{ return false })); // check box
-  console.log('isckecked length: ', isChecked);
   const [captureURL, setCaptureURL] = useState(); // 캡쳐 uri
 
   const [modalVisible, setModalVisible] = useState(false); // check box 선택시 모달
   const [modalVisible2, setModalVisible2] = useState(false); // 브랜드 추가 모달
-  const [modalVisible3, setModalVisible3] = useState(false); // 브랜드 적용됐는지 확인 모달
   const [modalVisible4, setModalVisible4] = useState(false); // 구매가이드 모달
   const [modalVisible5, setModalVisible5] = useState(false); // 초기화 모달
   const [modalVisible6, setModalVisible6] = useState(false); // 추천 리스트 변경 확인 모달
   const [modalVisible7, setModalVisible7] = useState(false); // 더보기
   const [modalVisible8, setModalVisible8] = useState(false); // 품목 추가
   const [modalVisible9, setModalVisible9] = useState(false); // 품목 삭제  
-  const [modalVisible10, setModalVisible10] = useState(false); // 정렬 
+  const [modalVisible10, setModalVisible10] = useState(false); // 정렬
+  const [modal, setModal] = useState(false); // fisrt modal
+  const [modal2, setModal2] = useState(false); //second modal
 
   useEffect(()=>{
     const commentInfo = async() => {
@@ -229,11 +231,11 @@ const Navigation = ({navigation, route}) => {
           setInfo(response.data);
           setChecked(Array.from({ length: info.length }, () => { return false}))
         }catch(error){
-            console.log('comment axios error:', error)
+            console.log('출산준비물 리스트 error:', error)
         }
     } 
     commentInfo();
-  }, []);
+  }, [modalVisible8]);
 
   useEffect(()=>{
       save();
@@ -388,14 +390,16 @@ const save = async() => {
 
         <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
         <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
-        <NoticeModal modalVisible3={modalVisible3} setModalVisible={setModalVisible3}/>
         <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4}/>
         <ResetModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
         <ResetModal2 modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
-        <DotModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible7={modalVisible7} setModalVisible7={setModalVisible7}/>
+        <DotModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible7={modalVisible7} setModalVisible7={setModalVisible7} modalVisible8={modalVisible8} setModalVisible8={setModalVisible8}
+        modalVisible9={modalVisible9} setModalVisible9={setModalVisible9}/>
         <AddModal modalVisible8={modalVisible8} setModalVisible8={setModalVisible8}/>
-        <DeleteModal modalVisible9={modalVisible9} setModalVisible9={setModalVisible9}/>
+        <DeleteModal info={info} modalVisible9={modalVisible9} setModalVisible9={setModalVisible9} modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2}/>
         <Filter modalVisible10={modalVisible10} setModalVisible10={setModalVisible10} />
+        <FirstModal info={{content: '출산준비물 리스트가 변경되었습니다.', buttonCount: 1}} modal={modal} setModal={setModal}/>
+        <SecondModal info={{content: ['삭제 혹은 복구된 품목이 없습니다.', '그래도 적용하시겠습니까?']}} modal={modal2} setModal={setModal2} />
         
         
         <FlatList data={DATA3} renderItem={renderItem}

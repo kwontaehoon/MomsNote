@@ -303,13 +303,10 @@ const Talk1Sub = ({navigation, route}) => {
         });
         
         const infoFiltering = [...arr, ...a];
-        console.log('infoFiltering: ', infoFiltering);
-        console.log(info[0].savedName.split('|'));
-        
         switch(true){
     
             case info[0].savedName.split('|').length == 1: return(
-                <TouchableOpacity style={styles.mainBox2ImageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
+                <TouchableOpacity style={styles.mainBox2ImageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)}>
                     <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${infoFiltering[0]}`}} style={styles.image}/>
                 </TouchableOpacity>
             )
@@ -318,13 +315,13 @@ const Talk1Sub = ({navigation, route}) => {
                     {infoFiltering.map(x=>{
                         if(x.charAt(x.length-1) === '4'){
                             return (
-                                <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
-                                        <View style={styles.videoImage}><Icon name='play' size={17} style={{color: 'white'}}/></View>
+                                <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)}>
+                                    <View style={styles.videoImage}><Icon name='play' size={17} style={{color: 'white'}}/></View>
                                     <Video source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image2} resizeMode='cover'/>
                                 </TouchableOpacity>
                             )
                         }else return (
-                            <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
+                            <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)}>
                                     <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image2}/>
                             </TouchableOpacity>
                         )

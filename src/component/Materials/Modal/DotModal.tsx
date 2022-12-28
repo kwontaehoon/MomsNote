@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     }
 })
 
-const CheckBoxModal = ({modalVisible5, setModalVisible5, modalVisible7, setModalVisible7}) => {
+const CheckBoxModal = ({modalVisible5, setModalVisible5, modalVisible7, setModalVisible7, modalVisible8, setModalVisible8, modalVisible9, setModalVisible9}) => {
 
     const [isChecked, setChecked] = useState(false); // check box 선택시 체크 팝업에서의 check box
 
@@ -57,8 +57,8 @@ const CheckBoxModal = ({modalVisible5, setModalVisible5, modalVisible7, setModal
                 <View style={styles.modalView}>
                     <View style={[styles.modalContainer2, {height: 250}]}>
                        <View style={styles.main}>
-                            <TouchableOpacity style={styles.mainBox}><Text style={{color: '#1E88E5', fontWeight: '600', fontSize: 20}}>품목 추가</Text></TouchableOpacity>
-                            <TouchableOpacity style={styles.mainBox}><Text style={{color: '#1E88E5', fontWeight: '600', fontSize: 20}}>품목 삭제</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.mainBox} onPress={()=>{setModalVisible7(!modalVisible7), setModalVisible8(!modalVisible8)}}><Text style={{color: '#1E88E5', fontWeight: '600', fontSize: 20}}>품목 추가</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.mainBox} onPress={()=>{setModalVisible9(!modalVisible9), setModalVisible7(!modalVisible7)}}><Text style={{color: '#1E88E5', fontWeight: '600', fontSize: 20}}>품목 삭제</Text></TouchableOpacity>
                             <TouchableOpacity style={styles.mainBox} onPress={()=>{setModalVisible7(!modalVisible7), setModalVisible5(!modalVisible5)}}>
                                 <Text style={{color: '#1E88E5', fontWeight: '600', fontSize: 20}}>초기화</Text></TouchableOpacity>
                        </View>

@@ -1,10 +1,12 @@
 import React from 'react'
-import { Text, View, StyleSheet, Image, StatusBar } from 'react-native'
+import { Text, View, StyleSheet, Image, StatusBar, Button } from 'react-native'
 import Slick from 'react-native-slick'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Swiper from 'react-native-swiper'
 import { useIsFocused } from '@react-navigation/native'
+import { Video, AVPlaybackStatus } from 'expo-av';
 
+import Icon from 'react-native-vector-icons/FontAwesome'
 import Close from '../../../public/assets/svg/Close.svg'
 
 const styles = StyleSheet.create({
@@ -15,7 +17,7 @@ const styles = StyleSheet.create({
     marginTop: getStatusBarHeight(),
   },
   header:{
-    height: '15%',
+    height: '20%',
   },
   closeBox:{
     position: 'absolute',
@@ -23,7 +25,7 @@ const styles = StyleSheet.create({
     top: 25,
   },
   main:{
-    height: '80%',
+    height: '75%',
   },
   mainBox: {
     height: 500,
@@ -34,6 +36,17 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  videoImage:{
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    borderWidth: 3,
+    borderColor: 'white',
+    zIndex: 999
+},
   text: {
     color: '#fff',
     fontSize: 30,
@@ -68,8 +81,11 @@ const Gallery = ({navigation, route}) => {
     return isFocused ? <StatusBar backgroundColor='black' barStyle={'white'} /> : null;
   }
 
+  const video = React.useRef(null);
+  const [status, setStatus] = React.useState({});
+
   console.log('이미지 길이: ', route.params);
-  const saveName = route.params.split('|');
+  const saveName = route.params;
   console.log('saveName: ', saveName);
 
   return(
@@ -78,17 +94,35 @@ const Gallery = ({navigation, route}) => {
       <FocusAwareStatusBar />
 
         <View style={styles.header}>
-          <View style={styles.closeBox}><Close onPress={()=>navigation.goBack()}/></View>
+          <View style={styles.closeBox}><Close fill={'white'} onPress={()=>navigation.goBack()}/></View>
         </View>
         <View style={styles.main}>
 
       <Swiper style={styles.wrapper} showsButtons={false} dot={<View style={styles.dot}/>} activeDot={<View style={styles.dotActive}/>}>
         {saveName.map((x) => {
+          console.log('x: ', x);
+          if(x.charAt(x.length-1) !== '4'){
           return(
             <View style={styles.mainBox}>
               <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image} key={x}/>
             </View>
-          )}
+          )}else{
+            return(
+              <View style={styles.mainBox}>
+                <View style={styles.videoImage}><Icon name='play' size={30} style={{color: 'white'}}/></View>
+                <Video source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image} resizeMode='cover'
+                  ref={video}
+                  onPlaybackStatusUpdate={status => setStatus(() => status)}/>
+                <Button
+          title={status.isPlaying ? 'Pause' : 'Play'}
+          onPress={() =>
+            status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
+          }
+        />
+              </View>
+            )
+          }
+        }
       )}
         
       </Swiper>
