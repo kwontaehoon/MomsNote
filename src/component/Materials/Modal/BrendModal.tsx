@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
 
 const Main = ({modalVisible2, setModalVisible2, navigation}) => {
 
-    console.log('modal: ', modalVisible2);
     const DATA = [
         {
           id: '0',

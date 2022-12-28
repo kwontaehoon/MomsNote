@@ -133,8 +133,6 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8}) => {
         title: '카테고리 선택(필수)',
         content: ''
     })
-    console.log('title: ', info.title);
-    console.log('content: ', info.content.length);
 
     const submit = async() => {
         await axios.post(`http://192.168.1.140:4000/post/test`, {

@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
 const CheckBoxModal = ({modalVisible10, setModalVisible10}) => {
 
     const [filter, setFilter] = useState(false); // 체크, 폰트 색상
-    console.log('filter: ', filter);
 
   return (
     <Modal animationType="slide" transparent={true} visible={modalVisible10}

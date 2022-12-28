@@ -221,7 +221,7 @@ const Register = ({navigation, route}) => {
             video: [],
         }
     );
-    console.log('info: ', info.imageFile);
+    console.log('info: ', info);
     
     const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
         let arr = Array.from({length: 5}, () => {return false});
@@ -302,30 +302,30 @@ const Register = ({navigation, route}) => {
         if(info.imageFile !== undefined){
             info.imageFile.filter(x => {
                 console.log('x: ', x);
-                return data.append('files', {uri: x, name: 'board.jpg', type: 'image/jpeg'});
+                data.append('files', {uri: x, name: 'board.jpg', type: 'image/jpeg'});
             })
         }
 
         if(info.video !== undefined){
             info.video.filter(x => {
-                return data.append('files', {uri: x, name: 'board.mp4', type: 'video/mp4'});
+                data.append('files', {uri: x, name: 'board.mp4', type: 'video/mp4'});
             })
         }
         console.log('data: ', data);
        
-        // try{
-        //   const response = await axios({
-        //         method: 'post',
-        //         url: 'https://momsnote.net/api/board/write',
-        //         headers: { 
-        //             'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
-        //           },
-        //         data: data
-        //       });
-        //       console.log('response: ', response.data);
-        //   }catch(error){
-        //     console.log('error: ', error);
-        //   }
+        try{
+          const response = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/api/board/write',
+                headers: { 
+                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
+                  },
+                data: data
+              });
+              console.log('response: ', response.data);
+          }catch(error){
+            console.log('error: ', error);
+          }
         route.params.setRefresh(info.contents);
     }
 

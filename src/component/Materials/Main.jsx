@@ -16,6 +16,7 @@ import DeleteModal from './Modal/DeleteModal'
 import Filter from './Modal/Filter'
 import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
+import axios from 'axios'
 
 import More from '../../../public/assets/svg/More.svg'
 import Sort from '../../../public/assets/svg/Sort.svg'
@@ -77,8 +78,6 @@ const styles = StyleSheet.create({
   },
   main3:{
     alignItems: 'center',
-    paddingTop: 20,
-    paddingBottom: 20,
   },
   main3Box:{
     backgroundColor: 'white',
@@ -107,7 +106,7 @@ const styles = StyleSheet.create({
   checkbox: {
     width: 24,
     height: 24,
-    borderRadius: 3,
+    borderRadius: 12,
     marginRight: 5,
     borderColor: '#E0E0E0',
   },
@@ -136,85 +135,54 @@ const styles = StyleSheet.create({
 
 const Navigation = ({navigation, route}) => {
 
-  console.log('Material Route: ', route.params);
-
   const DATA = [
     {
-      id: '0',
-      title: '산모용품 (0/13)',
+      id: 0,
+      title: '산모용품',
       icon: require('../../../public/assets/image/1.png'),
     },
     {
-      id: '1',
-      title: '수유용품 (0/13)',
+      id: 1,
+      title: '수유용품',
       icon: require('../../../public/assets/image/2.png'),
     },
     {
-      id: '2',
-      title: '위생용품 (0/13)',
+      id: 2,
+      title: '위생용품',
       icon: require('../../../public/assets/image/3.png'),
     },
     {
-      id: '3',
-      title: '목욕용품 (0/13)',
+      id: 3,
+      title: '목욕용품',
       icon: require('../../../public/assets/image/4.png'),
     },
     {
-      id: '4',
-      title: '침구류 (0/13)',
+      id: 4,
+      title: '침구류',
       icon: require('../../../public/assets/image/5.png'),
     },
     {
-      id: '5',
-      title: '아기의류 (0/13)',
-      color: '#FFADAD',
+      id: 5,
+      title: '아기의류',
       icon: require('../../../public/assets/image/6.png'),
     },
     {
-      id: '6',
-      title: '발육용품 (0/13)',
+      id: 6,
+      title: '발육용품',
       icon: require('../../../public/assets/image/7.png'),
     },
     {
-      id: '7',
-      title: '가전용품 (0/13)',
-      color: '#FFADAD',
+      id: 7,
+      title: '가전용품',
       icon: require('../../../public/assets/image/8.png'),
     },
     {
-      id: '8',
-      title: '놀이용품 (0/13)',
+      id: 8,
+      title: '놀이용품',
       icon: require('../../../public/assets/image/9.png'),
     },
   ];
 
-  const DATA2 = [
-    {
-      id: '0',
-      title: '산모 패드',
-      color: '올인원 샴푸 바디워시',
-      option: '필수',
-      
-    },
-    {
-      id: '1',
-      title: '수유 브라',
-      color: '#FFADAD',
-      option: '권장',
-    },
-    {
-      id: '2',
-      title: '손목 보호대',
-      color: '#FFADAD',
-      option: '선택',
-    },
-    {
-      id: '3',
-      title: '양말',
-      color: '#FFADAD',
-      option: '선택',
-    }
-  ];
 
   const DATA3 = [
     {
@@ -226,8 +194,11 @@ const Navigation = ({navigation, route}) => {
   ]
 
   const ref = useRef();
+  const [info, setInfo] = useState([]); // 줄산준비물 리스트
+  console.log('출산 준비물 리스트: ', info);
   const [list, setList] = useState(Array.from({ length: 9 }, () => { return true}));
-  const [isChecked, setChecked] = useState(Array.from({length: DATA2.length}, ()=>{ return false })); // check box
+  const [isChecked, setChecked] = useState(Array.from({length: 31}, ()=>{ return false })); // check box
+  console.log('isckecked length: ', isChecked);
   const [captureURL, setCaptureURL] = useState(); // 캡쳐 uri
 
   const [modalVisible, setModalVisible] = useState(false); // check box 선택시 모달
@@ -238,8 +209,31 @@ const Navigation = ({navigation, route}) => {
   const [modalVisible6, setModalVisible6] = useState(false); // 추천 리스트 변경 확인 모달
   const [modalVisible7, setModalVisible7] = useState(false); // 더보기
   const [modalVisible8, setModalVisible8] = useState(false); // 품목 추가
-  const [modalVisible9, setModalVisible9] = useState(false); // 품목 삭제
-  const [modalVisible10, setModalVisible10] = useState(false); // 정렬
+  const [modalVisible9, setModalVisible9] = useState(false); // 품목 삭제  
+  const [modalVisible10, setModalVisible10] = useState(false); // 정렬 
+
+  useEffect(()=>{
+    const commentInfo = async() => {
+        try{
+        const response = await axios({
+            method: 'post',
+            url: 'https://momsnote.net/api/needs/list',
+            headers: { 
+              'Content-Type': 'application/json'
+            },
+            data : { 
+              userId: 1,
+              order: 'need'
+            }
+        });
+          setInfo(response.data);
+          setChecked(Array.from({ length: info.length }, () => { return false}))
+        }catch(error){
+            console.log('comment axios error:', error)
+        }
+    } 
+    commentInfo();
+  }, []);
 
   useEffect(()=>{
       save();
@@ -300,30 +294,55 @@ const save = async() => {
   const optionBox = (e) => {
     switch(e){
       case '필수': return ( <View style={[styles.filterSub, {backgroundColor: '#E57373'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>필수</Text></View> )
-      case '권장': return ( <View style={[styles.filterSub, {backgroundColor: '#5291EF'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>권장</Text></View> )
-      case '선택': return ( <View style={[styles.filterSub, {backgroundColor: '#83D46F'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>선택</Text></View> )
+      case '권장': return ( <View style={[styles.filterSub, {backgroundColor: '#84C2F3'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>권장</Text></View> )
+      case '선택': return ( <View style={[styles.filterSub, {borderWidth: 1}]}><Text style={{fontSize: 12, fontWeight: 'bold'}}>선택</Text></View> )
+      case '추가': return ( <View style={[styles.filterSub, {backgroundColor: '#F5A256'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>추가</Text></View> )
     }
   }
 
   const List = (e) => {
-    let number = list.findIndex((x, index, arr)=>{ return x; })
-    console.log('number: ', number);
-
     return (
-      <View style={styles.main3Box}>
+      <View style={styles.main3Box} key={e.id}>
         <View style={styles.main3BoxHeader}>
           <View style={[styles.filterBox, {width: 50}]}><Text>구매</Text></View>
           <View style={[styles.filterBox, {width: 157}]}><Text>품목</Text></View>
           <View style={[styles.filterBox, {width: '41%'}]}><Text>브랜드</Text></View>
         </View>
-        <FlatList data={DATA2} renderItem={renderItem2}
-            keyExtractor={item => item.id} showsHorizontalScrollIndicator={false}>
-        </FlatList>
+        <List2 title={e.title}/>
       </View>
     )
   }
 
-  const renderItem3 = ({ item }) => (
+  const List2 = (title) => {
+    let arr = [];
+    info.filter((x, index)=>{
+      if(title.title == x.category){
+      arr.push(
+        <View style={[styles.main3BoxHeader]} key={index}>
+          <View style={[styles.filterBox, {width: 50}]}>
+          <Checkbox
+              style={styles.checkbox}
+              // value={isChecked[item.id]}
+              // onValueChange={()=>change(item.id)}
+              // color={isChecked[item.id] ? '#FEB401' : undefined}
+              />
+          </View>
+          <View style={[styles.filterBox, {width: 157, flexDirection: 'row', justifyContent: 'flex-start'}]}>
+            {optionBox(x.grade)}
+            <Text>{x.needsName}</Text>
+          </View>
+          <View style={[styles.filterBox, {width: '41%'}]}>
+            <View style={{width: 24, height: 24, borderRadius: 12,backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
+              <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(!modalVisible2)}/>
+            </View>
+          </View>
+      </View>
+      )}
+    })
+    return arr;
+  }
+
+  const renderItem = ({ item }) => (
     <View>
       <View style={styles.header}>
         <Text style={{fontSize: 18, fontWeight: '600'}}>출산준비물</Text>
@@ -342,14 +361,14 @@ const save = async() => {
           <Text style={{fontSize: 16, fontWeight: '600'}}>전체 (5/37)</Text>
         </View>
         <ViewShot style={styles.main} ref={ref} options={{ fileName: "MomsNote", format: "png", quality: 1 }}>
-          <FlatList data={DATA} renderItem={renderItem}
-              keyExtractor={item => item.id}>
+          <FlatList data={DATA} renderItem={renderItem3}
+              keyExtractor={item => String(item.id)}>
           </FlatList>
       </ViewShot>
     </View>
   );
 
-  const renderItem = ({ item }) => (
+  const renderItem3 = ({ item }) => (
     <View style={styles.mainBox}>
         <View style={styles.mainBox2}>
           <Image source={item.icon} width={20} height={20}/>
@@ -359,31 +378,10 @@ const save = async() => {
             </TouchableOpacity>
         </View> 
         <View style={[styles.main3, {display: list[item.id] ? 'flex' : 'none'}]}>
-          <List id={item.id}/>
+          <List title={item.title}/>
         </View>
     </View>
   );
-
-  const renderItem2 = ({ item }) => (
-      <View style={[styles.main3BoxHeader]}>
-          <View style={[styles.filterBox, {width: 50}]}>
-          <Checkbox
-              style={styles.checkbox}
-              value={isChecked[item.id]}
-              onValueChange={()=>change(item.id)}
-              color={isChecked[item.id] ? '#FEB401' : undefined}/>
-          </View>
-          <View style={[styles.filterBox, {width: 157, flexDirection: 'row', justifyContent: 'flex-start'}]}>
-            {optionBox(item.option)}
-            <Text>{item.title}</Text>
-          </View>
-          <View style={[styles.filterBox, {width: '41%'}]}>
-            <View style={{width: 24, height: 24, borderRadius: 12,backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
-              <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(!modalVisible2)}/>
-            </View>
-          </View>
-      </View>
-  ); 
 
   return (
     <View style={styles.container}>
@@ -400,7 +398,7 @@ const save = async() => {
         <Filter modalVisible10={modalVisible10} setModalVisible10={setModalVisible10} />
         
         
-        <FlatList data={DATA3} renderItem={renderItem3}
+        <FlatList data={DATA3} renderItem={renderItem}
               keyExtractor={item => item.id}>
         </FlatList>
 

@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     },
     mainBox3:{
         padding: 20,
-        borderWidth: 1,
+        borderWidth: 2,
     },
     listBox:{
         borderWidth: 1,
@@ -73,6 +73,24 @@ const styles = StyleSheet.create({
     arrowBox:{
         position: 'absolute',
         right: 15,
+    },
+    sumBox:{
+        height: 200,
+    },
+    sum:{
+        height: 150,
+        borderWidth: 1,
+    },
+    compare:{
+        alignItems: 'center',
+    },
+    compareButton:{
+        borderRadius: 4,
+        backgroundColor: '#FEA100',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '90%',
+        height: 50,
     },
     mainBox4:{
         height: 100,
@@ -287,7 +305,12 @@ const Talk1Sub = ({navigation, route}) => {
                         </View>
                         <List />
                     </View>
-                    <TouchableOpacity style={{width: '100%', height: 50, borderWidth: 1,}}></TouchableOpacity>
+                    <View style={styles.sumBox}>
+                        <View style={styles.sum}></View>
+                        <View style={styles.compare}>
+                            <TouchableOpacity style={styles.compareButton} onPress={()=>navigation.navigate('출산리스트 비교')}><Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>내 출산리스트와 비교하기</Text></TouchableOpacity>
+                        </View>
+                    </View>
                 </View>
                 <View style={styles.mainBox4}>
                     <View style={styles.likeBox}>

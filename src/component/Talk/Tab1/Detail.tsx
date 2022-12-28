@@ -8,10 +8,12 @@ import Modal4 from '../..//Modal/DelareConfirm'
 import Modal6 from '../../Modal/Declare2'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
+import { Video, AVPlaybackStatus } from 'expo-av';
 
 import Comment from './Comment'
 import axios from 'axios'
 
+import Icon from 'react-native-vector-icons/FontAwesome'
 import Chat from '../../../../public/assets/svg/Chat.svg'
 import Like from '../../../../public/assets/svg/Like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
@@ -69,6 +71,7 @@ const styles = StyleSheet.create({
         padding: 10,
         justifyContent: 'center',
         alignItems: 'center',
+        flexDirection: 'row',
     },
     mainBox2ImageBox2:{
         height: 150,
@@ -90,6 +93,19 @@ const styles = StyleSheet.create({
         height: 114,
         borderRadius: 4,
         margin: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    videoImage:{
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 40,
+        height: 40,
+        borderRadius: 25,
+        borderWidth: 1,
+        borderColor: 'white',
+        zIndex: 999
     },
     mainBox3:{
         height: 50,
@@ -280,33 +296,39 @@ const Talk1Sub = ({navigation, route}) => {
     }
 
     const ImageBox = () => {
-        switch(info[0].savedName.split('|').length){
-            case 1: return(
+        console.log(info[0]);
+        const arr:any[] = [];
+        const a = (info[0].savedName.split('|')).filter(x => {
+            if(x.charAt(x.length-1) === '4'){ arr.push(x); }else return x;
+        });
+        
+        const infoFiltering = [...arr, ...a];
+        console.log('infoFiltering: ', infoFiltering);
+        console.log(info[0].savedName.split('|'));
+        
+        switch(true){
+    
+            case info[0].savedName.split('|').length == 1: return(
                 <TouchableOpacity style={styles.mainBox2ImageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
-                    <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image}/>
+                    <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${infoFiltering[0]}`}} style={styles.image}/>
                 </TouchableOpacity>
             )
-            case 2: return(
+            case info[0].savedName.split('|').length < 4: return(
                 <View style={styles.mainBox2ImageBox2}>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
-                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image2}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
-                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[1]}`}} style={styles.image2}/>
-                    </TouchableOpacity>
-                </View>
-            )
-            case 3: return(
-                <View style={styles.mainBox2ImageBox2}>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
-                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image2}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
-                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[1]}`}} style={styles.image2}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
-                        <Image source={{uri: `https://reactnative.dev/img/tiny_logo.png`}} style={styles.image2}/>
-                    </TouchableOpacity>
+                    {infoFiltering.map(x=>{
+                        if(x.charAt(x.length-1) === '4'){
+                            return (
+                                <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
+                                        <View style={styles.videoImage}><Icon name='play' size={17} style={{color: 'white'}}/></View>
+                                    <Video source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image2} resizeMode='cover'/>
+                                </TouchableOpacity>
+                            )
+                        }else return (
+                            <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
+                                    <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image2}/>
+                            </TouchableOpacity>
+                        )
+                    })}
                 </View>
             )
             default: return(

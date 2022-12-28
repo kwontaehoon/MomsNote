@@ -206,6 +206,15 @@ const Talk1 = ({navigation}) => {
     setFilter(arr);
   }
 
+  const dayCalculate = (date) => {
+    const a = moment().diff(moment(date), 'minute');
+    switch(true){
+      case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
+      case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
+      default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'day')}일 전</Text>
+    }
+  }
+
   const renderItem = ({ item }) => (
     <View style={{justifyContent: 'center'}}>
       <View style={[styles.headerFilterBox, {backgroundColor: filter[item.id] ? '#FEA100' : 'white'}]}>
@@ -233,7 +242,7 @@ const Talk1 = ({navigation}) => {
           </View>
         </View>
         <View style={[styles.dateBox, {justifyContent: 'center', alignItems: 'flex-end'}]}>
-          <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(item.boardDate), "days")}일 전</Text>
+         {dayCalculate(item.boardDate)}
         </View>
     </TouchableOpacity>
   ); 
