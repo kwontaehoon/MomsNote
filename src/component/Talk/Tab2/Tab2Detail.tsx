@@ -59,14 +59,13 @@ const styles = StyleSheet.create({
     },
     mainBox3:{
         padding: 20,
-        borderWidth: 2,
     },
     listBox:{
         borderWidth: 1,
     },
     listHeader:{
         height: 40,
-        backgroundColor: '#FEECB3',
+        backgroundColor: '#F47A79',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -74,15 +73,28 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 15,
     },
-    sumBox:{
-        height: 200,
-    },
     sum:{
-        height: 150,
+        height: 130,
         borderWidth: 1,
+        borderBottomWidth: 0,
+        borderColor: '#EEEEEE',
+        justifyContent: 'center',
+    },
+    myList2FooterBox:{
+        height: 50,
+        justifyContent: 'center',
+        paddingLeft: 15,
+    },
+    budget:{
+        position: 'absolute',
+        right: 15,
     },
     compare:{
         alignItems: 'center',
+        borderWidth: 1,
+        borderTopWidth: 0,
+        borderColor: '#EEEEEE',
+        height: 70,
     },
     compareButton:{
         borderRadius: 4,
@@ -93,12 +105,11 @@ const styles = StyleSheet.create({
         height: 50,
     },
     mainBox4:{
-        height: 100,
-        justifyContent: 'flex-end',
-        borderColor: '#F5F5F5',
         borderBottomWidth: 1,
-        paddingBottom: 20,
+        borderColor: '#F5F5F5',
         paddingLeft: 15,
+        height: 50,
+        justifyContent: 'center',
     },
     likeBox:{
         width: '60%',
@@ -108,7 +119,6 @@ const styles = StyleSheet.create({
     lookupBox:{
         position: 'absolute',
         right: 20,
-        bottom: 20,
     },
 
     listMain:{
@@ -299,17 +309,30 @@ const Talk1Sub = ({navigation, route}) => {
                     <View style={styles.listBox}>
                         <View style={styles.listHeader}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text style={{fontSize: 15, fontWeight: '600'}}>{info.userId}</Text>
-                                <Text style={{fontSize: 15}}> 님의 출산준비물</Text>
+                                <Text style={{fontSize: 15, fontWeight: '600', color: 'white'}}>{info.userId}</Text>
+                                <Text style={{fontSize: 15, color: 'white'}}> 님의 출산준비물</Text>
                             </View>
                         </View>
                         <List />
                     </View>
-                    <View style={styles.sumBox}>
-                        <View style={styles.sum}></View>
-                        <View style={styles.compare}>
-                            <TouchableOpacity style={styles.compareButton} onPress={()=>navigation.navigate('출산리스트 비교')}><Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>내 출산리스트와 비교하기</Text></TouchableOpacity>
+                    <View style={styles.sum}>
+                            <View style={styles.myList2FooterBox}>
+                                <View style={styles.budget}><Text style={{fontSize: 18, fontWeight: '600'}}>119,700</Text></View>
+                                <Text style={{fontSize: 18, fontWeight: '600'}}>총 예산</Text>
+                            </View>
+                            <View style={[styles.myList2FooterBox, {paddingLeft: 20, height: 25}]}>
+                                <View style={styles.budget}><Text>119,700</Text></View>
+                                <Text style={{color: '#616161'}}>ㄴ 구매금액</Text>
+                            </View>
+                            <View style={[styles.myList2FooterBox, {paddingLeft: 20, height: 25}]}>
+                                <View style={styles.budget}><Text>119,700</Text></View>
+                                <Text style={{color: '#616161'}}>ㄴ 구매예정 금액</Text>
+                            </View>
                         </View>
+                        <View style={styles.compare}>
+                            <TouchableOpacity style={styles.compareButton} onPress={()=>navigation.navigate('출산리스트 비교')}>
+                                <Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>내 출산리스트와 비교하기</Text>
+                            </TouchableOpacity>
                     </View>
                 </View>
                 <View style={styles.mainBox4}>

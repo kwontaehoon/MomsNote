@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
 
 })
 
-const CheckBoxModal = ({info, modal, setModal, modal2, setModal2, modalVisible9, setModalVisible9}) => {
+const CheckBoxModal = ({info, setModal, setModal2, modalVisible9, setModalVisible9}) => {
 
     const DATA = [
         {
@@ -177,7 +177,6 @@ const CheckBoxModal = ({info, modal, setModal, modal2, setModal2, modalVisible9,
         title: '카테고리 선택(필수)',
         select: [],
     });
-
     const [isChecked, setChecked] = useState([]); // check box
 
     useEffect(()=>{
@@ -187,20 +186,20 @@ const CheckBoxModal = ({info, modal, setModal, modal2, setModal2, modalVisible9,
 
     const submit = async() => {
 
-        try{
-            const response = await axios({
-                method: 'post',
-                url: 'https://momsnote.net/api/needs/delete',
-                headers: { 
-                  'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
-                  'Content-Type': 'application/json'
-                },
-                data: { id: data.select.join(',') }
-                });
-                console.log('response: ', response.data);
-            }catch(error){
-              console.log('error: ', error);
-            }
+        // try{
+        //     const response = await axios({
+        //         method: 'post',
+        //         url: 'https://momsnote.net/api/needs/delete',
+        //         headers: { 
+        //           'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+        //           'Content-Type': 'application/json'
+        //         },
+        //         data: { id: data.select.join(',') }
+        //         });
+        //         console.log('response: ', response.data);
+        //     }catch(error){
+        //       console.log('error: ', error);
+        //     }
     }
 
     const change = (e, id) => { // check box
@@ -292,7 +291,8 @@ const CheckBoxModal = ({info, modal, setModal, modal2, setModal2, modalVisible9,
                 </View>
                 :
                 <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>{
-                    data.select === '' ? (submit(), setModal(!modal), setModalVisible9(!modalVisible9)) : (setModal2(!modal2), setModalVisible9(!modalVisible9))}}>
+                    data.select.length !== 0 ? (submit(), setModal((prevState) => ({...prevState, open: true, content: '출산준비물 리스트가 변경되었습니다.', buttonCount: 1})), setModalVisible9(!modalVisible9))
+                    : (setModal2((prevState) => ({...prevState, open: true, content: ['삭제 혹은 복구된 품목이 없습니다.', '그래도 적용하시겠습니까?'], buttonCount: 2})), setModalVisible9(!modalVisible9))}}>
                     <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>적용</Text>
                 </TouchableOpacity>}
              </View>

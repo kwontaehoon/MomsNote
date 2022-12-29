@@ -186,10 +186,10 @@ const Talk1Sub = ({navigation, route}) => {
     });
     Keyboard.addListener('keyboardDidHide', () => {
         setPageHeight(false);
-    })
+    });
 
     const info = [route.params.item];
-    console.log('info: ', info);
+    console.log('상세내용 info: ', info);
     const [refresh, setRefresh] = useState(false);
     console.log('refresh: ', refresh);
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
@@ -212,6 +212,8 @@ const Talk1Sub = ({navigation, route}) => {
 
     const animation = useRef(new Animated.Value(0)).current;
 
+
+
     useEffect(()=>{
         const commentInfo = async() => {
             console.log('댓글 목록 업데이트');
@@ -233,7 +235,7 @@ const Talk1Sub = ({navigation, route}) => {
         commentInfo();
       }, [refresh]);
 
-    useEffect(()=>{ // 게시물 업데이트 필요
+    useEffect(()=>{ // 게시물 추천 여부
         console.log('게시물 추천 여부 업데이트');
         const likeInfo = async() => {
             try{
@@ -272,7 +274,7 @@ const Talk1Sub = ({navigation, route}) => {
        setRefresh(insert.contents);
     }
 
-    const likeplus = async() => {
+    const likeplus = async() => { // 게시판 좋아요
         console.log('likeplus');
         try{
             const response = await axios({
@@ -364,7 +366,7 @@ const Talk1Sub = ({navigation, route}) => {
     const renderItem = ({ item }) => (
         <View>
             <View style={styles.header2}>
-                <View style={styles.profileBox}></View>
+                <TouchableOpacity style={styles.profileBox} onPress={()=>route.params.setRefresh('dsadssa')}></TouchableOpacity>
                 <View style={styles.infoBox}>
                     <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{item.nickname}</Text>
                     <Text style={{color: '#9E9E9E', fontSize: 13}}>{moment().diff(moment(item.boardDate), "days")}일 전</Text>
@@ -409,8 +411,8 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.alarm}><Text style={{color: 'white', fontSize: 13, fontWeight: '500'}}>{info[0].nickname}님을 차단하였습니다.</Text></View>
         </Animated.View>
 
-        <Modal modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3} commentsId={commentsId} info={info}
-            modal6={modal6} setModal6={setModal6} setRecommendState={route.params.refresh}/>
+        <Modal navigation={navigation} modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3} commentsId={commentsId} info={info}
+            modal6={modal6} setModal6={setModal6} setBoardState={route.params.setRefresh}/>
         <Modal2 modal2={modal2} setModal2={setModal2} userId={info[0].userId} ani={opacity_ani}/>
         <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4} boardId={info[0].boardId}/>
         <Modal4 modal4={modal4} setModal4={setModal4} />

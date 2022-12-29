@@ -37,26 +37,27 @@ const styles = StyleSheet.create({
     },
 })
 
-const NoticeModal = ({info, modal, setModal}) => {
-  return info.buttonCount == 1 ?(
-    <Modal animationType="fade" transparent={true} visible={modal}
+const NoticeModal = ({modal, setModal}) => {
+
+  return modal.buttonCount == 1 ?(
+    <Modal animationType="fade" transparent={true} visible={modal.open}
             onRequestClose={() => {
             setModal(!modal)}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
                         <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, paddingTop: 10}}>{info.content}</Text>
+                            <Text style={{fontSize: 16, paddingTop: 10}}>{modal.content}</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal} onPress={()=>setModal(!modal)}><Text style={{color: 'white', fontSize: 16}}>확인</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.modal} onPress={()=>setModal((prevState) => ({...prevState, open: false}))}><Text style={{color: 'white', fontSize: 16}}>확인</Text></TouchableOpacity>
                         </View>
                     </View>
                 </View>
             </View>
         </Modal>
   ):
-  <Modal animationType="fade" transparent={true} visible={modal}
+  <Modal animationType="fade" transparent={true} visible={modal.open}
             onRequestClose={() => {
             setModal(!modal)}}>
             <View style={styles.modalContainer}>
@@ -67,7 +68,9 @@ const NoticeModal = ({info, modal, setModal}) => {
                         </View>
                         <View style={styles.modalBox}>
                             <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>로그아웃</Text></TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModal(!modal)}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModal((prevState) => ({...prevState, open: false}))}>
+                                <Text style={{color: 'black', fontSize: 16}}>취소</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>

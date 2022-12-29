@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image } from 'react-native'
+import React, { useState, useRef } from 'react'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import ArrowTop from '../../../../public/assets/svg/Arrow-Top.svg'
+import ArrowBottom from '../../../../public/assets/svg/Arrow-Bottom.svg'
+
 
 const styles = StyleSheet.create({
     container:{
@@ -82,22 +84,42 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     myList2:{
-      borderWidth: 1,
       position: 'absolute',
       bottom: 0,
       width: '100%',
-      height: 400,
+      height: 450,
       zIndex: 800,
       backgroundColor: 'white',
     },
     myList2Header:{
-      borderWidth: 1,
       backgroundColor: '#F47A79',
-      height: 30,
+      height: 50,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'row',
+      borderTopStartRadius: 15,
+      borderTopEndRadius: 15,
     },
-    myList2Main:{
-      borderWidth: 1,
-      height: 800,
+    myList2Footer:{
+      height: 200,
+      backgroundColor: 'white',
+      paddingTop: 10,
+    },
+    myList2FooterBox:{
+      height: 50,
+      justifyContent: 'center',
+      paddingLeft: 15,
+    },
+    budget:{
+      position: 'absolute',
+      right: 15,
+    },
+    myList2FooterButton:{
+      backgroundColor: '#E0E0E0',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 20,
+      height: 60,
     },
 })
 const Talk1Sub = ({navigation, route}) => {
@@ -160,6 +182,9 @@ const Talk1Sub = ({navigation, route}) => {
     ]);
 
     const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
+    const animation = useRef(new Animated.Value(0)).current;
+    const [myList, setMyList] = useState(false);
+    console.log('myList: ', myList);
 
     const List = () => {
         let arr = [];
@@ -171,12 +196,12 @@ const Talk1Sub = ({navigation, route}) => {
                             onPress={()=>arrow(x.id)}>{list[x.id] ? <Icon name="angle-up" size={22}/> : <Icon name='angle-down' size={22}/>}
                         </TouchableOpacity>
                         <Image source={x.icon}/>
-                        <Text style={{fontSize: 16, marginLeft: 8}}>{x.title}</Text>
+                        <Text style={{fontSize: 16, marginLeft: 8, fontWeight: '500'}}>{x.title}</Text>
                     </View>
                     <View style={styles.listMain2}>
+                        <View style={styles.filterBox}><Text>구매</Text></View>
                         <View style={styles.filterBox}><Text>품목</Text></View>
-                        <View style={styles.filterBox}><Text>브랜드</Text></View>
-                        <View style={styles.filterBox}><Text>금액</Text></View>
+                        <View style={styles.filterBox}><Text>가격</Text></View>
                     </View>
                 </>
             )
@@ -184,48 +209,101 @@ const Talk1Sub = ({navigation, route}) => {
         return arr;
     }
 
-    const arrow = (e) => { // arrow 누르면 서브페이지 display
+    const List2 = () => {
+      let arr = [];
+      info3.map(x => {
+          arr.push(
+              <>
+                  <View style={styles.listMain}>
+                      <TouchableOpacity style={styles.arrowBox}
+                          onPress={()=>arrow(x.id)}>{list[x.id] ? <Icon name="angle-up" size={22}/> : <Icon name='angle-down' size={22}/>}
+                      </TouchableOpacity>
+                      <Image source={x.icon}/>
+                      <Text style={{fontSize: 16, marginLeft: 8, fontWeight: '500'}}>{x.title}</Text>
+                  </View>
+                  <View style={styles.listMain2}>
+                      <View style={styles.filterBox}><Text>구매</Text></View>
+                      <View style={styles.filterBox}><Text>품목</Text></View>
+                      <View style={styles.filterBox}><Text>가격</Text></View>
+                  </View>
+              </>
+          )
+      })
+      return arr;
+  }
+
+  const opacity_ani = () => {
+    Animated.timing(animation, {
+        toValue: myList ? 0 : 1,
+        useNativeDriver: true,
+        duration: 1500,
+    }).start();
+    // .start(()=>{
+    //     Animated.timing(animation, {
+    //         toValue: 0,
+    //         useNativeDriver: true,
+    //         duration: 1500,
+    //     }).start();
+    // });
+  }
+  const arrow = (e) => { // arrow 누르면 서브페이지 display
         let arr = [...list];
         arr[e] = !arr[e];
         setList(arr);
-    }
+  }
 
-    const renderItem = ({ item }) => (
-          <View style={styles.main}>
-              <View style={styles.listHeader}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{fontSize: 15, fontWeight: '600'}}>닉네임</Text>
-                  <Text style={{fontSize: 15}}> 님의 출산준비물</Text>
-                </View>
-              </View>
-            <List />
+  const renderItem = ({ item }) => (
+        <View style={styles.main}>
+          <View style={styles.listHeader}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={{fontSize: 15, fontWeight: '600'}}>닉네임</Text>
+              <Text style={{fontSize: 15}}> 님의 출산준비물</Text>
+            </View>
+          </View>
+          <List />
         </View>
-      );
+  );
 
     const renderItem2 = ({ item }) => (
-        <View>
-          <View style={styles.myList2Header}></View>
-          <View style={styles.myList2Main}>
-            
-          </View>
-        </View>
+      <View style={styles.main}>
+        <List2 />
+      </View>
     );
 
   return (
     <View style={styles.container}>
 
-      <View style={styles.myList}>
+      <TouchableOpacity style={[styles.myList, {display: myList ? 'none' : 'flex'}]} onPress={()=>{opacity_ani(), setMyList(!myList)}}>
         <View style={styles.myListBox}>
           <Text style={{color: 'white', fontWeight: '500', fontSize: 16, marginRight: 5}}>나의 출산준비물</Text>
           <ArrowTop />
         </View>
-      </View>
+      </TouchableOpacity>
 
-      <View style={styles.myList2}>
+      <Animated.View style={[styles.myList2, {opacity: animation}]}>
+        <View style={styles.myList2Header}>
+          <Text style={{fontSize: 15, fontWeight: '600', color: 'white'}}>나의 출산준비물</Text>
+          <ArrowBottom fill={'white'}/>
+        </View>
         <FlatList data={DATA} renderItem={renderItem2}
             keyExtractor={item => item.id}>
         </FlatList>
+        <View style={styles.myList2Footer}>
+          <View style={styles.myList2FooterBox}>
+            <View style={styles.budget}><Text style={{fontSize: 18, fontWeight: '600'}}>119,700</Text></View>
+            <Text style={{fontSize: 18, fontWeight: '600'}}>총 예산</Text>
+          </View>
+          <View style={[styles.myList2FooterBox, {paddingLeft: 20, height: 25}]}>
+            <View style={styles.budget}><Text>119,700</Text></View>
+            <Text style={{color: '#616161'}}>ㄴ 구매금액</Text>
+          </View>
+          <View style={[styles.myList2FooterBox, {paddingLeft: 20, height: 25}]}>
+            <View style={styles.budget}><Text>119,700</Text></View>
+            <Text style={{color: '#616161'}}>ㄴ 구매예정 금액</Text>
+          </View>
+          <View style={styles.myList2FooterButton}><Text style={{color: 'white', fontWeight: '600', fontSize: 16}}>수정</Text></View>
         </View>
+      </Animated.View>
 
       
         <FlatList data={DATA} renderItem={renderItem}

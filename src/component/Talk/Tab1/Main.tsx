@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Modal, Activ
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 import moment from 'moment'
+import { Video, AVPlaybackStatus } from 'expo-av';
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
@@ -71,14 +72,25 @@ const styles = StyleSheet.create({
   },
   mainBoxSub:{
     justifyContent: 'center',
+    alignItems: 'center',
     paddingLeft: 10,
     paddingRight: 10,
   },
+  videoImage:{
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 40,
+    height: 40,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: 'white',
+    zIndex: 999
+},
   dateBox:{
     position: 'absolute',
     right: 10,
     top: 50,
-
   },
   mainBoxSub2:{
     flexDirection: 'row',
@@ -136,7 +148,7 @@ const styles = StyleSheet.create({
 })
 
 
-const Talk1 = ({navigation}) => {
+const Talk1 = ({navigation, route}) => {
 
   const DATA = [
     {
@@ -175,8 +187,9 @@ const Talk1 = ({navigation}) => {
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
   const [info, setInfo] = useState([]); // 게시글 목록
-  console.log('info: ', info);
-  const [refresh, setRefresh] = useState('ㅋㅋ');
+  console.log('게시글 목록 info: ', info);
+
+  const [refresh, setRefresh] = useState('');
 
   useEffect(()=>{
     console.log('게시글 목록 업데이트');
@@ -215,6 +228,27 @@ const Talk1 = ({navigation}) => {
     }
   }
 
+  const ImageBox = ({item}) => {
+    const arr:any[] = [];
+    const a = (item.split('|')).filter(x => { if(x.charAt(x.length-1) === '4'){ arr.push(x); }else return x;});
+    const infoFiltering = [...arr, ...a];
+
+    if(infoFiltering[0].charAt(infoFiltering[0].length-1) == '4'){
+      return(
+        <View style={styles.mainBoxSub}>
+          <View style={styles.videoImage}><Icon name='play' size={17} style={{color: 'white'}}/></View>
+          <Video source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${infoFiltering[0]}`}} style={{width: 68, height: 68}} resizeMode='cover'/>
+        </View>
+      )
+    }else{
+      return(
+      <View style={styles.mainBoxSub}>
+          <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.split('|')[0]}`}} style={{width: 68, height: 68}}/>
+      </View>
+      )
+    }
+  }
+
   const renderItem = ({ item }) => (
     <View style={{justifyContent: 'center'}}>
       <View style={[styles.headerFilterBox, {backgroundColor: filter[item.id] ? '#FEA100' : 'white'}]}>
@@ -227,11 +261,8 @@ const Talk1 = ({navigation}) => {
 
   const renderItem2 = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', {item, refresh, setRefresh})}>
-        { item.savedName !== null ? <View style={styles.mainBoxSub}>
-          <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: 68, height: 68}}/>
-          </View> : ''
-        }
-        <View style={[styles.mainBoxSub, {width: '55%', justifyContent: 'flex-start', paddingTop: 5}]}>
+        { item.savedName !== null ? <ImageBox item={item.savedName}/> : '' }
+        <View style={[styles.mainBoxSub, {paddingTop: 5, width: '65%', alignItems: 'flex-start'}]}>
           <Text style={{fontSize: 15, paddingTop: 2}}>{item.title} </Text>
           <View style={styles.mainBoxSub2}>
             <Text style={{fontSize: 13, color: '#9E9E9E'}}>{item.nickname} </Text>
@@ -278,7 +309,7 @@ const Talk1 = ({navigation}) => {
         <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}
       </View>
       <TouchableOpacity style={styles.footer} onPress={()=> setModalVisible(!modalVisible)}>
-            <Pencil fill='white'/>
+            <Pencil/>
       </TouchableOpacity>
 
       <Modal animationType="fade" transparent={true} visible={modalVisible}

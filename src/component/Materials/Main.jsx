@@ -199,11 +199,19 @@ const Navigation = ({navigation, route}) => {
   const [info, setInfo] = useState([]); // 줄산준비물 리스트
   console.log('출산 준비물 리스트: ', info);
   const [list, setList] = useState(Array.from({ length: 9 }, () => { return true}));
-  const [isChecked, setChecked] = useState(Array.from({length: 31}, ()=>{ return false })); // check box
+  const [isChecked, setChecked] = useState({
+    needsBrandId: '',
+    needsId: '',
+  }); 
+  console.log('iseChecked: ', isChecked);
   const [captureURL, setCaptureURL] = useState(); // 캡쳐 uri
+  
 
   const [modalVisible, setModalVisible] = useState(false); // check box 선택시 모달
-  const [modalVisible2, setModalVisible2] = useState(false); // 브랜드 추가 모달
+  const [modalVisible2, setModalVisible2] = useState({
+    open: false,
+    needsId: '',
+  }); // 브랜드 추가 모달
   const [modalVisible4, setModalVisible4] = useState(false); // 구매가이드 모달
   const [modalVisible5, setModalVisible5] = useState(false); // 초기화 모달
   const [modalVisible6, setModalVisible6] = useState(false); // 추천 리스트 변경 확인 모달
@@ -211,16 +219,26 @@ const Navigation = ({navigation, route}) => {
   const [modalVisible8, setModalVisible8] = useState(false); // 품목 추가
   const [modalVisible9, setModalVisible9] = useState(false); // 품목 삭제  
   const [modalVisible10, setModalVisible10] = useState(false); // 정렬
-  const [modal, setModal] = useState(false); // fisrt modal
-  const [modal2, setModal2] = useState(false); //second modal
+  const [modal, setModal] = useState({
+    open: false,
+    content: '',
+    buttonCount: 1
+  }); // fisrt modal
+  const [modal2, setModal2] = useState({
+    open: false,
+    content: ['', ''],
+    buttonCount: 1
+  }); //second modal
 
   useEffect(()=>{
+    console.log('출산준비물 리스트 업데이트');
     const commentInfo = async() => {
         try{
         const response = await axios({
             method: 'post',
             url: 'https://momsnote.net/api/needs/list',
             headers: { 
+              'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
               'Content-Type': 'application/json'
             },
             data : { 
@@ -229,17 +247,53 @@ const Navigation = ({navigation, route}) => {
             }
         });
           setInfo(response.data);
-          setChecked(Array.from({ length: info.length }, () => { return false}))
         }catch(error){
-            console.log('출산준비물 리스트 error:', error)
+            console.log('출산준비물 리스트 error:', error);
         }
     } 
     commentInfo();
-  }, [modalVisible8]);
+  }, [modalVisible8, modalVisible2, isChecked]);
 
-  useEffect(()=>{
-      save();
-  }, [captureURL]);
+  // useEffect(()=>{
+  //     save();
+  // }, [captureURL]);
+
+
+  const perchase = async() =>{
+    try{
+      const response = await axios({
+          method: 'post',
+          url: 'https://momsnote.net/api/needs/buy/needs',
+          headers: { 
+            'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+            'Content-Type': 'application/json'
+          },
+          data : isChecked
+      });
+      console.log('response: ', response.data);
+      }catch(error){
+          console.log('출산준비물 리스트 error:', error);
+      }
+  }
+
+  const perchaseCencel = async() => {
+    try{
+      const response = await axios({
+          method: 'post',
+          url: 'https://momsnote.net/api/needs/cancel/buy',
+          headers: { 
+            'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+            'Content-Type': 'application/json'
+          },
+          data : {
+            needsId: isChecked.needsId
+          }
+      });
+      console.log('response: ', response.data);
+      }catch(error){
+          console.log('출산준비물 리스트 error:', error);
+      }
+  }
 
 const save = async() => {
    
@@ -277,13 +331,6 @@ const save = async() => {
     setList(arr);
   }
 
-  const change = (e) => { // check box
-    setModalVisible(!modalVisible);
-    let arr = [...isChecked];
-    arr[e] = !arr[e];
-    setChecked(arr);
-  }
-
   const capture = async() => {
     // opacity_ani();
     setCaptureURL('1');
@@ -319,14 +366,20 @@ const save = async() => {
     let arr = [];
     info.filter((x, index)=>{
       if(title.title == x.category){
-      arr.push(
+       arr.push(
         <View style={[styles.main3BoxHeader]} key={index}>
           <View style={[styles.filterBox, {width: 50}]}>
           <Checkbox
               style={styles.checkbox}
-              // value={isChecked[item.id]}
-              // onValueChange={()=>change(item.id)}
-              // color={isChecked[item.id] ? '#FEB401' : undefined}
+              value={x.id == 0 ? false : true}
+              color={x.id == 0 ? undefined : '#FEB401'}
+              onValueChange={()=>{
+                switch(true){
+                  case x.brandName == null: setModal(prevState => ({...prevState, open: true, buttonCount: 1, content: '브랜드를 체크해주세요'})); break;
+                  case x.id == 0 : setChecked(prevState => ({...prevState, needsId: x.needsId, needsBrandId: x.needsBrandId})), perchase(); break;
+                  default : setChecked(prevState => ({...prevState, needsId: x.needsId, needsBrandId: x.needsBrandId})), perchaseCencel();
+                }
+              }}
               />
           </View>
           <View style={[styles.filterBox, {width: 157, flexDirection: 'row', justifyContent: 'flex-start'}]}>
@@ -334,9 +387,9 @@ const save = async() => {
             <Text>{x.needsName}</Text>
           </View>
           <View style={[styles.filterBox, {width: '41%'}]}>
-            <View style={{width: 24, height: 24, borderRadius: 12,backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
-              <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(!modalVisible2)}/>
-            </View>
+            {x.brandName == null ? <View style={{width: 24, height: 24, borderRadius: 12,backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
+              <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId}))}/> 
+            </View> : <Text>{x.brandName}</Text>}
           </View>
       </View>
       )}
@@ -374,7 +427,7 @@ const save = async() => {
     <View style={styles.mainBox}>
         <View style={styles.mainBox2}>
           <Image source={item.icon} width={20} height={20}/>
-            <View style={[styles.titleBox, {marginLeft: 8}]}><Text>{item.title}</Text></View>
+            <View style={[styles.titleBox, {marginLeft: 8}]}><Text style={{fontSize: 16, fontWeight: '500'}}>{item.title}</Text></View>
             <TouchableOpacity style={styles.arrowBox}
               onPress={()=>arrow(item.id)}>{list[item.id] ? <Icon name="angle-up" size={22}/> : <Icon name='angle-down' size={22}/>}
             </TouchableOpacity>
@@ -389,21 +442,21 @@ const save = async() => {
     <View style={styles.container}>
 
         <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
-        <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
+        <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} setModal={setModal}/>
         <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4}/>
         <ResetModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
         <ResetModal2 modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
         <DotModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible7={modalVisible7} setModalVisible7={setModalVisible7} modalVisible8={modalVisible8} setModalVisible8={setModalVisible8}
-        modalVisible9={modalVisible9} setModalVisible9={setModalVisible9}/>
-        <AddModal modalVisible8={modalVisible8} setModalVisible8={setModalVisible8}/>
-        <DeleteModal info={info} modalVisible9={modalVisible9} setModalVisible9={setModalVisible9} modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2}/>
+            modalVisible9={modalVisible9} setModalVisible9={setModalVisible9}/>
+        <AddModal modalVisible8={modalVisible8} setModalVisible8={setModalVisible8} modal={modal} setModal={setModal}/>
+        <DeleteModal info={info} modalVisible9={modalVisible9} setModalVisible9={setModalVisible9} setModal={setModal} setModal2={setModal2}/>
         <Filter modalVisible10={modalVisible10} setModalVisible10={setModalVisible10} />
-        <FirstModal info={{content: '출산준비물 리스트가 변경되었습니다.', buttonCount: 1}} modal={modal} setModal={setModal}/>
-        <SecondModal info={{content: ['삭제 혹은 복구된 품목이 없습니다.', '그래도 적용하시겠습니까?']}} modal={modal2} setModal={setModal2} />
+        <FirstModal modal={modal} setModal={setModal}/>
+        <SecondModal modal={modal2} setModal={setModal2} />
         
         
         <FlatList data={DATA3} renderItem={renderItem}
-              keyExtractor={item => item.id}>
+              keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
         </FlatList>
 
         <View style={styles.footer}>
