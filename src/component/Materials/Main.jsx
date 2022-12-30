@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, TouchableHighlight } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon3 from 'react-native-vector-icons/Feather'
 import Checkbox from 'expo-checkbox';
@@ -195,15 +195,21 @@ const Navigation = ({navigation, route}) => {
     },
   ]
 
+  const [sumResult, setSumResult] = useState(0);
+  console.log('sumResult: ', sumResult);
   const ref = useRef();
   const [info, setInfo] = useState([]); // 줄산준비물 리스트
   console.log('출산 준비물 리스트: ', info);
   const [list, setList] = useState(Array.from({ length: 9 }, () => { return true}));
   const [isChecked, setChecked] = useState({
-    needsBrandId: '',
-    needsId: '',
-  }); 
-  console.log('iseChecked: ', isChecked);
+    needsBrandId: null,
+    needsId: null,
+  });
+  const [test, setTest] = useState({
+    needsBrandId: 35,
+    needsId: 30
+  })
+  console.log('isChecked: ', isChecked);
   const [captureURL, setCaptureURL] = useState(); // 캡쳐 uri
   
 
@@ -265,14 +271,14 @@ const Navigation = ({navigation, route}) => {
           method: 'post',
           url: 'https://momsnote.net/api/needs/buy/needs',
           headers: { 
-            'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+            'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIyMDczODUsImV4cCI6MTY3NDc5OTM4NX0.LRECgH_NBe10ueCfmefEzEueIrYukBHnXoKRfVqIurQ', 
             'Content-Type': 'application/json'
           },
-          data : isChecked
+          data: test
       });
       console.log('response: ', response.data);
       }catch(error){
-          console.log('출산준비물 리스트 error:', error);
+          console.log('출산준비물 구매 error:', error);
       }
   }
 
@@ -364,8 +370,12 @@ const save = async() => {
 
   const List2 = (title) => {
     let arr = [];
+    let sum = 0;
     info.filter((x, index)=>{
-      if(title.title == x.category){
+      if(x.id == 1){
+        sum += x.itemPrice;
+      }
+      if(title.title == x.category && x.deleteStatus == 1){
        arr.push(
         <View style={[styles.main3BoxHeader]} key={index}>
           <View style={[styles.filterBox, {width: 50}]}>
@@ -394,27 +404,12 @@ const save = async() => {
       </View>
       )}
     })
+    setSumResult(sum);
     return arr;
   }
 
   const renderItem = ({ item }) => (
     <View>
-      <View style={styles.header}>
-        <Text style={{fontSize: 18, fontWeight: '600'}}>출산준비물</Text>
-        <View style={styles.headerBar}>
-            <Download style={{marginRight: 12}} onPress={capture}/>
-            <Search style={{marginRight: 12}} onPress={()=>navigation.navigate('검색')}/>
-            <Bell style={{marginRight: 12}} onPress={()=>navigation.navigate('알림')}/>
-            <MyPage style={{marginRight: 5}} onPress={()=>navigation.navigate('마이페이지')}/>
-        </View>
-      </View>
-      <View style={styles.header2}>
-          <View style={styles.headerBox2}>
-            <Sort style={{paddingRight: 50}} onPress={()=>setModalVisible10(!modalVisible10)}/>
-            <More onPress={()=>setModalVisible7(!modalVisible7)}/>
-          </View>
-          <Text style={{fontSize: 16, fontWeight: '600'}}>전체 (5/37)</Text>
-        </View>
         <ViewShot style={styles.main} ref={ref} options={{ fileName: "MomsNote", format: "png", quality: 1 }}>
           <FlatList data={DATA} renderItem={renderItem3}
               keyExtractor={item => String(item.id)}>
@@ -453,7 +448,23 @@ const save = async() => {
         <Filter modalVisible10={modalVisible10} setModalVisible10={setModalVisible10} />
         <FirstModal modal={modal} setModal={setModal}/>
         <SecondModal modal={modal2} setModal={setModal2} />
-        
+
+        <View style={styles.header}>
+        <Text style={{fontSize: 18, fontWeight: '600'}}>출산준비물</Text>
+        <View style={styles.headerBar}>
+            <Download style={{marginRight: 12}} onPress={capture}/>
+            <Search style={{marginRight: 12}} onPress={()=>navigation.navigate('검색')}/>
+            <Bell style={{marginRight: 12}} onPress={()=>navigation.navigate('알림')}/>
+            <MyPage style={{marginRight: 5}} onPress={()=>navigation.navigate('마이페이지')}/>
+        </View>
+      </View>
+      <View style={styles.header2}>
+          <View style={styles.headerBox2}>
+            <Sort style={{paddingRight: 50}} onPress={()=>setModalVisible10(!modalVisible10)}/>
+            <More onPress={()=>setModalVisible7(!modalVisible7)}/>
+          </View>
+          <Text style={{fontSize: 16, fontWeight: '600'}}>전체 (5/37)</Text>
+        </View>
         
         <FlatList data={DATA3} renderItem={renderItem}
               keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
@@ -461,9 +472,9 @@ const save = async() => {
 
         <View style={styles.footer}>
           <View style={styles.footerBox}>
-            <View style={styles.budgetBox}><Text>총 예산: 0000원</Text></View>
+            <View style={styles.budgetBox}><Text>총 예산: {sumResult}</Text></View>
             <View style={[styles.budgetBox, {alignItems: 'flex-end'}]}>
-              <TouchableOpacity onPress={()=> navigation.navigate('총 예산')}><Text>자세히 보기  <Icon name='angle-right' size={15}/></Text></TouchableOpacity>
+              <TouchableOpacity onPress={()=> navigation.navigate('총 예산', info)}><Text>자세히 보기  <Icon name='angle-right' size={15}/></Text></TouchableOpacity>
             </View>
           </View>
         </View>

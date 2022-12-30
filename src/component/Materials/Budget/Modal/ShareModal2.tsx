@@ -69,12 +69,12 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({modalVisible3, setModalVisible3}) => {
 
-    ``
-
     const [info, setInfo] = useState({
+        boardCategory: '출산리스트 공유',
         title: '',
-        content: ''
+        contents: '',
     })
+    console.log('info: ', info);
 
     const animation = useRef(new Animated.Value(0)).current;
 
@@ -93,15 +93,20 @@ const CheckBoxModal = ({modalVisible3, setModalVisible3}) => {
     }
 
     const submit = async() => {
-        if(info.title === '' && info.content === ''){
-            opacity_ani();
-        }else{
-        // info.title.length === 0 && info.content.length === 0 ? 'animation' : 
-        // await axios.post(`http://192.168.1.140:4000/post/test`, {
-        //     info: info
-        // })
-        setModalVisible3(!modalVisible3);
-    }
+        try{
+            const response = await axios({
+                method: 'post',
+                headers: { 
+                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIyMDczODUsImV4cCI6MTY3NDc5OTM4NX0.LRECgH_NBe10ueCfmefEzEueIrYukBHnXoKRfVqIurQ', 
+                    'Content-Type': 'application/json'
+                  },
+                url: 'https://momsnote.net/api/needs/share/save',
+                data : info
+        });
+        console.log('response: ', response.data);
+         }catch(error){
+             console.log('출산공유리스트 axios error: ', error);
+        }
     
     }
 
@@ -121,7 +126,7 @@ const CheckBoxModal = ({modalVisible3, setModalVisible3}) => {
                                 </Animated.View>
                                 <TextInput style={styles.textInput} placeholder='글 제목' placeholderTextColor='#9E9E9E'  onChangeText={(e) => setInfo((prevState) => ({ ...prevState, title: e}))}></TextInput>
                                 <TextInput style={[styles.textInput, {marginTop: 10, height: 200, paddingBottom: 140}]} placeholder='간단한 내용을 입력해주세요.' placeholderTextColor='#9E9E9E'
-                                    onChangeText={(e) => setInfo((prevState) => ({ ...prevState, content: e}))}>
+                                    onChangeText={(e) => setInfo((prevState) => ({ ...prevState, contents: e}))}>
                                 </TextInput>
                             </View>
                             <TouchableOpacity style={styles.footer} onPress={submit}>

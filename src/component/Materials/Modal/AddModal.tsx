@@ -140,20 +140,20 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8, modal, setModal}) => {
     });
     
     const add = async() => {
-        // try{
-        //     const response = await axios({
-        //           method: 'post',
-        //           url: 'https://momsnote.net/api/needs/add/needs',
-        //           headers: { 
-        //             'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
-        //             'Content-Type': 'application/json'
-        //           },
-        //           data: info
-        //         });
-        //         console.log('response: ', response.data);
-        //     }catch(error){
-        //       console.log('error: ', error);
-        //     }
+        try{
+            const response = await axios({
+                  method: 'post',
+                  url: 'https://momsnote.net/api/needs/add/needs',
+                  headers: { 
+                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+                    'Content-Type': 'application/json'
+                  },
+                  data: info
+                });
+                console.log('response: ', response.data);
+            }catch(error){
+              console.log('error: ', error);
+            }
     }
 
     const renderItem = ({ item }) => (

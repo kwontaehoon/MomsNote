@@ -7,6 +7,7 @@ import axios from 'axios'
 
 import Arrow_Right from '../../../../public/assets/svg/Arrow-Right.svg'
 import Reset from '../../../../public/assets/svg/Reset.svg'
+import Crwon from '../../../../public/assets/svg/crown.svg'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -83,7 +84,8 @@ const styles = StyleSheet.create({
     },
     textInput:{
         width: '47%',
-        padding: 10,
+        paddingLeft: 10,
+        justifyContent: 'center',
         backgroundColor: 'white',
         borderRadius: 2,
     },
@@ -105,10 +107,11 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
     const [info, setInfo] = useState([]); // 브랜드 list
     const [selectBrand, setSelectBrand] = useState({
         needsId: 0,
-        needsBrandId: '',
+        needsBrandId: 1,
         itemName: '',
         itemPrice: '',
     });
+    console.log('selectBrand: ', selectBrand);
 
     useEffect(()=>{
         const commentInfo = async() => {
@@ -152,9 +155,9 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
     }
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: item.needsBrandId}))}>
+        <TouchableOpacity style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price}))}>
             <View style={[styles.mainBoxSub, {width: '24%'}]}>
-                <Text>사진</Text>
+                <Crwon />
             </View>
             <View style={[styles.mainBoxSub, {width: '40%', alignItems: 'flex-start'}]}>
                 <Text style={{fontWeight: '500', marginBottom: 3}}>[{item.brandName}]</Text>
@@ -195,17 +198,19 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
                 <View style={styles.footer}>
                     <View style={styles.footerBox}>
                         <View style={styles.resetBox}>
-                            <Text style={{marginRight: 5}}>초기화</Text>
-                            <TouchableOpacity onPress={()=>{console.log('초기화 ㄱㄱ'), setSelectBrand((preState)=> ({...preState, title: '', price: ''}))}}><Reset width={18}/></TouchableOpacity>
+                            <Text style={{marginRight: 5, color: '#757575'}}>초기화</Text>
+                            <TouchableOpacity onPress={()=>{setSelectBrand((preState)=> ({...preState, itemName: '', itemPrice: ''}))}}><Reset width={18} fill='#757575'/></TouchableOpacity>
                         </View>
                         <Text style={{color: '#212121', fontSize: 16, fontWeight: '700'}}>브랜드 추가</Text>
                     </View>
                     <View style={styles.footerBox2}>
-                        {selectBrand.itemName !== '' ? <TextInput style={styles.textInput} placeholder='브랜드명/제품명' value={selectBrand.itemName}></TextInput>
-                        : <TextInput style={styles.textInput} placeholder='브랜드명/제품명'></TextInput>}
+                        <TextInput style={styles.textInput} placeholder='브랜드명/제품명' value={selectBrand.itemName}
+                        onChangeText={(e) => setSelectBrand(prevState => ({ ...prevState, itemName: e}))}></TextInput>
+                        
                         <View style={{width: '6%'}}></View>
-                        {selectBrand.itemPrice !== '' ? <TextInput style={styles.textInput} placeholder='가격(원)' value={String(selectBrand.itemPrice)}></TextInput>
-                        : <TextInput style={styles.textInput} placeholder='가격(원)'></TextInput>}
+
+                       <TextInput style={styles.textInput} placeholder='가격(원)' value={String(selectBrand.itemPrice)}
+                        onChangeText={(e) => setSelectBrand(prevState => ({ ...prevState, itemPrice: e}))}></TextInput>
                     </View> 
                     <TouchableOpacity style={styles.footerBox3} onPress={()=>{
                         selectBrand.itemName == '' ? setModal((prevState) => ({...prevState, open: true, content: '브랜드/제품명은 필수 입력 항목입니다.', buttonCount: 1}))

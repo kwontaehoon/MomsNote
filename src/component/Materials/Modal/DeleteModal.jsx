@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     },
     scrollBox2:{
         width: 278,
+        height: 278,
     },
     listTitle:{
         marginTop: 15,
@@ -173,18 +174,17 @@ const CheckBoxModal = ({info, setModal, setModal2, modalVisible9, setModalVisibl
 
     const [titleDisplay, setTitleDisplay] = useState(0); // 품목 리스트 display
     const [info2, setInfo2] = useState(info);
+    console.log('info2: ', info2);
     const [data, setData] = useState({
         title: '카테고리 선택(필수)',
-        select: [],
+        select: [], // 품목 변경되었는지 모달창 띄우기위해 확인용
     });
-    const [isChecked, setChecked] = useState([]); // check box
 
     useEffect(()=>{
         setInfo2(info.filter(x => x.category == data.title));
-        setChecked(Array.from({length: info.filter(x => x.category == data.title).length}, ()=>{ return false }));
     }, [data.title]);
 
-    const submit = async() => {
+    const delete2 = async() => {
 
         // try{
         //     const response = await axios({
@@ -202,13 +202,24 @@ const CheckBoxModal = ({info, setModal, setModal2, modalVisible9, setModalVisibl
         //     }
     }
 
-    const change = (e, id) => { // check box
-        setData((prevState) => ({ ...prevState, select: [...data.select, id]}));
+    const deleteCencel = async() => {
+        
+        // try{
+        //     const response = await axios({
+        //         method: 'post',
+        //         url: 'https://momsnote.net/api/needs/cancel/delete',
+        //         headers: { 
+        //           'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+        //           'Content-Type': 'application/json'
+        //         },
+        //         data: { id: data.select.join(',') }
+        //         });
+        //         console.log('response: ', response.data);
+        //     }catch(error){
+        //       console.log('error: ', error);
+        //     }
 
-        let arr = [...isChecked];
-        arr[e] = !arr[e];
-        setChecked(arr);
-      }
+    }
 
     const optionBox = (e) => {
         switch(e){
@@ -238,9 +249,14 @@ const CheckBoxModal = ({info, setModal, setModal2, modalVisible9, setModalVisibl
             <View style={styles.listContent}>
             <Checkbox
               style={styles.checkbox}
-              value={isChecked[index]}
-              onValueChange={()=>{change(index, item.needsId)}}
-              color={isChecked[index] ? '#FEB401' : undefined}/></View>
+              value={item.deleteStatus == 0 ? true : false}
+              color={item.deleteStatus == 0 ? '#FEB401' : undefined}
+              onValueChange={()=>{
+                switch(true){
+                  case item.deleteStatus == 0 : setData(prevState => ({...prevState, needsId: item.needsId, needsBrandId: item.needsBrandId})), delete2(); break;
+                  default : setData(prevState => ({...prevState, needsId: item.needsId, needsBrandId: item.needsBrandId})), deleteCencel();
+                }
+              }}/></View>
             <View style={[styles.listContent, {width: '20%'}]}>{optionBox(item.grade)}</View>
             <View style={[styles.listContent, {width: '60%', alignItems: 'flex-start'}]}><Text>{item.needsName}</Text></View>
         </View>
@@ -291,7 +307,7 @@ const CheckBoxModal = ({info, setModal, setModal2, modalVisible9, setModalVisibl
                 </View>
                 :
                 <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>{
-                    data.select.length !== 0 ? (submit(), setModal((prevState) => ({...prevState, open: true, content: '출산준비물 리스트가 변경되었습니다.', buttonCount: 1})), setModalVisible9(!modalVisible9))
+                    data.select.length !== 0 ? (delete2(), setModal((prevState) => ({...prevState, open: true, content: '출산준비물 리스트가 변경되었습니다.', buttonCount: 1})), setModalVisible9(!modalVisible9))
                     : (setModal2((prevState) => ({...prevState, open: true, content: ['삭제 혹은 복구된 품목이 없습니다.', '그래도 적용하시겠습니까?'], buttonCount: 2})), setModalVisible9(!modalVisible9))}}>
                     <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>적용</Text>
                 </TouchableOpacity>}

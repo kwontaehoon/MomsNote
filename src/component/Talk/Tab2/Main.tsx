@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
+import axios from 'axios'
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
@@ -8,7 +9,7 @@ import Pencil from '../../../../public/assets/svg/pencil.svg'
 
 const styles = StyleSheet.create({
   container:{
-    height: '82%',
+    height: '91%',
     backgroundColor: 'white',
   },
   header:{
@@ -36,10 +37,9 @@ const styles = StyleSheet.create({
   },
   mainBox:{
     borderWidth: 1,
-    height: 80,
     borderColor: '#F5F5F5',
     justifyContent: 'center',
-    padding: 15,
+    padding: 20,
   },
   infoBox:{
     flexDirection: 'row',
@@ -111,46 +111,40 @@ const Talk1 = ({navigation}) => {
     {label: '인기순', value: '2'},
     {label: '마감임박', value: '3'},
 ]);
-  const [info, setInfo] = useState([
-    {
-        boardId: 1,
-        cateGory: '맘스토크',
-        subcategory: '출산리스트',
-        userId: '별똥맘',
-        title: '5주차 맘 입덧 질문있어요',
-        contents: '내용입니다.',
-        recommend: '3',
-        hits: '55',
-        boardDate: '2022-12-13'
-     },{
-        boardId: 2,
-        cateGory: '맘스토크',
-        subcategory: '출산리스트',
-        userId: '동글이',
-        title: '좋은 정보 많이 공유해요~',
-        contents: '내용입니다2.',
-        recommend: '3',
-        hits: '55',
-        boardDate: '2022-12-13'
-     },{
-        boardId: 3,
-        cateGory: '맘스토크',
-        subcategory: '출산리스트',
-        userId: '가양이',
-        title: '출산전 꼭! 읽어야할 임산부 필수글',
-        contents: '내용입니다3.',
-        recommend: '3',
-        hits: '55',
-        boardDate: '2022-12-13'
-    }
-]); // 맘스톡 정보
+  const [info, setInfo] = useState([]);
+  console.log('출산리스트공유게시판 info: ', info);
+
+
+useEffect(()=>{
+  console.log('출산 리스트 공유 게시판 업데이트');
+  const boardInfo = async() => {
+      try{
+      const response = await axios({
+          method: 'post',
+          url: 'https://momsnote.net/api/needs/share/list',
+          headers: { 
+            'Content-Type': 'application/json'
+          },
+          data : { 
+            order: 'new',
+            count: 2,
+            page: 1
+          }
+      });
+        setInfo(response.data);
+      }catch(error){
+        console.log('출산 리스트 공유 게시판 업데이트 axios error');
+      }
+    } 
+    boardInfo();
+}, []);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', item)}>
         <View style={styles.clockBox}><Text style={{color: '#9E9E9E', fontSize: 12}}>12시간전</Text></View>
         <Text>{item.title}</Text>
         <View style={styles.infoBox}>
-              <Text style={{color: '#9E9E9E', fontSize: 13}}>{item.userId} </Text>
+              <Text style={{color: '#9E9E9E', fontSize: 13}}>{item.nickname} </Text>
               <Like fill='#9E9E9E' width={13} height={17}/>
               <Text style={{color: '#9E9E9E', fontSize: 13}}> {item.recommend}  </Text>
               <Chat fill='#9E9E9E' width={13} height={17}/>
