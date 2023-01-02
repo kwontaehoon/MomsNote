@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 
     },
 })
-const Comment = ({info, refresh, setRefresh, setCommentsId, setInsert, modal, setModal}) => {
+const Comment = ({info, setCommentsId, setInsert, modal, setModal}) => {
 
     const [commentLike, setCommentLike] = useState(); // 댓글 추천 여부
 
@@ -58,7 +58,7 @@ const Comment = ({info, refresh, setRefresh, setCommentsId, setInsert, modal, se
             }
         }
         likeInfo();
-    }, [refresh]);
+    }, []);
 
     const commentplus = async(id) => {
 
@@ -80,7 +80,6 @@ const Comment = ({info, refresh, setRefresh, setCommentsId, setInsert, modal, se
             }catch(error){
               console.log('error: ', error);
             }
-            setRefresh(id);
     }
 
     const List = () => {

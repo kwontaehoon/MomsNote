@@ -23,6 +23,7 @@ import ModalFlatList from '../Test/ModalFlatList'
 import AxiosPost from '../Test/AxiosPost'
 import Wrap from '../Test/Wrap'
 import ScrollView from '../Test/ScrollView'
+import ReduxTest from '../Test/ReduxTest';
 
 import Search from '../../../public/assets/svg/Search.svg'
 import Bell from '../../../public/assets/svg/Bell.svg'
@@ -51,7 +52,7 @@ function MainScreen() {
 
 
   return (
-    <Tab.Navigator initialRouteName='출산 준비물' screenOptions={{ headerShown: false, tabBarStyle:{ height: 60, position: 'absolute', paddingBottom: 7}, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
+    <Tab.Navigator initialRouteName='맘스 톡' screenOptions={{ headerShown: false, tabBarStyle:{ height: 60, position: 'absolute', paddingBottom: 7}, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
       <Tab.Screen name="맘스 톡" options={{tabBarIcon: ({color}) => (<Icon3 name='message-square' size={22} color={color}/>)}}>
           {()=>(
                <Stack.Navigator>

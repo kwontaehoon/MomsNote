@@ -5,6 +5,8 @@ import Icon2 from 'react-native-vector-icons/AntDesign'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { getBoard } from '../../../../Redux/Slices/BoardSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -206,6 +208,7 @@ const Register = ({navigation, route}) => {
             title: '질문 게시판'
         },
     ];
+    const dispatch = useDispatch();
     const [modalVisible, setModalVisible] = useState(false); // 완료시 모달창
     const [modalVisible2, setModalVisible2] = useState(false); // 취소시 모달창
     const [modal2Content, setModal2Content] = useState(''); // 완료시 모달 내용
@@ -313,20 +316,20 @@ const Register = ({navigation, route}) => {
         }
         console.log('data: ', data);
        
-        try{
-          const response = await axios({
-                method: 'post',
-                url: 'https://momsnote.net/api/board/write',
-                headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
-                  },
-                data: data
-              });
-              console.log('response: ', response.data);
-          }catch(error){
-            console.log('error: ', error);
-          }
-        route.params.setRefresh(info.contents);
+        // try{
+        //   const response = await axios({
+        //         method: 'post',
+        //         url: 'https://momsnote.net/api/board/write',
+        //         headers: { 
+        //             'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
+        //           },
+        //         data: data
+        //       });
+        //       console.log('response: ', response.data);
+        //   }catch(error){
+        //     console.log('error: ', error);
+        //   }
+        dispatch(getBoard());
     }
 
     const close = (id, name) => {

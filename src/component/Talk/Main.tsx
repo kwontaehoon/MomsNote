@@ -4,12 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal, StatusBar } 
 import Talk1 from './Tab1/Main'
 import Talk2 from './Tab2/Main'
 import Talk3 from './Tab3/Main'
-import axios from 'axios'
-import { useSelector, useDispatch } from 'react-redux'
-import { getBoard } from '../../Redux/Slices/BoardSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
-
 
 const styles = StyleSheet.create({
     container:{
@@ -30,17 +25,8 @@ const styles = StyleSheet.create({
     },
 })
 const Main = ({navigation}) => {
-
-    const board = useSelector(state => { return state.board.data; });
-    console.log('board: ', board);
-    const dispatch = useDispatch();
     
     const [filter, setFilter] = useState([true, false, false]); // tab
-
-
-    useEffect(()=>{
-        dispatch(getBoard());
-    }, []);
 
     // useEffect(()=>{
     //     AsyncStorage.setItem('nickname',JSON.stringify({'nickname': 'User1', 'phonenumber': '010-xxxx-xxxx'}), () => {

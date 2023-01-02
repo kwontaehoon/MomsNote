@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { getBoard } from '../../Redux/Slices/BoardSlice'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -47,8 +49,9 @@ const styles = StyleSheet.create({
     }
 })
 
-const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, setModal3, modal6, setModal6, commentsId, info, setBoardState}) => {
+const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, setModal3, modal6, setModal6, commentsId, info}) => {
 
+    const dispatch = useDispatch();
     const [userId, setUserId] = useState();
     // console.log('dot modal comments userId: ', commentsId[0]);
     // console.log('dot modal comments commentsId: ', commentsId[1]);
@@ -63,21 +66,21 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
     }, []);
 
     const BoardDelete = async() => {
-        try{
-            const response = await axios({
-                  method: 'delete',
-                  url: 'https://momsnote.net/api/board/delete',
-                  headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDc1MTksImV4cCI6MTY3NDE5OTUxOX0.AWDHv0yNHklAEqHCojyNWWf0vb38L5dT-jFll4fE6Bk', 
-                    'Content-Type': 'application/json'
-                  },
-                  data: { boardId: info[0].boardId }
-                });
-                console.log('response: ', response.data);
-            }catch(error){
-              console.log('error: ', error);
-            }
-        setBoardState(info[0].boardId);
+        // try{
+        //     const response = await axios({
+        //           method: 'delete',
+        //           url: 'https://momsnote.net/api/board/delete',
+        //           headers: { 
+        //             'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDc1MTksImV4cCI6MTY3NDE5OTUxOX0.AWDHv0yNHklAEqHCojyNWWf0vb38L5dT-jFll4fE6Bk', 
+        //             'Content-Type': 'application/json'
+        //           },
+        //           data: { boardId: info[0].boardId }
+        //         });
+        //         console.log('response: ', response.data);
+        //     }catch(error){
+        //       console.log('error: ', error);
+        //     }
+        dispatch(getBoard());
     }
 
     const CommentDelete = async() => {
@@ -95,7 +98,7 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
             }catch(error){
               console.log('error: ', error);
             }
-            setRecommendState(false);
+            
     }
 
     const DotFilter = () => {
@@ -114,7 +117,7 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
             case info[0].userId == userId: return(
                 <View style={styles.main}>
                         <TouchableOpacity style={styles.mainBox} onPress={()=>{setModal(!modal), setModal2(!modal2)}}><Text style={{color: '#1E88E5', fontSize: 20}}>게시물 수정</Text></TouchableOpacity>
-                        <TouchableOpacity style={styles.mainBox} onPress={()=>{setModal(!modal), BoardDelete(), navigation.goBack('1234')}}><Text style={{color: '#F23737', fontSize: 20}}>삭제하기</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.mainBox} onPress={()=>{setModal(!modal), BoardDelete(), navigation.goBack()}}><Text style={{color: '#F23737', fontSize: 20}}>삭제하기</Text></TouchableOpacity>
                 </View>
             )
             

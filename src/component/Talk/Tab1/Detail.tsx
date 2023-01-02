@@ -9,6 +9,8 @@ import Modal6 from '../../Modal/Declare2'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
 import { Video, AVPlaybackStatus } from 'expo-av';
+import { useSelector, useDispatch } from 'react-redux'
+import { getBoard } from '../../../Redux/Slices/BoardSlice'
 
 import Comment from './Comment'
 import axios from 'axios'
@@ -188,10 +190,9 @@ const Talk1Sub = ({navigation, route}) => {
         setPageHeight(false);
     });
 
+    const dispatch = useDispatch();
     const info = [route.params.item];
     console.log('상세내용 info: ', info);
-    const [refresh, setRefresh] = useState(false);
-    console.log('refresh: ', refresh);
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const [comment, setComment] = useState([]); // 댓글 정보
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
@@ -212,8 +213,6 @@ const Talk1Sub = ({navigation, route}) => {
 
     const animation = useRef(new Animated.Value(0)).current;
 
-
-
     useEffect(()=>{
         const commentInfo = async() => {
             console.log('댓글 목록 업데이트');
@@ -233,7 +232,7 @@ const Talk1Sub = ({navigation, route}) => {
             }
         }
         commentInfo();
-      }, [refresh]);
+      }, []);
 
     useEffect(()=>{ // 게시물 추천 여부
         console.log('게시물 추천 여부 업데이트');
@@ -254,47 +253,47 @@ const Talk1Sub = ({navigation, route}) => {
             }
         }
         likeInfo();
-    }, [refresh]);
+    }, [boardLike]);
 
     const commentRegister = async() => { // 댓글 업데이트 필요
-        try{
-            const response = await axios({ 
-                  method: 'post',
-                  url: 'https://momsnote.net/api/comments/write',
-                  headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE3NzUwMzAsImV4cCI6MTY3NDM2NzAzMH0.sXaK1MqIIiSpnF-xGkY-TRIu-O-ndUa1QuG9HFkGrMM', 
-                    'Content-Type': 'application/json'
-                  },
-                  data: insert
-                });
-                console.log('response: ', response.data);
-            }catch(error){
-              console.log('error: ', error);
-            }
-       setRefresh(insert.contents);
+        // try{
+        //     const response = await axios({ 
+        //           method: 'post',
+        //           url: 'https://momsnote.net/api/comments/write',
+        //           headers: { 
+        //             'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE3NzUwMzAsImV4cCI6MTY3NDM2NzAzMH0.sXaK1MqIIiSpnF-xGkY-TRIu-O-ndUa1QuG9HFkGrMM', 
+        //             'Content-Type': 'application/json'
+        //           },
+        //           data: insert
+        //         });
+        //         console.log('response: ', response.data);
+        //     }catch(error){
+        //       console.log('error: ', error);
+        //     }
+        dispatch(getBoard());
     }
 
     const likeplus = async() => { // 게시판 좋아요
         console.log('likeplus');
-        try{
-            const response = await axios({
-                  method: 'post',
-                  url: 'https://momsnote.net/api/board/recommend',
-                  headers: { 
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
-                    'Content-Type': 'application/json'
-                  },
-                  data: {
-                    boardId: info[0].boardId,
-                    type: 'plus'
-                  }
-                });
-                console.log('response: ', response.data);
-            }catch(error){
-              console.log('error: ', error);
-            }
-            setRefresh(info[0].boardId);
-            route.params.setRefresh(info[0].boardId);
+        // try{
+        //     const response = await axios({
+        //           method: 'post',
+        //           url: 'https://momsnote.net/api/board/recommend',
+        //           headers: { 
+        //             'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
+        //             'Content-Type': 'application/json'
+        //           },
+        //           data: {
+        //             boardId: info[0].boardId,
+        //             type: 'plus'
+        //           }
+        //         });
+        //         console.log('response: ', response.data);
+        //     }catch(error){
+        //       console.log('error: ', error);
+        //     }
+            setBoardLike();
+            dispatch(getBoard());
     }
 
     const ImageBox = () => {
@@ -345,8 +344,6 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
             )
         }
-       
-        
     }
 
     const opacity_ani = () => {
@@ -366,7 +363,7 @@ const Talk1Sub = ({navigation, route}) => {
     const renderItem = ({ item }) => (
         <View>
             <View style={styles.header2}>
-                <TouchableOpacity style={styles.profileBox} onPress={()=>route.params.setRefresh('dsadssa')}></TouchableOpacity>
+                <TouchableOpacity style={styles.profileBox}></TouchableOpacity>
                 <View style={styles.infoBox}>
                     <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{item.nickname}</Text>
                     <Text style={{color: '#9E9E9E', fontSize: 13}}>{moment().diff(moment(item.boardDate), "days")}일 전</Text>
@@ -393,7 +390,7 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
                 <View style={styles.mainBox4}>
                     {comment.length !== 0 ?
-                    <Comment info={comment} refresh={refresh} setRefresh={setRefresh} setCommentsId={setCommentsId} setInsert={setInsert} modal={modal} setModal={setModal}/>:
+                    <Comment info={comment} setCommentsId={setCommentsId} setInsert={setInsert} modal={modal} setModal={setModal}/>:
                     <View style={{alignItems: 'center', justifyContent: 'center', height: 200}}>
                         <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
                         <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
@@ -412,7 +409,7 @@ const Talk1Sub = ({navigation, route}) => {
         </Animated.View>
 
         <Modal navigation={navigation} modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3} commentsId={commentsId} info={info}
-            modal6={modal6} setModal6={setModal6} setBoardState={route.params.setRefresh}/>
+            modal6={modal6} setModal6={setModal6}/>
         <Modal2 modal2={modal2} setModal2={setModal2} userId={info[0].userId} ani={opacity_ani}/>
         <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4} boardId={info[0].boardId}/>
         <Modal4 modal4={modal4} setModal4={setModal4} />

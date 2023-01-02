@@ -29,9 +29,7 @@ const initialState = {
 export const boardSlice = createSlice({
     name: 'board',
     initialState,
-    reducers: {
-      
-    },
+    reducers: {},
     extraReducers: (bulider) => {
       bulider.addCase(getBoard.fulfilled, (state, action) => {
         state.loading = 'success';

@@ -4,6 +4,8 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 import moment from 'moment'
 import { Video, AVPlaybackStatus } from 'expo-av';
+import { useSelector, useDispatch } from 'react-redux'
+import { getBoard } from '../../../Redux/Slices/BoardSlice'
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
@@ -178,6 +180,9 @@ const Talk1 = ({navigation, route}) => {
   ];
 
 
+  const dispatch = useDispatch();
+  const info = useSelector(state => { return state.board.data; });
+  console.log('info: ', info);
   const [modalVisible, setModalVisible] = useState(false); // 글쓰기 모달
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');
@@ -186,41 +191,43 @@ const Talk1 = ({navigation, route}) => {
   ]);
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
-  const [info, setInfo] = useState([]); // 게시글 목록
-  console.log('게시글 목록 info: ', info);
-
-  const [refresh, setRefresh] = useState('');
+  console.log('게시글 목록 info: ', info); 
 
   useEffect(()=>{
-    console.log('게시글 목록 업데이트');
-    const commentInfo = async() => {
-        try{
-        const response = await axios({
-            method: 'post',
-            url: 'https://momsnote.net/api/board/list',
-            data : { 
-              order: 'new',
-              count: 5,
-              page: 1,
-              subcategory: DATA[filter.findIndex(x => x === true)].title
-            }
-        });
-            setInfo(response.data);
-        }catch(error){
-            console.log('comment axios error');
-        }
-    } 
-    commentInfo();
-  }, [refresh, filter]);
+    console.log('Talk1 useEffect');
+    dispatch(getBoard());
+  }, []);
 
-  const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
+  // useEffect(()=>{
+  //   console.log('게시글 목록 업데이트');
+  //   const commentInfo = async() => {
+  //       try{
+  //       const response = await axios({
+  //           method: 'post',
+  //           url: 'https://momsnote.net/api/board/list',
+  //           data : { 
+  //             order: 'new',
+  //             count: 5,
+  //             page: 1,
+  //             subcategory: DATA[filter.findIndex(x => x === true)].title
+  //           }
+  //       });
+  //           setInfo(response.data);
+  //       }catch(error){
+  //           console.log('comment axios error');
+  //       }
+  //   } 
+  //   commentInfo();
+  // }, [refresh, filter]);
+
+  const change = (e) => { // 카테고리 배경색상, 글자 색상 변경 onpress
     let arr = Array.from({length: 6}, () => {return false});
     arr[e] = !arr[e];
     setFilter(arr);
+    
   }
 
   const dayCalculate = (date) => {
-    const a = moment().diff(moment(date), 'minute');
     switch(true){
       case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
       case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
@@ -260,7 +267,7 @@ const Talk1 = ({navigation, route}) => {
   );
 
   const renderItem2 = ({ item }) => (
-    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', {item, refresh, setRefresh})}>
+    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', {item})}>
         { item.savedName !== null ? <ImageBox item={item.savedName}/> : '' }
         <View style={[styles.mainBoxSub, {paddingTop: 5, width: '65%', alignItems: 'flex-start'}]}>
           <Text style={{fontSize: 15, paddingTop: 2}}>{item.title} </Text>
@@ -324,7 +331,7 @@ const Talk1 = ({navigation, route}) => {
                         </View>
                         <View style={styles.modalBox}>
                             <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>게시글 불러오기</Text></TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModalVisible(!modalVisible), navigation.navigate('글쓰기', {setRefresh})}}>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModalVisible(!modalVisible), navigation.navigate('글쓰기')}}>
                               <Text style={{color: 'black', fontSize: 16}}>새로 작성하기</Text>
                             </TouchableOpacity>
                         </View>
