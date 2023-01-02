@@ -280,11 +280,11 @@ const Talk1Sub = ({navigation, route}) => {
         </View>
       </TouchableOpacity>
 
-      <Animated.View style={[styles.myList2, {opacity: animation}]}>
-        <View style={styles.myList2Header}>
+      <Animated.View style={[styles.myList2, {opacity: animation, display: myList ? 'flex' : 'none'}]} >
+        <TouchableOpacity style={styles.myList2Header} onPress={()=>{opacity_ani(), setMyList(!myList)}}>
           <Text style={{fontSize: 15, fontWeight: '600', color: 'white'}}>나의 출산준비물</Text>
           <ArrowBottom fill={'white'}/>
-        </View>
+        </TouchableOpacity>
         <FlatList data={DATA} renderItem={renderItem2}
             keyExtractor={item => item.id}>
         </FlatList>

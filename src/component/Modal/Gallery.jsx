@@ -1,6 +1,5 @@
 import React from 'react'
 import { Text, View, StyleSheet, Image, StatusBar, Button } from 'react-native'
-import Slick from 'react-native-slick'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Swiper from 'react-native-swiper'
 import { useIsFocused } from '@react-navigation/native'
@@ -100,7 +99,6 @@ const Gallery = ({navigation, route}) => {
 
       <Swiper style={styles.wrapper} showsButtons={false} dot={<View style={styles.dot}/>} activeDot={<View style={styles.dotActive}/>}>
         {saveName.map((x) => {
-          console.log('x: ', x);
           if(x.charAt(x.length-1) !== '4'){
           return(
             <View style={styles.mainBox}>

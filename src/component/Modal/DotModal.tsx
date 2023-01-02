@@ -49,13 +49,10 @@ const styles = StyleSheet.create({
     }
 })
 
-const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, setModal3, modal6, setModal6, commentsId, info}) => {
+const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, setModal3, modal6, setModal6, commentsId, info, commentData}) => {
 
     const dispatch = useDispatch();
     const [userId, setUserId] = useState();
-    // console.log('dot modal comments userId: ', commentsId[0]);
-    // console.log('dot modal comments commentsId: ', commentsId[1]);
-    // console.log(commentsId);
     
      useEffect(()=>{
         const getUserId = async() => {
@@ -80,25 +77,25 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
         //     }catch(error){
         //       console.log('error: ', error);
         //     }
-        dispatch(getBoard());
+        dispatch(getBoard(commentData));
     }
 
     const CommentDelete = async() => {
-        try{
-            const response = await axios({
-                  method: 'delete',
-                  url: 'https://momsnote.net/api/comments/delete',
-                  headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDc1MTksImV4cCI6MTY3NDE5OTUxOX0.AWDHv0yNHklAEqHCojyNWWf0vb38L5dT-jFll4fE6Bk', 
-                    'Content-Type': 'application/json'
-                  },
-                  data: { commentsId: commentsId[1] }
-                });
-                console.log('response: ', response.data);
-            }catch(error){
-              console.log('error: ', error);
-            }
-            
+        // try{
+        //     const response = await axios({
+        //           method: 'delete',
+        //           url: 'https://momsnote.net/api/comments/delete',
+        //           headers: { 
+        //             'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDc1MTksImV4cCI6MTY3NDE5OTUxOX0.AWDHv0yNHklAEqHCojyNWWf0vb38L5dT-jFll4fE6Bk', 
+        //             'Content-Type': 'application/json'
+        //           },
+        //           data: { commentsId: commentsId[1] }
+        //         });
+        //         console.log('response: ', response.data);
+        //     }catch(error){
+        //       console.log('error: ', error);
+        //     }
+        
     }
 
     const DotFilter = () => {

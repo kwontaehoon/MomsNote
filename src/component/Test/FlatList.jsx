@@ -1,29 +1,27 @@
 import React, {useState} from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal } from 'react-native'
-import Google from '../../../public/assets/svg/google.svg';
-import Chat from '../../../public/assets/svg/chat.svg';
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal, ScrollView } from 'react-native'
 
 const styles = StyleSheet.create({
     container:{
         backgroundColor: 'white',
         height: '92%',
-        borderWidth: 2,
+        borderWidth: 1,
     },
     header:{
         height: 400,
-        borderWidth: 1,
+        borderWidth: 2,
+        borderColor: 'blue',
     },
     main:{
-        borderWidth: 1,
         height: 200,
         flexDirection: 'row'
     },
     mainBox:{
         borderWidth: 1,
+        borderColor: 'red',
         width: '50%',
-        overflow: 'hidden',
-        position: 'relative',
-        zIndex: 999
+        height: 200,
+
     },
     mainBox2:{
         width: 100,
@@ -31,8 +29,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     footer:{
-        borderWidth: 1,
         height: 300,
+        backgroundColor: 'pink'
     },
 
     scrollBox:{
@@ -91,20 +89,22 @@ const Main = ({navigation}) => {
     const renderItem = ({ item }) => (
         <View>
             <View style={styles.header}>
-                <Google width={50} height={50} fill={'red'}/>
-                <Chat width={200} height={200} fill={'blue'} />
+
             </View>
             <View style={styles.main}>
-                <View style={styles.mainBox}>
-                    <FlatList data={DATA} renderItem={renderItem3} numColumns={3}
-                        keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
-                    </FlatList>
-                </View>
-                <View style={styles.mainBox}>
-                    <FlatList data={DATA2} renderItem={renderItem2}
-                        keyExtractor={item => item.id} showsVerticalScrollIndicator={false} horizontal={true}>
-                    </FlatList>
-                </View>
+    
+                    <ScrollView style={styles.mainBox} nestedScrollEnabled={true}>
+                        <View style={styles.mainBox2}></View>
+                        <View style={styles.mainBox2}></View>
+                        <View style={styles.mainBox2}></View>
+                        <View style={styles.mainBox2}></View>
+                        <View style={styles.mainBox2}></View>
+                        <View style={styles.mainBox2}></View>
+                        <View style={styles.mainBox2}></View>
+                        <View style={styles.mainBox2}></View>
+                        <View style={styles.mainBox2}></View>
+                    </ScrollView>
+
             </View>
             <View style={styles.footer}></View>
         </View>
@@ -114,12 +114,6 @@ const Main = ({navigation}) => {
         <View style={styles.mainBox2}>
             <Text>{item.id}</Text>
         </View>
-    );
-
-    const renderItem3 = ({ item }) => (
-        <TouchableOpacity style={{height: 130, borderWidth: 1}}>
-            <Text>{item.title}</Text>
-        </TouchableOpacity>
     );
 
   return (

@@ -5,12 +5,12 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import moment from 'moment'
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
-import { getBoard } from '../../../Redux/Slices/BoardSlice'
+import { postBoard } from '../../../Redux/Slices/BoardSlice'
+import Swiper from 'react-native-swiper'
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
 import Pencil from '../../../../public/assets/svg/pencil.svg'
-import axios from 'axios'
 
 const styles = StyleSheet.create({
   container:{
@@ -57,6 +57,10 @@ const styles = StyleSheet.create({
     borderColor: '#EEEEEE',
     position: 'relative',
     zIndex: -100,
+  },
+  slide:{
+    height: '100%',
+    justifyContent: 'center'
   },
   main:{
     height: '74%',
@@ -189,14 +193,19 @@ const Talk1 = ({navigation, route}) => {
   const [items, setItems] = useState([
     {label: '최신순', value: '1'}, {label: '인기순', value: '2'}, {label: '마감임박', value: '3'},
   ]);
+  const [data, setData] = useState({
+    order: 'new',
+    count: 5,
+    page: 1,
+    subcategory: '전체'
+  });
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
   console.log('게시글 목록 info: ', info); 
 
   useEffect(()=>{
-    console.log('Talk1 useEffect');
-    dispatch(getBoard());
-  }, []);
+    dispatch(postBoard(data));
+  }, [filter]);
 
   // useEffect(()=>{
   //   console.log('게시글 목록 업데이트');
@@ -224,7 +233,8 @@ const Talk1 = ({navigation, route}) => {
     let arr = Array.from({length: 6}, () => {return false});
     arr[e] = !arr[e];
     setFilter(arr);
-    
+    console.log(DATA[e].title);
+    setData(prevState => ({...prevState, subcategory: DATA[e].title}));
   }
 
   const dayCalculate = (date) => {
@@ -305,9 +315,21 @@ const Talk1 = ({navigation, route}) => {
               setOpen={setOpen} setValue={setValue} setItems={setItems} labelStyle={{paddingLeft: 18}}/>
         </View>
       </View>
-      <View style={[styles.header3, {display: info.length === 0 ? 'none' : 'flex'}]}>
-        <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] 5주차 맘 입덧 질문있어요 슬라이딩 ~</Text>
+
+      <View style={[styles.header3, {display: info.length == 0 ? 'none' : 'flex'}]}>
+          <Swiper horizontal={false} autoplay={true} autoplayTimeout={4.5} showsPagination={false}>
+          <View style={styles.slide}>
+            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] 5주차 맘 입덧 질문있어요 슬라이딩 ~</Text>
+          </View>
+          <View style={styles.slide}>
+            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] 임신 7주차 병원 방문시기</Text>
+          </View>
+          <View style={styles.slide}>
+            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] 임신확인서 받았어요!!</Text>
+          </View>
+        </Swiper>
       </View>
+
       <View style={styles.main}>
         {info.length !== 0 ?
         <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{console.log('afdasfdasfdas')}} onEndReachedThreshold={0.6}

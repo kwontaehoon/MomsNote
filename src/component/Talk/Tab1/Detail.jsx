@@ -10,7 +10,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
-import { getBoard } from '../../../Redux/Slices/BoardSlice'
+import { postBoard } from '../../../Redux/Slices/BoardSlice'
+import { postComment } from '../../../Redux/Slices/CommentSlice'
 
 import Comment from './Comment'
 import axios from 'axios'
@@ -192,9 +193,9 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = [route.params.item];
-    console.log('상세내용 info: ', info);
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
-    const [comment, setComment] = useState([]); // 댓글 정보
+    const comment = useSelector(state => { return state.comment.data; });
+    console.log('comment: ', comment);
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
     const [insert, setInsert] = useState(
         {
@@ -205,6 +206,18 @@ const Talk1Sub = ({navigation, route}) => {
         }
     ); // 댓글 입력
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요
+    const [boardData, setBoardData] = useState({
+        order: 'new',
+        count: 5,
+        page: 1,
+        subcategory: '전체'
+    })
+    const [commentData, setCommentData] = useState({
+        boardId: info[0].boardId,
+        count: 1,
+        page: 1
+    });
+
     const [modal, setModal] = useState(false); // dot 모달 다른사람게시판 차단 및 신고
     const [modal2, setModal2] = useState(false); // 차단하기
     const [modal3, setModal3] = useState(false); // 게시물 신고 하기 
@@ -213,25 +226,8 @@ const Talk1Sub = ({navigation, route}) => {
 
     const animation = useRef(new Animated.Value(0)).current;
 
-    useEffect(()=>{
-        const commentInfo = async() => {
-            console.log('댓글 목록 업데이트');
-            try{
-            const response = await axios({
-                method: 'post',
-                url: 'https://momsnote.net/api/comments/list',
-                data : { 
-                    count: 5,
-                    page: 1,
-                    boardId: info[0].boardId
-                }
-            });
-                setComment(response.data);
-            }catch(error){
-                console.log('comment axios error');
-            }
-        }
-        commentInfo();
+    useEffect(()=>{ // 댓글 목록
+        dispatch(postComment(commentData));
       }, []);
 
     useEffect(()=>{ // 게시물 추천 여부
@@ -270,7 +266,8 @@ const Talk1Sub = ({navigation, route}) => {
         //     }catch(error){
         //       console.log('error: ', error);
         //     }
-        dispatch(getBoard());
+        dispatch(postBoard(boardData));
+        dispatch(postComment(commentData));
     }
 
     const likeplus = async() => { // 게시판 좋아요
@@ -293,11 +290,10 @@ const Talk1Sub = ({navigation, route}) => {
         //       console.log('error: ', error);
         //     }
             setBoardLike();
-            dispatch(getBoard());
+            dispatch(postBoard(boardData));
     }
 
     const ImageBox = () => {
-        console.log(info[0]);
         const arr:any[] = [];
         const a = (info[0].savedName.split('|')).filter(x => {
             if(x.charAt(x.length-1) === '4'){ arr.push(x); }else return x;
@@ -390,7 +386,7 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
                 <View style={styles.mainBox4}>
                     {comment.length !== 0 ?
-                    <Comment info={comment} setCommentsId={setCommentsId} setInsert={setInsert} modal={modal} setModal={setModal}/>:
+                    <Comment info={comment} setCommentsId={setCommentsId} setInsert={setInsert} modal={modal} setModal={setModal} commentData={commentData}/>:
                     <View style={{alignItems: 'center', justifyContent: 'center', height: 200}}>
                         <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
                         <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
@@ -409,7 +405,7 @@ const Talk1Sub = ({navigation, route}) => {
         </Animated.View>
 
         <Modal navigation={navigation} modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3} commentsId={commentsId} info={info}
-            modal6={modal6} setModal6={setModal6}/>
+            modal6={modal6} setModal6={setModal6} commentData={commentData}/>
         <Modal2 modal2={modal2} setModal2={setModal2} userId={info[0].userId} ani={opacity_ani}/>
         <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4} boardId={info[0].boardId}/>
         <Modal4 modal4={modal4} setModal4={setModal4} />

@@ -195,7 +195,7 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8, modal, setModal}) => {
                         </View>
                         {info.category !== '카테고리 선택(필수)' && info.needsName.length !== 0 ?
                             <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>{add(), setModalVisible8(!modalVisible8),
-                            setModal((prevState) => ({...prevState, open: true, content: '품목이 추가되었습니다.', buttonCount: 1}))}}>
+                            setModal(prevState => ({...prevState, open: true, content: '품목이 추가되었습니다.', buttonCount: 1}))}}>
                                 <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>추가하기</Text>
                             </TouchableOpacity> : 
                             

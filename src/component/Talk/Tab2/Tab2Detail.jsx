@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
@@ -47,21 +47,22 @@ const styles = StyleSheet.create({
     },
     main:{
         borderBottomWidth: 1,
-        borderColor: '#EEEEEE'
+        borderColor: '#EEEEEE',
+        padding: 20,
     },
     mainBox:{
         height: 70,
-        padding: 20,
+
     },
     mainBox2:{
         height: 60,
-        padding: 20,
     },
     mainBox3:{
-        padding: 20,
+
     },
     listBox:{
-        borderWidth: 1,
+        borderWidth: 2,
+        height: 400,
     },
     listHeader:{
         height: 40,
@@ -181,29 +182,6 @@ const Talk1Sub = ({navigation, route}) => {
     console.log('route: ', route.params);
     const info = route.params;
 
-    const [info2, setInfo2] = useState([
-        {
-          id: 1,
-          title: '산모패드',
-          brand: '마더스베이비',
-          price: '39,000'
-        },{
-          id: 1,
-          title: '산모패드',
-          brand: '마더스베이비',
-          price: '39,800'
-        },{
-          id: 1,
-          title: '산모패드',
-          brand: '마더스베이비',
-          price: '31,000'
-        },{
-          id: 1,
-          title: '산모패드',
-          brand: '마더스베이비',
-          price: '29,000'
-        },
-      ])
     const [info3, setInfo3] = useState([
         {
           id: '0',
@@ -287,8 +265,6 @@ const Talk1Sub = ({navigation, route}) => {
         setList(arr);
     }
 
-    
-
     const renderItem = ({ item }) => (
         <View>
             <View style={styles.header2}>
@@ -306,15 +282,18 @@ const Talk1Sub = ({navigation, route}) => {
                     <Text>{info.contents}</Text>
                 </View>
                 <View style={styles.mainBox3}>
-                    <View style={styles.listBox}>
-                        <View style={styles.listHeader}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text style={{fontSize: 15, fontWeight: '600', color: 'white'}}>{info.userId}</Text>
-                                <Text style={{fontSize: 15, color: 'white'}}> 님의 출산준비물</Text>
-                            </View>
+
+                    <View style={styles.listHeader}>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <Text style={{fontSize: 15, fontWeight: '600', color: 'white'}}>{info.userId}</Text>
+                            <Text style={{fontSize: 15, color: 'white'}}> 님의 출산준비물</Text>
                         </View>
-                        <List />
                     </View>
+
+                    <ScrollView style={styles.listBox} nestedScrollEnabled={true}>
+                        <List />
+                    </ScrollView>
+
                     <View style={styles.sum}>
                             <View style={styles.myList2FooterBox}>
                                 <View style={styles.budget}><Text style={{fontSize: 18, fontWeight: '600'}}>119,700</Text></View>
@@ -357,6 +336,12 @@ const Talk1Sub = ({navigation, route}) => {
                     </View>}
                 </View>
             </View>
+        </View>
+      );
+
+      const renderItem2 = ({ item }) => (
+        <View style={styles.listBox}>
+            
         </View>
       );
 

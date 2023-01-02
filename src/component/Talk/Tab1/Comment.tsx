@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Keyboard } from 'react-native'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useDispatch } from 'react-redux'
+import { postComment } from '../../../Redux/Slices/CommentSlice'
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
@@ -35,13 +37,13 @@ const styles = StyleSheet.create({
 
     },
 })
-const Comment = ({info, setCommentsId, setInsert, modal, setModal}) => {
+const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData}) => {
 
+    const dispatch = useDispatch();
     const [commentLike, setCommentLike] = useState(); // 댓글 추천 여부
 
     useEffect(()=>{
-        const likeInfo = async() => {
-            console.log('댓글 추천 여부 업데이트');
+        const likeInfo = async() => { // 댓글 추천 Flag
             try{
                 const response = await axios({
                     method: 'post',
@@ -58,28 +60,30 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal}) => {
             }
         }
         likeInfo();
-    }, []);
+    }, [commentLike]);
 
-    const commentplus = async(id) => {
-
-        try{
-            const response = await axios({
-                  method: 'post',
-                  url: 'https://momsnote.net/api/comments/recommend',
-                  headers: { 
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
-                    'Content-Type': 'application/json'
-                  },
-                  data: {
-                    boardId: info[0].boardId,
-                    commentsId: id,
-                    type: 'plus'
-                  }
-                });
-                console.log('response: ', response.data);
-            }catch(error){
-              console.log('error: ', error);
-            }
+    const commentplus = async(id) => { // 댓글 추천
+        console.log('likeComment');
+        // try{
+        //     const response = await axios({ 
+        //           method: 'post',
+        //           url: 'https://momsnote.net/api/comments/recommend',
+        //           headers: { 
+        //             'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
+        //             'Content-Type': 'application/json'
+        //           },
+        //           data: {
+        //             boardId: info[0].boardId,
+        //             commentsId: id,
+        //             type: 'plus'
+        //           }
+        //         });
+        //         console.log('response: ', response.data);
+        //     }catch(error){
+        //       console.log('error: ', error);
+        //     }
+            setCommentLike();
+            dispatch(postComment(commentData));
     }
 
     const List = () => {

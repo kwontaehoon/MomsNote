@@ -195,8 +195,7 @@ const Navigation = ({navigation, route}) => {
     },
   ]
 
-  const [sumResult, setSumResult] = useState(0);
-  console.log('sumResult: ', sumResult);
+  const [sumResult, setSumResult] = useState(0); // 총 예산
   const ref = useRef();
   const [info, setInfo] = useState([]); // 줄산준비물 리스트
   console.log('출산 준비물 리스트: ', info);
