@@ -148,6 +148,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
                   },
                 data: selectBrand
             });
+            console.log('response: ', response.data);
             setInfo(response.data);
             }catch(error){
                 console.log('comment axios error:', error)

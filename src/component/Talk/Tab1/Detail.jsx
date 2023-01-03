@@ -193,9 +193,11 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = [route.params.item];
+    console.log('Detail info: ', route.params.item);
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
     console.log('comment: ', comment);
+    console.log('comment: ', comment == '');
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
     const [insert, setInsert] = useState(
         {
@@ -205,7 +207,9 @@ const Talk1Sub = ({navigation, route}) => {
             level: 0
         }
     ); // 댓글 입력
+    console.log('댓글 작성: ', insert);
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요
+    console.log('boardlike: ', boardLike);
     const [boardData, setBoardData] = useState({
         order: 'new',
         count: 5,
@@ -252,45 +256,45 @@ const Talk1Sub = ({navigation, route}) => {
     }, [boardLike]);
 
     const commentRegister = async() => { // 댓글 업데이트 필요
-        // try{
-        //     const response = await axios({ 
-        //           method: 'post',
-        //           url: 'https://momsnote.net/api/comments/write',
-        //           headers: { 
-        //             'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE3NzUwMzAsImV4cCI6MTY3NDM2NzAzMH0.sXaK1MqIIiSpnF-xGkY-TRIu-O-ndUa1QuG9HFkGrMM', 
-        //             'Content-Type': 'application/json'
-        //           },
-        //           data: insert
-        //         });
-        //         console.log('response: ', response.data);
-        //     }catch(error){
-        //       console.log('error: ', error);
-        //     }
+        try{
+            const response = await axios({ 
+                  method: 'post',
+                  url: 'https://momsnote.net/api/comments/write',
+                  headers: { 
+                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE3NzUwMzAsImV4cCI6MTY3NDM2NzAzMH0.sXaK1MqIIiSpnF-xGkY-TRIu-O-ndUa1QuG9HFkGrMM', 
+                    'Content-Type': 'application/json'
+                  },
+                  data: insert
+                });
+                console.log('response: ', response.data);
+            }catch(error){
+              console.log('댓글 작성 error: ', error);
+            }
         dispatch(postBoard(boardData));
         dispatch(postComment(commentData));
     }
 
     const likeplus = async() => { // 게시판 좋아요
         console.log('likeplus');
-        // try{
-        //     const response = await axios({
-        //           method: 'post',
-        //           url: 'https://momsnote.net/api/board/recommend',
-        //           headers: { 
-        //             'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
-        //             'Content-Type': 'application/json'
-        //           },
-        //           data: {
-        //             boardId: info[0].boardId,
-        //             type: 'plus'
-        //           }
-        //         });
-        //         console.log('response: ', response.data);
-        //     }catch(error){
-        //       console.log('error: ', error);
-        //     }
+        try{
+            const response = await axios({
+                  method: 'post',
+                  url: 'https://momsnote.net/api/board/recommend',
+                  headers: { 
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
+                    'Content-Type': 'application/json'
+                  },
+                  data: {
+                    boardId: info[0].boardId,
+                    type: 'plus'
+                  }
+                });
+                console.log('response: ', response.data);
+                dispatch(postBoard(boardData));
+            }catch(error){
+              console.log('error: ', error);
+            }
             setBoardLike();
-            dispatch(postBoard(boardData));
     }
 
     const ImageBox = () => {
@@ -375,8 +379,8 @@ const Talk1Sub = ({navigation, route}) => {
                 {item.savedName === null ? <View></View> : ImageBox()}
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
-                        {boardLike == 0 ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000'/>}
-                        <Text style={{color: boardLike == 0 ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 {item.recommend}</Text>
+                        {boardLike == 0 | boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000'/>}
+                        <Text style={{color: boardLike == 0 ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { boardLike }</Text>
                         <Chat width={16} height={16}/>
                         <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 {item.commentsCount}</Text>
                     </View>
@@ -385,12 +389,12 @@ const Talk1Sub = ({navigation, route}) => {
                     </View>
                 </View>
                 <View style={styles.mainBox4}>
-                    {comment.length !== 0 ?
-                    <Comment info={comment} setCommentsId={setCommentsId} setInsert={setInsert} modal={modal} setModal={setModal} commentData={commentData}/>:
+                    {comment == '' ?
+                    
                     <View style={{alignItems: 'center', justifyContent: 'center', height: 200}}>
                         <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
                         <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
-                    </View>}
+                    </View> : <Comment info={comment} setCommentsId={setCommentsId} setInsert={setInsert} modal={modal} setModal={setModal} commentData={commentData}/>}
                 </View>
             </View>
         </View>

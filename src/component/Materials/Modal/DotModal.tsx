@@ -47,8 +47,6 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({modalVisible5, setModalVisible5, modalVisible7, setModalVisible7, modalVisible8, setModalVisible8, modalVisible9, setModalVisible9}) => {
 
-    const [isChecked, setChecked] = useState(false); // check box 선택시 체크 팝업에서의 check box
-
   return (
     <Modal animationType="fade" transparent={true} visible={modalVisible7} statusBarTranslucent={true}
             onRequestClose={() => {

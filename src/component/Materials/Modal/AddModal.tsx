@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 import axios from 'axios'
+import First from '../../Modal/First'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -91,7 +92,9 @@ const styles = StyleSheet.create({
 
 })
 
-const CheckBoxModal = ({modalVisible8, setModalVisible8, modal, setModal}) => {
+const CheckBoxModal = ({modalVisible8, setModalVisible8, modal, setModal, info2}) => {
+
+    console.log('품목추가: ', info2);
 
     const DATA = [
         {
@@ -140,20 +143,33 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8, modal, setModal}) => {
     });
     
     const add = async() => {
-        try{
-            const response = await axios({
-                  method: 'post',
-                  url: 'https://momsnote.net/api/needs/add/needs',
-                  headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
-                    'Content-Type': 'application/json'
-                  },
-                  data: info
-                });
-                console.log('response: ', response.data);
-            }catch(error){
-              console.log('error: ', error);
-            }
+
+        console.log(info.category);
+        const filter = info2.filter(x => x.category == info.category && x.needsName == info.needsName);
+        console.log('filter: ', filter == '');
+
+        if(filter == ''){
+
+            try{
+                const response = await axios({
+                      method: 'post',
+                      url: 'https://momsnote.net/api/needs/add/needs',
+                      headers: { 
+                        'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+                        'Content-Type': 'application/json'
+                      },
+                      data: info
+                    });
+                    console.log('response: ', response.data);
+                    setModalVisible8(!modalVisible8);
+                    setModal(prevState => ({...prevState, open: true, content: '품목이 추가되었습니다.', buttonCount: 1}));
+                }catch(error){
+                  console.log('error: ', error);
+                }
+            return;
+        }
+        setModal(prevState => ({...prevState, open: true, content: '중복된 항목이 존재합니다.', buttonCount: 1}));
+        setModalVisible8(!modalVisible8);
     }
 
     const renderItem = ({ item }) => (
@@ -194,8 +210,7 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8, modal, setModal}) => {
                                 onChangeText={(e) => setInfo((prevState) => ({ ...prevState, needsName: e}))}></TextInput>
                         </View>
                         {info.category !== '카테고리 선택(필수)' && info.needsName.length !== 0 ?
-                            <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>{add(), setModalVisible8(!modalVisible8),
-                            setModal(prevState => ({...prevState, open: true, content: '품목이 추가되었습니다.', buttonCount: 1}))}}>
+                            <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={add}>
                                 <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>추가하기</Text>
                             </TouchableOpacity> : 
                             

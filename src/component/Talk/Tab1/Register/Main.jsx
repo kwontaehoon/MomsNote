@@ -5,8 +5,8 @@ import Icon2 from 'react-native-vector-icons/AntDesign'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios'
-import { useDispatch } from 'react-redux'
-import { getBoard } from '../../../../Redux/Slices/BoardSlice'
+import { useSelector, useDispatch } from 'react-redux'
+import { postBoard } from '../../../../Redux/Slices/BoardSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -184,6 +184,8 @@ const styles = StyleSheet.create({
 })
 const Register = ({navigation, route}) => {
 
+    const boardSet = useSelector(state => { return state.board.refresh; });
+
     const DATA = [{ id: '0', title: '전체' }];
 
     const DATA2 = [
@@ -316,20 +318,20 @@ const Register = ({navigation, route}) => {
         }
         console.log('data: ', data);
        
-        // try{
-        //   const response = await axios({
-        //         method: 'post',
-        //         url: 'https://momsnote.net/api/board/write',
-        //         headers: { 
-        //             'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
-        //           },
-        //         data: data
-        //       });
-        //       console.log('response: ', response.data);
-        //   }catch(error){
-        //     console.log('error: ', error);
-        //   }
-        dispatch(getBoard());
+        try{
+          const response = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/api/board/write',
+                headers: { 
+                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
+                  },
+                data: data
+              });
+              console.log('response: ', response.data);
+          }catch(error){
+            console.log('error: ', error);
+          }
+        dispatch(postBoard(boardSet));
     }
 
     const close = (id, name) => {

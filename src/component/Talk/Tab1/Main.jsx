@@ -7,6 +7,7 @@ import { Video, AVPlaybackStatus } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import Swiper from 'react-native-swiper'
+import { setBoardRefresh } from '../../../Redux/Slices/BoardSlice'
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
@@ -187,54 +188,27 @@ const Talk1 = ({navigation, route}) => {
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.board.data; });
   console.log('info: ', info);
+  const boardSet = useSelector(state => { return state.board.refresh; });
+  console.log('boardSet: ', boardSet);
   const [modalVisible, setModalVisible] = useState(false); // 글쓰기 모달
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');
   const [items, setItems] = useState([
     {label: '최신순', value: '1'}, {label: '인기순', value: '2'}, {label: '마감임박', value: '3'},
   ]);
-  const [data, setData] = useState({
-    order: 'new',
-    count: 5,
-    page: 1,
-    subcategory: '전체'
-  });
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
-  console.log('게시글 목록 info: ', info); 
 
   useEffect(()=>{
-    dispatch(postBoard(data));
+    dispatch(postBoard(boardSet));
   }, [filter]);
-
-  // useEffect(()=>{
-  //   console.log('게시글 목록 업데이트');
-  //   const commentInfo = async() => {
-  //       try{
-  //       const response = await axios({
-  //           method: 'post',
-  //           url: 'https://momsnote.net/api/board/list',
-  //           data : { 
-  //             order: 'new',
-  //             count: 5,
-  //             page: 1,
-  //             subcategory: DATA[filter.findIndex(x => x === true)].title
-  //           }
-  //       });
-  //           setInfo(response.data);
-  //       }catch(error){
-  //           console.log('comment axios error');
-  //       }
-  //   } 
-  //   commentInfo();
-  // }, [refresh, filter]);
 
   const change = (e) => { // 카테고리 배경색상, 글자 색상 변경 onpress
     let arr = Array.from({length: 6}, () => {return false});
     arr[e] = !arr[e];
     setFilter(arr);
     console.log(DATA[e].title);
-    setData(prevState => ({...prevState, subcategory: DATA[e].title}));
+    dispatch(setBoardRefresh({subcategory: DATA[e].title}));
   }
 
   const dayCalculate = (date) => {
@@ -305,7 +279,7 @@ const Talk1 = ({navigation, route}) => {
       <View style={styles.header2}>
         <View style={styles.header2FilterBox}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{fontSize: 16, fontWeight: '600'}}>{info.length}</Text>
+            <Text style={{fontSize: 16, fontWeight: '600'}}>{info == undefined ?  0 : info.length}</Text>
             <Text style={{fontSize: 16}}> 건</Text>
           </View>
         </View>
@@ -316,8 +290,12 @@ const Talk1 = ({navigation, route}) => {
         </View>
       </View>
 
-      <View style={[styles.header3, {display: info.length == 0 ? 'none' : 'flex'}]}>
-          <Swiper horizontal={false} autoplay={true} autoplayTimeout={4.5} showsPagination={false}>
+      <View style={[styles.header3, {display: info == undefined | info == null ? 'none' : 'flex'}]}>
+          <Swiper horizontal={false}
+          autoplay={true}
+          // autoplayTimeout={4.5}
+          showsPagination={false}
+          >
           <View style={styles.slide}>
             <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] 5주차 맘 입덧 질문있어요 슬라이딩 ~</Text>
           </View>
@@ -331,7 +309,7 @@ const Talk1 = ({navigation, route}) => {
       </View>
 
       <View style={styles.main}>
-        {info.length !== 0 ?
+        {info !== undefined ?
         <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{console.log('afdasfdasfdas')}} onEndReachedThreshold={0.6}
           keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
         </FlatList> : 

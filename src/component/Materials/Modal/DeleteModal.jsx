@@ -5,6 +5,9 @@ import Icon2 from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 import Checkbox from 'expo-checkbox'
 import axios from 'axios'
+import { useSelector, useDispatch } from 'react-redux'
+import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
+import { setMaterialRefresh } from '../../../Redux/Slices/MaterialSlice'
 
 
 const styles = StyleSheet.create({
@@ -172,9 +175,13 @@ const CheckBoxModal = ({info, setModal, setModal2, modalVisible9, setModalVisibl
         }
     ];
 
+    const dispatch = useDispatch();
+    const materialSet = useSelector(state => { return state.material.refresh; });
     const [titleDisplay, setTitleDisplay] = useState(0); // 품목 리스트 display
+
     const [info2, setInfo2] = useState(info);
-    console.log('info2: ', info2);
+    console.log('delete info2: ', info2);
+
     const [data, setData] = useState({
         title: '카테고리 선택(필수)',
         select: [], // 품목 변경되었는지 모달창 띄우기위해 확인용
@@ -184,41 +191,42 @@ const CheckBoxModal = ({info, setModal, setModal2, modalVisible9, setModalVisibl
         setInfo2(info.filter(x => x.category == data.title));
     }, [data.title]);
 
-    const delete2 = async() => {
-
-        // try{
-        //     const response = await axios({
-        //         method: 'post',
-        //         url: 'https://momsnote.net/api/needs/delete',
-        //         headers: { 
-        //           'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
-        //           'Content-Type': 'application/json'
-        //         },
-        //         data: { id: data.select.join(',') }
-        //         });
-        //         console.log('response: ', response.data);
-        //     }catch(error){
-        //       console.log('error: ', error);
-        //     }
+    const delete2 = async(e) => {
+        console.log('delete');
+        try{
+            const response = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/api/needs/delete',
+                headers: { 
+                  'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+                  'Content-Type': 'application/json'
+                },
+                data: { id: String(e) }
+                });
+                console.log('response: ', response.data);
+            }catch(error){
+              console.log('error: ', error);
+            }
+            dispatch(postMaterial(materialSet));
     }
 
-    const deleteCencel = async() => {
-        
-        // try{
-        //     const response = await axios({
-        //         method: 'post',
-        //         url: 'https://momsnote.net/api/needs/cancel/delete',
-        //         headers: { 
-        //           'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
-        //           'Content-Type': 'application/json'
-        //         },
-        //         data: { id: data.select.join(',') }
-        //         });
-        //         console.log('response: ', response.data);
-        //     }catch(error){
-        //       console.log('error: ', error);
-        //     }
-
+    const deleteCencel = async(e) => {
+        console.log('e: ', e);
+        try{
+            const response = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/api/needs/cancel/delete',
+                headers: { 
+                  'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+                  'Content-Type': 'application/json'
+                },
+                data: { id: String(e) }
+                });
+                console.log('response: ', response.data);
+            }catch(error){
+              console.log('error: ', error);
+            }
+            dispatch(postMaterial(materialSet));
     }
 
     const optionBox = (e) => {
@@ -253,8 +261,8 @@ const CheckBoxModal = ({info, setModal, setModal2, modalVisible9, setModalVisibl
               color={item.deleteStatus == 0 ? '#FEB401' : undefined}
               onValueChange={()=>{
                 switch(true){
-                  case item.deleteStatus == 0 : setData(prevState => ({...prevState, needsId: item.needsId, needsBrandId: item.needsBrandId})), delete2(); break;
-                  default : setData(prevState => ({...prevState, needsId: item.needsId, needsBrandId: item.needsBrandId})), deleteCencel();
+                  case item.deleteStatus !== 0 : delete2(item.needsId); break;
+                  default : deleteCencel(item.needsId);
                 }
               }}/></View>
             <View style={[styles.listContent, {width: '20%'}]}>{optionBox(item.grade)}</View>

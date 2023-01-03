@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import Slick from 'react-native-slick'
+import Slick from 'react-native-swiper'
 
 var styles = {
   wrapper: {},
@@ -30,7 +30,7 @@ var styles = {
 }
 
 export default () => (
-  <Slick style={styles.wrapper} showsButtons loop={false}>
+  <Slick style={styles.wrapper} autoplay={true}>
     <View testID="Hello" style={styles.slide1}>
       <Text style={styles.text}>Hello Slick</Text>
     </View>

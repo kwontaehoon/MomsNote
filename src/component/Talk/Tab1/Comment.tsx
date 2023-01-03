@@ -54,36 +54,41 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                     },
                     data: { boardId : info[0].boardId }
                 });
+                console.log('a');
                 setCommentLike(response.data);
             }catch(error){
                 console.log('comment like axios error');
             }
         }
         likeInfo();
-    }, [commentLike]);
+    }, []);
 
     const commentplus = async(id) => { // 댓글 추천
         console.log('likeComment');
-        // try{
-        //     const response = await axios({ 
-        //           method: 'post',
-        //           url: 'https://momsnote.net/api/comments/recommend',
-        //           headers: { 
-        //             'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
-        //             'Content-Type': 'application/json'
-        //           },
-        //           data: {
-        //             boardId: info[0].boardId,
-        //             commentsId: id,
-        //             type: 'plus'
-        //           }
-        //         });
-        //         console.log('response: ', response.data);
-        //     }catch(error){
-        //       console.log('error: ', error);
-        //     }
-            setCommentLike();
-            dispatch(postComment(commentData));
+        try{
+            const response = await axios({ 
+                  method: 'post',
+                  url: 'https://momsnote.net/api/comments/recommend',
+                  headers: { 
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
+                    'Content-Type': 'application/json'
+                  },
+                  data: {
+                    boardId: info[0].boardId,
+                    commentsId: id,
+                    type: 'plus'
+                  }
+                });
+                console.log('response: ', response.data);
+            }catch(error){
+              console.log('error: ', error);
+            }
+            setCommentLike(); 
+            dispatch(postComment({
+                count: 1,
+                page: 1,
+                boardId: info[0].boardId
+            }));
     }
 
     const List = () => {

@@ -18,6 +18,12 @@ export const postBoard = createAsyncThunk("postBoardSlice/async", async (data) =
 const initialState = {
     loading: false,
     data: [],
+    refresh: {
+      order: 'new',
+      count: 5,
+      page: 1,
+      subcategory: '전체'
+    }
 }
 
 export const boardSlice = createSlice({
@@ -28,6 +34,10 @@ export const boardSlice = createSlice({
       //   console.log('subcategory: ', action);
       //   state.subcategory = action.payload;
       // }
+      setBoardRefresh:(state, action)=>{
+        console.log('subcategory: ', action);
+        state.refresh.subcategory = action.payload.subcategory;
+      }
     },
     extraReducers: (bulider) => {
       bulider.addCase(postBoard.fulfilled, (state, action) => {
@@ -38,5 +48,7 @@ export const boardSlice = createSlice({
   })
 
 export const data = (state) => state.boardSlice.data;
+
+export const { setBoardRefresh } = boardSlice.actions;
 
 export default boardSlice.reducer
