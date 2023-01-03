@@ -241,7 +241,8 @@ const Navigation = ({navigation, route}) => {
   // }, [captureURL]);
 
 
-  const perchase = async(needsId, needsBrandId) =>{
+  const purchase = async(needsId, needsBrandId) =>{
+    console.log('purchase');
     try{
       const response = await axios({
           method: 'post',
@@ -259,26 +260,30 @@ const Navigation = ({navigation, route}) => {
       }catch(error){
           console.log('출산준비물 구매 error:', error);
       }
+      dispatch(postMaterial(materialSet));
   }
 
-  // const perchaseCencel = async() => {
-  //   try{
-  //     const response = await axios({
-  //         method: 'post',
-  //         url: 'https://momsnote.net/api/needs/cancel/buy',
-  //         headers: { 
-  //           'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
-  //           'Content-Type': 'application/json'
-  //         },
-  //         data : {
-  //           needsId: isChecked.needsId
-  //         }
-  //     });
-  //     console.log('response: ', response.data);
-  //     }catch(error){
-  //         console.log('출산준비물 리스트 error:', error);
-  //     }
-  // }
+  const purchaseCencel = async(needsId) => {
+    console.log('purchaseCencel');
+    console.log(needsId);
+    try{
+      const response = await axios({
+          method: 'post',
+          url: 'https://momsnote.net/api/needs/cancel/buy',
+          headers: { 
+            'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+            'Content-Type': 'application/json'
+          },
+          data : {
+            needsId: needsId
+          }
+      });
+      console.log('response: ', response.data);
+      }catch(error){
+          console.log('출산준비물 리스트 error:', error);
+      }
+      dispatch(postMaterial(materialSet));
+  }
 
 const save = async() => {
    
@@ -347,17 +352,19 @@ const save = async() => {
     )
   }
 
-  const List2 = (title) => {
+  const List2 = (title) => {  
     let arr = [];
     let sum = 0;
+    let count = 0;
     info.filter((x, index)=>{
       if(x.id == 1){
+        count++;
         sum += x.itemPrice;
       }
       if(title.title == x.category && x.deleteStatus == 1){
        arr.push(
         <View style={[styles.main3BoxHeader]} key={index}>
-          <View style={[styles.filterBox, {width: 50}]}>
+          <View style={[styles.filterBox, {width: 50}]}>  
           <Checkbox
               style={styles.checkbox}
               value={x.id == 0 ? false : true}
@@ -365,8 +372,8 @@ const save = async() => {
               onValueChange={()=>{
                 switch(true){
                   case x.brandName == null: setModal(prevState => ({...prevState, open: true, buttonCount: 1, content: '브랜드를 체크해주세요'})); break;
-                  case x.id == 0 : perchase(x.needsId, x.needsBrandId); break;
-                  default : perchaseCencel();
+                  case x.id == 0 : purchase(x.needsId, x.needsBrandId); break;
+                  default : purchaseCencel(x.needsId);
                 }
               }}
               />
@@ -383,6 +390,7 @@ const save = async() => {
       </View>
       )}
     })
+    console.log('count: ', count);
     setSumResult(sum);
     return arr;
   }

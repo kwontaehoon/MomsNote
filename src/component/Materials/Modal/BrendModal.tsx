@@ -111,7 +111,6 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
         itemName: '',
         itemPrice: '',
     });
-    console.log('selectBrand: ', selectBrand);
 
     useEffect(()=>{
         const commentInfo = async() => {

@@ -94,8 +94,6 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({modalVisible8, setModalVisible8, modal, setModal, info2}) => {
 
-    console.log('품목추가: ', info2);
-
     const DATA = [
         {
             id: '0',

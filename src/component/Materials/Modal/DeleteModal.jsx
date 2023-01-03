@@ -181,13 +181,11 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
     const [titleDisplay, setTitleDisplay] = useState(0); // 품목 리스트 display
 
     const [info, setInfo] = useState();
-    console.log('delete info: ', info);
 
     const [data, setData] = useState({
         title: '카테고리 선택(필수)',
         select: [], // 품목 변경되었는지 모달창 띄우기위해 확인용
     });
-    console.log('data select: ', data.select);
 
     useEffect(()=>{
         setInfo(material.filter(x => x.category == data.title));
