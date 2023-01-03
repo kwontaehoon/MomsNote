@@ -423,7 +423,7 @@ const save = async() => {
         <DotModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible7={modalVisible7} setModalVisible7={setModalVisible7} modalVisible8={modalVisible8} setModalVisible8={setModalVisible8}
             modalVisible9={modalVisible9} setModalVisible9={setModalVisible9}/>
         <AddModal modalVisible8={modalVisible8} setModalVisible8={setModalVisible8} modal={modal} setModal={setModal} info2={info}/>
-        <DeleteModal info={info} modalVisible9={modalVisible9} setModalVisible9={setModalVisible9} setModal={setModal} setModal2={setModal2}/>
+        <DeleteModal modalVisible9={modalVisible9} setModalVisible9={setModalVisible9} setModal={setModal} setModal2={setModal2}/>
         <Filter modalVisible10={modalVisible10} setModalVisible10={setModalVisible10} />
         <FirstModal modal={modal} setModal={setModal}/>
         <SecondModal modal={modal2} setModal={setModal2} />

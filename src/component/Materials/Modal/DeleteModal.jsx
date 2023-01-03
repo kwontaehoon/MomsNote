@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
 
 })
 
-const CheckBoxModal = ({info, setModal, setModal2, modalVisible9, setModalVisible9}) => {
+const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) => {
 
     const DATA = [
         {
@@ -176,20 +176,22 @@ const CheckBoxModal = ({info, setModal, setModal2, modalVisible9, setModalVisibl
     ];
 
     const dispatch = useDispatch();
+    const material = useSelector(state => { return state.material.data; });
     const materialSet = useSelector(state => { return state.material.refresh; });
     const [titleDisplay, setTitleDisplay] = useState(0); // 품목 리스트 display
 
-    const [info2, setInfo2] = useState(info);
-    console.log('delete info2: ', info2);
+    const [info, setInfo] = useState();
+    console.log('delete info: ', info);
 
     const [data, setData] = useState({
         title: '카테고리 선택(필수)',
         select: [], // 품목 변경되었는지 모달창 띄우기위해 확인용
     });
+    console.log('data select: ', data.select);
 
     useEffect(()=>{
-        setInfo2(info.filter(x => x.category == data.title));
-    }, [data.title]);
+        setInfo(material.filter(x => x.category == data.title));
+    }, [data.title, material]);
 
     const delete2 = async(e) => {
         console.log('delete');
@@ -211,7 +213,7 @@ const CheckBoxModal = ({info, setModal, setModal2, modalVisible9, setModalVisibl
     }
 
     const deleteCencel = async(e) => {
-        console.log('e: ', e);
+        console.log('delete cencel');
         try{
             const response = await axios({
                 method: 'post',
@@ -261,8 +263,8 @@ const CheckBoxModal = ({info, setModal, setModal2, modalVisible9, setModalVisibl
               color={item.deleteStatus == 0 ? '#FEB401' : undefined}
               onValueChange={()=>{
                 switch(true){
-                  case item.deleteStatus !== 0 : delete2(item.needsId); break;
-                  default : deleteCencel(item.needsId);
+                  case item.deleteStatus !== 0 : (delete2(item.needsId), setData(prevState => ({...prevState, select: item.needsId}))); break;
+                  default : (deleteCencel(item.needsId), setData(prevState => ({...prevState, select: item.needsId})));
                 }
               }}/></View>
             <View style={[styles.listContent, {width: '20%'}]}>{optionBox(item.grade)}</View>
@@ -305,7 +307,7 @@ const CheckBoxModal = ({info, setModal, setModal2, modalVisible9, setModalVisibl
                             <View style={styles.listTitleBox}><Text>선택</Text></View>
                             <View style={[styles.listTitleBox, {width: '75%'}]}><Text>품목</Text></View>
                         </View>
-                        <FlatList data={info2} renderItem={renderItem2}
+                        <FlatList data={info} renderItem={renderItem2}
                             keyExtractor={(item, index) => String(index)}>
                         </FlatList>
                     </View>

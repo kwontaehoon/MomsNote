@@ -207,7 +207,6 @@ const Talk1 = ({navigation, route}) => {
     let arr = Array.from({length: 6}, () => {return false});
     arr[e] = !arr[e];
     setFilter(arr);
-    console.log(DATA[e].title);
     dispatch(setBoardRefresh({subcategory: DATA[e].title}));
   }
 

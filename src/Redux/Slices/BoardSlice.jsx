@@ -35,7 +35,6 @@ export const boardSlice = createSlice({
       //   state.subcategory = action.payload;
       // }
       setBoardRefresh:(state, action)=>{
-        console.log('subcategory: ', action);
         state.refresh.subcategory = action.payload.subcategory;
       }
     },

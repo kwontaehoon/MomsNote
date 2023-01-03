@@ -6,12 +6,13 @@ import Modal2 from '../../Modal/Block'
 import Modal3 from '../..//Modal/Declare'
 import Modal4 from '../..//Modal/DelareConfirm'
 import Modal6 from '../../Modal/Declare2'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
+import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
+import { postCommentRecommend } from '../../../Redux/Slices/CommentRecommendSlice'
 
 import Comment from './Comment'
 import axios from 'axios'
@@ -193,11 +194,10 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = [route.params.item];
-    console.log('Detail info: ', route.params.item);
+
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
     console.log('comment: ', comment);
-    console.log('comment: ', comment == '');
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
     const [insert, setInsert] = useState(
         {
@@ -207,15 +207,15 @@ const Talk1Sub = ({navigation, route}) => {
             level: 0
         }
     ); // 댓글 입력
-    console.log('댓글 작성: ', insert);
+    console.log('insert: ', insert);
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요
-    console.log('boardlike: ', boardLike);
     const [boardData, setBoardData] = useState({
         order: 'new',
         count: 5,
         page: 1,
         subcategory: '전체'
     })
+
     const [commentData, setCommentData] = useState({
         boardId: info[0].boardId,
         count: 1,
@@ -232,9 +232,13 @@ const Talk1Sub = ({navigation, route}) => {
 
     useEffect(()=>{ // 댓글 목록
         dispatch(postComment(commentData));
-      }, []);
+    }, []);
 
-    useEffect(()=>{ // 게시물 추천 여부
+    useEffect(()=>{ // 댓글 추쳔 Flag
+        dispatch(postCommentFlag({boardId: info[0].boardId}));
+    }, []);
+
+    useEffect(()=>{ // 게시물 추천 Flag
         console.log('게시물 추천 여부 업데이트');
         const likeInfo = async() => {
             try{
@@ -390,7 +394,6 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
                 <View style={styles.mainBox4}>
                     {comment == '' ?
-                    
                     <View style={{alignItems: 'center', justifyContent: 'center', height: 200}}>
                         <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
                         <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
@@ -433,7 +436,7 @@ const Talk1Sub = ({navigation, route}) => {
         </View>
         <View style={styles.footer}>
             <View style={styles.profileBox}></View>
-            <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: ''}))}}>
+            <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: '', level: 0}))}}>
                 <Text style={{color: '#1E88E5', fontWeight: '600'}}>등록</Text>
             </TouchableOpacity>
             <TextInput style={styles.textInput} value={insert.contents} placeholder='댓글을 입력해주세요.' onChangeText={

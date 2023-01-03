@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Keyboard } from 'react-native'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
+import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
@@ -39,29 +40,10 @@ const styles = StyleSheet.create({
 })
 const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData}) => {
 
-    const dispatch = useDispatch();
-    const [commentLike, setCommentLike] = useState(); // 댓글 추천 여부
 
-    useEffect(()=>{
-        const likeInfo = async() => { // 댓글 추천 Flag
-            try{
-                const response = await axios({
-                    method: 'post',
-                    url: 'https://momsnote.net/api/comments/recommend/flag',
-                    headers: { 
-                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
-                        'Content-Type': 'application/json'
-                    },
-                    data: { boardId : info[0].boardId }
-                });
-                console.log('a');
-                setCommentLike(response.data);
-            }catch(error){
-                console.log('comment like axios error');
-            }
-        }
-        likeInfo();
-    }, []);
+    const commentLike = useSelector(state => { return state.commentFlag.data; });
+
+    const dispatch = useDispatch();
 
     const commentplus = async(id) => { // 댓글 추천
         console.log('likeComment');
@@ -83,12 +65,8 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
             }catch(error){
               console.log('error: ', error);
             }
-            setCommentLike(); 
-            dispatch(postComment({
-                count: 1,
-                page: 1,
-                boardId: info[0].boardId
-            }));
+            dispatch(postComment(commentData));
+            dispatch(postCommentFlag({boardId: info[0].boardId}));
     }
 
     const List = () => {
@@ -159,12 +137,12 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
         return arr;
     }
 
-  return commentLike !== undefined ?(
+  return commentLike !== '' | commentLike !== undefined ? (
     <>
         <List />
         <View style={styles.commentRes}></View>
     </>
-  ): <View></View>
+  ): <View><Text>gg</Text></View>
 }
 
 export default Comment
