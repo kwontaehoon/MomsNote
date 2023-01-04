@@ -7,7 +7,6 @@ import Checkbox from 'expo-checkbox'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
-import { setMaterialRefresh } from '../../../Redux/Slices/MaterialSlice'
 
 
 const styles = StyleSheet.create({

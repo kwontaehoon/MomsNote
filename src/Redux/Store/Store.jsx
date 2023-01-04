@@ -5,6 +5,7 @@ import commentReducer from '../Slices/CommentSlice'
 import materialReducer from '../Slices/MaterialSlice'
 import commentFlagReducer from '../Slices/CommentFlag'
 import commentRecommendReducer from '../Slices/CommentRecommendSlice'
+import shareListReducer from '../Slices/ShareList'
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     material: materialReducer,
     commentFlag: commentFlagReducer,
     commentRecommend: commentRecommendReducer,
+    shareList: shareListReducer,
   },
 })

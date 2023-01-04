@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
 import axios from 'axios'
+import moment from 'moment'
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
 import Pencil from '../../../../public/assets/svg/pencil.svg'
+import { useDispatch, useSelector } from 'react-redux'
+import { postShareList } from '../../../Redux/Slices/ShareList'
 
 const styles = StyleSheet.create({
   container:{
@@ -103,6 +106,12 @@ const styles = StyleSheet.create({
 
 const Talk1 = ({navigation}) => {
 
+  const dispatch = useDispatch();
+  const shareList = useSelector(state => { return state.shareList.data; });
+  console.log('출산리스트공유게시판 info: ', shareList);
+
+  const [info, setInfo] = useState([]);
+  console.log('info: ', info);
   const [modalVisible, setModalVisible] = useState(false); // 글쓰기 모달
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');
@@ -111,37 +120,34 @@ const Talk1 = ({navigation}) => {
     {label: '인기순', value: '2'},
     {label: '마감임박', value: '3'},
 ]);
-  const [info, setInfo] = useState([]);
-  console.log('출산리스트공유게시판 info: ', info);
-
 
 useEffect(()=>{
-  console.log('출산 리스트 공유 게시판 업데이트');
-  const boardInfo = async() => {
-      try{
-      const response = await axios({
-          method: 'post',
-          url: 'https://momsnote.net/api/needs/share/list',
-          headers: { 
-            'Content-Type': 'application/json'
-          },
-          data : { 
-            order: 'new',
-            count: 2,
-            page: 1
-          }
-      });
-        setInfo(response.data);
-      }catch(error){
-        console.log('출산 리스트 공유 게시판 업데이트 axios error');
-      }
-    } 
-    boardInfo();
+  dispatch(postShareList({
+    order: 'buy',
+    count: 1,
+    page: 1
+  }));
 }, []);
+
+useEffect(()=>{
+  if(shareList !== undefined || shareList !== ''){
+    setInfo(shareList.reduce((acc, current) => {
+      const x = acc.find(item => item.boardId === current.boardId);
+      if (!x) { return acc.concat([current]); } else { return acc; }}, []));
+    }
+}, [shareList])
+
+const dayCalculate = (date) => {
+  switch(true){
+    case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
+    case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
+    default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'day')}일 전</Text>
+  }
+}
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', item)}>
-        <View style={styles.clockBox}><Text style={{color: '#9E9E9E', fontSize: 12}}>12시간전</Text></View>
+        <View style={styles.clockBox}><Text style={{color: '#9E9E9E', fontSize: 12}}>{dayCalculate(item.boardDate)}</Text></View>
         <Text>{item.title}</Text>
         <View style={styles.infoBox}>
               <Text style={{color: '#9E9E9E', fontSize: 13}}>{item.nickname} </Text>
@@ -150,18 +156,17 @@ useEffect(()=>{
               <Chat fill='#9E9E9E' width={13} height={17}/>
               <Text style={{color: '#9E9E9E', fontSize: 13}}> {item.recommend} </Text>
         </View>
-
     </TouchableOpacity>
   ); 
 
-  return (
+  return info !== undefined && info !== '' ?(
     <View style={styles.container}>
       <View style={styles.header}></View>
       <View style={styles.header2}>
         <View style={[styles.header2FilterBox, {paddingBottom: 5}]}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={{fontSize: 16, fontWeight: '600'}}></Text>
-            <Text style={{fontSize: 16}}>{info.length} 건</Text>
+            <Text style={{fontSize: 16}}>2 건</Text>
           </View>
         </View>
         <View style={[styles.header2FilterBox, {width: '32%'}]}>
@@ -172,7 +177,7 @@ useEffect(()=>{
       </View>
       <View style={styles.main}>
         <FlatList data={info} renderItem={renderItem}
-          keyExtractor={item => item.id}>
+          keyExtractor={item => String(item.boardId)}>
         </FlatList>
       </View>
       <TouchableOpacity style={styles.footer} onPress={()=> setModalVisible(!modalVisible)}>
@@ -200,7 +205,7 @@ useEffect(()=>{
             </View>
         </Modal>
      </View>
-  )
+  ): <View></View>
 }
 
 export default Talk1

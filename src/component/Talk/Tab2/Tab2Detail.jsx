@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
+import moment from 'moment'
+import { useDispatch, useSelector } from 'react-redux'
+import { postShareList } from '../../../Redux/Slices/ShareList'
 
 import Chat from '../../../../public/assets/svg/Chat.svg'
 import Like from '../../../../public/assets/svg/Like.svg'
@@ -61,7 +64,6 @@ const styles = StyleSheet.create({
 
     },
     listBox:{
-        borderWidth: 2,
         height: 400,
     },
     listHeader:{
@@ -121,7 +123,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 20,
     },
-
     listMain:{
         height: 56,
         flexDirection: 'row',
@@ -132,7 +133,9 @@ const styles = StyleSheet.create({
     },
     listMain2:{
         flexDirection: 'row',
-        borderBottomWidth: 2,
+        borderBottomWidth: 1,
+        borderLeftWidth: 1,
+        borderRightWidth: 1,
         borderColor: '#F5F5F5'
     },
     filterBox:{
@@ -141,7 +144,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
       },
-    
+    filterBox2:{
+        width: '33.4%',
+        height: 48,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+    },
     mainBox5:{
         height: 300,
     },
@@ -179,69 +188,83 @@ const Talk1Sub = ({navigation, route}) => {
         },
     ];
 
-    console.log('route: ', route.params);
-    const info = route.params;
-
-    const [info3, setInfo3] = useState([
+    const DATA2 =[
         {
           id: '0',
-          title: '산모용품 (0/13)',
+          title: '산모용품',
           icon: require('../../../../public/assets/image/1.png'),
         },
         {
           id: '1',
-          title: '수유용품 (0/13)',
+          title: '수유용품',
           icon: require('../../../../public/assets/image/2.png'),
         },
         {
           id: '2',
-          title: '위생용품 (0/13)',
+          title: '위생용품',
           icon: require('../../../../public/assets/image/3.png'),
         },
         {
           id: '3',
-          title: '목욕용품 (0/13)',
+          title: '목욕용품',
           icon: require('../../../../public/assets/image/4.png'),
         },
         {
           id: '4',
-          title: '침구류 (0/13)',
+          title: '침구류',
           icon: require('../../../../public/assets/image/5.png'),
         },
         {
           id: '5',
-          title: '아기의류 (0/13)',
+          title: '아기의류',
           color: '#FFADAD',
           icon: require('../../../../public/assets/image/6.png'),
         },
         {
           id: '6',
-          title: '발육용품 (0/13)',
+          title: '발육용품',
           icon: require('../../../../public/assets/image/7.png'),
         },
         {
           id: '7',
-          title: '가전용품 (0/13)',
+          title: '가전용품',
           color: '#FFADAD',
           icon: require('../../../../public/assets/image/8.png'),
         },
         {
           id: '8',
-          title: '놀이용품 (0/13)',
+          title: '놀이용품',
           icon: require('../../../../public/assets/image/9.png'),
         },
-    ]);
+    ];
 
+    const [info, setInfo] = useState();
+    console.log('출산리스트 공유 상세페이지 info: ', info);
+    const shareList = useSelector(state => { return state.shareList.data; });
+    console.log('shareList: ', shareList);
     const [comment, setComment] = useState([]); // 댓글 데이터
     const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
-    console.log('list: ', list);
+
+    useEffect(()=>{
+        if(shareList !== '' || shareList !== undefined){
+            setInfo(shareList.filter(x=> x.boardId == route.params.boardId));
+        }
+    }, [shareList]);
+
+    const dayCalculate = (date) => {
+        switch(true){
+          case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
+          case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
+          default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'day')}일 전</Text>
+        }
+    }
 
     const List = () => {
         let arr = [];
-        info3.map(x => {
+        DATA2.map((x, index) => {
             arr.push(
                 <>
-                    <View style={styles.listMain}>
+                    <View style={styles.listMain} key={index}>
                         <TouchableOpacity style={styles.arrowBox}
                             onPress={()=>arrow(x.id)}>{list[x.id] ? <Icon name="angle-up" size={22}/> : <Icon name='angle-down' size={22}/>}
                         </TouchableOpacity>
@@ -253,8 +276,25 @@ const Talk1Sub = ({navigation, route}) => {
                         <View style={styles.filterBox}><Text>브랜드</Text></View>
                         <View style={styles.filterBox}><Text>금액</Text></View>
                     </View>
+                    <List2 title={x.title}/>
                 </>
             )
+        })
+        return arr;
+    }
+
+    const List2 = (e) => {
+        let arr = [];
+        info.filter((x, index)=>{
+            if(x.category == e.title){
+                arr.push(
+                     <View style={styles.listMain2} key={index}>
+                        <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
+                        <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
+                        <View style={styles.filterBox2}><Text>{x.itemPrice} 원</Text></View>
+                    </View>
+                )
+            }
         })
         return arr;
     }
@@ -270,22 +310,22 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.header2}>
                 <View style={styles.profileBox}></View>
                 <View style={styles.infoBox}>
-                    <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{info.userId}</Text>
-                    <Text style={{color: '#9E9E9E', fontSize: 13}}>{info.boardDate}</Text>
+                    <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{route.params.nickname}</Text>
+                    <Text style={{color: '#9E9E9E', fontSize: 13}}>{dayCalculate(item.boardDate)}</Text>
                 </View>
             </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
-                    <Text style={{fontSize: 20, fontWeight: '400'}}>{info.title}</Text>
+                    <Text style={{fontSize: 20, fontWeight: '400'}}>{route.params.title}</Text>
                 </View>
                 <View style={styles.mainBox2}>
-                    <Text>{info.contents}</Text>
+                    <Text>{route.params.contents}</Text>
                 </View>
                 <View style={styles.mainBox3}>
 
                     <View style={styles.listHeader}>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <Text style={{fontSize: 15, fontWeight: '600', color: 'white'}}>{info.userId}</Text>
+                            <Text style={{fontSize: 15, fontWeight: '600', color: 'white'}}>{route.params.nickname}</Text>
                             <Text style={{fontSize: 15, color: 'white'}}> 님의 출산준비물</Text>
                         </View>
                     </View>
@@ -296,20 +336,20 @@ const Talk1Sub = ({navigation, route}) => {
 
                     <View style={styles.sum}>
                             <View style={styles.myList2FooterBox}>
-                                <View style={styles.budget}><Text style={{fontSize: 18, fontWeight: '600'}}>119,700</Text></View>
+                                <View style={styles.budget}><Text style={{fontSize: 18, fontWeight: '600'}}>119,700 원</Text></View>
                                 <Text style={{fontSize: 18, fontWeight: '600'}}>총 예산</Text>
                             </View>
                             <View style={[styles.myList2FooterBox, {paddingLeft: 20, height: 25}]}>
-                                <View style={styles.budget}><Text>119,700</Text></View>
+                                <View style={styles.budget}><Text>119,700 원</Text></View>
                                 <Text style={{color: '#616161'}}>ㄴ 구매금액</Text>
                             </View>
                             <View style={[styles.myList2FooterBox, {paddingLeft: 20, height: 25}]}>
-                                <View style={styles.budget}><Text>119,700</Text></View>
+                                <View style={styles.budget}><Text>119,700 원</Text></View>
                                 <Text style={{color: '#616161'}}>ㄴ 구매예정 금액</Text>
                             </View>
                         </View>
                         <View style={styles.compare}>
-                            <TouchableOpacity style={styles.compareButton} onPress={()=>navigation.navigate('출산리스트 비교')}>
+                            <TouchableOpacity style={styles.compareButton} onPress={()=>navigation.navigate('출산리스트 비교', route.params.boardId)}>
                                 <Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>내 출산리스트와 비교하기</Text>
                             </TouchableOpacity>
                     </View>
@@ -345,7 +385,7 @@ const Talk1Sub = ({navigation, route}) => {
         </View>
       );
 
-  return (
+  return info !== undefined && info !== '' ? (
     <View style={styles.container}>
          <View style={styles.header}>
                 <Back onPress={()=>navigation.goBack()}/>
@@ -362,7 +402,7 @@ const Talk1Sub = ({navigation, route}) => {
             <TextInput style={styles.textInput} placeholder='댓글을 입력해주세요.' placeholderTextColor={'#BDBDBD'}></TextInput>
         </View>
     </View>
-  )
+  ) : <View></View>
 }
 
 export default Talk1Sub

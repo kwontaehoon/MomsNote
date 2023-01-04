@@ -33,6 +33,8 @@ const styles = StyleSheet.create({
         height: '33.4%',
         alignItems: 'center',
         justifyContent: 'center',
+        borderBottomWidth: 1,
+        borderColor: '#757575'
     },
     footer:{
         height: 62,

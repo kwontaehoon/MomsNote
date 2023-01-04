@@ -268,7 +268,7 @@ const Talk1 = ({navigation, route}) => {
     </TouchableOpacity>
   ); 
 
-  return (
+  return info !== '' && info !== undefined ? (
     <View style={styles.container}>
       <View style={styles.header}>
         <FlatList data={DATA} renderItem={renderItem}
@@ -289,7 +289,7 @@ const Talk1 = ({navigation, route}) => {
         </View>
       </View>
 
-      <View style={[styles.header3, {display: info == undefined | info == null ? 'none' : 'flex'}]}>
+      <View style={[styles.header3, {display: info == undefined | info == '' ? 'none' : 'flex'}]}>
           <Swiper horizontal={false}
           autoplay={true}
           // autoplayTimeout={4.5}
@@ -308,8 +308,10 @@ const Talk1 = ({navigation, route}) => {
       </View>
 
       <View style={styles.main}>
-        {info !== undefined ?
+        {info !== '' && info !== undefined ?
         <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{console.log('afdasfdasfdas')}} onEndReachedThreshold={0.6}
+
+        
           keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
         </FlatList> : 
         <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}
@@ -339,7 +341,7 @@ const Talk1 = ({navigation, route}) => {
             </View>
         </Modal>
      </View>
-  )
+  ) : <View></View>
 }
 
 export default Talk1

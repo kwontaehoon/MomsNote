@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 })
 const Main = ({navigation}) => {
     
-    const [filter, setFilter] = useState([true, false, false]); // tab
+    const [filter, setFilter] = useState([false, true, false]); // tab
 
     // useEffect(()=>{
     //     AsyncStorage.setItem('nickname',JSON.stringify({'nickname': 'User1', 'phonenumber': '010-xxxx-xxxx'}), () => {

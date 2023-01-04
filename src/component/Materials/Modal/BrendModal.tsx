@@ -181,7 +181,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
   return (
     <Modal animationType="fade" transparent={true} visible={modalVisible2.open}
         onRequestClose={() => {
-        setModalVisible2((prevState)=> ({...prevState, open: true}))}}>
+        setModalVisible2(!modalVisible2)}}>
     <View style={styles.modalContainer}>
         <View style={styles.modalView}>
             <View style={styles.modalContainer2}>
@@ -213,8 +213,8 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
                         onChangeText={(e) => setSelectBrand(prevState => ({ ...prevState, itemPrice: e}))}></TextInput>
                     </View> 
                     <TouchableOpacity style={styles.footerBox3} onPress={()=>{
-                        selectBrand.itemName == '' ? setModal((prevState) => ({...prevState, open: true, content: '브랜드/제품명은 필수 입력 항목입니다.', buttonCount: 1}))
-                        : (submit(), setModalVisible2((prevState)=> ({...prevState, open: false})), setModal((prevState) => ({...prevState, open: true, content: '리스트에 적용되었습니다.', buttonCount: 1})))
+                        selectBrand.itemName == '' ? setModal(prevState => ({...prevState, open: true, content: '브랜드/제품명은 필수 입력 항목입니다.', buttonCount: 1}))
+                        : (submit(), setModalVisible2(prevState => ({...prevState, open: false})), setModal(prevState => ({...prevState, open: true, content: '리스트에 적용되었습니다.', buttonCount: 1})))
                     }}><Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>적용</Text></TouchableOpacity>
                     <View style={styles.footerBox4}><Text>#해시태그</Text></View>
                 </View>

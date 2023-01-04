@@ -21,7 +21,6 @@ import ViewShot from 'react-native-view-shot'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux';
 import { postMaterial } from '../../Redux/Slices/MaterialSlice';
-import { setMaterialRefresh } from '../../Redux/Slices/MaterialSlice';
 
 import More from '../../../public/assets/svg/More.svg'
 import Sort from '../../../public/assets/svg/Sort.svg'
@@ -214,8 +213,12 @@ const Navigation = ({navigation, route}) => {
     open: false,
     needsId: '',
   }); // 브랜드 추가 모달
-  const [modalVisible4, setModalVisible4] = useState(false); // 구매가이드 모달
-  const [modalVisible5, setModalVisible5] = useState(false); // 초기화 모달
+  const [modalVisible4, setModalVisible4] = useState({
+    open: false,
+    content: ''
+  }); // 구매가이드 모달
+  console.log('modalvisible4: ', modalVisible4);
+  const [modalVisible5, setModalVisible5] = useState(true); // 초기화 모달
   const [modalVisible6, setModalVisible6] = useState(false); // 추천 리스트 변경 확인 모달
   const [modalVisible7, setModalVisible7] = useState(false); // 더보기
   const [modalVisible8, setModalVisible8] = useState(false); // 품목 추가
@@ -299,7 +302,7 @@ const save = async() => {
         
         if(status === 'granted'){
             // const kwon = await MediaLibrary.getAlbumAsync('DCIM');
-            // const moms = await MediaLibrary.getAlbumAsync('맘스노트');
+            // const moms = await MediaLibrary.getAlbumAsync('맘스노트');split
             // if(moms === null){
             //     MediaLibrary.createAlbumAsync('맘스노트', asset);
             // }
@@ -355,10 +358,8 @@ const save = async() => {
   const List2 = (title) => {  
     let arr = [];
     let sum = 0;
-    let count = 0;
     info.filter((x, index)=>{
       if(x.id == 1){
-        count++;
         sum += x.itemPrice;
       }
       if(title.title == x.category && x.deleteStatus == 1){
@@ -380,7 +381,7 @@ const save = async() => {
           </View>
           <View style={[styles.filterBox, {width: 157, flexDirection: 'row', justifyContent: 'flex-start'}]}>
             {optionBox(x.grade)}
-            <Text>{x.needsName}</Text>
+            <TouchableOpacity onPress={()=>setModalVisible4(prevState => ({...prevState, open: true, content: x}))}><Text>{x.needsName}</Text></TouchableOpacity>
           </View>
           <View style={[styles.filterBox, {width: '41%'}]}>
             {x.brandName == null ? <View style={{width: 24, height: 24, borderRadius: 12,backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
@@ -390,8 +391,7 @@ const save = async() => {
       </View>
       )}
     })
-    console.log('count: ', count);
-    setSumResult(sum);
+    // setSumResult(sum);
     return arr;
   }
 
@@ -420,7 +420,7 @@ const save = async() => {
     </View>
   );
 
-  return (
+  return info !== '' ? (
     <View style={styles.container}>
 
         <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
@@ -453,7 +453,7 @@ const save = async() => {
           <Text style={{fontSize: 16, fontWeight: '600'}}>전체 (5/37)</Text>
         </View>
         
-        {info !== undefined ? <FlatList data={DATA3} renderItem={renderItem}
+        {info !== '' ? <FlatList data={DATA3} renderItem={renderItem}
               keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
         </FlatList> : <View style={styles.main}></View>}
 
@@ -466,7 +466,7 @@ const save = async() => {
           </View>
         </View>
     </View>
-  )
+  ) : <View></View>
 }
 
 export default Navigation

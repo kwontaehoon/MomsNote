@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { useSelector } from 'react-redux'
+
 import DeleteModal from './Modal/DeleteModal'
 import ShareModal from './Modal/ShareModal'
 import ShareModal2 from './Modal/ShareModal2'
 import ConfirmModal from './Modal/ConfirmModal'
+import DotModal from './Modal/DotModal'
 
 const styles = StyleSheet.create({
     container:{
@@ -45,14 +48,16 @@ const styles = StyleSheet.create({
     mainBox3:{
       flexDirection: 'row',
       borderBottomWidth: 1,
-      borderColor: '#F5F5F5'
+      borderColor: '#F5F5F5',
+      paddingLeft: 15,
+      paddingRight: 15,
     },
     filterBox2:{
       width: '33.4%',
       height: 48,
       alignItems: 'center',
       justifyContent: 'center',
-      flexDirection: 'row'
+      flexDirection: 'row',
     },
     footer:{
       height: '20%',
@@ -73,8 +78,8 @@ const styles = StyleSheet.create({
 })
 const Talk1Sub = ({route}) => {
 
-  const [info, setInfo] = useState(route.params);
-  console.log('info: ', info);
+  const info = useSelector(state => state.material.data);
+  console.log('총 예산 info: ', info);
 
   const DATA = [
     {
@@ -126,15 +131,18 @@ const Talk1Sub = ({route}) => {
 
   const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
   console.log('list: ', list);
-  const [sum, setSum] = useState({
-    perchaseSum: '',
-    expectSum: '',
-  })
   const [modalVisible, setModalVisible] = useState(false); // 품목 삭제
   const [modalVisible2, setModalVisible2] = useState(false); // 공유 확인 유무 
   const [modalVisible3, setModalVisible3] = useState(false); // 공유 작성
   const [modalVisible4, setModalVisible4] = useState(false); // 공유 등록 확인
+  const [modal5, setModal5] = useState({
+    open: false,
+    content: null,
+  }); // onLongPress dot 모달
 
+  const [sum, setSum] = useState(0)
+
+  console.log('sum: ', sum);
 
   const arrow = (e) => { // arrow 누르면 서브페이지 display
     let arr = [...list];
@@ -144,32 +152,21 @@ const Talk1Sub = ({route}) => {
 
 
   const List = ({title}) => {
-    console.log('title: ', title);
     let arr = [];
-    let ss = 0;
-    let ss2 = 0;
     info.filter((x, index)=>{
-
-      switch(x.id){
-        case 1: ss += x.itemPrice;
-        default: ss2 += x.itemPrice;
-      }
-
-      if(x.category == title && x.needsBrandId !== null && x.id == 1){
-      arr.push(
-        <View style={styles.mainBox3}>
-            <View style={styles.filterBox2}><Text style={{fontWeight: '500'}}>{x.needsName}</Text></View>
+      if(x.category == title && x.needsBrandId !== null){
+              arr.push(
+        <TouchableOpacity style={styles.mainBox3} onLongPress={()=>setModal5(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1} key={index}>
+            <View style={[styles.filterBox2, {justifyContent: 'flex-start'}]}><Text style={{fontWeight: '500'}}>{x.needsName}</Text></View>
             <View style={styles.filterBox2}><Text>{x.itemName == null ? '-' : x.itemName}</Text></View>
-            <View style={styles.filterBox2}>
+            <View style={[styles.filterBox2, {justifyContent: 'flex-end'}]}>
               <Text style={{fontWeight: '600'}}>{x.itemPrice == null ? 0 : x.itemPrice}</Text>
               <Text> 원</Text>
             </View>
-        </View>
+        </TouchableOpacity>
       )}
     })
-    // setSum(prevState => ({...prevState, perchaseSum: ss, expectSum: ss2}));
-    console.log('ss: ', ss);
-    console.log('ss2: ', ss2);
+
     return arr;
   }
 
@@ -188,7 +185,7 @@ const Talk1Sub = ({route}) => {
               <View style={styles.filterBox}><Text>브랜드</Text></View>
               <View style={styles.filterBox}><Text>금액</Text></View>
             </View>
-            <List title={item.title}/>
+              <List title={item.title}/>
           </View>
       </View>
     );
@@ -197,9 +194,11 @@ const Talk1Sub = ({route}) => {
     <View style={styles.container}>
 
       <DeleteModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
-      <ShareModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} />
-      <ShareModal2 modalVisible3={modalVisible3} setModalVisible3={setModalVisible3} />
+      <ShareModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modalVisible3={modalVisible3} setModalVisible3={setModalVisible3} />
+      <ShareModal2 modalVisible3={modalVisible3} setModalVisible3={setModalVisible3} modalVisible4={modalVisible4} setModalVisible4={setModalVisible4}/>
       <ConfirmModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} />
+      <DotModal modal5={modal5} setModal5={setModal5} />
+
 
       <View style={styles.main}>
         <View></View>
@@ -218,7 +217,7 @@ const Talk1Sub = ({route}) => {
           <Text style={{fontSize: 18, fontWeight: '500'}}>총 예산</Text>
         </View>
         <View style={[styles.footerBox, {paddingLeft: 20, height: 25}]}>
-          <View style={[styles.arrowBox, {right: 0}]}><Text>119,700 원</Text></View>
+          <View style={[styles.arrowBox, {right: 0}]}><Text>{sum} 원</Text></View>
           <Text style={{color: '#616161'}}>ㄴ 구매 금액</Text>
         </View>
         <View style={[styles.footerBox, {paddingLeft: 20, height: 25}]}>
@@ -226,7 +225,7 @@ const Talk1Sub = ({route}) => {
           <Text style={{color: '#616161'}}>ㄴ 구매 예정 금액</Text>
         </View>
       </View>
-      <TouchableOpacity style={styles.buttonBox} onPress={()=>setModalVisible3(!modalVisible3)}>
+      <TouchableOpacity style={styles.buttonBox} onPress={()=>setModalVisible2(!modalVisible2)}>
         <Text style={{color: 'white', fontWeight: '600', fontSize: 16}}>출산 리스트 게시판 공유</Text>
       </TouchableOpacity>
     </View>

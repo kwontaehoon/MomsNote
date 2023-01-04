@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     },
 })
 
-const CheckBoxModal = ({modalVisible2, setModalVisible2}) => {
+const CheckBoxModal = ({modalVisible2, setModalVisible2, modalVisible3, setModalVisible3}) => {
 
   return (
     <Modal animationType="fade" transparent={true} visible={modalVisible2}
@@ -53,8 +53,10 @@ const CheckBoxModal = ({modalVisible2, setModalVisible2}) => {
                             <Text style={{fontSize: 16, paddingTop: 10}}>내 리스트를 게시판에 공유하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>공유하기</Text></TouchableOpacity>
-                           <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModalVisible2(!modalVisible2)}>
+                            <TouchableOpacity style={styles.modal} onPress={()=>(setModalVisible2(!modalVisible2), setModalVisible3(!modalVisible3))}>
+                                <Text style={{color: 'white', fontSize: 16}}>공유하기</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModalVisible2(!modalVisible2)}>
                                 <Text style={{fontSize: 16}}>취소</Text>
                             </TouchableOpacity>
                         </View>

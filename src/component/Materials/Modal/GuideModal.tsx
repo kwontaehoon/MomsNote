@@ -22,20 +22,20 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '90%',
-        height: 144,
+        height: 570,
         backgroundColor: 'white',
         marginBottom: 35,
         borderRadius: 15,
-        padding: 20,
+        overflow: 'hidden'
     },
     container2:{
 
     },
     header:{
-        borderWidth: 1,
         height: 60,
         justifyContent: 'center',
         alignItems: 'center',
+
     },
     closeBox:{
         position: 'absolute',
@@ -45,72 +45,126 @@ const styles = StyleSheet.create({
         zIndex: 10
     },
     header2:{
-        height: 140,
-        borderWidth: 1,
+        height: 170,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     main:{
-        borderWidth: 1,
-        height: 250,
+        padding: 20,
     },
     mainBox:{
-        borderWidth: 1,
-        height: 125,
+        marginBottom: 30,
+    },
+    mainBoxSub:{
+      width: '33.4%',
+      borderWidth: 1,
+      borderColor: '#EEEEEE',
+    },
+    title:{
+        backgroundColor: '#424242',
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    content:{
+        height: 60,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    filterSub:{
+        height: 20,
+        paddingLeft: 8,
+        paddingTop: 2,
+        paddingbottom: 2,
+        paddingRight: 8,
+        marginRight: 5,
+        marginLeft: 5,
     },
     footer:{
-        borderWidth: 1,
-        height: 300,
-        backgroundColor: '#EEEEEE',
-        padding: 15,
-    },
+        height: 60,
+        backgroundColor: '#FEA100',
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 })
 
-const Main = ({modalVisible4, setModalVisible4, navigation}) => {
+const Main = ({modalVisible4, setModalVisible4}) => {
 
-    const DATA = [
-        {
-          id: '0',
-          title: '산모용품 (0/13)',
-          color: '#FFADAD',
-          icon: 'material1'
-        },
-    ];
+    const optionBox = (e) => {
+        switch(e){
+          case '필수': return ( <View style={[styles.filterSub, {backgroundColor: '#E57373'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>필수</Text></View> )
+          case '권장': return ( <View style={[styles.filterSub, {backgroundColor: '#84C2F3'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>권장</Text></View> )
+          case '선택': return ( <View style={[styles.filterSub, {borderWidth: 1}]}><Text style={{fontSize: 12, fontWeight: 'bold'}}>선택</Text></View> )
+          case '추가': return ( <View style={[styles.filterSub, {backgroundColor: '#F5A256'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>추가</Text></View> )
+        }
+      }
 
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
-            <View style={styles.header}>
-                <TouchableOpacity style={styles.closeBox} onPress={()=>setModalVisible4(!modalVisible4)}><Icon name='close' size={24}/></TouchableOpacity>
-                <Text style={{color: '#212121', fontSize: 18, fontWeight: '700'}}>영양제</Text>
-            </View>
             <View style={styles.header2}>
-                <Text>이미지</Text>
+                <Image source={{uri: item.needsImage}} style={{width: 150, height: 150}} resizeMode='cover' />
             </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
-                    <Text style={{color: '#212121', fontWeight: '700'}}>제품설명</Text>
-                    <Text></Text>
+                    <Text style={{color: '#212121', fontWeight: '700', paddingBottom: 5}}>제품 설명</Text>
+                    <Text>{item.needsDescription}</Text>
                 </View>
                 <View style={styles.mainBox}>
-                    <Text style={{color: '#212121', fontWeight: '700'}}>구매 팁</Text>
-                    <Text></Text>
+                    <Text style={{color: '#212121', fontWeight: '700', paddingBottom: 5}}>구매 팁</Text>
+                    <Text>{item.needsTips}</Text>
+                </View>
+                <View style={[styles.mainBox, {flexDirection: 'row'}]}>
+                    <View style={styles.mainBoxSub}>
+                        <View style={styles.title}>
+                            <Text style={{color: 'white', fontSize: 13, fontWeight: '600'}}>수량/횟수</Text>
+                        </View>
+                        <View style={styles.content}>
+                            <Text>{item.needsAmount}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.mainBoxSub}>
+                        <View style={styles.title}>
+                            <Text style={{color: 'white', fontSize: 13, fontWeight: '600'}}>필요성</Text>
+                        </View>
+                        <View style={styles.content}>
+                            <Text>{optionBox(item.grade)}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.mainBoxSub}>
+                        <View style={styles.title}>
+                            <Text style={{color: 'white', fontSize: 13, fontWeight: '600'}}>필요시기</Text>
+                        </View>
+                        <View style={styles.content}>
+                            <Text>{item.needsTime}</Text>
+                        </View>
+                    </View>
                 </View>
             </View>
-            <View style={styles.footer}>
-        
-            </View>
+            
         </View>
         
       );
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modalVisible4}
+    <Modal animationType="fade" transparent={true} visible={modalVisible4.open}
         onRequestClose={() => {
-        setModalVisible4(!modalVisible4)}}>
+        setModalVisible4(prevState=> ({...prevState, open: true}))}}>
     <View style={styles.modalContainer}>
         <View style={styles.modalView}>
-            <View style={[styles.modalContainer2, {height: 626}]}>
-                <FlatList data={DATA} renderItem={renderItem}
+            <View style={styles.modalContainer2}>
+
+                <View style={styles.header}>
+                    <TouchableOpacity style={styles.closeBox} onPress={()=>setModalVisible4(prevState => ({...prevState, open: false}))}><Icon name='close' size={24}/></TouchableOpacity>
+                    <Text style={{color: '#212121', fontSize: 18, fontWeight: '700'}}>{modalVisible4.content.needsName}</Text>
+                </View>
+
+                <FlatList data={[modalVisible4.content]} renderItem={renderItem} showsVerticalScrollIndicator={false}
                     keyExtractor={item => item.id}>
                 </FlatList>
+
+                <View style={styles.footer}>
+                    <Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>BEST 제품 바로가기 ></Text>
+                </View>
             </View>
         </View>
     </View>

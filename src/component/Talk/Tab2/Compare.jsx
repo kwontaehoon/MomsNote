@@ -1,7 +1,11 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { useSelector, useDispatch } from 'react-redux'
+
+import Modal from '../../Materials/Modal/BrendModal'
+import Modal2 from './Modal/Confirm'
 
 import ArrowTop from '../../../../public/assets/svg/Arrow-Top.svg'
 import ArrowBottom from '../../../../public/assets/svg/Arrow-Bottom.svg'
@@ -66,6 +70,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
       },
+    filterBox2:{
+        width: '33.4%',
+        height: 48,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+    },
     myList:{
         position: 'absolute',
         bottom: 60,
@@ -84,42 +95,35 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     myList2:{
-      position: 'absolute',
-      bottom: 0,
-      width: '100%',
-      height: 450,
-      zIndex: 800,
-      backgroundColor: 'white',
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        height: 390,
+        zIndex: 800,
+        backgroundColor: 'white',
     },
     myList2Header:{
-      backgroundColor: '#F47A79',
-      height: 50,
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexDirection: 'row',
-      borderTopStartRadius: 15,
-      borderTopEndRadius: 15,
+        backgroundColor: '#F47A79',
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        borderTopStartRadius: 15,
+        borderTopEndRadius: 15,
     },
     myList2Footer:{
-      height: 200,
-      backgroundColor: 'white',
-      paddingTop: 10,
+        height: 140,
+        backgroundColor: 'white',
+        paddingTop: 10,
     },
     myList2FooterBox:{
-      height: 50,
-      justifyContent: 'center',
-      paddingLeft: 15,
+        height: 50,
+        justifyContent: 'center',
+        paddingLeft: 15,
     },
     budget:{
-      position: 'absolute',
-      right: 15,
-    },
-    myList2FooterButton:{
-      backgroundColor: '#E0E0E0',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginTop: 20,
-      height: 60,
+        position: 'absolute',
+        right: 15,
     },
 })
 const Talk1Sub = ({navigation, route}) => {
@@ -131,64 +135,82 @@ const Talk1Sub = ({navigation, route}) => {
         },
     ];
 
-    const [info3, setInfo3] = useState([
+    const DATA2 = [
         {
           id: '0',
-          title: '산모용품 (0/13)',
+          title: '산모용품',
           icon: require('../../../../public/assets/image/1.png'),
         },
         {
           id: '1',
-          title: '수유용품 (0/13)',
+          title: '수유용품',
           icon: require('../../../../public/assets/image/2.png'),
         },
         {
           id: '2',
-          title: '위생용품 (0/13)',
+          title: '위생용품',
           icon: require('../../../../public/assets/image/3.png'),
         },
         {
           id: '3',
-          title: '목욕용품 (0/13)',
+          title: '목욕용품',
           icon: require('../../../../public/assets/image/4.png'),
         },
         {
           id: '4',
-          title: '침구류 (0/13)',
+          title: '침구류',
           icon: require('../../../../public/assets/image/5.png'),
         },
         {
           id: '5',
-          title: '아기의류 (0/13)',
+          title: '아기의류',
           color: '#FFADAD',
           icon: require('../../../../public/assets/image/6.png'),
         },
         {
           id: '6',
-          title: '발육용품 (0/13)',
+          title: '발육용품',
           icon: require('../../../../public/assets/image/7.png'),
         },
         {
           id: '7',
-          title: '가전용품 (0/13)',
+          title: '가전용품)',
           color: '#FFADAD',
           icon: require('../../../../public/assets/image/8.png'),
         },
         {
           id: '8',
-          title: '놀이용품 (0/13)',
+          title: '놀이용품',
           icon: require('../../../../public/assets/image/9.png'),
         },
-    ]);
+    ];
 
+    const shareList = useSelector(state => { return state.shareList.data; });
+    const material = useSelector(state => { return state.material.data; });
+    console.log('compare material: ', material);
+    const [info, setInfo] = useState([]);
+    console.log('compare info: ', info);
     const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
     const animation = useRef(new Animated.Value(0)).current;
     const [myList, setMyList] = useState(false);
     console.log('myList: ', myList);
 
+    const [modal, setModal] = useState({ // 브랜드 선택 모달
+      open: false,
+      boardId: 0
+    });
+    console.log('compare modal: ', modal);
+    const [modal2, setModal2] = useState(true); // 수정 내용 적용 모달
+
+    useEffect(()=>{
+      if(shareList !== '' || shareList !== undefined){
+          setInfo(shareList.filter(x=> x.boardId == route.params));
+      }
+  }, [shareList]);
+
     const List = () => {
         let arr = [];
-        info3.map(x => {
+        DATA2.map(x => {
             arr.push(
                 <>
                     <View style={styles.listMain}>
@@ -203,15 +225,32 @@ const Talk1Sub = ({navigation, route}) => {
                         <View style={styles.filterBox}><Text>품목</Text></View>
                         <View style={styles.filterBox}><Text>가격</Text></View>
                     </View>
+                    <List2 title={x.title}/>
                 </>
             )
         })
         return arr;
     }
 
-    const List2 = () => {
+    const List2 = (e) => {
       let arr = [];
-      info3.map(x => {
+      info.filter((x, index)=>{
+          if(x.category == e.title && (x.itemName !== null)){
+              arr.push(
+                   <View style={styles.listMain2}>
+                      <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
+                      <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
+                      <View style={styles.filterBox2}><Text>{x.itemPrice} 원</Text></View>
+                  </View>
+              )
+          }
+      })
+      return arr;
+  }
+
+    const List3 = () => {
+      let arr = [];
+      DATA2.map(x => {
           arr.push(
               <>
                   <View style={styles.listMain}>
@@ -226,10 +265,26 @@ const Talk1Sub = ({navigation, route}) => {
                       <View style={styles.filterBox}><Text>품목</Text></View>
                       <View style={styles.filterBox}><Text>가격</Text></View>
                   </View>
+                  <List4 title={x.title}/>
               </>
           )
       })
       return arr;
+  }
+
+  const List4 = (e) => {
+    let arr = [];
+    material.filter((x, index)=>{
+      if(x.category == e.title && x.itemName !== null){
+      arr.push(
+        <TouchableOpacity style={styles.listMain2} onLongPress={()=>setModal(prevState => ({...prevState, open: true}))} delayLongPress={1500} activeOpacity={1} key={index}>
+            <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
+            <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
+            <View style={styles.filterBox2}><Text>{x.itemPrice} 원</Text></View>
+        </TouchableOpacity>
+      )}
+    })
+    return arr;
   }
 
   const opacity_ani = () => {
@@ -266,7 +321,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     const renderItem2 = ({ item }) => (
       <View style={styles.main}>
-        <List2 />
+        <List3 />
       </View>
     );
 
@@ -309,6 +364,9 @@ const Talk1Sub = ({navigation, route}) => {
         <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id}>
         </FlatList>
+
+        <Modal modalVisible2={modal} setModalVisible2={setModal}/>
+        <Modal2 modal2={modal2} setModal2={setModal2}/>
     </View>
   )
 }
