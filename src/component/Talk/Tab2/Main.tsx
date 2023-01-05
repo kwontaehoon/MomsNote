@@ -198,7 +198,7 @@ const dayCalculate = (date) => {
                         </View>
                         <View style={styles.modalBox}>
                             <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>게시글 불러오기</Text></TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModalVisible(!modalVisible), navigation.navigate('출산리스트 공유 상세내용')}}>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModalVisible(!modalVisible), navigation.navigate('출산리스트 공유 등록')}}>
                               <Text style={{color: 'black', fontSize: 16}}>새로 작성하기</Text>
                             </TouchableOpacity>
                         </View>
