@@ -78,9 +78,6 @@ const styles = StyleSheet.create({
 })
 const Talk1Sub = ({route}) => {
 
-  const info = useSelector(state => state.material.data);
-  console.log('총 예산 info: ', info);
-
   const DATA = [
     {
       id: 0,
@@ -129,6 +126,8 @@ const Talk1Sub = ({route}) => {
     },
   ];
 
+  const info = useSelector(state => state.material.data);
+  console.log('총 예산 info: ', info);
   const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
   console.log('list: ', list);
   const [modalVisible, setModalVisible] = useState(false); // 품목 삭제
@@ -150,11 +149,25 @@ const Talk1Sub = ({route}) => {
     setList(arr);
   }
 
+  const filtering = (e) => { // 품목 브랜드 가격 부분 none || flex
+    if(info.filter(x => x.category == e && x.itemName !== null) == ''){
+      return(
+        <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}><Text>검색 결과가 없습니다.</Text></View>
+      )
+    }else return(
+        <View style={styles.mainBox2}>
+            <View style={styles.filterBox}><Text>품목</Text></View>
+            <View style={styles.filterBox}><Text>브랜드</Text></View>
+            <View style={styles.filterBox}><Text>금액</Text></View>
+        </View>
+    )
+  }
+
 
   const List = ({title}) => {
     let arr = [];
     info.filter((x, index)=>{
-      if(x.category == title && x.needsBrandId !== null){
+      if(x.category == title && x.itemName !== null){
               arr.push(
         <TouchableOpacity style={styles.mainBox3} onLongPress={()=>setModal5(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1} key={index}>
             <View style={[styles.filterBox2, {justifyContent: 'flex-start'}]}><Text style={{fontWeight: '500'}}>{x.needsName}</Text></View>
@@ -180,11 +193,14 @@ const Talk1Sub = ({route}) => {
             <View style={[styles.titleBox, {marginLeft: 8}]}><Text style={{fontSize: 16, fontWeight: '500'}}>{item.title}</Text></View>
           </View>
           <View style={{display: list[item.id] ? 'none' : 'flex'}}>
-            <View style={styles.mainBox2}>
-              <View style={styles.filterBox}><Text>품목</Text></View>
-              <View style={styles.filterBox}><Text>브랜드</Text></View>
-              <View style={styles.filterBox}><Text>금액</Text></View>
-            </View>
+           { 
+          //  <View style={styles.mainBox2}>
+          //     <View style={styles.filterBox}><Text>품목</Text></View>
+          //     <View style={styles.filterBox}><Text>브랜드</Text></View>
+          //     <View style={styles.filterBox}><Text>금액</Text></View>
+          //   </View>
+          filtering(item.title)
+            }
               <List title={item.title}/>
           </View>
       </View>

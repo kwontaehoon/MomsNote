@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, ScrollView, Keyboard } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
@@ -181,6 +181,13 @@ const styles = StyleSheet.create({
 })
 const Talk1Sub = ({navigation, route}) => {
 
+    Keyboard.addListener('keyboardDidShow', () => {
+        setPageHeight(true);
+    });
+    Keyboard.addListener('keyboardDidHide', () => {
+        setPageHeight(false);
+    });
+
     const DATA = [
         {
           id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -243,7 +250,13 @@ const Talk1Sub = ({navigation, route}) => {
     const shareList = useSelector(state => { return state.shareList.data; });
     console.log('shareList: ', shareList);
     const [comment, setComment] = useState([]); // 댓글 데이터
-    const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
+    const [list, setList] = useState(Array.from({length: 8}, () => {return true})); // list display
+
+    const [modal, setModal] = useState(false); // dot 모달 다른사람게시판 차단 및 신고
+    const [modal2, setModal2] = useState(false); // 차단하기
+    const [modal3, setModal3] = useState(false); // 게시물 신고 하기 
+    const [modal4, setModal4] = useState(false); // 신고 확인
+    const [modal6, setModal6] = useState(false); // comment 신고 하기 
 
     useEffect(()=>{
         if(shareList !== '' || shareList !== undefined){
@@ -251,13 +264,97 @@ const Talk1Sub = ({navigation, route}) => {
         }
     }, [shareList]);
 
+    //  useEffect(()=>{ 
+    //     dispatch(postComment(commentData)); // 댓글 목록
+    //     dispatch(postCommentFlag({boardId: info[0].boardId})); // 댓글 추쳔 Flag
+    // }, []);
+
+    // useEffect(()=>{ // 게시물 추천 Flag
+    //     console.log('게시물 추천 여부 업데이트');
+    //     const likeInfo = async() => {
+    //         try{
+    //             const response = await axios({
+    //                 method: 'post',
+    //                 url: 'https://momsnote.net/api/board/recommend/flag',
+    //                 headers: { 
+    //                     'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1OTE0OTIsImV4cCI6MTY3NDE4MzQ5Mn0.d8GpqvEmnnrUZKumuL4OPzp7wSGXiTo47hGkCSM2HO0', 
+    //                     'Content-Type': 'application/json'
+    //                   },
+    //                 data: { boardId : info[0].boardId }
+    //             });
+    //             setBoardLike(response.data);
+    //         }catch(error){
+    //             console.log('like axios error');
+    //         }
+    //     }
+    //     likeInfo();
+    // }, [boardLike]);
+
+    // const commentRegister = async() => { // 댓글 업데이트 필요
+    //     try{
+    //         const response = await axios({ 
+    //               method: 'post',
+    //               url: 'https://momsnote.net/api/comments/write',
+    //               headers: { 
+    //                 'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE3NzUwMzAsImV4cCI6MTY3NDM2NzAzMH0.sXaK1MqIIiSpnF-xGkY-TRIu-O-ndUa1QuG9HFkGrMM', 
+    //                 'Content-Type': 'application/json'
+    //               },
+    //               data: insert
+    //             });
+    //             console.log('response: ', response.data);
+    //         }catch(error){
+    //           console.log('댓글 작성 error: ', error);
+    //         }
+    //     dispatch(postBoard(boardData));
+    //     dispatch(postComment(commentData));
+    // }
+
+    // const likeplus = async() => { // 게시판 좋아요
+    //     console.log('likeplus');
+    //     try{
+    //         const response = await axios({
+    //               method: 'post',
+    //               url: 'https://momsnote.net/api/board/recommend',
+    //               headers: { 
+    //                 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
+    //                 'Content-Type': 'application/json'
+    //               },
+    //               data: {
+    //                 boardId: info[0].boardId,
+    //                 type: 'plus'
+    //               }
+    //             });
+    //             console.log('response: ', response.data);
+    //             dispatch(postBoard(boardData));
+    //         }catch(error){
+    //           console.log('error: ', error);
+    //         }
+    //         setBoardLike();
+    // }
+
+
     const dayCalculate = (date) => {
+        console.log('date: ', date);
         switch(true){
           case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
           case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
           default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'day')}일 전</Text>
         }
     }
+
+    const filtering = (e) => { // 품목 브랜드 가격 부분 none || flex
+        if(info.filter(x => x.category == e && x.needsBrandId !== null) == ''){
+          return(
+            <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}><Text>검색 결과가 없습니다.</Text></View>
+          )
+        }else return(
+            <View style={styles.listMain2}>
+                <View style={styles.filterBox}><Text>품목</Text></View>
+                <View style={styles.filterBox}><Text>브랜드</Text></View>
+                <View style={styles.filterBox}><Text>금액</Text></View>
+            </View>
+        )
+      }
 
     const List = () => {
         let arr = [];
@@ -269,14 +366,12 @@ const Talk1Sub = ({navigation, route}) => {
                             onPress={()=>arrow(x.id)}>{list[x.id] ? <Icon name="angle-up" size={22}/> : <Icon name='angle-down' size={22}/>}
                         </TouchableOpacity>
                         <Image source={x.icon} width={20} height={20}/>
-                        <Text style={{fontSize: 15}}>{x.title}</Text>
+                        <Text style={{fontSize: 15}}> {x.title}</Text>
                     </View>
-                    <View style={styles.listMain2}>
-                        <View style={styles.filterBox}><Text>품목</Text></View>
-                        <View style={styles.filterBox}><Text>브랜드</Text></View>
-                        <View style={styles.filterBox}><Text>금액</Text></View>
+                    <View style={{display: list[index] ? 'flex' : 'none'}}>
+                        {filtering(x.title)}
+                        <List2 title={x.title}/>
                     </View>
-                    <List2 title={x.title}/>
                 </>
             )
         })
@@ -311,7 +406,7 @@ const Talk1Sub = ({navigation, route}) => {
                 <View style={styles.profileBox}></View>
                 <View style={styles.infoBox}>
                     <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{route.params.nickname}</Text>
-                    <Text style={{color: '#9E9E9E', fontSize: 13}}>{dayCalculate(item.boardDate)}</Text>
+                    <Text style={{color: '#9E9E9E', fontSize: 13}}>{dayCalculate(route.params.boardDate)}</Text>
                 </View>
             </View>
             <View style={styles.main}>
@@ -366,27 +461,31 @@ const Talk1Sub = ({navigation, route}) => {
                     </View>
                 </View>
                 <View style={styles.mainBox5}>
-                    {comment.length !== 0 ?
-                    <View style={styles.commentBox}>
-                        <Text></Text>
-                    </View> :
-                    <View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 60}}>
+                {comment == '' ?
+                    <View style={{alignItems: 'center', justifyContent: 'center', height: 200}}>
                         <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
                         <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
-                    </View>}
+                    </View> : <Comment info={comment} setCommentsId={setCommentsId} setInsert={setInsert} modal={modal} setModal={setModal} commentData={commentData}/>}
                 </View>
             </View>
         </View>
       );
 
-      const renderItem2 = ({ item }) => (
-        <View style={styles.listBox}>
-            
-        </View>
-      );
-
   return info !== undefined && info !== '' ? (
     <View style={styles.container}>
+
+        {/* <Animated.View style={[styles.alarmBox, {opacity: animation}]}>
+            <View style={styles.alarm}><Text style={{color: 'white', fontSize: 13, fontWeight: '500'}}>{info[0].nickname}님을 차단하였습니다.</Text></View>
+        </Animated.View>
+
+
+        <Modal navigation={navigation} modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3} commentsId={commentsId} info={info}
+            modal6={modal6} setModal6={setModal6} commentData={commentData}/>
+        <Modal2 modal2={modal2} setModal2={setModal2} userId={info[0].userId} ani={opacity_ani}/>
+        <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4} boardId={info[0].boardId}/>
+        <Modal4 modal4={modal4} setModal4={setModal4} />
+        <Modal6 modal4={modal4} setModal4={setModal4} modal6={modal6} setModal6={setModal6} commentsId={commentsId}/> */}
+
          <View style={styles.header}>
                 <Back onPress={()=>navigation.goBack()}/>
                 <View style={styles.headerBar}>

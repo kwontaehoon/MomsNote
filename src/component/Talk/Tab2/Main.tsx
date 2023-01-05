@@ -121,6 +121,8 @@ const Talk1 = ({navigation}) => {
     {label: '마감임박', value: '3'},
 ]);
 
+console.log(shareList == undefined);
+
 useEffect(()=>{
   dispatch(postShareList({
     order: 'buy',
@@ -159,7 +161,7 @@ const dayCalculate = (date) => {
     </TouchableOpacity>
   ); 
 
-  return info !== undefined && info !== '' ?(
+  return shareList == undefined ? <View><Text>gg요</Text></View> : (
     <View style={styles.container}>
       <View style={styles.header}></View>
       <View style={styles.header2}>
@@ -205,7 +207,7 @@ const dayCalculate = (date) => {
             </View>
         </Modal>
      </View>
-  ): <View></View>
+  )
 }
 
 export default Talk1

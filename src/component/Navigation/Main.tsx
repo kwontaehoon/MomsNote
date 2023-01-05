@@ -42,6 +42,10 @@ import Gallery from '../Modal/Gallery'
 import Government from '../Information/Tab3/Detail'
 import GuideDetail from '../Information/Tab1/Detail'
 import ReduxTest2 from '../Test/ReduxTest2'
+import MomsSearchSearch from '../Navigation/SearchTab/MomsTalk'
+import MaterialSearch from '../Navigation/SearchTab/Material'
+import CommentSearch from '../Navigation/SearchTab/Comment'
+import ExperienceSearch from '../Navigation/SearchTab/Expreience'
 
 
 LogBox.ignoreAllLogs();
@@ -129,6 +133,11 @@ const Navigation = () => {
                             })}/>
             <Stack.Screen name="갤러리" component={Gallery} options={{title: '', headerShown: false}}/>
             <Stack.Screen name="리덕스 테스트2" component={ReduxTest2} />
+
+            <Stack.Screen name="맘스 톡 서치" component={MomsSearchSearch} />
+            <Stack.Screen name="출산준비물 공유 서치" component={MaterialSearch} />
+            <Stack.Screen name="댓글 서치" component={CommentSearch} />
+            <Stack.Screen name="체험단 서치" component={Experience} />
 
         </Stack.Navigator>
       </NavigationContainer>

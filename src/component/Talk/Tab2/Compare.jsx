@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, A
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSelector, useDispatch } from 'react-redux'
+import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
 
 import Modal from '../../Materials/Modal/BrendModal'
 import Modal2 from './Modal/Confirm'
@@ -174,7 +175,7 @@ const Talk1Sub = ({navigation, route}) => {
         },
         {
           id: '7',
-          title: '가전용품)',
+          title: '가전용품',
           color: '#FFADAD',
           icon: require('../../../../public/assets/image/8.png'),
         },
@@ -185,47 +186,68 @@ const Talk1Sub = ({navigation, route}) => {
         },
     ];
 
+    const dispatch = useDispatch();
     const shareList = useSelector(state => { return state.shareList.data; });
     const material = useSelector(state => { return state.material.data; });
     console.log('compare material: ', material);
     const [info, setInfo] = useState([]);
     console.log('compare info: ', info);
-    const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
+    const [list, setList] = useState(Array.from({length: 8}, () => {return true})); // list display
     const animation = useRef(new Animated.Value(0)).current;
     const [myList, setMyList] = useState(false);
     console.log('myList: ', myList);
 
     const [modal, setModal] = useState({ // 브랜드 선택 모달
       open: false,
-      boardId: 0
+      needsId: null,
+      needsBrandId: null,
+      needsDateId: null
     });
     console.log('compare modal: ', modal);
     const [modal2, setModal2] = useState(true); // 수정 내용 적용 모달
 
-    useEffect(()=>{
-      if(shareList !== '' || shareList !== undefined){
+  useEffect(()=>{ // 해당 게시글 boardId만 filtering
+      if(shareList !== '' || shareList !== undefined){ 
           setInfo(shareList.filter(x=> x.boardId == route.params));
       }
   }, [shareList]);
 
+  useEffect(()=>{
+    dispatch(postMaterial({
+      order: 'need'
+    }));
+  }, []);
+
+  const filtering = (e, title) => { // 품목 브랜드 가격 부분 none || flex
+    if(title.filter(x => x.category == e && x.needName !== null) == ''){
+      return(
+        <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}><Text>검색 결과가 없습니다.</Text></View>
+      )
+    }else return(
+        <View style={styles.listMain2}>
+            <View style={styles.filterBox}><Text>품목</Text></View>
+            <View style={styles.filterBox}><Text>브랜드</Text></View>
+            <View style={styles.filterBox}><Text>금액</Text></View>
+        </View>
+    )
+  }
+
     const List = () => {
         let arr = [];
-        DATA2.map(x => {
+        DATA2.map((x, index) => {
             arr.push(
                 <>
-                    <View style={styles.listMain}>
+                    <View style={styles.listMain} key={index}>
                         <TouchableOpacity style={styles.arrowBox}
                             onPress={()=>arrow(x.id)}>{list[x.id] ? <Icon name="angle-up" size={22}/> : <Icon name='angle-down' size={22}/>}
                         </TouchableOpacity>
                         <Image source={x.icon}/>
                         <Text style={{fontSize: 16, marginLeft: 8, fontWeight: '500'}}>{x.title}</Text>
                     </View>
-                    <View style={styles.listMain2}>
-                        <View style={styles.filterBox}><Text>구매</Text></View>
-                        <View style={styles.filterBox}><Text>품목</Text></View>
-                        <View style={styles.filterBox}><Text>가격</Text></View>
+                    <View style={{display: list[index] ? 'flex' : 'none'}}>
+                        {filtering(x.title, info)}
+                        <List2 title={x.title}/>
                     </View>
-                    <List2 title={x.title}/>
                 </>
             )
         })
@@ -235,9 +257,9 @@ const Talk1Sub = ({navigation, route}) => {
     const List2 = (e) => {
       let arr = [];
       info.filter((x, index)=>{
-          if(x.category == e.title && (x.itemName !== null)){
+          if(x.category == e.title && x.itemName !== null){
               arr.push(
-                   <View style={styles.listMain2}>
+                   <View style={styles.listMain2} key={index}>
                       <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
                       <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
                       <View style={styles.filterBox2}><Text>{x.itemPrice} 원</Text></View>
@@ -250,42 +272,40 @@ const Talk1Sub = ({navigation, route}) => {
 
     const List3 = () => {
       let arr = [];
-      DATA2.map(x => {
+      DATA2.map((x, index) => {
           arr.push(
               <>
-                  <View style={styles.listMain}>
+                  <View style={styles.listMain} key={index}>
                       <TouchableOpacity style={styles.arrowBox}
                           onPress={()=>arrow(x.id)}>{list[x.id] ? <Icon name="angle-up" size={22}/> : <Icon name='angle-down' size={22}/>}
                       </TouchableOpacity>
                       <Image source={x.icon}/>
                       <Text style={{fontSize: 16, marginLeft: 8, fontWeight: '500'}}>{x.title}</Text>
                   </View>
-                  <View style={styles.listMain2}>
-                      <View style={styles.filterBox}><Text>구매</Text></View>
-                      <View style={styles.filterBox}><Text>품목</Text></View>
-                      <View style={styles.filterBox}><Text>가격</Text></View>
+                  <View style={{display: list[index] ? 'flex' : 'none'}}>
+                        {filtering(x.title, material)}
+                        <List4 title={x.title}/>
                   </View>
-                  <List4 title={x.title}/>
               </>
           )
       })
       return arr;
   }
 
-  const List4 = (e) => {
-    let arr = [];
-    material.filter((x, index)=>{
-      if(x.category == e.title && x.itemName !== null){
-      arr.push(
-        <TouchableOpacity style={styles.listMain2} onLongPress={()=>setModal(prevState => ({...prevState, open: true}))} delayLongPress={1500} activeOpacity={1} key={index}>
-            <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
-            <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
-            <View style={styles.filterBox2}><Text>{x.itemPrice} 원</Text></View>
-        </TouchableOpacity>
-      )}
-    })
-    return arr;
-  }
+    const List4 = (e) => {
+      let arr = [];
+      material.filter((x, index)=>{
+        if(x.category == e.title && x.needsName !== null){
+        arr.push(
+          <TouchableOpacity style={styles.listMain2} onLongPress={()=>setModal(prevState => ({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))} delayLongPress={1500} activeOpacity={1} key={index}>
+              <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
+              <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
+              <View style={styles.filterBox2}><Text>{x.itemPrice} 원</Text></View>
+          </TouchableOpacity>
+        )}
+      })
+      return arr;
+    }
 
   const opacity_ani = () => {
     Animated.timing(animation, {

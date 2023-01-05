@@ -201,9 +201,9 @@ const Talk1Sub = ({navigation, route}) => {
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
     const [insert, setInsert] = useState(
         {
-            boardId: null,
+            boardId: info[0].boardId,
             contents: '',
-            ref: 0,
+            ref: 1,
             level: 0
         }
     ); // 댓글 입력
@@ -232,9 +232,6 @@ const Talk1Sub = ({navigation, route}) => {
 
     useEffect(()=>{ // 댓글 목록
         dispatch(postComment(commentData));
-    }, []);
-
-    useEffect(()=>{ // 댓글 추쳔 Flag
         dispatch(postCommentFlag({boardId: info[0].boardId}));
     }, []);
 
@@ -444,7 +441,7 @@ const Talk1Sub = ({navigation, route}) => {
                 setInsert((prevState) => ({...prevState,
                     boardId: info[0].boardId,
                     contents: e,
-                    ref: 0,
+                    ref: comment.length+1,
                     level: 0}))} placeholderTextColor={'#BDBDBD'}></TextInput>
         </View>
     </View>

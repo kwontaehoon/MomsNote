@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Keyboard } from 'react-native'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useSelector, useDispatch } from 'react-redux'
+import { postComment } from '../../../Redux/Slices/CommentSlice'
+import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
@@ -35,36 +38,17 @@ const styles = StyleSheet.create({
 
     },
 })
-const Comment = ({info, commentsId, setCommentsId, setInsert, modal, setModal, recommendState, setRecommendState}) => {
+const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData}) => {
 
-    // console.log('comment commentsId: ', commentsId);
 
-    const [commentLike, setCommentLike] = useState(); // 댓글 추천 여부
+    const commentLike = useSelector(state => { return state.commentFlag.data; });
 
-    useEffect(()=>{
-        const likeInfo = async() => {
-            try{
-                const response = await axios({
-                    method: 'post',
-                    url: 'https://momsnote.net/api/comments/recommend/flag',
-                    headers: { 
-                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
-                        'Content-Type': 'application/json'
-                    },
-                    data: { boardId : info[0].boardId }
-                });
-                setCommentLike(response.data);
-            }catch(error){
-                console.log('comment like axios error');
-            }
-        }
-        likeInfo();
-    }, [recommendState]);
+    const dispatch = useDispatch();
 
-    const commentplus = async(id) => {
-
+    const commentplus = async(id) => { // 댓글 추천
+        console.log('likeComment');
         try{
-            const response = await axios({
+            const response = await axios({ 
                   method: 'post',
                   url: 'https://momsnote.net/api/comments/recommend',
                   headers: { 
@@ -81,7 +65,8 @@ const Comment = ({info, commentsId, setCommentsId, setInsert, modal, setModal, r
             }catch(error){
               console.log('error: ', error);
             }
-            setRecommendState(false);
+            dispatch(postComment(commentData));
+            dispatch(postCommentFlag({boardId: info[0].boardId}));
     }
 
     const List = () => {
@@ -113,7 +98,7 @@ const Comment = ({info, commentsId, setCommentsId, setInsert, modal, setModal, r
                                         ref: x.ref,
                                         level: 1
                                     }))
-                                }
+                                    setCommentsId(x.nickname);}
                                 }>댓글달기
                             </Text> 
                         </View>
@@ -152,12 +137,12 @@ const Comment = ({info, commentsId, setCommentsId, setInsert, modal, setModal, r
         return arr;
     }
 
-  return commentLike !== undefined ?(
+  return commentLike !== '' | commentLike !== undefined ? (
     <>
         <List />
         <View style={styles.commentRes}></View>
     </>
-  ): <View></View>
+  ): <View><Text>gg</Text></View>
 }
 
 export default Comment

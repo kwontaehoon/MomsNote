@@ -211,7 +211,9 @@ const Navigation = ({navigation, route}) => {
   const [modalVisible, setModalVisible] = useState(false); // check box 선택시 모달
   const [modalVisible2, setModalVisible2] = useState({
     open: false,
-    needsId: '',
+    needsId: null,
+    needsBrandId: null,
+    needsDateId: null
   }); // 브랜드 추가 모달
   const [modalVisible4, setModalVisible4] = useState({
     open: false,
@@ -384,9 +386,9 @@ const save = async() => {
             <TouchableOpacity onPress={()=>setModalVisible4(prevState => ({...prevState, open: true, content: x}))}><Text>{x.needsName}</Text></TouchableOpacity>
           </View>
           <View style={[styles.filterBox, {width: '41%'}]}>
-            {x.brandName == null ? <View style={{width: 24, height: 24, borderRadius: 12,backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
-              <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId}))}/> 
-            </View> : <Text>{x.brandName}</Text>}
+            {x.itemName == null ? <View style={{width: 24, height: 24, borderRadius: 12,backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
+              <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}/> 
+            </View> : <Text>{x.itemName}</Text>}
           </View>
       </View>
       )}
@@ -420,7 +422,7 @@ const save = async() => {
     </View>
   );
 
-  return info !== '' ? (
+  return info !== '' || info !== undefined ? (
     <View style={styles.container}>
 
         <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>

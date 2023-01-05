@@ -8,6 +8,8 @@ import axios from 'axios'
 import Arrow_Right from '../../../../public/assets/svg/Arrow-Right.svg'
 import Reset from '../../../../public/assets/svg/Reset.svg'
 import Crwon from '../../../../public/assets/svg/crown.svg'
+import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
+import { useDispatch } from 'react-redux'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -103,14 +105,18 @@ const styles = StyleSheet.create({
 })
 
 const Main = ({modalVisible2, setModalVisible2, setModal}) => {
+    console.log('modalvisible2: ', modalVisible2);
 
+    const dispatch = useDispatch();
     const [info, setInfo] = useState([]); // 브랜드 list
     const [selectBrand, setSelectBrand] = useState({
-        needsId: 0,
-        needsBrandId: 1,
+        needsId: null,
+        needsBrandId: 0,
         itemName: '',
         itemPrice: '',
+        needsDataId: null
     });
+    console.log(selectBrand);
 
     useEffect(()=>{
         const commentInfo = async() => {
@@ -123,7 +129,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
                     'Content-Type': 'application/json'
                   },
                 data: { 
-                  needsId: 11,
+                  needsId: modalVisible2.needsId,
                 }
             });
             setInfo(response.data);
@@ -133,7 +139,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
             }
         } 
         commentInfo();
-        setSelectBrand(prevState => ({...prevState, needsId: modalVisible2.needsId}));
+        setSelectBrand(prevState => ({...prevState, needsId: modalVisible2.needsId, needsDataId: modalVisible2.needsDataId == null ? 0 : modalVisible2.needsDataId}));
     }, [modalVisible2]);
 
     const submit = async() => {
@@ -152,10 +158,11 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
             }catch(error){
                 console.log('comment axios error:', error)
             }
+            dispatch(postMaterial({order: 'need'}));
     }
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price}))}>
+        <TouchableOpacity style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: item.needsBrandId}))}>
             <View style={[styles.mainBoxSub, {width: '24%'}]}>
                 <Crwon />
             </View>
@@ -179,7 +186,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
     );
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modalVisible2.open}
+    <Modal animationType="fade" transparent={false} visible={modalVisible2.open}
         onRequestClose={() => {
         setModalVisible2(!modalVisible2)}}>
     <View style={styles.modalContainer}>
