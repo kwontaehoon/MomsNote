@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
 import Checkbox from 'expo-checkbox'
+import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -55,10 +58,33 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({modalVisible, setModalVisible}) => {
 
+    const dispatch = useDispatch();
     const [isChecked, setChecked] = useState(false); // check box 선택시 체크 팝업에서의 check box
 
+    const purchase = async(needsId, needsBrandId) =>{
+      console.log('purchase');
+      try{
+        const response = await axios({
+            method: 'post',
+            url: 'https://momsnote.net/api/needs/buy/needs',
+            headers: { 
+              'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIyMDczODUsImV4cCI6MTY3NDc5OTM4NX0.LRECgH_NBe10ueCfmefEzEueIrYukBHnXoKRfVqIurQ', 
+              'Content-Type': 'application/json'
+            },
+            data: {
+              needsBrandId: needsBrandId,
+              needsId: needsId
+            }
+        });
+        console.log('response: ', response.data);
+        }catch(error){
+            console.log('출산준비물 구매 error:', error);
+        }
+        dispatch(postMaterial(materialSet));
+    }
+
   return (
-    <Modal animationType="fade" transparent={true} visible={modalVisible}
+    <Modal animationType="fade" transparent={true} visible={modalVisible.open}
             onRequestClose={() => {
             setModalVisible(!modalVisible)}}>
             <View style={styles.modalContainer}>
@@ -81,8 +107,8 @@ const CheckBoxModal = ({modalVisible, setModalVisible}) => {
                                 <Text style={{color: '#424242'}}>다시 표시하지 않겠습니다.</Text>
                           </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>구매 완료</Text></TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModalVisible(!modalVisible)}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.modal} onPress={purchase}><Text style={{color: 'white', fontSize: 16}}>구매 완료</Text></TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModalVisible(prevState => ({...prevState, open: false}))}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
                         </View>
                     </View>
                 </View>

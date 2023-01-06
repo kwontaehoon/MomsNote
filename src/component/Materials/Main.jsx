@@ -198,6 +198,7 @@ const Navigation = ({navigation, route}) => {
   ]
 
   const dispatch = useDispatch();
+  const test = 0; // asyncstorage 선택 모달 때문에 만듬
   const info = useSelector(state => { return state.material.data; });
   console.log('출산준비물 리스트: ', info);
   const materialSet = useSelector(state => { return state.material.refresh; });
@@ -208,13 +209,19 @@ const Navigation = ({navigation, route}) => {
 
   const [captureURL, setCaptureURL] = useState(); // 캡쳐 uri
   
-  const [modalVisible, setModalVisible] = useState(false); // check box 선택시 모달
+  const [modalVisible, setModalVisible] = useState({
+    open: false,
+    needsBrandId: null,
+    needsId: null,
+
+  }); // check box 선택시 모달
   const [modalVisible2, setModalVisible2] = useState({
     open: false,
     needsId: null,
     needsBrandId: null,
     needsDateId: null
   }); // 브랜드 추가 모달
+  console.log('modalvisible2: ', modalVisible2);
   const [modalVisible4, setModalVisible4] = useState({
     open: false,
     content: ''
@@ -374,17 +381,18 @@ const save = async() => {
               color={x.id == 0 ? undefined : '#FEB401'}
               onValueChange={()=>{
                 switch(true){
-                  case x.brandName == null: setModal(prevState => ({...prevState, open: true, buttonCount: 1, content: '브랜드를 체크해주세요'})); break;
+                  case x.itemName == null: setModal(prevState => ({...prevState, open: true, buttonCount: 1, content: '브랜드를 체크해주세요'})); break;
+                  case test == 0 : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: x.needsBrandId, needsId: x.needsId})); break;
                   case x.id == 0 : purchase(x.needsId, x.needsBrandId); break;
                   default : purchaseCencel(x.needsId);
                 }
               }}
               />
           </View>
-          <View style={[styles.filterBox, {width: 157, flexDirection: 'row', justifyContent: 'flex-start'}]}>
+          <TouchableOpacity style={[styles.filterBox, {width: 157, flexDirection: 'row', justifyContent: 'flex-start'}]} onPress={()=>setModalVisible4(prevState => ({...prevState, open: true, content: x}))}>
             {optionBox(x.grade)}
-            <TouchableOpacity onPress={()=>setModalVisible4(prevState => ({...prevState, open: true, content: x}))}><Text>{x.needsName}</Text></TouchableOpacity>
-          </View>
+            <Text>{x.needsName}</Text>
+          </TouchableOpacity>
           <View style={[styles.filterBox, {width: '41%'}]}>
             {x.itemName == null ? <View style={{width: 24, height: 24, borderRadius: 12,backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
               <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}/> 
@@ -393,7 +401,6 @@ const save = async() => {
       </View>
       )}
     })
-    // setSumResult(sum);
     return arr;
   }
 
@@ -427,7 +434,7 @@ const save = async() => {
 
         <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
         <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} setModal={setModal}/>
-        <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4}/>
+        <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
         <ResetModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
         <ResetModal2 modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
         <DotModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible7={modalVisible7} setModalVisible7={setModalVisible7} modalVisible8={modalVisible8} setModalVisible8={setModalVisible8}

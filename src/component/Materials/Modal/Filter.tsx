@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
+import { useDispatch } from 'react-redux'
+import { setMaterialRefresh } from '../../../Redux/Slices/MaterialSlice'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -44,10 +46,13 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({modalVisible10, setModalVisible10}) => {
 
+    const dispatch = useDispatch();
     const [filter, setFilter] = useState(false); // 체크, 폰트 색상
 
+    // dispatch(setMaterialRefresh({}));
+
   return (
-    <Modal animationType="slide" transparent={true} visible={modalVisible10}
+    <Modal animationType="slide" transparent={true} visible={modalVisible10} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible10(!modalVisible10)}}>
             <View style={styles.modalContainer}>

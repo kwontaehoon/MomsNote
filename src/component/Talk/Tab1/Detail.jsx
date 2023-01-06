@@ -194,6 +194,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = [route.params.item];
+    console.log('talk1 info: ', info);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
@@ -426,6 +427,7 @@ const Talk1Sub = ({navigation, route}) => {
         <FlatList data={info} renderItem={renderItem}
             keyExtractor={item => String(item.boardId)}>
         </FlatList>
+        
         <View style={[styles.commentRes, {display: insert.level === 0 ? 'none' : 'flex'}]}>
             <View style={styles.closeBox}><Close width={20} fill='#757575' onPress={()=>setInsert((prevState) => ({...prevState, level: 0}))}/></View>
             <Text style={{fontSize: 15}}>{commentsId}</Text>

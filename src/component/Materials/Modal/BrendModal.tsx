@@ -51,6 +51,8 @@ const styles = StyleSheet.create({
         height: '50%',
         paddingLeft: 15,
         paddingRight: 15,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     mainBox:{
         height: 95,
@@ -91,6 +93,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 2,
     },
+    redDot:{
+        width: 5,
+        height: 5,
+        borderRadius: 5,
+        backgroundColor: '#EF1E1E',
+        position: 'absolute',
+        right: '35%',
+    },
     footerBox3:{
         backgroundColor: '#FEA100',
         alignItems: 'center',
@@ -105,10 +115,10 @@ const styles = StyleSheet.create({
 })
 
 const Main = ({modalVisible2, setModalVisible2, setModal}) => {
-    console.log('modalvisible2: ', modalVisible2);
 
     const dispatch = useDispatch();
-    const [info, setInfo] = useState([]); // 브랜드 list
+    const [info, setInfo] = useState(); // 브랜드 lists
+    console.log('브랜드 리스트: ', info);
     const [selectBrand, setSelectBrand] = useState({
         needsId: null,
         needsBrandId: 0,
@@ -116,7 +126,6 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
         itemPrice: '',
         needsDataId: null
     });
-    console.log(selectBrand);
 
     useEffect(()=>{
         const commentInfo = async() => {
@@ -135,7 +144,8 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
             setInfo(response.data);
             console.log('response: ', response.data);
             }catch(error){
-                console.log('comment axios error:', error)
+                console.log('comment axios error:', error);
+                setInfo(undefined);
             }
         } 
         commentInfo();
@@ -198,22 +208,29 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
                     <Text style={{color: '#212121'}}>수유브라 Best</Text>
                 </View>
                 <View style={styles.main}>
+                    {info == undefined || info.length == 0 ? <View><Text style={{fontSize: 15, color: '#757575'}}>등록된 품목이 없습니다.</Text></View>
+                    :
                     <FlatList data={info} renderItem={renderItem}
                         keyExtractor={item => String(item.needsBrandId)} showsVerticalScrollIndicator={false}>
-                    </FlatList>
+                    </FlatList>}
                 </View>
                 <View style={styles.footer}>
                     <View style={styles.footerBox}>
                         <View style={styles.resetBox}>
                             <Text style={{marginRight: 5, color: '#757575'}}>초기화</Text>
-                            <TouchableOpacity onPress={()=>{setSelectBrand((preState)=> ({...preState, itemName: '', itemPrice: ''}))}}><Reset width={18} fill='#757575'/></TouchableOpacity>
+                            <TouchableOpacity style={{borderWidth: 1}} onPress={()=>{setSelectBrand((preState)=> ({...preState, itemName: '', itemPrice: ''}))}}><Reset width={18} fill='#757575'/></TouchableOpacity>
                         </View>
                         <Text style={{color: '#212121', fontSize: 16, fontWeight: '700'}}>브랜드 추가</Text>
                     </View>
                     <View style={styles.footerBox2}>
-                        <TextInput style={styles.textInput} placeholder='브랜드명/제품명' value={selectBrand.itemName}
-                        onChangeText={(e) => setSelectBrand(prevState => ({ ...prevState, itemName: e}))}></TextInput>
-                        
+                        <View style={styles.textInput}>
+                        {selectBrand.itemName == '' ? <View style={styles.redDot}></View> : ''}
+                        <TextInput placeholder='브랜드명/제품명' value={selectBrand.itemName}
+                            onChangeText={(e) => setSelectBrand(prevState => ({ ...prevState, itemName: e}))}>   
+                        </TextInput>
+
+                        </View>
+
                         <View style={{width: '6%'}}></View>
 
                        <TextInput style={styles.textInput} placeholder='가격(원)' value={String(selectBrand.itemPrice)}

@@ -12,6 +12,7 @@ export const postComment = createAsyncThunk("postCommentSlice/async", async (dat
           },
           data : data
       });
+      console.log('zzzzzzzzzzzzzzzz', response.data);
       return response.data;
       }catch(error){
           console.log('comment axios error: ', error);

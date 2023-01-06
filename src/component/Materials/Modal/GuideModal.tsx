@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     }
 })
 
-const Main = ({modalVisible4, setModalVisible4}) => {
+const Main = ({modalVisible4, setModalVisible4, modalVisible2, setModalVisible2}) => {
 
     const optionBox = (e) => {
         switch(e){
@@ -162,9 +162,9 @@ const Main = ({modalVisible4, setModalVisible4}) => {
                     keyExtractor={item => item.id}>
                 </FlatList>
 
-                <View style={styles.footer}>
+                <TouchableOpacity style={styles.footer} onPress={()=>(setModalVisible4(prevState => ({...prevState, open: false})), setModalVisible2(prevState => ({...prevState, open: true, needsId: modalVisible4.content.needsId, needsDateId: modalVisible4.content.needsDateId})))}>
                     <Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>BEST 제품 바로가기 ></Text>
-                </View>
+                </TouchableOpacity>
             </View>
         </View>
     </View>

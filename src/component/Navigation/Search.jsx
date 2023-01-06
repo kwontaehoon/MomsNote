@@ -15,11 +15,11 @@ import More from '../../../public/assets/svg/More.svg'
 const styles = StyleSheet.create({
   container:{
     height: '97%',
-    backgroundColor: 'white',
     marginTop: getStatusBarHeight(),
   },
   header:{
     height: 80,
+    backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',
     padding: 15,
@@ -38,7 +38,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   main:{
-    height: '90%',
+
+  },
+  main2:{
+    backgroundColor: 'white',
   },
   titleBox:{
     height: 50,
@@ -81,7 +84,7 @@ const styles = StyleSheet.create({
   notBox:{
     height: 120,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   }
 
 })
@@ -95,10 +98,16 @@ const Main = ({navigation}) => {
     }
   ];
 
+  const [search, setSearch] = useState('');
+
   const [momsSearch, setMomsSearch] = useState();
+  console.log('moms: ', momsSearch);
   const [materialSearch, setMaterialSearch] = useState();
+  console.log('material: ', materialSearch);
   const [commentSearch, setCommentSearch] = useState();
+  console.log('comment: ', commentSearch);
   const [experienceSearch, setExperienceSearch] = useState();
+  console.log('exp: ', experienceSearch)
 
   useEffect(()=>{
     const boardSearch = async() => {
@@ -109,16 +118,17 @@ const Main = ({navigation}) => {
                 headers: { 
                   'Content-Type': 'application/json'
                 },
-                data: { keyword: '테스트'}
+                data: { keyword: search}
             });
             console.log('boardSearch: ', response.data);
             setMomsSearch(response.data);
         }catch(error){
             console.log('boardSearch axios error', error);
+            setMomsSearch(undefined);
         }
     }
     boardSearch();
-}, []);
+}, [search]);
 
 useEffect(()=>{
   const materialSearch = async() => {
@@ -129,16 +139,17 @@ useEffect(()=>{
               headers: { 
                 'Content-Type': 'application/json'
               },
-              data: { keyword: '테스트'}
+              data: { keyword: search}
           });
           console.log('materialSearch: ', response.data);
           setMaterialSearch(response.data);
       }catch(error){
           console.log('materialSerach axios error', error);
+          setMaterialSearch(undefined);
       }
   }
   materialSearch();
-}, []);
+}, [search]);
 
 useEffect(()=>{
   const experienceSearch = async() => {
@@ -149,16 +160,17 @@ useEffect(()=>{
               headers: { 
                 'Content-Type': 'application/json'
               },
-              data: { keyword: '테스트'}
+              data: { keyword: search}
           });
           console.log('commentSearch', response.data);
           setCommentSearch(response.data);
       }catch(error){
           console.log('commentSearch axios error', error);
+          setCommentSearch(undefined);
       }
   }
   experienceSearch();
-}, []);
+}, [search]);
 
 useEffect(()=>{
   const commentSearch = async() => {
@@ -169,16 +181,17 @@ useEffect(()=>{
               headers: { 
                 'Content-Type': 'application/json'
               },
-              data: { keyword: '테스트'}
+              data: { keyword: search}
           });
           console.log('experienceSearch: ', response.data);
           setExperienceSearch(response.data);
       }catch(error){
           console.log('experienceSearch axios error', error);
+          setExperienceSearch(undefined);
       }
   }
   commentSearch();
-}, []);
+}, [search]);
 
 
 const dayCalculate = (date) => {
@@ -193,13 +206,13 @@ const dayCalculate = (date) => {
     let arr = [];
     momsSearch.filter((x, index) => {
       arr.push(
-        <View style={styles.momstalk} key={index}>
+        <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: x})}>
         <View style={styles.dateBox}>
-          <Text style={{fontSize: 12, color: '#9E9E9E'}}>1분전</Text>
+          <Text style={{fontSize: 12, color: '#9E9E9E'}}>{dayCalculate(x.boardDate)}</Text>
         </View>
         
         <View>
-          <Text>5주차 맘 입덧 질문있어요</Text>
+          <Text>{x.title}</Text>
           <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 4}}>
             <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.nickname}</Text>
             <Like height={17}/>
@@ -209,7 +222,7 @@ const dayCalculate = (date) => {
           </View>
         </View>
         
-      </View>
+      </TouchableOpacity>
       )
     })
     return arr;
@@ -219,13 +232,13 @@ const dayCalculate = (date) => {
     let arr = [];
     materialSearch.filter((x, index) => {
       arr.push(
-        <View style={styles.momstalk} key={index}>
+        <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', x)}>
         <View style={styles.dateBox}>
-          <Text style={{fontSize: 13, color: '#9E9E9E'}}>1분전</Text>
+          <Text style={{fontSize: 13, color: '#9E9E9E'}}>{dayCalculate(x.boardDate)}</Text>
         </View>
         
         <View>
-          <Text>5주차 맘 입덧 질문있어요</Text>
+          <Text>{x.title}</Text>
           <View style={{flexDirection: 'row', marginTop: 4}}>
             <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.nickname}</Text>
             <Like height={17}/>
@@ -235,7 +248,7 @@ const dayCalculate = (date) => {
           </View>
         </View>
 
-      </View>
+      </TouchableOpacity>
       )
     })
     return arr;
@@ -245,7 +258,7 @@ const dayCalculate = (date) => {
     let arr = [];
     commentSearch.filter((x, index) => {
       arr.push(
-       <View style={styles.momstalk} key={index}>
+       <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('체험단 상세페이지', x)}>
           <View style={styles.dotBox}><More /></View>
           <View style={styles.profile}></View>
         <View>
@@ -253,10 +266,10 @@ const dayCalculate = (date) => {
           <Text style={{fontWeight: '600'}}>{x.nickname}</Text>
           <Text style={{marginLeft: 5}}>{dayCalculate(x.commentsDate)}</Text>
         </View>
-        <Text>저는 5주차 입니다.</Text>
+        <Text>{x.contents}</Text>
         </View>
         
-      </View>
+      </TouchableOpacity>
       )
     })
     return arr;
@@ -264,14 +277,14 @@ const dayCalculate = (date) => {
   const Experience = () => {
     let arr = [];
     experienceSearch.filter((x, index) => {
+      console.log('x: ', x);
       arr.push(
        <View style={styles.momstalk} key={index}>
-          <View style={styles.dotBox}><More /></View>
+          <View style={styles.dateBox}>{dayCalculate(x.boardDate)}</View>
           <View style={styles.profile}></View>
         <View>
         <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 3}}>
           <Text style={{fontWeight: '600'}}>{x.nickname}</Text>
-          <Text style={{marginLeft: 5}}>{dayCalculate(x.commentsDate)}</Text>
         </View>
         <Text>저는 5주차 입니다.</Text>
         </View>
@@ -281,36 +294,38 @@ const dayCalculate = (date) => {
     return arr;
   }
 
-
-  const renderItem = ({ item, navigation}) => (
+  const renderItem = ({ item }) => (
     <View>
         <View style={styles.titleBox}>
           <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('맘스 톡 서치')}><Arrow /></TouchableOpacity>
           <Text style={{fontWeight: '600'}}>맘스 톡 {momsSearch !== undefined ?  momsSearch.length : 0}건</Text>
         </View>
         <View style={styles.mainBox}>
-          {momsSearch !== undefined ? <MomsTalk /> : <View><Text>MomsTalk</Text></View>}
+          {momsSearch.length !== 0 ? <MomsTalk /> :
+           <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
         </View>
         <View style={styles.titleBox}>
           <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('출산준비물 공유 서치')}><Arrow /></TouchableOpacity>
           <Text style={{fontWeight: '600'}}>출산준비물 공유 {materialSearch !== undefined ? materialSearch.length : 0}건</Text>
         </View>
         <View style={styles.mainBox}>
-          {materialSearch !== undefined ? <MaterialShare /> : <View><Text>gg</Text></View>}
+          {materialSearch.length !== 0 ? <MaterialShare /> :
+           <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
         </View>
         <View style={styles.titleBox}>
           <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('댓글 서치')}><Arrow /></TouchableOpacity>
           <Text style={{fontWeight: '600'}}>댓글 {commentSearch !== undefined ? commentSearch.length : 0}건</Text>
         </View>
         <View style={styles.mainBox}>
-          {commentSearch !== undefined ? <Comment /> : <View><Text>gg</Text></View>}
+          {commentSearch.length !== 0 ? <Comment /> :
+           <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
         </View>
         <View style={styles.titleBox}>
           <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('체험단 서치')}><Arrow /></TouchableOpacity>
           <Text style={{fontWeight: '600'}}>체험단 {experienceSearch !== undefined ? experienceSearch.length : 0}건</Text>
         </View>
         <View style={styles.mainBox}>
-          {experienceSearch == undefined ? <Experience /> :
+          {experienceSearch.length !== 0 ? <Experience /> :
           <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
         </View>
     </View>
@@ -318,19 +333,23 @@ const dayCalculate = (date) => {
 
   
 
-  return experienceSearch == undefined ? <View></View> : (
+  return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Back/>
         <View style={styles.textInput}>
           <View style={styles.searchIconBox}><Search width={22}/></View>
-          <TextInput placeholder='검색하실 단어를 입력하세요.'></TextInput>
+          <TextInput placeholder='검색하실 단어를 입력하세요.' onChangeText={(e)=>setSearch(e)}></TextInput>
+          <TouchableOpacity onPress={()=>navigation.navigate('맘스 톡')}></TouchableOpacity>
         </View>
       </View>
-      <View style={styles.main}>
-        <FlatList data={DATA} renderItem={(item, navigation)=>renderItem(item, navigation, 1)}
-            keyExtractor={item => item.title} showsVerticalScrollIndicator={false}>
+      <View style={styles.main2}>
+        { experienceSearch !== undefined && momsSearch !== undefined && materialSearch !== undefined && commentSearch !== undefined?
+        <FlatList data={DATA} renderItem={renderItem}
+            keyExtractor={item => item.title} >
         </FlatList>
+        : ''
+        }
       </View>
     </View>
   )

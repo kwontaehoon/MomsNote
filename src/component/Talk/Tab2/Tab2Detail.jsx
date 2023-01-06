@@ -25,6 +25,7 @@ import Back from '../../../../public/assets/svg/Back.svg'
 import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
+import { postShareList } from '../../../Redux/Slices/ShareList'
 
 const styles = StyleSheet.create({
     container:{
@@ -61,7 +62,6 @@ const styles = StyleSheet.create({
         marginLeft: 7,
     },
     main:{
-        
     },
     mainBox:{
         height: 70,
@@ -70,46 +70,77 @@ const styles = StyleSheet.create({
     mainBox2:{
         padding: 20,
     },
-    mainBox2ImageBox:{
+    listBox:{
         height: 400,
-        padding: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
     },
-    mainBox2ImageBox2:{
-        height: 150,
-        flexDirection: 'row',
-        padding: 10,
-    },
-    image:{
-        width: '95%',
-        height: '95%',
-        borderRadius: 4,
-    },
-    image2:{
-        width: '100%',
-        height: '100%',
-        borderRadius: 4,
-    },
-    imageBox:{
-        width: '31%',
-        height: 114,
-        borderRadius: 4,
-        margin: 5,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    videoImage:{
-        position: 'absolute',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 40,
+    listHeader:{
         height: 40,
-        borderRadius: 25,
+        backgroundColor: '#F47A79',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    listMain:{
+        height: 56,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#EEEEEE',
+        paddingLeft: 15,
+        paddingRight: 15
+    },
+    listMain2:{
+        flexDirection: 'row',
+        borderBottomWidth: 1,
+        borderLeftWidth: 1,
+        borderRightWidth: 1,
+        borderColor: '#F5F5F5'
+    },
+    filterBox:{
+        width: '33.4%',
+        height: 30,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    filterBox2:{
+        width: '33.4%',
+        height: 48,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+    },
+    arrowBox:{
+        position: 'absolute',
+        right: 15,
+    },
+    sum:{
+        height: 130,
         borderWidth: 1,
-        borderColor: 'white',
-        zIndex: 999
+        borderBottomWidth: 0,
+        borderColor: '#EEEEEE',
+        justifyContent: 'center',
+    },
+    myList2FooterBox:{
+        height: 50,
+        justifyContent: 'center',
+        paddingLeft: 15,
+    },
+    budget:{
+        position: 'absolute',
+        right: 15,
+    },
+    compare:{
+        alignItems: 'center',
+        borderWidth: 1,
+        borderTopWidth: 0,
+        borderColor: '#EEEEEE',
+        height: 70,
+    },
+    compareButton:{
+        borderRadius: 4,
+        backgroundColor: '#FEA100',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '90%',
+        height: 50,
     },
     mainBox3:{
         height: 50,
@@ -150,7 +181,8 @@ const styles = StyleSheet.create({
         borderColor: '#F5F5F5',
         justifyContent: 'center',
         backgroundColor: 'white',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderWidth: 1,
     },
     regisButton:{
         position: 'absolute',
@@ -191,6 +223,13 @@ const Talk1Sub = ({navigation, route}) => {
     Keyboard.addListener('keyboardDidHide', () => {
         setPageHeight(false);
     });
+
+    const DATA = [
+        {
+          id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+          title: '전체'
+        },
+    ];
 
     const DATA2 =[
         {
@@ -245,13 +284,10 @@ const Talk1Sub = ({navigation, route}) => {
     const dispatch = useDispatch();
     const info = [route.params];
     const shareList = useSelector(state => { return state.shareList.data; });
-
+    const shareListSet = useSelector(state => { return state.shareList.refresh});
     const [info2, setInfo2] = useState();
-    console.log('출산리스트 공유 상세페이지 info2: ', info2);
-
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
-    console.log('comment: ', comment);
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
     const [insert, setInsert] = useState(
         {
@@ -269,8 +305,7 @@ const Talk1Sub = ({navigation, route}) => {
         count: 5,
         page: 1,
         subcategory: '전체'
-    })
-
+    });
     const [commentData, setCommentData] = useState({
         boardId: info[0].boardId,
         count: 1,
@@ -288,13 +323,12 @@ const Talk1Sub = ({navigation, route}) => {
     useEffect(()=>{ // 댓글 목록
         dispatch(postComment(commentData));
         dispatch(postCommentFlag({boardId: info[0].boardId}));
+        dispatch(postShareList(shareListSet));
     }, []);
 
     useEffect(()=>{
-        if(shareList !== '' || shareList !== undefined){
-            setInfo2(shareList.filter(x=> x.boardId == route.params.boardId));
-        }
-    }, [shareList]);
+        setInfo2(shareList.filter(x=> x.boardId == route.params.boardId));
+    }, []);
 
     useEffect(()=>{ // 게시물 추천 Flag
         console.log('게시물 추천 여부 업데이트');
@@ -359,15 +393,6 @@ const Talk1Sub = ({navigation, route}) => {
             setBoardLike();
     }
 
-    const dayCalculate = (date) => {
-        console.log('date: ', date);
-        switch(true){
-          case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
-          case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
-          default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'day')}일 전</Text>
-        }
-    }
-
     const arrow = (e) => { // arrow 누르면 서브페이지 display
         let arr = [...list];
         arr[e] = !arr[e];
@@ -377,7 +402,9 @@ const Talk1Sub = ({navigation, route}) => {
     const filtering = (e) => { // 품목 브랜드 가격 부분 none || flex
         if(info2.filter(x => x.category == e && x.needsBrandId !== null) == ''){
           return(
-            <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}><Text>검색 결과가 없습니다.</Text></View>
+            <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}>
+                <Text style={{fontSize: 16, color: '#9E9E9E'}}>검색 결과가 없습니다.</Text>
+            </View>
           )
         }else return(
             <View style={styles.listMain2}>
@@ -445,32 +472,43 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.header2}>
                 <TouchableOpacity style={styles.profileBox}></TouchableOpacity>
                 <View style={styles.infoBox}>
-                    <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{item.nickname}</Text>
-                    <Text style={{color: '#9E9E9E', fontSize: 13}}>{moment().diff(moment(item.boardDate), "days")}일 전</Text>
+                    <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{info[0].nickname}</Text>
+                    <Text style={{color: '#9E9E9E', fontSize: 13}}>{moment().diff(moment(info[0].boardDate), "days")}일 전</Text>
                 </View>
             </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
-                    <Text style={{fontSize: 20, fontWeight: '400'}}>{item.title}</Text>
+                    <Text style={{fontSize: 20, fontWeight: '400'}}>{info[0].title}</Text>
                 </View>
 
-                <ScrollView style={styles.mainBox2} nestedScrollEnabled={true}>
+                <View style={styles.mainBox2}>
+                    <Text>{info[0].contents}</Text>
+                </View>
+
+                <View style={styles.listHeader}>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <Text style={{fontSize: 15, fontWeight: '600', color: 'white'}}>{route.params.nickname}</Text>
+                            <Text style={{fontSize: 15, color: 'white'}}> 님의 출산준비물</Text>
+                        </View>
+                </View>
+
+                <ScrollView style={styles.listBox} nestedScrollEnabled={true}>
                         <List />
                 </ScrollView>
 
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
                         {boardLike == 0 | boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000'/>}
-                        <Text style={{color: boardLike == 0 ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { boardLike }</Text>
+                        <Text style={{color: boardLike == 0 ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { info[0].recommend }</Text>
                         <Chat width={16} height={16}/>
-                        <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 {item.commentsCount}</Text>
+                        <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 {info[0].commentsCount}</Text>
                     </View>
                     <View style={styles.lookupBox}>
-                        <Text style={{fontSize: 13, color: '#9E9E9E'}}>조회수 {item.hits}</Text>
+                        <Text style={{fontSize: 13, color: '#9E9E9E'}}>조회수 {info[0].hits}</Text>
                     </View>
                 </View>
                 <View style={styles.mainBox4}>
-                    {comment == '' ?
+                    {comment.length == 0 ?
                     <View style={{alignItems: 'center', justifyContent: 'center', height: 200}}>
                         <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
                         <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
@@ -481,7 +519,7 @@ const Talk1Sub = ({navigation, route}) => {
       );
 
 
-  return shareList == undefined || shareList !== '' ? <View><Text>gg</Text></View> :(
+  return info2 === undefined ? <View><Text>gg</Text></View> :(
     <View style={[styles.container, {height: pageHeight ? '94%' : '97%'}]}>
 
         <Animated.View style={[styles.alarmBox, {opacity: animation}]}>
@@ -503,9 +541,10 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
         </View>
 
-        <FlatList data={info} renderItem={renderItem}
+        <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => String(item.boardId)}>
         </FlatList>
+
         <View style={[styles.commentRes, {display: insert.level === 0 ? 'none' : 'flex'}]}>
             <View style={styles.closeBox}><Close width={20} fill='#757575' onPress={()=>setInsert((prevState) => ({...prevState, level: 0}))}/></View>
             <Text style={{fontSize: 15}}>{commentsId}</Text>

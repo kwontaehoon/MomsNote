@@ -132,7 +132,7 @@ useEffect(()=>{
 }, []);
 
 useEffect(()=>{
-  if(shareList !== undefined || shareList !== ''){
+  if(shareList !== undefined){
     setInfo(shareList.reduce((acc, current) => {
       const x = acc.find(item => item.boardId === current.boardId);
       if (!x) { return acc.concat([current]); } else { return acc; }}, []));

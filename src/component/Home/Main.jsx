@@ -13,7 +13,10 @@ import MainImage from '../../../public/assets/svg/main.svg'
 import { useIsFocused } from '@react-navigation/native'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { getBoard } from '../../Redux/Slices/BoardSlice'
+import { postBoard } from '../../Redux/Slices/BoardSlice'
+import { postBoardPopularSlice } from '../../Redux/Slices/BoardPopularSlice'
+import { postMaterialPopularSlice } from '../../Redux/Slices/MaterialPopularSlice'
+import { postInfoPopularSlice } from '../../Redux/Slices/InfoPopularSlice'
 
 
 const styles = StyleSheet.create({
@@ -85,14 +88,19 @@ const styles = StyleSheet.create({
     main3Box:{
         flexDirection: 'row',
         padding: 3,
+
     },
     main3Box2:{
         width: '50%',
         padding: 3,
+
     },
     titleBox:{
         flexDirection: 'row',
         height: '25%',
+
+        paddingLeft: 8,
+        paddingRight: 8
     },
     title:{
         width: '50%',
@@ -100,6 +108,8 @@ const styles = StyleSheet.create({
     },
     contentBox:{
         height: '75%',
+        paddingLeft: 8,
+        paddingRight: 8
     },
     content:{
         height: '28.4%',
@@ -179,68 +189,26 @@ const Home = ({navigation}) => {
         },
       ];
 
-      const DATA2 = [
-        {
-          id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-          title: 'First Item',
-        },
-        {
-          id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-          title: 'Second Item',
-        },
-        {
-          id: '58694a0f-3da1-471f-bd96-145571e29d72',
-          title: 'Third Item',
-        },
-        {
-            id: '1',
-        },
-        {
-            id: '2',
-        },
-    ];
-
-    const count = useSelector(state => { return state.board.data; });
-    console.log('count: ', count);
     const dispatch = useDispatch();
     
     useEffect(()=>{
         console.log('useEffect');
-        dispatch(getBoard());
+        dispatch(postBoard());
+        dispatch(postBoardPopularSlice());
+        dispatch(postMaterialPopularSlice());
+        dispatch(postInfoPopularSlice());
     }, []);
 
-    useEffect(()=>{
-        async function b(){
-            const response = await axios.get('https://my-json-server.typicode.com/typicode/demo/posts');
-            console.log('response: ', response.data);
-          }
-          b();
-    }, [])
 
     const ref = useRef();
+    const boardPopular = useSelector(state => { return state.boardPopularSlice.data });
+    const materialPopular = useSelector(state => { return state.materialPopularSlice.data });
+    const infoPopular = useSelector(state => { return state.infoPopularSlice.data });
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
     const [modal, setModal] = useState(true); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
 
-    const [info, setInfo] = useState([
-        {
-            title: '저와 준비물 비교해 보아요'
-        },{
-            title: '별똥이 출산 준비물 이예요'
-        },{
-            title: '별똥이 DDay 입니다'
-        }
-    ]);
-    const [info2, setInfo2] = useState([
-        {
-            title: '저와 준비물 비교해 보아요'
-        },{
-            title: '별똥이 출산 준비물 이예요'
-        },{
-            title: '별똥이 DDay 입니다'
-        }
-    ]);
     const [info3, setInfo3] = useState([
         {
             imgae: ''
@@ -373,23 +341,23 @@ const Home = ({navigation}) => {
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>출산 리스트</Text></View>
                             <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡')}>+ 더보기</Text></View>
                         </View>
-                        {info.length !== 0 ? <View style={styles.contentBox}>
+                        {boardPopular !== '' ? <View style={styles.contentBox}>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>1 </Text>
-                                    <Text> {info[0].title}</Text>
+                                    <Text> {boardPopular[0].title}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>2 </Text>
-                                    <Text> {info[1].title}</Text>
+                                    <Text> {boardPopular[1].title}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>3 </Text>
-                                    <Text> {info[2].title}</Text>
+                                    <Text> {boardPopular[2].title}</Text>
                                 </View>
                             </View>
                         </View> : <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
@@ -402,23 +370,23 @@ const Home = ({navigation}) => {
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>맘스 토크</Text></View>
                             <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡')}>+ 더보기</Text></View>
                         </View>
-                        {info.length === 0 ? <View style={styles.contentBox}>
+                        {materialPopular !== '' ? <View style={styles.contentBox}>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>1 </Text>
-                                    <Text> {info[0].title}</Text>
+                                    <Text> {materialPopular[0].title}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>2 </Text>
-                                    <Text> {info[1].title}</Text>
+                                    <Text> {materialPopular[1].title}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>3 </Text>
-                                    <Text> {info[2].title}</Text>
+                                    <Text> {materialPopular[2].title}</Text>
                                 </View>
                             </View>
                         </View> : <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
@@ -436,7 +404,7 @@ const Home = ({navigation}) => {
                     </View>
                 </View>
                 <View style={styles.main4Box2}>
-                {info3.length === 0 ?<FlatList data={DATA2} renderItem={renderItem2}
+                {infoPopular !== '' ? <FlatList data={infoPopular} renderItem={renderItem2} showsHorizontalScrollIndicator={false}
                         keyExtractor={item => item.id} horizontal={true}>
                 </FlatList> : <View><Text style={{color: '#757575'}}>새로운 정보가 없습니다.</Text></View>}
                 </View>
@@ -453,7 +421,7 @@ const Home = ({navigation}) => {
         </View>
     );
     
-  return (
+  return materialPopular.length !== 0 ?(
     <SafeAreaView style={[styles.container, {backgroundColor: '#FEECB3'}]}>
         
         <FocusAwareStatusBar />
@@ -469,7 +437,7 @@ const Home = ({navigation}) => {
             </View>
         </Animated.View>
     </SafeAreaView>
-  )
+  ): <View></View>
 }
 
 export default Home

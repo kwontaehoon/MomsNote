@@ -1,35 +1,30 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-export const postShareList = createAsyncThunk("postShareList/async", async (data) => {
-  console.log('postShareList 업데이트됨');
+export const postMaterialPopularSlice = createAsyncThunk("postMaterialPopularSlice/async", async () => {
+  console.log('postMaterialPopularSlice 업데이트됨');
     try{
       const response = await axios({
           method: 'post',
-          url: 'https://momsnote.net/api/needs/share/list',
+          url: 'https://momsnote.net/api/needs/best',
           headers: { 
             'Content-Type': 'application/json'
           },
-          data : data
+          data : {}
       });
       return response.data;
       }catch(error){
-          console.log('shareList redux axios error: ', error);
+          console.log('MaterialPopularSlice redux axios error: ', error);
       }
 });
 
 const initialState = {
     loading: false,
     data: [],
-    refresh: {
-        order: 'buy',
-        count: 1,
-        page: 1
-    }
 }
 
-export const shareListSlice = createSlice({
-    name: 'shareListSlice',
+export const materialPopularSlice = createSlice({
+    name: 'materialPopularSlice',
     initialState,
     reducers: {
     //   setMarterialRefresh:(state, action)=>{
@@ -37,15 +32,13 @@ export const shareListSlice = createSlice({
     //   }
     },
     extraReducers: (bulider) => {
-      bulider.addCase(postShareList.fulfilled, (state, action) => {
+      bulider.addCase(postMaterialPopularSlice.fulfilled, (state, action) => {
         state.loading = 'success';
         state.data = action.payload;
       },
     )}
   })
 
-export const data = (state) => state.shareListSlice.data;
+export const data = (state) => state.materialPopularSlice.data;
 
-export const { setShareListRefresh } = shareListSlice.actions;
-
-export default shareListSlice.reducer
+export default materialPopularSlice.reducer

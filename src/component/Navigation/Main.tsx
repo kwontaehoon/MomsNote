@@ -134,10 +134,10 @@ const Navigation = () => {
             <Stack.Screen name="갤러리" component={Gallery} options={{title: '', headerShown: false}}/>
             <Stack.Screen name="리덕스 테스트2" component={ReduxTest2} />
 
-            <Stack.Screen name="맘스 톡 서치" component={MomsSearchSearch} />
-            <Stack.Screen name="출산준비물 공유 서치" component={MaterialSearch} />
-            <Stack.Screen name="댓글 서치" component={CommentSearch} />
-            <Stack.Screen name="체험단 서치" component={Experience} />
+            <Stack.Screen name="맘스 톡 서치" component={MomsSearchSearch} options={{title: '맘스 톡 전체'}}/>
+            <Stack.Screen name="출산준비물 공유 서치" component={MaterialSearch} options={{title: '출산리스트 공유 전체'}}/>
+            <Stack.Screen name="댓글 서치" component={CommentSearch} options={{title: '댓글 전체'}}/>
+            <Stack.Screen name="체험단 서치" component={ExperienceSearch} options={{title: '체험단 전체'}}/>
 
         </Stack.Navigator>
       </NavigationContainer>
