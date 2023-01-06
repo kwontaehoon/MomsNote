@@ -1,4 +1,5 @@
 import React from 'react'
+import { AppRegistry } from 'react-native'
 import Navigation from './component/Navigation/Main'
 import { StatusBar  } from 'expo-status-bar'
 import DefalutPage from './component/Default/Login'

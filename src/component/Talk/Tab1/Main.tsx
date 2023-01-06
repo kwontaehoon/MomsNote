@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
 })
 
 
-const Talk1 = ({navigation, route}) => {
+const Talk1 = ({navigation, route}:any) => {
 
   const DATA = [
     {
@@ -186,7 +186,7 @@ const Talk1 = ({navigation, route}) => {
 
 
   const dispatch = useDispatch();
-  const info = useSelector(state => { return state.board.data; });
+  const info = useSelector((state:unknown) => { return state.board.data; });
   console.log('info: ', info);
   const boardSet = useSelector(state => { return state.board.refresh; });
   console.log('boardSet: ', boardSet);
@@ -210,7 +210,7 @@ const Talk1 = ({navigation, route}) => {
     dispatch(setBoardRefresh({subcategory: DATA[e].title}));
   }
 
-  const dayCalculate = (date) => {
+  const dayCalculate = (date:number) => {
     switch(true){
       case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
       case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
@@ -218,9 +218,9 @@ const Talk1 = ({navigation, route}) => {
     }
   }
 
-  const ImageBox = ({item}) => {
-    const arr:any[] = [];
-    const a = (item.split('|')).filter(x => { if(x.charAt(x.length-1) === '4'){ arr.push(x); }else return x;});
+  const ImageBox = ({item}:any) => {
+    const arr:string[] = [];
+    const a = (item.split('|')).filter((x:string) => { if(x.charAt(x.length-1) === '4'){ arr.push(x); }else return x;});
     const infoFiltering = [...arr, ...a];
 
     if(infoFiltering[0].charAt(infoFiltering[0].length-1) == '4'){
@@ -239,7 +239,7 @@ const Talk1 = ({navigation, route}) => {
     }
   }
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }:any) => (
     <View style={{justifyContent: 'center'}}>
       <View style={[styles.headerFilterBox, {backgroundColor: filter[item.id] ? '#FEA100' : 'white'}]}>
         <TouchableOpacity onPress={()=>change(item.id)}>
@@ -249,7 +249,7 @@ const Talk1 = ({navigation, route}) => {
     </View>
   );
 
-  const renderItem2 = ({ item }) => (
+  const renderItem2 = ({ item }:any) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', {item})}>
         { item.savedName !== null ? <ImageBox item={item.savedName}/> : '' }
         <View style={[styles.mainBoxSub, {paddingTop: 5, width: '65%', alignItems: 'flex-start'}]}>
@@ -289,7 +289,7 @@ const Talk1 = ({navigation, route}) => {
         </View>
       </View>
 
-      <View style={[styles.header3, {display: info == undefined | info == '' ? 'none' : 'flex'}]}>
+      <View style={[styles.header3, {display: info == undefined || info == '' ? 'none' : 'flex'}]}>
           <Swiper horizontal={false}
           autoplay={true}
           // autoplayTimeout={4.5}
