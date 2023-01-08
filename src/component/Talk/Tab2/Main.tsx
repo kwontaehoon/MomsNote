@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal } from 'react
 import DropDownPicker from 'react-native-dropdown-picker'
 import axios from 'axios'
 import moment from 'moment'
+import { useIsFocused } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
@@ -106,13 +108,14 @@ const styles = StyleSheet.create({
 
 const Talk1 = ({navigation}) => {
 
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const shareList = useSelector(state => { return state.shareList.data; });
-  console.log('출산리스트공유게시판 info: ', shareList);
-
   const [info, setInfo] = useState([]);
-  console.log('info: ', info);
-  const [modalVisible, setModalVisible] = useState(false); // 글쓰기 모달
+  const [modalVisible, setModalVisible] = useState({
+    open: false,
+    asyncStorage: ''
+  }); // 글쓰기 모달
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');
   const [items, setItems] = useState([
@@ -120,8 +123,6 @@ const Talk1 = ({navigation}) => {
     {label: '인기순', value: '2'},
     {label: '마감임박', value: '3'},
 ]);
-
-console.log(shareList == undefined);
 
 useEffect(()=>{
   dispatch(postShareList({
@@ -137,7 +138,18 @@ useEffect(()=>{
       const x = acc.find(item => item.boardId === current.boardId);
       if (!x) { return acc.concat([current]); } else { return acc; }}, []));
     }
-}, [shareList])
+}, [shareList]);
+
+useEffect(()=>{
+  const momsTalk = async() => {
+    const asyncStorage = await AsyncStorage.getItem('materialList');
+
+    console.log('aaaaaaaaaaaaaa: ', asyncStorage);
+    
+    setModalVisible(prevState => ({...prevState, asyncStorage: asyncStorage}));
+  }
+  momsTalk();
+}, [isFocused]);
 
 const dayCalculate = (date) => {
   switch(true){
@@ -182,11 +194,12 @@ const dayCalculate = (date) => {
           keyExtractor={item => String(item.boardId)}>
         </FlatList>
       </View>
-      <TouchableOpacity style={styles.footer} onPress={()=> setModalVisible(!modalVisible)}>
+      <TouchableOpacity style={styles.footer} onPress={()=>
+        modalVisible.asyncStorage == null ? navigation.navigate('출산리스트 공유 등록') : setModalVisible(prevState => ({...prevState, open: true}))}>
             <Pencil fill='white'/>
       </TouchableOpacity>
 
-      <Modal animationType="fade" transparent={true} visible={modalVisible}
+      <Modal animationType="fade" transparent={true} visible={modalVisible.open}
             onRequestClose={() => {
             setModalVisible(!modalVisible)}}>
             <View style={styles.modalContainer}>
@@ -197,8 +210,10 @@ const dayCalculate = (date) => {
                             <Text style={{fontSize: 16, paddingTop: 5}}>임시저장된 게시글을 불러오시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>게시글 불러오기</Text></TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModalVisible(!modalVisible), navigation.navigate('출산리스트 공유 등록')}}>
+                            <TouchableOpacity style={styles.modal} onPress={()=>{setModalVisible(prevState => ({...prevState, open: false})), navigation.navigate('출산리스트 공유 등록', '게시글 불러오기')}}>
+                              <Text style={{color: 'white', fontSize: 16}}>게시글 불러오기</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModalVisible(prevState => ({...prevState, open: true})), navigation.navigate('출산리스트 공유 등록')}}>
                               <Text style={{color: 'black', fontSize: 16}}>새로 작성하기</Text>
                             </TouchableOpacity>
                         </View>

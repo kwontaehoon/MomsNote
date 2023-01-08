@@ -1,5 +1,5 @@
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack'
 import {View, Button, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'

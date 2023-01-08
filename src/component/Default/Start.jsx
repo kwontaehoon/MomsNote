@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     container:{
         backgroundColor: 'white',
         marginTop: getStatusBarHeight(),
+        flex: 1,
         padding: 20,
     },
     header:{
@@ -45,6 +46,12 @@ const styles = StyleSheet.create({
       marginTop: 3,
       marginBottom: 3
     },
+    nextButton:{
+        width: 100,
+        height: 100,
+        backgroundColor: 'pink',
+        position: 'absolute',
+    },
     footer:{
       height: 56,
       backgroundColor: '#FEA100',
@@ -76,14 +83,16 @@ const Main = () => {
 
   return (
     <View style={styles.container}>
-        <View style={styles.header}><Text style={{color: '#757575', fontSize: 16}} onPress={()=>setPage(2)}>건너뛰기</Text></View>
+        <View style={styles.header}><Text style={{color: '#757575', fontSize: 16}} onPress={()=>setPage(3)}>건너뛰기</Text></View>
         <View style={styles.main}>
-            <Slick showsButtons={false} loop={false} index={page}
+            <Slick showsButtons={true} loop={false} index={page}
             dot={<View style={styles.dot}/>}
             activeDot={<View style={styles.dotActive}/>}
-            renderPagination={(index, total, context):any=>{
-              setPage(context.state.index);
+            renderPagination={(index, total, context)=>{
+                setPage(index);
             }}
+            nextButton={<View style={styles.nextButton}></View>}
+            buttonWrapperStyle={{backgroundColor: 'greenyellow'}}
           
         >
                 <View testID="Page1" style={styles.header2}>

@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, SafeAreaView, Modal, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     container:{
@@ -82,7 +83,9 @@ const styles = StyleSheet.create({
     },
     
 })
-const Register = ({navigation}) => {
+const Register = ({navigation, route}) => {
+
+    console.log('materialList route params: ', route.params);
 
     const DATA = [
         {
@@ -102,6 +105,14 @@ const Register = ({navigation}) => {
         }
     );
     console.log('data: ', data);
+
+    useEffect(()=>{
+        const load = async() => {
+            const asyncStorage = await AsyncStorage.getItem('materialList');
+            route.params == undefined ? AsyncStorage.removeItem('materialTalk') : setData(JSON.parse(asyncStorage));
+        }
+        load();
+    }, [])
     
     const complete = () => {
         switch(true){
@@ -130,7 +141,9 @@ const Register = ({navigation}) => {
           }
     }
 
-    const modal = (e) => {
+    const boardSave = async(e) => {
+        e == 1 ? AsyncStorage.setItem('materialList', JSON.stringify(data)) :  await AsyncStorage.removeItem('materialList');
+
         setModalVisible(!modalVisible);
         navigation.goBack();
     }
@@ -138,7 +151,10 @@ const Register = ({navigation}) => {
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
             <View style={styles.header}>
-                    <View style={[styles.headerBox, {width: '20%'}]}><Text style={{fontSize: 16}} onPress={()=>setModalVisible(!modalVisible)}>취소</Text></View>
+                    <View style={[styles.headerBox, {width: '20%'}]}><Text style={{fontSize: 16}} onPress={()=>
+                         data.title == '' && data.contents == '' ? 
+                         navigation.goBack() : setModalVisible(!modalVisible)}>취소</Text>
+                        </View>
                     <View style={[styles.headerBox, {width: '60%'}]}><Text style={{fontSize: 25, fontWeight: 'bold'}}>출산리스트 공유 등록</Text></View>
                     <View style={[styles.headerBox, {width: '20%'}]}><Text style={{color: '#FE7000', fontSize: 16, fontWeight: '600'}} onPress={()=>complete()}>완료</Text></View>
             </View>
@@ -155,13 +171,13 @@ const Register = ({navigation}) => {
                     <View style={[styles.mainBox2Sub, {width: '20%', alignItems: 'flex-end'}]}><Icon name='angle-right' size={25}/></View>
                 </TouchableOpacity>
                 <TextInput style={styles.mainBox2} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'}
-                    onChangeText={(e) =>
+                    value={data.title} onChangeText={(e) =>
                         setData((prevState) => ({
                             ...prevState,
                             title: e
                         }))}></TextInput>
                 <TextInput style={[styles.mainBox2, {height: 220, paddingBottom: 180}]} placeholder='게시글 내용을 작성해주세요.' placeholderTextColor={'#BDBDBD'}
-                    onChangeText={(e) =>
+                    value={data.contents} onChangeText={(e) =>
                         setData((prevState) => ({
                             ...prevState,
                             contents: e
@@ -184,8 +200,12 @@ const Register = ({navigation}) => {
                                 <Text style={{fontSize: 16, paddingTop: 5}}>해당 내용을 임시저장하시겠습니까?</Text>
                             </View>
                             <View style={styles.modalBox}>
-                                <TouchableOpacity style={styles.modal} onPress={()=>{submit(), setModalVisible(!modalVisible), navigation.goBack()}}><Text style={{color: 'white', fontSize: 16}}>네</Text></TouchableOpacity>
-                                <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={modal}><Text style={{color: 'black', fontSize: 16}}>아니요</Text></TouchableOpacity>
+                                <TouchableOpacity style={styles.modal} onPress={()=>boardSave(1)}>
+                                    <Text style={{color: 'white', fontSize: 16}}>네</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>boardSave(0)}>
+                                    <Text style={{color: 'black', fontSize: 16}}>아니요</Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </View>

@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import Swiper from 'react-native-swiper'
 import { setBoardRefresh } from '../../../Redux/Slices/BoardSlice'
+import { useIsFocused } from '@react-navigation/native'
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
@@ -188,6 +189,7 @@ const Talk1 = ({navigation, route}:any) => {
   ];
 
 
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const info = useSelector((state:unknown) => { return state.board.data; });
   console.log('info: ', info);
@@ -195,7 +197,7 @@ const Talk1 = ({navigation, route}:any) => {
   console.log('boardSet: ', boardSet);
   const [modalVisible, setModalVisible] = useState({
     open: false,
-    asyncStorge: ''
+    asyncStorage: ''
   }); // 글쓰기 모달
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');
@@ -212,13 +214,11 @@ const Talk1 = ({navigation, route}:any) => {
   useEffect(()=>{
     const momsTalk = async() => {
       const asyncStorage = await AsyncStorage.getItem('momsTalk');
-
-      console.log('aaaaaaaaaaaa: ', asyncStorage);
       
-      setModalVisible(prevState => ({...prevState, asyncStorge: asyncStorage}));
+      setModalVisible(prevState => ({...prevState, asyncStorage: asyncStorage}));
     }
     momsTalk();
-  }, [route]);
+  }, [isFocused]);
 
   const change = (e) => { // 카테고리 배경색상, 글자 색상 변경 onpress
     let arr = Array.from({length: 6}, () => {return false});
@@ -332,7 +332,7 @@ const Talk1 = ({navigation, route}:any) => {
         <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}
       </View>
       <TouchableOpacity style={styles.footer} onPress={()=>
-        modalVisible.asyncStorge == null ? navigation.navigate('글쓰기') : setModalVisible(prevState => ({...prevState, open: true}))
+        modalVisible.asyncStorage == null ? navigation.navigate('글쓰기') : setModalVisible(prevState => ({...prevState, open: true}))
         }>
             <Pencil/>
       </TouchableOpacity>

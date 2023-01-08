@@ -8,6 +8,7 @@ import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../../Redux/Slices/BoardSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { NavigationAction } from '@react-navigation/native'
 
 const styles = StyleSheet.create({
     container:{
@@ -234,10 +235,10 @@ const Register = ({navigation, route}) => {
     useEffect(()=>{
         const load = async() => {
             const asyncStorage = await AsyncStorage.getItem('momsTalk');
-            route.params == undefined ? '' : setInfo(JSON.parse(asyncStorage))
+            route.params == undefined ? AsyncStorage.removeItem('momsTalk') : setInfo(JSON.parse(asyncStorage));
         }
         load();
-    }, []);
+    }, [])
     
     const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
         let arr = Array.from({length: 5}, () => {return false});
@@ -367,7 +368,7 @@ const Register = ({navigation, route}) => {
         e == 1 ? AsyncStorage.setItem('momsTalk', JSON.stringify(info)) :  await AsyncStorage.removeItem('momsTalk');
 
         setModalVisible(!modalVisible);
-        navigation.navigate('맘스 톡', 1234);
+        navigation.goBack();
     }
 
 
