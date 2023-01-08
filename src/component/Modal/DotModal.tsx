@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, setModal3, modal6, setModal6, commentsId, info}) => {
 
+    console.log('zzzzgfdgfdgfdgfdzzzz');
     const dispatch = useDispatch();
     const [userId, setUserId] = useState();
     const boardSet = useSelector(state => { return state.board.refresh; });
@@ -59,7 +60,11 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
      useEffect(()=>{
         const getUserId = async() => {
             const a = await AsyncStorage.getItem('userId');
+            console.log('userId: ', a); // string
             setUserId(Number(a));
+
+            const b = await AsyncStorage.getAllKeys();
+            console.log('b: ', b);
         }
         getUserId();
     }, []);

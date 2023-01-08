@@ -71,6 +71,11 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginRight: 5,
   },
+  profile2:{
+    width: 44,
+    height: 44,
+    marginRight: 10,
+  },
   dateBox:{
     position: 'absolute',
     right: 0,
@@ -202,6 +207,14 @@ const dayCalculate = (date) => {
   }
 }
 
+const dayCalculate2 = (date) => {
+  switch(true){
+    case moment().diff(moment(date), 'minute') > 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(date).diff(moment(), 'minute')}분 전</Text>
+    case moment().diff(moment(date), 'hour') > 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(date).diff(moment(), 'hour')}시간 전</Text>
+    default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(date).diff(moment(), 'day')}일 전</Text>
+  }
+}
+
   const MomsTalk = () => {
     let arr = [];
     momsSearch.filter((x, index) => {
@@ -258,7 +271,7 @@ const dayCalculate = (date) => {
     let arr = [];
     commentSearch.filter((x, index) => {
       arr.push(
-       <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('체험단 상세페이지', x)}>
+       <TouchableOpacity style={styles.momstalk} key={index}>
           <View style={styles.dotBox}><More /></View>
           <View style={styles.profile}></View>
         <View>
@@ -277,18 +290,17 @@ const dayCalculate = (date) => {
   const Experience = () => {
     let arr = [];
     experienceSearch.filter((x, index) => {
-      console.log('x: ', x);
       arr.push(
-       <View style={styles.momstalk} key={index}>
-          <View style={styles.dateBox}>{dayCalculate(x.boardDate)}</View>
-          <View style={styles.profile}></View>
+       <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('체험단 상세페이지', x)}>
+          <View style={styles.dateBox}>{dayCalculate2(x.applicationEndDate)}</View>
+          <View style={styles.profile2}>
+            <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%'}} />
+          </View>
         <View>
-        <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 3}}>
-          <Text style={{fontWeight: '600'}}>{x.nickname}</Text>
+            <Text style={{fontSize: 15, marginBottom: 3}}>{x.title}</Text>
+            <Text style={{fontSize: 13}}>모집인원 {x.appCount} / {x.maxPeople}</Text>
         </View>
-        <Text>저는 5주차 입니다.</Text>
-        </View>
-      </View>
+      </TouchableOpacity>
       )
     })
     return arr;
@@ -297,7 +309,7 @@ const dayCalculate = (date) => {
   const renderItem = ({ item }) => (
     <View>
         <View style={styles.titleBox}>
-          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('맘스 톡 서치')}><Arrow /></TouchableOpacity>
+          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('맘스 톡 서치', momsSearch)}><Arrow /></TouchableOpacity>
           <Text style={{fontWeight: '600'}}>맘스 톡 {momsSearch !== undefined ?  momsSearch.length : 0}건</Text>
         </View>
         <View style={styles.mainBox}>
@@ -305,7 +317,7 @@ const dayCalculate = (date) => {
            <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
         </View>
         <View style={styles.titleBox}>
-          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('출산준비물 공유 서치')}><Arrow /></TouchableOpacity>
+          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('출산준비물 공유 서치', materialSearch)}><Arrow /></TouchableOpacity>
           <Text style={{fontWeight: '600'}}>출산준비물 공유 {materialSearch !== undefined ? materialSearch.length : 0}건</Text>
         </View>
         <View style={styles.mainBox}>
@@ -313,7 +325,7 @@ const dayCalculate = (date) => {
            <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
         </View>
         <View style={styles.titleBox}>
-          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('댓글 서치')}><Arrow /></TouchableOpacity>
+          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('댓글 서치', commentSearch)}><Arrow /></TouchableOpacity>
           <Text style={{fontWeight: '600'}}>댓글 {commentSearch !== undefined ? commentSearch.length : 0}건</Text>
         </View>
         <View style={styles.mainBox}>
@@ -321,7 +333,7 @@ const dayCalculate = (date) => {
            <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
         </View>
         <View style={styles.titleBox}>
-          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('체험단 서치')}><Arrow /></TouchableOpacity>
+          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('체험단 서치', experienceSearch)}><Arrow /></TouchableOpacity>
           <Text style={{fontWeight: '600'}}>체험단 {experienceSearch !== undefined ? experienceSearch.length : 0}건</Text>
         </View>
         <View style={styles.mainBox}>

@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
 })
 
-const Main = ({navigation}) => {
+const Main = ({navigation, route}) => {
 
   const DATA = [
     {
@@ -53,29 +53,7 @@ const Main = ({navigation}) => {
     }
   ];
 
-  const [commentSearch, setCommentSearch] = useState();
-
-useEffect(()=>{
-  const experienceSearch = async() => {
-      try{
-          const response = await axios({
-              method: 'post',
-              url: 'https://momsnote.net/api/search/comments',
-              headers: { 
-                'Content-Type': 'application/json'
-              },
-              data: { keyword: '테스트'}
-          });
-          console.log('commentSearch', response.data);
-          setCommentSearch(response.data);
-      }catch(error){
-          console.log('commentSearch axios error', error);
-      }
-  }
-  experienceSearch();
-}, []);
-
-
+const [commentSearch, setCommentSearch] = useState(route.params);
 
 const dayCalculate = (date) => {
   switch(true){
@@ -117,7 +95,7 @@ const dayCalculate = (date) => {
 
   
 
-  return commentSearch == undefined ?
+  return commentSearch.length == 0 ?
     <View style={styles.rainboxBox}>
       <Image source={require('../../../../public/assets/image/rainbow2.png')} />
     </View>

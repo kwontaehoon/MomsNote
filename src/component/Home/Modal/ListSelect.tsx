@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Switch, 
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -41,6 +42,11 @@ const styles = StyleSheet.create({
 })
 const Main = ({modal, setModal}) => {
 
+    const click = async() => {
+        await AsyncStorage.setItem('recommendList', '1');
+        setModal(!modal);
+    }
+
   return (
     <Modal animationType="fade" transparent={true} visible={modal}
     onRequestClose={() => {
@@ -52,12 +58,12 @@ const Main = ({modal, setModal}) => {
                     <Text style={{fontSize: 16, fontWeight: '600'}}>원하는 출산 준비물 리스트를 선택해주세요.</Text>
                </View>
                <View style={styles.modalBox2}>
-                    <Text style={{color: '#FE7000', fontSize: 15, fontWeight: '500'}}>실제맘 추천 리스트</Text>
+                    <Text style={{color: '#FE7000', fontSize: 15, fontWeight: '500'}} onPress={click}>실제맘 추천 리스트</Text>
                </View>
                <View style={styles.modalBox}>
                     <Text style={{fontSize: 15}}>많은 임산부들이 추천한 품목을 필수, 권장, 선택 항목으로 나눠서 알기 쉽게 보여준답니다.</Text>
                </View>
-               <TouchableOpacity style={styles.modalBox2} onPress={()=>setModal(!modal)}>
+               <TouchableOpacity style={styles.modalBox2} onPress={click}>
                     <Text style={{color: '#FE7000', fontSize: 15, fontWeight: '500'}}>직접 작성</Text>
                </TouchableOpacity>
                <View style={styles.modalBox}>

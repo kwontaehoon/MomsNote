@@ -17,6 +17,7 @@ import { postBoard } from '../../Redux/Slices/BoardSlice'
 import { postBoardPopularSlice } from '../../Redux/Slices/BoardPopularSlice'
 import { postMaterialPopularSlice } from '../../Redux/Slices/MaterialPopularSlice'
 import { postInfoPopularSlice } from '../../Redux/Slices/InfoPopularSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const styles = StyleSheet.create({
@@ -203,21 +204,23 @@ const Home = ({navigation}) => {
     const ref = useRef();
     const boardPopular = useSelector(state => { return state.boardPopularSlice.data });
     const materialPopular = useSelector(state => { return state.materialPopularSlice.data });
+    console.log('materialPopular: ', materialPopular);
     const infoPopular = useSelector(state => { return state.infoPopularSlice.data });
+    console.log('infoPopular: ', infoPopular);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
-    const [modal, setModal] = useState(true); // 모달 원하는 출산준비물 리스트
+    const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
 
-    const [info3, setInfo3] = useState([
-        {
-            imgae: ''
-        },{
-            image: '',
-        },{
-            image: ''
+    useEffect(()=>{
+        const recommendList = async() => {
+            const asyncStorage = await AsyncStorage.getItem('recommendList');
+
+            asyncStorage == null ? setModal(true) : '';
         }
-    ]);
+        recommendList();
+        
+    }, []);
 
     useEffect(()=>{
         save();
@@ -341,7 +344,13 @@ const Home = ({navigation}) => {
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>출산 리스트</Text></View>
                             <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡')}>+ 더보기</Text></View>
                         </View>
-                        {boardPopular !== '' ? <View style={styles.contentBox}>
+                        {boardPopular == '' ? 
+                            <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
+                                <Text style={{color: '#757575'}}>등록된</Text>
+                                <Text style={{color: '#757575'}}>게시물이 없습니다.</Text>
+                            </View>
+                        :
+                        <View style={styles.contentBox}>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>1 </Text>
@@ -360,9 +369,6 @@ const Home = ({navigation}) => {
                                     <Text> {boardPopular[2].title}</Text>
                                 </View>
                             </View>
-                        </View> : <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
-                            <Text style={{color: '#757575'}}>등록된</Text>
-                            <Text style={{color: '#757575'}}>게시물이 없습니다.</Text>
                         </View>}
                     </View>
                     <View style={[styles.main3Box2, {borderLeftWidth: 1, borderColor: '#EEEEEE',}]}>
@@ -370,7 +376,13 @@ const Home = ({navigation}) => {
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>맘스 토크</Text></View>
                             <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡')}>+ 더보기</Text></View>
                         </View>
-                        {materialPopular !== '' ? <View style={styles.contentBox}>
+                        {materialPopular == '' ? 
+                        <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
+                            <Text style={{color: '#757575'}}>등록된</Text>
+                            <Text style={{color: '#757575'}}>게시물이 없습니다.</Text>
+                        </View>
+                        :
+                        <View style={styles.contentBox}>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>1 </Text>
@@ -389,10 +401,7 @@ const Home = ({navigation}) => {
                                     <Text> {materialPopular[2].title}</Text>
                                 </View>
                             </View>
-                        </View> : <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
-                            <Text style={{color: '#757575'}}>등록된</Text>
-                            <Text style={{color: '#757575'}}>게시물이 없습니다.</Text>
-                        </View>}
+                        </View> }
                     </View>
                 </View>
             </View>
@@ -405,7 +414,7 @@ const Home = ({navigation}) => {
                 </View>
                 <View style={styles.main4Box2}>
                 {infoPopular !== '' ? <FlatList data={infoPopular} renderItem={renderItem2} showsHorizontalScrollIndicator={false}
-                        keyExtractor={item => item.id} horizontal={true}>
+                        keyExtractor={item => item.boardId} horizontal={true}>
                 </FlatList> : <View><Text style={{color: '#757575'}}>새로운 정보가 없습니다.</Text></View>}
                 </View>
             </View>
@@ -421,23 +430,26 @@ const Home = ({navigation}) => {
         </View>
     );
     
-  return materialPopular.length !== 0 ?(
-    <SafeAreaView style={[styles.container, {backgroundColor: '#FEECB3'}]}>
-        
-        <FocusAwareStatusBar />
+  return infoPopular == '' && materialPopular == '' ? 
+    <View></View>
+  :
+    (
+        <SafeAreaView style={[styles.container, {backgroundColor: '#FEECB3'}]}>
+            
+            <FocusAwareStatusBar />
 
-        <Modal modal={modal} setModal={setModal} />
+            <Modal modal={modal} setModal={setModal} />
 
-        <FlatList data={DATA} renderItem={renderItem}
-            keyExtractor={item => item.id}>
-        </FlatList>
-        <Animated.View style={[styles.saveModalBox, {opacity: animation}]}>
-            <View style={styles.saveModal}>
-                <Text style={{color: 'white'}}>출산 리스트가 내 앨범에 저장되었습니다.</Text>
-            </View>
-        </Animated.View>
-    </SafeAreaView>
-  ): <View></View>
+            <FlatList data={DATA} renderItem={renderItem}
+                keyExtractor={item => item.id}>
+            </FlatList>
+            <Animated.View style={[styles.saveModalBox, {opacity: animation}]}>
+                <View style={styles.saveModal}>
+                    <Text style={{color: 'white'}}>출산 리스트가 내 앨범에 저장되었습니다.</Text>
+                </View>
+            </Animated.View>
+        </SafeAreaView>
+    )
 }
 
 export default Home

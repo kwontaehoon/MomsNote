@@ -24,7 +24,6 @@ const initialState = {
     loading: false,
     data: [],
     refresh: {
-        userId: 4,
         order: 'need'
     }
 }

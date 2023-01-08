@@ -4,6 +4,7 @@ import Checkbox from 'expo-checkbox'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -61,8 +62,10 @@ const CheckBoxModal = ({modalVisible, setModalVisible}) => {
     const dispatch = useDispatch();
     const [isChecked, setChecked] = useState(false); // check box 선택시 체크 팝업에서의 check box
 
-    const purchase = async(needsId, needsBrandId) =>{
+    const purchase = async() =>{
       console.log('purchase');
+
+      isChecked ? AsyncStorage.setItem('purchase', '1') : AsyncStorage.removeItem('purchase');
       try{
         const response = await axios({
             method: 'post',
@@ -72,15 +75,16 @@ const CheckBoxModal = ({modalVisible, setModalVisible}) => {
               'Content-Type': 'application/json'
             },
             data: {
-              needsBrandId: needsBrandId,
-              needsId: needsId
+              needsBrandId: modalVisible.needsBrandId,
+              needsId: modalVisible.needsId
             }
         });
         console.log('response: ', response.data);
         }catch(error){
             console.log('출산준비물 구매 error:', error);
         }
-        dispatch(postMaterial(materialSet));
+        dispatch(postMaterial({ order: 'buy'}));
+        setModalVisible(prevState => ({...prevState, open: false}));
     }
 
   return (

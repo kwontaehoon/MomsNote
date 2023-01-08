@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
 })
 
-const Main = ({navigation}) => {
+const Main = ({navigation, route}) => {
 
   const DATA = [
     {
@@ -49,27 +49,7 @@ const Main = ({navigation}) => {
     }
   ];
 
-  const [materialSearch, setMaterialSearch] = useState();
-
-useEffect(()=>{
-  const materialSearch = async() => {
-      try{
-          const response = await axios({
-              method: 'post',
-              url: 'https://momsnote.net/api/search/needs',
-              headers: { 
-                'Content-Type': 'application/json'
-              },
-              data: { keyword: '테스트'}
-          });
-          console.log('materialSearch: ', response.data);
-          setMaterialSearch(response.data);
-      }catch(error){
-          console.log('materialSerach axios error', error);
-      }
-  }
-  materialSearch();
-}, []);
+const [materialSearch, setMaterialSearch] = useState(route.params);
 
 const dayCalculate = (date) => {
   switch(true){
@@ -115,7 +95,7 @@ const dayCalculate = (date) => {
 
   
 
-  return materialSearch == undefined ?
+  return materialSearch.length == 0 ?
   <View style={styles.rainboxBox}>
     <Image source={require('../../../../public/assets/image/rainbow2.png')} />
   </View>

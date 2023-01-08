@@ -447,28 +447,28 @@ const Talk1Sub = ({navigation, route}) => {
                             <TouchableOpacity style={styles.compareButton} onPress={()=>navigation.navigate('출산리스트 비교', route.params.boardId)}>
                                 <Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>내 출산리스트와 비교하기</Text>
                             </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-                <View style={styles.mainBox4}>
-                    <View style={styles.likeBox}>
-                        <Like width={16} height={16} fill='#9E9E9E'/>
-                        <Text style={{color: '#9E9E9E', fontSize: 13, paddingRight: 10}}> 추천 13</Text>
-                        <Chat width={16} height={16}/>
-                        <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 5</Text>
+                    <View style={styles.mainBox4}>
+                        <View style={styles.likeBox}>
+                            <Like width={16} height={16} fill='#9E9E9E'/>
+                            <Text style={{color: '#9E9E9E', fontSize: 13, paddingRight: 10}}> 추천 13</Text>
+                            <Chat width={16} height={16}/>
+                            <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 5</Text>
+                        </View>
+                        <View style={styles.lookupBox}>
+                            <Text style={{fontSize: 13, color: '#9E9E9E'}}>조회수 134</Text>
+                        </View>
                     </View>
-                    <View style={styles.lookupBox}>
-                        <Text style={{fontSize: 13, color: '#9E9E9E'}}>조회수 134</Text>
+                    <View style={styles.mainBox5}>
+                    {comment == '' ?
+                        <View style={{alignItems: 'center', justifyContent: 'center', height: 200}}>
+                            <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
+                            <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
+                        </View> : <Comment info={comment} setCommentsId={setCommentsId} setInsert={setInsert} modal={modal} setModal={setModal} commentData={commentData}/>}
                     </View>
-                </View>
-                <View style={styles.mainBox5}>
-                {comment == '' ?
-                    <View style={{alignItems: 'center', justifyContent: 'center', height: 200}}>
-                        <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
-                        <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
-                    </View> : <Comment info={comment} setCommentsId={setCommentsId} setInsert={setInsert} modal={modal} setModal={setModal} commentData={commentData}/>}
                 </View>
             </View>
-        </View>
       );
 
   return info !== undefined && info !== '' ? (

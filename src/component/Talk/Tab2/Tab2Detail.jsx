@@ -496,6 +496,26 @@ const Talk1Sub = ({navigation, route}) => {
                         <List />
                 </ScrollView>
 
+                <View style={styles.sum}>
+                    <View style={styles.myList2FooterBox}>
+                        <View style={styles.budget}><Text style={{fontSize: 18, fontWeight: '600'}}>119,700 원</Text></View>
+                        <Text style={{fontSize: 18, fontWeight: '600'}}>총 예산</Text>
+                    </View>
+                    <View style={[styles.myList2FooterBox, {paddingLeft: 20, height: 25}]}>
+                        <View style={styles.budget}><Text>119,700 원</Text></View>
+                        <Text style={{color: '#616161'}}>ㄴ 구매금액</Text>
+                    </View>
+                    <View style={[styles.myList2FooterBox, {paddingLeft: 20, height: 25}]}>
+                        <View style={styles.budget}><Text>119,700 원</Text></View>
+                        <Text style={{color: '#616161'}}>ㄴ 구매예정 금액</Text>
+                    </View>
+                </View>
+                <View style={styles.compare}>
+                    <TouchableOpacity style={styles.compareButton} onPress={()=>navigation.navigate('출산리스트 비교', route.params)}>
+                        <Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>내 출산리스트와 비교하기</Text>
+                    </TouchableOpacity>
+                </View>
+
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
                         {boardLike == 0 | boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000'/>}

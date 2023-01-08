@@ -94,18 +94,19 @@ const Register = ({navigation}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible2, setModalVisible2] = useState(false);
     const [modal2Content, setModal2Content] = useState(''); // 완료시 모달 내용
-    const [info, setInfo] = useState( // post info
+    const [data, setData] = useState( // post info
         {
+            boardCategory: '출산리스트 공유',
             title: '',
             contents: '',
         }
     );
-    console.log('info: ', info);
+    console.log('data: ', data);
     
     const complete = () => {
         switch(true){
-            case info.title === '': setModal2Content('제목을 입력해주세요.'); break;
-            case info.contents === '': setModal2Content('게시글 내용을 입력해주세요.'); break;
+            case data.title === '': setModal2Content('제목을 입력해주세요.'); break;
+            case data.contents === '': setModal2Content('게시글 내용을 입력해주세요.'); break;
             default: submit(), navigation.goBack(); return;
         }
         setModalVisible2(!modalVisible2);
@@ -113,17 +114,13 @@ const Register = ({navigation}) => {
 
     const submit = async() => {
 
-        let data = new FormData();
-        data.append('category', '출산리스트');
-        data.append('title', info.title);
-        data.append('contents', info.contents);
-
         try{
           const response = await axios({
                 method: 'post',
-                url: 'https://momsnote.net/api/board/write',
+                url: 'https://momsnote.net/api/needs/share/save',
                 headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
+                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIyMDczODUsImV4cCI6MTY3NDc5OTM4NX0.LRECgH_NBe10ueCfmefEzEueIrYukBHnXoKRfVqIurQ', 
+                    'Content-Type': 'application/json'
                   },
                 data: data
               });
@@ -159,13 +156,13 @@ const Register = ({navigation}) => {
                 </TouchableOpacity>
                 <TextInput style={styles.mainBox2} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'}
                     onChangeText={(e) =>
-                        setInfo((prevState) => ({
+                        setData((prevState) => ({
                             ...prevState,
                             title: e
                         }))}></TextInput>
                 <TextInput style={[styles.mainBox2, {height: 220, paddingBottom: 180}]} placeholder='게시글 내용을 작성해주세요.' placeholderTextColor={'#BDBDBD'}
                     onChangeText={(e) =>
-                        setInfo((prevState) => ({
+                        setData((prevState) => ({
                             ...prevState,
                             contents: e
                         }))}></TextInput>

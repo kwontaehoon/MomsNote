@@ -12,6 +12,7 @@ import { setBoardRefresh } from '../../../Redux/Slices/BoardSlice'
 import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
 import Pencil from '../../../../public/assets/svg/pencil.svg'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
   container:{
@@ -157,6 +158,8 @@ const styles = StyleSheet.create({
 
 const Talk1 = ({navigation, route}:any) => {
 
+  console.log('talk route: ', route);
+
   const DATA = [
     {
       id: '0',
@@ -190,7 +193,10 @@ const Talk1 = ({navigation, route}:any) => {
   console.log('info: ', info);
   const boardSet = useSelector(state => { return state.board.refresh; });
   console.log('boardSet: ', boardSet);
-  const [modalVisible, setModalVisible] = useState(false); // 글쓰기 모달
+  const [modalVisible, setModalVisible] = useState({
+    open: false,
+    asyncStorge: ''
+  }); // 글쓰기 모달
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');
   const [items, setItems] = useState([
@@ -202,6 +208,17 @@ const Talk1 = ({navigation, route}:any) => {
   useEffect(()=>{
     dispatch(postBoard(boardSet));
   }, [filter]);
+
+  useEffect(()=>{
+    const momsTalk = async() => {
+      const asyncStorage = await AsyncStorage.getItem('momsTalk');
+
+      console.log('aaaaaaaaaaaa: ', asyncStorage);
+      
+      setModalVisible(prevState => ({...prevState, asyncStorge: asyncStorage}));
+    }
+    momsTalk();
+  }, [route]);
 
   const change = (e) => { // 카테고리 배경색상, 글자 색상 변경 onpress
     let arr = Array.from({length: 6}, () => {return false});
@@ -292,7 +309,7 @@ const Talk1 = ({navigation, route}:any) => {
       <View style={[styles.header3, {display: info == undefined || info == '' ? 'none' : 'flex'}]}>
           <Swiper horizontal={false}
           autoplay={true}
-          // autoplayTimeout={4.5}
+          autoplayTimeout={4.5}
           showsPagination={false}
           >
           <View style={styles.slide}>
@@ -314,11 +331,13 @@ const Talk1 = ({navigation, route}:any) => {
         </FlatList> : 
         <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}
       </View>
-      <TouchableOpacity style={styles.footer} onPress={()=> setModalVisible(!modalVisible)}>
+      <TouchableOpacity style={styles.footer} onPress={()=>
+        modalVisible.asyncStorge == null ? navigation.navigate('글쓰기') : setModalVisible(prevState => ({...prevState, open: true}))
+        }>
             <Pencil/>
       </TouchableOpacity>
 
-      <Modal animationType="fade" transparent={true} visible={modalVisible}
+      <Modal animationType="fade" transparent={true} visible={modalVisible.open}
             onRequestClose={() => {
             setModalVisible(!modalVisible)}}>
             <View style={styles.modalContainer}>
@@ -329,8 +348,10 @@ const Talk1 = ({navigation, route}:any) => {
                             <Text style={{fontSize: 16, paddingTop: 5}}>임시저장된 게시글을 불러오시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>게시글 불러오기</Text></TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModalVisible(!modalVisible), navigation.navigate('글쓰기')}}>
+                            <TouchableOpacity style={styles.modal} onPress={()=>{setModalVisible(prevState => ({...prevState, open: false})), navigation.navigate('글쓰기', '게시글 불러오기')}}>
+                              <Text style={{color: 'white', fontSize: 16}}>게시글 불러오기</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModalVisible(prevState => ({...prevState, open: false})), navigation.navigate('글쓰기')}}>
                               <Text style={{color: 'black', fontSize: 16}}>새로 작성하기</Text>
                             </TouchableOpacity>
                         </View>

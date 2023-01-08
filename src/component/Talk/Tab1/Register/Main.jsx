@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, SafeAreaView, Modal, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
@@ -7,6 +7,7 @@ import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../../Redux/Slices/BoardSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     container:{
@@ -184,6 +185,8 @@ const styles = StyleSheet.create({
 })
 const Register = ({navigation, route}) => {
 
+    console.log('Register route params: ', route.params);
+
     const boardSet = useSelector(state => { return state.board.refresh; });
 
     const DATA = [{ id: '0', title: '전체' }];
@@ -227,6 +230,14 @@ const Register = ({navigation, route}) => {
         }
     );
     console.log('info: ', info);
+
+    useEffect(()=>{
+        const load = async() => {
+            const asyncStorage = await AsyncStorage.getItem('momsTalk');
+            route.params == undefined ? '' : setInfo(JSON.parse(asyncStorage))
+        }
+        load();
+    }, []);
     
     const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
         let arr = Array.from({length: 5}, () => {return false});
@@ -352,10 +363,22 @@ const Register = ({navigation, route}) => {
         }
     }
 
+    const boardSave = async(e) => {
+        e == 1 ? AsyncStorage.setItem('momsTalk', JSON.stringify(info)) :  await AsyncStorage.removeItem('momsTalk');
+
+        setModalVisible(!modalVisible);
+        navigation.navigate('맘스 톡', 1234);
+    }
+
+
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
             <View style={styles.header}>
-                    <View style={[styles.headerBox, {width: '20%'}]}><Text style={{fontSize: 16}} onPress={()=>setModalVisible(!modalVisible)}>취소</Text></View>
+                    <View style={[styles.headerBox, {width: '20%'}]}><Text style={{fontSize: 16}} onPress={()=>
+                        info.title == '' && info.contents == '' && info.files == ''&& info.imageFile.length == 0
+                        && info.video.length == 0 ? 
+                        navigation.goBack() : setModalVisible(!modalVisible)
+                        }>취소</Text></View>
                     <View style={[styles.headerBox, {width: '60%'}]}><Text style={{fontSize: 25, fontWeight: 'bold'}}>글쓰기</Text></View>
                     <View style={[styles.headerBox, {width: '20%'}]}><Text style={{color: '#FE7000', fontSize: 16, fontWeight: '600'}} onPress={complete}>완료</Text></View>
             </View>
@@ -381,13 +404,13 @@ const Register = ({navigation, route}) => {
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, color: '#424242'}}>제목</Text>
-                    <TextInput style={styles.textBox} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'}
+                    <TextInput style={styles.textBox} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'} value={info.title}
                         onChangeText={(e) => setInfo((prevState) => ({ ...prevState, title: e}))}> 
                     </TextInput>
                 </View>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, color: '#424242'}}>내용</Text>
-                    <TextInput style={styles.textBox2} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'}
+                    <TextInput style={styles.textBox2} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'} value={info.contents}
                      onChangeText={(e) => setInfo((prevState) => ({ ...prevState, contents: e}))}> 
                      </TextInput>
                 </View>
@@ -466,8 +489,8 @@ const Register = ({navigation, route}) => {
                             <Text style={{fontSize: 16, paddingTop: 5}}>해당 내용을 임시저장하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal} onPress={()=>{submit(), setModalVisible(!modalVisible), navigation.goBack()}}><Text style={{color: 'white', fontSize: 16}}>네</Text></TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModalVisible(!modalVisible), navigation.goBack();}}>
+                            <TouchableOpacity style={styles.modal} onPress={()=>boardSave(1)}><Text style={{color: 'white', fontSize: 16}}>네</Text></TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>boardSave(0)}>
                                 <Text style={{color: 'black', fontSize: 16}}>아니요</Text>
                             </TouchableOpacity>
                         </View>

@@ -25,9 +25,10 @@ import Apply from '../Talk/Tab3/Apply'
 import Post from '../Talk/Tab3/Post'
 import Setting from '../MyPage/Setting/Main'
 import Search from '../Navigation/Search'
+import MaterialSearch from '../Materials/Search/Search'
 import Talk2Detail from '../Talk/Tab2/Tab2Detail'
 import Talk2Register from '../Talk/Tab2/Register/Main'
-import Categoires from '../Talk/Tab2/Register/Categoires'
+import MaterialList from '../Talk/Tab2/Register/MaterialList'
 import Initial from '../Default/Main'
 import Budget from '../Materials/Budget/Main'
 import KakaoWebView from '../Default/KakaoWebView'
@@ -42,10 +43,10 @@ import Gallery from '../Modal/Gallery'
 import Government from '../Information/Tab3/Detail'
 import GuideDetail from '../Information/Tab1/Detail'
 import ReduxTest2 from '../Test/ReduxTest2'
-import MomsSearchSearch from '../Navigation/SearchTab/MomsTalk'
-import MaterialSearch from '../Navigation/SearchTab/Material'
-import CommentSearch from '../Navigation/SearchTab/Comment'
-import ExperienceSearch from '../Navigation/SearchTab/Expreience'
+import MomsSearchDetail from '../Navigation/SearchTab/MomsTalk'
+import MaterialDetail from '../Navigation/SearchTab/Material'
+import CommentDetail from '../Navigation/SearchTab/Comment'
+import ExperienceDetail from '../Navigation/SearchTab/Expreience'
 
 
 LogBox.ignoreAllLogs();
@@ -103,7 +104,7 @@ const Navigation = () => {
             <Stack.Screen name="출산리스트 공유 상세내용" component={Talk2Detail} options={{title: '', headerShown: false}}/>
             <Stack.Screen name="출산리스트 공유 등록" component={Talk2Register} options={{title: '', headerShown: false}}/>
             <Stack.Screen name="출산리스트 비교" component={Compare}/>
-            <Stack.Screen name="출산리스트" component={Categoires}/>
+            <Stack.Screen name="출산리스트" component={MaterialList}/>
             <Stack.Screen name="신청 정보" component={Apply}  options={{title: '', headerShown: false}}/>
             <Stack.Screen name="주소 찾기" component={Post}  options={{title: ''}}/>
             <Stack.Screen name="설정" component={Setting}/>
@@ -115,6 +116,7 @@ const Navigation = () => {
             <Stack.Screen name="정부지원혜택 상세내용" component={Government} options={{title: '', headerShown: false}}/>
 
             <Stack.Screen name="검색" component={Search} options={{title: '', headerShown: false}}/>
+            <Stack.Screen name="출산 준비물 검색" component={MaterialSearch} options={{title: '', headerShown: false}}/>
             <Stack.Screen name="알림" component={Alarm}/>
             <Stack.Screen name="총 예산" component={Budget}/>
             <Stack.Screen name="오늘의편지 상세페이지" component={DdayDetail} options={{title: '', headerShown: false}}/>
@@ -134,10 +136,10 @@ const Navigation = () => {
             <Stack.Screen name="갤러리" component={Gallery} options={{title: '', headerShown: false}}/>
             <Stack.Screen name="리덕스 테스트2" component={ReduxTest2} />
 
-            <Stack.Screen name="맘스 톡 서치" component={MomsSearchSearch} options={{title: '맘스 톡 전체'}}/>
-            <Stack.Screen name="출산준비물 공유 서치" component={MaterialSearch} options={{title: '출산리스트 공유 전체'}}/>
-            <Stack.Screen name="댓글 서치" component={CommentSearch} options={{title: '댓글 전체'}}/>
-            <Stack.Screen name="체험단 서치" component={ExperienceSearch} options={{title: '체험단 전체'}}/>
+            <Stack.Screen name="맘스 톡 서치" component={MomsSearchDetail} options={{title: '맘스 톡 전체'}}/>
+            <Stack.Screen name="출산준비물 공유 서치" component={MaterialDetail} options={{title: '출산리스트 공유 전체'}}/>
+            <Stack.Screen name="댓글 서치" component={CommentDetail} options={{title: '댓글 전체'}}/>
+            <Stack.Screen name="체험단 서치" component={ExperienceDetail} options={{title: '체험단 전체'}}/>
 
         </Stack.Navigator>
       </NavigationContainer>

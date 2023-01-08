@@ -28,6 +28,7 @@ import Download from '../../../public/assets/svg/Download.svg'
 import Search from '../../../public/assets/svg/Search.svg'
 import Bell from '../../../public/assets/svg/Bell.svg'
 import MyPage from '../../../public/assets/svg/Mypage.svg'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const styles = StyleSheet.create({
@@ -213,7 +214,7 @@ const Navigation = ({navigation, route}) => {
     open: false,
     needsBrandId: null,
     needsId: null,
-
+    asyncStorage: '',
   }); // check box 선택시 모달
   const [modalVisible2, setModalVisible2] = useState({
     open: false,
@@ -221,13 +222,12 @@ const Navigation = ({navigation, route}) => {
     needsBrandId: null,
     needsDateId: null
   }); // 브랜드 추가 모달
-  console.log('modalvisible2: ', modalVisible2);
   const [modalVisible4, setModalVisible4] = useState({
     open: false,
-    content: ''
+    content: '',
   }); // 구매가이드 모달
-  console.log('modalvisible4: ', modalVisible4);
-  const [modalVisible5, setModalVisible5] = useState(true); // 초기화 모달
+
+  const [modalVisible5, setModalVisible5] = useState(false); // 초기화 모달
   const [modalVisible6, setModalVisible6] = useState(false); // 추천 리스트 변경 확인 모달
   const [modalVisible7, setModalVisible7] = useState(false); // 더보기
   const [modalVisible8, setModalVisible8] = useState(false); // 품목 추가
@@ -246,6 +246,12 @@ const Navigation = ({navigation, route}) => {
 
   useEffect(()=>{
     dispatch(postMaterial(materialSet));
+
+    const purchaseInfo = async() => {
+      const purchase = await AsyncStorage.getItem('purchase');
+      setModalVisible(prevState => ({...prevState, asyncStorage: purchase}));
+  }
+  purchaseInfo();
   }, []);
 
   // useEffect(()=>{
@@ -382,14 +388,15 @@ const save = async() => {
               onValueChange={()=>{
                 switch(true){
                   case x.itemName == null: setModal(prevState => ({...prevState, open: true, buttonCount: 1, content: '브랜드를 체크해주세요'})); break;
-                  case test == 0 : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: x.needsBrandId, needsId: x.needsId})); break;
+                  case modalVisible.asyncStorage == null : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: x.needsBrandId, needsId: x.needsId})); break;
                   case x.id == 0 : purchase(x.needsId, x.needsBrandId); break;
                   default : purchaseCencel(x.needsId);
                 }
               }}
               />
           </View>
-          <TouchableOpacity style={[styles.filterBox, {width: 157, flexDirection: 'row', justifyContent: 'flex-start'}]} onPress={()=>setModalVisible4(prevState => ({...prevState, open: true, content: x}))}>
+          <TouchableOpacity style={[styles.filterBox, {width: 157, flexDirection: 'row', justifyContent: 'flex-start'}]}
+            onPress={()=>setModalVisible4(prevState => ({...prevState, open: true, content: x}))}>
             {optionBox(x.grade)}
             <Text>{x.needsName}</Text>
           </TouchableOpacity>
@@ -449,7 +456,7 @@ const save = async() => {
         <Text style={{fontSize: 18, fontWeight: '600'}}>출산준비물</Text>
         <View style={styles.headerBar}>
             <Download style={{marginRight: 12}} onPress={capture}/>
-            <Search style={{marginRight: 12}} onPress={()=>navigation.navigate('검색')}/>
+            <Search style={{marginRight: 12}} onPress={()=>navigation.navigate('출산 준비물 검색')}/>
             <Bell style={{marginRight: 12}} onPress={()=>navigation.navigate('알림')}/>
             <MyPage style={{marginRight: 5}} onPress={()=>navigation.navigate('마이페이지')}/>
         </View>

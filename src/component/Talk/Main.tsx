@@ -28,24 +28,6 @@ const Main = ({navigation}) => {
     
     const [filter, setFilter] = useState([false, true, false]); // tab
 
-    // useEffect(()=>{
-    //     AsyncStorage.setItem('nickname',JSON.stringify({'nickname': 'User1', 'phonenumber': '010-xxxx-xxxx'}), () => {
-    //         console.log('유저정보 저장 완료');
-    //     });
-
-    //     console.log('aaaaaaaaaaaaaaaaaaa', AsyncStorage.getItem('nickname', (error, result) =>{
-    //     const userInfo = JSON.parse(result);
-    //     console.log(userInfo.nickname);
-    // }));
-
-    // }, []);
-
-    // const test = async() => {
-    //     const a = await AsyncStorage.getItem('userId');
-    //     console.log('a: ', a);
-    // }
-    // test();    
-
     const List = () => {
 
         switch(true){

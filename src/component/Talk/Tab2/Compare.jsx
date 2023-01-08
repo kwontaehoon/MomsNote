@@ -195,7 +195,6 @@ const Talk1Sub = ({navigation, route}) => {
     const [list, setList] = useState(Array.from({length: 8}, () => {return true})); // list display
     const animation = useRef(new Animated.Value(0)).current;
     const [myList, setMyList] = useState(false);
-    console.log('myList: ', myList);
 
     const [modal, setModal] = useState({ // 브랜드 선택 모달
       open: false,
@@ -208,7 +207,7 @@ const Talk1Sub = ({navigation, route}) => {
 
   useEffect(()=>{ // 해당 게시글 boardId만 filtering
       if(shareList !== '' || shareList !== undefined){ 
-          setInfo(shareList.filter(x=> x.boardId == route.params));
+          setInfo(shareList.filter(x=> x.boardId == route.params.boardId));
       }
   }, [shareList]);
 
@@ -331,7 +330,7 @@ const Talk1Sub = ({navigation, route}) => {
         <View style={styles.main}>
           <View style={styles.listHeader}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontSize: 15, fontWeight: '600'}}>닉네임</Text>
+              <Text style={{fontSize: 15, fontWeight: '600'}}>{route.params.nickname}</Text>
               <Text style={{fontSize: 15}}> 님의 출산준비물</Text>
             </View>
           </View>
