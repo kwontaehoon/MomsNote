@@ -256,6 +256,10 @@ const Talk1 = ({navigation, route}:any) => {
     }
   }
 
+  const boardCount = () => {
+
+  }
+
   const renderItem = ({ item }:any) => (
     <View style={{justifyContent: 'center'}}>
       <View style={[styles.headerFilterBox, {backgroundColor: filter[item.id] ? '#FEA100' : 'white'}]}>
@@ -268,7 +272,7 @@ const Talk1 = ({navigation, route}:any) => {
 
   const renderItem2 = ({ item }:any) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', {item})}>
-        { item.savedName !== null ? <ImageBox item={item.savedName}/> : '' }
+        { item.savedName == null ? '' : <ImageBox item={item.savedName}/>  }
         <View style={[styles.mainBoxSub, {paddingTop: 5, width: '65%', alignItems: 'flex-start'}]}>
           <Text style={{fontSize: 15, paddingTop: 2}}>{item.title} </Text>
           <View style={styles.mainBoxSub2}>
@@ -285,7 +289,7 @@ const Talk1 = ({navigation, route}:any) => {
     </TouchableOpacity>
   ); 
 
-  return info !== '' && info !== undefined ? (
+  return info == '' && info == undefined ? <View></View> : (
     <View style={styles.container}>
       <View style={styles.header}>
         <FlatList data={DATA} renderItem={renderItem}
@@ -326,7 +330,7 @@ const Talk1 = ({navigation, route}:any) => {
 
       <View style={styles.main}>
         {info !== '' && info !== undefined ?
-        <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{console.log('afdasfdasfdas')}} onEndReachedThreshold={0.6}
+        <FlatList data={info} renderItem={renderItem2} onEndReached={boardCount} onEndReachedThreshold={0.6}
           keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
         </FlatList> : 
         <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}
@@ -351,7 +355,7 @@ const Talk1 = ({navigation, route}:any) => {
                             <TouchableOpacity style={styles.modal} onPress={()=>{setModalVisible(prevState => ({...prevState, open: false})), navigation.navigate('글쓰기', '게시글 불러오기')}}>
                               <Text style={{color: 'white', fontSize: 16}}>게시글 불러오기</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModalVisible(prevState => ({...prevState, open: false})), navigation.navigate('글쓰기')}}>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModalVisible(prevState => ({...prevState, open: false})), navigation.navigate('글쓰기', '새로 작성하기')}}>
                               <Text style={{color: 'black', fontSize: 16}}>새로 작성하기</Text>
                             </TouchableOpacity>
                         </View>
@@ -360,7 +364,7 @@ const Talk1 = ({navigation, route}:any) => {
             </View>
         </Modal>
      </View>
-  ) : <View></View>
+  )
 }
 
 export default Talk1

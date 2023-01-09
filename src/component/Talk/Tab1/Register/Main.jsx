@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
 const Register = ({navigation, route}) => {
 
     console.log('Register route params: ', route.params);
+    console.log(typeof(route.params) == 'object');
 
     const boardSet = useSelector(state => { return state.board.refresh; });
 
@@ -235,7 +236,12 @@ const Register = ({navigation, route}) => {
     useEffect(()=>{
         const load = async() => {
             const asyncStorage = await AsyncStorage.getItem('momsTalk');
-            route.params == undefined ? AsyncStorage.removeItem('momsTalk') : setInfo(JSON.parse(asyncStorage));
+            switch(typeof(route.params)){
+                case 'string': setInfo(JSON.parse(asyncStorage)); break;
+                case 'object': console.log('object 입니다.'); break;
+                default: AsyncStorage.removeItem('momsTalk');
+            }
+            // route.params == undefined ?  AsyncStorage.removeItem('momsTalk') : setInfo(JSON.parse(asyncStorage));
         }
         load();
     }, [])

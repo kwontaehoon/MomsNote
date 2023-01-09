@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { postMaterial } from '../../../../Redux/Slices/MaterialSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -114,6 +114,7 @@ const Talk1Sub = ({route}) => {
     },
   ];
 
+  const dispatch = useDispatch();
   const info = useSelector(state => state.material.data);
   console.log('총 예산 info: ', info);
   const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
@@ -122,6 +123,10 @@ const Talk1Sub = ({route}) => {
   const [sum, setSum] = useState(0)
 
   console.log('sum: ', sum);
+
+  useEffect(()=>{
+    dispatch(postMaterial({ order: 'buy' }));
+  }, []);
 
   const arrow = (e) => { // arrow 누르면 서브페이지 display
     let arr = [...list];

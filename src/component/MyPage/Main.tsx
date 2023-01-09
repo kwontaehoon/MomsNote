@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
-import Icon from 'react-native-vector-icons/Feather'
 import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
 
 const styles = StyleSheet.create({
     container:{
@@ -70,6 +70,24 @@ const Main = ({navigation}) => {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
+
+    let data = new FormData();
+    data.append('files', {uri: image, name: 'profile.mp4', type: 'image/png'});
+
+    try{
+        const response = await axios({
+              method: 'post',
+              url: 'https://momsnote.net/profile/upload',
+              headers: { 
+                'Authorization': 'Bearer token', 
+              },
+              data: data
+            });
+            console.log('response: ', response.data);
+        }catch(error){
+          console.log('error: ', error);
+        }
+
   };
 
   return (

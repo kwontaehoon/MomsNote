@@ -6,7 +6,7 @@ export const postShareList = createAsyncThunk("postShareList/async", async (data
     try{
       const response = await axios({
           method: 'post',
-          url: 'https://momsnote.net/api/needs/share/list',
+          url: 'https://momsnote.net/api/needs/read/board',
           headers: { 
             'Content-Type': 'application/json'
           },
@@ -22,9 +22,7 @@ const initialState = {
     loading: false,
     data: [],
     refresh: {
-        order: 'buy',
-        count: 1,
-        page: 1
+        'boardId': null
     }
 }
 

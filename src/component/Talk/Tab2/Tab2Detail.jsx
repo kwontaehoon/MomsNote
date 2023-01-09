@@ -25,7 +25,8 @@ import Back from '../../../../public/assets/svg/Back.svg'
 import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
-import { postShareList } from '../../../Redux/Slices/ShareList'
+import { postShareList } from '../../../Redux/Slices/ShareListSlice'
+import { postShareList2 } from '../../../Redux/Slices/ShareList2Slice'
 
 const styles = StyleSheet.create({
     container:{
@@ -283,11 +284,9 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = [route.params];
-    console.log('info: ', info);
     const shareList = useSelector(state => { return state.shareList.data; });
     const shareListSet = useSelector(state => { return state.shareList.refresh});
-    const [info2, setInfo2] = useState();
-    console.log('info2: ', info2);
+    const info2 = useSelector(state => { return state.shareList2.data});
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
@@ -326,10 +325,7 @@ const Talk1Sub = ({navigation, route}) => {
         dispatch(postComment(commentData));
         dispatch(postCommentFlag({boardId: info[0].boardId}));
         dispatch(postShareList(shareListSet));
-    }, []);
-
-    useEffect(()=>{
-        setInfo2(shareList.filter(x=> x.boardId == route.params.boardId));
+        dispatch(postShareList2({boardId: info[0].boardId}));
     }, []);
 
     useEffect(()=>{ // 게시물 추천 Flag
@@ -402,7 +398,7 @@ const Talk1Sub = ({navigation, route}) => {
     }
 
     const filtering = (e) => { // 품목 브랜드 가격 부분 none || flex
-        if(info2.filter(x => x.category == e && x.needsBrandId !== null) == ''){
+        if(info2.filter(x => x.category == e) == ''){
           return(
             <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}>
                 <Text style={{fontSize: 16, color: '#9E9E9E'}}>검색 결과가 없습니다.</Text>

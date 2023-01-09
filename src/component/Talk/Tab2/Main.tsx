@@ -10,7 +10,7 @@ import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
 import Pencil from '../../../../public/assets/svg/pencil.svg'
 import { useDispatch, useSelector } from 'react-redux'
-import { postShareList } from '../../../Redux/Slices/ShareList'
+import { postShareList } from '../../../Redux/Slices/ShareListSlice'
 
 const styles = StyleSheet.create({
   container:{
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
   },
   main:{
-    height: '100%',
+    flex: 1,
     position: 'relative',
     zIndex: -100,
   },
@@ -127,11 +127,7 @@ const Talk1 = ({navigation}) => {
 ]);
 
 useEffect(()=>{
-  dispatch(postShareList({
-    order: 'buy',
-    count: 1,
-    page: 1
-  }));
+  dispatch(postShareList({ boardId: 129 }));
 }, []);
 
 useEffect(()=>{
@@ -196,7 +192,7 @@ const dayCalculate = (date) => {
         <View style={[styles.header2FilterBox, {paddingBottom: 5}]}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={{fontSize: 16, fontWeight: '600'}}></Text>
-            <Text style={{fontSize: 16}}>2 건</Text>
+            <Text style={{fontSize: 16}}>{info.length} 건</Text>
           </View>
         </View>
         <View style={[styles.header2FilterBox, {width: '32%'}]}>
@@ -205,11 +201,13 @@ const dayCalculate = (date) => {
               setOpen={setOpen} setValue={setValue} setItems={setItems} labelStyle={{paddingLeft: 18}}/>
         </View>
       </View>
+
       <View style={styles.main}>
         <FlatList data={info} renderItem={renderItem}
           keyExtractor={item => String(item.boardId)}>
         </FlatList>
       </View>
+
       <TouchableOpacity style={styles.footer} onPress={()=>
         modalVisible.asyncStorage == null ? navigation.navigate('출산리스트 공유 등록') : setModalVisible(prevState => ({...prevState, open: true}))}>
             <Pencil fill='white'/>

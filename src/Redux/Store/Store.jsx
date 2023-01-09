@@ -5,10 +5,11 @@ import commentReducer from '../Slices/CommentSlice'
 import materialReducer from '../Slices/MaterialSlice'
 import commentFlagReducer from '../Slices/CommentFlag'
 import commentRecommendReducer from '../Slices/CommentRecommendSlice'
-import shareListReducer from '../Slices/ShareList'
-import materialPopularSlice from '../Slices/MaterialPopularSlice'
-import boardPopularSlice from '../Slices/BoardPopularSlice'
-import infoPopularSlice from '../Slices/InfoPopularSlice'
+import shareListReducer from '../Slices/ShareListSlice'
+import materialPopularReducer from '../Slices/MaterialPopularSlice'
+import boardPopularReducer from '../Slices/BoardPopularSlice'
+import infoPopularReducer from '../Slices/InfoPopularSlice'
+import shareList2Reducer from '../Slices/ShareList2Slice'
 
 export const store = configureStore({
   reducer: {
@@ -19,8 +20,10 @@ export const store = configureStore({
     commentFlag: commentFlagReducer,
     commentRecommend: commentRecommendReducer,
     shareList: shareListReducer,
-    materialPopularSlice: materialPopularSlice,
-    boardPopularSlice: boardPopularSlice,
-    infoPopularSlice: infoPopularSlice
+    shareList2: shareList2Reducer,
+    materialPopularSlice: materialPopularReducer,
+    boardPopularSlice: boardPopularReducer,
+    infoPopularSlice: infoPopularReducer,
+    
   },
 })

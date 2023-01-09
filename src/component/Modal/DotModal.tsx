@@ -52,10 +52,11 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, setModal3, modal6, setModal6, commentsId, info}) => {
 
-    console.log('zzzzgfdgfdgfdgfdzzzz');
     const dispatch = useDispatch();
     const [userId, setUserId] = useState();
     const boardSet = useSelector(state => { return state.board.refresh; });
+
+    console.log('dotmodal: ', info);
     
      useEffect(()=>{
         const getUserId = async() => {
@@ -126,7 +127,7 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
             );
             case info[0].userId == userId: return(
                 <View style={styles.main}>
-                        <TouchableOpacity style={styles.mainBox} onPress={()=>{setModal(!modal), setModal2(!modal2)}}><Text style={{color: '#1E88E5', fontSize: 20}}>게시물 수정</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.mainBox} onPress={()=>{setModal(!modal), navigation.navigate('글쓰기', info)}}><Text style={{color: '#1E88E5', fontSize: 20}}>게시물 수정</Text></TouchableOpacity>
                         <TouchableOpacity style={styles.mainBox} onPress={()=>{setModal(!modal), BoardDelete(), navigation.goBack()}}><Text style={{color: '#F23737', fontSize: 20}}>삭제하기</Text></TouchableOpacity>
                 </View>
             )
