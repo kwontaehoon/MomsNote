@@ -25,7 +25,6 @@ import Apply from '../Talk/Tab3/Apply'
 import Post from '../Talk/Tab3/Post'
 import Setting from '../MyPage/Setting/Main'
 import Search from '../Navigation/Search'
-import MaterialSearch from '../Materials/Search/Search'
 import Talk2Detail from '../Talk/Tab2/Tab2Detail'
 import Talk2Register from '../Talk/Tab2/Register/Main'
 import MaterialList from '../Talk/Tab2/Register/MaterialList'
@@ -47,6 +46,7 @@ import MomsSearchDetail from '../Navigation/SearchTab/MomsTalk'
 import MaterialDetail from '../Navigation/SearchTab/Material'
 import CommentDetail from '../Navigation/SearchTab/Comment'
 import ExperienceDetail from '../Navigation/SearchTab/Expreience'
+import MaterialSearch from '../Materials/Search/Search'
 
 
 LogBox.ignoreAllLogs();

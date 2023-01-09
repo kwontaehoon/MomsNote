@@ -1,19 +1,41 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, KeyboardAvoidingView, Image } from 'react-native'
-import Icon4 from 'react-native-vector-icons/AntDesign'
-import { getStatusBarHeight } from "react-native-status-bar-height"
+import React, { useState, useEffect, useRef } from 'react'
+import { getStatusBarHeight } from "react-native-status-bar-height"; 
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, TextInput } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon3 from 'react-native-vector-icons/Feather'
+import Checkbox from 'expo-checkbox';
+import BrendModal from '../Modal/BrendModal'
+import CheckboxModal from '../Modal/CheckBoxModal';
+import NoticeModal from '../Modal/NoticeModal';
+import GuideModal from '../Modal/GuideModal'
+import ResetModal from '../Modal/ResetModal'
+import ResetModal2 from '../Modal/ResetModal2'
+import DotModal from '../Modal/DotModal'
+import AddModal from '../Modal/AddModal'
+import DeleteModal from '../Modal/DeleteModal'
+import Filter from '../Modal/Filter'
+import FirstModal from '../../Modal/First'
+import SecondModal from '../../Modal/Second'
+import * as MediaLibrary from 'expo-media-library'
+import ViewShot from 'react-native-view-shot'
 import axios from 'axios'
-import moment from 'moment'
+import { useSelector, useDispatch } from 'react-redux';
+import { postMaterial, setMaterialRefresh } from '../../../Redux/Slices/MaterialSlice';
 
-import Back from '../../../../public/assets/svg/Back.svg'
+
+import More from '../../../../public/assets/svg/More.svg'
+import Sort from '../../../../public/assets/svg/Sort.svg'
+import Download from '../../../../public/assets/svg/Download.svg'
 import Search from '../../../../public/assets/svg/Search.svg'
-import Arrow from '../../../../public/assets/svg/Arrow-Right.svg'
-import Chat from '../../../../public/assets/svg/Chat.svg'
-import Like from '../../../../public/assets/svg/Like.svg'
+import Bell from '../../../../public/assets/svg/Bell.svg'
+import MyPage from '../../../../public/assets/svg/Mypage.svg'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Back from '../../../../public/assets/svg/Back.svg'
+
 
 const styles = StyleSheet.create({
   container:{
-    height: '97%',
+    flex: 1,
     marginTop: getStatusBarHeight(),
   },
   header:{
@@ -39,142 +61,345 @@ const styles = StyleSheet.create({
   main:{
 
   },
-  main2:{
-    backgroundColor: 'white',
+  mainBox:{
+    backgroundColor: '#F5F5F5',
+  },
+  mainBox2:{
+    flexDirection: 'row',
+    padding: 20,
+    alignItems: 'center',
   },
   titleBox:{
-    height: 50,
-    padding: 15,
-    justifyContent: 'center',
-    backgroundColor: '#F5F5F5',
+    width: '50%',
+    justifyContent: 'center'
   },
   arrowBox:{
     position: 'absolute',
-    right: 10,
+    right: 15,
   },
-  momstalk:{
-    height: 80,
-    borderTopWidth: 1,
+  main3:{
     alignItems: 'center',
+  },
+  main3Box:{
+    backgroundColor: 'white',
+    width: '90%',
+    borderRadius: 10,
+  },
+  main3BoxHeader:{
+    height: 44,
     flexDirection: 'row',
-    borderColor: '#F5F5F5'
+    marginBottom: 7,
   },
-  mainBox:{
-    paddingLeft: 15,
-    paddingRight: 15,
-  },
-  profile:{
-    borderWidth: 1,
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    marginRight: 5,
-  },
-  dateBox:{
-    position: 'absolute',
-    right: 0,
-    bottom: 20,
-  },
-  dotBox:{
-    position: 'absolute',
-    right: 0,
-    top: 20,
-  },
-  notBox:{
-    height: 120,
-    justifyContent: 'center',
+  filterBox:{
     alignItems: 'center',
-  }
-
+    justifyContent: 'center',
+  },
+  filterSub:{
+    height: 20,
+    paddingLeft: 8,
+    paddingTop: 2,
+    paddingbottom: 2,
+    paddingRight: 8,
+    marginRight: 5,
+    marginLeft: 5,
+    borderRadius: 10,
+  },
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    marginRight: 5,
+    borderColor: '#E0E0E0',
+  },
 })
 
-const Main = ({navigation}) => {
+const Navigation = ({navigation, route}) => {
 
   const DATA = [
     {
-      id: '0',
-      title: '전체'
-    }
+      id: 0,
+      title: '산모용품',
+      icon: require('../../../../public/assets/image/1.png'),
+    },
+    {
+      id: 1,
+      title: '수유용품',
+      icon: require('../../../../public/assets/image/2.png'),
+    },
+    {
+      id: 2,
+      title: '위생용품',
+      icon: require('../../../../public/assets/image/3.png'),
+    },
+    {
+      id: 3,
+      title: '목욕용품',
+      icon: require('../../../../public/assets/image/4.png'),
+    },
+    {
+      id: 4,
+      title: '침구류',
+      icon: require('../../../../public/assets/image/5.png'),
+    },
+    {
+      id: 5,
+      title: '아기의류',
+      icon: require('../../../../public/assets/image/6.png'),
+    },
+    {
+      id: 6,
+      title: '발육용품',
+      icon: require('../../../../public/assets/image/7.png'),
+    },
+    {
+      id: 7,
+      title: '가전용품',
+      icon: require('../../../../public/assets/image/8.png'),
+    },
+    {
+      id: 8,
+      title: '놀이용품',
+      icon: require('../../../../public/assets/image/9.png'),
+    },
   ];
 
-  const [search, setSearch] = useState('');
 
-  const [materialSearch, setMaterialSearch] = useState();
-  console.log('material: ', materialSearch);
+  const DATA3 = [
+    {
+      id: '0',
+      title: '산모용품 (0/13)',
+      color: '#FFADAD',
+      icon: 'material1'
+    },
+  ]
+
+
+  const [search, setSearch] = useState('');
+  const [materialList, setMaterialList] = useState();
+
+  const materialSet = useSelector(state => { return state.material.refresh; });
+
+  console.log('materialList: ', materialList);
+  const dispatch = useDispatch();
+  const ref = useRef();
+  const [list, setList] = useState(Array.from({ length: 9 }, () => { return true}));
+  
+  const [modalVisible, setModalVisible] = useState({
+    open: false,
+    needsBrandId: null,
+    needsId: null,
+    asyncStorage: '',
+  }); // check box 선택시 모달
+  const [modalVisible2, setModalVisible2] = useState({
+    open: false,
+    needsId: null,
+    needsBrandId: null,
+    needsDateId: null
+  }); // 브랜드 추가 모달
+  const [modalVisible4, setModalVisible4] = useState({
+    open: false,
+    content: '',
+  }); // 구매가이드 모달
+
+  const [modal, setModal] = useState({
+    open: false,
+    content: '',
+    buttonCount: 1
+  }); // fisrt modal
+  const [modal2, setModal2] = useState({
+    open: false,
+    content: ['', ''],
+    buttonCount: 1
+  }); //second modal
+
+  useEffect(()=>{
+    dispatch(postMaterial(materialSet));
+
+    const purchaseInfo = async() => {
+      const purchase = await AsyncStorage.getItem('purchase');
+      setModalVisible(prevState => ({...prevState, asyncStorage: purchase}));
+  }
+  purchaseInfo();
+  }, []);
 
   useEffect(()=>{
     const boardSearch = async() => {
         try{
             const response = await axios({
                 method: 'post',
-                url: 'https://momsnote.net/api/search/board',
+                url: 'https://momsnote.net/api/search/needslist',
                 headers: { 
+                  'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzI4ODU1NDAsImV4cCI6MTY3NTQ3NzU0MH0.IIEc85n1yAqgQ1HZZ8_yiSJWOXlX3E2BUXDIoaqYJD8', 
                   'Content-Type': 'application/json'
                 },
                 data: { keyword: search}
             });
             console.log('boardSearch: ', response.data);
-            setMaterialSearch(response.data);
+            setMaterialList(response.data);
         }catch(error){
             console.log('materialSearch axios error', error);
-            setMaterialSearch(undefined);
+            setMaterialList(undefined);
         }
     }
     boardSearch();
 }, [search]);
 
-const dayCalculate = (date) => {
-  switch(true){
-    case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
-    case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
-    default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'day')}일 전</Text>
-  }
-}
 
-  const Material = () => {
+  const purchase = async(needsId, needsBrandId) =>{
+    console.log('purchase');
+    try{
+      const response = await axios({
+          method: 'post',
+          url: 'https://momsnote.net/api/needs/buy/needs',
+          headers: { 
+            'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIyMDczODUsImV4cCI6MTY3NDc5OTM4NX0.LRECgH_NBe10ueCfmefEzEueIrYukBHnXoKRfVqIurQ', 
+            'Content-Type': 'application/json'
+          },
+          data: {
+            needsBrandId: needsBrandId,
+            needsId: needsId
+          }
+      });
+      console.log('response: ', response.data);
+      }catch(error){
+          console.log('출산준비물 구매 error:', error);
+      }
+      dispatch(postMaterial(materialSet));
+  }
+
+  const purchaseCencel = async(needsId) => {
+    console.log('purchaseCencel');
+    console.log(needsId);
+    try{
+      const response = await axios({
+          method: 'post',
+          url: 'https://momsnote.net/api/needs/cancel/buy',
+          headers: { 
+            'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+            'Content-Type': 'application/json'
+          },
+          data : {
+            needsId: needsId
+          }
+      });
+      console.log('response: ', response.data);
+      }catch(error){
+          console.log('출산준비물 리스트 error:', error);
+      }
+      dispatch(postMaterial(materialSet));
+  }
+
+
+  const arrow = (e) => { // arrow 누르면 서브페이지 display
+    let arr = [...list];
+    arr[e] = !arr[e];
+    setList(arr);
+  }
+
+  const optionBox = (e) => {
+    switch(e){
+      case '필수': return ( <View style={[styles.filterSub, {backgroundColor: '#E57373'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>필수</Text></View> )
+      case '권장': return ( <View style={[styles.filterSub, {backgroundColor: '#84C2F3'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>권장</Text></View> )
+      case '선택': return ( <View style={[styles.filterSub, {borderWidth: 1}]}><Text style={{fontSize: 12, fontWeight: 'bold'}}>선택</Text></View> )
+      case '추가': return ( <View style={[styles.filterSub, {backgroundColor: '#F5A256'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>추가</Text></View> )
+    }
+  }
+
+  const filtering = () => {
+
+  }
+
+  const List = ({item}) => {
+    return (
+      <View style={styles.main3Box} key={item.id}>
+        <View style={styles.main3BoxHeader}>
+          <View style={[styles.filterBox, {width: 50}]}><Text>구매</Text></View>
+          <View style={[styles.filterBox, {width: 157}]}><Text>품목</Text></View>
+          <View style={[styles.filterBox, {width: '41%'}]}><Text>브랜드</Text></View>
+        </View>
+        {
+        materialList.filter(x=> x.category == item.title) == '' ? 
+        <View style={{height: 100, justifyContent: 'center', alignItems: 'center', paddingBottom: 20}}>
+          <Text style={{color: '#9E9E9E', fontSize: 15}}>일치하는 항목이 없습니다.</Text>
+        </View> 
+        : <List2 item={item}/>
+        } 
+      </View>
+    )
+  }
+
+  const List2 = ({item}) => {
     let arr = [];
-    materialSearch.filter((x, index) => {
-      arr.push(
-        <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: x})}>
-        <View style={styles.dateBox}>
-          <Text style={{fontSize: 12, color: '#9E9E9E'}}>{dayCalculate(x.boardDate)}</Text>
-        </View>
-        
-        <View>
-          <Text>{x.title}</Text>
-          <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 4}}>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.nickname}</Text>
-            <Like height={17}/>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.recommend}</Text>
-            <Chat height={17}/>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.commentsCount}</Text>
+    materialList.filter((x, index)=>{
+      if(item.title == x.category && x.deleteStatus == 1){
+       arr.push(
+        <View style={styles.main3BoxHeader} key={index}>
+          <View style={[styles.filterBox, {width: 50}]}>  
+          <Checkbox
+              style={styles.checkbox}
+              value={x.id == 0 ? false : true}
+              color={x.id == 0 ? undefined : '#FEB401'}
+              onValueChange={()=>{
+                switch(true){
+                  case x.itemName == null: setModal(prevState => ({...prevState, open: true, buttonCount: 1, content: '브랜드를 체크해주세요'})); break;
+                  case modalVisible.asyncStorage == null : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: x.needsBrandId, needsId: x.needsId})); break;
+                  case x.id == 0 : purchase(x.needsId, x.needsBrandId); break;
+                  default : purchaseCencel(x.needsId);
+                }
+              }}
+              />
           </View>
-        </View>
-        
-      </TouchableOpacity>
-      )
+          <TouchableOpacity style={[styles.filterBox, {width: 157, flexDirection: 'row', justifyContent: 'flex-start'}]}
+            onPress={()=>setModalVisible4(prevState => ({...prevState, open: true, content: x}))}>
+            {optionBox(x.grade)}
+            <Text>{x.needsName}</Text>
+          </TouchableOpacity>
+          <View style={[styles.filterBox, {width: '41%'}]}>
+            {x.itemName == null ? <View style={{width: 24, height: 24, borderRadius: 12,backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
+              <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}/> 
+            </View> : <Text>{x.itemName}</Text>}
+          </View>
+      </View>
+      )}
     })
     return arr;
   }
 
   const renderItem = ({ item }) => (
     <View>
-        <View style={styles.titleBox}>
-          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('맘스 톡 서치')}><Arrow /></TouchableOpacity>
-          <Text style={{fontWeight: '600'}}>맘스 톡 {materialSearch !== undefined ?  materialSearch.length : 0}건</Text>
-        </View>
-        <View style={styles.mainBox}>
-          {materialSearch.length !== 0 ? <Material /> :
-           <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
+        <ViewShot style={styles.main} ref={ref} options={{ fileName: "MomsNote", format: "png", quality: 1 }}>
+          <FlatList data={DATA} renderItem={renderItem3}
+              keyExtractor={item => String(item.id)}>
+          </FlatList>
+      </ViewShot>
+    </View>
+  );
+
+  const renderItem3 = ({ item }) => (
+    <View style={styles.mainBox}>
+        <View style={styles.mainBox2}>
+          <Image source={item.icon} width={20} height={20}/>
+            <View style={[styles.titleBox, {marginLeft: 8}]}><Text style={{fontSize: 16, fontWeight: '500'}}>{item.title}</Text></View>
+            <TouchableOpacity style={styles.arrowBox}
+              onPress={()=>arrow(item.id)}>{list[item.id] ? <Icon name="angle-up" size={22}/> : <Icon name='angle-down' size={22}/>}
+            </TouchableOpacity>
+        </View> 
+        <View style={[styles.main3, {display: list[item.id] ? 'flex' : 'none'}]}>
+          <List item={item}/>
         </View>
     </View>
   );
 
-  
-
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+
+        <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+        <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} setModal={setModal}/>
+        <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
+        <FirstModal modal={modal} setModal={setModal}/>
+        <SecondModal modal={modal2} setModal={setModal2} />
+
+        <View style={styles.header}>
         <Back/>
         <View style={styles.textInput}>
           <View style={styles.searchIconBox}><Search width={22}/></View>
@@ -182,16 +407,12 @@ const dayCalculate = (date) => {
           <TouchableOpacity onPress={()=>navigation.navigate('맘스 톡')}></TouchableOpacity>
         </View>
       </View>
-      <View style={styles.main2}>
-        { materialSearch !== undefined ?
-        <FlatList data={DATA} renderItem={renderItem}
-            keyExtractor={item => item.title} >
-        </FlatList>
-        : ''
-        }
-      </View>
+
+        {materialList == undefined ? <View></View> : <FlatList data={DATA3} renderItem={renderItem}
+              keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
+        </FlatList>}
     </View>
   )
 }
 
-export default Main
+export default Navigation

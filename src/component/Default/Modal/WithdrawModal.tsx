@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
     modalView:{
         width: '100%',
         height: '100%',
-        margin: 20,
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: "center",
         justifyContent: 'center',
@@ -20,9 +19,8 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 220,
+        height: 160,
         backgroundColor: 'white',
-        marginBottom: 35,
         borderRadius: 15
     },
     modalBox:{
@@ -41,21 +39,23 @@ const styles = StyleSheet.create({
     },
 })
 
-const NoticeModal = ({modal2, setModal2}) => {
+const NoticeModal = ({modal, setModal}) => {
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modal2}
+    <Modal animationType="fade" transparent={true} visible={modal}
             onRequestClose={() => {
-            setModal2(!modal2)}}>
+            setModal(!modal)}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
-                        <View style={[styles.modalBox, {height: '45%'}]}>
-                            <Text style={{fontSize: 16, paddingTop: 10}}>내 리스트에 적용하시겠습니까?</Text>
+                        <View style={styles.modalBox}>
+                            <Text style={{fontSize: 16, paddingTop: 10}}>회원탈퇴가 완료되었습니다.</Text>
+                            <Text style={{fontSize: 16, paddingTop: 5}}>맘스노트를 이용해주셔서 감사합니다.</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>적용</Text></TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModal2(!modal2)}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.modal} onPress={()=>setModal(!modal)}>
+                              <Text style={{color: 'white', fontSize: 16}}>확인</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>

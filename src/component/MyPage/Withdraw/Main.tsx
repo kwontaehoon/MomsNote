@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList, Modal } from 'react-native'
 import Icon from 'react-native-vector-icons/Entypo'
 import Checkbox from 'expo-checkbox'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     container:{
@@ -90,10 +91,12 @@ const Main = ({navigation}) => {
     const [isChecked, setCheck] = useState(false); // 체크박스
     const [modalVisible, setModalVisible] = useState(false); // modal
 
-    const modal = (e) => {
-        if(isChecked === true){
-            setModalVisible(!modalVisible);
-        }
+    const withdraw = async() => {
+        AsyncStorage.setItem('login', '123');
+        
+        setModalVisible(!modalVisible);
+
+        navigation.navigate('초기접근');
     }
 
     const renderItem = ({ item }) => (
@@ -125,7 +128,7 @@ const Main = ({navigation}) => {
             </View>
             <TextInput style={styles.mainBox2} placeholder='탈퇴 사유를 작성해주세요.' multiline={true}/>
         </View>
-        <TouchableOpacity style={[styles.main2, {backgroundColor: isChecked ? '#FEA100' : '#E0E0E0'}]} onPress={modal}>
+        <TouchableOpacity style={[styles.main2, {backgroundColor: isChecked ? '#FEA100' : '#E0E0E0'}]} onPress={()=>{isChecked ? setModalVisible(!modalVisible) : ''}}>
             <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>회원탈퇴</Text>
         </TouchableOpacity>
     </View>
@@ -143,8 +146,12 @@ const Main = ({navigation}) => {
                             <Text style={{fontSize: 16, paddingTop: 10}}>정말로 회원탈퇴를 하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
-                        <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>회원탈퇴</Text></TouchableOpacity>
-                           <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={modal}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.modal} onPress={withdraw}>
+                            <Text style={{color: 'white', fontSize: 16}}>회원탈퇴</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModalVisible(!modalVisible)}>
+                            <Text style={{color: 'black', fontSize: 16}}>취소</Text>
+                        </TouchableOpacity>
                         </View>
                     </View>
                 </View>

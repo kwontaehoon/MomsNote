@@ -111,7 +111,9 @@ const Talk1 = ({navigation}) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const shareList = useSelector(state => { return state.shareList.data; });
+  console.log('shareList: ', shareList);
   const [info, setInfo] = useState([]);
+  console.log('info: ', info);
   const [modalVisible, setModalVisible] = useState({
     open: false,
     asyncStorage: ''
@@ -133,12 +135,26 @@ useEffect(()=>{
 }, []);
 
 useEffect(()=>{
-  if(shareList !== undefined){
-    setInfo(shareList.reduce((acc, current) => {
-      const x = acc.find(item => item.boardId === current.boardId);
-      if (!x) { return acc.concat([current]); } else { return acc; }}, []));
-    }
-}, [shareList]);
+  const shareBoard = async() => {
+      try{
+      const response = await axios({
+          method: 'post',
+          url: 'https://momsnote.net/api/needs/share/board',
+          headers: { 
+            'Content-Type': 'application/json'
+          },
+          data: { }
+      });
+      setInfo(response.data);
+      console.log('response: ', response.data);
+      }catch(error){
+          console.log('comment axios error:', error);
+          setInfo(undefined);
+      }
+  } 
+  shareBoard();
+}, []);
+
 
 useEffect(()=>{
   const momsTalk = async() => {

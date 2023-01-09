@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import { useDispatch } from 'react-redux'
-import { setMaterialRefresh } from '../../../Redux/Slices/MaterialSlice'
+import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -49,7 +49,15 @@ const CheckBoxModal = ({modalVisible10, setModalVisible10}) => {
     const dispatch = useDispatch();
     const [filter, setFilter] = useState(false); // 체크, 폰트 색상
 
-    // dispatch(setMaterialRefresh({}));
+    const complete = (e) => {
+        setFilter(!filter);
+        e == 0 ?
+        dispatch(postMaterial({order: 'need'}))
+        :
+        dispatch(postMaterial({order: 'buy'}))
+
+        setModalVisible10(!modalVisible10);
+    }
 
   return (
     <Modal animationType="slide" transparent={true} visible={modalVisible10} statusBarTranslucent={true}
@@ -60,11 +68,11 @@ const CheckBoxModal = ({modalVisible10, setModalVisible10}) => {
                     <View style={[styles.modalContainer2]}>
                        <View style={styles.main}>
                             <View style={styles.mainBox}><Text style={{fontSize: 15}}>정렬</Text></View>
-                            <TouchableOpacity style={styles.mainBox2} onPress={()=>{setFilter(!filter), setModalVisible10(!modalVisible10)}}>
+                            <TouchableOpacity style={styles.mainBox2} onPress={()=>complete(0)}>
                                 <View style={styles.checkBox}><Icon name='check' size={20} style={{color: filter ? '#212121' : '#FE7000', display: filter ? 'none' : 'flex'}}/></View>
                                 <Text style={{fontSize: 18, color: filter ? '#212121' : '#FE7000'}}>필수품목 순</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.mainBox2} onPress={()=>{setFilter(!filter), setModalVisible10(!modalVisible10)}}>
+                            <TouchableOpacity style={styles.mainBox2} onPress={()=>complete(1)}>
                                 <View style={styles.checkBox}><Icon name='check' size={20} style={{color: filter ? '#FE7000' : '#212121', display: filter ? 'flex' : 'none'}}/></View>
                                 <Text style={{fontSize: 18, color: filter ? '#FE7000' : '#212121'}}>구매 순</Text>
                             </TouchableOpacity>

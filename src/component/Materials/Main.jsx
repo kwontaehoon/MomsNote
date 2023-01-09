@@ -199,7 +199,6 @@ const Navigation = ({navigation, route}) => {
   ]
 
   const dispatch = useDispatch();
-  const test = 0; // asyncstorage 선택 모달 때문에 만듬
   const info = useSelector(state => { return state.material.data; });
   console.log('출산준비물 리스트: ', info);
   const materialSet = useSelector(state => { return state.material.refresh; });
@@ -436,10 +435,10 @@ const save = async() => {
     </View>
   );
 
-  return info !== '' || info !== undefined ? (
+  return info == '' || info == undefined ? <View></View> : (
     <View style={styles.container}>
 
-        <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+        {/* <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
         <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} setModal={setModal}/>
         <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
         <ResetModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
@@ -450,7 +449,7 @@ const save = async() => {
         <DeleteModal modalVisible9={modalVisible9} setModalVisible9={setModalVisible9} setModal={setModal} setModal2={setModal2}/>
         <Filter modalVisible10={modalVisible10} setModalVisible10={setModalVisible10} />
         <FirstModal modal={modal} setModal={setModal}/>
-        <SecondModal modal={modal2} setModal={setModal2} />
+        <SecondModal modal={modal2} setModal={setModal2} /> */}
 
         <View style={styles.header}>
         <Text style={{fontSize: 18, fontWeight: '600'}}>출산준비물</Text>
@@ -482,7 +481,7 @@ const save = async() => {
           </View>
         </View>
     </View>
-  ) : <View></View>
+  )
 }
 
 export default Navigation

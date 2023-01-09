@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, StyleSheet, Image, StatusBar, Button } from 'react-native'
+import { Text, View, StyleSheet, Image, StatusBar, Button, TouchableOpacity } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Swiper from 'react-native-swiper'
 import { useIsFocused } from '@react-navigation/native'
@@ -27,13 +27,11 @@ const styles = StyleSheet.create({
     height: '75%',
   },
   mainBox: {
-    height: 500,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex: 1,
   },
   image:{
     width: '100%',
-    height: '100%',
+    height: 500,
   },
   videoImage:{
     position: 'absolute',
@@ -44,7 +42,7 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     borderWidth: 3,
     borderColor: 'white',
-    zIndex: 999
+    zIndex: 999,
 },
   text: {
     color: '#fff',
@@ -100,6 +98,7 @@ const Gallery = ({navigation, route}) => {
       <Swiper style={styles.wrapper} showsButtons={false} dot={<View style={styles.dot}/>} activeDot={<View style={styles.dotActive}/>}>
         {saveName.map((x) => {
           if(x.charAt(x.length-1) !== '4'){
+            console.log('a');
           return(
             <View style={styles.mainBox}>
               <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image} key={x}/>
@@ -107,16 +106,17 @@ const Gallery = ({navigation, route}) => {
           )}else{
             return(
               <View style={styles.mainBox}>
-                <View style={styles.videoImage}><Icon name='play' size={30} style={{color: 'white'}}/></View>
-                <Video source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image} resizeMode='cover'
+                {/* <TouchableOpacity style={styles.videoImage}><Icon name='play' size={30} style={{color: 'white'}}
+                  onPress={() => status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()}/>
+                </TouchableOpacity> */}
+                <Video source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}}
+                  style={styles.image}
+                  useNativeControls
+                  resizeMode='cover'
                   ref={video}
-                  onPlaybackStatusUpdate={status => setStatus(() => status)}/>
-                <Button
-          title={status.isPlaying ? 'Pause' : 'Play'}
-          onPress={() =>
-            status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
-          }
-        />
+                  isLooping={false}
+                  // onPlaybackStatusUpdate={status => setStatus(() => status)}
+                  />
               </View>
             )
           }

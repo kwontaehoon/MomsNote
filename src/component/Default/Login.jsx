@@ -12,6 +12,7 @@ import * as Google from 'expo-auth-session/providers/google'
 import * as AppleAuthentication from 'expo-apple-authentication'
 import * as Linking from 'expo-linking';
 import axios from 'axios'
+import Modal from './Modal/WithdrawModal'
 
 
 const styles = StyleSheet.create({
@@ -50,6 +51,7 @@ const styles = StyleSheet.create({
 })
 const Main = ({navigation, route}) => {
     
+    const [modal, setModal] = useState(false); // 회원탈퇴시 모달창
 
     const [googleToken, setGoogleToken] = useState([]);
     console.log('googleToken: ', googleToken);
@@ -75,6 +77,10 @@ const Main = ({navigation, route}) => {
             GoogleGetId(authentication.accessToken);
         }
     }, [response]);
+
+    useEffect(()=>{
+        route !== undefined ? setModal(!modal) : ''
+    }, [route]);
 
     const GoogleGetId = async(googleAccessToken) => {
         try{
@@ -147,6 +153,9 @@ const Main = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
+
+        <Modal modal={modal} setModal={setModal}/>
+
         <View style={styles.header}>
             <Logo width={230} height={112}/>
         </View>

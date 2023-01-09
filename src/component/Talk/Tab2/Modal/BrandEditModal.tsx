@@ -5,10 +5,10 @@ import Icon from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/Ionicons'
 import axios from 'axios'
 
-import Arrow_Right from '../../../../public/assets/svg/Arrow-Right.svg'
-import Reset from '../../../../public/assets/svg/Reset.svg'
-import Crwon from '../../../../public/assets/svg/crown.svg'
-import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
+import Arrow_Right from '../../../../../public/assets/svg/Arrow-Right.svg'
+import Reset from '../../../../../public/assets/svg/Reset.svg'
+import Crwon from '../../../../../public/assets/svg/crown.svg'
+import { postMaterial } from '../../../../Redux/Slices/MaterialSlice'
 import { useDispatch } from 'react-redux'
 
 const styles = StyleSheet.create({
@@ -114,11 +114,11 @@ const styles = StyleSheet.create({
     },
 })
 
-const Main = ({modalVisible2, setModalVisible2, setModal}) => {
+const Main = ({modalVisible2, setModalVisible2, modal3, setModal3}) => {
 
     const dispatch = useDispatch();
     const [info, setInfo] = useState(); // 브랜드 lists
-    console.log('브랜드 리스트: ', info);
+    
     const [selectBrand, setSelectBrand] = useState({
         needsId: null,
         needsBrandId: 0,
@@ -237,9 +237,9 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
                         onChangeText={(e) => setSelectBrand(prevState => ({ ...prevState, itemPrice: e}))}></TextInput>
                     </View> 
                     <TouchableOpacity style={styles.footerBox3} onPress={()=>{
-                        selectBrand.itemName == '' ? setModal(prevState => ({...prevState, open: true, content: '브랜드/제품명은 필수 입력 항목입니다.', buttonCount: 1}))
-                        : (submit(), setModalVisible2(prevState => ({...prevState, open: false})), setModal(prevState => ({...prevState, open: true, content: '리스트에 적용되었습니다.', buttonCount: 1})))
-                    }}><Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>적용</Text></TouchableOpacity>
+                        selectBrand.itemName == '' ? setModal3(prevState => ({...prevState, open: true, content: '브랜드/제품명은 필수 입력 항목입니다.', buttonCount: 1}))
+                        : (submit(), setModalVisible2(prevState => ({...prevState, open: false})), setModal3(prevState => ({...prevState, open: true, content: '출산리스트가 수정되었습니다.', buttonCount: 1})))
+                    }}><Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>수정</Text></TouchableOpacity>
                     <View style={styles.footerBox4}><Text>#해시태그</Text></View>
                 </View>
             </View>

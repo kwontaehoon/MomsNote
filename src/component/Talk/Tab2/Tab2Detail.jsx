@@ -283,9 +283,11 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = [route.params];
+    console.log('info: ', info);
     const shareList = useSelector(state => { return state.shareList.data; });
     const shareListSet = useSelector(state => { return state.shareList.refresh});
     const [info2, setInfo2] = useState();
+    console.log('info2: ', info2);
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬

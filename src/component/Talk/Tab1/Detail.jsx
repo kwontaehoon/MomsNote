@@ -306,6 +306,7 @@ const Talk1Sub = ({navigation, route}) => {
         });
         
         const infoFiltering = [...arr, ...a];
+        console.log('infoFiltering: ', infoFiltering);
         switch(true){
     
             case info[0].savedName.split('|').length == 1: return(

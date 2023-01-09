@@ -5,8 +5,9 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSelector, useDispatch } from 'react-redux'
 import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
 
-import Modal from '../../Materials/Modal/BrendModal'
+import Modal from './Modal/BrandEditModal'
 import Modal2 from './Modal/Confirm'
+import Modal3 from '../../Modal/First'
 
 import ArrowTop from '../../../../public/assets/svg/Arrow-Top.svg'
 import ArrowBottom from '../../../../public/assets/svg/Arrow-Bottom.svg'
@@ -202,8 +203,13 @@ const Talk1Sub = ({navigation, route}) => {
       needsBrandId: null,
       needsDateId: null
     });
-    console.log('compare modal: ', modal);
     const [modal2, setModal2] = useState(true); // 수정 내용 적용 모달
+
+    const [modal3, setModal3] = useState({
+      open: false,
+      content: '',
+      buttonCount: 1
+    });
 
   useEffect(()=>{ // 해당 게시글 boardId만 filtering
       if(shareList !== '' || shareList !== undefined){ 
@@ -256,13 +262,14 @@ const Talk1Sub = ({navigation, route}) => {
     const List2 = (e) => {
       let arr = [];
       info.filter((x, index)=>{
+        
           if(x.category == e.title && x.itemName !== null){
               arr.push(
-                   <View style={styles.listMain2} key={index}>
+                   <TouchableOpacity style={styles.listMain2} onLongPress={()=>setModal(prevState => ({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId, needsBrandId: x.needsBrandId}))} delayLongPress={1500} activeOpacity={1} key={index}>
                       <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
                       <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
                       <View style={styles.filterBox2}><Text>{x.itemPrice} 원</Text></View>
-                  </View>
+                  </TouchableOpacity>
               )
           }
       })
@@ -296,11 +303,11 @@ const Talk1Sub = ({navigation, route}) => {
       material.filter((x, index)=>{
         if(x.category == e.title && x.needsName !== null){
         arr.push(
-          <TouchableOpacity style={styles.listMain2} onLongPress={()=>setModal(prevState => ({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))} delayLongPress={1500} activeOpacity={1} key={index}>
+          <View style={styles.listMain2} >
               <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
               <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
               <View style={styles.filterBox2}><Text>{x.itemPrice} 원</Text></View>
-          </TouchableOpacity>
+          </View>
         )}
       })
       return arr;
@@ -384,8 +391,9 @@ const Talk1Sub = ({navigation, route}) => {
             keyExtractor={item => item.id}>
         </FlatList>
 
-        <Modal modalVisible2={modal} setModalVisible2={setModal}/>
+        <Modal modalVisible2={modal} setModalVisible2={setModal} modal3={modal3} setModal3={setModal3}/>
         <Modal2 modal2={modal2} setModal2={setModal2}/>
+        <Modal3 modal={modal3} setModal={setModal3}/>
     </View>
   )
 }
