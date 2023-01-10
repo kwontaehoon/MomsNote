@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import Icon2 from 'react-native-vector-icons/AntDesign'
-import Icon3 from 'react-native-vector-icons/Ionicons'
-import DropDownPicker from 'react-native-dropdown-picker'
-import { WithLocalSvg } from "react-native-svg"
-import like from '../../../../public/assets/svg/Like.svg'
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { postGovernment, setGovernmentCount } from '../../../Redux/Slices/Government'
 
 const styles = StyleSheet.create({
   container:{
@@ -52,22 +49,13 @@ const styles = StyleSheet.create({
 
 const Talk1 = ({navigation}) => {
 
-  const [info, setInfo] = useState([]);
+  const dispatch = useDispatch();
+  const info = useSelector(state => { return state.government.data });
   console.log('정부지원혜택 info: ', info);
+  const governmentSet = useSelector(state => { return state.government.refresh });
 
   useEffect(()=>{
-    const Government = async() => {
-      const response = await axios({
-        method: 'post',
-        url: 'https://momsnote.net/api/benefits/list',
-        data : {
-          count: 5,
-          page: 1,
-      }
-    });
-    setInfo(response.data);
-    }
-    Government();
+    dispatch(postGovernment(governmentSet));
   }, []);
 
   const renderItem = ({ item }) => (
@@ -76,7 +64,7 @@ const Talk1 = ({navigation}) => {
     </TouchableOpacity>
   ); 
 
-  return (
+  return info == undefined ? <View></View> : (
     <View style={styles.container}>
       <View style={styles.header}></View>
       <View style={styles.header2}>
@@ -84,8 +72,8 @@ const Talk1 = ({navigation}) => {
             <Text style={{fontSize: 16}}> 건</Text>
       </View>
       <View style={styles.main}>
-        <FlatList data={info} renderItem={renderItem}
-          keyExtractor={item => item.id}>
+        <FlatList data={info} renderItem={renderItem} onEndReached={()=>{console.log('밑에닿음'); dispatch(setGovernmentCount({count: governmentSet.page + 1}))}} onEndReachedThreshold={0.6}
+          keyExtractor={item => String(item.boardId)}>
         </FlatList>
       </View>
      </View>

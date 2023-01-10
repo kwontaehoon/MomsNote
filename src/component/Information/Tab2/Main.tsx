@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
 import moment from 'moment'
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { postEvent, setEventRefresh } from '../../../Redux/Slices/EventSlice'
+import { postGuide } from '../../../Redux/Slices/GuideSlice'
 
 const styles = StyleSheet.create({
   container:{
@@ -102,37 +106,34 @@ const Talk1 = ({navigation}: any) => {
     },
   ];
   
+  const dispatch = useDispatch();
+  const eventSet = useSelector(state => { return state.event.refresh });
+  const info = useSelector(state => { return state.event.data; });
   const [week, setWeek] = useState([true, false, false, false, false, false,
   false, false, false, false, false, false]);
-  const [info, setInfo] = useState([]);
   console.log('행사정보: ', info);
 
     useEffect(()=>{
-      const EventBoard = async() => {
-        let subcategory = week.findIndex(x => x === true);
-        if(subcategory-9 < 0){
-          subcategory = '0' + (subcategory+1);
-        } else subcategory += 1;
-
-        const response = await axios({
-          method: 'post',
-          url: 'https://momsnote.net/api/eventboard/list',
-          data : {
-            start: `${new Date().getFullYear()}-${subcategory}`,
-            end: `${new Date().getFullYear()}-${subcategory}`,
-            count: 5,
-            page: 1
-        }
-      });
-      setInfo(response.data);
-      }
-      EventBoard();
-    }, [week]);
+      dispatch(postEvent(eventSet));
+    }, [eventSet]);
 
     const change = (e) => { // 몇 주차 border, 글자두께 변경
+      console.log('첫번째 e: ', e);
       let arr = Array.from({length: 12}, ()=>{ return false});
+
       arr[e] = !arr[e];
       setWeek(arr);
+
+        if(e-9 < 0){
+          e = '0' + (e+1);
+        } else e += 1;
+      
+      console.log('두번째 e: ', e);
+
+      dispatch(postEvent({
+        start: `${new Date().getFullYear()}-${e}`,
+        end: `${new Date().getFullYear()}-${e}`
+      }))
     }
 
     const dateFilter = (item) => {

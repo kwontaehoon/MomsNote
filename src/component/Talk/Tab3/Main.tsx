@@ -4,6 +4,10 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 import axios from 'axios'
 import moment from 'moment'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { postExperience } from '../../../Redux/Slices/ExperienceSlice'
+import { setExperienceCount } from '../../../Redux/Slices/ExperienceSlice'
 
 const styles = StyleSheet.create({
   container:{
@@ -70,8 +74,10 @@ const styles = StyleSheet.create({
 
 const Talk3 = ({navigation}: any) => {
 
-
-
+  const dispatch = useDispatch();
+  const info = useSelector(state => {return state.experience.data});
+  console.log('체험단 info: ', info);
+  const experienceSet = useSelector(state => { return state.experience.refresh; });
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');
   const [items, setItems] = useState([
@@ -80,23 +86,8 @@ const Talk3 = ({navigation}: any) => {
         {label: '마감임박', value: '3'},
   ]);
 
-  const [info, setInfo] = useState([]);
-  console.log('체험단 info: ', info);
-
   useEffect(()=>{
-    const exp = async() => {
-      const response = await axios({
-        method: 'post',
-        url: 'https://momsnote.net/exp',
-        data : {
-          order: "new",
-          count: 5,
-          page: 1
-      }
-    });
-    setInfo(response.data);
-    }
-    exp();
+    dispatch(postExperience(experienceSet));
   }, []);
 
   const renderItem = ({ item }) => (

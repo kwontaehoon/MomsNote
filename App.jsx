@@ -1,9 +1,8 @@
 import React from 'react'
-import { AppRegistry } from 'react-native'
-import Navigation from './component/Navigation/Main'
+import Navigation from './src/component/Navigation/Main'
 import { StatusBar  } from 'expo-status-bar'
-import DefalutPage from './component/Default/Login'
-import { store } from './Redux/Store/Store'
+import DefalutPage from './src/component/Default/Login'
+import { store } from './src/Redux/Store/Store'
 import { Provider } from 'react-redux'
 // import { Counter } from './Redux/slices/Counter'
 

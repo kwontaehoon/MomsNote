@@ -7,7 +7,7 @@ import { Video, AVPlaybackStatus } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import Swiper from 'react-native-swiper'
-import { setBoardRefresh } from '../../../Redux/Slices/BoardSlice'
+import { setBoardRefresh, setBoardCount } from '../../../Redux/Slices/BoardSlice'
 import { useIsFocused } from '@react-navigation/native'
 
 import Like from '../../../../public/assets/svg/Like.svg'
@@ -195,6 +195,7 @@ const Talk1 = ({navigation, route}:any) => {
   console.log('info: ', info);
   const boardSet = useSelector(state => { return state.board.refresh; });
   console.log('boardSet: ', boardSet);
+
   const [modalVisible, setModalVisible] = useState({
     open: false,
     asyncStorage: ''
@@ -209,7 +210,8 @@ const Talk1 = ({navigation, route}:any) => {
 
   useEffect(()=>{
     dispatch(postBoard(boardSet));
-  }, [filter]);
+  }, [boardSet]);
+
 
   useEffect(()=>{
     const momsTalk = async() => {
@@ -256,9 +258,6 @@ const Talk1 = ({navigation, route}:any) => {
     }
   }
 
-  const boardCount = () => {
-
-  }
 
   const renderItem = ({ item }:any) => (
     <View style={{justifyContent: 'center'}}>
@@ -330,7 +329,7 @@ const Talk1 = ({navigation, route}:any) => {
 
       <View style={styles.main}>
         {info !== '' && info !== undefined ?
-        <FlatList data={info} renderItem={renderItem2} onEndReached={boardCount} onEndReachedThreshold={0.6}
+        <FlatList data={info} renderItem={renderItem2} onEndReached={()=>dispatch(setBoardCount({count: boardSet.page + 1}))} onEndReachedThreshold={0.6}
           keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
         </FlatList> : 
         <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}

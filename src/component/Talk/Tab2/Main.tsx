@@ -111,7 +111,8 @@ const Talk1 = ({navigation}) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const shareList = useSelector(state => { return state.shareList.data; });
-  console.log('shareList: ', shareList);
+  const shareListSet = useSelector(state => { return state.shareList.refresh });
+  console.log('shareListSet: ', shareListSet);
   const [info, setInfo] = useState([]);
   console.log('info: ', info);
   const [modalVisible, setModalVisible] = useState({
@@ -128,7 +129,7 @@ const Talk1 = ({navigation}) => {
 
 useEffect(()=>{
   dispatch(postShareList({ boardId: 129 }));
-}, []);
+}, [shareListSet]);
 
 useEffect(()=>{
   const shareBoard = async() => {

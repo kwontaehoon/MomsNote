@@ -10,6 +10,10 @@ import materialPopularReducer from '../Slices/MaterialPopularSlice'
 import boardPopularReducer from '../Slices/BoardPopularSlice'
 import infoPopularReducer from '../Slices/InfoPopularSlice'
 import shareList2Reducer from '../Slices/ShareList2Slice'
+import experienceReducer from '../Slices/ExperienceSlice'
+import guideReducer from '../Slices/GuideSlice'
+import eventReducer from '../Slices/EventSlice'
+import government from '../Slices/Government'
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +28,9 @@ export const store = configureStore({
     materialPopularSlice: materialPopularReducer,
     boardPopularSlice: boardPopularReducer,
     infoPopularSlice: infoPopularReducer,
-    
+    experience: experienceReducer,
+    guide: guideReducer,
+    event: eventReducer,
+    government: government,
   },
 })

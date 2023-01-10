@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { postGuide, setGuideCount, setGuideRefresh } from '../../../Redux/Slices/GuideSlice'
 
 const styles = StyleSheet.create({
   container:{
@@ -85,27 +87,16 @@ const Talk1 = ({navigation}) => {
     },
   ];
 
-  const [info, setInfo] = useState([]);
+  const dispatch = useDispatch();
+  const info = useSelector(state => { return state.guide.data });
+  const guideSet = useSelector(state => { return state.guide.refresh });
+  console.log('guideSet: ', guideSet);
   console.log('맘스가이드 info: ', info);
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
 
   useEffect(()=>{
-    const GuideBoard = async() => {
-      const sort = filter.findIndex(x => x === true);
-      console.log(sort);
-      const response = await axios({
-        method: 'post',
-        url: 'https://momsnote.net/api/guideboard/list',
-        data : {
-          subcategory: DATA[filter.findIndex(x => x === true)].title,
-          count: 5,
-          page: 1
-      }
-    });
-    setInfo(response.data);
-    }
-    GuideBoard();
-  }, [filter]);
+    dispatch(postGuide(guideSet));
+  }, [guideSet]);
 
   
 
@@ -113,6 +104,7 @@ const Talk1 = ({navigation}) => {
     let arr = Array.from({length: 6}, () => {return false});
     arr[e] = !arr[e];
     setFilter(arr);
+    dispatch(setGuideRefresh({subcategory: DATA[e].title}));
   }
 
   const renderItem = ({ item }) => (
@@ -131,7 +123,7 @@ const Talk1 = ({navigation}) => {
     </TouchableOpacity>
   ); 
 
-  return (
+  return info == undefined ? <View></View> : (
     <View style={styles.container}>
       <View style={styles.header}>
         <FlatList data={DATA} renderItem={renderItem}
@@ -148,8 +140,8 @@ const Talk1 = ({navigation}) => {
       </View>
       <View style={styles.main}>
         {info.length !== 0 ?
-        <FlatList data={info} renderItem={renderItem2}
-          keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
+        <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{console.log('밑에닿음'); dispatch(setGuideCount({count: guideSet.page + 1}))}} onEndReachedThreshold={0.6}
+          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
         </FlatList> : 
         <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}
       </View>
