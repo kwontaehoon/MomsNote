@@ -15,6 +15,7 @@ export const postMaterialPopularSlice = createAsyncThunk("postMaterialPopularSli
       return response.data;
       }catch(error){
           console.log('MaterialPopularSlice redux axios error: ', error);
+          return undefined;
       }
 });
 

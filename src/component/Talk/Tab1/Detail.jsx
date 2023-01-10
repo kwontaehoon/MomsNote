@@ -403,7 +403,7 @@ const Talk1Sub = ({navigation, route}) => {
       );
 
 
-  return (
+  return comment == undefined ? <View></View> : (
     <View style={[styles.container, {height: pageHeight ? '94%' : '97%'}]}>
 
         <Animated.View style={[styles.alarmBox, {opacity: animation}]}>

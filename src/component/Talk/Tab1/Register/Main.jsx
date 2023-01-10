@@ -238,7 +238,15 @@ const Register = ({navigation, route}) => {
             const asyncStorage = await AsyncStorage.getItem('momsTalk');
             switch(typeof(route.params)){
                 case 'string': setInfo(JSON.parse(asyncStorage)); break;
-                case 'object': console.log('object 입니다.'); break;
+                case 'object': {
+                        setInfo(prevState => ({...prevState, title: route.params[0].title, contents: route.params[0].contents,
+                            imageFile: [],
+                            video: []
+                            // imageFile: route.params[0].savedName.split('|').filter(x => x.charAt(x.length-1) == 'g'),
+                            // video: route.params[0].savedName.split('|').filter(x => x.charAt(x.length-1) == 4)
+                            })
+                        )
+                    }; break;
                 default: AsyncStorage.removeItem('momsTalk');
             }
             // route.params == undefined ?  AsyncStorage.removeItem('momsTalk') : setInfo(JSON.parse(asyncStorage));
@@ -464,7 +472,7 @@ const Register = ({navigation, route}) => {
             <TouchableOpacity style={styles.close} onPress={()=>close(index, 'image')}>
                 <Icon2 name='close' size={16} style={{color: 'white'}}/>
             </TouchableOpacity>
-            <Image source={{ uri: item }} style={{ width: 80, height: 80, borderRadius: 5,}} />
+            <Image source={{ uri: item }} style={{ width: 80, height: 80, borderRadius: 5}} />
         </View>
     );
 

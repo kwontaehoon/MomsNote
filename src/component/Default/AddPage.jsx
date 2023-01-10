@@ -97,8 +97,7 @@ const AddPage = ({navigation, route}) => {
         },
     ];
 
-    console.log('route: ', route.params[0]);
-    console.log('route: ', route.params[1]);
+    console.log('route params: ', route.params);
 
     const [isChecked, setChecked] = useState(Array.from({length: 4}, ()=>{return false})); // check box
     console.log(isChecked[3]);
@@ -120,7 +119,6 @@ const AddPage = ({navigation, route}) => {
     console.log('info: ', info);
 
     const submit = async() => {
-        
         const response = await axios.post(`http://momsnote.net/signup`, {
             info: info
         })
@@ -249,7 +247,7 @@ const AddPage = ({navigation, route}) => {
         </View>
       );
 
-  return (
+  return route.params == undefined ? <View></View> : (
     <View style={styles.container}>
         {show && (
           <DateTimePicker

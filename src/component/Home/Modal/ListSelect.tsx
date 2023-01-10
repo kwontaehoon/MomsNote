@@ -48,7 +48,7 @@ const Main = ({modal, setModal}) => {
     }
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modal}
+    <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
     onRequestClose={() => {
     setModal(!modal)}}>
     <View style={styles.modalContainer}>

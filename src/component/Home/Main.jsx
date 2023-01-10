@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, SafeAreaView, StatusBar, Animated } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, SafeAreaView, StatusBar, Animated } from 'react-native'
 import Icon2 from 'react-native-vector-icons/Feather'
 import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
@@ -209,7 +207,7 @@ const Home = ({navigation}) => {
     console.log('infoPopular: ', infoPopular);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
-    const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
+    const [modal, setModal] = useState(true); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
 
     useEffect(()=>{
@@ -430,9 +428,7 @@ const Home = ({navigation}) => {
         </View>
     );
     
-  return infoPopular == '' && materialPopular == '' ? 
-    <View></View>
-  :
+  return infoPopular == undefined && materialPopular == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> :
     (
         <SafeAreaView style={[styles.container, {backgroundColor: '#FEECB3'}]}>
             

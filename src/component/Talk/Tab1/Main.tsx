@@ -337,7 +337,7 @@ const Talk1 = ({navigation, route}:any) => {
       <TouchableOpacity style={styles.footer} onPress={()=>
         modalVisible.asyncStorage == null ? navigation.navigate('글쓰기') : setModalVisible(prevState => ({...prevState, open: true}))
         }>
-            <Pencil/>
+            <Pencil fill={'red'}/>
       </TouchableOpacity>
 
       <Modal animationType="fade" transparent={true} visible={modalVisible.open}

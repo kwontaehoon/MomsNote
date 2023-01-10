@@ -15,6 +15,7 @@ export const postInfoPopularSlice = createAsyncThunk("postInfoPopularSlice/async
       return response.data;
       }catch(error){
           console.log('InfoPopularSlice redux axios error: ', error);
+          return undefined;
       }
 });
 

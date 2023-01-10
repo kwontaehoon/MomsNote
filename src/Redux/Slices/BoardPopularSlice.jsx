@@ -15,6 +15,7 @@ export const postBoardPopularSlice = createAsyncThunk("postBoardPopularSlice/asy
       return response.data;
       }catch(error){
           console.log('BoardPopularSlice redux axios error: ', error);
+          return undefined;
       }
 });
 

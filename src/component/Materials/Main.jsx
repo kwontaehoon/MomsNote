@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, TouchableHighlight } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon3 from 'react-native-vector-icons/Feather'
 import Checkbox from 'expo-checkbox';
@@ -435,10 +435,10 @@ const save = async() => {
     </View>
   );
 
-  return info == '' || info == undefined ? <View></View> : (
+  return info == '' || info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
 
-        {/* <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+        <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
         <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} setModal={setModal}/>
         <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
         <ResetModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
@@ -449,7 +449,7 @@ const save = async() => {
         <DeleteModal modalVisible9={modalVisible9} setModalVisible9={setModalVisible9} setModal={setModal} setModal2={setModal2}/>
         <Filter modalVisible10={modalVisible10} setModalVisible10={setModalVisible10} />
         <FirstModal modal={modal} setModal={setModal}/>
-        <SecondModal modal={modal2} setModal={setModal2} /> */}
+        <SecondModal modal={modal2} setModal={setModal2} />
 
         <View style={styles.header}>
         <Text style={{fontSize: 18, fontWeight: '600'}}>출산준비물</Text>
