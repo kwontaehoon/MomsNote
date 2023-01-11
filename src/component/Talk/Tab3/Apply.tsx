@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/AntDesign'
 import Checkbox from 'expo-checkbox'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 import Modal from './Modal/AuthComplete'
 import Modal2 from './Modal/AuthFail'
 import Modal3 from './Modal/AuthReady'
@@ -154,15 +156,17 @@ const Withdraw = ({navigation, route}) => {
     );
     console.log('info: ', info);
 
+    useEffect(()=>{
+        const load = async() => {
+            const asyncStorage = await AsyncStorage.getItem('application');
 
-    const submit = async() => {
-        const response = await axios({
-            method: 'post',
-            url: 'https://momsnote.net/application/info',
-            data : info
-        });
-        setInfo(response.data);
-    }
+            console.log('async: ', asyncStorage);
+
+            asyncStorage == undefined ? '' : setInfo(JSON.parse(asyncStorage));
+            
+        }
+        load();
+    }, [])
 
     const change = (e) => { // 텍스트 밑줄 색상 변경
         let arr = [...isChecked];
@@ -192,19 +196,23 @@ const Withdraw = ({navigation, route}) => {
         <View style={styles.container2}>
             <View style={styles.header}>
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>신청 정보</Text>
-                <TouchableOpacity style={styles.headerBox}><Icon name='close' size={20} onPress={()=>navigation.goBack()}/></TouchableOpacity>
+                <TouchableOpacity style={styles.headerBox}><Icon name='close' size={20} onPress={()=>
+                    info.memberName == '' && info.tel == '' && info.blogUrl == '' && info.youtubeUrl == '' && info.instaUrl == '' &&
+                    info.address == undefined && info.addressDetails == '' ? navigation.goBack() : setModal6(!modal6)
+                }/>
+                </TouchableOpacity>
             </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>이름</Text>
-                    <TextInput style={styles.textBox} placeholder='이름 입력'
+                    <TextInput style={styles.textBox} placeholder='이름 입력' value={info.memberName}
                         onChangeText={(e) => setInfo((prevState) => ({
-                            ...prevState, name: e
+                            ...prevState, memberName: e
                         }))}></TextInput>
                 </View>
                 <View>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>연락처</Text>
-                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)'
+                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info.tel}
                          onChangeText={(e) => setInfo((prevState) => ({...prevState, tel: e}))}>
                     </TextInput>
                     <View style={styles.certificateBox}><Text style={{fontWeight: '500'}}>인증요청</Text></View>
@@ -216,14 +224,14 @@ const Withdraw = ({navigation, route}) => {
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>SNS 계정</Text>
                     <Text style={{color: '#757575', marginTop: 5}}>리뷰에 사용할 계정을 하나 이상 입력해주세요.</Text>
-                    <TextInput style={styles.textBox} placeholder='네이버 블로그'
+                    <TextInput style={styles.textBox} placeholder='네이버 블로그' value={info.blogUrl}
                         onChangeText={(e) => setInfo((prevState) => ({
                             ...prevState, blogUrl: e
                         }))}></TextInput>
-                    <TextInput style={styles.textBox} placeholder='인스타그램'
+                    <TextInput style={styles.textBox} placeholder='인스타그램' value={info.instaUrl}
                         onChangeText={(e) => setInfo((prevState) => ({ ...prevState, instaUrl: e }))}>
                     </TextInput>
-                    <TextInput style={styles.textBox} placeholder='유튜브'
+                    <TextInput style={styles.textBox} placeholder='유튜브' value={info.youtubeUrl}
                         onChangeText={(e) => setInfo((prevState) => ({ ...prevState, youtubeUrl: e }))}>
                     </TextInput>
                 </View>
@@ -235,7 +243,7 @@ const Withdraw = ({navigation, route}) => {
                         </View>
                         <View style={styles.postBox}><Icon name='right' size={15} onPress={()=>navigation.navigate('주소 찾기')}/></View>
                     </View>
-                    <TextInput style={styles.textBox} placeholder='상세주소 입력' onChangeText={(e) => setInfo((prevState) => ({ ...prevState, addressDetails: e }))}></TextInput>
+                    <TextInput style={styles.textBox} placeholder='상세주소 입력' value={info.addressDetails} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, addressDetails: e }))}></TextInput>
                 </View>
                 <View style={[styles.mainBox, {flexDirection: 'row', borderBottomWidth: 1, height: 40, borderColor: '#EEEEEE', marginBottom: 15}]}>
                 <Checkbox
@@ -278,7 +286,7 @@ const Withdraw = ({navigation, route}) => {
         <Modal3 modal3={modal3} setModal3={setModal3} />
         <Modal4 navigation={navigation} modal4={modal4} setModal4={setModal4} />
         <Modal5 modal5={modal5} setModal5={setModal5} />
-        <Modal6 navigation={navigation}modal6={modal6} setModal6={setModal6} />
+        <Modal6 navigation={navigation}modal6={modal6} setModal6={setModal6} info={info} />
 
         <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id} showsHorizontalScrollIndicator={false}>

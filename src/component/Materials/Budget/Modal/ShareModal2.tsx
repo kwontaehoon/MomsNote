@@ -93,20 +93,20 @@ const CheckBoxModal = ({modalVisible3, setModalVisible3, modalVisible4, setModal
     }
 
     const submit = async() => {
-        // try{
-        //     const response = await axios({
-        //         method: 'post',
-        //         headers: { 
-        //             'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIyMDczODUsImV4cCI6MTY3NDc5OTM4NX0.LRECgH_NBe10ueCfmefEzEueIrYukBHnXoKRfVqIurQ', 
-        //             'Content-Type': 'application/json'
-        //           },
-        //         url: 'https://momsnote.net/api/needs/share/save',
-        //         data : info
-        // });
-        // console.log('response: ', response.data);
-        //  }catch(error){
-        //      console.log('출산공유리스트 axios error: ', error);
-        // }
+        try{
+            const response = await axios({
+                method: 'post',
+                headers: { 
+                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIyMDczODUsImV4cCI6MTY3NDc5OTM4NX0.LRECgH_NBe10ueCfmefEzEueIrYukBHnXoKRfVqIurQ', 
+                    'Content-Type': 'application/json'
+                  },
+                url: 'https://momsnote.net/api/needs/share/save',
+                data : info
+        });
+        console.log('response: ', response.data);
+         }catch(error){
+             console.log('출산공유리스트 axios error: ', error);
+        }
         setModalVisible3(!modalVisible3);
         setModalVisible4(!modalVisible4);
     }

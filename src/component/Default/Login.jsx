@@ -64,8 +64,8 @@ const Main = ({navigation, route}) => {
 
     WebBrowser.maybeCompleteAuthSession();
     const [request, response, promptAsync] = Google.useAuthRequest({
-        expoClientId: '444409448687-jjajg2r5i863i00st8npnvs8e704gop2.apps.googleusercontent.com',
-        // expo: https://auth.expo.io/@gju04195/Project1Type
+        expoClientId: '444409448687-7dlgufei4unruhfnpq0o885t4paq1bc0.apps.googleusercontent.com',
+        // expo: 'https://auth.expo.io/@gju04195/Project1Type',
         iosClientId: '444409448687-r6mi5mhrcc1hifm978d7t4lqaia89tps.apps.googleusercontent.com',
         androidClientId: '444409448687-617ta8ugivu8ekfeh1fuiq6nsup96vc9.apps.googleusercontent.com',
       });
@@ -73,7 +73,7 @@ const Main = ({navigation, route}) => {
     React.useEffect(() => {
         if (response?.type === 'success') {
             const { authentication } = response;
-            // console.log('Google: ', authentication);
+            console.log('Google: ', authentication);
             GoogleGetId(authentication.accessToken);
         }
     }, [response]);
@@ -169,10 +169,10 @@ const Main = ({navigation, route}) => {
                 <Text style={{color: '#212121', fontWeight: '400'}}>Google로 시작하기</Text>
             </TouchableOpacity>
             <IosLogin />
-            {/* <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#000000'}]}>
+            <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#000000'}]}>
                 <View style={styles.iconBox}><Apple width={22} height={20}/></View>
                 <Text style={{color: 'white', fontWeight: '400'}}>Apple로 시작하기</Text>
-            </TouchableOpacity>  */}
+            </TouchableOpacity> 
         </View>
     </View>
   )

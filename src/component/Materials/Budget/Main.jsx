@@ -9,6 +9,9 @@ import ShareModal from './Modal/ShareModal'
 import ShareModal2 from './Modal/ShareModal2'
 import ConfirmModal from './Modal/ConfirmModal'
 import DotModal from './Modal/DotModal'
+import PriceEdit from './Modal/PriceEdit'
+import { useDispatch } from 'react-redux'
+import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -58,6 +61,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       flexDirection: 'row',
+      
     },
     footer:{
       height: '20%',
@@ -126,8 +130,10 @@ const Talk1Sub = ({route}) => {
     },
   ];
 
+  const dispatch = useDispatch();
   const info = useSelector(state => state.material.data);
   console.log('총 예산 info: ', info);
+  const materialSet = useSelector(state => state.material.refresh);
   const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
   console.log('list: ', list);
   const [modalVisible, setModalVisible] = useState(false); // 품목 삭제
@@ -139,12 +145,21 @@ const Talk1Sub = ({route}) => {
     content: null,
   }); // onLongPress dot 모달
 
+  const [modal6, setModal6] = useState({
+    open: false,
+    content: null,
+  }); // onLongPress 가격 수정 모달
+
   const [sumResult, setSumResult] = useState({
     sum: 0,
     exp: 0
   }); // 총 예산
 
   console.log('sumResult: ', sumResult);
+
+  useEffect(()=>{
+    dispatch(postMaterial(materialSet));
+  }, [modal6]);
 
   useEffect(()=>{
     let sum = 0;
@@ -188,10 +203,10 @@ const Talk1Sub = ({route}) => {
         <TouchableOpacity style={styles.mainBox3} onLongPress={()=>setModal5(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1} key={index}>
             <View style={[styles.filterBox2, {justifyContent: 'flex-start'}]}><Text style={{fontWeight: '500'}}>{x.needsName}</Text></View>
             <View style={styles.filterBox2}><Text>{x.itemName == null ? '-' : x.itemName}</Text></View>
-            <View style={[styles.filterBox2, {justifyContent: 'flex-end'}]}>
+            <TouchableOpacity style={[styles.filterBox2, {justifyContent: 'flex-end'}]} onLongPress={()=>setModal6(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1}>
               <Text style={{fontWeight: '600'}}>{(x.itemPrice).toLocaleString()}</Text>
               <Text> 원</Text>
-            </View>
+            </TouchableOpacity>
         </TouchableOpacity>
       )}
     })
@@ -229,6 +244,8 @@ const Talk1Sub = ({route}) => {
       <ShareModal2 modalVisible3={modalVisible3} setModalVisible3={setModalVisible3} modalVisible4={modalVisible4} setModalVisible4={setModalVisible4}/>
       <ConfirmModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} />
       <DotModal modal5={modal5} setModal5={setModal5} />
+      <PriceEdit modal6={modal6} setModal6={setModal6} />
+      
 
 
       <View style={styles.main}>

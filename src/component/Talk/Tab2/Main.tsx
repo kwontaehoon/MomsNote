@@ -109,10 +109,6 @@ const styles = StyleSheet.create({
 const Talk1 = ({navigation}) => {
 
   const isFocused = useIsFocused();
-  const dispatch = useDispatch();
-  const shareList = useSelector(state => { return state.shareList.data; });
-  const shareListSet = useSelector(state => { return state.shareList.refresh });
-  console.log('shareListSet: ', shareListSet);
   const [info, setInfo] = useState([]);
   console.log('info: ', info);
   const [modalVisible, setModalVisible] = useState({
@@ -126,10 +122,6 @@ const Talk1 = ({navigation}) => {
     {label: '인기순', value: '2'},
     {label: '마감임박', value: '3'},
 ]);
-
-useEffect(()=>{
-  dispatch(postShareList({ boardId: 129 }));
-}, [shareListSet]);
 
 useEffect(()=>{
   const shareBoard = async() => {
@@ -186,7 +178,7 @@ const dayCalculate = (date) => {
     </TouchableOpacity>
   ); 
 
-  return shareList == undefined ? <View><Text>gg요</Text></View> : (
+  return info == undefined ? <View><Text>gg요</Text></View> : (
     <View style={styles.container}>
       <View style={styles.header}></View>
       <View style={styles.header2}>

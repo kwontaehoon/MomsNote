@@ -215,10 +215,10 @@ const Home = ({navigation}) => {
 
 
     const ref = useRef();
-    const boardPopular = useSelector(state => { return state.boardPopularSlice.data });
-    const materialPopular = useSelector(state => { return state.materialPopularSlice.data });
+    const boardPopular = useSelector(state => { return state.boardPopular.data });
+    const materialPopular = useSelector(state => { return state.materialPopular.data });
     console.log('materialPopular: ', materialPopular);
-    const infoPopular = useSelector(state => { return state.infoPopularSlice.data });
+    const infoPopular = useSelector(state => { return state.infoPopular.data });
     console.log('infoPopular: ', infoPopular);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선

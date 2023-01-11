@@ -8,9 +8,11 @@ import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
 import Modal from './Modal/BrandEditModal'
 import Modal2 from './Modal/Confirm'
 import Modal3 from '../../Modal/First'
+import Modal4 from '../../Materials/Budget/Modal/PriceEdit'
 
 import ArrowTop from '../../../../public/assets/svg/Arrow-Top.svg'
 import ArrowBottom from '../../../../public/assets/svg/Arrow-Bottom.svg'
+import { postShareList } from '../../../Redux/Slices/ShareListSlice'
 
 
 const styles = StyleSheet.create({
@@ -187,15 +189,23 @@ const Talk1Sub = ({navigation, route}) => {
         },
     ];
 
+    console.log('route params: ', route.params);
     const dispatch = useDispatch();
-    const shareList = useSelector(state => { return state.shareList.data; });
+    const info = useSelector(state => { return state.shareList.data; });
+    console.log('info: ', info);
     const material = useSelector(state => { return state.material.data; });
     console.log('compare material: ', material);
-    const [info, setInfo] = useState([]);
-    console.log('compare info: ', info);
     const [list, setList] = useState(Array.from({length: 8}, () => {return true})); // list display
     const animation = useRef(new Animated.Value(0)).current;
     const [myList, setMyList] = useState(false);
+
+    const [sumResult, setSumResult] = useState({
+      sum: 0,
+      exp: 0
+    });
+
+    console.log(sumResult.sum);
+    console.log(sumResult.exp);
 
     const [modal, setModal] = useState({ // 브랜드 선택 모달
       open: false,
@@ -203,25 +213,36 @@ const Talk1Sub = ({navigation, route}) => {
       needsBrandId: null,
       needsDateId: null
     });
-    const [modal2, setModal2] = useState(true); // 수정 내용 적용 모달
+    const [modal2, setModal2] = useState(false); // 수정 내용 적용하시겠습니까 모달
 
-    const [modal3, setModal3] = useState({
+    const [modal3, setModal3] = useState({ // 수정되었습니다 모달
       open: false,
-      content: '',
+      content: '출산리스트가 수정되었습니다.',
       buttonCount: 1
     });
 
-  useEffect(()=>{ // 해당 게시글 boardId만 filtering
-      if(shareList !== '' || shareList !== undefined){ 
-          setInfo(shareList.filter(x=> x.boardId == route.params.boardId));
-      }
-  }, [shareList]);
+    const [modal4, setModal4] = useState({ // 가격 수정 모달
+      open: false,
+      content: null
+    })
 
   useEffect(()=>{
-    dispatch(postMaterial({
-      order: 'need'
-    }));
+    dispatch(postMaterial({ order: 'need'}));
+    dispatch(postShareList({ boardId: route.params.boardId }))
   }, []);
+
+  useEffect(()=>{
+    let sum = 0;
+    let exp = 0;
+
+    material.filter(x=>{
+      if(x.id == 0 && x.needsBrandId !== null){
+        exp += x.itemPrice
+      } else sum += x.itemPrice;
+    });
+    setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
+  }, [info]);
+
 
   const filtering = (e, title) => { // 품목 브랜드 가격 부분 none || flex
     if(title.filter(x => x.category == e && x.needName !== null) == ''){
@@ -268,7 +289,10 @@ const Talk1Sub = ({navigation, route}) => {
                    <TouchableOpacity style={styles.listMain2} onLongPress={()=>setModal(prevState => ({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId, needsBrandId: x.needsBrandId}))} delayLongPress={1500} activeOpacity={1} key={index}>
                       <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
                       <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
-                      <View style={styles.filterBox2}><Text>{x.itemPrice} 원</Text></View>
+                      <View style={styles.filterBox2}>
+                        <Text style={{fontWeight: '500'}}>{(x.itemPrice).toLocaleString()}</Text>
+                        <Text> 원</Text>
+                      </View>
                   </TouchableOpacity>
               )
           }
@@ -303,10 +327,13 @@ const Talk1Sub = ({navigation, route}) => {
       material.filter((x, index)=>{
         if(x.category == e.title && x.needsName !== null){
         arr.push(
-          <View style={styles.listMain2} >
+          <View style={styles.listMain2} key={index}>
               <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
               <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
-              <View style={styles.filterBox2}><Text>{x.itemPrice} 원</Text></View>
+              <TouchableOpacity style={styles.filterBox2} onLongPress={()=>setModal4(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1}>
+                <Text style={{fontWeight: '500'}}>{x.itemPrice == null ? '-' : (x.itemPrice).toLocaleString()}</Text>
+                <Text> 원</Text>
+              </TouchableOpacity>
           </View>
         )}
       })
@@ -371,15 +398,15 @@ const Talk1Sub = ({navigation, route}) => {
         </FlatList>
         <View style={styles.myList2Footer}>
           <View style={styles.myList2FooterBox}>
-            <View style={styles.budget}><Text style={{fontSize: 18, fontWeight: '600'}}>119,700</Text></View>
+            <View style={styles.budget}><Text style={{fontSize: 18, fontWeight: '600'}}>{`${(sumResult.sum + sumResult.exp).toLocaleString()} 원`}</Text></View>
             <Text style={{fontSize: 18, fontWeight: '600'}}>총 예산</Text>
           </View>
           <View style={[styles.myList2FooterBox, {paddingLeft: 20, height: 25}]}>
-            <View style={styles.budget}><Text>119,700</Text></View>
+            <View style={styles.budget}><Text>{`${(sumResult.sum).toLocaleString()} 원`}</Text></View>
             <Text style={{color: '#616161'}}>ㄴ 구매금액</Text>
           </View>
           <View style={[styles.myList2FooterBox, {paddingLeft: 20, height: 25}]}>
-            <View style={styles.budget}><Text>119,700</Text></View>
+            <View style={styles.budget}><Text>{`${(sumResult.exp).toLocaleString()} 원`}</Text></View>
             <Text style={{color: '#616161'}}>ㄴ 구매예정 금액</Text>
           </View>
           <View style={styles.myList2FooterButton}><Text style={{color: 'white', fontWeight: '600', fontSize: 16}}>수정</Text></View>
@@ -391,9 +418,10 @@ const Talk1Sub = ({navigation, route}) => {
             keyExtractor={item => item.id}>
         </FlatList>
 
-        <Modal modalVisible2={modal} setModalVisible2={setModal} modal3={modal3} setModal3={setModal3}/>
+        <Modal modalVisible2={modal} setModalVisible2={setModal} setModal={setModal3}/>
         <Modal2 modal2={modal2} setModal2={setModal2}/>
         <Modal3 modal={modal3} setModal={setModal3}/>
+        <Modal4 modal6={modal4} setModal6={setModal4} />
     </View>
   )
 }

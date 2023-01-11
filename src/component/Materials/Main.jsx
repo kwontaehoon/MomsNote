@@ -270,7 +270,6 @@ const Navigation = ({navigation, route}) => {
     let exp = 0;
 
     info.filter(x=>{
-      console.log('x: ', x);
       if(x.id == 0 && x.needsBrandId !== null){
         exp += x.itemPrice
       } else sum += x.itemPrice;
@@ -383,7 +382,7 @@ const save = async() => {
 
   const List = (e) => {
     return (
-      <View style={styles.main3Box} key={e.id}>
+      <View style={styles.main3Box} key={e.title}>
         <View style={styles.main3BoxHeader}>
           <View style={[styles.filterBox, {width: 50}]}><Text>구매</Text></View>
           <View style={[styles.filterBox, {width: 157}]}><Text>품목</Text></View>

@@ -26,7 +26,6 @@ import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
 import { postShareList } from '../../../Redux/Slices/ShareListSlice'
-import { postShareList2 } from '../../../Redux/Slices/ShareList2Slice'
 
 const styles = StyleSheet.create({
     container:{
@@ -284,8 +283,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = [route.params];
-    const shareListSet = useSelector(state => { return state.shareList.refresh});
-    const info2 = useSelector(state => { return state.shareList2.data}); // 게시글 리스트
+    const info2 = useSelector(state => { return state.shareList.data }); // 게시글 리스트
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
@@ -303,7 +301,7 @@ const Talk1Sub = ({navigation, route}) => {
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요
     const [boardData, setBoardData] = useState({
         order: 'new',
-        count: 5,
+        count: 1,
         page: 1,
         subcategory: '전체'
     });
@@ -326,12 +324,23 @@ const Talk1Sub = ({navigation, route}) => {
         exp: 0
     });
 
-    useEffect(()=>{ // 댓글 목록
+    useEffect(()=>{
         dispatch(postComment(commentData));
         dispatch(postCommentFlag({boardId: info[0].boardId}));
-        dispatch(postShareList(shareListSet));
-        dispatch(postShareList2({boardId: info[0].boardId}));
+        dispatch(postShareList({boardId: info[0].boardId}));
     }, []);
+
+    useEffect(()=>{
+        let sum = 0;
+        let exp = 0;
+    
+        info2.filter(x=>{
+          if(x.id == 0 && x.needsBrandId !== null){
+            exp += x.itemPrice
+          } else sum += x.itemPrice;
+        });
+        setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
+      }, [info2]);
 
     useEffect(()=>{ // 게시물 추천 Flag
         console.log('게시물 추천 여부 업데이트');
@@ -462,7 +471,10 @@ const Talk1Sub = ({navigation, route}) => {
                      <View style={styles.listMain2} key={index}>
                         <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
                         <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
-                        <View style={styles.filterBox2}><Text>{x.itemPrice} 원</Text></View>
+                        <View style={styles.filterBox2}>
+                            <Text style={{fontWeight: '600'}}>{(x.itemPrice).toLocaleString()}</Text>
+                            <Text> 원</Text>
+                        </View>
                     </View>
                 )
             }
@@ -501,15 +513,15 @@ const Talk1Sub = ({navigation, route}) => {
 
                 <View style={styles.sum}>
                     <View style={styles.myList2FooterBox}>
-                        <View style={styles.budget}><Text style={{fontSize: 18, fontWeight: '600'}}>119,700 원</Text></View>
+                        <View style={styles.budget}><Text style={{fontSize: 18, fontWeight: '600'}}>{(sumResult.sum + sumResult.exp).toLocaleString()} 원</Text></View>
                         <Text style={{fontSize: 18, fontWeight: '600'}}>총 예산</Text>
                     </View>
                     <View style={[styles.myList2FooterBox, {paddingLeft: 20, height: 25}]}>
-                        <View style={styles.budget}><Text>119,700 원</Text></View>
+                        <View style={styles.budget}><Text>{(sumResult.sum).toLocaleString()} 원</Text></View>
                         <Text style={{color: '#616161'}}>ㄴ 구매금액</Text>
                     </View>
                     <View style={[styles.myList2FooterBox, {paddingLeft: 20, height: 25}]}>
-                        <View style={styles.budget}><Text>119,700 원</Text></View>
+                        <View style={styles.budget}><Text>{(sumResult.exp).toLocaleString()} 원</Text></View>
                         <Text style={{color: '#616161'}}>ㄴ 구매예정 금액</Text>
                     </View>
                 </View>

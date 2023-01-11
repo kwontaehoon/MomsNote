@@ -9,11 +9,13 @@ import shareListReducer from '../Slices/ShareListSlice'
 import materialPopularReducer from '../Slices/MaterialPopularSlice'
 import boardPopularReducer from '../Slices/BoardPopularSlice'
 import infoPopularReducer from '../Slices/InfoPopularSlice'
-import shareList2Reducer from '../Slices/ShareList2Slice'
 import experienceReducer from '../Slices/ExperienceSlice'
 import guideReducer from '../Slices/GuideSlice'
 import eventReducer from '../Slices/EventSlice'
-import government from '../Slices/Government'
+import governmentReducer from '../Slices/Government'
+import boardLikeFlagReducer from '../Slices/BoardLikeFlagSlice'
+import boardLikeReducer from '../Slices/BoardLikeSlice'
+import boardAppFlagReducer from '../Slices/BoardAppFlagSlice'
 
 export const store = configureStore({
   reducer: {
@@ -24,13 +26,15 @@ export const store = configureStore({
     commentFlag: commentFlagReducer,
     commentRecommend: commentRecommendReducer,
     shareList: shareListReducer,
-    shareList2: shareList2Reducer,
-    materialPopularSlice: materialPopularReducer,
-    boardPopularSlice: boardPopularReducer,
-    infoPopularSlice: infoPopularReducer,
+    materialPopular: materialPopularReducer,
+    boardPopular: boardPopularReducer,
+    infoPopular: infoPopularReducer,
     experience: experienceReducer,
     guide: guideReducer,
     event: eventReducer,
-    government: government,
+    government: governmentReducer,
+    boardLikeFlag: boardLikeFlagReducer,
+    boardLike: boardLikeReducer,
+    boardAppFlag: boardAppFlagReducer,
   },
 })

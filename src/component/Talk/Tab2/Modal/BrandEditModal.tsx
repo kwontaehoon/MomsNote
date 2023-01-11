@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal, KeyboardAvoidingView } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/Ionicons'
@@ -76,9 +76,7 @@ const styles = StyleSheet.create({
     resetBox:{
         position: 'absolute',
         right: 0,
-        height: '100%',
         alignItems: 'center',
-        justifyContent: 'center',
         flexDirection: 'row',
     },
     footerBox2:{
@@ -99,7 +97,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: '#EF1E1E',
         position: 'absolute',
-        right: '35%',
+        right: '62%',
     },
     footerBox3:{
         backgroundColor: '#FEA100',
@@ -114,18 +112,20 @@ const styles = StyleSheet.create({
     },
 })
 
-const Main = ({modalVisible2, setModalVisible2, modal3, setModal3}) => {
+const Main = ({modalVisible2, setModalVisible2, setModal}) => {
 
     const dispatch = useDispatch();
     const [info, setInfo] = useState(); // 브랜드 lists
-    
+    console.log('브랜드 리스트: ', info);
     const [selectBrand, setSelectBrand] = useState({
         needsId: null,
         needsBrandId: 0,
         itemName: '',
-        itemPrice: '',
-        needsDataId: null
+        itemPrice: 0,
+        needsDataId: null,
+        itemBrand: '',
     });
+    console.log('selectBrand: ', selectBrand);
 
     useEffect(()=>{
         const commentInfo = async() => {
@@ -142,7 +142,6 @@ const Main = ({modalVisible2, setModalVisible2, modal3, setModal3}) => {
                 }
             });
             setInfo(response.data);
-            console.log('response: ', response.data);
             }catch(error){
                 console.log('comment axios error:', error);
                 setInfo(undefined);
@@ -169,10 +168,11 @@ const Main = ({modalVisible2, setModalVisible2, modal3, setModal3}) => {
                 console.log('comment axios error:', error)
             }
             dispatch(postMaterial({order: 'need'}));
+            setModalVisible2(prevState => ({...prevState, open: false}));
     }
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: item.needsBrandId}))}>
+        <TouchableOpacity style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: item.needsBrandId, itemBrand: item.productName}))}>
             <View style={[styles.mainBoxSub, {width: '24%'}]}>
                 <Crwon />
             </View>
@@ -196,7 +196,7 @@ const Main = ({modalVisible2, setModalVisible2, modal3, setModal3}) => {
     );
 
   return (
-    <Modal animationType="fade" transparent={false} visible={modalVisible2.open}
+    <Modal animationType="fade" transparent={true} visible={modalVisible2.open}
         onRequestClose={() => {
         setModalVisible2(!modalVisible2)}}>
     <View style={styles.modalContainer}>
@@ -216,29 +216,32 @@ const Main = ({modalVisible2, setModalVisible2, modal3, setModal3}) => {
                 </View>
                 <View style={styles.footer}>
                     <View style={styles.footerBox}>
-                        <View style={styles.resetBox}>
+                        <TouchableOpacity style={styles.resetBox} onPress={()=>{console.log('zz'); setSelectBrand((preState)=> ({...preState, itemName: '', productName: ''}))}}>
                             <Text style={{marginRight: 5, color: '#757575'}}>초기화</Text>
-                            <TouchableOpacity onPress={()=>{setSelectBrand((preState)=> ({...preState, itemName: '', itemPrice: ''}))}}><Reset width={18} fill='#757575'/></TouchableOpacity>
-                        </View>
+                            <Reset width={18} fill='#757575'/>
+                        </TouchableOpacity>
                         <Text style={{color: '#212121', fontSize: 16, fontWeight: '700'}}>브랜드 추가</Text>
                     </View>
                     <View style={styles.footerBox2}>
                         <View style={styles.textInput}>
-                        {selectBrand.itemName == '' ? <View style={styles.redDot}></View> : ''}
-                        <TextInput placeholder='브랜드명/제품명' value={selectBrand.itemName}
-                            onChangeText={(e) => setSelectBrand(prevState => ({ ...prevState, itemName: e}))}>   
-                        </TextInput>
-
+                            {selectBrand.itemBrand == '' ? <View style={styles.redDot}></View> : ''}
+                            <TextInput placeholder='브랜드명' value={selectBrand.itemBrand}
+                                onChangeText={(e) => setSelectBrand(prevState => ({ ...prevState, itemBrand: e}))}>   
+                            </TextInput>
                         </View>
 
                         <View style={{width: '6%'}}></View>
 
-                       <TextInput style={styles.textInput} placeholder='가격(원)' value={String(selectBrand.itemPrice)}
-                        onChangeText={(e) => setSelectBrand(prevState => ({ ...prevState, itemPrice: e}))}></TextInput>
-                    </View> 
+                        <View style={styles.textInput}>
+                            {selectBrand.itemName == '' ? <View style={[styles.redDot, {right: '70%'}]}></View> : ''}
+                            <TextInput placeholder='제품명' value={selectBrand.itemName}
+                                onChangeText={(e) => setSelectBrand(prevState => ({...prevState, itemName: e}))}>   
+                            </TextInput>
+                            </View>
+                        </View> 
                     <TouchableOpacity style={styles.footerBox3} onPress={()=>{
-                        selectBrand.itemName == '' ? setModal3(prevState => ({...prevState, open: true, content: '브랜드/제품명은 필수 입력 항목입니다.', buttonCount: 1}))
-                        : (submit(), setModalVisible2(prevState => ({...prevState, open: false})), setModal3(prevState => ({...prevState, open: true, content: '출산리스트가 수정되었습니다.', buttonCount: 1})))
+                        selectBrand.itemName == '' || selectBrand.productName == '' ? setModal(prevState => ({...prevState, open: true, content: '브랜드/제품명은 필수 입력 항목입니다.', buttonCount: 1}))
+                        : (submit(), setModalVisible2(prevState => ({...prevState, open: false})), setModal(prevState => ({...prevState, open: true, content: '출산리스트가 수정되었습니다.', buttonCount: 1})))
                     }}><Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>수정</Text></TouchableOpacity>
                     <View style={styles.footerBox4}><Text>#해시태그</Text></View>
                 </View>

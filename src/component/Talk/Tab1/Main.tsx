@@ -159,8 +159,6 @@ const styles = StyleSheet.create({
 
 const Talk1 = ({navigation, route}:any) => {
 
-  console.log('talk route: ', route);
-
   const DATA = [
     {
       id: '0',

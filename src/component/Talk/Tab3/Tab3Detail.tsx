@@ -7,6 +7,11 @@ import moment from 'moment'
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Like2 from '../../../../public/assets/svg/Heart.svg'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { postBoardLikeFlag } from '../../../Redux/Slices/BoardLikeFlagSlice'
+import { postBoardLike } from '../../../Redux/Slices/BoardLikeSlice'
+import { postBoardAppFlag } from '../../../Redux/Slices/BoardAppFlagSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -87,6 +92,7 @@ const styles = StyleSheet.create({
     },
     footerBox:{
         borderWidth: 1,
+        height: 60,
         borderColor: '#EEEEEE',
         flexDirection: 'row',
         alignItems: 'center',
@@ -94,8 +100,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     footerBox2:{
-        width: '95%',
-        height: 48,
+        width: '75%',
+        height: 60,
         backgroundColor: '#FEA100',
         justifyContent: 'center',
         alignItems: 'center',
@@ -149,34 +155,33 @@ const Talk1Sub = ({navigation, route}) => {
         },
     ];
 
-    const [likeCount, setLikeCount] = useState();
+    const dispatch = useDispatch();
+    const boardLikeFlag = useSelector(state => { return state.boardLikeFlag.data });
+    console.log('boardLikeFlag', boardLikeFlag);
+    const boardLike = useSelector(state => { return state.boardLikeFlag.data });
+    console.log('boardLike: ', boardLike);
+    const boardLikeFlagSet = useSelector(state => { return state.boardLikeFlag.refresh });
+    console.log('boardLikeFlagSet: ', boardLikeFlagSet);
+    const boardLikeSet = useSelector(state => { return state.boardLike.refresh });
+    console.log('boardLikeSet: ', boardLikeSet);
+
+    const boardAppFlag = useSelector(state => {return state.boardAppFlag.data});
+    console.log('boardAppFlag: ', boardAppFlag);
+    
     const [filter, setFilter] = useState(false);
     const [modalVisible, setModalVisible] = useState(false); // 체험단 신청정보 입력 -> asnyc storage
     const [modalVisible2, setModalVisible2] = useState(false); // 체험단 신청완료
     const [modalVisible3, setModalVisible3] = useState(false); // 컨텐츠 URL 등록
 
     useEffect(()=>{
-        const exp = async() => {
-        try{
-          const response = await axios({
-            method: 'post',
-            url: 'https://momsnote.net/api/board/recommend/flag',
-            headers: { 
-                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1OTE0OTIsImV4cCI6MTY3NDE4MzQ5Mn0.d8GpqvEmnnrUZKumuL4OPzp7wSGXiTo47hGkCSM2HO0', 
-                'Content-Type': 'application/json'
-              },
-            data : {
-              boardId: 23,
-          }
-        });
-        console.log('response: ', response.data);
-        setLikeCount(response.data);
-        }catch(error){
-            console.log('error: ', error);
-        }
-        }
-        exp();
-      }, []);
+        dispatch(postBoardLikeFlag({ boardId: info.boardId}));
+        // dispatch(postBoardLike({ boardId: info.boardId, type: 'plus'}));
+        // dispatch(postBoardAppFlag({ experienceId: 1 }));
+    }, []);
+
+    const recommend = async() => {
+        
+    }
 
     const renderItem = ({ item }:any) => (
         
@@ -291,17 +296,21 @@ const Talk1Sub = ({navigation, route}) => {
         <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
         </FlatList>
-        {!filter ? <View style={styles.footer}>
-            {<View style={[styles.footerBox, {width: '20%'}]}>
-                <Like width={20} fill='#BDBDBD'/>
-                <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {likeCount}</Text>
-            </View>}
-            <View style={[styles.footerBox, {width: '3%', borderWidth: 0}]}></View>
-            <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={()=>navigation.navigate('신청 정보')}><Text style={{fontSize: 20, fontWeight: '500'}}>신청 정보 확인</Text></TouchableOpacity>
-        </View> :
         <View style={styles.footer}>
-            <TouchableOpacity style={styles.footerBox2} onPress={()=>setModalVisible3(!modalVisible3)}><Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>컨텐츠 등록</Text></TouchableOpacity>
-        </View>}
+            <View style={[styles.footerBox, {width: '20%'}]}>
+                {boardLikeFlagSet == 0 ? <Like width={20} fill='#BDBDBD'/> : <Like width={20} fill='#FEA100'/> }
+                <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {boardLike}</Text>
+            </View>
+            <View style={[styles.footerBox, {width: '3%', borderWidth: 0}]}></View>
+            { boardAppFlag == 0 ? 
+            <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={()=>navigation.navigate('신청 정보')}>
+                <Text style={{fontSize: 20, fontWeight: '500'}}>신청 정보 확인</Text>
+            </TouchableOpacity>
+            :
+            <TouchableOpacity style={styles.footerBox2} onPress={()=>setModalVisible(!modalVisible)}>
+                <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
+            </TouchableOpacity>}
+        </View> 
     </View>
   )
 }
