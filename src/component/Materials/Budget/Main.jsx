@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -139,9 +139,24 @@ const Talk1Sub = ({route}) => {
     content: null,
   }); // onLongPress dot 모달
 
-  const [sum, setSum] = useState(0)
+  const [sumResult, setSumResult] = useState({
+    sum: 0,
+    exp: 0
+  }); // 총 예산
 
-  console.log('sum: ', sum);
+  console.log('sumResult: ', sumResult);
+
+  useEffect(()=>{
+    let sum = 0;
+    let exp = 0;
+
+    info.filter(x=>{
+      if(x.id == 0 && x.needsBrandId !== null){
+        exp += x.itemPrice
+      } else sum += x.itemPrice;
+    });
+    setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
+  }, [info]);
 
   const arrow = (e) => { // arrow 누르면 서브페이지 display
     let arr = [...list];
@@ -166,20 +181,20 @@ const Talk1Sub = ({route}) => {
 
   const List = ({title}) => {
     let arr = [];
+
     info.filter((x, index)=>{
       if(x.category == title && x.itemName !== null){
-              arr.push(
+          arr.push(
         <TouchableOpacity style={styles.mainBox3} onLongPress={()=>setModal5(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1} key={index}>
             <View style={[styles.filterBox2, {justifyContent: 'flex-start'}]}><Text style={{fontWeight: '500'}}>{x.needsName}</Text></View>
             <View style={styles.filterBox2}><Text>{x.itemName == null ? '-' : x.itemName}</Text></View>
             <View style={[styles.filterBox2, {justifyContent: 'flex-end'}]}>
-              <Text style={{fontWeight: '600'}}>{x.itemPrice == null ? 0 : x.itemPrice}</Text>
+              <Text style={{fontWeight: '600'}}>{(x.itemPrice).toLocaleString()}</Text>
               <Text> 원</Text>
             </View>
         </TouchableOpacity>
       )}
     })
-
     return arr;
   }
 
@@ -226,18 +241,18 @@ const Talk1Sub = ({route}) => {
         <View style={styles.footerBox}>
           <View style={[styles.arrowBox, {right: 0}]}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontSize: 18, fontWeight: '500'}}>119,700 </Text>
+              <Text style={{fontSize: 18, fontWeight: '500'}}>{(sumResult.sum + sumResult.exp).toLocaleString()} </Text>
               <Text>원</Text>
             </View>
           </View>
           <Text style={{fontSize: 18, fontWeight: '500'}}>총 예산</Text>
         </View>
         <View style={[styles.footerBox, {paddingLeft: 20, height: 25}]}>
-          <View style={[styles.arrowBox, {right: 0}]}><Text>{sum} 원</Text></View>
+          <View style={[styles.arrowBox, {right: 0}]}><Text>{(sumResult.sum).toLocaleString()} 원</Text></View>
           <Text style={{color: '#616161'}}>ㄴ 구매 금액</Text>
         </View>
         <View style={[styles.footerBox, {paddingLeft: 20, height: 25}]}>
-          <View style={[styles.arrowBox, {right: 0}]}><Text>0 원</Text></View>
+          <View style={[styles.arrowBox, {right: 0}]}><Text>{(sumResult.exp).toLocaleString()} 원</Text></View>
           <Text style={{color: '#616161'}}>ㄴ 구매 예정 금액</Text>
         </View>
       </View>

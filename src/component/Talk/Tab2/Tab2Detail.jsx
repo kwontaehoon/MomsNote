@@ -284,9 +284,9 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = [route.params];
-    const shareList = useSelector(state => { return state.shareList.data; });
     const shareListSet = useSelector(state => { return state.shareList.refresh});
-    const info2 = useSelector(state => { return state.shareList2.data});
+    const info2 = useSelector(state => { return state.shareList2.data}); // 게시글 리스트
+
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
@@ -320,6 +320,11 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal6, setModal6] = useState(false); // comment 신고 하기 
 
     const animation = useRef(new Animated.Value(0)).current;
+
+    const [sumResult, setSumResult] = useState({
+        sum: 0,
+        exp: 0
+    });
 
     useEffect(()=>{ // 댓글 목록
         dispatch(postComment(commentData));

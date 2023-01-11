@@ -13,6 +13,7 @@ export const postBoard = createAsyncThunk("postBoardSlice/async", async (data) =
       return response.data;
       }catch(error){
           console.log('board axios error: ', error);
+          return undefined;
       }
 });
 

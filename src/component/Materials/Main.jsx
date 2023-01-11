@@ -130,11 +130,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     borderRadius: 3,
     flexDirection: 'row',
-    padding: 10
+    padding: 15,
+    alignItems: 'center'
   },
   budgetBox:{
-    width: '50%',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  budgetBox2:{
+    position: 'absolute',
+    right: 15,
   },
 })
 
@@ -203,8 +208,13 @@ const Navigation = ({navigation, route}) => {
   console.log('출산준비물 리스트: ', info);
   const materialSet = useSelector(state => { return state.material.refresh; });
   console.log('materialSet: ', materialSet)
-  const [sumResult, setSumResult] = useState(0); // 총 예산
+  const [sumResult, setSumResult] = useState({
+    sum: 0,
+    exp: 0
+  }); // 총 예산
+  console.log('sumResult: ', sumResult);
   const ref = useRef();
+
   const [list, setList] = useState(Array.from({ length: 9 }, () => { return true}));
 
   const [captureURL, setCaptureURL] = useState(); // 캡쳐 uri
@@ -244,6 +254,7 @@ const Navigation = ({navigation, route}) => {
   }); //second modal
 
   useEffect(()=>{
+    
     dispatch(postMaterial(materialSet));
 
     const purchaseInfo = async() => {
@@ -251,12 +262,26 @@ const Navigation = ({navigation, route}) => {
       setModalVisible(prevState => ({...prevState, asyncStorage: purchase}));
   }
   purchaseInfo();
+  
   }, []);
+
+  useEffect(()=>{
+    let sum = 0;
+    let exp = 0;
+
+    info.filter(x=>{
+      console.log('x: ', x);
+      if(x.id == 0 && x.needsBrandId !== null){
+        exp += x.itemPrice
+      } else sum += x.itemPrice;
+    });
+    setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
+  }, [info]);
+
 
   // useEffect(()=>{
   //     save();
   // }, [captureURL]);
-
 
   const purchase = async(needsId, needsBrandId) =>{
     console.log('purchase');
@@ -371,11 +396,9 @@ const save = async() => {
 
   const List2 = (title) => {  
     let arr = [];
-    let sum = 0;
+
     info.filter((x, index)=>{
-      if(x.id == 1){
-        sum += x.itemPrice;
-      }
+
       if(title.title == x.category && x.deleteStatus == 1){
        arr.push(
         <View style={[styles.main3BoxHeader]} key={index}>
@@ -406,7 +429,7 @@ const save = async() => {
           </View>
       </View>
       )}
-    })
+    });
     return arr;
   }
 
@@ -474,8 +497,12 @@ const save = async() => {
 
         <View style={styles.footer}>
           <View style={styles.footerBox}>
-            <View style={styles.budgetBox}><Text>총 예산: {sumResult}</Text></View>
-            <View style={[styles.budgetBox, {alignItems: 'flex-end'}]}>
+            <View style={styles.budgetBox}>
+              <Text>총 예산: </Text>
+              <Text style={{fontSize: 18, fontWeight: '500'}}>{(sumResult.sum).toLocaleString()}</Text>
+              <Text> 원</Text>
+            </View>
+            <View style={styles.budgetBox2}>
               <TouchableOpacity onPress={()=> navigation.navigate('총 예산', info)}><Text>자세히 보기  <Icon name='angle-right' size={15}/></Text></TouchableOpacity>
             </View>
           </View>

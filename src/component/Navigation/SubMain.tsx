@@ -1,29 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack'
 import {View, Button, Text, StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'
-import Icon2 from 'react-native-vector-icons/SimpleLineIcons'
-import Icon3 from 'react-native-vector-icons/Feather'
-import Icon4 from 'react-native-vector-icons/AntDesign'
 import Home from '../Home/Main'
 import Talk from '../Talk/Main'
 import Dday from '../Dday/Main'
 import Materials from '../Materials/Main'
 import Information from '../Information/Main'
-import Video from '../Test/Video'
-import ImagePicker from '../Test/ImagePicker'
-import FlatList from '../Test//FlatList'
-import DropDown from '../Test/DropDown'
-import Animation from '../Test/animation'
-import Animation2 from '../Test/animation2'
-import Svg2 from '../Test/Svg2'
-import Budget from '../Materials/Budget/Main'
-import ModalFlatList from '../Test/ModalFlatList'
-import AxiosPost from '../Test/AxiosPost'
-import Wrap from '../Test/Wrap'
-import ScrollView from '../Test/ScrollView'
-import ReduxTest from '../Test/ReduxTest';
 
 import Search from '../../../public/assets/svg/Search.svg'
 import Bell from '../../../public/assets/svg/Bell.svg'
@@ -58,9 +41,9 @@ const styles = StyleSheet.create({
 })
 function MainScreen() {
 
-    const Tab = createBottomTabNavigator();
-    const Stack = createStackNavigator();
-    
+  const Tab = createBottomTabNavigator();
+  const Stack = createStackNavigator();
+
   return (
     <Tab.Navigator initialRouteName='출산 준비물' screenOptions={{ headerShown: false, tabBarStyle:{ height: 60, position: 'absolute', paddingBottom: 7}, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
       <Tab.Screen name="맘스 톡" options={{tabBarIcon: ({focused, color}) => (focused ? <Forum2 /> : <Forum/>)}}>
@@ -113,16 +96,8 @@ function MainScreen() {
                         name="Home"
                         component={Home}
                         options={({ navigation, route }) => ({
-                            title: '',
+                            title: '', headerShown: false,
                             headerStyle:{backgroundColor: '#FEECB3'},
-                            headerRight: () => (
-                                <View style={styles.header}>
-                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-                                    <View style={styles.iconBox}><Bell onPress={()=>navigation.navigate('알림')}/></View>
-                                    <View style={styles.iconBox}><MyPage onPress={()=>navigation.navigate('마이페이지')}/></View>
-                                </View>
-                            </View>
-                            ),
                           })}
                         />
                </Stack.Navigator>

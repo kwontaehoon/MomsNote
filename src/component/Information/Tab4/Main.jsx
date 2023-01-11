@@ -151,7 +151,7 @@ const Talk1 = ({navigation}) => {
                 pregnantComfirm.push(
                     <>
                     <TouchableOpacity style={styles.contentBox} onPress={()=>answer(x.category, index)}>
-                        <View style={{marginRight: 10}}>{infoDisplay[index] ? <Q fill='black'/> : <Q fill='#BDBDBD'/>}</View>
+                        <View style={{marginRight: 10}}>{infoDisplay[index] ? <Q fill={'#424242'}/> : <Q fill={'#BDBDBD'} />}</View>
                         <Text>{x.qnaQ}</Text>
                     </TouchableOpacity>
                     <View style={[styles.contentBox, {backgroundColor: '#F5F5F5', display: infoDisplay[index] ? 'flex' : 'none'}]}>
@@ -172,7 +172,7 @@ const Talk1 = ({navigation}) => {
                 pregnantComfirm.push(
                     <>
                     <TouchableOpacity style={styles.contentBox} onPress={()=>answer(x.category, index)}>
-                        <View style={{marginRight: 10}}>{info2Display[index] ? <Q fill='black'/> : <Q fill='#BDBDBD'/>}</View>
+                        <View style={{marginRight: 10}}>{info2Display[index] ? <Q fill={'#424242'} /> : <Q fill={'#BDBDBD'} />}</View>
                         <Text>{x.qnaQ}</Text>
                     </TouchableOpacity>
                     <View style={[styles.contentBox, {backgroundColor: '#F5F5F5', display: info2Display[index] ? 'flex' : 'none'}]}>
@@ -189,11 +189,11 @@ const Talk1 = ({navigation}) => {
     const renderItem = ({ item }) => (
         <View style={styles.mainBox}>
             <View style={{display: filter[2] ? 'none' : 'flex'}}>
-                <View style={styles.titleBox}><Text style={{fontSize: 16,  fontWeight: '700'}}>임신상담</Text></View>
+                <View style={styles.titleBox}><Text style={{fontSize: 16,  fontWeight: '700'}}>임신상담({info.length})</Text></View>
                 <List />
             </View>
             <View style={{display: filter[1] ? 'none' : 'flex'}}>
-                <View style={styles.titleBox}><Text style={{fontSize: 16,  fontWeight: '700'}}>출산상담</Text></View>
+                <View style={styles.titleBox}><Text style={{fontSize: 16,  fontWeight: '700'}}>출산상담({info2.length})</Text></View>
                 <List2 />
             </View>
         </View>

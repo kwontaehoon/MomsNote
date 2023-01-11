@@ -7,8 +7,11 @@ import axios from 'axios'
 import Modal from './Modal/ListSelect'
 
 import MainImage from '../../../public/assets/svg/main.svg'
+import Bell from '../../../public/assets/svg/Bell.svg'
+import MyPage from '../../../public/assets/svg/Mypage.svg'
 
 import { useIsFocused } from '@react-navigation/native'
+import { getStatusBarHeight } from "react-native-status-bar-height"
 
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../Redux/Slices/BoardSlice'
@@ -20,12 +23,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     container:{
-        height: '92%',
+        flex: 1,
         backgroundColor: 'white',
+        marginTop: getStatusBarHeight(),
     },
     container2:{
 
     },
+    header:{
+        height: 60,
+        justifyContent: 'center',
+        padding: 15,
+      },
+      headerBar:{
+          position: 'absolute',
+          right: 20,
+          alignItems: 'center',
+          flexDirection: 'row',
+      },
     main:{
         height: 500,
         padding: 20,
@@ -121,8 +136,8 @@ const styles = StyleSheet.create({
     },
     main4Box:{
         height: '20%',
-        paddingLeft: 20,
-        paddingRight: 20,
+        paddingLeft: 10,
+        paddingRight: 10,
     },
     main4Box2:{
         height: 196,
@@ -428,15 +443,23 @@ const Home = ({navigation}) => {
         </View>
     );
     
-  return infoPopular == undefined && materialPopular == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> :
+  return infoPopular == ''|| infoPopular == undefined || materialPopular == undefined || materialPopular == '' ?
+    <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> :
     (
         <SafeAreaView style={[styles.container, {backgroundColor: '#FEECB3'}]}>
+
+        <View style={styles.header}>
+            <View style={styles.headerBar}>
+                <Bell style={{marginRight: 12}} onPress={()=>navigation.navigate('알림')}/>
+                <MyPage style={{marginRight: 5}} onPress={()=>navigation.navigate('마이페이지')}/>
+            </View>
+        </View>
             
             <FocusAwareStatusBar />
 
             <Modal modal={modal} setModal={setModal} />
 
-            <FlatList data={DATA} renderItem={renderItem}
+            <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
                 keyExtractor={item => item.id}>
             </FlatList>
             <Animated.View style={[styles.saveModalBox, {opacity: animation}]}>
