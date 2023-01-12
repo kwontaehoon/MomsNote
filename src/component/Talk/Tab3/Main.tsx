@@ -7,7 +7,7 @@ import moment from 'moment'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { postExperience } from '../../../Redux/Slices/ExperienceSlice'
-import { setExperienceCount } from '../../../Redux/Slices/ExperienceSlice'
+import { setExperienceFilter } from '../../../Redux/Slices/ExperienceSlice'
 
 const styles = StyleSheet.create({
   container:{
@@ -78,17 +78,22 @@ const Talk3 = ({navigation}: any) => {
   const info = useSelector(state => {return state.experience.data});
   console.log('체험단 info: ', info);
   const experienceSet = useSelector(state => { return state.experience.refresh; });
+  console.log('experienceSet: ', experienceSet);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');
   const [items, setItems] = useState([
-        {label: '최신순', value: '1'},
-        {label: '인기순', value: '2'},
-        {label: '마감임박', value: '3'},
+        {label: '최신 순', value: '1'},
+        {label: '인기 순', value: '2'},
   ]);
 
   useEffect(()=>{
     dispatch(postExperience(experienceSet));
   }, []);
+
+  const filtering = (e) => {
+    console.log('e: ', e.label == '인기 순');
+    e.label == '인기 순' ? dispatch(setExperienceFilter({filter: 'best'})) : dispatch(setExperienceFilter({filter: 'new'}))
+  }
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('체험단 상세페이지', item)}>
@@ -109,8 +114,8 @@ const Talk3 = ({navigation}: any) => {
       <View style={styles.header2}>
         <View style={[styles.header2FilterBox, {paddingBottom: 5}]}><Text style={{fontSize: 16}}>{info.length} 건</Text></View>
         <View style={[styles.header2FilterBox, {width: '32%'}]}>
-        <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순'
-              textStyle={{fontSize: 13}} dropDownContainerStyle={{backgroundColor: '#FAFAFA', borderWidth: 1, borderColor: '#F5F5F5'}}
+        <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순' onSelectItem={(e)=>filtering(e)}
+              textStyle={{fontSize: 13}} dropDownContainerStyle={{backgroundColor: 'white', borderColor: 'white'}}
               setOpen={setOpen} setValue={setValue} setItems={setItems} labelStyle={{paddingLeft: 18}}/>
         </View>
       </View>

@@ -38,6 +38,12 @@ export const experienceSlice = createSlice({
         console.log('state: ', state);
         console.log('action: ', action);
         state.refresh.count = action.payload.count;
+      },
+      setExperienceFilter:(state, action)=>{
+        console.log('필터링');
+        console.log('state: ', state);
+        console.log('action: ', action);
+        state.refresh.order = action.payload.filter;
       }
     },
     extraReducers: (bulider) => {
@@ -51,5 +57,6 @@ export const experienceSlice = createSlice({
 export const data = (state) => state.experienceSlice.data;
 
 export const { setExperienceCount } = experienceSlice.actions;
+export const { setExperienceFilter } = experienceSlice.actions; 
 
 export default experienceSlice.reducer

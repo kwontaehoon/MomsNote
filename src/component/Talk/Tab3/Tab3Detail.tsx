@@ -4,14 +4,21 @@ import Icon2 from 'react-native-vector-icons/AntDesign'
 import ContentsURL from './Modal/ContentsURL'
 import axios from 'axios'
 import moment from 'moment'
+import Swiper from 'react-native-swiper'
 
 import Like from '../../../../public/assets/svg/Like.svg'
-import Like2 from '../../../../public/assets/svg/Heart.svg'
+import Heart from '../../../../public/assets/svg/Heart-1.svg'
+import More from '../../../../public/assets/svg/More.svg'
+import Share from '../../../../public/assets/svg/Share.svg'
+
+
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { postBoardLikeFlag } from '../../../Redux/Slices/BoardLikeFlagSlice'
 import { postBoardLike } from '../../../Redux/Slices/BoardLikeSlice'
 import { postBoardAppFlag } from '../../../Redux/Slices/BoardAppFlagSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useIsFocused } from '@react-navigation/native'
 
 const styles = StyleSheet.create({
     container:{
@@ -19,8 +26,39 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     header:{
+        height: 60,
+        justifyContent: 'center',
+        padding: 15,
+        borderBottomWidth: 1,
+        borderColor: '#F5F5F5'
+      },
+      headerBar:{
+        position: 'absolute',
+        right: 20,
+        alignItems: 'center',
+        flexDirection: 'row',
+      },
+    header2:{
         height: 250,
         backgroundColor: 'yellow',
+    },
+    slide1: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#9DD6EB'
+    },
+    slide2: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#97CAE5'
+    },
+    slide3: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#92BBD9'
     },
     main:{
         height: 220,
@@ -55,8 +93,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     main3Box2:{
-        paddingTop: 20,
-        paddingBottom: 20,
+        padding: 20
     },
     main3Box3:{
         paddingTop: 20,
@@ -88,7 +125,9 @@ const styles = StyleSheet.create({
         height: '12%',
         flexDirection: 'row',
         padding: 10,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderTopWidth: 1,
+        borderColor: '#EEEEEE'
     },
     footerBox:{
         borderWidth: 1,
@@ -114,7 +153,6 @@ const styles = StyleSheet.create({
     modalView:{
         width: '100%',
         height: '100%',
-        margin: 20,
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: "center",
         justifyContent: 'center',
@@ -125,7 +163,6 @@ const styles = StyleSheet.create({
         width: '80%',
         height: 144,
         backgroundColor: 'white',
-        marginBottom: 35,
         borderRadius: 15
     },
     modalBox:{
@@ -145,8 +182,8 @@ const styles = StyleSheet.create({
 })
 const Talk1Sub = ({navigation, route}) => {
 
-    console.log('route: ', route.params);
     const info = route.params;
+    console.log('체험단 상세: ', route.params);
 
     const DATA = [
         {
@@ -156,39 +193,56 @@ const Talk1Sub = ({navigation, route}) => {
     ];
 
     const dispatch = useDispatch();
+    const isFocused = useIsFocused();
+    const [async, setAsync] = useState();
     const boardLikeFlag = useSelector(state => { return state.boardLikeFlag.data });
-    console.log('boardLikeFlag', boardLikeFlag);
     const boardLike = useSelector(state => { return state.boardLikeFlag.data });
-    console.log('boardLike: ', boardLike);
     const boardLikeFlagSet = useSelector(state => { return state.boardLikeFlag.refresh });
-    console.log('boardLikeFlagSet: ', boardLikeFlagSet);
     const boardLikeSet = useSelector(state => { return state.boardLike.refresh });
-    console.log('boardLikeSet: ', boardLikeSet);
-
     const boardAppFlag = useSelector(state => {return state.boardAppFlag.data});
-    console.log('boardAppFlag: ', boardAppFlag);
+
+    boardAppFlag.applicationId == null ? console.log('null') : console.log('aaaaaa', boardAppFlag.applicationId);
     
     const [filter, setFilter] = useState(false);
     const [modalVisible, setModalVisible] = useState(false); // 체험단 신청정보 입력 -> asnyc storage
     const [modalVisible2, setModalVisible2] = useState(false); // 체험단 신청완료
     const [modalVisible3, setModalVisible3] = useState(false); // 컨텐츠 URL 등록
+    const [modal4, setModal4] = useState(false) // 임시저장 불러올거냐
 
     useEffect(()=>{
         dispatch(postBoardLikeFlag({ boardId: info.boardId}));
         // dispatch(postBoardLike({ boardId: info.boardId, type: 'plus'}));
-        // dispatch(postBoardAppFlag({ experienceId: 1 }));
+        dispatch(postBoardAppFlag({ experienceId: route.params.experienceId }));
+
     }, []);
 
+    useEffect(()=>{
+        const load = async() => {
+            const asyncStorage = await AsyncStorage.getItem('application');
+            console.log('detail asyncStorage: ', asyncStorage);
+            setAsync(asyncStorage);
+        }
+        load();
+    }, [isFocused]);
+
     const recommend = async() => {
-        
+        dispatch(postBoardLike({ boardId: route.params.boardId, type: 'plus'}));
     }
 
     const renderItem = ({ item }:any) => (
         
         <View>
-            <View style={styles.header}>
-
-            </View>
+            <Swiper style={styles.header2} showsButtons={false}>
+                <View style={styles.slide1}>
+                <Text>Hello Swiper</Text>
+                </View>
+                <View style={styles.slide2}>
+                <Text>Beautiful</Text>
+                </View>
+                <View style={styles.slide3}>
+                <Text>And simple</Text>
+                </View>
+            </Swiper>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{color: '#9E9E9E', marginBottom: 3}}>신청 36명/모집 {info.maxPeople}명</Text>
@@ -254,7 +308,7 @@ const Talk1Sub = ({navigation, route}) => {
   return (
     <View style={styles.container}>
 
-        <StatusBar translucent={true} />
+        <StatusBar translucent={false} />
 
          <Modal animationType="fade" transparent={true} visible={modalVisible}
             onRequestClose={() => {
@@ -268,8 +322,12 @@ const Talk1Sub = ({navigation, route}) => {
                             <Text style={{fontSize: 16, paddingTop: 5}}>지금 작성하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>네</Text></TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.modal} onPress={()=>{setModalVisible(!modalVisible), navigation.navigate('신청 정보', route.params)}}>
+                                <Text style={{color: 'white', fontSize: 16}}>네</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModalVisible(!modalVisible)}>
+                                <Text style={{color: 'black', fontSize: 16}}>취소</Text>
+                            </TouchableOpacity>
                         </View>
                         </View>
                     </View>
@@ -291,26 +349,77 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
             </Modal>
 
+            <Modal animationType="fade" transparent={true} visible={modal4}
+            onRequestClose={() => {
+            setModal4(!modal4)}}>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                    <View style={[styles.modalContainer2, {height: 220}]}>
+                        <View style={styles.modalBox}>
+                            <Text style={{fontSize: 16, paddingTop: 10}}>작성 중이던 게시글이 존재합니다.</Text>
+                            <Text style={{fontSize: 16, paddingTop: 5}}>임시저장된 게시글을 불러오시겠습니까?</Text>
+                        </View>
+                        <View style={styles.modalBox}>
+                            <TouchableOpacity style={styles.modal} onPress={()=>{setModal4(!modal4), navigation.navigate('신청 정보', '신청 정보 불러오기')}}>
+                              <Text style={{color: 'white', fontSize: 16}}>신청 정보 불러오기</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModal4(!modal4), navigation.navigate('신청 정보', route.params), AsyncStorage.removeItem('application')}}>
+                              <Text style={{color: 'black', fontSize: 16}}>새로 작성하기</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+
             <ContentsURL modalVisible3={modalVisible3} setModalVisible3={setModalVisible3}/>
+
+    
+        <View style={styles.header}>
+            <Text style={{fontSize: 18, fontWeight: '600'}}>출산준비물</Text>
+            <View style={styles.headerBar}>
+            <Share style={{marginRight: 12}} />
+            <More style={{marginRight: 5}} />
+            </View>
+        </View>
 
         <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
         </FlatList>
-        <View style={styles.footer}>
-            <View style={[styles.footerBox, {width: '20%'}]}>
-                {boardLikeFlagSet == 0 ? <Like width={20} fill='#BDBDBD'/> : <Like width={20} fill='#FEA100'/> }
-                <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {boardLike}</Text>
+        {filter ? 
+            <View style={styles.footer}>
+                <TouchableOpacity style={[styles.footerBox2, {width: '100%'}]} onPress={()=>setModalVisible3(!modalVisible3)}>
+                    <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>컨텐츠 등록</Text>
+                </TouchableOpacity>
             </View>
+            :<View style={styles.footer}>
+            {boardLikeFlagSet == 0 ? 
+            <TouchableOpacity style={[styles.footerBox, {width: '20%'}]} onPress={recommend}>
+                <Like width={20} fill='#BDBDBD'/>  
+                <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {boardLike}</Text>
+            </TouchableOpacity>
+            :
+            <View style={[styles.footerBox, {width: '20%'}]}>
+                <Heart width={20} fill='#FEA100'/> 
+                <Text style={{fontSize: 16, fontWeight: '500', color: '#FEA100'}}> {boardLike}</Text>
+            </View>
+            }
+
             <View style={[styles.footerBox, {width: '3%', borderWidth: 0}]}></View>
-            { boardAppFlag == 0 ? 
-            <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={()=>navigation.navigate('신청 정보')}>
+            { boardAppFlag.applicationId !== null ? 
+            <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={()=>navigation.navigate('신청 정보', route.params)}>
                 <Text style={{fontSize: 20, fontWeight: '500'}}>신청 정보 확인</Text>
             </TouchableOpacity>
             :
-            <TouchableOpacity style={styles.footerBox2} onPress={()=>setModalVisible(!modalVisible)}>
+            <TouchableOpacity style={styles.footerBox2} onPress={()=>
+                {
+                    async == null ? setModalVisible(!modalVisible) : setModal4(!modal4);
+                    
+                }
+            }>
                 <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
             </TouchableOpacity>}
-        </View> 
+        </View>}
     </View>
   )
 }

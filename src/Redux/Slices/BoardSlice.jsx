@@ -41,6 +41,12 @@ export const boardSlice = createSlice({
         console.log('state: ', state);
         console.log('action: ', action);
         state.refresh.page = action.payload.count;
+      },
+      setBoardFilter:(state, action)=>{
+        console.log('필터링');
+        console.log('state: ', state);
+        console.log('action: ', action);
+        state.refresh.order = action.payload.filter;
       }
     },
     extraReducers: (bulider) => {
@@ -55,5 +61,6 @@ export const data = (state) => state.boardSlice.data;
 
 export const { setBoardRefresh } = boardSlice.actions;
 export const { setBoardCount } = boardSlice.actions;
+export const { setBoardFilter } = boardSlice.actions;
 
 export default boardSlice.reducer

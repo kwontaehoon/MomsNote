@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 // 신청유무
-export const postBoardAppFlag = createAsyncThunk("postBoardAppFlagSlice/async", async (data) => {
-  console.log('postBoardAppFlag 업데이트됨');
+export const postBoardApp = createAsyncThunk("postBoardAppSlice/async", async (data) => {
+  console.log('postBoardApp 업데이트됨');
   console.log('data: ', data);
     try{
       const response = await axios({
@@ -17,7 +17,7 @@ export const postBoardAppFlag = createAsyncThunk("postBoardAppFlagSlice/async", 
       });
       return response.data;
       }catch(error){
-          console.log('boardAppFlag axios error: ', error);
+          console.log('boardApp axios error: ', error);
           return undefined;
       }
 });
@@ -30,25 +30,25 @@ const initialState = {
     }
 }
 
-export const boardAppFlagSlice = createSlice({
-    name: 'boardAppFlagSlice',
+export const boardAppSlice = createSlice({
+    name: 'boardAppSlice',
     initialState,
     reducers: {
-      setBoardAppFlagSliceRefresh:(state, action)=>{
+      setBoardAppSliceRefresh:(state, action)=>{
         state.refresh.boardId = action.payload.boardId;
       }
     },
     extraReducers: (bulider) => {
-      bulider.addCase(postBoardAppFlag.fulfilled, (state, action) => {
+      bulider.addCase(postBoardApp.fulfilled, (state, action) => {
         state.loading = 'success';
         state.data = action.payload;
       },
     )}
   })
 
-export const data = (state) => state.boardAppFlagSlice.data;
+export const data = (state) => state.boardAppSlice.data;
 
-export const { setBoardAppFlagSliceRefresh } = boardAppFlagSlice.actions;
-export const { setBoardAppFlagSliceCount } = boardAppFlagSlice.actions;
+export const { setBoardAppSliceRefresh } = boardAppSlice.actions;
+export const { setBoardAppSliceCount } = boardAppSlice.actions;
 
-export default boardAppFlagSlice.reducer
+export default boardAppSlice.reducer

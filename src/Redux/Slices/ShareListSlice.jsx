@@ -30,9 +30,12 @@ export const shareListSlice = createSlice({
     name: 'shareListSlice',
     initialState,
     reducers: {
-    //   setMarterialRefresh:(state, action)=>{
-    //     state.refresh.subcategory = action.payload.subcategory;
-    //   }
+      setShareListFilter:(state, action)=>{
+        console.log('필터링');
+        console.log('state: ', state);
+        console.log('action: ', action);
+        state.refresh.order = action.payload.filter;
+      }
     },
     extraReducers: (bulider) => {
       bulider.addCase(postShareList.fulfilled, (state, action) => {
@@ -45,5 +48,6 @@ export const shareListSlice = createSlice({
 export const data = (state) => state.shareListSlice.data;
 
 export const { setShareListRefresh } = shareListSlice.actions;
+export const { setShareListFilter } = shareListSlice.actions;
 
 export default shareListSlice.reducer

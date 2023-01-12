@@ -10,7 +10,7 @@ import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
 import Pencil from '../../../../public/assets/svg/pencil.svg'
 import { useDispatch, useSelector } from 'react-redux'
-import { postShareList } from '../../../Redux/Slices/ShareListSlice'
+import { setBoardFilter } from '../../../Redux/Slices/BoardSlice'
 
 const styles = StyleSheet.create({
   container:{
@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
 
 const Talk1 = ({navigation}) => {
 
+  const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const [info, setInfo] = useState([]);
   console.log('info: ', info);
@@ -120,7 +121,6 @@ const Talk1 = ({navigation}) => {
   const [items, setItems] = useState([
     {label: '최신순', value: '1'},
     {label: '인기순', value: '2'},
-    {label: '마감임박', value: '3'},
 ]);
 
 useEffect(()=>{
@@ -164,6 +164,11 @@ const dayCalculate = (date) => {
   }
 }
 
+const filtering = (e) => {
+  console.log('e: ', e.label == '인기 순');
+  e.label == '인기 순' ? dispatch(setBoardFilter({filter: 'best'})) : dispatch(setBoardFilter({filter: 'new'}))
+}
+
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', item)}>
         <View style={styles.clockBox}><Text style={{color: '#9E9E9E', fontSize: 12}}>{dayCalculate(item.boardDate)}</Text></View>
@@ -189,8 +194,8 @@ const dayCalculate = (date) => {
           </View>
         </View>
         <View style={[styles.header2FilterBox, {width: '32%'}]}>
-        <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순'
-              textStyle={{fontSize: 13}} dropDownContainerStyle={{backgroundColor: '#FAFAFA', borderWidth: 1, borderColor: '#F5F5F5'}}
+        <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순' onSelectItem={(e)=>filtering(e)}
+              textStyle={{fontSize: 13}} dropDownContainerStyle={{backgroundColor: 'white', borderColor: 'white'}}
               setOpen={setOpen} setValue={setValue} setItems={setItems} labelStyle={{paddingLeft: 18}}/>
         </View>
       </View>

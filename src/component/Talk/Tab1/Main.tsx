@@ -7,7 +7,7 @@ import { Video, AVPlaybackStatus } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import Swiper from 'react-native-swiper'
-import { setBoardRefresh, setBoardCount } from '../../../Redux/Slices/BoardSlice'
+import { setBoardRefresh, setBoardCount, setBoardFilter } from '../../../Redux/Slices/BoardSlice'
 import { useIsFocused } from '@react-navigation/native'
 
 import Like from '../../../../public/assets/svg/Like.svg'
@@ -201,7 +201,7 @@ const Talk1 = ({navigation, route}:any) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');
   const [items, setItems] = useState([
-    {label: '최신순', value: '1'}, {label: '인기순', value: '2'}, {label: '마감임박', value: '3'},
+    {label: '최신 순', value: '1'}, {label: '인기 순', value: '2'}
   ]);
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
@@ -256,6 +256,11 @@ const Talk1 = ({navigation, route}:any) => {
     }
   }
 
+  const filtering = (e) => {
+    console.log('e: ', e.label == '인기 순');
+    e.label == '인기 순' ? dispatch(setBoardFilter({filter: 'best'})) : dispatch(setBoardFilter({filter: 'new'}))
+  }
+
 
   const renderItem = ({ item }:any) => (
     <View style={{justifyContent: 'center'}}>
@@ -301,8 +306,8 @@ const Talk1 = ({navigation, route}:any) => {
           </View>
         </View>
         <View style={[styles.header2FilterBox, {width: '32%'}]}>
-          <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순'
-              textStyle={{fontSize: 13}} dropDownContainerStyle={{backgroundColor: '#FAFAFA', borderWidth: 1, borderColor: '#F5F5F5'}}
+        <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순' onSelectItem={(e)=>filtering(e)}
+              textStyle={{fontSize: 13}} dropDownContainerStyle={{backgroundColor: 'white', borderColor: 'white'}}
               setOpen={setOpen} setValue={setValue} setItems={setItems} labelStyle={{paddingLeft: 18}}/>
         </View>
       </View>

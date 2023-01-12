@@ -16,6 +16,7 @@ import governmentReducer from '../Slices/Government'
 import boardLikeFlagReducer from '../Slices/BoardLikeFlagSlice'
 import boardLikeReducer from '../Slices/BoardLikeSlice'
 import boardAppFlagReducer from '../Slices/BoardAppFlagSlice'
+import boardAppReducer from '../Slices/BoardApp'
 
 export const store = configureStore({
   reducer: {
@@ -36,5 +37,6 @@ export const store = configureStore({
     boardLikeFlag: boardLikeFlagReducer,
     boardLike: boardLikeReducer,
     boardAppFlag: boardAppFlagReducer,
+    boardApp: boardAppReducer,
   },
 })

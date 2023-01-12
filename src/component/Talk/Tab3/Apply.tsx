@@ -12,12 +12,15 @@ import Modal3 from './Modal/AuthReady'
 import Modal4 from './Modal/Cencel'
 import Modal5 from './Modal/CencelConfirm'
 import Modal6 from './Modal/Save'
+import { useDispatch } from 'react-redux'
+import { postBoardAppFlag } from '../../../Redux/Slices/BoardAppFlagSlice'
+import { postBoardApp } from '../../../Redux/Slices/BoardApp'
+import { useSelector } from 'react-redux'
 
 
 const styles = StyleSheet.create({
     container:{
-        marginTop: getStatusBarHeight(),
-        height: '100%',
+        flex: 1,
         backgroundColor: 'white',
     },
     container2:{
@@ -120,9 +123,8 @@ const styles = StyleSheet.create({
 })
 const Withdraw = ({navigation, route}) => {
 
-    console.log('route: ', route.params);
-    const address = route.params;
-    console.log('address: ', address);
+    const dispatch = useDispatch();
+    console.log('apply route: ', route.params);
 
     const DATA = [
         {
@@ -132,7 +134,9 @@ const Withdraw = ({navigation, route}) => {
     ];
 
     const [isChecked, setChecked] = useState(Array.from({length: 3}, ()=>{ return false })); // check box
-    console.log('isChecked: ', isChecked);
+
+    const appFlag = useSelector(state => { return state.boardApp.data; });
+    console.log('appFlag: ', appFlag);
 
     const [modal, setModal] = useState(false); // 핸드폰 인증 완료
     const [modal2, setModal2] = useState(false); // 핸드폰 인증 실패
@@ -146,7 +150,7 @@ const Withdraw = ({navigation, route}) => {
             applicationId: 0,
             memberName: '',
             tel: '',
-            address: route.params,
+            address: '',
             addressDetails: '',
             expreienceId: 0,
             blogUrl: '',
@@ -157,12 +161,25 @@ const Withdraw = ({navigation, route}) => {
     console.log('info: ', info);
 
     useEffect(()=>{
+        // dispatch(postBoardAppFlag({ experienceId: route.params.experienceId}));
+        dispatch(postBoardApp({ experienceId: route.params.experienceId }));
+    }, []);
+
+    useEffect(()=>{
         const load = async() => {
-            const asyncStorage = await AsyncStorage.getItem('application');
+            switch(route.params){
+                case '신청 정보 불러오기': {
+                    const asyncStorage = await AsyncStorage.getItem('application');
 
-            console.log('async: ', asyncStorage);
-
-            asyncStorage == undefined ? '' : setInfo(JSON.parse(asyncStorage));
+                    console.log('apply async: ', asyncStorage);
+        
+                    asyncStorage == undefined ? '' : setInfo(JSON.parse(asyncStorage));
+                } break;
+                case '신청 정보 확인': {
+                    
+                }
+            }
+            
             
         }
         load();
@@ -182,15 +199,6 @@ const Withdraw = ({navigation, route}) => {
         }
     }
 
-    // const complete2 = () => {
-    //     switch(true){
-    //         case filter.filter(x => x===true).length === 0: setModal2Content('카테고리를 선택해주세요.'); break;
-    //         case info.title === '': setModal2Content('제목을 입력해주세요.'); break;
-    //         case info.content === '': setModal2Content('게시글 내용을 입력해주세요.'); break;
-    //         default: submit(), navigation.goBack(); return;
-    //     }
-    //     setModalVisible2(!modalVisible2);
-    // }
     
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
@@ -198,7 +206,7 @@ const Withdraw = ({navigation, route}) => {
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>신청 정보</Text>
                 <TouchableOpacity style={styles.headerBox}><Icon name='close' size={20} onPress={()=>
                     info.memberName == '' && info.tel == '' && info.blogUrl == '' && info.youtubeUrl == '' && info.instaUrl == '' &&
-                    info.address == undefined && info.addressDetails == '' ? navigation.goBack() : setModal6(!modal6)
+                    info.address == '' && info.addressDetails == '' ? navigation.goBack() : setModal6(!modal6)
                 }/>
                 </TouchableOpacity>
             </View>
@@ -239,7 +247,7 @@ const Withdraw = ({navigation, route}) => {
                     <Text style={{fontSize: 16, fontWeight: '500'}}>배송지</Text>
                     <View>
                         <View style={styles.textBox}>
-                            {address === undefined ? <Text>주소 검색하기</Text> : <Text>{address}</Text>}
+                            <Text>주소 검색하기</Text>
                         </View>
                         <View style={styles.postBox}><Icon name='right' size={15} onPress={()=>navigation.navigate('주소 찾기')}/></View>
                     </View>

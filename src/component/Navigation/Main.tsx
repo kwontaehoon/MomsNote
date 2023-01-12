@@ -100,7 +100,7 @@ const Navigation = () => {
             <Stack.Screen name="추천 게시물" component={Like} />
             <Stack.Screen name="내 정보 수정" component={Edit} />
             <Stack.Screen name="회원탈퇴" component={Withdraw} />
-            <Stack.Screen name="체험단 상세페이지" component={Talk3Detail} options={{title: ''}}/>
+            <Stack.Screen name="체험단 상세페이지" component={Talk3Detail} options={{title: '', headerShown: false}}/>
             <Stack.Screen name="출산리스트 공유 상세내용" component={Talk2Detail} options={{title: '', headerShown: false}}/>
             <Stack.Screen name="출산리스트 공유 등록" component={Talk2Register} options={{title: '', headerShown: false}}/>
             <Stack.Screen name="출산리스트 비교" component={Compare}/>
