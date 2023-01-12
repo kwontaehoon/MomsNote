@@ -17,6 +17,8 @@ import boardLikeFlagReducer from '../Slices/BoardLikeFlagSlice'
 import boardLikeReducer from '../Slices/BoardLikeSlice'
 import boardAppFlagReducer from '../Slices/BoardAppFlagSlice'
 import boardAppReducer from '../Slices/BoardApp'
+import materialShareReducer from '../Slices/MaterialShareSlice'
+import winListReducer from '../Slices/WinListSlice'
 
 export const store = configureStore({
   reducer: {
@@ -38,5 +40,7 @@ export const store = configureStore({
     boardLike: boardLikeReducer,
     boardAppFlag: boardAppFlagReducer,
     boardApp: boardAppReducer,
+    materialShare: materialShareReducer,
+    winList: winListReducer,
   },
 })

@@ -13,6 +13,7 @@ import * as AppleAuthentication from 'expo-apple-authentication'
 import * as Linking from 'expo-linking';
 import axios from 'axios'
 import Modal from './Modal/WithdrawModal'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const styles = StyleSheet.create({
@@ -95,8 +96,10 @@ const Main = ({navigation, route}) => {
                 data : {
                     username: `google_${response.data.sub}`
                 }
-            })
-            response2.data.status !== 'success' ?  navigation.navigate('추가 정보 입력', ['google', response.data.sub]) : navigation.navigate('main');
+            });
+            const asyncStorage = await AsyncStorage.getItem('login');
+
+            asyncStorage == '1' ? (navigation.navigate('main'), AsyncStorage.setItem('login', '2')) : navigation.navigate('추가 정보 입력', ['google', response.data.sub]);
 
 
         }catch(error){

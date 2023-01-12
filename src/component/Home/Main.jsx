@@ -23,7 +23,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     container:{
-        flex: 1,
+        height: '90%',
         backgroundColor: 'white',
         marginTop: getStatusBarHeight(),
     },
@@ -95,8 +95,6 @@ const styles = StyleSheet.create({
         height: 250,
         paddingTop: 40,
         paddingBottom: 40,
-        paddingLeft: 10,
-        paddingRight: 10,
         backgroundColor: 'white',
     },
     main3Box:{
@@ -106,24 +104,29 @@ const styles = StyleSheet.create({
     },
     main3Box2:{
         width: '50%',
-        padding: 3,
+        paddingLeft: 10,
+        paddingRight: 10,
 
     },
     titleBox:{
         flexDirection: 'row',
         height: '25%',
 
-        paddingLeft: 8,
-        paddingRight: 8
+        alignItems: 'center'
     },
     title:{
-        width: '50%',
-        justifyContent: 'center',
+
     },
+    add:{
+        position: 'absolute',
+        right: 8,
+        alignItems: 'center',
+        justifyContent: 'center'
+    }, 
     contentBox:{
         height: '75%',
-        paddingLeft: 8,
-        paddingRight: 8
+        paddingLeft: 5,
+        paddingRight: 5,
     },
     content:{
         height: '28.4%',
@@ -133,6 +136,8 @@ const styles = StyleSheet.create({
     main4:{
         backgroundColor: 'white',
         height: 300,
+        paddingLeft: 10,
+        paddingRight: 10,
     },
     main4Box:{
         height: '20%',
@@ -206,8 +211,6 @@ const Home = ({navigation}) => {
     const dispatch = useDispatch();
     
     useEffect(()=>{
-        console.log('useEffect');
-        dispatch(postBoard());
         dispatch(postBoardPopularSlice());
         dispatch(postMaterialPopularSlice());
         dispatch(postInfoPopularSlice());
@@ -355,7 +358,7 @@ const Home = ({navigation}) => {
                     <View style={styles.main3Box2}>
                         <View style={styles.titleBox}>
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>출산 리스트</Text></View>
-                            <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡')}>+ 더보기</Text></View>
+                            <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡')}>+ 더보기</Text></View>
                         </View>
                         {boardPopular == '' ? 
                             <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
@@ -367,19 +370,19 @@ const Home = ({navigation}) => {
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>1 </Text>
-                                    <Text> {boardPopular[0].title}</Text>
+                                    <Text numberOfLines={1}> {boardPopular[0].title}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>2 </Text>
-                                    <Text> {boardPopular[1].title}</Text>
+                                    <Text numberOfLines={1}> {boardPopular[1].title}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>3 </Text>
-                                    <Text> {boardPopular[2].title}</Text>
+                                    <Text numberOfLines={1}> {boardPopular[2].title}</Text>
                                 </View>
                             </View>
                         </View>}
@@ -387,7 +390,7 @@ const Home = ({navigation}) => {
                     <View style={[styles.main3Box2, {borderLeftWidth: 1, borderColor: '#EEEEEE',}]}>
                         <View style={styles.titleBox}>
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>맘스 토크</Text></View>
-                            <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡')}>+ 더보기</Text></View>
+                            <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡')}>+ 더보기</Text></View>
                         </View>
                         {materialPopular == '' ? 
                         <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
@@ -399,19 +402,19 @@ const Home = ({navigation}) => {
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>1 </Text>
-                                    <Text> {materialPopular[0].title}</Text>
+                                    <Text numberOfLines={1}> {materialPopular[0].title}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>2 </Text>
-                                    <Text> {materialPopular[1].title}</Text>
+                                    <Text numberOfLines={1}> {materialPopular[1].title}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>3 </Text>
-                                    <Text> {materialPopular[2].title}</Text>
+                                    <Text numberOfLines={1}> {materialPopular[2].title}</Text>
                                 </View>
                             </View>
                         </View> }
@@ -422,7 +425,7 @@ const Home = ({navigation}) => {
                 <View style={styles.main4Box}>
                     <View style={[styles.titleBox, {height: '100%'}]}>
                         <View style={styles.title}><Text style={{fontSize: 20, fontWeight: 'bold'}}>맘스 정보</Text></View>
-                        <View style={[styles.title, {alignItems: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>+ 더보기</Text></View>
+                        <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}}>+ 더보기</Text></View>
                     </View>
                 </View>
                 <View style={styles.main4Box2}>

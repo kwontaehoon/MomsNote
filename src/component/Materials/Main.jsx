@@ -88,13 +88,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: '90%',
     borderRadius: 10,
+    paddingLeft: 10,
+    paddingRight: 10
   },
   main3BoxHeader:{
     height: 44,
     flexDirection: 'row',
-    marginBottom: 7
+    marginBottom: 7,
   },
   filterBox:{
+    width: '44%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -268,7 +271,7 @@ const Navigation = ({navigation, route}) => {
   useEffect(()=>{
     let sum = 0;
     let exp = 0;
-
+    info == undefined ? '' :
     info.filter(x=>{
       if(x.id == 0 && x.needsBrandId !== null){
         exp += x.itemPrice
@@ -384,9 +387,9 @@ const save = async() => {
     return (
       <View style={styles.main3Box} key={e.title}>
         <View style={styles.main3BoxHeader}>
-          <View style={[styles.filterBox, {width: 50}]}><Text>구매</Text></View>
-          <View style={[styles.filterBox, {width: 157}]}><Text>품목</Text></View>
-          <View style={[styles.filterBox, {width: '41%'}]}><Text>브랜드</Text></View>
+          <View style={[styles.filterBox, {width: '12%'}]}><Text>구매</Text></View>
+          <View style={[styles.filterBox, {width: '44%'}]}><Text>품목</Text></View>
+          <View style={[styles.filterBox, {width: '44%'}]}><Text>브랜드</Text></View>
         </View>
         <List2 title={e.title}/>
       </View>
@@ -401,7 +404,7 @@ const save = async() => {
       if(title.title == x.category && x.deleteStatus == 1){
        arr.push(
         <View style={[styles.main3BoxHeader]} key={index}>
-          <View style={[styles.filterBox, {width: 50}]}>  
+          <View style={[styles.filterBox, {width: '12%'}]}>  
           <Checkbox
               style={styles.checkbox}
               value={x.id == 0 ? false : true}
@@ -416,15 +419,15 @@ const save = async() => {
               }}
               />
           </View>
-          <TouchableOpacity style={[styles.filterBox, {width: 157, flexDirection: 'row', justifyContent: 'flex-start'}]}
+          <TouchableOpacity style={[styles.filterBox, {flexDirection: 'row', justifyContent: 'flex-start'}]}
             onPress={()=>setModalVisible4(prevState => ({...prevState, open: true, content: x}))}>
             {optionBox(x.grade)}
             <Text>{x.needsName}</Text>
           </TouchableOpacity>
-          <View style={[styles.filterBox, {width: '41%'}]}>
+          <View style={styles.filterBox}>
             {x.itemName == null ? <View style={{width: 24, height: 24, borderRadius: 12,backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
               <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}/> 
-            </View> : <Text>{x.itemName}</Text>}
+            </View> : <Text numberOfLines={1}>{x.itemName}</Text>}
           </View>
       </View>
       )}
@@ -457,7 +460,7 @@ const save = async() => {
     </View>
   );
 
-  return info == '' || info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
 
         <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>

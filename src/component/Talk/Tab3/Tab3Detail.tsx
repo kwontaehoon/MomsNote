@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Modal, StatusBar } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Modal, StatusBar, Image } from 'react-native'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import ContentsURL from './Modal/ContentsURL'
 import axios from 'axios'
@@ -19,6 +19,7 @@ import { postBoardLike } from '../../../Redux/Slices/BoardLikeSlice'
 import { postBoardAppFlag } from '../../../Redux/Slices/BoardAppFlagSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useIsFocused } from '@react-navigation/native'
+import { postWinList } from '../../../Redux/Slices/WinListSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -40,25 +41,35 @@ const styles = StyleSheet.create({
       },
     header2:{
         height: 250,
-        backgroundColor: 'yellow',
     },
-    slide1: {
+    image:{
+        width: '100%',
+        height: '100%',
+      },
+    slide: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#9DD6EB'
     },
-    slide2: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#97CAE5'
-    },
-    slide3: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#92BBD9'
+    dot:{
+        backgroundColor: '#E0E0E0',
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        marginLeft: 8,
+        marginRight: 8,
+        marginTop: 3,
+        marginBottom: 3
+      },
+      dotActive:{
+        backgroundColor: 'white',
+        width: 8,
+        height: 8,
+        borderRadius: 4,
+        marginLeft: 8,
+        marginRight: 8,
+        marginTop: 3,
+        marginBottom: 3
     },
     main:{
         height: 220,
@@ -184,6 +195,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     const info = route.params;
     console.log('체험단 상세: ', route.params);
+    console.log(info.savedName.split('|').map(x => console.log('x: ', x)));
 
     const DATA = [
         {
@@ -200,6 +212,8 @@ const Talk1Sub = ({navigation, route}) => {
     const boardLikeFlagSet = useSelector(state => { return state.boardLikeFlag.refresh });
     const boardLikeSet = useSelector(state => { return state.boardLike.refresh });
     const boardAppFlag = useSelector(state => {return state.boardAppFlag.data});
+    const winList = useSelector(state => { return state.winList.data });
+    console.log('선정인원: ', winList);
 
     boardAppFlag.applicationId == null ? console.log('null') : console.log('aaaaaa', boardAppFlag.applicationId);
     
@@ -213,6 +227,7 @@ const Talk1Sub = ({navigation, route}) => {
         dispatch(postBoardLikeFlag({ boardId: info.boardId}));
         // dispatch(postBoardLike({ boardId: info.boardId, type: 'plus'}));
         dispatch(postBoardAppFlag({ experienceId: route.params.experienceId }));
+        dispatch(postWinList({ experienceId: info.experienceId }));
 
     }, []);
 
@@ -232,16 +247,15 @@ const Talk1Sub = ({navigation, route}) => {
     const renderItem = ({ item }:any) => (
         
         <View>
-            <Swiper style={styles.header2} showsButtons={false}>
-                <View style={styles.slide1}>
-                <Text>Hello Swiper</Text>
-                </View>
-                <View style={styles.slide2}>
-                <Text>Beautiful</Text>
-                </View>
-                <View style={styles.slide3}>
-                <Text>And simple</Text>
-                </View>
+            <Swiper style={styles.header2} showsButtons={false} dot={<View style={styles.dot}/>} activeDot={<View style={styles.dotActive}/>}>
+                {(info.savedName.split('|')).map((x, index)=>{
+                    return(
+                        <View style={styles.slide}>
+                            <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image} key={x}/>
+                        </View>
+                    )
+                })}
+                
             </Swiper>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
@@ -290,14 +304,14 @@ const Talk1Sub = ({navigation, route}) => {
                         <Text style={{color: '#757575'}}>체험 관련 상세 정보는 알림으로 발송됩니다.</Text>
                     </View>
                     <View style={styles.main3Box3Main}>
-                        <View style={styles.winBox}>
-                            <View style={styles.profileBox}></View>
-                            <Text> 닉네임 님</Text>
-                        </View>
-                        <View style={styles.winBox}>
-                            <View style={styles.profileBox}></View>
-                            <Text> 닉네임 님</Text>
-                        </View>
+                        {winList.map((x, index)=>{
+                            return(
+                                <View style={styles.winBox} key={index}>
+                                    <View style={styles.profileBox}></View>
+                                    <Text style={{fontSize: 15, marginLeft: 3}}>{x.nickname} 님</Text>
+                                </View>
+                                ) 
+                        })}
                     </View>
                 </View>
             )

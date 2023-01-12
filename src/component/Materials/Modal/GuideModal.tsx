@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         marginLeft: 5,
     },
     footer:{
-        height: 60,
+        height: 50,
         backgroundColor: '#FEA100',
         justifyContent: 'center',
         alignItems: 'center',
@@ -107,11 +107,11 @@ const Main = ({modalVisible4, setModalVisible4, modalVisible2, setModalVisible2}
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{color: '#212121', fontWeight: '700', paddingBottom: 5}}>제품 설명</Text>
-                    <Text>{item.needsDescription}</Text>
+                    <Text style={{lineHeight: 20}}>{item.needsDescription}</Text>
                 </View>
                 <View style={styles.mainBox}>
                     <Text style={{color: '#212121', fontWeight: '700', paddingBottom: 5}}>구매 팁</Text>
-                    <Text>{item.needsTips}</Text>
+                    <Text style={{lineHeight: 20}}>{item.needsTips}</Text>
                 </View>
                 <View style={[styles.mainBox, {flexDirection: 'row'}]}>
                     <View style={styles.mainBoxSub}>

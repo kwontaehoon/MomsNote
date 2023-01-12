@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
     modalView:{
         width: '100%',
         height: '100%',
-        margin: 20,
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: "center",
         justifyContent: 'center',
@@ -23,8 +22,8 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
+        height: 294,
         backgroundColor: 'white',
-        marginBottom: 35,
         borderRadius: 15,
         padding: 20,
     },
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
     },
     
     mainBox:{
-        width: 278,
+        width: '100%',
         height: 44,
         borderColor: '#EEEEEE',
         borderWidth: 1,
@@ -60,9 +59,8 @@ const styles = StyleSheet.create({
     scrollBox:{
         position: 'absolute',
         height: 200,
-        width: 278,
-        top: '46.5%',
-        left: '15%',
+        width: '70%',
+        top: '48%',
         backgroundColor: 'white',
         zIndex: 999,
         shadowColor: "#000",
@@ -193,7 +191,7 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8, modal, setModal, info2}
                                         keyExtractor={item => item.id}>
                                     </FlatList>
                                 </View>
-                    <View style={[styles.modalContainer2, {height: 294}]}>
+                    <View style={styles.modalContainer2}>
                         <View style={styles.header}>
                             <TouchableOpacity style={styles.closeBox} onPress={()=>setModalVisible8(!modalVisible8)}><Icon name='close' size={24}/></TouchableOpacity>
                             <Text style={{color: '#212121', fontSize: 18, fontWeight: '500'}}>품목 추가</Text>

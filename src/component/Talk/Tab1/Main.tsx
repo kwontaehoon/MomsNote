@@ -210,7 +210,6 @@ const Talk1 = ({navigation, route}:any) => {
     dispatch(postBoard(boardSet));
   }, [boardSet]);
 
-
   useEffect(()=>{
     const momsTalk = async() => {
       const asyncStorage = await AsyncStorage.getItem('momsTalk');
@@ -331,11 +330,16 @@ const Talk1 = ({navigation, route}:any) => {
       </View>
 
       <View style={styles.main}>
-        {info !== '' && info !== undefined ?
-        <FlatList data={info} renderItem={renderItem2} onEndReached={()=>dispatch(setBoardCount({count: boardSet.page + 1}))} onEndReachedThreshold={0.6}
+        {info == '' || info == undefined ?
+        <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
+        :
+        <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{
+          console.log('데이터받자');
+          dispatch(setBoardCount({count: boardSet.page + 1}));
+        }} onEndReachedThreshold={0}
           keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
-        </FlatList> : 
-        <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}
+        </FlatList>
+        }
       </View>
       <TouchableOpacity style={styles.footer} onPress={()=>
         modalVisible.asyncStorage == null ? navigation.navigate('글쓰기') : setModalVisible(prevState => ({...prevState, open: true}))

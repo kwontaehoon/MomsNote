@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, ActivityI
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import { WebView } from 'react-native-webview';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
     container:{
@@ -37,7 +38,13 @@ const Main = ({navigation}) => {
             username: `google_${response2.data.id}`
           }
         });
-        response3.data.status !== 'success' ?  navigation.navigate('추가 정보 입력', ['kakao', response2.data.id]) : navigation.navigate('main');
+        console.log(response3);
+        
+        const asyncStorage = await AsyncStorage.getItem('login');
+        console.log('kakao asyncStorage: ', asyncStorage);
+
+        asyncStorage == '1' ? navigation.navigate('main') : navigation.navigate('추가 정보 입력', ['google', response.data.sub]);
+
     }catch(error){
         console.log('error: ', error);
     }

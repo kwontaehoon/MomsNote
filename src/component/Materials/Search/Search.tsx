@@ -84,6 +84,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: '90%',
     borderRadius: 10,
+    paddingLeft: 10,
+    paddingRight: 10
+
   },
   main3BoxHeader:{
     height: 44,
@@ -91,6 +94,7 @@ const styles = StyleSheet.create({
     marginBottom: 7,
   },
   filterBox:{
+    width: '44%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -313,9 +317,9 @@ const Navigation = ({navigation, route}) => {
     return (
       <View style={styles.main3Box} key={item.id}>
         <View style={styles.main3BoxHeader}>
-          <View style={[styles.filterBox, {width: 50}]}><Text>구매</Text></View>
-          <View style={[styles.filterBox, {width: 157}]}><Text>품목</Text></View>
-          <View style={[styles.filterBox, {width: '41%'}]}><Text>브랜드</Text></View>
+          <View style={[styles.filterBox, {width: '12%'}]}><Text>구매</Text></View>
+          <View style={styles.filterBox}><Text>품목</Text></View>
+          <View style={styles.filterBox}><Text>브랜드</Text></View>
         </View>
         {
         materialList.filter(x=> x.category == item.title) == '' ? 
@@ -334,7 +338,7 @@ const Navigation = ({navigation, route}) => {
       if(item.title == x.category && x.deleteStatus == 1){
        arr.push(
         <View style={styles.main3BoxHeader} key={index}>
-          <View style={[styles.filterBox, {width: 50}]}>  
+          <View style={[styles.filterBox, {width: '12%'}]}>  
           <Checkbox
               style={styles.checkbox}
               value={x.id == 0 ? false : true}
@@ -349,12 +353,12 @@ const Navigation = ({navigation, route}) => {
               }}
               />
           </View>
-          <TouchableOpacity style={[styles.filterBox, {width: 157, flexDirection: 'row', justifyContent: 'flex-start'}]}
+          <TouchableOpacity style={[styles.filterBox, {flexDirection: 'row', justifyContent: 'flex-start'}]}
             onPress={()=>setModalVisible4(prevState => ({...prevState, open: true, content: x}))}>
             {optionBox(x.grade)}
             <Text>{x.needsName}</Text>
           </TouchableOpacity>
-          <View style={[styles.filterBox, {width: '41%'}]}>
+          <View style={styles.filterBox}>
             {x.itemName == null ? <View style={{width: 24, height: 24, borderRadius: 12,backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
               <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}/> 
             </View> : <Text>{x.itemName}</Text>}

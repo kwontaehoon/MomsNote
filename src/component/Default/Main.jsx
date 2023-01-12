@@ -13,8 +13,9 @@ const Main = ({navigation}) => {
 
     useEffect(()=>{
         const login = async() => {
-            AsyncStorage.setItem('login', '1');
+            AsyncStorage.setItem('login', '2');
 
+            
             const asyncStorage = await AsyncStorage.getItem('login');
             console.log('asyncStorage: ', asyncStorage);
             setInfo(asyncStorage);
@@ -24,9 +25,10 @@ const Main = ({navigation}) => {
     }, [isFocused]);
 
     switch(info){
-        case '0': return(<Login navigation={navigation} />);
-        case '1': return(<Home />);
-        default: return(<Start />);
+        case null : return(<Start />);
+        case '1': return(<Login navigation={navigation} />);
+        default: return(<Home />);
+        
     }
 }
 

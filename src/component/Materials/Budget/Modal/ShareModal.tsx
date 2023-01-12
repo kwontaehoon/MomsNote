@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
     modalView:{
         width: '100%',
         height: '100%',
-        margin: 20,
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: "center",
         justifyContent: 'center',
@@ -19,10 +18,10 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 144,
+        height: 220,
         backgroundColor: 'white',
-        marginBottom: 35,
-        borderRadius: 15
+        borderRadius: 15,
+        padding: 10
     },
     modalBox:{
         height: '50%',
@@ -48,9 +47,9 @@ const CheckBoxModal = ({modalVisible2, setModalVisible2, modalVisible3, setModal
             setModalVisible2(!modalVisible2)}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
-                    <View style={[styles.modalContainer2, {height: 200}]}>
+                    <View style={styles.modalContainer2}>
                         <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, paddingTop: 10}}>내 리스트를 게시판에 공유하시겠습니까?</Text>
+                            <Text style={{fontSize: 16, lineHeight: 20, textAlign: 'center'}}>내 리스트를 게시판에 공유하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
                             <TouchableOpacity style={styles.modal} onPress={()=>(setModalVisible2(!modalVisible2), setModalVisible3(!modalVisible3))}>

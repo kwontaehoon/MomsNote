@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Switch, 
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     container:{
@@ -169,6 +170,12 @@ const Main = ({navigation}) => {
         }else setClock('end');
     };
 
+    const logout = async() => {
+        AsyncStorage.setItem('login', '1');
+        navigation.navigate('초기접근');
+        setModalVisible2(!modalVisible2);
+    }
+
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
             <View style={[styles.main, {height: isEnabled[2] ? 360 : 240}]}>
@@ -281,7 +288,7 @@ const Main = ({navigation}) => {
                             <Text style={{fontSize: 16, paddingTop: 10}}>로그아웃 하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal} onPress={()=>navigation.navigate('')}><Text style={{color: 'white', fontSize: 16}}>로그아웃</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.modal} onPress={logout}><Text style={{color: 'white', fontSize: 16}}>로그아웃</Text></TouchableOpacity>
                             <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModalVisible2(!modalVisible2)}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
                         </View>
                     </View>

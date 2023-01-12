@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 
     },
     mainBox:{
-        width: 278,
+        width: '100%',
         height: 44,
         borderColor: '#EEEEEE',
         borderWidth: 1,
@@ -62,9 +62,8 @@ const styles = StyleSheet.create({
     scrollBox:{
         position: 'absolute',
         height: 200,
-        width: 278,
+        width: '70%',
         top: '51%',
-        left: '15%',
         backgroundColor: 'white',
         zIndex: 999,
         shadowColor: "#000",
@@ -78,7 +77,7 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
     },
     scrollBox2:{
-        width: 278,
+        width: '100%',
         height: 278,
     },
     listTitle:{

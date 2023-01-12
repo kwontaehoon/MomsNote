@@ -10,7 +10,8 @@ import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
 import Pencil from '../../../../public/assets/svg/pencil.svg'
 import { useDispatch, useSelector } from 'react-redux'
-import { setBoardFilter } from '../../../Redux/Slices/BoardSlice'
+import { setMaterialShareFilter, setMaterialShareCount } from '../../../Redux/Slices/MaterialShareSlice'
+import { postMaterialShare } from '../../../Redux/Slices/MaterialShareSlice'
 
 const styles = StyleSheet.create({
   container:{
@@ -75,7 +76,6 @@ const styles = StyleSheet.create({
   modalView:{
       width: '100%',
       height: '100%',
-      margin: 20,
       backgroundColor: "rgba(0,0,0,0.5)",
       alignItems: "center",
       justifyContent: 'center',
@@ -84,9 +84,8 @@ const styles = StyleSheet.create({
   },
   modalContainer2:{
       width: '80%',
-      height: 144,
+      height: 220,
       backgroundColor: 'white',
-      marginBottom: 35,
       borderRadius: 15
   },
   modalBox:{
@@ -110,8 +109,10 @@ const Talk1 = ({navigation}) => {
 
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
-  const [info, setInfo] = useState([]);
-  console.log('info: ', info);
+  const materialShareSet = useSelector(state => { return state.materialShare.refresh });
+  console.log('materialShareSet: ', materialShareSet);
+  const info = useSelector(state => { return state.materialShare.data});
+  console.log('출산준비물 공유 리스트 info: ', info);
   const [modalVisible, setModalVisible] = useState({
     open: false,
     asyncStorage: ''
@@ -119,29 +120,12 @@ const Talk1 = ({navigation}) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');
   const [items, setItems] = useState([
-    {label: '최신순', value: '1'},
-    {label: '인기순', value: '2'},
+    {label: '최신 순', value: '1'},
+    {label: '인기 순', value: '2'},
 ]);
 
 useEffect(()=>{
-  const shareBoard = async() => {
-      try{
-      const response = await axios({
-          method: 'post',
-          url: 'https://momsnote.net/api/needs/share/board',
-          headers: { 
-            'Content-Type': 'application/json'
-          },
-          data: { }
-      });
-      setInfo(response.data);
-      console.log('response: ', response.data);
-      }catch(error){
-          console.log('comment axios error:', error);
-          setInfo(undefined);
-      }
-  } 
-  shareBoard();
+  dispatch(postMaterialShare(materialShareSet));
 }, []);
 
 
@@ -165,13 +149,15 @@ const dayCalculate = (date) => {
 }
 
 const filtering = (e) => {
-  console.log('e: ', e.label == '인기 순');
-  e.label == '인기 순' ? dispatch(setBoardFilter({filter: 'best'})) : dispatch(setBoardFilter({filter: 'new'}))
+  console.log('e: ', e.label);
+  e.label == '인기 순' ? dispatch(setMaterialShareFilter({filter: 'best'})) : dispatch(setMaterialShareFilter({filter: 'new'}))
 }
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', item)}>
-        <View style={styles.clockBox}><Text style={{color: '#9E9E9E', fontSize: 12}}>{dayCalculate(item.boardDate)}</Text></View>
+        <View style={styles.clockBox}>
+          <Text style={{color: '#9E9E9E', fontSize: 12}}>{dayCalculate(item.boardDate)}</Text>
+        </View>
         <Text>{item.title}</Text>
         <View style={styles.infoBox}>
               <Text style={{color: '#9E9E9E', fontSize: 13}}>{item.nickname} </Text>
@@ -183,7 +169,7 @@ const filtering = (e) => {
     </TouchableOpacity>
   ); 
 
-  return info == undefined ? <View><Text>gg요</Text></View> : (
+  return info == undefined || info == '' ? <View><Text>gg요</Text></View> : (
     <View style={styles.container}>
       <View style={styles.header}></View>
       <View style={styles.header2}>
@@ -201,9 +187,15 @@ const filtering = (e) => {
       </View>
 
       <View style={styles.main}>
-        <FlatList data={info} renderItem={renderItem}
-          keyExtractor={item => String(item.boardId)}>
-        </FlatList>
+        {info == undefined || info == '' ?
+        <View></View>
+        :
+        <FlatList data={info} renderItem={renderItem} onEndReached={()=>{
+          console.log('데이터받자')
+          dispatch(setMaterialShareCount({count: materialShareSet.page + 1}))
+        }} onEndReachedThreshold={0}
+          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
+        </FlatList>}
       </View>
 
       <TouchableOpacity style={styles.footer} onPress={()=>
@@ -216,7 +208,7 @@ const filtering = (e) => {
             setModalVisible(!modalVisible)}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
-                    <View style={[styles.modalContainer2, {height: 220}]}>
+                    <View style={styles.modalContainer2}>
                         <View style={styles.modalBox}>
                             <Text style={{fontSize: 16, paddingTop: 10}}>작성 중이던 게시글이 존재합니다.</Text>
                             <Text style={{fontSize: 16, paddingTop: 5}}>임시저장된 게시글을 불러오시겠습니까?</Text>

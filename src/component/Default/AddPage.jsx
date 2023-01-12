@@ -119,10 +119,24 @@ const AddPage = ({navigation, route}) => {
     console.log('info: ', info);
 
     const submit = async() => {
-        const response = await axios.post(`http://momsnote.net/signup`, {
-            info: info
-        })
-        console.log(response.data);
+        try{
+            const response = await axios({
+                method: 'post',
+                url: 'http://momsnote.net/signup',
+                headers: { 
+                    'Content-Type': 'application/json'
+                  },
+                data: info
+            });
+            console.log('response: ', response.data);
+
+            AsyncStorage.setItem('login', '2');
+            navigation.navigate('홈');
+
+            }catch(error){
+                console.log('회원가입 error:', error);
+            }
+
     }
 
     const onChange = (event, selectedDate) => {

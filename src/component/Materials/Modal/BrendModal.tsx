@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     resetBox:{
         position: 'absolute',
         right: 0,
+        zIndex: 999,
         alignItems: 'center',
         flexDirection: 'row',
     },
@@ -215,7 +216,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
                 </View>
                 <View style={styles.footer}>
                     <View style={styles.footerBox}>
-                        <TouchableOpacity style={styles.resetBox} onPress={()=>{console.log('zz'); setSelectBrand((preState)=> ({...preState, itemName: '', productName: ''}))}}>
+                        <TouchableOpacity style={styles.resetBox} onPress={()=>{console.log('zz'); setSelectBrand((preState)=> ({...preState, itemName: '', itemBrand: ''}))}}>
                             <Text style={{marginRight: 5, color: '#757575'}}>초기화</Text>
                             <Reset width={18} fill='#757575'/>
                         </TouchableOpacity>
@@ -224,7 +225,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
                     <View style={styles.footerBox2}>
                         <View style={styles.textInput}>
                             {selectBrand.itemBrand == '' ? <View style={styles.redDot}></View> : ''}
-                            <TextInput placeholder='브랜드명' value={selectBrand.itemBrand}
+                            <TextInput placeholder='브랜드명' value={selectBrand.itemBrand} numberOfLines={1}
                                 onChangeText={(e) => setSelectBrand(prevState => ({ ...prevState, itemBrand: e}))}>   
                             </TextInput>
                         </View>
@@ -233,14 +234,14 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
 
                         <View style={styles.textInput}>
                             {selectBrand.itemName == '' ? <View style={[styles.redDot, {right: '70%'}]}></View> : ''}
-                            <TextInput placeholder='제품명' value={selectBrand.itemName}
+                            <TextInput placeholder='제품명' value={selectBrand.itemName} numberOfLines={1}
                                 onChangeText={(e) => setSelectBrand(prevState => ({...prevState, itemName: e}))}>   
                             </TextInput>
                             </View>
                         </View> 
                     <TouchableOpacity style={styles.footerBox3} onPress={()=>{
-                        selectBrand.itemName == '' || selectBrand.productName == '' ? setModal(prevState => ({...prevState, open: true, content: '브랜드/제품명은 필수 입력 항목입니다.', buttonCount: 1}))
-                        : (submit(), setModalVisible2(prevState => ({...prevState, open: false})), setModal(prevState => ({...prevState, open: true, content: '리스트에 적용되었습니다.', buttonCount: 1})))
+                        selectBrand.itemName == '' || selectBrand.itemBrand == '' ? setModal(prevState => ({...prevState, open: true, content: '브랜드/제품명은 필수 입력 항목입니다.', buttonCount: 1}))
+                        : (submit(), setSelectBrand(prevState => ({...prevState, itemName: '', itemBrand: ''})), setModalVisible2(prevState => ({...prevState, open: false})), setModal(prevState => ({...prevState, open: true, content: '리스트에 적용되었습니다.', buttonCount: 1})))
                     }}><Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>적용</Text></TouchableOpacity>
                     <View style={styles.footerBox4}><Text>#해시태그</Text></View>
                 </View>

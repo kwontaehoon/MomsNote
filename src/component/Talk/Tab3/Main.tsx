@@ -7,7 +7,8 @@ import moment from 'moment'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { postExperience } from '../../../Redux/Slices/ExperienceSlice'
-import { setExperienceFilter } from '../../../Redux/Slices/ExperienceSlice'
+import { setExperienceCount, setExperienceFilter } from '../../../Redux/Slices/ExperienceSlice'
+
 
 const styles = StyleSheet.create({
   container:{
@@ -121,6 +122,11 @@ const Talk3 = ({navigation}: any) => {
       </View>
       <View style={styles.main}>
         {info.length !== 0 ? <FlatList data={info} renderItem={renderItem} numColumns={2} showsVerticalScrollIndicator={false}
+          onEndReached={()=>
+          {
+            info.length > 4 ?
+            dispatch(setExperienceCount({count: experienceSet.page + 1})) : ''
+          }} onEndReachedThreshold={0}
           keyExtractor={item => item.appCount}>
           </FlatList>:
           <View style={{marginTop: 100, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>모집중인 체험단이 없습니다.</Text></View>}

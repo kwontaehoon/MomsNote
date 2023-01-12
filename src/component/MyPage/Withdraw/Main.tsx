@@ -92,7 +92,7 @@ const Main = ({navigation}) => {
     const [modalVisible, setModalVisible] = useState(false); // modal
 
     const withdraw = async() => {
-        AsyncStorage.setItem('login', '123');
+        AsyncStorage.setItem('login', '1');
         
         setModalVisible(!modalVisible);
 

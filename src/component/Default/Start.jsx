@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import Slick from 'react-native-slick'
@@ -68,7 +69,7 @@ const Main = () => {
     const List = () => {
         if(page === 3){
             return(
-                <TouchableOpacity style={styles.footer}>
+                <TouchableOpacity style={styles.footer} onPress={() => AsyncStorage.setItem('login', '1')}>
                   <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>시작하기</Text>
                 </TouchableOpacity>
             )
