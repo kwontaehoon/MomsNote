@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Switch, Modal, Platform } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
-import Icon from 'react-native-vector-icons/FontAwesome'
+import axios from 'axios'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -95,6 +94,9 @@ const Main = ({navigation}) => {
         },
     ];
 
+    const REST_API_KEY = '7d1cb1e652f5ee8aaffc2e7ce0547c9b';
+    const LOGOUT_REDIRECT_URI = 'https://www.naver.com';
+
     const [isEnabled, setIsEnabled] = useState(Array.from({length: 3}, () => { return false })); // 스위치 토글
     const [clockDisplay, setClockDisplay] = useState(false); // 시작 종료 시간 display
     const [modalVisible, setModalVisible] = useState(false); // 알람 끄기 modal
@@ -171,9 +173,18 @@ const Main = ({navigation}) => {
     };
 
     const logout = async() => {
-        AsyncStorage.setItem('login', '1');
-        navigation.navigate('초기접근');
-        setModalVisible2(!modalVisible2);
+        try{
+            const response = await axios.get(`/oauth/logout?client_id=${REST_API_KEY}&logout_redirect_uri=${LOGOUT_REDIRECT_URI}`);
+            console.log(response.data);
+
+            AsyncStorage.setItem('login', '1');
+            navigation.navigate('초기접근');
+            setModalVisible2(!modalVisible2);
+    
+        }catch(error){
+            console.log('kakao Logout error: ', error);
+        }
+        
     }
 
     const renderItem = ({ item }) => (

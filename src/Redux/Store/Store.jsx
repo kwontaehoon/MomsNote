@@ -19,6 +19,14 @@ import boardAppFlagReducer from '../Slices/BoardAppFlagSlice'
 import boardAppReducer from '../Slices/BoardApp'
 import materialShareReducer from '../Slices/MaterialShareSlice'
 import winListReducer from '../Slices/WinListSlice'
+import boardCountReducer from '../Slices/BoardCountSlice'
+import eventCountReducer from '../Slices/EventCountSlice'
+import experienceCountReducer from '../Slices/ExperienceCountSlice'
+import guideCountReducer from '../Slices/GuideCountSlice'
+import letterCountReducer from '../Slices/LetterCountSlice'
+import periodCountReducer from '../Slices/PeriodCountSlice'
+import materialShareCountReducer from '../Slices/MaterialShareCountSlice'
+import governmentCountReducer from '../Slices/GovernmentCountSlice'
 
 export const store = configureStore({
   reducer: {
@@ -42,5 +50,13 @@ export const store = configureStore({
     boardApp: boardAppReducer,
     materialShare: materialShareReducer,
     winList: winListReducer,
+    boardCount: boardCountReducer,
+    eventCount: eventCountReducer,
+    experienceCount: experienceCountReducer,
+    guideCount: guideCountReducer,
+    letterCount: letterCountReducer,
+    periodCount: periodCountReducer,
+    materialShareCount: materialShareCountReducer,
+    governmentCount: governmentCountReducer
   },
 })

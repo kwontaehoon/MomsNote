@@ -14,6 +14,7 @@ import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
 import Pencil from '../../../../public/assets/svg/pencil.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { postBoardCount, setBoardCountRefresh } from '../../../Redux/Slices/BoardCountSlice'
 
 const styles = StyleSheet.create({
   container:{
@@ -185,6 +186,10 @@ const Talk1 = ({navigation, route}:any) => {
       title: '질문게시판'
     }
   ];
+  interface Data {
+    id: string;
+    title: string;
+  }
 
 
   const isFocused = useIsFocused();
@@ -193,6 +198,11 @@ const Talk1 = ({navigation, route}:any) => {
   console.log('info: ', info);
   const boardSet = useSelector(state => { return state.board.refresh; });
   console.log('boardSet: ', boardSet);
+  const boardCountSet = useSelector(state => { return state.boardCount.refresh; });
+  const infoCount = useSelector(state => { return state.boardCount.data; });
+  console.log('boardCount: ', infoCount);
+
+  const [loading, setLoading] = useState(false);
 
   const [modalVisible, setModalVisible] = useState({
     open: false,
@@ -207,7 +217,10 @@ const Talk1 = ({navigation, route}:any) => {
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
 
   useEffect(()=>{
+    setLoading(true);
     dispatch(postBoard(boardSet));
+    dispatch(postBoardCount(boardCountSet));
+    setLoading(false);
   }, [boardSet]);
 
   useEffect(()=>{
@@ -224,6 +237,7 @@ const Talk1 = ({navigation, route}:any) => {
     arr[e] = !arr[e];
     setFilter(arr);
     dispatch(setBoardRefresh({subcategory: DATA[e].title}));
+    dispatch(setBoardCountRefresh({subcategory: DATA[e].title}));
   }
 
   const dayCalculate = (date:number) => {
@@ -275,7 +289,7 @@ const Talk1 = ({navigation, route}:any) => {
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', {item})}>
         { item.savedName == null ? '' : <ImageBox item={item.savedName}/>  }
         <View style={[styles.mainBoxSub, {paddingTop: 5, width: '65%', alignItems: 'flex-start'}]}>
-          <Text style={{fontSize: 15, paddingTop: 2}}>{item.title} </Text>
+          <Text style={{fontSize: 15, paddingTop: 2}} numberOfLines={1}>{item.title} </Text>
           <View style={styles.mainBoxSub2}>
             <Text style={{fontSize: 13, color: '#9E9E9E'}}>{item.nickname} </Text>
             <Like width={12} height={17} fill='#9E9E9E'/>
@@ -300,14 +314,14 @@ const Talk1 = ({navigation, route}:any) => {
       <View style={styles.header2}>
         <View style={styles.header2FilterBox}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{fontSize: 16, fontWeight: '600'}}>{info == undefined ?  0 : info.length}</Text>
+            <Text style={{fontSize: 16, fontWeight: '600'}}>{infoCount}</Text>
             <Text style={{fontSize: 16}}> 건</Text>
           </View>
         </View>
         <View style={[styles.header2FilterBox, {width: '32%'}]}>
         <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순' onSelectItem={(e)=>filtering(e)}
-              textStyle={{fontSize: 13}} dropDownContainerStyle={{backgroundColor: 'white', borderColor: 'white'}}
-              setOpen={setOpen} setValue={setValue} setItems={setItems} labelStyle={{paddingLeft: 18}}/>
+              textStyle={{fontSize: 12}} dropDownContainerStyle={{backgroundColor: 'white', borderColor: 'white'}} modalTitleStyle={{borderWidth: 1}}
+              setOpen={setOpen} setValue={setValue} setItems={setItems} />
         </View>
       </View>
 
@@ -334,10 +348,10 @@ const Talk1 = ({navigation, route}:any) => {
         <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
         :
         <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{
-          console.log('데이터받자');
-          dispatch(setBoardCount({count: boardSet.page + 1}));
+          dispatch(setBoardCount({page: infoCount > (boardSet.page * 30) ? boardSet.page + 1 : boardSet.page, count: infoCount}));
         }} onEndReachedThreshold={0}
-          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
+          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
+          ListFooterComponent={loading && <ActivityIndicator />}>
         </FlatList>
         }
       </View>

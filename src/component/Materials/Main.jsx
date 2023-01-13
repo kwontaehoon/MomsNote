@@ -460,7 +460,7 @@ const save = async() => {
     </View>
   );
 
-  return info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
 
         <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>

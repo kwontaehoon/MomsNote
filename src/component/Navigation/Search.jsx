@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, KeyboardAvoidingView, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, KeyboardAvoidingView, Image, ActivityIndicator } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import axios from 'axios'
 import moment from 'moment'
@@ -13,7 +13,7 @@ import More from '../../../public/assets/svg/More.svg'
 
 const styles = StyleSheet.create({
   container:{
-    height: '97%',
+    height: '86%',
     marginTop: getStatusBarHeight(),
   },
   header:{
@@ -37,9 +37,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   main:{
-
-  },
-  main2:{
     backgroundColor: 'white',
   },
   titleBox:{
@@ -354,12 +351,12 @@ const dayCalculate2 = (date) => {
           <TouchableOpacity onPress={()=>navigation.navigate('맘스 톡')}></TouchableOpacity>
         </View>
       </View>
-      <View style={styles.main2}>
+      <View style={styles.main}>
         { experienceSearch !== undefined && momsSearch !== undefined && materialSearch !== undefined && commentSearch !== undefined?
-        <FlatList data={DATA} renderItem={renderItem}
+        <FlatList data={DATA} renderItem={renderItem} 
             keyExtractor={item => item.title} >
         </FlatList>
-        : ''
+        :  ''
         }
       </View>
     </View>

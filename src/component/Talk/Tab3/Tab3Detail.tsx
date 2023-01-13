@@ -195,7 +195,6 @@ const Talk1Sub = ({navigation, route}) => {
 
     const info = route.params;
     console.log('체험단 상세: ', route.params);
-    console.log(info.savedName.split('|').map(x => console.log('x: ', x)));
 
     const DATA = [
         {
@@ -206,7 +205,10 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
-    const [async, setAsync] = useState();
+
+    const [async, setAsync] = useState(); // 임시저장 및 체험단 정보 저장 유무
+    const [userInfo, setUserInfo] = useState(); // user 정보 asyncStorage
+    // console.log('userInfo: ', JSON.parse(userInfo).babyName);
     const boardLikeFlag = useSelector(state => { return state.boardLikeFlag.data });
     const boardLike = useSelector(state => { return state.boardLikeFlag.data });
     const boardLikeFlagSet = useSelector(state => { return state.boardLikeFlag.refresh });
@@ -214,8 +216,6 @@ const Talk1Sub = ({navigation, route}) => {
     const boardAppFlag = useSelector(state => {return state.boardAppFlag.data});
     const winList = useSelector(state => { return state.winList.data });
     console.log('선정인원: ', winList);
-
-    boardAppFlag.applicationId == null ? console.log('null') : console.log('aaaaaa', boardAppFlag.applicationId);
     
     const [filter, setFilter] = useState(false);
     const [modalVisible, setModalVisible] = useState(false); // 체험단 신청정보 입력 -> asnyc storage
@@ -228,14 +228,17 @@ const Talk1Sub = ({navigation, route}) => {
         // dispatch(postBoardLike({ boardId: info.boardId, type: 'plus'}));
         dispatch(postBoardAppFlag({ experienceId: route.params.experienceId }));
         dispatch(postWinList({ experienceId: info.experienceId }));
-
     }, []);
 
     useEffect(()=>{
         const load = async() => {
             const asyncStorage = await AsyncStorage.getItem('application');
-            console.log('detail asyncStorage: ', asyncStorage);
+            const asyncStorage2 = await AsyncStorage.getItem('user');
+            setUserInfo(asyncStorage2);
             setAsync(asyncStorage);
+
+            const aaa = winList.filter(x=> x.nickname ==JSON.parse(userInfo).babyName);
+            console.log('aaa: ', aaa == '');
         }
         load();
     }, [isFocused]);
@@ -400,13 +403,13 @@ const Talk1Sub = ({navigation, route}) => {
         <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
         </FlatList>
-        {filter ? 
+        {filter ? winList.filter(x=> x.nickname == JSON.parse(userInfo).babyName) == '' ?  '' :
             <View style={styles.footer}>
                 <TouchableOpacity style={[styles.footerBox2, {width: '100%'}]} onPress={()=>setModalVisible3(!modalVisible3)}>
                     <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>컨텐츠 등록</Text>
                 </TouchableOpacity>
             </View>
-            :<View style={styles.footer}>
+            : <View style={styles.footer}>
             {boardLikeFlagSet == 0 ? 
             <TouchableOpacity style={[styles.footerBox, {width: '20%'}]} onPress={recommend}>
                 <Like width={20} fill='#BDBDBD'/>  

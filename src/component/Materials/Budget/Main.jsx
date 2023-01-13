@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSelector } from 'react-redux'
 
@@ -61,7 +60,6 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       flexDirection: 'row',
-      
     },
     footer:{
       height: '20%',
@@ -201,8 +199,8 @@ const Talk1Sub = ({route}) => {
       if(x.category == title && x.itemName !== null){
           arr.push(
         <TouchableOpacity style={styles.mainBox3} onLongPress={()=>setModal5(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1} key={index}>
-            <View style={[styles.filterBox2, {justifyContent: 'flex-start'}]}><Text style={{fontWeight: '500'}}>{x.needsName}</Text></View>
-            <View style={styles.filterBox2}><Text>{x.itemName == null ? '-' : x.itemName}</Text></View>
+            <View style={[styles.filterBox2, {justifyContent: 'flex-start'}]}><Text style={{fontWeight: '500'}} >{x.needsName}</Text></View>
+            <View style={styles.filterBox2}><Text numberOfLines={2}>{x.itemName == null ? '-' : x.itemName}</Text></View>
             <TouchableOpacity style={[styles.filterBox2, {justifyContent: 'flex-end'}]} onLongPress={()=>setModal6(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1}>
               <Text style={{fontWeight: '600'}}>{(x.itemPrice).toLocaleString()}</Text>
               <Text> 원</Text>

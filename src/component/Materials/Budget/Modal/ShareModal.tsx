@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         height: 220,
         backgroundColor: 'white',
         borderRadius: 15,
-        padding: 10
+        padding: 15
     },
     modalBox:{
         height: '50%',
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 const CheckBoxModal = ({modalVisible2, setModalVisible2, modalVisible3, setModalVisible3}) => {
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modalVisible2}
+    <Modal animationType="fade" transparent={true} visible={modalVisible2} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible2(!modalVisible2)}}>
             <View style={styles.modalContainer}>

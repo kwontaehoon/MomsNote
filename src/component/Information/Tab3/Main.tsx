@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { postGovernment, setGovernmentCount } from '../../../Redux/Slices/Government'
+import { postGovernmentCount } from '../../../Redux/Slices/GovernmentCountSlice'
 
 const styles = StyleSheet.create({
   container:{
@@ -53,9 +54,14 @@ const Talk1 = ({navigation}) => {
   const info = useSelector(state => { return state.government.data });
   console.log('정부지원혜택 info: ', info);
   const governmentSet = useSelector(state => { return state.government.refresh });
+  const infoCount = useSelector(state => { return state.governmentCount.data });
+  console.log('정부지원혜택 갯수: ', infoCount);
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(()=>{
     dispatch(postGovernment(governmentSet));
+    dispatch(postGovernmentCount());
   }, []);
 
   const renderItem = ({ item }) => (
@@ -68,13 +74,20 @@ const Talk1 = ({navigation}) => {
     <View style={styles.container}>
       <View style={styles.header}></View>
       <View style={styles.header2}>
-            <Text style={{fontSize: 16, fontWeight: '600'}}>{info.length}</Text>
+            <Text style={{fontSize: 16, fontWeight: '600'}}>{infoCount}</Text>
             <Text style={{fontSize: 16}}> 건</Text>
       </View>
       <View style={styles.main}>
-        <FlatList data={info} renderItem={renderItem} onEndReached={()=>{console.log('밑에닿음'); dispatch(setGovernmentCount({count: governmentSet.page + 1}))}} onEndReachedThreshold={0.6}
-          keyExtractor={item => String(item.boardId)}>
+      {info == '' || info == undefined ?
+        <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
+        :
+        <FlatList data={info} renderItem={renderItem} onEndReached={()=>{
+          dispatch(setGovernmentCount({page: infoCount > (governmentSet.page * 30) ? governmentSet.page + 1 : governmentSet.page, count: infoCount}));
+        }} onEndReachedThreshold={0}
+          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
+          ListFooterComponent={loading && <ActivityIndicator />}>
         </FlatList>
+        }
       </View>
      </View>
   )

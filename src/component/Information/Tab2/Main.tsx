@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native'
 import moment from 'moment'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { postEvent, setEventRefresh } from '../../../Redux/Slices/EventSlice'
 import { postGuide } from '../../../Redux/Slices/GuideSlice'
+import { postEventCount } from '../../../Redux/Slices/EventCountSlice'
+import { setEventCount } from '../../../Redux/Slices/EventSlice'
 
 const styles = StyleSheet.create({
   container:{
@@ -106,15 +108,23 @@ const Talk1 = ({navigation}: any) => {
     },
   ];
   
-  const dispatch = useDispatch();
-  const eventSet = useSelector(state => { return state.event.refresh });
-  const info = useSelector(state => { return state.event.data; });
-  const [week, setWeek] = useState([true, false, false, false, false, false,
-  false, false, false, false, false, false]);
-  console.log('행사정보: ', info);
+    const dispatch = useDispatch();
+    const eventSet = useSelector(state => { return state.event.refresh });
+    console.log('eventSet: ', eventSet);
+    const info = useSelector(state => { return state.event.data; });
+    console.log('행사정보: ', info);
+    const [week, setWeek] = useState([true, false, false, false, false, false,
+    false, false, false, false, false, false]);
+    const infoCount = useSelector(state => { return state.eventCount.data; });
+    console.log('행사정보 갯수: ', infoCount);
+
+    const [loading, setLoading] = useState(false);
 
     useEffect(()=>{
+      setLoading(true);
       dispatch(postEvent(eventSet));
+      dispatch(postEventCount(eventSet));
+      setLoading(false);
     }, [eventSet]);
 
     const change = (e) => { // 몇 주차 border, 글자두께 변경
@@ -130,7 +140,13 @@ const Talk1 = ({navigation}: any) => {
       
       console.log('두번째 e: ', e);
 
-      dispatch(postEvent({
+      dispatch(setEventRefresh({
+        page: 1,
+        count: 1,
+        start: `${new Date().getFullYear()}-${e}`,
+        end: `${new Date().getFullYear()}-${e}`
+      }));
+      dispatch(postEventCount({
         start: `${new Date().getFullYear()}-${e}`,
         end: `${new Date().getFullYear()}-${e}`
       }))
@@ -163,15 +179,20 @@ const Talk1 = ({navigation}: any) => {
        <View style={styles.header}>
           <View style={styles.headerBox}><Text style={{fontSize: 18, fontWeight: '600'}}>{moment().format('YYYY')}년</Text></View>
           <View style={styles.headerBox2}>
-            <FlatList data={DATA2} renderItem={renderItem2}
+          <FlatList data={DATA2} renderItem={renderItem2}
               keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
             </FlatList>
           </View>
         </View>
         <View style={styles.main}>
-          <FlatList data={info} renderItem={renderItem}
-              keyExtractor={item => item.boardId}>
-          </FlatList>
+        {info !== undefined ?
+        <FlatList data={info} renderItem={renderItem} onEndReached={()=>{
+          dispatch(setEventCount({page: infoCount > (eventSet.page * 30) ? eventSet.page + 1 : eventSet.page, count: infoCount}));
+        }} onEndReachedThreshold={0}
+          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
+          ListFooterComponent={loading && <ActivityIndicator />}>
+        </FlatList> : 
+        <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}
         </View>
      </View>
   )

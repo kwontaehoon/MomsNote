@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, Animated } from 'react-native'
-import Icon from 'react-native-vector-icons/Feather'
+import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, Animated, KeyboardAvoidingView } from 'react-native'
 import axios from 'axios'
 
 const styles = StyleSheet.create({
@@ -11,7 +10,6 @@ const styles = StyleSheet.create({
     modalView:{
         width: '100%',
         height: '100%',
-        margin: 20,
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: "center",
         justifyContent: 'flex-end',
@@ -20,12 +18,11 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '100%',
-        borderRadius: 15,
     },
     main:{
-        height: 470,
         backgroundColor: 'white',
-        borderRadius: 15,
+        borderTopStartRadius: 15,
+        borderTopEndRadius: 15
     },
     mainBox:{
         height: 70,
@@ -36,7 +33,7 @@ const styles = StyleSheet.create({
         padding: 15,
     },
     textInput:{
-        height: 60,
+        height: 50,
         borderWidth: 1,
         borderColor: '#EEEEEE',
         paddingLeft: 15,
@@ -93,32 +90,35 @@ const CheckBoxModal = ({modalVisible3, setModalVisible3, modalVisible4, setModal
     }
 
     const submit = async() => {
-        try{
-            const response = await axios({
-                method: 'post',
-                headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIyMDczODUsImV4cCI6MTY3NDc5OTM4NX0.LRECgH_NBe10ueCfmefEzEueIrYukBHnXoKRfVqIurQ', 
-                    'Content-Type': 'application/json'
-                  },
-                url: 'https://momsnote.net/api/needs/share/save',
-                data : info
-        });
-        console.log('response: ', response.data);
-         }catch(error){
-             console.log('출산공유리스트 axios error: ', error);
-        }
-        setModalVisible3(!modalVisible3);
-        setModalVisible4(!modalVisible4);
+        if(info.title == '' || info.contents == ''){
+            opacity_ani()
+        }else try{
+                const response = await axios({
+                    method: 'post',
+                    headers: { 
+                        'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIyMDczODUsImV4cCI6MTY3NDc5OTM4NX0.LRECgH_NBe10ueCfmefEzEueIrYukBHnXoKRfVqIurQ', 
+                        'Content-Type': 'application/json'
+                    },
+                    url: 'https://momsnote.net/api/needs/share/save',
+                    data : info
+            });
+            console.log('response: ', response.data);
+            setModalVisible3(!modalVisible3);
+            setModalVisible4(!modalVisible4);
+            }catch(error){
+                console.log('출산공유리스트 axios error: ', error);
+            }
     }
 
 
   return (
-    <Modal animationType="slide" transparent={true} visible={modalVisible3}
+    <Modal animationType="slide" transparent={true} visible={modalVisible3} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible3(!modalVisible3)}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
-                    <View style={[styles.modalContainer2]}>
+                    <KeyboardAvoidingView style={styles.modalContainer2} behavior='padding'>
+
                        <View style={styles.main}>
                             <View style={styles.mainBox}><Text style={{fontSize: 15}}>출산 리스트 공유</Text></View>
                             <View style={styles.mainBox2}>
@@ -134,7 +134,7 @@ const CheckBoxModal = ({modalVisible3, setModalVisible3, modalVisible4, setModal
                                 <Text style={{color: 'white', fontSize: 18, fontWeight: '600'}}>공유하기</Text>
                             </TouchableOpacity>
                        </View>
-                    </View>
+                    </KeyboardAvoidingView>
                 </View>
             </View>
         </Modal>

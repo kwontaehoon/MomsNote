@@ -15,7 +15,6 @@ const Main = ({navigation}) => {
         const login = async() => {
             AsyncStorage.setItem('login', '2');
 
-            
             const asyncStorage = await AsyncStorage.getItem('login');
             console.log('asyncStorage: ', asyncStorage);
             setInfo(asyncStorage);

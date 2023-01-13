@@ -101,7 +101,7 @@ const Gallery = ({navigation, route}) => {
             console.log('a');
           return(
             <View style={styles.mainBox}>
-              <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image} key={x}/>
+              <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image} key={x} resizeMode='contain'/>
             </View>
           )}else{
             return(

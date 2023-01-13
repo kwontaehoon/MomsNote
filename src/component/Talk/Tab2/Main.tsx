@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal, ActivityIndicator } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
 import axios from 'axios'
 import moment from 'moment'
@@ -12,6 +12,7 @@ import Pencil from '../../../../public/assets/svg/pencil.svg'
 import { useDispatch, useSelector } from 'react-redux'
 import { setMaterialShareFilter, setMaterialShareCount } from '../../../Redux/Slices/MaterialShareSlice'
 import { postMaterialShare } from '../../../Redux/Slices/MaterialShareSlice'
+import { postMaterialShareCount } from '../../../Redux/Slices/MaterialShareCountSlice'
 
 const styles = StyleSheet.create({
   container:{
@@ -113,6 +114,10 @@ const Talk1 = ({navigation}) => {
   console.log('materialShareSet: ', materialShareSet);
   const info = useSelector(state => { return state.materialShare.data});
   console.log('출산준비물 공유 리스트 info: ', info);
+  const infoCount = useSelector(state => { return state.materialShareCount.data});
+  console.log('출산 준비물 공유 리스트 infoCount: ', infoCount);
+
+  const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState({
     open: false,
     asyncStorage: ''
@@ -125,7 +130,10 @@ const Talk1 = ({navigation}) => {
 ]);
 
 useEffect(()=>{
+  setLoading(true);
   dispatch(postMaterialShare(materialShareSet));
+  dispatch(postMaterialShareCount());
+  setLoading(false);
 }, []);
 
 
@@ -175,14 +183,14 @@ const filtering = (e) => {
       <View style={styles.header2}>
         <View style={[styles.header2FilterBox, {paddingBottom: 5}]}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{fontSize: 16, fontWeight: '600'}}></Text>
-            <Text style={{fontSize: 16}}>{info.length} 건</Text>
+            <Text style={{fontSize: 16, fontWeight: '600'}}>{infoCount}</Text>
+            <Text style={{fontSize: 16}}> 건</Text>
           </View>
         </View>
         <View style={[styles.header2FilterBox, {width: '32%'}]}>
         <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순' onSelectItem={(e)=>filtering(e)}
               textStyle={{fontSize: 13}} dropDownContainerStyle={{backgroundColor: 'white', borderColor: 'white'}}
-              setOpen={setOpen} setValue={setValue} setItems={setItems} labelStyle={{paddingLeft: 18}}/>
+              setOpen={setOpen} setValue={setValue} setItems={setItems}/>
         </View>
       </View>
 
@@ -191,10 +199,10 @@ const filtering = (e) => {
         <View></View>
         :
         <FlatList data={info} renderItem={renderItem} onEndReached={()=>{
-          console.log('데이터받자')
-          dispatch(setMaterialShareCount({count: materialShareSet.page + 1}))
+          dispatch(setMaterialShareCount({page: infoCount > (materialShareSet.page * 30) ? materialShareSet.page + 1 : materialShareSet.page, count: infoCount}))
         }} onEndReachedThreshold={0}
-          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
+          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
+          ListFooterComponent={loading && <ActivityIndicator />}>
         </FlatList>}
       </View>
 

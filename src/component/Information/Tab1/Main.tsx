@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import DropDownPicker from 'react-native-dropdown-picker'
-import axios from 'axios'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { postGuide, setGuideCount, setGuideRefresh } from '../../../Redux/Slices/GuideSlice'
+import { postGuideCount } from '../../../Redux/Slices/GuideCountSlice'
+import { postGuide, setGuideRefresh, setGuideCount } from '../../../Redux/Slices/GuideSlice'
+import { setGuideCountRefresh } from '../../../Redux/Slices/GuideCountSlice'
 
 const styles = StyleSheet.create({
   container:{
@@ -89,13 +88,23 @@ const Talk1 = ({navigation}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.guide.data });
+  console.log('맘스가이드 info: ', info);
   const guideSet = useSelector(state => { return state.guide.refresh });
   console.log('guideSet: ', guideSet);
-  console.log('맘스가이드 info: ', info);
+  const infoCount = useSelector(state => { return state.guideCount.data });
+  console.log('맘스가이드 info 갯수: ', infoCount);
+  const guideCountSet = useSelector(state => { return state.guideCount.refresh });
+  console.log('guideCountSet: ', guideCountSet);
+
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(()=>{
+    setLoading(true);
     dispatch(postGuide(guideSet));
+    dispatch(postGuideCount(guideCountSet));
+    setLoading(false);
   }, [guideSet]);
 
   
@@ -105,6 +114,7 @@ const Talk1 = ({navigation}) => {
     arr[e] = !arr[e];
     setFilter(arr);
     dispatch(setGuideRefresh({subcategory: DATA[e].title}));
+    dispatch(setGuideCountRefresh({subcategory: DATA[e].title}));
   }
 
   const renderItem = ({ item }) => (
@@ -133,15 +143,18 @@ const Talk1 = ({navigation}) => {
       <View style={styles.header2}>
         <View style={styles.header2FilterBox}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{fontSize: 16, fontWeight: '600'}}>{info.length}</Text>
+            <Text style={{fontSize: 16, fontWeight: '600'}}>{infoCount}</Text>
             <Text style={{fontSize: 16}}> 건</Text>
           </View>
         </View>
       </View>
       <View style={styles.main}>
         {info.length !== 0 ?
-        <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{console.log('밑에닿음'); dispatch(setGuideCount({count: guideSet.page + 1}))}} onEndReachedThreshold={0.6}
-          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
+        <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{
+          dispatch(setGuideCount({page: infoCount > (guideSet.page * 30) ? guideSet.page + 1 : guideSet.page, count: infoCount}));
+        }} onEndReachedThreshold={0}
+          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
+          ListFooterComponent={loading && <ActivityIndicator />}>
         </FlatList> : 
         <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}
       </View>

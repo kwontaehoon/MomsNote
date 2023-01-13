@@ -32,14 +32,17 @@ export const eventSlice = createSlice({
     initialState,
     reducers: {
       setEventRefresh:(state, action)=>{
-        console.log('카테고리');
-        state.refresh.subcategory = action.payload.subcategory;
+        console.log('refresh 카운트');
+        console.log('refresh state: ', state);
+        state.refresh.start = action.payload.start;
+        state.refresh.end = action.payload.end;
       },
       setEventCount:(state, action)=>{
         console.log('카운트');
         console.log('state: ', state);
         console.log('action: ', action);
         state.refresh.page = action.payload.page;
+        state.refresh.count = action.payload.count;
       }
     },
     extraReducers: (bulider) => {

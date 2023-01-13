@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, FlatList } from 'react-native'
-import Icon from 'react-native-vector-icons/AntDesign'
-import Icon2 from 'react-native-vector-icons/FontAwesome'
-import DropDownPicker from 'react-native-dropdown-picker'
+import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native'
 import axios from 'axios'
-import First from '../../Modal/First'
+
+import Close from '../../../../../public/assets/svg/Close.svg'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -25,10 +23,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 15,
         padding: 20,
-        height: 220,
     },
     header:{
-        height: '25%',
+        height: 50,
         alignItems: 'center',
     },
     closeBox:{
@@ -39,22 +36,27 @@ const styles = StyleSheet.create({
         zIndex: 1
     },
     main:{
-
+        marginBottom: 15
     },
     mainBox:{
         height: 44,
         borderColor: '#EEEEEE',
         borderWidth: 1,
-        paddingRight: 15,
+        paddingRight: 28,
+        justifyContent: 'center'
+    },
+    priceBox:{
+        position: 'absolute',
+        right: 10,
     },
     footer:{
         height: 44,
-        marginTop: 20,
+        marginBottom: 20,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 4,
         position: 'relative',
-        zIndex: -999
+        zIndex: -999,
     },
 
 })
@@ -89,27 +91,34 @@ const CheckBoxModal = ({modal6, setModal6}) => {
     }
 
   return modal6.content == null ? <View></View> : (
-    <Modal animationType="fade" transparent={true} visible={modal6.open}
+    <Modal animationType="fade" transparent={true} visible={modal6.open} statusBarTranslucent={true}
             onRequestClose={() => {
             setModal6(!modal6)}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
-                    <View style={styles.modalContainer2}>
+                    <KeyboardAvoidingView style={styles.modalContainer2} behavior='padding'>
                         <View style={styles.header}>
-                            <TouchableOpacity style={styles.closeBox} onPress={()=>setModal6(prevState=>({...prevState, open: false}))}><Icon name='close' size={24}/></TouchableOpacity>
+                            <TouchableOpacity style={styles.closeBox} onPress={()=>setModal6(prevState=>({...prevState, open: false}))}>
+                                <Close />
+                            </TouchableOpacity>
                             <Text style={{color: '#212121', fontSize: 18, fontWeight: '500'}}>가격 수정</Text>
                         </View>
                         <View style={styles.main}>
                             <View style={{marginBottom: 10}}><Text>{modal6.content.needsName}</Text></View>
-                            <TextInput style={styles.mainBox} textAlign='right' placeholder={`${(modal6.content.itemPrice).toLocaleString()}`} placeholderTextColor={'black'}
-                                onChangeText={(e) => setInfo((prevState) => ({ ...prevState, needsId: modal6.content.needsId, itemPrice: Number(e)}))}>
-                            </TextInput>
+
+                            <View style={styles.mainBox}>
+                                <View style={styles.priceBox}><Text>원</Text></View>
+                                <TextInput style={{fontWeight: '600'}} textAlign='right' placeholder={`${(modal6.content.itemPrice).toLocaleString()}`} placeholderTextColor={'black'}
+                                    onChangeText={(e) => setInfo((prevState) => ({ ...prevState, needsId: modal6.content.needsId, itemPrice: Number(e)}))}
+                                    value={info.itemPrice} keyboardType='number-pad'>
+                                </TextInput>
+                            </View>
                         </View>
                         
                             <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={edit}>
                                 <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>적용</Text>
                             </TouchableOpacity> 
-                    </View>
+                    </KeyboardAvoidingView>
                 </View>
             </View>
         </Modal>

@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 })
 
 
-const Talk1 = ({navigation, week}: any) => {
+const Talk1 = ({navigation, week}) => {
 
   const [info, setInfo] = useState([]);
   console.log('오늘의편지 info: ', info);

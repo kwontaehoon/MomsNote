@@ -14,6 +14,7 @@ import * as Linking from 'expo-linking';
 import axios from 'axios'
 import Modal from './Modal/WithdrawModal'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import jwtDecode from 'jwt-decode'
 
 
 const styles = StyleSheet.create({
@@ -98,8 +99,12 @@ const Main = ({navigation, route}) => {
                 }
             });
             const asyncStorage = await AsyncStorage.getItem('login');
+            console.log('response2: ', response2);
 
-            asyncStorage == '1' ? (navigation.navigate('main'), AsyncStorage.setItem('login', '2')) : navigation.navigate('추가 정보 입력', ['google', response.data.sub]);
+            const decoded = jwtDecode(response2.data.token);
+            console.log('google decoded: ', decoded);
+
+            asyncStorage == '1' ? (navigation.navigate('main'), AsyncStorage.setItem('login', '2')) : navigation.navigate('추가 정보 입력', ['google', response.data.sub, decoded.id]);
 
 
         }catch(error){

@@ -41,7 +41,8 @@ export const guideSlice = createSlice({
         console.log('카운트');
         console.log('state: ', state);
         console.log('action: ', action);
-        state.refresh.page = action.payload.count;
+        state.refresh.page = action.payload.page;
+        state.refresh.count = action.payload.count;
       }
     },
     extraReducers: (bulider) => {
@@ -52,7 +53,7 @@ export const guideSlice = createSlice({
     )}
   })
 
-export const data = (state) => state.boardSlice.data;
+export const data = (state) => state.guideSlice.data;
 
 export const { setGuideRefresh } = guideSlice.actions;
 export const { setGuideCount } = guideSlice.actions;

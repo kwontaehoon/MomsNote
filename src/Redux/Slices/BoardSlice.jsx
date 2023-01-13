@@ -40,7 +40,8 @@ export const boardSlice = createSlice({
         console.log('카운트');
         console.log('state: ', state);
         console.log('action: ', action);
-        state.refresh.page = action.payload.count;
+        state.refresh.page = action.payload.page;
+        state.refresh.count = action.payload.count;
       },
       setBoardFilter:(state, action)=>{
         console.log('필터링');

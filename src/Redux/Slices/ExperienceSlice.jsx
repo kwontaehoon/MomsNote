@@ -38,6 +38,7 @@ export const experienceSlice = createSlice({
         console.log('state: ', state);
         console.log('action: ', action);
         state.refresh.count = action.payload.count;
+        state.refresh.page = action.payload.page;
       },
       setExperienceFilter:(state, action)=>{
         console.log('필터링');

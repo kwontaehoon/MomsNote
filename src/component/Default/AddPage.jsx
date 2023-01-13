@@ -119,24 +119,37 @@ const AddPage = ({navigation, route}) => {
     console.log('info: ', info);
 
     const submit = async() => {
-        try{
-            const response = await axios({
-                method: 'post',
-                url: 'http://momsnote.net/signup',
-                headers: { 
-                    'Content-Type': 'application/json'
-                  },
-                data: info
-            });
-            console.log('response: ', response.data);
+        const userInfo = {
+            profileImage: '',
+            memberName: '권신청',
+            userId: `${route.params[2]}`,
+        }
+        console.log('추가된 info: ', userInfo);
+        AsyncStorage.setItem('user', JSON.stringify(Object.assign(info, userInfo)));
 
-            AsyncStorage.setItem('login', '2');
-            navigation.navigate('홈');
+        const c = await AsyncStorage.getItem('user');
+        const d = await AsyncStorage.getAllKeys();
+        console.log('c: ', c);
+        console.log('d: ', d);
 
-            }catch(error){
-                console.log('회원가입 error:', error);
-            }
+        // try{
+        //     const response = await axios({
+        //         method: 'post',
+        //         url: 'http://momsnote.net/signup',
+        //         headers: { 
+        //             'Content-Type': 'application/json'
+        //           },
+        //         data: info
+        //     });
+        //     console.log('response: ', response.data);
 
+        //     AsyncStorage.setItem('login', '2');
+            
+        //     navigation.navigate('홈');
+
+        //     }catch(error){
+        //         console.log('회원가입 error:', error);
+        //     }
     }
 
     const onChange = (event, selectedDate) => {
