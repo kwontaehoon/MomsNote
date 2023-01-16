@@ -66,10 +66,10 @@ const Main = ({navigation, route}) => {
 
     WebBrowser.maybeCompleteAuthSession();
     const [request, response, promptAsync] = Google.useAuthRequest({
-        expoClientId: '444409448687-7dlgufei4unruhfnpq0o885t4paq1bc0.apps.googleusercontent.com',
+        expoClientId: '673560692803-8gner3okerjtf8444afhnqptdjfeh6vl.apps.googleusercontent.com',
         // expo: 'https://auth.expo.io/@gju04195/Project1Type',
-        iosClientId: '444409448687-r6mi5mhrcc1hifm978d7t4lqaia89tps.apps.googleusercontent.com',
-        androidClientId: '444409448687-617ta8ugivu8ekfeh1fuiq6nsup96vc9.apps.googleusercontent.com',
+        iosClientId: '673560692803-h11u319oi5pni5p6ng84ddvkm3gt6p21.apps.googleusercontent.com',
+        androidClientId: '673560692803-b20hb831hqiqh9u1ndvr7dntsr7hdl3h.apps.googleusercontent.com',
       });
 
     React.useEffect(() => {
@@ -98,13 +98,12 @@ const Main = ({navigation, route}) => {
                     username: `google_${response.data.sub}`
                 }
             });
-            const asyncStorage = await AsyncStorage.getItem('login');
             console.log('response2: ', response2);
 
             const decoded = jwtDecode(response2.data.token);
             console.log('google decoded: ', decoded);
 
-            asyncStorage == '1' ? (navigation.navigate('main'), AsyncStorage.setItem('login', '2')) : navigation.navigate('추가 정보 입력', ['google', response.data.sub, decoded.id]);
+            response2.data.status == 'success' ? (navigation.navigate('main'), AsyncStorage.setItem('login', '2')) : navigation.navigate('추가 정보 입력', ['google', response.data.sub, decoded.id]);
 
 
         }catch(error){
@@ -177,6 +176,7 @@ const Main = ({navigation, route}) => {
                 <Text style={{color: '#212121', fontWeight: '400'}}>Google로 시작하기</Text>
             </TouchableOpacity>
             <IosLogin />
+            
             <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#000000'}]}>
                 <View style={styles.iconBox}><Apple width={22} height={20}/></View>
                 <Text style={{color: 'white', fontWeight: '400'}}>Apple로 시작하기</Text>

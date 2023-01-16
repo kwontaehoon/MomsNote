@@ -100,7 +100,6 @@ const AddPage = ({navigation, route}) => {
     console.log('route params: ', route.params);
 
     const [isChecked, setChecked] = useState(Array.from({length: 4}, ()=>{return false})); // check box
-    console.log(isChecked[3]);
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
 
     const [date, setDate] = useState(new Date());
@@ -121,7 +120,7 @@ const AddPage = ({navigation, route}) => {
     const submit = async() => {
         const userInfo = {
             profileImage: '',
-            memberName: '권신청',
+            memberName: '',
             userId: `${route.params[2]}`,
         }
         console.log('추가된 info: ', userInfo);
@@ -129,27 +128,27 @@ const AddPage = ({navigation, route}) => {
 
         const c = await AsyncStorage.getItem('user');
         const d = await AsyncStorage.getAllKeys();
-        console.log('c: ', c);
+        console.log('c: ', JSON.parse(c));
         console.log('d: ', d);
 
-        // try{
-        //     const response = await axios({
-        //         method: 'post',
-        //         url: 'http://momsnote.net/signup',
-        //         headers: { 
-        //             'Content-Type': 'application/json'
-        //           },
-        //         data: info
-        //     });
-        //     console.log('response: ', response.data);
+        try{
+            const response = await axios({
+                method: 'post',
+                url: 'http://momsnote.net/signup',
+                headers: { 
+                    'Content-Type': 'application/json'
+                  },
+                data: info
+            });
+            console.log('response: ', response.data);
 
-        //     AsyncStorage.setItem('login', '2');
+            AsyncStorage.setItem('login', '2');
             
-        //     navigation.navigate('홈');
+            navigation.navigate('홈');
 
-        //     }catch(error){
-        //         console.log('회원가입 error:', error);
-        //     }
+            }catch(error){
+                console.log('회원가입 error:', error);
+            }
     }
 
     const onChange = (event, selectedDate) => {

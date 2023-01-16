@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Switch, Modal, Platform } from 'react-native'
 import axios from 'axios'
 import DateTimePicker from '@react-native-community/datetimepicker'
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     main2:{
-        height: 120,
+
     },
     main2Box:{
         height: 60,
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         paddingRight: 15,
     },
     main3:{
-        height: 360,
+
     },
     modalContainer:{
         justifyContent: "center",
@@ -108,7 +108,17 @@ const Main = ({navigation}) => {
     const [clock, setClock] = useState('start');
 
     const [alarmStart, setAlarmStart] = useState('22:00');
-    const [alarmEnd, setAlarmEnd] = useState('07:00')
+    const [alarmEnd, setAlarmEnd] = useState('07:00');
+
+    const [token, setToken] = useState();
+
+    useEffect(()=>{
+        const user = async() => {
+            const asyncStorage = await AsyncStorage.getItem('token');
+            setToken(asyncStorage);
+        }
+        user();
+    })
 
     const modal = (e) => {
         let arr = [...isEnabled];
@@ -174,17 +184,21 @@ const Main = ({navigation}) => {
 
     const logout = async() => {
         try{
-            const response = await axios.get(`/oauth/logout?client_id=${REST_API_KEY}&logout_redirect_uri=${LOGOUT_REDIRECT_URI}`);
-            console.log(response.data);
-
+            const response = await axios({
+                method: 'post',
+                url: `https://kapi.kakao.com/v1/user/logout`,
+                headers: { 
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                  },
+            });
+            console.log('response: ', response.data);
+            }catch(error){
+                console.log('kakao logout axios error: ', error);
+            }
             AsyncStorage.setItem('login', '1');
-            navigation.navigate('초기접근');
             setModalVisible2(!modalVisible2);
-    
-        }catch(error){
-            console.log('kakao Logout error: ', error);
-        }
-        
+            navigation.navigate('초기접근');
     }
 
     const renderItem = ({ item }) => (
@@ -289,7 +303,7 @@ const Main = ({navigation}) => {
                 </View>
             </View>
         </Modal>
-        <Modal animationType="fade" transparent={true} visible={modalVisible2}
+        <Modal animationType="fade" transparent={true} visible={modalVisible2} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible2(!modalVisible2)}}>
             <View style={styles.modalContainer}>
