@@ -225,6 +225,7 @@ const Talk1Sub = ({navigation, route}) => {
     const [userInfo, setUserInfo] = useState();
 
     const animation = useRef(new Animated.Value(0)).current;
+    const flatlistRef = useRef(null);
 
     useEffect(()=>{ // 댓글 목록
         dispatch(postComment(commentData));
@@ -274,6 +275,7 @@ const Talk1Sub = ({navigation, route}) => {
             }
         dispatch(postBoard(boardData));
         dispatch(postComment(commentData));
+        onPressFunction();
     }
 
     const likeplus = async() => { // 게시판 좋아요
@@ -362,6 +364,10 @@ const Talk1Sub = ({navigation, route}) => {
         });
     }
 
+    const onPressFunction = () => {
+        flatlistRef.current?.scrollToEnd();
+    };
+
     const renderItem = ({ item }) => (
         <View>
             <View style={styles.main}>
@@ -418,7 +424,7 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
         </View>
 
-        <FlatList data={info} renderItem={renderItem}
+        <FlatList ref={flatlistRef} data={info} renderItem={renderItem}
             keyExtractor={item => String(item.boardId)}>
         </FlatList>
         <View style={[styles.commentRes, {display: insert.level === 0 ? 'none' : 'flex'}]}>

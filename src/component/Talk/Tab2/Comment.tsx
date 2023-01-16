@@ -83,7 +83,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                                 <Text style={{fontSize: 13, fontWeight: '500', color: '#BDBDBD'}}>16분 전</Text>
                             </View>
                         </View>
-                        <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10}}>{x.contents}</Text>
+                        <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>{x.contents}</Text>
                         <View style={styles.likeBox}>
                             {commentLike.includes(x.commentsId) ? <Like2 width={16} height={16} fill='#FE9000'/>
                             :
@@ -121,7 +121,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                         <Text style={{fontSize: 16, fontWeight: '600', paddingRight: 8}}>{x.nickname}</Text>
                         <Text style={{fontSize: 13, fontWeight: '500', color: '#BDBDBD'}}>16분 전</Text>
                     </View>
-                    <Text style={{paddingLeft: 45, marginBottom: 10}}>{x.contents}</Text>
+                    <Text style={{paddingLeft: 45, marginBottom: 10, marginRight: 25, lineHeight: 20}}>{x.contents}</Text>
                     <View style={styles.likeBox}>
                         {commentLike.includes(x.commentsId) ? <Like2 width={16} height={16} fill='#FE9000'/>
                         :

@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Modal } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ActivityIndicator } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 import axios from 'axios'
 import moment from 'moment'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { postExperience } from '../../../../Redux/Slices/ExperienceSlice'
+import { setExperienceCount, setExperienceFilter } from '../../../../Redux/Slices/ExperienceSlice'
+import { postExperienceCount } from '../../../../Redux/Slices/ExperienceCountSlice'
+
 
 const styles = StyleSheet.create({
   container:{
@@ -70,34 +76,34 @@ const styles = StyleSheet.create({
 
 const Talk3 = ({navigation}: any) => {
 
+  const dispatch = useDispatch();
+  const info = useSelector(state => {return state.experience.data});
+  console.log('체험단 info: ', info);
+  const infoCount = useSelector(state => { return state.experienceCount.data});
+  console.log('체험단 infoCount: ', infoCount);
+  const experienceSet = useSelector(state => { return state.experience.refresh; });
+  console.log('experienceSet: ', experienceSet);
+  const experienceCountSet = useSelector(state => { return state.experience.refresh; });
+  console.log('experienceCountSet: ', experienceCountSet);
 
-
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');
   const [items, setItems] = useState([
-        {label: '최신순', value: '1'},
-        {label: '인기순', value: '2'},
-        {label: '마감임박', value: '3'},
+        {label: '최신 순', value: '1'},
+        {label: '인기 순', value: '2'},
   ]);
 
-  const [info, setInfo] = useState([]);
-  console.log('체험단 info: ', info);
-
   useEffect(()=>{
-    const exp = async() => {
-      const response = await axios({
-        method: 'post',
-        url: 'https://momsnote.net/exp',
-        data : {
-          order: "new",
-          count: 5,
-          page: 1
-      }
-    });
-    setInfo(response.data);
-    }
-    exp();
+    setLoading(true);
+    dispatch(postExperience(experienceSet));
+    dispatch(postExperienceCount(experienceCountSet));
+    setLoading(false);
   }, []);
+
+  const filtering = (e) => {
+    e.label == '인기 순' ? dispatch(setExperienceFilter({filter: 'best'})) : dispatch(setExperienceFilter({filter: 'new'}))
+  }
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('체험단 상세페이지', item)}>
@@ -116,16 +122,26 @@ const Talk3 = ({navigation}: any) => {
     <View style={styles.container}>
       <View style={styles.header}></View>
       <View style={styles.header2}>
-        <View style={[styles.header2FilterBox, {paddingBottom: 5}]}><Text style={{fontSize: 16}}>{info.length} 건</Text></View>
+        <View style={[styles.header2FilterBox, {paddingBottom: 5}]}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={{fontSize: 16, fontWeight: '600'}}>{infoCount}</Text>
+            <Text style={{fontSize: 16}}> 건</Text>
+          </View>
+        </View>
         <View style={[styles.header2FilterBox, {width: '32%'}]}>
-        <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순'
-              textStyle={{fontSize: 13}} dropDownContainerStyle={{backgroundColor: '#FAFAFA', borderWidth: 1, borderColor: '#F5F5F5'}}
-              setOpen={setOpen} setValue={setValue} setItems={setItems} labelStyle={{paddingLeft: 18}}/>
+        <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순' onSelectItem={(e)=>filtering(e)}
+              textStyle={{fontSize: 13}} dropDownContainerStyle={{backgroundColor: 'white', borderColor: 'white'}}
+              setOpen={setOpen} setValue={setValue} setItems={setItems}/>
         </View>
       </View>
       <View style={styles.main}>
         {info.length !== 0 ? <FlatList data={info} renderItem={renderItem} numColumns={2} showsVerticalScrollIndicator={false}
-          keyExtractor={item => item.appCount}>
+          onEndReached={()=>
+          {
+            dispatch(setExperienceCount({page: infoCount > (experienceSet.page * 30) ? experienceSet.page + 1 :experienceSet.page, count: infoCount}))
+          }} onEndReachedThreshold={0}
+          keyExtractor={item => item.appCount}
+          ListFooterComponent={loading && <ActivityIndicator />}>
           </FlatList>:
           <View style={{marginTop: 100, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>모집중인 체험단이 없습니다.</Text></View>}
       </View>

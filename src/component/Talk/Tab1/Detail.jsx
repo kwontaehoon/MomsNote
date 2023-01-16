@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, ActivityIndicator, Keyboard } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Modal from '../../Modal/DotModal'
 import Modal2 from '../../Modal/Block'
@@ -25,6 +25,7 @@ import Back from '../../../../public/assets/svg/Back.svg'
 import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
+import { postHits } from '../../../Redux/Slices/HitsSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -232,6 +233,7 @@ const Talk1Sub = ({navigation, route}) => {
     const [userInfo, setUserInfo] = useState();
 
     const animation = useRef(new Animated.Value(0)).current;
+    const flatlistRef = useRef(null);
 
     useEffect(()=>{ // 댓글 목록
         dispatch(postComment(commentData));
@@ -240,7 +242,16 @@ const Talk1Sub = ({navigation, route}) => {
             const user = await AsyncStorage.getItem('user');
             setUserInfo(JSON.parse(user));
         }
+        const hits = async() => {
+            const hits = await AsyncStorage.getItem('hits');
+            console.log('hits: ', hits);
+
+            hits == null || hits.split('|').filter(x => x == String(info[0].boardId)) == '' ? 
+            (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`)) : ''
+            
+        }
         user();
+        hits();
     }, []);
 
     useEffect(()=>{ // 게시물 추천 Flag
@@ -281,6 +292,7 @@ const Talk1Sub = ({navigation, route}) => {
             }
         dispatch(postBoard(boardData));
         dispatch(postComment(commentData));
+        onPressFunction();
     }
 
     const likeplus = async() => { // 게시판 좋아요
@@ -370,6 +382,10 @@ const Talk1Sub = ({navigation, route}) => {
         });
     }
 
+    const onPressFunction = () => {
+        flatlistRef.current?.scrollToEnd();
+    };
+
     const renderItem = ({ item }) => (
         <View>
             <View style={styles.header2}>
@@ -410,7 +426,7 @@ const Talk1Sub = ({navigation, route}) => {
       );
 
 
-  return comment == undefined || userInfo == undefined ? <View></View> : (
+  return comment == undefined || userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={[styles.container, {height: pageHeight ? '94%' : '97%'}]}>
 
         <Animated.View style={[styles.alarmBox, {opacity: animation}]}>
@@ -432,7 +448,7 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
         </View>
 
-        <FlatList data={info} renderItem={renderItem} showsVerticalScrollIndicator={false}
+        <FlatList ref={flatlistRef} data={info} renderItem={renderItem} showsVerticalScrollIndicator={false}
             keyExtractor={item => String(item.boardId)}>
         </FlatList>
         

@@ -27,6 +27,7 @@ import letterCountReducer from '../Slices/LetterCountSlice'
 import periodCountReducer from '../Slices/PeriodCountSlice'
 import materialShareCountReducer from '../Slices/MaterialShareCountSlice'
 import governmentCountReducer from '../Slices/GovernmentCountSlice'
+import hitsReducer from '../Slices/HitsSlice'
 
 export const store = configureStore({
   reducer: {
@@ -57,6 +58,7 @@ export const store = configureStore({
     letterCount: letterCountReducer,
     periodCount: periodCountReducer,
     materialShareCount: materialShareCountReducer,
-    governmentCount: governmentCountReducer
+    governmentCount: governmentCountReducer,
+    hits: hitsReducer
   },
 })

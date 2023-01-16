@@ -13,6 +13,7 @@ import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
 import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
 import { postCommentRecommend } from '../../../Redux/Slices/CommentRecommendSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Comment from './Comment'
 import axios from 'axios'
@@ -26,6 +27,7 @@ import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
 import { postShareList } from '../../../Redux/Slices/ShareListSlice'
+import { postHits } from '../../../Redux/Slices/HitsSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -318,6 +320,7 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal6, setModal6] = useState(false); // comment 신고 하기 
 
     const animation = useRef(new Animated.Value(0)).current;
+    const flatlistRef = useRef(null);
 
     const [sumResult, setSumResult] = useState({
         sum: 0,
@@ -328,6 +331,16 @@ const Talk1Sub = ({navigation, route}) => {
         dispatch(postComment(commentData));
         dispatch(postCommentFlag({boardId: info[0].boardId}));
         dispatch(postShareList({boardId: info[0].boardId}));
+
+        const hits = async() => {
+            const hits = await AsyncStorage.getItem('hits');
+            console.log('hits: ', hits);
+
+            hits == null || hits.split('|').filter(x => x == String(info[0].boardId)) == '' ? 
+            (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`)) : ''
+            
+        }
+        hits();
     }, []);
 
     useEffect(()=>{
@@ -380,6 +393,7 @@ const Talk1Sub = ({navigation, route}) => {
             }
         dispatch(postBoard(boardData));
         dispatch(postComment(commentData));
+        onPressFunction();
     }
 
     const likeplus = async() => { // 게시판 좋아요
@@ -440,6 +454,11 @@ const Talk1Sub = ({navigation, route}) => {
             }).start();
         });
     }
+
+    const onPressFunction = () => {
+        flatlistRef.current?.scrollToEnd();
+    };
+
 
     const List = () => {
         let arr = [];
@@ -576,7 +595,7 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
         </View>
 
-        <FlatList data={DATA} renderItem={renderItem}
+        <FlatList ref={flatlistRef} data={DATA} renderItem={renderItem}
             keyExtractor={item => String(item.boardId)}>
         </FlatList>
 

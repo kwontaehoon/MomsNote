@@ -1,136 +1,106 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal, ActivityIndicator } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
+import axios from 'axios'
 import moment from 'moment'
+import { useIsFocused } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Like from '../../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../../public/assets/svg/Chat.svg'
-import axios from 'axios'
+import Pencil from '../../../../../public/assets/svg/pencil.svg'
+import { useDispatch, useSelector } from 'react-redux'
+import { setMaterialShareFilter, setMaterialShareCount } from '../../../../Redux/Slices/MaterialShareSlice'
+import { postMaterialShare } from '../../../../Redux/Slices/MaterialShareSlice'
+import { postMaterialShareCount } from '../../../../Redux/Slices/MaterialShareCountSlice'
 
 const styles = StyleSheet.create({
   container:{
-    height: '91%',
+    height: '92%',
     backgroundColor: 'white',
   },
-  main:{
-    height: '74%',
-    paddingLeft: 10,
-    paddingRight: 10,
-    position: 'relative',
-    zIndex: -100,
-  },
   mainBox:{
-    borderBottomWidth: 1,
-    borderColor: '#EEEEEE',
-    height: 100,
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  mainBoxSub:{
+    borderColor: '#F5F5F5',
     justifyContent: 'center',
-    paddingLeft: 10,
-    paddingRight: 10,
+    padding: 20,
   },
-  dateBox:{
-    position: 'absolute',
-    right: 10,
-    top: 50,
-  },
-  mainBoxSub2:{
+  infoBox:{
     flexDirection: 'row',
-    paddingTop: 4,
-    alignItems: 'center',
+    marginTop: 5,
+  },
+  clockBox:{
+    position: 'absolute',
+    right: 15,
+    bottom: 20,
   },
 })
 
 
 const Talk1 = ({navigation}) => {
 
-  const DATA = [
-    {
-      id: '0',
-      title: '전체'
-    },
-    {
-      id: '1',
-      title: '자유게시판'
-    },
-    {
-      id: '2',
-      title: '일상이야기'
-    },
-    {
-      id: '3',
-      title: '임신정보'
-    },
-    {
-      id: '4',
-      title: '고민상담'
-    },
-    {
-      id: '5',
-      title: '질문게시판'
-    }
-  ];
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+  const materialShareSet = useSelector(state => { return state.materialShare.refresh });
+  console.log('materialShareSet: ', materialShareSet);
+  const info = useSelector(state => { return state.materialShare.data});
+  console.log('출산준비물 공유 리스트 info: ', info);
+  const infoCount = useSelector(state => { return state.materialShareCount.data});
+  console.log('출산 준비물 공유 리스트 infoCount: ', infoCount);
 
-  const [filter, setFilter] = useState([true, false, false, false, false, false]);
-  const [info, setInfo] = useState([]); // 게시글 목록
-  const [refresh, setRefresh] = useState('ㅋㅋ');
+  const [loading, setLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState({
+    open: false,
+    asyncStorage: ''
+  }); // 글쓰기 모달
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('1');
+  const [items, setItems] = useState([
+    {label: '최신 순', value: '1'},
+    {label: '인기 순', value: '2'},
+]);
 
-  useEffect(()=>{
-    console.log('게시글 목록 업데이트');
-    const commentInfo = async() => {
-        try{
-        const response = await axios({
-            method: 'post',
-            url: 'https://momsnote.net/api/board/list',
-            data : { 
-              order: 'new',
-              count: 5,
-              page: 1,
-              subcategory: DATA[filter.findIndex(x => x === true)].title
-            }
-        });
-            setInfo(response.data);
-        }catch(error){
-            console.log('comment axios error');
-        }
-    } 
-    commentInfo();
-  }, [refresh]);
+useEffect(()=>{
+  setLoading(true);
+  dispatch(postMaterialShare(materialShareSet));
+  dispatch(postMaterialShareCount());
+  setLoading(false);
+}, []);
 
-  const renderItem2 = ({ item }) => (
-    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', {item, refresh, setRefresh})}>
-        { item.savedName !== null ? <View style={styles.mainBoxSub}>
-          <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: 68, height: 68}}/>
-          </View> : ''
-        }
-        <View style={[styles.mainBoxSub, {width: '55%', justifyContent: 'flex-start', paddingTop: 5}]}>
-          <Text style={{fontSize: 15, paddingTop: 2}}>{item.title} </Text>
-          <View style={styles.mainBoxSub2}>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{item.nickname} </Text>
-            <Like width={12} height={17} fill='#9E9E9E'/>
-            <Text style={{color: '#9E9E9E'}}> {item.recommend}  </Text>
-            <Chat width={12} height={18} fill='#9E9E9E'/>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}> {item.commentsCount}</Text>
-          </View>
+const dayCalculate = (date) => {
+  switch(true){
+    case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
+    case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
+    default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'day')}일 전</Text>
+  }
+}
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', item)}>
+        <View style={styles.clockBox}>
+          <Text style={{color: '#9E9E9E', fontSize: 12}}>{dayCalculate(item.boardDate)}</Text>
         </View>
-        <View style={[styles.dateBox, {justifyContent: 'center', alignItems: 'flex-end'}]}>
-          <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(item.boardDate), "days")}일 전</Text>
+        <Text>{item.title}</Text>
+        <View style={styles.infoBox}>
+              <Text style={{color: '#9E9E9E', fontSize: 13}}>{item.nickname} </Text>
+              <Like fill='#9E9E9E' width={13} height={17}/>
+              <Text style={{color: '#9E9E9E', fontSize: 13}}> {item.recommend}  </Text>
+              <Chat fill='#9E9E9E' width={13} height={17}/>
+              <Text style={{color: '#9E9E9E', fontSize: 13}}> {item.recommend} </Text>
         </View>
     </TouchableOpacity>
   ); 
 
-  return (
+  return info == undefined || info == '' ?  <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
-      <View style={styles.main}>
-        {info.length === 0 ?
-        <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{console.log('afdasfdasfdas')}} onEndReachedThreshold={0.6}
-          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
-        </FlatList> : 
-        <View style={{marginTop: 150, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}
-      </View>
+        {info == undefined || info == '' ?
+        <View></View>
+        :
+        <FlatList data={info} renderItem={renderItem} onEndReached={()=>{
+          dispatch(setMaterialShareCount({page: infoCount > (materialShareSet.page * 30) ? materialShareSet.page + 1 : materialShareSet.page, count: infoCount}))
+        }} onEndReachedThreshold={0}
+          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
+          ListFooterComponent={loading && <ActivityIndicator />}>
+        </FlatList>}
      </View>
   )
 }

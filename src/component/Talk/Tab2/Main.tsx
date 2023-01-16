@@ -134,6 +134,15 @@ useEffect(()=>{
   dispatch(postMaterialShare(materialShareSet));
   dispatch(postMaterialShareCount());
   setLoading(false);
+
+  const hits = async() => {
+    const hits = await AsyncStorage.getItem('hits');
+    console.log('hits: ', hits);
+
+    hits == null || hits.split('|').filter(x => x == String(info[0].boardId)) == '' ? 
+    (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`)) : ''
+  }
+  hits();
 }, []);
 
 
@@ -157,7 +166,6 @@ const dayCalculate = (date) => {
 }
 
 const filtering = (e) => {
-  console.log('e: ', e.label);
   e.label == '인기 순' ? dispatch(setMaterialShareFilter({filter: 'best'})) : dispatch(setMaterialShareFilter({filter: 'new'}))
 }
 

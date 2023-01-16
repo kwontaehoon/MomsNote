@@ -20,6 +20,7 @@ import { postBoardAppFlag } from '../../../Redux/Slices/BoardAppFlagSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useIsFocused } from '@react-navigation/native'
 import { postWinList } from '../../../Redux/Slices/WinListSlice'
+import { postHits } from '../../../Redux/Slices/HitsSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -194,6 +195,7 @@ const styles = StyleSheet.create({
 const Talk1Sub = ({navigation, route}) => {
 
     const info = route.params;
+    console.log('체험단 route info: ', info);
     console.log('체험단 상세: ', route.params);
 
     const DATA = [
@@ -228,6 +230,16 @@ const Talk1Sub = ({navigation, route}) => {
         // dispatch(postBoardLike({ boardId: info.boardId, type: 'plus'}));
         dispatch(postBoardAppFlag({ experienceId: route.params.experienceId }));
         dispatch(postWinList({ experienceId: info.experienceId }));
+
+        const hits = async() => {
+            const hits = await AsyncStorage.getItem('hits');
+            console.log('hits: ', hits);
+
+            hits == null || hits.split('|').filter(x => x == String(info.boardId)) == '' ? 
+            (dispatch(postHits({boardId: info.boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info.boardId}`)) : ''
+            
+        }
+        hits();
     }, []);
 
     useEffect(()=>{

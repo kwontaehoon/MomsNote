@@ -28,15 +28,8 @@ const Main = ({navigation}) => {
 
     useEffect(()=>{
         const login = async() => {
-            // AsyncStorage.setItem('login', '1');
-            // AsyncStorage.setItem('user', JSON.stringify(test));
-
-
             const asyncStorage = await AsyncStorage.getItem('login');
             setInfo(asyncStorage);
-
-            const user = await AsyncStorage.getItem('user');
-            console.log('user: ', JSON.parse(user));
         }
         login();
 
@@ -46,7 +39,6 @@ const Main = ({navigation}) => {
         case null : return(<Start />);
         case '1': return(<Login navigation={navigation} />);
         default: return(<Home />);
-        
     }
 }
 

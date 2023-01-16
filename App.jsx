@@ -4,7 +4,6 @@ import { StatusBar  } from 'expo-status-bar'
 import DefalutPage from './src/component/Default/Login'
 import { store } from './src/Redux/Store/Store'
 import { Provider } from 'react-redux'
-// import { Counter } from './Redux/slices/Counter'
 
 const App = () => {
   

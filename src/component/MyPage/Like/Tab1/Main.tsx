@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Modal, ActivityIndicator } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 import moment from 'moment'
+import { Video, AVPlaybackStatus } from 'expo-av';
+import { useSelector, useDispatch } from 'react-redux'
+import { postBoard } from '../../../../Redux/Slices/BoardSlice'
+import Swiper from 'react-native-swiper'
+import { setBoardRefresh, setBoardCount, setBoardFilter } from '../../../../Redux/Slices/BoardSlice'
+import { useIsFocused } from '@react-navigation/native'
 
 import Like from '../../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../../public/assets/svg/Chat.svg'
-import axios from 'axios'
+import Pencil from '../../../../../public/assets/svg/pencil.svg'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { postBoardCount, setBoardCountRefresh } from '../../../../Redux/Slices/BoardCountSlice'
 
 const styles = StyleSheet.create({
   container:{
-    height: '91%',
+    height: '92%',
     backgroundColor: 'white',
-  },
-  main:{
-    height: '74%',
     paddingLeft: 10,
     paddingRight: 10,
-    position: 'relative',
-    zIndex: -100,
   },
   mainBox:{
     borderBottomWidth: 1,
@@ -29,9 +32,21 @@ const styles = StyleSheet.create({
   },
   mainBoxSub:{
     justifyContent: 'center',
+    alignItems: 'center',
     paddingLeft: 10,
     paddingRight: 10,
   },
+  videoImage:{
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 40,
+    height: 40,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: 'white',
+    zIndex: 999
+},
   dateBox:{
     position: 'absolute',
     right: 10,
@@ -45,69 +60,68 @@ const styles = StyleSheet.create({
 })
 
 
-const Talk1 = ({navigation}) => {
+const Talk1 = ({navigation, route}:any) => {
 
-  const DATA = [
-    {
-      id: '0',
-      title: '전체'
-    },
-    {
-      id: '1',
-      title: '자유게시판'
-    },
-    {
-      id: '2',
-      title: '일상이야기'
-    },
-    {
-      id: '3',
-      title: '임신정보'
-    },
-    {
-      id: '4',
-      title: '고민상담'
-    },
-    {
-      id: '5',
-      title: '질문게시판'
-    }
-  ];
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+  const info = useSelector((state:unknown) => { return state.board.data; });
+  const boardSet = useSelector(state => { return state.board.refresh; });
+  const boardCountSet = useSelector(state => { return state.boardCount.refresh; });
+  const infoCount = useSelector(state => { return state.boardCount.data; });
 
-  const [filter, setFilter] = useState([true, false, false, false, false, false]);
-  const [info, setInfo] = useState([]); // 게시글 목록
-  const [refresh, setRefresh] = useState('ㅋㅋ');
+  const [loading, setLoading] = useState(false);
 
   useEffect(()=>{
-    console.log('게시글 목록 업데이트');
-    const commentInfo = async() => {
-        try{
-        const response = await axios({
-            method: 'post',
-            url: 'https://momsnote.net/api/board/list',
-            data : { 
-              order: 'new',
-              count: 5,
-              page: 1,
-              subcategory: DATA[filter.findIndex(x => x === true)].title
-            }
-        });
-            setInfo(response.data);
-        }catch(error){
-            console.log('comment axios error');
-        }
-    } 
-    commentInfo();
-  }, [refresh]);
+    setLoading(true);
+    dispatch(postBoard(boardSet));
+    dispatch(postBoardCount(boardCountSet));
+    setLoading(false);
+  }, [boardSet]);
 
-  const renderItem2 = ({ item }) => (
-    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', {item, refresh, setRefresh})}>
-        { item.savedName !== null ? <View style={styles.mainBoxSub}>
-          <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: 68, height: 68}}/>
-          </View> : ''
-        }
-        <View style={[styles.mainBoxSub, {width: '55%', justifyContent: 'flex-start', paddingTop: 5}]}>
-          <Text style={{fontSize: 15, paddingTop: 2}}>{item.title} </Text>
+  useEffect(()=>{
+    const momsTalk = async() => {
+      const asyncStorage = await AsyncStorage.getItem('momsTalk');
+      
+      setModalVisible(prevState => ({...prevState, asyncStorage: asyncStorage}));
+    }
+    momsTalk();
+  }, [isFocused]);
+
+
+  const dayCalculate = (date:number) => {
+    switch(true){
+      case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
+      case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
+      default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'day')}일 전</Text>
+    }
+  }
+
+  const ImageBox = ({item}:any) => {
+    const arr:string[] = [];
+    const a = (item.split('|')).filter((x:string) => { if(x.charAt(x.length-1) === '4'){ arr.push(x); }else return x;});
+    const infoFiltering = [...arr, ...a];
+
+    if(infoFiltering[0].charAt(infoFiltering[0].length-1) == '4'){
+      return(
+        <View style={styles.mainBoxSub}>
+          <View style={styles.videoImage}><Icon name='play' size={17} style={{color: 'white'}}/></View>
+          <Video source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${infoFiltering[0]}`}} style={{width: 68, height: 68}} resizeMode='cover'/>
+        </View>
+      )
+    }else{
+      return(
+      <View style={styles.mainBoxSub}>
+          <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.split('|')[0]}`}} style={{width: 68, height: 68}}/>
+      </View>
+      )
+    }
+  }
+
+  const renderItem2 = ({ item }:any) => (
+    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', {item})} activeOpacity={1}>
+        { item.savedName == null ? '' : <ImageBox item={item.savedName}/>  }
+        <View style={[styles.mainBoxSub, {paddingTop: 5, width: '65%', alignItems: 'flex-start'}]}>
+          <Text style={{fontSize: 15, paddingTop: 2}} numberOfLines={1}>{item.title} </Text>
           <View style={styles.mainBoxSub2}>
             <Text style={{fontSize: 13, color: '#9E9E9E'}}>{item.nickname} </Text>
             <Like width={12} height={17} fill='#9E9E9E'/>
@@ -117,20 +131,23 @@ const Talk1 = ({navigation}) => {
           </View>
         </View>
         <View style={[styles.dateBox, {justifyContent: 'center', alignItems: 'flex-end'}]}>
-          <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(item.boardDate), "days")}일 전</Text>
+         {dayCalculate(item.boardDate)}
         </View>
     </TouchableOpacity>
   ); 
 
-  return (
+  return info == '' && info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
-      <View style={styles.main}>
-        {info.length === 0 ?
-        <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{console.log('afdasfdasfdas')}} onEndReachedThreshold={0.6}
-          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
-        </FlatList> : 
-        <View style={{marginTop: 150, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}
-      </View>
+        {info == '' || info == undefined ?
+        <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
+        :
+        <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{
+          dispatch(setBoardCount({page: infoCount > (boardSet.page * 30) ? boardSet.page + 1 : boardSet.page, count: infoCount}));
+        }} onEndReachedThreshold={0}
+          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
+          ListFooterComponent={loading && <ActivityIndicator />}>
+        </FlatList>
+        }
      </View>
   )
 }
