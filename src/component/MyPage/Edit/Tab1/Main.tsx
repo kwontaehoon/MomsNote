@@ -76,7 +76,7 @@ const Talk1 = ({navigation}: any) => {
 
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
 
-    const [date, setDate] = useState(new Date(1598051730000));
+    const [date, setDate] = useState(new Date());
     const [date2, setDate2] = useState('');
     console.log('date2: ', date2);
     const [mode, setMode] = useState('date');

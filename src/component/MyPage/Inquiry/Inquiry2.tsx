@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import axios from 'axios'
@@ -25,12 +25,8 @@ const styles = StyleSheet.create({
     statusBox:{
       position: 'absolute',
       right: 20,
-      width: 50,
-      height: 50,
       alignItems: 'center',
       justifyContent: 'center',
-
-
     },
 })
 const Inquiry3 = ({navigation}) => {
@@ -55,21 +51,19 @@ const Inquiry3 = ({navigation}) => {
   }, []);
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.main} onPress={()=>navigation.navigate('문의 상세', item)}>
+    <TouchableOpacity style={styles.main} onPress={()=>navigation.navigate('문의 상세', item)} activeOpacity={1}>
       <View style={styles.statusBox}><Text style={{color: '#757575'}}>{item.status}</Text></View>
-        <Text style={{fontSize: 15, fontWeight: '600', marginBottom: 3, color: '#424242'}}>{item.title}</Text>
+        <Text style={{fontSize: 15, fontWeight: '600', marginBottom: 3, color: '#424242'}} numberOfLines={1}>{item.title}</Text>
         <Text style={{color: '#9E9E9E'}}>{`${item.inquiryDate.split('-')[0]}/${item.inquiryDate.split('-')[1]}/${item.inquiryDate.split('-')[2].substring(0, 2)}`}</Text>
     </TouchableOpacity>
   );
 
-  return (
+  return info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
-      {info.length !== 0 ?
+      {info.length == 0 ? <View style={styles.main2}><Text style={{color: '#757575', fontSize: 16}}>문의하신 내역이 없습니다.</Text></View> :
         <FlatList data={info} renderItem={renderItem} showsVerticalScrollIndicator={false}
           keyExtractor={item => String(item.inquiryId)}>
         </FlatList>
-        :
-        <View style={styles.main2}><Text style={{color: '#757575', fontSize: 16}}>문의하신 내역이 없습니다.</Text></View>
       }
     </View>
   )

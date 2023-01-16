@@ -49,7 +49,7 @@ const CheckBoxModal = ({modalVisible2, setModalVisible2, modalVisible3, setModal
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
                         <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, lineHeight: 20, textAlign: 'center'}}>내 리스트를 게시판에 공유하시겠습니까?</Text>
+                            <Text style={{fontSize: 16, lineHeight: 25, textAlign: 'center'}}>내 리스트를 게시판에 공유하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
                             <TouchableOpacity style={styles.modal} onPress={()=>(setModalVisible2(!modalVisible2), setModalVisible3(!modalVisible3))}>

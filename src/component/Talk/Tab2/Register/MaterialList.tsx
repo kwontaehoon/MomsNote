@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSelector, useDispatch } from 'react-redux'
 import { postMaterial } from '../../../../Redux/Slices/MaterialSlice'
@@ -119,14 +119,27 @@ const Talk1Sub = ({route}) => {
   console.log('총 예산 info: ', info);
   const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
   console.log('list: ', list);
-
-  const [sum, setSum] = useState(0)
-
-  console.log('sum: ', sum);
+  const [sumResult, setSumResult] = useState({
+    sum: 0,
+    exp: 0
+  });
+  console.log(sumResult);
 
   useEffect(()=>{
     dispatch(postMaterial({ order: 'buy' }));
   }, []);
+
+  useEffect(()=>{
+    let sum = 0;
+    let exp = 0;
+    info == undefined ? '' :
+    info.filter(x=>{
+      if(x.id == 0 && x.needsBrandId !== null){
+        exp += x.itemPrice
+      } else sum += x.itemPrice;
+    });
+    setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
+  }, [info]);
 
   const arrow = (e) => { // arrow 누르면 서브페이지 display
     let arr = [...list];
@@ -154,14 +167,14 @@ const Talk1Sub = ({route}) => {
     info.filter((x, index)=>{
       if(x.category == title && x.itemName !== null){
               arr.push(
-        <TouchableOpacity style={styles.mainBox3} onLongPress={()=>setModal5(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1} key={index}>
+        <View style={styles.mainBox3} key={index}>
             <View style={[styles.filterBox2, {justifyContent: 'flex-start'}]}><Text style={{fontWeight: '500'}}>{x.needsName}</Text></View>
             <View style={styles.filterBox2}><Text>{x.itemName == null ? '-' : x.itemName}</Text></View>
             <View style={[styles.filterBox2, {justifyContent: 'flex-end'}]}>
               <Text style={{fontWeight: '600'}}>{x.itemPrice == null ? 0 : x.itemPrice}</Text>
               <Text> 원</Text>
             </View>
-        </TouchableOpacity>
+        </View>
       )}
     })
 
@@ -191,7 +204,7 @@ const Talk1Sub = ({route}) => {
       </View>
     );
 
-  return (
+  return info == undefined || info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
       <View style={styles.main}>
         <View></View>
@@ -203,18 +216,18 @@ const Talk1Sub = ({route}) => {
         <View style={styles.footerBox}>
           <View style={[styles.arrowBox, {right: 0}]}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontSize: 18, fontWeight: '500'}}>119,700 </Text>
+              <Text style={{fontSize: 18, fontWeight: '500'}}>{(sumResult.sum + sumResult.exp).toLocaleString()} </Text>
               <Text>원</Text>
             </View>
           </View>
           <Text style={{fontSize: 18, fontWeight: '500'}}>총 예산</Text>
         </View>
         <View style={[styles.footerBox, {paddingLeft: 20, height: 25}]}>
-          <View style={[styles.arrowBox, {right: 0}]}><Text>{sum} 원</Text></View>
+          <View style={[styles.arrowBox, {right: 0}]}><Text>{(sumResult.sum).toLocaleString()} 원</Text></View>
           <Text style={{color: '#616161'}}>ㄴ 구매 금액</Text>
         </View>
         <View style={[styles.footerBox, {paddingLeft: 20, height: 25}]}>
-          <View style={[styles.arrowBox, {right: 0}]}><Text>0 원</Text></View>
+          <View style={[styles.arrowBox, {right: 0}]}><Text>{(sumResult.exp).toLocaleString()} 원</Text></View>
           <Text style={{color: '#616161'}}>ㄴ 구매 예정 금액</Text>
         </View>
       </View>

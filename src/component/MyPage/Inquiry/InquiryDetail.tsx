@@ -46,16 +46,16 @@ const InquiryDetail = ({route}) => {
                 <Text style={{color: '#9E9E9E'}}>{moment(item.inquiryDate).format('YYYY/MM/DD')}</Text>
             </View>
             <View style={styles.main}>
-                <Text>{item.contents}</Text>
+                <Text style={{lineHeight: 20}}>{item.contents}</Text>
             </View>
-            {item.answerDate !== null ? 
+            {item.answerDate == null ? <View></View> :
             <View style={styles.main2}>
                 <View style={styles.main2Box}>
                     <Text style={{fontWeight: '600', fontSize: 15}}>답변 내용</Text>
                     <View style={[styles.statusBox, {right: 0}]}><Text style={{color: '#757575'}}>{moment(item.answerDate).format('YYYY.MM.DD mm:ss')}</Text></View>
                 </View>
                 <Text style={{marginTop: 14, fontSize: 16}}>{item.answerContents}</Text>
-            </View> : <View></View>}
+            </View>}
         </View>
       );
 

@@ -5,6 +5,7 @@ import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
 import axios from 'axios'
 import Modal from './Modal/ListSelect'
+import moment from 'moment'
 
 import MainImage from '../../../public/assets/svg/main.svg'
 import Bell from '../../../public/assets/svg/Bell.svg'
@@ -216,21 +217,24 @@ const Home = ({navigation}) => {
         dispatch(postInfoPopularSlice());
     }, []);
 
-
     const ref = useRef();
+    const [date, setDate] = useState(new Date());
     const boardPopular = useSelector(state => { return state.boardPopular.data });
     const materialPopular = useSelector(state => { return state.materialPopular.data });
-    console.log('materialPopular: ', materialPopular);
     const infoPopular = useSelector(state => { return state.infoPopular.data });
-    console.log('infoPopular: ', infoPopular);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
     const [modal, setModal] = useState(true); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
 
+    const [userInfo, setUserInfo] = useState();
+    console.log('home userInfo: ', userInfo);
+
     useEffect(()=>{
         const recommendList = async() => {
             const asyncStorage = await AsyncStorage.getItem('recommendList');
+            const user = await  AsyncStorage.getItem('user');
+            setUserInfo(JSON.parse(user));
 
             asyncStorage == null ? setModal(true) : '';
         }
@@ -315,7 +319,7 @@ const Home = ({navigation}) => {
         <View style={styles.container2}>
             <ViewShot style={[styles.main]} ref={ref} options={{ fileName: "MomsNote", format: "png", quality: 1 }}>
                 <View style={styles.mainBox}>
-                    <Text style={{color: '#424242', fontSize: 18}}>2022년 12월 02일</Text>
+                    <Text style={{color: '#424242', fontSize: 18}}>{date.getFullYear()}년 {moment(date).format("MM")}월 {date.getDate()}일</Text>
                     <Text style={{color: '#212121', fontSize: 32, fontWeight: '700'}}>별똥이</Text>
                 </View>
                 <View style={styles.mainBox2}>
@@ -347,8 +351,10 @@ const Home = ({navigation}) => {
                     </View>
                     <View style={[styles.mainBox3Sub, {width: '70%'}]}>
                         <View style={styles.DdayBox}>
-                            <Text style={{color: '#FE9000', fontSize: 24, fontWeight: '700', marginBottom: 3}}>D-183 (45주차 3일)</Text>
-                            <Text style={{color: '#424242', fontSize: 15}}>예정일 : 2022년 10월 31일</Text>
+                            <Text style={{color: '#FE9000', fontSize: 24, fontWeight: '700', marginBottom: 3}}>
+                                D-{moment(userInfo.dueDate).diff(moment(), "days")} ({moment(userInfo.dueDate).diff(moment(), "week")}주차 {moment(userInfo.dueDate).diff(moment(), "day")%7}일)</Text>
+                            <Text style={{color: '#424242', fontSize: 15}}>
+                                예정일 : {moment(userInfo.dueDate).format("YYYY")}년 {moment(userInfo.dueDate).format("MM")}월 {moment(userInfo.dueDate).format("DD")}일</Text>
                         </View>
                     </View>
                 </View> 
@@ -446,7 +452,7 @@ const Home = ({navigation}) => {
         </View>
     );
     
-  return infoPopular == ''|| infoPopular == undefined || materialPopular == undefined || materialPopular == '' ?
+  return infoPopular == '' || infoPopular == undefined || materialPopular == undefined || materialPopular == '' ||  userInfo == undefined ?
     <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> :
     (
         <SafeAreaView style={[styles.container, {backgroundColor: '#FEECB3'}]}>

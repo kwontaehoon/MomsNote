@@ -69,7 +69,7 @@ const InquiryDetail = ({navigation}) => {
       }
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.main} onPress={()=>navigation.navigate('공지사항2', item)}>
+        <TouchableOpacity style={styles.main} onPress={()=>navigation.navigate('공지사항2', item)} activeOpacity={1}>
            <Text style={{fontSize: 15, fontWeight: '600', marginBottom: 3, color: '#424242'}}>{item.title}</Text>
             <Text style={{color: '#9E9E9E'}}>{item.inquiryDate}</Text>
         </TouchableOpacity>

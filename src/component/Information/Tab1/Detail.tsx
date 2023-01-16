@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
         marginLeft: 7,
     },
     main:{
-        height: 800,
     },
     mainBox:{
         height: 70,
@@ -148,7 +147,7 @@ const Talk1Sub = ({navigation, route}) => {
                 <Back onPress={()=>navigation.goBack()}/>
                 <View style={styles.headerBar}>
                     <Share style={{marginRight: 12}}/>
-                    <More style={{marginRight: 5}}/>
+                    <More />
                 </View>
             </View>
             <View style={styles.main}>
@@ -157,7 +156,7 @@ const Talk1Sub = ({navigation, route}) => {
                     <Text>일정: {moment(item.boardDate).format("YY.MM.DD")}</Text>
                 </View>
                 <View style={styles.mainBox2}>
-                    <Text>{item.contents}</Text>
+                    <Text style={{lineHeight: 20}}>{item.contents}</Text>
                 </View>
                 {item.savedName === null ? '' : ImageBox()}
             </View>

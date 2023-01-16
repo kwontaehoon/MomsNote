@@ -25,6 +25,7 @@ import Back from '../../../../public/assets/svg/Back.svg'
 import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     container:{
@@ -221,11 +222,18 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal4, setModal4] = useState(false); // 신고 확인
     const [modal6, setModal6] = useState(false); // comment 신고 하기 
 
+    const [userInfo, setUserInfo] = useState();
+
     const animation = useRef(new Animated.Value(0)).current;
 
     useEffect(()=>{ // 댓글 목록
         dispatch(postComment(commentData));
         dispatch(postCommentFlag({boardId: info[0].boardId}));
+        const user = async() => {
+            const user = await AsyncStorage.getItem('user');
+            setUserInfo(JSON.parse(user));
+        }
+        user();
     }, []);
 
     useEffect(()=>{ // 게시물 추천 Flag
@@ -359,10 +367,10 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 4}}>{item.title}</Text>
-                    <Text>일정: {item.eventStartDate} ~ {item.eventEndDate}</Text>
+                    <Text>일정: {moment(item.eventStartDate).format('YY.MM.DD')} ~ {moment(item.eventEndDate).format('YY.MM.DD')}</Text>
                 </View>
                 <View style={styles.mainBox2}>
-                    <Text>{item.contents}</Text>
+                    <Text style={{lineHeight: 20}}>{item.contents}</Text>
                 </View>
                 {item.savedName === null ? <View></View> : ImageBox()}
                 <View style={styles.mainBox3}>
@@ -388,7 +396,7 @@ const Talk1Sub = ({navigation, route}) => {
       );
 
 
-  return (
+  return userInfo == undefined ? <View></View> : (
     <View style={[styles.container, {height: pageHeight ? '94%' : '97%'}]}>
 
         <Animated.View style={[styles.alarmBox, {opacity: animation}]}>
@@ -419,7 +427,7 @@ const Talk1Sub = ({navigation, route}) => {
             <Text style={{color: '#757575'}}> 님에게 답변 남기기</Text>
         </View>
         <View style={styles.footer}>
-            <View style={styles.profileBox}></View>
+            <Image source={{ uri: userInfo.profileImage }} style={styles.profileBox}/>
             <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: '', level: 0}))}}>
                 <Text style={{color: '#1E88E5', fontWeight: '600'}}>등록</Text>
             </TouchableOpacity>

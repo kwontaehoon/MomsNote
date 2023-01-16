@@ -42,11 +42,12 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
 
 
     const commentLike = useSelector(state => { return state.commentFlag.data; });
+    console.log('comment info: ', info);
+    console.log(commentData);
 
     const dispatch = useDispatch();
 
     const commentplus = async(id) => { // 댓글 추천
-        console.log('likeComment');
         try{
             const response = await axios({ 
                   method: 'post',

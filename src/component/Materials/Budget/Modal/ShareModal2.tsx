@@ -79,12 +79,12 @@ const CheckBoxModal = ({modalVisible3, setModalVisible3, modalVisible4, setModal
         Animated.timing(animation, {
             toValue: 1,
             useNativeDriver: true,
-            duration: 1500,
+            duration: 1000,
         }).start(()=>{
             Animated.timing(animation, {
                 toValue: 0,
                 useNativeDriver: true,
-                duration: 1500,
+                duration: 1000,
             }).start();
         });
     }
@@ -125,8 +125,8 @@ const CheckBoxModal = ({modalVisible3, setModalVisible3, modalVisible4, setModal
                                 <Animated.View style={[styles.noticeModal, {opacity: animation}]}>
                                     <View style={styles.notice}><Text style={{color: 'white', fontSize: 13, fontWeight: '500'}}>제목과 내용은 필수 항목입니다.</Text></View>
                                 </Animated.View>
-                                <TextInput style={styles.textInput} placeholder='글 제목' placeholderTextColor='#9E9E9E'  onChangeText={(e) => setInfo((prevState) => ({ ...prevState, title: e}))}></TextInput>
-                                <TextInput style={[styles.textInput, {marginTop: 10, height: 200, paddingBottom: 140}]} placeholder='간단한 내용을 입력해주세요.' placeholderTextColor='#9E9E9E'
+                                <TextInput style={styles.textInput} placeholder='글 제목' placeholderTextColor='#9E9E9E'  onChangeText={(e) => setInfo((prevState) => ({ ...prevState, title: e}))} ></TextInput>
+                                <TextInput style={[styles.textInput, {marginTop: 10, height: 200, paddingBottom: 140}]} placeholder='간단한 내용을 입력해주세요.' placeholderTextColor='#9E9E9E' multiline={true}
                                     onChangeText={(e) => setInfo((prevState) => ({ ...prevState, contents: e}))}>
                                 </TextInput>
                             </View>

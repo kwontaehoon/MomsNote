@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   main:{
-    height: '74%',
+    height: '71%',
     paddingLeft: 10,
     paddingRight: 10,
     position: 'relative',
@@ -286,7 +286,7 @@ const Talk1 = ({navigation, route}:any) => {
   );
 
   const renderItem2 = ({ item }:any) => (
-    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', {item})}>
+    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', {item})} activeOpacity={1}>
         { item.savedName == null ? '' : <ImageBox item={item.savedName}/>  }
         <View style={[styles.mainBoxSub, {paddingTop: 5, width: '65%', alignItems: 'flex-start'}]}>
           <Text style={{fontSize: 15, paddingTop: 2}} numberOfLines={1}>{item.title} </Text>
@@ -304,7 +304,7 @@ const Talk1 = ({navigation, route}:any) => {
     </TouchableOpacity>
   ); 
 
-  return info == '' && info == undefined ? <View></View> : (
+  return info == '' && info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
       <View style={styles.header}>
         <FlatList data={DATA} renderItem={renderItem}

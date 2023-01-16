@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../../Redux/Slices/BoardSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NavigationAction } from '@react-navigation/native'
+import moment from 'moment'
 
 const styles = StyleSheet.create({
     container:{
@@ -31,11 +32,11 @@ const styles = StyleSheet.create({
         height: 60,
         backgroundColor: '#FEECB3',
         flexDirection: 'row',
+        alignItems: 'center',
     },
     header2Box:{
         width: '75%',
-        padding: 5,
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     profileBox:{
         borderWidth: 1,
@@ -43,16 +44,12 @@ const styles = StyleSheet.create({
         borderRadius: 999,
     },
     infoBox:{
-        width: '83%',
         justifyContent: 'center',
         paddingLeft: 8,
     },
     header2Box2:{
-        width: '25%',
-        padding: 5,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
+        position: 'absolute',
+        right: 10,
     },
     header3:{
         padding: 15,
@@ -104,6 +101,7 @@ const styles = StyleSheet.create({
     album:{
         flexDirection: 'row',
         alignItems: 'center',
+        marginTop: 10
     },
     albumLeft:{
         borderColor: '#E0E0E0',
@@ -220,8 +218,8 @@ const Register = ({navigation, route}) => {
     const [modalVisible2, setModalVisible2] = useState(false); // 취소시 모달창
     const [modal2Content, setModal2Content] = useState(''); // 완료시 모달 내용
     const [filter, setFilter] = useState(Array.from({length: 5}, () => {return false})); // 카테고리
+    const [userInfo, setUserInfo] = useState();
     
-
     const [info, setInfo] = useState( // post info
         {
             title: '',
@@ -236,8 +234,9 @@ const Register = ({navigation, route}) => {
     useEffect(()=>{
         const load = async() => {
             const asyncStorage = await AsyncStorage.getItem('momsTalk');
+            const user = await AsyncStorage.getItem('user');
             switch(typeof(route.params)){
-                case 'string': setInfo(JSON.parse(asyncStorage)); break;
+                case '게시글 불러오기': setInfo(JSON.parse(asyncStorage)); break;
                 case 'object': {
                         setInfo(prevState => ({...prevState, title: route.params[0].title, contents: route.params[0].contents,
                             imageFile: [],
@@ -249,7 +248,7 @@ const Register = ({navigation, route}) => {
                     }; break;
                 default: AsyncStorage.removeItem('momsTalk');
             }
-            // route.params == undefined ?  AsyncStorage.removeItem('momsTalk') : setInfo(JSON.parse(asyncStorage));
+            setUserInfo(JSON.parse(user));
         }
         load();
     }, [])
@@ -399,16 +398,16 @@ const Register = ({navigation, route}) => {
             </View>
             <View style={styles.header2}>
                 <View style={styles.header2Box}>
-                    <View style={styles.profileBox}></View>
-                    <View style={styles.infoBox}><Text style={{fontSize: 20, fontWeight : 'bold'}}>별똥이맘</Text></View>
+                    <Image source={{ uri: userInfo.profileImage }} style={styles.profileBox}/>
+                    <View style={styles.infoBox}><Text style={{fontSize: 20, fontWeight : 'bold'}}>{userInfo.nickname}</Text></View>
                 </View>
                 <View style={styles.header2Box2}>
-                    <View><Text>임신 몇주차</Text></View>
+                    <View><Text>임신 {moment(userInfo.dueDate).diff(moment(), "week")}주차</Text></View>
                 </View>
             </View>
             <View style={styles.header3}>
                 <View style={styles.header3Box}>
-                    <View style={styles.titleBox}><Text style={{fontSize: 16, color: '#424242'}}>카테고리</Text></View>
+                    <View style={styles.titleBox}><Text style={{fontSize: 16, color: '#424242', fontWeight: '600'}}>카테고리</Text></View>
                     <View style={styles.filterBox}>
                         <FlatList data={DATA2} renderItem={renderItem2}
                             keyExtractor={item => item.id} showsHorizontalScrollIndicator={false} horizontal={true}>
@@ -418,19 +417,19 @@ const Register = ({navigation, route}) => {
             </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
-                    <Text style={{fontSize: 16, color: '#424242'}}>제목</Text>
+                    <Text style={{fontSize: 16, color: '#424242', fontWeight: '600'}}>제목</Text>
                     <TextInput style={styles.textBox} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'} value={info.title}
                         onChangeText={(e) => setInfo((prevState) => ({ ...prevState, title: e}))}> 
                     </TextInput>
                 </View>
                 <View style={styles.mainBox}>
-                    <Text style={{fontSize: 16, color: '#424242'}}>내용</Text>
-                    <TextInput style={styles.textBox2} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'} value={info.contents}
+                    <Text style={{fontSize: 16, color: '#424242', fontWeight: '600'}}>내용</Text>
+                    <TextInput style={styles.textBox2} placeholder='내용을 입력해주세요.' placeholderTextColor={'#BDBDBD'} value={info.contents} multiline={true}
                      onChangeText={(e) => setInfo((prevState) => ({ ...prevState, contents: e}))}> 
                      </TextInput>
                 </View>
                 <View style={styles.mainBox} >
-                    <Text style={{fontSize: 16, color: '#424242'}}>이미지 첨부</Text>
+                    <Text style={{fontSize: 16, color: '#424242', fontWeight: '600'}}>이미지 첨부</Text>
                     <View style={styles.album}>
                         <TouchableOpacity style={styles.albumLeft} onPress={pickImage}>
                             <Icon name='camera' size={22}/>
@@ -444,7 +443,7 @@ const Register = ({navigation, route}) => {
                     </View>
                 </View>
                 <View style={styles.mainBox} >
-                    <Text style={{fontSize: 16, color: '#424242'}}>동영상 첨부</Text>
+                    <Text style={{fontSize: 16, color: '#424242', fontWeight: '600'}}>동영상 첨부</Text>
                     <View style={styles.album}>
                         <TouchableOpacity style={styles.albumLeft} onPress={pickVideo}>
                             <Icon name='camera' size={22}/>
@@ -491,7 +490,7 @@ const Register = ({navigation, route}) => {
     );
 
     
-    return (
+    return userInfo == undefined ? <View></View> : (
         <View style={styles.container}>
             <Modal animationType="fade" transparent={true} visible={modalVisible}
             onRequestClose={() => {

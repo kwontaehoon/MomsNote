@@ -170,7 +170,7 @@ const Register = ({navigation, route}) => {
                     <View style={styles.mainBox2Sub}><Text style={{color: '#424242', fontSize: 16}}>나의 출산리스트 보기</Text></View>
                     <View style={[styles.mainBox2Sub, {width: '20%', alignItems: 'flex-end'}]}><Icon name='angle-right' size={25}/></View>
                 </TouchableOpacity>
-                <TextInput style={styles.mainBox2} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'}
+                <TextInput style={styles.mainBox2} placeholder='제목을 입력해주세요.' placeholderTextColor={'#BDBDBD'} multiline={true}
                     value={data.title} onChangeText={(e) =>
                         setData((prevState) => ({
                             ...prevState,

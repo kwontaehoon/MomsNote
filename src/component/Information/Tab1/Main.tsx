@@ -128,8 +128,8 @@ const Talk1 = ({navigation}) => {
   );
 
   const renderItem2 = ({ item }) => (
-    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스가이드 상세내용', item)}>
-        <Text style={{fontSize: 15}}>{item.title} </Text>
+    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스가이드 상세내용', item)} activeOpacity={1}>
+        <Text style={{fontSize: 15}} numberOfLines={1} >{item.title} </Text>
     </TouchableOpacity>
   ); 
 

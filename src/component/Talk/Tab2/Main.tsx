@@ -177,7 +177,7 @@ const filtering = (e) => {
     </TouchableOpacity>
   ); 
 
-  return info == undefined || info == '' ? <View><Text>gg요</Text></View> : (
+  return info == undefined || info == '' ?  <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
       <View style={styles.header}></View>
       <View style={styles.header2}>

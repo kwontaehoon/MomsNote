@@ -102,7 +102,6 @@ const Talk3 = ({navigation}: any) => {
   }, []);
 
   const filtering = (e) => {
-    console.log('e: ', e.label == '인기 순');
     e.label == '인기 순' ? dispatch(setExperienceFilter({filter: 'best'})) : dispatch(setExperienceFilter({filter: 'new'}))
   }
 

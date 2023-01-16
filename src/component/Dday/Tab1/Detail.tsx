@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
 import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
-import { postCommentRecommend } from '../../../Redux/Slices/CommentRecommendSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Comment from './Comment'
 import axios from 'axios'
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
         height: 50,
         flexDirection: 'row',
         borderColor: '#F5F5F5',
-        borderWidth: 1,
+        borderBottomWidth: 1,
         paddingLeft: 20,
         alignItems: 'center'
     },
@@ -226,13 +226,20 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal2, setModal2] = useState(false); // 차단하기
     const [modal3, setModal3] = useState(false); // 게시물 신고 하기 
     const [modal4, setModal4] = useState(false); // 신고 확인
-    const [modal6, setModal6] = useState(false); // comment 신고 하기 
+    const [modal6, setModal6] = useState(false); // comment 신고 하기
+
+    const [userInfo, setUserInfo] = useState();
 
     const animation = useRef(new Animated.Value(0)).current;
 
     useEffect(()=>{ // 댓글 목록
         dispatch(postComment(commentData));
         dispatch(postCommentFlag({boardId: info[0].boardId}));
+        const user = async() => {
+            const user = await AsyncStorage.getItem('user');
+            setUserInfo(JSON.parse(user));
+        }
+        user();
     }, []);
 
     useEffect(()=>{ // 게시물 추천 Flag
@@ -392,7 +399,7 @@ const Talk1Sub = ({navigation, route}) => {
       );
 
 
-  return (
+  return userInfo == undefined ? <View></View> : (
     <View style={[styles.container, {height: pageHeight ? '94%' : '97%'}]}>
 
         <Animated.View style={[styles.alarmBox, {opacity: animation}]}>
@@ -423,7 +430,7 @@ const Talk1Sub = ({navigation, route}) => {
             <Text style={{color: '#757575'}}> 님에게 답변 남기기</Text>
         </View>
         <View style={styles.footer}>
-            <View style={styles.profileBox}></View>
+            <Image source={{ uri: userInfo.profileImage }} style={styles.profileBox}/>
             <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: '', level: 0}))}}>
                 <Text style={{color: '#1E88E5', fontWeight: '600'}}>등록</Text>
             </TouchableOpacity>

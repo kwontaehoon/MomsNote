@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
 const NoticeModal = ({modal4, setModal4}) => {
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modal4}
+    <Modal animationType="fade" transparent={true} visible={modal4} statusBarTranslucent={true}
             onRequestClose={() => {
             setModal4(!modal4)}}>
             <View style={styles.modalContainer}>

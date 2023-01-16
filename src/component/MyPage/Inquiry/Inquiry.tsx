@@ -41,9 +41,9 @@ const styles = StyleSheet.create({
     },
     inputBox:{
       width: '100%',
-      height: 56,
+      height: 52,
       borderWidth: 1,
-      borderColor: 'lightgrey',
+      borderColor: '#EEEEEE',
       justifyContent: 'center',
       paddingLeft: 10,
       borderRadius: 4,
@@ -106,7 +106,7 @@ const Inquiry2 = ({filter, setFilter}) => {
         <View style={styles.header2}>
           <View style={styles.header2Box}><Text style={{fontWeight: 'bold', fontSize: 15}}>내용</Text></View>
           <View style={styles.header2Box2}>
-            <TextInput style={[styles.inputBox, {height: 340, paddingBottom: 290}]} placeholder='문의내용 입력' placeholderTextColor={'#BDBDBD'}
+            <TextInput style={[styles.inputBox, {height: 340, paddingBottom: 290}]} placeholder='문의내용 입력' placeholderTextColor={'#BDBDBD'} multiline={true}
                onChangeText={(e) => setInfo((prevState) => ({ ...prevState, contents: e}))}> 
               </TextInput>
           </View>

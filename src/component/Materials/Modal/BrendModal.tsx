@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: '#EF1E1E',
         position: 'absolute',
-        right: '62%',
+        right: '55%',
     },
     footerBox3:{
         backgroundColor: '#FEA100',
@@ -196,7 +196,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
     );
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modalVisible2.open}
+    <Modal animationType="fade" transparent={true} visible={modalVisible2.open} statusBarTranslucent={true}
         onRequestClose={() => {
         setModalVisible2(!modalVisible2)}}>
     <View style={styles.modalContainer}>
@@ -233,7 +233,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
                         <View style={{width: '6%'}}></View>
 
                         <View style={styles.textInput}>
-                            {selectBrand.itemName == '' ? <View style={[styles.redDot, {right: '70%'}]}></View> : ''}
+                            {selectBrand.itemName == '' ? <View style={[styles.redDot, {right: '65%'}]}></View> : ''}
                             <TextInput placeholder='제품명' value={selectBrand.itemName} numberOfLines={1}
                                 onChangeText={(e) => setSelectBrand(prevState => ({...prevState, itemName: e}))}>   
                             </TextInput>

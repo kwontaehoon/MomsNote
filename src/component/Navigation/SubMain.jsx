@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack'
 import {View, Button, Text, StyleSheet} from 'react-native';
+import moment from 'moment';
 import Home from '../Home/Main'
 import Talk from '../Talk/Main'
 import Dday from '../Dday/Main'
@@ -23,6 +24,7 @@ import Home3 from '../../../public/assets/svg/home2.svg'
 import Forum2 from '../../../public/assets/svg/forum2.svg'
 import Campaign2 from '../../../public/assets/svg/campaign2.svg'
 import Baby2 from '../../../public/assets/svg/Baby2.svg'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
     header:{
@@ -38,14 +40,30 @@ const styles = StyleSheet.create({
     iconBox:{
         marginRight: 15,
     },
-})
+});
+
+
 function MainScreen() {
 
   const Tab = createBottomTabNavigator();
   const Stack = createStackNavigator();
 
+  const [userInfo, setUserInfo] = useState();
+  console.log('subMain userInfo: ', userInfo);
+
+  useEffect(()=>{
+    const userInfo = async()=> {
+    
+    const asyncStorage = await AsyncStorage.getItem('user');
+
+    setUserInfo(moment(JSON.parse(asyncStorage).dueDate).diff(moment(), "days"));
+  
+    }
+    userInfo();
+  }, []);
+
   return (
-    <Tab.Navigator initialRouteName='맘스 톡' screenOptions={{ headerShown: false, tabBarStyle:{ height: 60, position: 'absolute', paddingBottom: 7}, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
+    <Tab.Navigator initialRouteName='D-280' screenOptions={{ headerShown: false, tabBarStyle:{ height: 60, position: 'absolute', paddingBottom: 7}, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
       <Tab.Screen name="맘스 톡" options={{tabBarIcon: ({focused, color}) => (focused ? <Forum2 /> : <Forum/>)}}>
           {()=>(
                <Stack.Navigator>
@@ -68,13 +86,14 @@ function MainScreen() {
             )}
           </Tab.Screen>
 
-          <Tab.Screen name="D-260" options={{tabBarIcon: ({focused, color}) => (focused ? <Baby2 /> : <Baby />)}}>
+          <Tab.Screen name="Dday" options={{tabBarIcon: ({focused, color}) => (focused ? <Baby2 /> : <Baby />), tabBarLabel: `D-${userInfo}`}}>
         {()=>(
                <Stack.Navigator>
                     <Stack.Screen 
                         name="D-280"
                         component={Dday}
                         options={({ navigation, route }) => ({
+                          title: `D-${userInfo}`,
                           headerRight: () => (
                             <View style={styles.header}>
                             <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
@@ -145,29 +164,6 @@ function MainScreen() {
       </Tab.Screen>
     </Tab.Navigator>
   );
-}
-function HomeScreen({navigation}) {
-  return (
-    <View>
-      <Text>Home</Text>
-      <Button
-        title="상세보기"
-        onPress={() => navigation.push('추가 정보 입력', {id: 1})}
-      />
-    </View>
-  );
-}
-
-function SearchScreen() {
-  return <Text>Search</Text>;
-}
-
-function NotificationScreen() {
-  return <Text>Notification</Text>;
-}
-
-function MessageScreen() {
-  return <Text>Message</Text>;
 }
 
 export default MainScreen;

@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
     container:{
@@ -13,10 +14,9 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
         backgroundColor: 'white',
+        alignItems: 'center'
     },
     headerBox:{
-        width: '75%',
-        padding: 5,
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -28,11 +28,8 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     headerBox2:{
-        width: '25%',
-        padding: 5,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
+        position: 'absolute',
+        right: 10,
     },
     editBox:{
         borderWidth: 1,
@@ -54,8 +51,18 @@ const styles = StyleSheet.create({
 const Main = ({navigation}) => {
 
 
-    const [image, setImage] = useState(null);
-    console.log('image: ', image);
+    const [image, setImage] = useState();
+
+    const [userInfo, setUserInfo] = useState([]);
+    console.log('userInfo: ', userInfo);
+
+    useEffect(()=>{
+        const user = async() => {
+            const user = await AsyncStorage.getItem('user');
+            setUserInfo(JSON.parse(user));
+        }
+        user();
+    }, []);
 
     const pickImage = async () => {
       // No permissions request is necessary for launching the image library
@@ -65,29 +72,29 @@ const Main = ({navigation}) => {
         aspect: [4, 3],
         quality: 1,
       });
-      console.log(result);
+
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+        AsyncStorage.setItem('user', JSON.stringify(Object.assign(userInfo, {profileImage: result.assets[0].uri})));
     }
 
-    let data = new FormData();
-    data.append('files', {uri: image, name: 'profile.mp4', type: 'image/png'});
+    // let data = new FormData();
+    // data.append('files', {uri: image, name: 'profile.mp4', type: 'image/png'});
 
-    try{
-        const response = await axios({
-              method: 'post',
-              url: 'https://momsnote.net/profile/upload',
-              headers: { 
-                'Authorization': 'Bearer token', 
-              },
-              data: data
-            });
-            console.log('response: ', response.data);
-        }catch(error){
-          console.log('error: ', error);
-        }
-
+    // try{
+    //     const response = await axios({
+    //           method: 'post',
+    //           url: 'https://momsnote.net/profile/upload',
+    //           headers: { 
+    //             'Authorization': 'Bearer token', 
+    //           },
+    //           data: data
+    //         });
+    //         console.log('response: ', response.data);
+    //     }catch(error){
+    //       console.log('error: ', error);
+    //     }
+    
   };
 
   return (
@@ -95,11 +102,11 @@ const Main = ({navigation}) => {
         <View style={styles.header}>
             <View style={styles.headerBox}>
                 <TouchableOpacity style={styles.profileBox} onPress={pickImage}>
-                    {image === null ? <Image source={require('../../../public/assets/image/baby1.png')} onPress={pickImage}/>
-                    :  <Image source={{ uri: image }} style={{ width: 72, height: 72, borderRadius: 36}}/>}
+                    {userInfo.profileImage === undefined ? <Image source={require('../../../public/assets/image/baby1.png')}/>
+                    :  <Image source={{ uri: userInfo.profileImage }} style={{ width: 72, height: 72, borderRadius: 36}}/>}
                 </TouchableOpacity>
                 <View style={styles.infoBox}>
-                    <Text style={{fontSize: 20, fontWeight : 'bold'}}>닉네임</Text>
+                    <Text style={{fontSize: 20, fontWeight : 'bold'}}>{userInfo.nickname}</Text>
                 </View>
             </View>
             <View style={styles.headerBox2}>

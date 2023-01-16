@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 const NoticeModal = ({modal, setModal}) => {
 
   return modal.buttonCount == 1 ?(
-    <Modal animationType="fade" transparent={true} visible={modal.open}
+    <Modal animationType="fade" transparent={true} visible={modal.open} statusBarTranslucent={true}
             onRequestClose={() => {
             setModal(!modal)}}>
             <View style={styles.modalContainer}>

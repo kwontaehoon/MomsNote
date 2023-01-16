@@ -95,7 +95,7 @@ const Main = ({navigation, modal6, setModal6, info}) => {
     }
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modal6}
+    <Modal animationType="fade" transparent={true} visible={modal6} statusBarTranslucent={true}
     onRequestClose={() => {
     setModal6(!modal6)}}>
     <View style={styles.modalContainer}>

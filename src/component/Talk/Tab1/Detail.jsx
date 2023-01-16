@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
 import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
-import { postCommentRecommend } from '../../../Redux/Slices/CommentRecommendSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Comment from './Comment'
 import axios from 'axios'
@@ -227,13 +227,20 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal2, setModal2] = useState(false); // 차단하기
     const [modal3, setModal3] = useState(false); // 게시물 신고 하기 
     const [modal4, setModal4] = useState(false); // 신고 확인
-    const [modal6, setModal6] = useState(false); // comment 신고 하기 
+    const [modal6, setModal6] = useState(false); // comment 신고 하기
+
+    const [userInfo, setUserInfo] = useState();
 
     const animation = useRef(new Animated.Value(0)).current;
 
     useEffect(()=>{ // 댓글 목록
         dispatch(postComment(commentData));
         dispatch(postCommentFlag({boardId: info[0].boardId}));
+        const user = async() => {
+            const user = await AsyncStorage.getItem('user');
+            setUserInfo(JSON.parse(user));
+        }
+        user();
     }, []);
 
     useEffect(()=>{ // 게시물 추천 Flag
@@ -310,7 +317,7 @@ const Talk1Sub = ({navigation, route}) => {
         switch(true){
     
             case info[0].savedName.split('|').length == 1: return(
-                <TouchableOpacity style={styles.mainBox2ImageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)}>
+                <TouchableOpacity style={styles.mainBox2ImageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)} activeOpacity={1}>
                     <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${infoFiltering[0]}`}} style={styles.image}/>
                 </TouchableOpacity>
             )
@@ -319,13 +326,13 @@ const Talk1Sub = ({navigation, route}) => {
                     {infoFiltering.map(x=>{
                         if(x.charAt(x.length-1) === '4'){
                             return (
-                                <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)}>
+                                <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)} activeOpacity={1}>
                                     <View style={styles.videoImage}><Icon name='play' size={17} style={{color: 'white'}}/></View>
                                     <Video source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image2} resizeMode='cover'/>
                                 </TouchableOpacity>
                             )
                         }else return (
-                            <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)}>
+                            <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)} activeOpacity={1}>
                                     <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image2}/>
                             </TouchableOpacity>
                         )
@@ -334,13 +341,13 @@ const Talk1Sub = ({navigation, route}) => {
             )
             default: return(
                 <View style={styles.mainBox2ImageBox2}>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리')}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리')} activeOpacity={1}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image2}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)} activeOpacity={1}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[1]}`}} style={styles.image2}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)} activeOpacity={1}>
                         <Image source={{uri: `https://reactnative.dev/img/tiny_logo.png`}} style={styles.image2}/>
                         <View style={{position: 'absolute', top: '40%', left: '40%'}}><Text style={{color: 'white', fontSize: 20, fontWeight: '600'}}>+{info[0].savedName.split('|').length-3}</Text></View>
                     </TouchableOpacity>
@@ -366,7 +373,7 @@ const Talk1Sub = ({navigation, route}) => {
     const renderItem = ({ item }) => (
         <View>
             <View style={styles.header2}>
-                <TouchableOpacity style={styles.profileBox}></TouchableOpacity>
+                <View style={styles.profileBox}></View>
                 <View style={styles.infoBox}>
                     <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{item.nickname}</Text>
                     <Text style={{color: '#9E9E9E', fontSize: 13}}>{moment().diff(moment(item.boardDate), "days")}일 전</Text>
@@ -403,7 +410,7 @@ const Talk1Sub = ({navigation, route}) => {
       );
 
 
-  return comment == undefined ? <View></View> : (
+  return comment == undefined || userInfo == undefined ? <View></View> : (
     <View style={[styles.container, {height: pageHeight ? '94%' : '97%'}]}>
 
         <Animated.View style={[styles.alarmBox, {opacity: animation}]}>
@@ -421,11 +428,11 @@ const Talk1Sub = ({navigation, route}) => {
                 <Back onPress={()=>navigation.goBack()}/>
                 <View style={styles.headerBar}>
                     <Share style={{marginRight: 12}}/>
-                    <More style={{marginRight: 5}} onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}/>
+                    <More onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}/>
                 </View>
         </View>
 
-        <FlatList data={info} renderItem={renderItem}
+        <FlatList data={info} renderItem={renderItem} showsVerticalScrollIndicator={false}
             keyExtractor={item => String(item.boardId)}>
         </FlatList>
         
@@ -435,7 +442,7 @@ const Talk1Sub = ({navigation, route}) => {
             <Text style={{color: '#757575'}}> 님에게 답변 남기기</Text>
         </View>
         <View style={styles.footer}>
-            <View style={styles.profileBox}></View>
+            <Image source={{ uri: userInfo.profileImage }} style={styles.profileBox}/>
             <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: '', level: 0}))}}>
                 <Text style={{color: '#1E88E5', fontWeight: '600'}}>등록</Text>
             </TouchableOpacity>

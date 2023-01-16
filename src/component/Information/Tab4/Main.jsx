@@ -156,7 +156,7 @@ const Talk1 = ({navigation}) => {
                     </TouchableOpacity>
                     <View style={[styles.contentBox, {backgroundColor: '#F5F5F5', display: infoDisplay[index] ? 'flex' : 'none'}]}>
                         <View style={{marginRight: 10}}><A /></View>
-                        <Text style={{width: '92%'}}>{x.qnaA}</Text>
+                        <Text style={{width: '92%', lineHeight: 20}}>{x.qnaA}</Text>
                     </View>
                     </>
                 )
@@ -177,7 +177,7 @@ const Talk1 = ({navigation}) => {
                     </TouchableOpacity>
                     <View style={[styles.contentBox, {backgroundColor: '#F5F5F5', display: info2Display[index] ? 'flex' : 'none'}]}>
                         <View style={{marginRight: 10}}><A /></View>
-                        <Text style={{width: '92%'}}>{x.qnaA}</Text>
+                        <Text style={{width: '92%', lineHeight: 20}}>{x.qnaA}</Text>
                     </View>
                     </>
                 )

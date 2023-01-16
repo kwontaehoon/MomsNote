@@ -327,7 +327,7 @@ const Talk1Sub = ({navigation, route}) => {
 
         <StatusBar translucent={false} />
 
-         <Modal animationType="fade" transparent={true} visible={modalVisible}
+         <Modal animationType="fade" transparent={true} visible={modalVisible} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible(!modalVisible)}}>
             <View style={styles.modalContainer}>
@@ -351,7 +351,7 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
             </Modal>
 
-            <Modal animationType="fade" transparent={true} visible={modalVisible2}
+            <Modal animationType="fade" transparent={true} visible={modalVisible2} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible2(!modalVisible2)}}>
             <View style={styles.modalContainer}>
@@ -366,7 +366,7 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
             </Modal>
 
-            <Modal animationType="fade" transparent={true} visible={modal4}
+            <Modal animationType="fade" transparent={true} visible={modal4} statusBarTranslucent={true}
             onRequestClose={() => {
             setModal4(!modal4)}}>
             <View style={styles.modalContainer}>
