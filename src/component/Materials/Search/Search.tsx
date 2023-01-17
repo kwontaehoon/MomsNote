@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, TextInput } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, TextInput, Platform, StatusBar, SafeAreaView } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon3 from 'react-native-vector-icons/Feather'
 import Checkbox from 'expo-checkbox';
@@ -21,6 +21,7 @@ import ViewShot from 'react-native-view-shot'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux';
 import { postMaterial, setMaterialRefresh } from '../../../Redux/Slices/MaterialSlice';
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 
 import More from '../../../../public/assets/svg/More.svg'
@@ -36,7 +37,7 @@ import Back from '../../../../public/assets/svg/Back.svg'
 const styles = StyleSheet.create({
   container:{
     flex: 1,
-    marginTop: getStatusBarHeight(),
+    marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
   },
   header:{
     height: 80,
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   main:{
-
+    paddingBottom: 50,
   },
   mainBox:{
     backgroundColor: '#F5F5F5',
@@ -85,8 +86,7 @@ const styles = StyleSheet.create({
     width: '90%',
     borderRadius: 10,
     paddingLeft: 10,
-    paddingRight: 10
-
+    paddingRight: 10,
   },
   main3BoxHeader:{
     height: 44,
@@ -309,10 +309,6 @@ const Navigation = ({navigation, route}) => {
     }
   }
 
-  const filtering = () => {
-
-  }
-
   const List = ({item}) => {
     return (
       <View style={styles.main3Box} key={item.id}>
@@ -395,27 +391,34 @@ const Navigation = ({navigation, route}) => {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaProvider>
 
-        <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
-        <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} setModal={setModal}/>
-        <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
-        <FirstModal modal={modal} setModal={setModal}/>
-        <SecondModal modal={modal2} setModal={setModal2} />
+            <SafeAreaView style={{ backgroundColor: 'white' }}>
+                    <StatusBar />
+            </SafeAreaView>
 
-        <View style={styles.header}>
-        <Back/>
-        <View style={styles.textInput}>
-          <View style={styles.searchIconBox}><Search width={22}/></View>
-          <TextInput placeholder='검색하실 단어를 입력하세요.' onChangeText={(e)=>setSearch(e)}></TextInput>
-          <TouchableOpacity onPress={()=>navigation.navigate('맘스 톡')}></TouchableOpacity>
-        </View>
-      </View>
+            <SafeAreaView style={styles.container}>
+                <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+                <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modal={modal} setModal={setModal}/>
+                <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
+                <FirstModal modal={modal} setModal={setModal}/>
+                <SecondModal modal={modal2} setModal={setModal2} />
 
-        {materialList == undefined ? <View></View> : <FlatList data={DATA3} renderItem={renderItem}
-              keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
-        </FlatList>}
-    </View>
+                <View style={styles.header}>
+                <TouchableOpacity activeOpacity={1} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                <View style={styles.textInput}>
+                  <View style={styles.searchIconBox}><Search width={22}/></View>
+                  <TextInput placeholder='검색하실 단어를 입력하세요.' onChangeText={(e)=>setSearch(e)}></TextInput>
+                  <TouchableOpacity onPress={()=>navigation.navigate('맘스 톡')}></TouchableOpacity>
+                </View>
+              </View>
+
+                {materialList == undefined ? <View></View> : <FlatList data={DATA3} renderItem={renderItem}
+                      keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
+                </FlatList>}
+        </SafeAreaView>
+</SafeAreaProvider>
+
   )
 }
 

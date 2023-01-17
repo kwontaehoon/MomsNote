@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, ActivityIndicator, Keyboard } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, ActivityIndicator, Keyboard, Platform } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Modal from '../../Modal/DotModal'
 import Modal2 from '../../Modal/Block'
@@ -13,6 +13,10 @@ import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
 import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import {
+    SafeAreaProvider,
+    useSafeAreaInsets,
+  } from 'react-native-safe-area-context';
 
 import Comment from './Comment'
 import axios from 'axios'
@@ -30,7 +34,8 @@ import { postHits } from '../../../Redux/Slices/HitsSlice'
 const styles = StyleSheet.create({
     container:{
         backgroundColor: 'white',
-        marginTop: getStatusBarHeight(),
+        marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
+        height: '100%',
     },
     header:{
         height: 60,
@@ -193,6 +198,7 @@ const Talk1Sub = ({navigation, route}) => {
         setPageHeight(false);
     });
 
+    const insets = useSafeAreaInsets();
     const dispatch = useDispatch();
     const info = [route.params.item];
     console.log('talk1 info: ', info);
@@ -427,7 +433,7 @@ const Talk1Sub = ({navigation, route}) => {
 
 
   return comment == undefined || userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
-    <View style={[styles.container, {height: pageHeight ? '94%' : '97%'}]}>
+    <View style={[styles.container, { paddingBottom: insets.bottom}]}>
 
         <Animated.View style={[styles.alarmBox, {opacity: animation}]}>
             <View style={styles.alarm}><Text style={{color: 'white', fontSize: 13, fontWeight: '500'}}>{info[0].nickname}님을 차단하였습니다.</Text></View>

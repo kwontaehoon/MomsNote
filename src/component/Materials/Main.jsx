@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator, SafeAreaView, StatusBar, Platform } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon3 from 'react-native-vector-icons/Feather'
 import Checkbox from 'expo-checkbox';
@@ -14,13 +14,16 @@ import DotModal from './Modal/DotModal'
 import AddModal from './Modal/AddModal'
 import DeleteModal from './Modal/DeleteModal'
 import Filter from './Modal/Filter'
-import FirstModal from '../Modal/First'
-import SecondModal from '../Modal/Second'
+import BrandNameFlag from './Modal/BrendNameFlag'
+import First from '../Modal/First'
+import Second from '../Modal/Second'
+
 import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux';
-import { postMaterial } from '../../Redux/Slices/MaterialSlice';
+import { postMaterial } from '../../Redux/Slices/MaterialSlice'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import More from '../../../public/assets/svg/More.svg'
 import Sort from '../../../public/assets/svg/Sort.svg'
@@ -30,12 +33,11 @@ import Bell from '../../../public/assets/svg/Bell.svg'
 import MyPage from '../../../public/assets/svg/Mypage.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 const styles = StyleSheet.create({
   container:{
-    height: '89.5%',
+    flex: 1,
     backgroundColor: 'white',
-    marginTop: getStatusBarHeight(),
+    marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
   },
   header:{
     height: 60,
@@ -53,7 +55,7 @@ const styles = StyleSheet.create({
   header2:{
     height: 55,
     justifyContent: 'center',
-    padding: 15
+    padding: 15,
   },
   headerBox2:{
     position: 'absolute',
@@ -63,19 +65,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   main:{
-
   },
   mainBox:{
     backgroundColor: '#F5F5F5',
   },
   mainBox2:{
     flexDirection: 'row',
-    padding: 20,
+    padding: 15,
     alignItems: 'center',
   },
   titleBox:{
-    width: '50%',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   arrowBox:{
     position: 'absolute',
@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
   },
   main3:{
     alignItems: 'center',
+    paddingBottom: 15
   },
   main3Box:{
     backgroundColor: 'white',
@@ -110,6 +111,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
     marginLeft: 5,
     borderRadius: 10,
+    justifyContent: 'center'
   },
   checkbox: {
     width: 24,
@@ -210,12 +212,10 @@ const Navigation = ({navigation, route}) => {
   const info = useSelector(state => { return state.material.data; });
   console.log('출산준비물 리스트: ', info);
   const materialSet = useSelector(state => { return state.material.refresh; });
-  console.log('materialSet: ', materialSet)
   const [sumResult, setSumResult] = useState({
     sum: 0,
     exp: 0
   }); // 총 예산
-  console.log('sumResult: ', sumResult);
   const ref = useRef();
 
   const [list, setList] = useState(Array.from({ length: 9 }, () => { return true}));
@@ -245,16 +245,17 @@ const Navigation = ({navigation, route}) => {
   const [modalVisible8, setModalVisible8] = useState(false); // 품목 추가
   const [modalVisible9, setModalVisible9] = useState(false); // 품목 삭제  
   const [modalVisible10, setModalVisible10] = useState(false); // 정렬
-  const [modal, setModal] = useState({
-    open: false,
-    content: '',
-    buttonCount: 1
-  }); // fisrt modal
+  const [modal, setModal] = useState(false); // 브랜드 제품명 필수값 유무
   const [modal2, setModal2] = useState({
     open: false,
-    content: ['', ''],
-    buttonCount: 1
-  }); //second modal
+    content: '',
+    bottomCount: 1,
+  }); // First
+  const[modal3, setModal3] = useState({
+    open: false,
+    content: '',
+    bottomCount: 2,
+  }) // second
 
   useEffect(()=>{
     
@@ -266,7 +267,7 @@ const Navigation = ({navigation, route}) => {
   }
   purchaseInfo();
   
-  }, []);
+  }, [modalVisible8, modalVisible9]);
 
   useEffect(()=>{
     let sum = 0;
@@ -286,7 +287,6 @@ const Navigation = ({navigation, route}) => {
   // }, [captureURL]);
 
   const purchase = async(needsId, needsBrandId) =>{
-    console.log('purchase');
     try{
       const response = await axios({
           method: 'post',
@@ -461,20 +461,27 @@ const save = async() => {
   );
 
   return info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
-    <View style={styles.container}>
+    <SafeAreaProvider>
+
+        <SafeAreaView style={{ backgroundColor: 'white' }}>
+            <StatusBar />
+        </SafeAreaView>
+
+		    <SafeAreaView style={styles.container}>
 
         <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
-        <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} setModal={setModal}/>
+        <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modal={modal} setModal={setModal} setModal2={setModal2}/>
         <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
         <ResetModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
         <ResetModal2 modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
         <DotModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible7={modalVisible7} setModalVisible7={setModalVisible7} modalVisible8={modalVisible8} setModalVisible8={setModalVisible8}
             modalVisible9={modalVisible9} setModalVisible9={setModalVisible9}/>
-        <AddModal modalVisible8={modalVisible8} setModalVisible8={setModalVisible8} modal={modal} setModal={setModal} info2={info}/>
-        <DeleteModal modalVisible9={modalVisible9} setModalVisible9={setModalVisible9} setModal={setModal} setModal2={setModal2}/>
+        <AddModal modalVisible8={modalVisible8} setModalVisible8={setModalVisible8} setModal={setModal2} info2={info}/>
+        <DeleteModal modalVisible9={modalVisible9} setModalVisible9={setModalVisible9} setModal={setModal2} setModal2={setModal3}/>
         <Filter modalVisible10={modalVisible10} setModalVisible10={setModalVisible10} />
-        <FirstModal modal={modal} setModal={setModal}/>
-        <SecondModal modal={modal2} setModal={setModal2} />
+        <BrandNameFlag modal={modal} setModal={setModal} modal2={modalVisible2} setModal2={setModalVisible2}/>
+        <First modal={modal2} setModal={setModal2}/>
+        <Second modal={modal3} setModal={setModal3}/>
 
         <View style={styles.header}>
         <Text style={{fontSize: 18, fontWeight: '600'}}>출산준비물</Text>
@@ -487,8 +494,8 @@ const save = async() => {
       </View>
       <View style={styles.header2}>
           <View style={styles.headerBox2}>
-            <Sort style={{paddingRight: 50}} onPress={()=>setModalVisible10(!modalVisible10)}/>
-            <More onPress={()=>setModalVisible7(!modalVisible7)}/>
+            <TouchableOpacity activeOpacity={1} style={{paddingRight: 20}} onPress={()=>setModalVisible10(!modalVisible10)}><Sort /></TouchableOpacity>
+            <TouchableOpacity activeOpacity={1} onPress={()=>setModalVisible7(!modalVisible7)}><More /></TouchableOpacity>
           </View>
           <Text style={{fontSize: 16, fontWeight: '600'}}>전체 (5/37)</Text>
         </View>
@@ -509,7 +516,10 @@ const save = async() => {
             </View>
           </View>
         </View>
-    </View>
+		</SafeAreaView>
+    </SafeAreaProvider>
+
+        
   )
 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack'
-import {View, Button, Text, StyleSheet} from 'react-native';
+import { View, Button, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native';
 import moment from 'moment';
 import Home from '../Home/Main'
 import Talk from '../Talk/Main'
@@ -12,6 +12,7 @@ import Information from '../Information/Main'
 import Search from '../../../public/assets/svg/Search.svg'
 import Bell from '../../../public/assets/svg/Bell.svg'
 import MyPage from '../../../public/assets/svg/Mypage.svg'
+import Back from '../../../public/assets/svg/Back.svg'
 
 import Note from '../../../public/assets/svg/Note.svg'
 import Home2 from '../../../public/assets/svg/home.svg'
@@ -28,18 +29,23 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
     header:{
-        height: 100,
         flexDirection: 'row',
     },
     headerBox:{
-        width: '50%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingRight: 15,
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingLeft: 15,
+      paddingRight: 15
     },
     iconBox:{
-        marginRight: 15,
+      paddingLeft: 5,
+      padding: 10
     },
+    header2:{
+      width: 300,
+      borderWidth: 1,
+      height: 50,   
+    }
 });
 
 
@@ -62,7 +68,7 @@ function MainScreen() {
   }, []);
 
   return (
-    <Tab.Navigator initialRouteName='맘스 톡' screenOptions={{ headerShown: false, tabBarStyle:{ height: 60, position: 'absolute', paddingBottom: 7}, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
+    <Tab.Navigator initialRouteName='맘스 톡' screenOptions={{ headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
       <Tab.Screen name="맘스 톡" options={{tabBarIcon: ({focused, color}) => (focused ? <Forum2 /> : <Forum/>)}}>
           {()=>(
                <Stack.Navigator>
@@ -70,6 +76,16 @@ function MainScreen() {
                         name="맘스톡"
                         component={Talk}
                         options={({ navigation, route }) => ({
+                          headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>맘스 톡</Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                          <View></View>
+                        },
                           headerRight: () => (
                             <View style={styles.header}>
                                 <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>

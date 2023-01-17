@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 import { postExperience } from '../../../Redux/Slices/ExperienceSlice'
 import { setExperienceCount, setExperienceFilter } from '../../../Redux/Slices/ExperienceSlice'
 import { postExperienceCount } from '../../../Redux/Slices/ExperienceCountSlice'
+import Modal from '../../Modal/First'
 
 
 const styles = StyleSheet.create({
@@ -22,7 +23,6 @@ const styles = StyleSheet.create({
   header2:{
     height: 50,
     flexDirection: 'row',
-    backgroundColor: 'white',
   },
   header2FilterBox:{
     width: '68%',
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   mainBox2:{
     height: '50%',
     justifyContent: 'center',
-    paddingLeft: 5
+    paddingLeft: 5,
   },
   mainBox3:{
     height: '50%',
@@ -94,6 +94,12 @@ const Talk3 = ({navigation}: any) => {
         {label: '인기 순', value: '2'},
   ]);
 
+  const [modal, setModal] = useState({
+    open: false,
+    content: '이미 모집이 종료된 게시물입니다.',
+    buttonCount : 1
+  });
+
   useEffect(()=>{
     setLoading(true);
     dispatch(postExperience(experienceSet));
@@ -105,7 +111,20 @@ const Talk3 = ({navigation}: any) => {
     e.label == '인기 순' ? dispatch(setExperienceFilter({filter: 'best'})) : dispatch(setExperienceFilter({filter: 'new'}))
   }
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }) =>
+    item.appCount >= item.maxPeople || moment(item.applicationEndDate).diff(moment(), "days") <= 0 ?
+    (
+      <TouchableOpacity style={[styles.mainBox, {opacity: 0.5}]} onPress={()=>setModal(prevState=> ({...prevState, open: true}))}>
+        <View style={styles.imageBox}>
+          <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} />
+        </View>
+        <View style={styles.contentBox}>
+          <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#757575', fontSize: 13, fontWeight: '600'}}>모집 종료</Text></View>
+          <View style={styles.content}><Text style={{fontWeight: '500'}}>{item.title}</Text></View>
+          <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>신청 {item.appCount}명/모집 {item.maxPeople}명</Text></View>
+        </View>
+      </TouchableOpacity>
+    ):(
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('체험단 상세페이지', item)}>
       <View style={styles.imageBox}>
         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} />
@@ -120,6 +139,9 @@ const Talk3 = ({navigation}: any) => {
 
   return (
     <View style={styles.container}>
+
+      <Modal modal={modal} setModal={setModal}/>
+
       <View style={styles.header}></View>
       <View style={styles.header2}>
         <View style={[styles.header2FilterBox, {paddingBottom: 5}]}>

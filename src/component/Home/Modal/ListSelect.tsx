@@ -71,8 +71,8 @@ const Main = ({modal, setModal}) => {
                     <Text style={{fontSize: 15, lineHeight: 20}}>카테고리만 기본 제공하며, 필요한 품목을 직접 작성할 수 있어요.</Text>
                </View>
                <View style={styles.modalBox}>
-                    <Text style={{color: '#EF1E1E', fontSize: 13}}>Tip! 
-                        <Text style={{color: '#757575', lineHeight: 20, fontSize: 13}}> 초보 엄마라면 추천 리스트를 바탕으로 나에게 맞는 출산준비물 리스트를 작성해 보세요.</Text>
+                    <Text style={{color: '#EF1E1E', fontSize: 13, lineHeight: 20}}>Tip! 
+                        <Text style={{color: '#757575', fontSize: 13}}> 초보 엄마라면 추천 리스트를 바탕으로 나에게 맞는 출산준비물 리스트를 작성해 보세요.</Text>
                     </Text>
                </View>
             </View>

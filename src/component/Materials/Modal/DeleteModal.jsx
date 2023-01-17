@@ -184,6 +184,7 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
         title: '카테고리 선택(필수)',
         select: [], // 품목 변경되었는지 모달창 띄우기위해 확인용
     });
+    console.log('data select: ', data.select);
 
     useEffect(()=>{
         setInfo(material.filter(x => x.category == data.title));
@@ -313,8 +314,9 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
                 </View>
                 :
                 <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>{
-                    data.select.length !== 0 ? (delete2(), setModal((prevState) => ({...prevState, open: true, content: '출산준비물 리스트가 변경되었습니다.', buttonCount: 1})), setModalVisible9(!modalVisible9))
-                    : (setModal2((prevState) => ({...prevState, open: true, content: ['삭제 혹은 복구된 품목이 없습니다.', '그래도 적용하시겠습니까?'], buttonCount: 2})), setModalVisible9(!modalVisible9))}}>
+                    data.select.length == 0 ? (setModal2((prevState) => ({...prevState, open: true, content: ['삭제 혹은 복구된 품목이 없습니다.', '그래도 적용하시겠습니까?'], buttonCount: 2})), setModalVisible9(!modalVisible9))
+                    :
+                    (delete2(), setModal((prevState) => ({...prevState, open: true, content: '출산준비물 리스트가 변경되었습니다.', buttonCount: 1})), setModalVisible9(!modalVisible9), setData(prevState => ({...prevState, select: []})))}}>
                     <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>적용</Text>
                 </TouchableOpacity>}
              </View>

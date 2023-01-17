@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Switch, Modal, Platform } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, KeyboardAvoidingView, Modal, Platform } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DateTimePicker from '@react-native-community/datetimepicker'
@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
     modalView:{
         width: '100%',
         height: '100%',
-        margin: 50,
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: "center",
         justifyContent: 'center',
@@ -22,12 +21,11 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '90%',
-        height: 540,
         backgroundColor: 'white',
-        marginBottom: 35,
         borderRadius: 15,
-        paddingLeft: 25,
         paddingRight: 25,
+        paddingLeft: 25,
+        paddingBottom: 25,
     },
     header:{
         height: 80,
@@ -35,7 +33,7 @@ const styles = StyleSheet.create({
     },
     closeBox:{
         position: 'absolute',
-        right: 10,
+        right: 0,
     },
     main:{
         height: 365,
@@ -181,12 +179,10 @@ const Main = ({modalVisible3, setModalVisible3}) => {
       );
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modalVisible3}
+    <Modal animationType="fade" transparent={true} visible={modalVisible3} statusBarTranslucent={true}
         onRequestClose={() => {setModalVisible3(!modalVisible3)}}>
 
-
-
-        <View style={styles.modalContainer}>
+        <KeyboardAvoidingView behavior='height' style={styles.modalContainer}>
             <View style={styles.modalView}>
                 <View style={styles.modalContainer2}>
                     <View style={styles.header}>
@@ -211,7 +207,7 @@ const Main = ({modalVisible3, setModalVisible3}) => {
                     }
                 </View>
             </View>
-        </View>
+        </KeyboardAvoidingView>
     </Modal>
   )
 }

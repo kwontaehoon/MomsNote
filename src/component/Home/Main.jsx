@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, SafeAreaView, StatusBar, Animated } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, SafeAreaView, StatusBar, Animated, Platform } from 'react-native'
 import Icon2 from 'react-native-vector-icons/Feather'
 import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
 import axios from 'axios'
 import Modal from './Modal/ListSelect'
 import moment from 'moment'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import MainImage from '../../../public/assets/svg/main.svg'
 import Bell from '../../../public/assets/svg/Bell.svg'
@@ -24,9 +25,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     container:{
-        height: '90%',
-        backgroundColor: 'white',
-        marginTop: getStatusBarHeight(),
+        flex: 1,
+        backgroundColor: '#FEECB3',
+        marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
     },
     container2:{
 
@@ -45,7 +46,6 @@ const styles = StyleSheet.create({
     main:{
         height: 500,
         padding: 20,
-        backgroundColor: '#FEECB3',
     },
     mainBox:{
         height: '20%',
@@ -306,10 +306,6 @@ const Home = ({navigation}) => {
         });
     }
 
-    const complete = () => { // modal
-
-    }
-
     const FocusAwareStatusBar = () => {
         const isFocused = useIsFocused();
         return isFocused ? <StatusBar backgroundColor='#FEECB3' /> : null;
@@ -319,8 +315,8 @@ const Home = ({navigation}) => {
         <View style={styles.container2}>
             <ViewShot style={[styles.main]} ref={ref} options={{ fileName: "MomsNote", format: "png", quality: 1 }}>
                 <View style={styles.mainBox}>
-                    <Text style={{color: '#424242', fontSize: 18}}>{date.getFullYear()}년 {moment(date).format("MM")}월 {date.getDate()}일</Text>
-                    <Text style={{color: '#212121', fontSize: 32, fontWeight: '700'}}>별똥이</Text>
+                    <Text style={{color: '#424242', fontSize: 18, marginBottom: 3}}>{date.getFullYear()}년 {moment(date).format("MM")}월 {date.getDate()}일</Text>
+                    <Text style={{color: '#212121', fontSize: 32, fontWeight: '700'}}>{userInfo.babyName}</Text>
                 </View>
                 <View style={styles.mainBox2}>
 
@@ -455,17 +451,19 @@ const Home = ({navigation}) => {
   return infoPopular == '' || infoPopular == undefined || materialPopular == undefined || materialPopular == '' ||  userInfo == undefined ?
     <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> :
     (
-        <SafeAreaView style={[styles.container, {backgroundColor: '#FEECB3'}]}>
-
-        <View style={styles.header}>
+        <SafeAreaProvider>
+            <SafeAreaView style={{ backgroundColor: '#FEECB3' }}>
+                    <StatusBar />
+            </SafeAreaView>
+            <FocusAwareStatusBar />
+            <SafeAreaView style={styles.container}>
+            <View style={styles.header}>
             <View style={styles.headerBar}>
                 <Bell style={{marginRight: 12}} onPress={()=>navigation.navigate('알림')}/>
                 <MyPage style={{marginRight: 5}} onPress={()=>navigation.navigate('마이페이지')}/>
             </View>
         </View>
             
-            <FocusAwareStatusBar />
-
             <Modal modal={modal} setModal={setModal} />
 
             <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
@@ -476,7 +474,11 @@ const Home = ({navigation}) => {
                     <Text style={{color: 'white'}}>출산 리스트가 내 앨범에 저장되었습니다.</Text>
                 </View>
             </Animated.View>
-        </SafeAreaView>
+
+            </SafeAreaView>
+
+        
+        </SafeAreaProvider>
     )
 }
 

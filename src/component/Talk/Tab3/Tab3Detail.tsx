@@ -22,6 +22,8 @@ import { useIsFocused } from '@react-navigation/native'
 import { postWinList } from '../../../Redux/Slices/WinListSlice'
 import { postHits } from '../../../Redux/Slices/HitsSlice'
 
+import Modal2 from '../../Modal/First'
+
 const styles = StyleSheet.create({
     container:{
         height: '100%',
@@ -195,8 +197,7 @@ const styles = StyleSheet.create({
 const Talk1Sub = ({navigation, route}) => {
 
     const info = route.params;
-    console.log('체험단 route info: ', info);
-    console.log('체험단 상세: ', route.params);
+    console.log('체험단 상세: ', info);
 
     const DATA = [
         {
@@ -210,20 +211,24 @@ const Talk1Sub = ({navigation, route}) => {
 
     const [async, setAsync] = useState(); // 임시저장 및 체험단 정보 저장 유무
     const [userInfo, setUserInfo] = useState(); // user 정보 asyncStorage
-    // console.log('userInfo: ', JSON.parse(userInfo).babyName);
     const boardLikeFlag = useSelector(state => { return state.boardLikeFlag.data });
     const boardLike = useSelector(state => { return state.boardLikeFlag.data });
     const boardLikeFlagSet = useSelector(state => { return state.boardLikeFlag.refresh });
     const boardLikeSet = useSelector(state => { return state.boardLike.refresh });
     const boardAppFlag = useSelector(state => {return state.boardAppFlag.data});
     const winList = useSelector(state => { return state.winList.data });
-    console.log('선정인원: ', winList);
+
     
     const [filter, setFilter] = useState(false);
     const [modalVisible, setModalVisible] = useState(false); // 체험단 신청정보 입력 -> asnyc storage
     const [modalVisible2, setModalVisible2] = useState(false); // 체험단 신청완료
-    const [modalVisible3, setModalVisible3] = useState(false); // 컨텐츠 URL 등록
+    const [modalVisible3, setModalVisible3] = useState(true); // 컨텐츠 URL 등록
     const [modal4, setModal4] = useState(false) // 임시저장 불러올거냐
+    const [modal, setModal] = useState({
+        open: false,
+        content: '발표일자 이후 확인이 가능합니다.',
+        buttonCount: 1
+    })
 
     useEffect(()=>{
         dispatch(postBoardLikeFlag({ boardId: info.boardId}));
@@ -247,10 +252,7 @@ const Talk1Sub = ({navigation, route}) => {
             const asyncStorage = await AsyncStorage.getItem('application');
             const asyncStorage2 = await AsyncStorage.getItem('user');
             setUserInfo(asyncStorage2);
-            setAsync(asyncStorage);
-
-            const aaa = winList.filter(x=> x.nickname ==JSON.parse(userInfo).babyName);
-            console.log('aaa: ', aaa == '');
+            setAsync(asyncStorage);            
         }
         load();
     }, [isFocused]);
@@ -291,7 +293,8 @@ const Talk1Sub = ({navigation, route}) => {
                     <TouchableOpacity style={[styles.main3FilterBox, {borderBottomColor: filter ? '#BDBDBD' : 'orange'}]} onPress={()=>setFilter(false)}>
                         <Text style={{fontWeight: 'bold', fontSize: 18, color: filter ? '#BDBDBD' : 'orange'}}>체험 정보</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.main3FilterBox, {borderBottomColor: filter ? 'orange' : 'lightgrey'}]} onPress={()=>setFilter(true)}>
+                    <TouchableOpacity style={[styles.main3FilterBox, {borderBottomColor: filter ? 'orange' : 'lightgrey'}]} 
+                        onPress={()=>moment(info.openDate).diff(moment(), "days") <= 0 ? setFilter(true) : setModal(prevState => ({...prevState, open: true}))}>
                         <Text style={{fontWeight: 'bold', fontSize: 18, color: filter ? 'orange' : 'lightgrey'}}>선정 인원</Text>
                     </TouchableOpacity>
                 </View>
@@ -402,6 +405,7 @@ const Talk1Sub = ({navigation, route}) => {
         </Modal>
 
             <ContentsURL modalVisible3={modalVisible3} setModalVisible3={setModalVisible3}/>
+            <Modal2 modal={modal} setModal={setModal} />
 
     
         <View style={styles.header}>
@@ -422,7 +426,7 @@ const Talk1Sub = ({navigation, route}) => {
                 </TouchableOpacity>
             </View>
             : <View style={styles.footer}>
-            {boardLikeFlagSet == 0 ? 
+            {boardLikeFlag == 0 ? 
             <TouchableOpacity style={[styles.footerBox, {width: '20%'}]} onPress={recommend}>
                 <Like width={20} fill='#BDBDBD'/>  
                 <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {boardLike}</Text>
@@ -435,11 +439,7 @@ const Talk1Sub = ({navigation, route}) => {
             }
 
             <View style={[styles.footerBox, {width: '3%', borderWidth: 0}]}></View>
-            { boardAppFlag.applicationId !== null ? 
-            <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={()=>navigation.navigate('신청 정보', route.params)}>
-                <Text style={{fontSize: 20, fontWeight: '500'}}>신청 정보 확인</Text>
-            </TouchableOpacity>
-            :
+            { boardAppFlag.applicationId == null ?
             <TouchableOpacity style={styles.footerBox2} onPress={()=>
                 {
                     async == null ? setModalVisible(!modalVisible) : setModal4(!modal4);
@@ -447,7 +447,12 @@ const Talk1Sub = ({navigation, route}) => {
                 }
             }>
                 <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
-            </TouchableOpacity>}
+            </TouchableOpacity>
+            :
+            <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={()=>navigation.navigate('신청 정보', route.params)}>
+                <Text style={{fontSize: 20, fontWeight: '500'}}>신청 정보 확인</Text>
+            </TouchableOpacity>
+            }
         </View>}
     </View>
   )

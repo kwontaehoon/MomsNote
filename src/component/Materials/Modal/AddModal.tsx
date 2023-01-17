@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
 
 })
 
-const CheckBoxModal = ({modalVisible8, setModalVisible8, modal, setModal, info2}) => {
+const CheckBoxModal = ({modalVisible8, setModalVisible8, setModal, info2}) => {
 
     const DATA = [
         {
@@ -139,13 +139,8 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8, modal, setModal, info2}
     });
     
     const add = async() => {
-
-        console.log(info.category);
         const filter = info2.filter(x => x.category == info.category && x.needsName == info.needsName);
-        console.log('filter: ', filter == '');
-
         if(filter == ''){
-
             try{
                 const response = await axios({
                       method: 'post',

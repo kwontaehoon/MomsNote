@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         height: 326,
         backgroundColor: 'white',
         borderRadius: 15,
-        padding: 10
+        padding: 20
     },
       modalBox:{
         height: '40%',
@@ -37,10 +37,11 @@ const styles = StyleSheet.create({
         paddingLeft: 30,
         height: '20%',
         alignItems: 'center',
+
     },
       modal:{
         backgroundColor: '#FEA100',
-        width: '90%',
+        width: '100%',
         height: 44,
         alignItems: 'center',
         justifyContent: 'center',
@@ -94,9 +95,8 @@ const CheckBoxModal = ({modalVisible, setModalVisible}) => {
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
                         <View style={styles.modalBox}>
-                            <Text style={{fontSize: 18, paddingTop: 10, textAlign: 'center', lineHeight: 20}}>선택하신 품목을 구매 완료로 체크 하시겠습니까?</Text>
-                            <Text style={{fontSize: 14, paddingTop: 10, color: '#757575', lineHeight: 20}}>구매 완료 시 출산준비리스트 구매율로 합산되어</Text>
-                            <Text style={{fontSize: 14, color: '#757575'}}>다른 사용자들의 구매에 도움이 됩니다.</Text>
+                            <View style={{paddingLeft: 20, paddingRight: 20}}><Text style={{fontSize: 18, paddingTop: 10, textAlign: 'center', lineHeight: 25}}>선택하신 품목을 구매 완료로 체크 하시겠습니까?</Text></View>
+                            <Text style={{fontSize: 14, paddingTop: 10, color: '#757575', lineHeight: 20, textAlign: 'center'}}>구매 완료 시 출산준비리스트 구매율로 합산되어 다른 사용자들의 구매에 도움이 됩니다.</Text>
                         </View>
                         <View style={styles.modalBoxSub}>
                                 <View>

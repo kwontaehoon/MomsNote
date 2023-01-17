@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header2:{
-    height: 50,
+    height: '8%',
     flexDirection: 'row',
     backgroundColor: '#F5F5F5',
   },
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   main:{
-    height: '71%',
+    height: '74%',
     paddingLeft: 10,
     paddingRight: 10,
     position: 'relative',
