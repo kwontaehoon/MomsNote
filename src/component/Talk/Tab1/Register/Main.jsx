@@ -343,20 +343,39 @@ const Register = ({navigation, route}) => {
             })
         }
         console.log('data: ', data);
-       
-        try{
-          const response = await axios({
-                method: 'post',
-                url: 'https://momsnote.net/api/board/write',
-                headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
-                  },
-                data: data
-              });
-              console.log('response: ', response.data);
-          }catch(error){
-            console.log('error: ', error);
-          }
+
+        if(route.params == 'object'){
+            try{
+                const response = await axios({
+                      method: 'post',
+                      url: 'https://momsnote.net/api/board/update',
+                      headers: { 
+                          'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
+                        },
+                      data: data
+                    });
+                    console.log('response: ', response.data);
+                }catch(error){
+                  console.log('error: ', error);
+                }
+
+        }else{
+
+            try{
+                const response = await axios({
+                      method: 'post',
+                      url: 'https://momsnote.net/api/board/write',
+                      headers: { 
+                          'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
+                        },
+                      data: data
+                    });
+                    console.log('response: ', response.data);
+                }catch(error){
+                  console.log('error: ', error);
+                }
+
+        }
         dispatch(postBoard(boardSet));
     }
 
@@ -493,7 +512,7 @@ const Register = ({navigation, route}) => {
     
     return userInfo == undefined ? <View></View> : (
         <View style={styles.container}>
-            <Modal animationType="fade" transparent={true} visible={modalVisible}
+            <Modal animationType="fade" transparent={true} visible={modalVisible} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible(!modalVisible)}}>
             <View style={styles.modalContainer}>
@@ -513,7 +532,7 @@ const Register = ({navigation, route}) => {
                     </View>
                 </View>
             </Modal>
-            <Modal animationType="fade" transparent={true} visible={modalVisible2}
+            <Modal animationType="fade" transparent={true} visible={modalVisible2} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible2(!modalVisible2)}}>
             <View style={styles.modalContainer}>

@@ -149,9 +149,6 @@ useEffect(()=>{
 useEffect(()=>{
   const momsTalk = async() => {
     const asyncStorage = await AsyncStorage.getItem('materialList');
-
-    console.log('aaaaaaaaaaaaaa: ', asyncStorage);
-    
     setModalVisible(prevState => ({...prevState, asyncStorage: asyncStorage}));
   }
   momsTalk();

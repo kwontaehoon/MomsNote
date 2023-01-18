@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndi
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSelector } from 'react-redux'
 
-import DeleteModal from './Modal/DeleteModal'
 import ShareModal from './Modal/ShareModal'
 import ShareModal2 from './Modal/ShareModal2'
 import ConfirmModal from './Modal/ConfirmModal'
@@ -141,15 +140,13 @@ const Talk1Sub = ({route}) => {
   console.log('총 예산 info: ', info);
   const materialSet = useSelector(state => state.material.refresh);
   const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
-  console.log('list: ', list);
-  const [modalVisible, setModalVisible] = useState(false); // 품목 삭제
   const [modalVisible2, setModalVisible2] = useState(false); // 공유 확인 유무 
   const [modalVisible3, setModalVisible3] = useState(false); // 공유 작성
   const [modalVisible4, setModalVisible4] = useState(false); // 공유 등록 확인
   const [modal5, setModal5] = useState({
     open: false,
     content: null,
-  }); // onLongPress dot 모달
+  }); // onLongPress dot 품목삭제 모달
 
   const [modal6, setModal6] = useState({
     open: false,
@@ -165,7 +162,7 @@ const Talk1Sub = ({route}) => {
 
   useEffect(()=>{
     dispatch(postMaterial(materialSet));
-  }, [modal6]);
+  }, [modal6, modal5]);
 
   useEffect(()=>{
     let sum = 0;
@@ -204,7 +201,7 @@ const Talk1Sub = ({route}) => {
     let arr = [];
 
     info.filter((x, index)=>{
-      if(x.category == title && x.itemName !== null){
+      if(x.category == title && x.itemName !== null && x.deleteStatus == 1){
           arr.push(
         <TouchableOpacity style={styles.mainBox3} onLongPress={()=>setModal5(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1} key={index}>
             <View style={[styles.filterBox2, {justifyContent: 'flex-start'}]}><Text style={{fontWeight: '500'}}>{x.needsName}</Text></View>
@@ -245,7 +242,6 @@ const Talk1Sub = ({route}) => {
   return (
     <View style={[styles.container, Platform.OS == 'ios' ? {paddingBottom: insets.bottom} : {paddingBottom: 0}]}>
 
-      <DeleteModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
       <ShareModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modalVisible3={modalVisible3} setModalVisible3={setModalVisible3} />
       <ShareModal2 modalVisible3={modalVisible3} setModalVisible3={setModalVisible3} modalVisible4={modalVisible4} setModalVisible4={setModalVisible4}/>
       <ConfirmModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} />

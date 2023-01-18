@@ -45,6 +45,8 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({modal5, setModal5}) => {
 
+    console.log('dot delete modal5: ', modal5);
+
     const dispatch = useDispatch();
 
     const delete2 = async() => {

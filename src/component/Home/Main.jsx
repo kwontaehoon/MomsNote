@@ -224,7 +224,7 @@ const Home = ({navigation}) => {
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
-    const [modal, setModal] = useState(true); // 모달 원하는 출산준비물 리스트
+    const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
 
     const [userInfo, setUserInfo] = useState();
@@ -232,9 +232,12 @@ const Home = ({navigation}) => {
 
     useEffect(()=>{
         const recommendList = async() => {
+            const all = await AsyncStorage.getAllKeys();
             const asyncStorage = await AsyncStorage.getItem('recommendList');
             const user = await  AsyncStorage.getItem('user');
             setUserInfo(JSON.parse(user));
+
+            console.log('all: ', all);
 
             asyncStorage == null ? setModal(true) : '';
         }

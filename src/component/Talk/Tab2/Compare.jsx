@@ -325,7 +325,7 @@ const Talk1Sub = ({navigation, route}) => {
     const List4 = (e) => {
       let arr = [];
       material.filter((x, index)=>{
-        if(x.category == e.title && x.needsName !== null){
+        if(x.category == e.title && x.needsName !== null && x.deleteStatus == 0){
         arr.push(
           <View style={styles.listMain2} key={index}>
               <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>

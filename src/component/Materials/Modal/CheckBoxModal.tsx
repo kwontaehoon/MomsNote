@@ -34,10 +34,8 @@ const styles = StyleSheet.create({
     },
       modalBoxSub:{
         flexDirection: 'row',
-        paddingLeft: 30,
         height: '20%',
         alignItems: 'center',
-
     },
       modal:{
         backgroundColor: '#FEA100',
@@ -59,13 +57,15 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({modalVisible, setModalVisible}) => {
 
+  console.log('modalVisible: ', modalVisible);
+
     const dispatch = useDispatch();
     const [isChecked, setChecked] = useState(false); // check box 선택시 체크 팝업에서의 check box
 
     const purchase = async() =>{
       console.log('purchase');
 
-      isChecked ? AsyncStorage.setItem('purchase', '1') : AsyncStorage.removeItem('purchase');
+      isChecked ? AsyncStorage.setItem('materialPurchase', '1') : AsyncStorage.removeItem('materialPurchase');
       try{
         const response = await axios({
             method: 'post',
@@ -75,7 +75,7 @@ const CheckBoxModal = ({modalVisible, setModalVisible}) => {
               'Content-Type': 'application/json'
             },
             data: {
-              needsBrandId: modalVisible.needsBrandId,
+              needsBrandId: modalVisible.needsBrandId == null ? 0 : modalVisible.needsBrandId,
               needsId: modalVisible.needsId
             }
         });
@@ -88,7 +88,7 @@ const CheckBoxModal = ({modalVisible, setModalVisible}) => {
     }
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modalVisible.open}
+    <Modal animationType="fade" transparent={true} visible={modalVisible.open} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible(!modalVisible)}}>
             <View style={styles.modalContainer}>

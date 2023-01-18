@@ -8,12 +8,7 @@ import BrendModal from '../Modal/BrendModal'
 import CheckboxModal from '../Modal/CheckBoxModal';
 import NoticeModal from '../Modal/NoticeModal';
 import GuideModal from '../Modal/GuideModal'
-import ResetModal from '../Modal/ResetModal'
-import ResetModal2 from '../Modal/ResetModal2'
-import DotModal from '../Modal/DotModal'
-import AddModal from '../Modal/AddModal'
-import DeleteModal from '../Modal/DeleteModal'
-import Filter from '../Modal/Filter'
+import BrandNameFlag from '../Modal/BrendNameFlag'
 import FirstModal from '../../Modal/First'
 import SecondModal from '../../Modal/Second'
 import * as MediaLibrary from 'expo-media-library'
@@ -179,14 +174,14 @@ const Navigation = ({navigation, route}) => {
 
 
   const [search, setSearch] = useState('');
-  const [materialList, setMaterialList] = useState();
+  console.log('search: ', search);
+  const [materialSearch, setMaterialSearch] = useState();
+  console.log('materialSearch: ', materialSearch);
+  const [refresh, setRefresh] = useState();
 
-  const materialSet = useSelector(state => { return state.material.refresh; });
-
-  console.log('materialList: ', materialList);
-  const dispatch = useDispatch();
   const ref = useRef();
   const [list, setList] = useState(Array.from({ length: 9 }, () => { return true}));
+  const [purchaseCheckBox, setPurchaseCheckBox] = useState(); // 체크박스 선택시 모달 안나옴
   
   const [modalVisible, setModalVisible] = useState({
     open: false,
@@ -205,25 +200,24 @@ const Navigation = ({navigation, route}) => {
     content: '',
   }); // 구매가이드 모달
 
-  const [modal, setModal] = useState({
-    open: false,
-    content: '',
-    buttonCount: 1
-  }); // fisrt modal
+  const [modal, setModal] = useState(false); // 브랜드 제품명 필수값 유무
   const [modal2, setModal2] = useState({
     open: false,
-    content: ['', ''],
-    buttonCount: 1
-  }); //second modal
+    content: '',
+    bottomCount: 1,
+  }); // First
+  const[modal3, setModal3] = useState({
+    open: false,
+    content: '',
+    bottomCount: 2,
+  }) // second
 
   useEffect(()=>{
-    dispatch(postMaterial(materialSet));
-
-    const purchaseInfo = async() => {
-      const purchase = await AsyncStorage.getItem('purchase');
-      setModalVisible(prevState => ({...prevState, asyncStorage: purchase}));
-  }
-  purchaseInfo();
+    const materialPurchase = async() =>{
+      const asyncStorage = await AsyncStorage.getItem('materialPurchase');
+      setPurchaseCheckBox(asyncStorage);
+    }
+    materialPurchase();
   }, []);
 
   useEffect(()=>{
@@ -239,15 +233,14 @@ const Navigation = ({navigation, route}) => {
                 data: { keyword: search}
             });
             console.log('boardSearch: ', response.data);
-            setMaterialList(response.data);
+            setMaterialSearch(response.data);
         }catch(error){
             console.log('materialSearch axios error', error);
-            setMaterialList(undefined);
+            setMaterialSearch(undefined);
         }
     }
     boardSearch();
-}, [search]);
-
+}, [search, modalVisible2, refresh]);
 
   const purchase = async(needsId, needsBrandId) =>{
     console.log('purchase');
@@ -260,7 +253,7 @@ const Navigation = ({navigation, route}) => {
             'Content-Type': 'application/json'
           },
           data: {
-            needsBrandId: needsBrandId,
+            needsBrandId: needsBrandId == null ? 0 : needsBrandId,
             needsId: needsId
           }
       });
@@ -268,7 +261,7 @@ const Navigation = ({navigation, route}) => {
       }catch(error){
           console.log('출산준비물 구매 error:', error);
       }
-      dispatch(postMaterial(materialSet));
+      setRefresh(`구매${needsId}`);
   }
 
   const purchaseCencel = async(needsId) => {
@@ -290,7 +283,7 @@ const Navigation = ({navigation, route}) => {
       }catch(error){
           console.log('출산준비물 리스트 error:', error);
       }
-      dispatch(postMaterial(materialSet));
+      setRefresh(`구매캔슬${needsId}`);
   }
 
 
@@ -318,7 +311,7 @@ const Navigation = ({navigation, route}) => {
           <View style={styles.filterBox}><Text>브랜드</Text></View>
         </View>
         {
-        materialList.filter(x=> x.category == item.title) == '' ? 
+        materialSearch.filter(x=> x.category == item.title) == '' ? 
         <View style={{height: 100, justifyContent: 'center', alignItems: 'center', paddingBottom: 20}}>
           <Text style={{color: '#9E9E9E', fontSize: 15}}>일치하는 항목이 없습니다.</Text>
         </View> 
@@ -330,7 +323,7 @@ const Navigation = ({navigation, route}) => {
 
   const List2 = ({item}) => {
     let arr = [];
-    materialList.filter((x, index)=>{
+    materialSearch.filter((x, index)=>{
       if(item.title == x.category && x.deleteStatus == 1){
        arr.push(
         <View style={styles.main3BoxHeader} key={index}>
@@ -341,8 +334,8 @@ const Navigation = ({navigation, route}) => {
               color={x.id == 0 ? undefined : '#FEB401'}
               onValueChange={()=>{
                 switch(true){
-                  case x.itemName == null: setModal(prevState => ({...prevState, open: true, buttonCount: 1, content: '브랜드를 체크해주세요'})); break;
-                  case modalVisible.asyncStorage == null : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: x.needsBrandId, needsId: x.needsId})); break;
+                  case x.itemName == null: setModal2(prevState => ({...prevState, open: true, buttonCount: 1, content: '브랜드를 체크해주세요'})); break;
+                  case purchaseCheckBox == null : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: x.needsBrandId, needsId: x.needsId})); break;
                   case x.id == 0 : purchase(x.needsId, x.needsBrandId); break;
                   default : purchaseCencel(x.needsId);
                 }
@@ -399,21 +392,21 @@ const Navigation = ({navigation, route}) => {
 
             <SafeAreaView style={styles.container}>
                 <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
-                <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modal={modal} setModal={setModal}/>
+                <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modal={modal} setModal={setModal} setModal2={setModal2}/>
                 <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
-                <FirstModal modal={modal} setModal={setModal}/>
-                <SecondModal modal={modal2} setModal={setModal2} />
+                <FirstModal modal={modal2} setModal={setModal2}/>
+                <SecondModal modal={modal3} setModal={setModal3} />
+                <BrandNameFlag modal={modal} setModal={setModal} modal2={modalVisible2} setModal2={setModalVisible2}/>
 
                 <View style={styles.header}>
-                <TouchableOpacity activeOpacity={1} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                <TouchableOpacity onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
                 <View style={styles.textInput}>
                   <View style={styles.searchIconBox}><Search width={22}/></View>
                   <TextInput placeholder='검색하실 단어를 입력하세요.' onChangeText={(e)=>setSearch(e)}></TextInput>
-                  <TouchableOpacity onPress={()=>navigation.navigate('맘스 톡')}></TouchableOpacity>
                 </View>
               </View>
 
-                {materialList == undefined ? <View></View> : <FlatList data={DATA3} renderItem={renderItem}
+                {materialSearch == undefined ? <View></View> : <FlatList data={DATA3} renderItem={renderItem}
                       keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
                 </FlatList>}
         </SafeAreaView>

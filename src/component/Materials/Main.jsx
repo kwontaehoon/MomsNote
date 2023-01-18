@@ -35,7 +35,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
   container:{
-    flex: 1,
+    height: '90%',
     backgroundColor: 'white',
     marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
   },
@@ -147,6 +147,24 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 15,
   },
+  saveModal:{
+    width: '90%',
+    height: 40,
+    backgroundColor: 'black',
+    opacity: 0.7,
+    borderRadius: 10,
+    justifyContent: 'center',
+    paddingLeft: 20,
+},
+saveModalBox:{
+    width: '100%',
+    height: 40,
+    position: 'absolute',
+    zIndex: 1,
+    bottom: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+},
 })
 
 const Navigation = ({navigation, route}) => {
@@ -222,12 +240,12 @@ const Navigation = ({navigation, route}) => {
   const [list, setList] = useState(Array.from({ length: 9 }, () => { return true}));
 
   const [captureURL, setCaptureURL] = useState(); // 캡쳐 uri
+  const [purchaseCheckBox, setPurchaseCheckBox] = useState(); // 체크박스 선택시 모달 안나옴
   
   const [modalVisible, setModalVisible] = useState({
     open: false,
     needsBrandId: null,
     needsId: null,
-    asyncStorage: '',
   }); // check box 선택시 모달
   const [modalVisible2, setModalVisible2] = useState({
     open: false,
@@ -260,16 +278,16 @@ const Navigation = ({navigation, route}) => {
   const animation = useRef(new Animated.Value(0)).current;
 
   useEffect(()=>{
-    
-    dispatch(postMaterial(materialSet));
+    const materialPurchase = async() =>{
+      const asyncStorage = await AsyncStorage.getItem('materialPurchase');
+      setPurchaseCheckBox(asyncStorage);
+    }
+    materialPurchase();
+  }, []);
 
-    const purchaseInfo = async() => {
-      const purchase = await AsyncStorage.getItem('purchase');
-      setModalVisible(prevState => ({...prevState, asyncStorage: purchase}));
-  }
-  purchaseInfo();
-  
-  }, [modalVisible8, modalVisible9]);
+  useEffect(()=>{
+    dispatch(postMaterial(materialSet));
+  }, [modalVisible, modalVisible8, modalVisible9]);
 
   useEffect(()=>{
     let sum = 0;
@@ -298,7 +316,7 @@ const Navigation = ({navigation, route}) => {
             'Content-Type': 'application/json'
           },
           data: {
-            needsBrandId: needsBrandId,
+            needsBrandId: needsBrandId == null ? 0 : needsBrandId,
             needsId: needsId
           }
       });
@@ -427,8 +445,8 @@ const save = async() => {
               color={x.id == 0 ? undefined : '#FEB401'}
               onValueChange={()=>{
                 switch(true){
-                  case x.itemName == null: setModal(prevState => ({...prevState, open: true, buttonCount: 1, content: '브랜드를 체크해주세요'})); break;
-                  case modalVisible.asyncStorage == null : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: x.needsBrandId, needsId: x.needsId})); break;
+                  case x.itemName == null: setModal2(prevState => ({...prevState, open: true, buttonCount: 1, content: '브랜드를 체크해주세요'})); break;
+                  case purchaseCheckBox == null : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: x.needsBrandId, needsId: x.needsId})); break;
                   case x.id == 0 : purchase(x.needsId, x.needsBrandId); break;
                   default : purchaseCencel(x.needsId);
                 }
@@ -521,6 +539,13 @@ const save = async() => {
         </FlatList> : <View style={styles.main}></View>}
 
         <View style={styles.footer}>
+
+          <Animated.View style={[styles.saveModalBox, {opacity: animation}]}>
+                <View style={styles.saveModal}>
+                    <Text style={{color: 'white'}}>출산 리스트가 내 앨범에 저장되었습니다.</Text>
+                </View>
+          </Animated.View>
+
           <View style={styles.footerBox}>
             <View style={styles.budgetBox}>
               <Text>총 예산: </Text>
@@ -528,7 +553,7 @@ const save = async() => {
               <Text> 원</Text>
             </View>
             <View style={styles.budgetBox2}>
-              <TouchableOpacity onPress={()=> navigation.navigate('총 예산', info)}><Text>자세히 보기  <Icon name='angle-right' size={15}/></Text></TouchableOpacity>
+              <TouchableOpacity style={{borderWidth: 1, padding: 20}} onPress={()=>navigation.navigate('총 예산', info)}><Text>자세히 보기  <Icon name='angle-right' size={15}/></Text></TouchableOpacity>
             </View>
           </View>
         </View>

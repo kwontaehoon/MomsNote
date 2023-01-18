@@ -254,7 +254,7 @@ const Talk1Sub = ({navigation, route}) => {
             console.log('hits: ', hits);
 
             hits == null || hits.split('|').filter(x => x == String(info[0].boardId)) == '' ? 
-            (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`)) : ''
+            (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`), setBoardLike('조회수증가')) : ''
             
         }
         user();

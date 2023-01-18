@@ -567,7 +567,7 @@ const Talk1Sub = ({navigation, route}) => {
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
                         {boardLike == 0 | boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000'/>}
-                        <Text style={{color: boardLike == 0 ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { info[0].recommend }</Text>
+                        <Text style={{color: boardLike == 0 ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { boardLike }</Text>
                         <Chat width={16} height={16}/>
                         <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 {info[0].commentsCount}</Text>
                     </View>

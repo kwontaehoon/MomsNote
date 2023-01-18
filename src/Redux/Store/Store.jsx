@@ -31,6 +31,8 @@ import hitsReducer from '../Slices/HitsSlice'
 import MyBoardReducer from '../Slices/MyBoardSlice'
 import MyCommentReducer from '../Slices/MyCommentSlice'
 import MyExpReducer from '../Slices/MyExpSlice'
+import MaterialSearchReducer from '../Slices/MaterialSearchSlice'
+
 
 
 export const store = configureStore({
@@ -66,6 +68,7 @@ export const store = configureStore({
     hits: hitsReducer,
     myBoard: MyBoardReducer,
     myComment: MyCommentReducer,
-    myExp: MyExpReducer
+    myExp: MyExpReducer,
+    materialSearch: MaterialSearchReducer
   },
 })

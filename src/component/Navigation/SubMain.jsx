@@ -28,6 +28,7 @@ import Baby2 from '../../../public/assets/svg/Baby2.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import DateTime from '../Test/DateTime'
+import CutDownTimer from '../Test/CutdownTimer'
 
 const styles = StyleSheet.create({
     header:{
@@ -77,7 +78,7 @@ function MainScreen() {
                <Stack.Navigator>
                     <Stack.Screen 
                         name="맘스톡"
-                        component={Talk}
+                        component={CutDownTimer}
                         options={({ navigation, route }) => ({
                           headerLeft: () => (
                             <View style={styles.header}>

@@ -149,7 +149,7 @@ const Main = ({modalVisible4, setModalVisible4, modalVisible2, setModalVisible2}
       );
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modalVisible4.open}
+    <Modal animationType="fade" transparent={true} visible={modalVisible4.open} statusBarTranslucent={true}
         onRequestClose={() => {
         setModalVisible4(prevState=> ({...prevState, open: true}))}}>
     <View style={styles.modalContainer}>

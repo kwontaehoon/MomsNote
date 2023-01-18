@@ -95,7 +95,7 @@ const Main = ({modalVisible6, setModalVisible6}) => {
     ];
 
   return (
-        <Modal animationType="fade" transparent={true} visible={modalVisible6}
+        <Modal animationType="fade" transparent={true} visible={modalVisible6} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible6(!modalVisible6)}}>
             <View style={styles.modalContainer}>
