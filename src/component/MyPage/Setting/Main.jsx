@@ -169,7 +169,9 @@ const Main = ({navigation}) => {
       if (Platform.OS === 'android') {
         setShow(false);
         // for iOS, add a button that closes the picker
-      } 
+      }else{
+        setShow(true);
+      }
       setMode(currentMode);
     };
   
@@ -328,7 +330,10 @@ const Main = ({navigation}) => {
             mode={mode}
             is24Hour={true}
             onChange={onChange}
-            style={{width: 100, height: 100, backgroundColor: 'blue'}}
+            style={Platform.OS == 'ios' ? {position: 'absolute',bottom: 20, borderWidth: 1, width: '100%'} : {width: 100, height: 100, backgroundColor: 'blue'}}
+            display={Platform.OS == 'ios' ? 'spinner' : ''}
+            
+            
           />
         )}
         

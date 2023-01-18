@@ -344,7 +344,7 @@ const dayCalculate2 = (date) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Back/>
+        <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
         <View style={styles.textInput}>
           <View style={styles.searchIconBox}><Search width={22}/></View>
           <TextInput placeholder='검색하실 단어를 입력하세요.' onChangeText={(e)=>setSearch(e)}></TextInput>

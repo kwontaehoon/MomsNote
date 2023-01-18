@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     container:{
         marginTop: getStatusBarHeight(),
         backgroundColor: 'white',
+        flex: 1,
     },
     container2:{
 

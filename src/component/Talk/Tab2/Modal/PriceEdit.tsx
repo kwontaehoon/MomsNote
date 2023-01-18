@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 
 })
 
-const CheckBoxModal = ({modal6, setModal6}) => {
+const CheckBoxModal = ({modal6, setModal6, setModal3}) => {
 
     const [info, setInfo] = useState({
         category: '카테고리 선택(필수)',
@@ -86,7 +86,7 @@ const CheckBoxModal = ({modal6, setModal6}) => {
                                 onChangeText={(e) => setInfo((prevState) => ({ ...prevState, needsName: e}))}></TextInput>
                         </View>
                         
-                            <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]}>
+                            <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>{console.log('zz')}}>
                                 <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>적용</Text>
                             </TouchableOpacity> 
                     </View>

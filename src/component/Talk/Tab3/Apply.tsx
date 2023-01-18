@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, SafeAreaView, StatusBar } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/AntDesign'
 import Checkbox from 'expo-checkbox'
@@ -16,6 +16,10 @@ import { useDispatch } from 'react-redux'
 import { postBoardAppFlag } from '../../../Redux/Slices/BoardAppFlagSlice'
 import { postBoardApp } from '../../../Redux/Slices/BoardApp'
 import { useSelector } from 'react-redux'
+import {
+    SafeAreaProvider,
+    useSafeAreaInsets,
+  } from 'react-native-safe-area-context';
 
 
 const styles = StyleSheet.create({
@@ -198,7 +202,6 @@ const Withdraw = ({navigation, route}) => {
             setChecked(arr);
         }
     }
-
     
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
@@ -287,19 +290,28 @@ const Withdraw = ({navigation, route}) => {
       );
 
   return (
-    <View style={styles.container}>
 
-        <Modal modal={modal} setModal={setModal}/>
-        <Modal2 modal2={modal2} setModal2={setModal2} />
-        <Modal3 modal3={modal3} setModal3={setModal3} />
-        <Modal4 navigation={navigation} modal4={modal4} setModal4={setModal4} />
-        <Modal5 modal5={modal5} setModal5={setModal5} />
-        <Modal6 navigation={navigation}modal6={modal6} setModal6={setModal6} info={info} />
+    <SafeAreaProvider>
+            <SafeAreaView style={{ backgroundColor: 'white' }}>
+                    <StatusBar />
+            </SafeAreaView>
+            <SafeAreaView style={styles.container}>
 
-        <FlatList data={DATA} renderItem={renderItem}
-          keyExtractor={item => item.id} showsHorizontalScrollIndicator={false}>
-        </FlatList>
-    </View>
+            <Modal modal={modal} setModal={setModal}/>
+            <Modal2 modal2={modal2} setModal2={setModal2} />
+            <Modal3 modal3={modal3} setModal3={setModal3} />
+            <Modal4 navigation={navigation} modal4={modal4} setModal4={setModal4} />
+            <Modal5 modal5={modal5} setModal5={setModal5} />
+            <Modal6 navigation={navigation}modal6={modal6} setModal6={setModal6} info={info} />
+            
+
+            <FlatList data={DATA} renderItem={renderItem}
+            keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
+            </FlatList>
+        </SafeAreaView>
+
+</SafeAreaProvider>
+    
   )
 }
 

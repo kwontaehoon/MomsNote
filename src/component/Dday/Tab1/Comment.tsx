@@ -12,7 +12,6 @@ import More from '../../../../public/assets/svg/More.svg'
 
 const styles = StyleSheet.create({
     container:{
-
     },
     box:{
         paddingLeft: 12,

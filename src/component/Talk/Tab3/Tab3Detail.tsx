@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Modal, StatusBar, Image } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Modal, StatusBar, Image, SafeAreaView } from 'react-native'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import ContentsURL from './Modal/ContentsURL'
 import axios from 'axios'
@@ -10,6 +10,13 @@ import Like from '../../../../public/assets/svg/Like.svg'
 import Heart from '../../../../public/assets/svg/Heart-1.svg'
 import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'
+import Back from '../../../../public/assets/svg/Back.svg'
+
+import { getStatusBarHeight } from "react-native-status-bar-height"
+import {
+    SafeAreaProvider,
+    useSafeAreaInsets,
+  } from 'react-native-safe-area-context';
 
 
 import { useDispatch } from 'react-redux'
@@ -26,22 +33,20 @@ import Modal2 from '../../Modal/First'
 
 const styles = StyleSheet.create({
     container:{
-        height: '100%',
+        flex: 1,
         backgroundColor: 'white',
     },
     header:{
         height: 60,
         justifyContent: 'center',
-        padding: 15,
-        borderBottomWidth: 1,
-        borderColor: '#F5F5F5'
-      },
-      headerBar:{
+        padding: 20,
+    },
+    headerBar:{
         position: 'absolute',
         right: 20,
         alignItems: 'center',
         flexDirection: 'row',
-      },
+    },
     header2:{
         height: 250,
     },
@@ -141,7 +146,7 @@ const styles = StyleSheet.create({
         padding: 10,
         justifyContent: 'center',
         borderTopWidth: 1,
-        borderColor: '#EEEEEE'
+        borderColor: '#EEEEEE',
     },
     footerBox:{
         borderWidth: 1,
@@ -222,7 +227,7 @@ const Talk1Sub = ({navigation, route}) => {
     const [filter, setFilter] = useState(false);
     const [modalVisible, setModalVisible] = useState(false); // 체험단 신청정보 입력 -> asnyc storage
     const [modalVisible2, setModalVisible2] = useState(false); // 체험단 신청완료
-    const [modalVisible3, setModalVisible3] = useState(true); // 컨텐츠 URL 등록
+    const [modalVisible3, setModalVisible3] = useState(false); // 컨텐츠 URL 등록
     const [modal4, setModal4] = useState(false) // 임시저장 불러올거냐
     const [modal, setModal] = useState({
         open: false,
@@ -338,123 +343,130 @@ const Talk1Sub = ({navigation, route}) => {
 
 
   return (
-    <View style={styles.container}>
+    <SafeAreaProvider>
+            <SafeAreaView style={{ backgroundColor: 'white' }}>
+                    <StatusBar />
+            </SafeAreaView>
+            <SafeAreaView style={styles.container}>
+                <View style={styles.container}>
 
-        <StatusBar translucent={false} />
+<Modal animationType="fade" transparent={true} visible={modalVisible} statusBarTranslucent={true}
+   onRequestClose={() => {
+   setModalVisible(!modalVisible)}}>
+   <View style={styles.modalContainer}>
+       <View style={styles.modalView}>
+           <View style={[styles.modalContainer2, {height: 220}]}>
+               <View style={styles.modalBox}>
+                   <Text style={{fontSize: 16, paddingTop: 10}}>체험단 신청을 하시려면</Text>
+                   <Text style={{fontSize: 16, paddingTop: 5}}>신청정보를 먼저 작성하셔야 합니다.</Text>
+                   <Text style={{fontSize: 16, paddingTop: 5}}>지금 작성하시겠습니까?</Text>
+               </View>
+               <View style={styles.modalBox}>
+                   <TouchableOpacity style={styles.modal} onPress={()=>{setModalVisible(!modalVisible), navigation.navigate('신청 정보', route.params)}}>
+                       <Text style={{color: 'white', fontSize: 16}}>네</Text>
+                   </TouchableOpacity>
+                   <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModalVisible(!modalVisible)}>
+                       <Text style={{color: 'black', fontSize: 16}}>취소</Text>
+                   </TouchableOpacity>
+               </View>
+               </View>
+           </View>
+       </View>
+   </Modal>
 
-         <Modal animationType="fade" transparent={true} visible={modalVisible} statusBarTranslucent={true}
-            onRequestClose={() => {
-            setModalVisible(!modalVisible)}}>
-            <View style={styles.modalContainer}>
-                <View style={styles.modalView}>
-                    <View style={[styles.modalContainer2, {height: 220}]}>
-                        <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, paddingTop: 10}}>체험단 신청을 하시려면</Text>
-                            <Text style={{fontSize: 16, paddingTop: 5}}>신청정보를 먼저 작성하셔야 합니다.</Text>
-                            <Text style={{fontSize: 16, paddingTop: 5}}>지금 작성하시겠습니까?</Text>
-                        </View>
-                        <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal} onPress={()=>{setModalVisible(!modalVisible), navigation.navigate('신청 정보', route.params)}}>
-                                <Text style={{color: 'white', fontSize: 16}}>네</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModalVisible(!modalVisible)}>
-                                <Text style={{color: 'black', fontSize: 16}}>취소</Text>
-                            </TouchableOpacity>
-                        </View>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
+   <Modal animationType="fade" transparent={true} visible={modalVisible2} statusBarTranslucent={true}
+   onRequestClose={() => {
+   setModalVisible2(!modalVisible2)}}>
+   <View style={styles.modalContainer}>
+       <View style={styles.modalView}>
+           <View style={styles.modalContainer2}>
+               <View style={styles.modalBox}><Text style={{fontSize: 16, paddingTop: 10}}>체험단 신청이 완료되었습니다.</Text></View>
+               <View style={styles.modalBox}>
+                   <TouchableOpacity style={styles.modal} onPress={()=>setModalVisible2(!modalVisible2)}><Text style={{color: 'white', fontSize: 16}}>확인</Text></TouchableOpacity>
+               </View>
+               </View>
+           </View>
+       </View>
+   </Modal>
 
-            <Modal animationType="fade" transparent={true} visible={modalVisible2} statusBarTranslucent={true}
-            onRequestClose={() => {
-            setModalVisible2(!modalVisible2)}}>
-            <View style={styles.modalContainer}>
-                <View style={styles.modalView}>
-                    <View style={styles.modalContainer2}>
-                        <View style={styles.modalBox}><Text style={{fontSize: 16, paddingTop: 10}}>체험단 신청이 완료되었습니다.</Text></View>
-                        <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal} onPress={()=>setModalVisible2(!modalVisible2)}><Text style={{color: 'white', fontSize: 16}}>확인</Text></TouchableOpacity>
-                        </View>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
+   <Modal animationType="fade" transparent={true} visible={modal4} statusBarTranslucent={true}
+   onRequestClose={() => {
+   setModal4(!modal4)}}>
+   <View style={styles.modalContainer}>
+       <View style={styles.modalView}>
+           <View style={[styles.modalContainer2, {height: 220}]}>
+               <View style={styles.modalBox}>
+                   <Text style={{fontSize: 16, paddingTop: 10}}>작성 중이던 게시글이 존재합니다.</Text>
+                   <Text style={{fontSize: 16, paddingTop: 5}}>임시저장된 게시글을 불러오시겠습니까?</Text>
+               </View>
+               <View style={styles.modalBox}>
+                   <TouchableOpacity style={styles.modal} onPress={()=>{setModal4(!modal4), navigation.navigate('신청 정보', '신청 정보 불러오기')}}>
+                     <Text style={{color: 'white', fontSize: 16}}>신청 정보 불러오기</Text>
+                   </TouchableOpacity>
+                   <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModal4(!modal4), navigation.navigate('신청 정보', route.params), AsyncStorage.removeItem('application')}}>
+                     <Text style={{color: 'black', fontSize: 16}}>새로 작성하기</Text>
+                   </TouchableOpacity>
+               </View>
+           </View>
+       </View>
+   </View>
+</Modal>
 
-            <Modal animationType="fade" transparent={true} visible={modal4} statusBarTranslucent={true}
-            onRequestClose={() => {
-            setModal4(!modal4)}}>
-            <View style={styles.modalContainer}>
-                <View style={styles.modalView}>
-                    <View style={[styles.modalContainer2, {height: 220}]}>
-                        <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, paddingTop: 10}}>작성 중이던 게시글이 존재합니다.</Text>
-                            <Text style={{fontSize: 16, paddingTop: 5}}>임시저장된 게시글을 불러오시겠습니까?</Text>
-                        </View>
-                        <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal} onPress={()=>{setModal4(!modal4), navigation.navigate('신청 정보', '신청 정보 불러오기')}}>
-                              <Text style={{color: 'white', fontSize: 16}}>신청 정보 불러오기</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModal4(!modal4), navigation.navigate('신청 정보', route.params), AsyncStorage.removeItem('application')}}>
-                              <Text style={{color: 'black', fontSize: 16}}>새로 작성하기</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </View>
-        </Modal>
+   <ContentsURL modalVisible3={modalVisible3} setModalVisible3={setModalVisible3}/>
+   <Modal2 modal={modal} setModal={setModal} />
 
-            <ContentsURL modalVisible3={modalVisible3} setModalVisible3={setModalVisible3}/>
-            <Modal2 modal={modal} setModal={setModal} />
 
+<View style={styles.header}>
+   <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
+   <View style={styles.headerBar}>
+   <Share style={{marginRight: 12}} />
+   <More />
+   </View>
+</View>
+
+<FlatList data={DATA} renderItem={renderItem}
+ keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
+</FlatList>
+{filter ? winList.filter(x=> x.nickname == JSON.parse(userInfo).babyName) == '' ?  '' :
+   <View style={styles.footer}>
+       <TouchableOpacity style={[styles.footerBox2, {width: '100%'}]} onPress={()=>setModalVisible3(!modalVisible3)}>
+           <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>컨텐츠 등록</Text>
+       </TouchableOpacity>
+   </View>
+   : <View style={styles.footer}>
+   {boardLikeFlag == 0 ? 
+   <TouchableOpacity style={[styles.footerBox, {width: '20%'}]} onPress={recommend}>
+       <Like width={20} fill='#BDBDBD'/>  
+       <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {boardLike}</Text>
+   </TouchableOpacity>
+   :
+   <View style={[styles.footerBox, {width: '20%'}]}>
+       <Heart width={20} fill='#FEA100'/> 
+       <Text style={{fontSize: 16, fontWeight: '500', color: '#FEA100'}}> {boardLike}</Text>
+   </View>
+   }
+
+   <View style={[styles.footerBox, {width: '3%', borderWidth: 0}]}></View>
+   { boardAppFlag.applicationId == null ?
+   <TouchableOpacity style={styles.footerBox2} onPress={()=>
+       {
+           async == null ? setModalVisible(!modalVisible) : setModal4(!modal4);
+           
+       }
+   }>
+       <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
+   </TouchableOpacity>
+   :
+   <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={()=>navigation.navigate('신청 정보', route.params)}>
+       <Text style={{fontSize: 20, fontWeight: '500'}}>신청 정보 확인</Text>
+   </TouchableOpacity>
+   }
+</View>}
+</View>
+            </SafeAreaView>
+
+        </SafeAreaProvider>
     
-        <View style={styles.header}>
-            <Text style={{fontSize: 18, fontWeight: '600'}}>출산준비물</Text>
-            <View style={styles.headerBar}>
-            <Share style={{marginRight: 12}} />
-            <More style={{marginRight: 5}} />
-            </View>
-        </View>
-
-        <FlatList data={DATA} renderItem={renderItem}
-          keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
-        </FlatList>
-        {filter ? winList.filter(x=> x.nickname == JSON.parse(userInfo).babyName) == '' ?  '' :
-            <View style={styles.footer}>
-                <TouchableOpacity style={[styles.footerBox2, {width: '100%'}]} onPress={()=>setModalVisible3(!modalVisible3)}>
-                    <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>컨텐츠 등록</Text>
-                </TouchableOpacity>
-            </View>
-            : <View style={styles.footer}>
-            {boardLikeFlag == 0 ? 
-            <TouchableOpacity style={[styles.footerBox, {width: '20%'}]} onPress={recommend}>
-                <Like width={20} fill='#BDBDBD'/>  
-                <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {boardLike}</Text>
-            </TouchableOpacity>
-            :
-            <View style={[styles.footerBox, {width: '20%'}]}>
-                <Heart width={20} fill='#FEA100'/> 
-                <Text style={{fontSize: 16, fontWeight: '500', color: '#FEA100'}}> {boardLike}</Text>
-            </View>
-            }
-
-            <View style={[styles.footerBox, {width: '3%', borderWidth: 0}]}></View>
-            { boardAppFlag.applicationId == null ?
-            <TouchableOpacity style={styles.footerBox2} onPress={()=>
-                {
-                    async == null ? setModalVisible(!modalVisible) : setModal4(!modal4);
-                    
-                }
-            }>
-                <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
-            </TouchableOpacity>
-            :
-            <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={()=>navigation.navigate('신청 정보', route.params)}>
-                <Text style={{fontSize: 20, fontWeight: '500'}}>신청 정보 확인</Text>
-            </TouchableOpacity>
-            }
-        </View>}
-    </View>
   )
 }
 

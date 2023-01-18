@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator, SafeAreaView, StatusBar, Platform } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator, SafeAreaView, StatusBar, Platform, Animated } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon3 from 'react-native-vector-icons/Feather'
 import Checkbox from 'expo-checkbox';
@@ -83,7 +83,8 @@ const styles = StyleSheet.create({
   },
   main3:{
     alignItems: 'center',
-    paddingBottom: 15
+    paddingBottom: 15,
+    backgroundColor: '#F5F5F5'
   },
   main3Box:{
     backgroundColor: 'white',
@@ -256,6 +257,7 @@ const Navigation = ({navigation, route}) => {
     content: '',
     bottomCount: 2,
   }) // second
+  const animation = useRef(new Animated.Value(0)).current;
 
   useEffect(()=>{
     
@@ -282,9 +284,9 @@ const Navigation = ({navigation, route}) => {
   }, [info]);
 
 
-  // useEffect(()=>{
-  //     save();
-  // }, [captureURL]);
+  useEffect(()=>{
+      save();
+  }, [captureURL]);
 
   const purchase = async(needsId, needsBrandId) =>{
     try{
@@ -365,8 +367,22 @@ const save = async() => {
     setList(arr);
   }
 
+  const opacity_ani = () => {
+    Animated.timing(animation, {
+        toValue: 1,
+        useNativeDriver: true,
+        duration: 1500,
+    }).start(()=>{
+        Animated.timing(animation, {
+            toValue: 0,
+            useNativeDriver: true,
+            duration: 1500,
+        }).start();
+    });
+  }
+
   const capture = async() => {
-    // opacity_ani();
+    opacity_ani();
     setCaptureURL('1');
 
     ref.current.capture().then(uri => {
@@ -486,10 +502,10 @@ const save = async() => {
         <View style={styles.header}>
         <Text style={{fontSize: 18, fontWeight: '600'}}>출산준비물</Text>
         <View style={styles.headerBar}>
-            <Download style={{marginRight: 12}} onPress={capture}/>
-            <Search style={{marginRight: 12}} onPress={()=>navigation.navigate('출산 준비물 검색')}/>
-            <Bell style={{marginRight: 12}} onPress={()=>navigation.navigate('알림')}/>
-            <MyPage style={{marginRight: 5}} onPress={()=>navigation.navigate('마이페이지')}/>
+            <TouchableOpacity style={{marginRight: 12}} onPress={capture}><Download/></TouchableOpacity>
+            <TouchableOpacity style={{marginRight: 12}} onPress={()=>navigation.navigate('출산 준비물 검색')}><Search/></TouchableOpacity>
+            <TouchableOpacity style={{marginRight: 12}} onPress={()=>navigation.navigate('알림')}><Bell/></TouchableOpacity>
+            <TouchableOpacity style={{marginRight: 5}} onPress={()=>navigation.navigate('마이페이지')}><MyPage/></TouchableOpacity>
         </View>
       </View>
       <View style={styles.header2}>

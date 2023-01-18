@@ -421,7 +421,7 @@ const Talk1Sub = ({navigation, route}) => {
         <Modal modalVisible2={modal} setModalVisible2={setModal} setModal={setModal3}/>
         <Modal2 modal2={modal2} setModal2={setModal2}/>
         <Modal3 modal={modal3} setModal={setModal3}/>
-        <Modal4 modal6={modal4} setModal6={setModal4} />
+        <Modal4 modal6={modal4} setModal6={setModal4} setModal3={setModal3} />
     </View>
   )
 }

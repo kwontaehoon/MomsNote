@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
         marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
     },
     container2:{
-
     },
     header:{
         height: 60,
@@ -46,6 +45,7 @@ const styles = StyleSheet.create({
     main:{
         height: 500,
         padding: 20,
+        backgroundColor: '#FEECB3',
     },
     mainBox:{
         height: '20%',
@@ -251,14 +251,13 @@ const Home = ({navigation}) => {
         if(test !== undefined){
             let { status } = await MediaLibrary.requestPermissionsAsync();
             const asset = await MediaLibrary.createAssetAsync(test);
-            // const moms = await MediaLibrary.getAlbumAsync('맘스노트');
+            const moms = await MediaLibrary.getAlbumAsync('맘스노트');
 
             console.log('status: ', status);
             console.log('asset: ', asset);
-            // console.log('moms: ', moms);
-           
-            
-            if(status === 'granted'){
+            console.log('moms: ', moms);
+                 
+            // if(status === 'granted'){
                 // const kwon = await MediaLibrary.getAlbumAsync('DCIM');
                 // const moms = await MediaLibrary.getAlbumAsync('맘스노트');
                 // if(moms === null){
@@ -271,7 +270,7 @@ const Home = ({navigation}) => {
     
                 // MediaLibrary.createAlbumAsync('맘스노트', asset);
                 // // const asset = await MediaLibrary.createAssetAsync(test);
-            }
+            // }
         }
         setTest(undefined);
     }
@@ -292,6 +291,7 @@ const Home = ({navigation}) => {
         arr[number+1] = !arr[number+1];
         setBubble(arr); 
     }
+    
     const opacity_ani = () => {
         Animated.timing(animation, {
             toValue: 1,

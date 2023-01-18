@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, Button } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, SafeAreaView } from 'react-native'
 import Slick from 'react-native-slick'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import { WithLocalSvg } from "react-native-svg"
@@ -9,18 +9,21 @@ import GoogleIcon from '../../../public/assets/svg/google.svg'
 import Logo from '../../../public/assets/svg/Logo.svg'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
-import * as AppleAuthentication from 'expo-apple-authentication'
+import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Linking from 'expo-linking';
 import axios from 'axios'
 import Modal from './Modal/WithdrawModal'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import jwtDecode from 'jwt-decode'
+import {
+    SafeAreaProvider,
+    useSafeAreaInsets,
+  } from 'react-native-safe-area-context';
 
 
 const styles = StyleSheet.create({
     container:{
         backgroundColor: 'white',
-        marginTop: getStatusBarHeight(),
         padding: 20,
     },
     header:{
@@ -81,7 +84,10 @@ const Main = ({navigation, route}) => {
     }, [response]);
 
     useEffect(()=>{
-        route !== undefined ? setModal(!modal) : ''
+        console.log('route: ', route);
+        if(route !== undefined){
+            route.params == '로그인' ? '' : setModal(!modal)
+        }
     }, [route]);
 
     const GoogleGetId = async(googleAccessToken) => {
@@ -118,71 +124,53 @@ const Main = ({navigation, route}) => {
         // })
     }
 
-    const IosLogin = () => {
-        if(Platform.OS === 'ios'){
-            return(
-            <AppleAuthentication.AppleAuthenticationButton
-                buttonType={AppleAuthentication.AppleAuthenticationButtonType.FULL_NAME}
-                buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-                cornerRadius={5}
-                style={{ width: 200, height: 44 }}
-                onPress={async () => {
-                    try {
-                    const credential = await AppleAuthentication.signInAsync({
-                        requestedScopes: [
-                        AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-                        AppleAuthentication.AppleAuthenticationScope.EMAIL,
-                        ],
-                    });
-                    // signed in
-                    } catch (e) {
-                    if (e.code === 'ERR_CANCELED') {
-                        // handle that the user canceled the sign-in flow
-                    } else {
-                        // handle other errors
-                    }
-                    }
-                }}
-            />
-            )
-        }else{
-
-            // return(
-            //     <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#000000'}]}>
-            //         <View style={styles.iconBox}><WithLocalSvg width={22} height={20} asset={apple}/></View>
-            //         <Text style={{color: 'white', fontWeight: '400'}}>Apple로 시작하기</Text>
-            //     </TouchableOpacity>
-            // )
-        }
-    }
-
-
-
   return (
-    <View style={styles.container}>
 
-        <Modal modal={modal} setModal={setModal}/>
+    <SafeAreaProvider>
+        <SafeAreaView style={{ backgroundColor: 'white' }}></SafeAreaView>
 
-        <View style={styles.header}>
-            <Logo width={230} height={112}/>
-        </View>
-        <View style={styles.footer}>
-            <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#FEE500'}]} onPress={()=>navigation.navigate('카카오 로그인')}>
-                <View style={styles.iconBox}><Kakao width={22} height={20}/></View>
-                <Text style={{color: '#212121', fontWeight: '400'}}>카카오톡으로 시작하기</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#FFFFFF'}]} onPress={()=>promptAsync()}>
-                <View style={styles.iconBox}><GoogleIcon width={22} height={20}/></View>
-                <Text style={{color: '#212121', fontWeight: '400'}}>Google로 시작하기</Text>
-            </TouchableOpacity>
-            <IosLogin />
-            
-            <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#000000'}]}>
-                <View style={styles.iconBox}><Apple width={22} height={20}/></View>
-                <Text style={{color: 'white', fontWeight: '400'}}>Apple로 시작하기</Text>
-            </TouchableOpacity> 
-        </View>
-    </View>
+        <SafeAreaView style={styles.container}>
+
+            <Modal modal={modal} setModal={setModal}/>
+
+            <View style={styles.header}>
+                <Logo width={230} height={112}/>
+            </View>
+            <View style={styles.footer}>
+                <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#FEE500'}]} onPress={()=>navigation.navigate('카카오 로그인')}>
+                    <View style={styles.iconBox}><Kakao width={22} height={20}/></View>
+                    <Text style={{color: '#212121', fontWeight: '400'}}>카카오톡으로 시작하기</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#FFFFFF'}]} onPress={()=>promptAsync()}>
+                    <View style={styles.iconBox}><GoogleIcon width={22} height={20}/></View>
+                    <Text style={{color: '#212121', fontWeight: '400'}}>Google로 시작하기</Text>
+                </TouchableOpacity>
+
+                { Platform.OS == 'ios' ? <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#000000'}]} onPress={ async () => {
+                        try {
+                        const credential = await AppleAuthentication.signInAsync({
+                            requestedScopes: [
+                            AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                            AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                            ],
+                        });
+                        // signed in
+                        } catch (e) {
+                        if (e.code === 'ERR_CANCELED') {
+                            // handle that the user canceled the sign-in flow
+                        } else {
+                            // handle other errors
+                        }
+                        }
+                    }}>
+                    <View style={styles.iconBox}><Apple width={22} height={20}/></View>
+                    <Text style={{color: 'white', fontWeight: '400'}}>Apple로 시작하기</Text>
+                </TouchableOpacity> : ''}
+            </View>
+
+        </SafeAreaView>
+
+    </SafeAreaProvider>
   )
 }
 

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, ActivityIndicator, Keyboard, Platform } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, ActivityIndicator, Keyboard, SafeAreaView, Platform, KeyboardAvoidingView } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Modal from '../../Modal/DotModal'
 import Modal2 from '../../Modal/Block'
@@ -17,7 +17,7 @@ import {
     SafeAreaProvider,
     useSafeAreaInsets,
   } from 'react-native-safe-area-context';
-
+import { useIsFocused } from '@react-navigation/native'
 import Comment from './Comment'
 import axios from 'axios'
 
@@ -34,8 +34,8 @@ import { postHits } from '../../../Redux/Slices/HitsSlice'
 const styles = StyleSheet.create({
     container:{
         backgroundColor: 'white',
-        marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
-        height: '100%',
+
+        flex: 1,
     },
     header:{
         height: 60,
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
         borderColor: '#F5F5F5',
         justifyContent: 'center',
         backgroundColor: 'white',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     regisButton:{
         position: 'absolute',
@@ -190,6 +190,8 @@ const styles = StyleSheet.create({
     }
 })
 const Talk1Sub = ({navigation, route}) => {
+
+    console.log('xaxaqewqewq',getStatusBarHeight());
     
     Keyboard.addListener('keyboardDidShow', () => {
         setPageHeight(true);
@@ -198,7 +200,6 @@ const Talk1Sub = ({navigation, route}) => {
         setPageHeight(false);
     });
 
-    const insets = useSafeAreaInsets();
     const dispatch = useDispatch();
     const info = [route.params.item];
     console.log('talk1 info: ', info);
@@ -300,6 +301,7 @@ const Talk1Sub = ({navigation, route}) => {
         dispatch(postComment(commentData));
         onPressFunction();
     }
+
 
     const likeplus = async() => { // 게시판 좋아요
         console.log('likeplus');
@@ -433,50 +435,52 @@ const Talk1Sub = ({navigation, route}) => {
 
 
   return comment == undefined || userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
-    <View style={[styles.container, { paddingBottom: insets.bottom}]}>
+    <SafeAreaProvider>
+        <SafeAreaView style={styles.container}>
 
-        <Animated.View style={[styles.alarmBox, {opacity: animation}]}>
-            <View style={styles.alarm}><Text style={{color: 'white', fontSize: 13, fontWeight: '500'}}>{info[0].nickname}님을 차단하였습니다.</Text></View>
-        </Animated.View>
+            <Animated.View style={[styles.alarmBox, {opacity: animation}]}>
+                <View style={styles.alarm}><Text style={{color: 'white', fontSize: 13, fontWeight: '500'}}>{info[0].nickname}님을 차단하였습니다.</Text></View>
+            </Animated.View>
 
-        <Modal navigation={navigation} modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3} commentsId={commentsId} info={info}
-            modal6={modal6} setModal6={setModal6} commentData={commentData}/>
-        <Modal2 modal2={modal2} setModal2={setModal2} userId={info[0].userId} ani={opacity_ani}/>
-        <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4} boardId={info[0].boardId}/>
-        <Modal4 modal4={modal4} setModal4={setModal4} />
-        <Modal6 modal4={modal4} setModal4={setModal4} modal6={modal6} setModal6={setModal6} commentsId={commentsId}/>
-        
-        <View style={styles.header}>
-                <Back onPress={()=>navigation.goBack()}/>
-                <View style={styles.headerBar}>
-                    <Share style={{marginRight: 12}}/>
-                    <More onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}/>
-                </View>
-        </View>
+            <Modal navigation={navigation} modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3} commentsId={commentsId} info={info}
+                modal6={modal6} setModal6={setModal6} commentData={commentData}/>
+            <Modal2 modal2={modal2} setModal2={setModal2} userId={info[0].userId} ani={opacity_ani}/>
+            <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4} boardId={info[0].boardId}/>
+            <Modal4 modal4={modal4} setModal4={setModal4} />
+            <Modal6 modal4={modal4} setModal4={setModal4} modal6={modal6} setModal6={setModal6} commentsId={commentsId}/>
 
-        <FlatList ref={flatlistRef} data={info} renderItem={renderItem} showsVerticalScrollIndicator={false}
-            keyExtractor={item => String(item.boardId)}>
-        </FlatList>
-        
-        <View style={[styles.commentRes, {display: insert.level === 0 ? 'none' : 'flex'}]}>
-            <View style={styles.closeBox}><Close width={20} fill='#757575' onPress={()=>setInsert((prevState) => ({...prevState, level: 0}))}/></View>
-            <Text style={{fontSize: 15}}>{commentsId}</Text>
-            <Text style={{color: '#757575'}}> 님에게 답변 남기기</Text>
-        </View>
-        <View style={styles.footer}>
-            <Image source={{ uri: userInfo.profileImage }} style={styles.profileBox}/>
-            <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: '', level: 0}))}}>
-                <Text style={{color: '#1E88E5', fontWeight: '600'}}>등록</Text>
-            </TouchableOpacity>
-            <TextInput style={styles.textInput} value={insert.contents} placeholder='댓글을 입력해주세요.' onChangeText={
-                (e)=> insert.level !== 0 ? setInsert((prevState) => ({...prevState, contents: e})) :
-                setInsert((prevState) => ({...prevState,
-                    boardId: info[0].boardId,
-                    contents: e,
-                    ref: comment.length+1,
-                    level: 0}))} placeholderTextColor={'#BDBDBD'}></TextInput>
-        </View>
-    </View>
+            <View style={styles.header}>
+                    <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
+                    <View style={styles.headerBar}>
+                        <Share style={{marginRight: 12}}/>
+                        <More onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}/>
+                    </View>
+            </View>
+
+            <FlatList ref={flatlistRef} data={info} renderItem={renderItem} showsVerticalScrollIndicator={false}
+                keyExtractor={item => String(item.boardId)}>
+            </FlatList>
+
+            <View style={[styles.commentRes, {display: insert.level === 0 ? 'none' : 'flex'}]}>
+                <View style={styles.closeBox}><Close width={20} fill='#757575' onPress={()=>setInsert((prevState) => ({...prevState, level: 0}))}/></View>
+                <Text style={{fontSize: 15}}>{commentsId}</Text>
+                <Text style={{color: '#757575'}}> 님에게 답변 남기기</Text>
+            </View>
+            <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : ''} keyboardVerticalOffset={Platform.OS == 'ios' ? 30 : ''} style={styles.footer}>
+                <Image source={{ uri: userInfo.profileImage }} style={styles.profileBox}/>
+                <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: '', level: 0}))}}>
+                    <Text style={{color: '#1E88E5', fontWeight: '600'}}>등록</Text>
+                </TouchableOpacity>
+                <TextInput style={styles.textInput} value={insert.contents} placeholder='댓글을 입력해주세요.' onChangeText={
+                    (e)=> insert.level !== 0 ? setInsert((prevState) => ({...prevState, contents: e})) :
+                    setInsert((prevState) => ({...prevState,
+                        boardId: info[0].boardId,
+                        contents: e,
+                        ref: comment.length+1,
+                        level: 0}))} placeholderTextColor={'#BDBDBD'}></TextInput>
+            </KeyboardAvoidingView>
+            </SafeAreaView>
+        </SafeAreaProvider>
   )
 }
 

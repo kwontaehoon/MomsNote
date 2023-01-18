@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator, Platform } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSelector } from 'react-redux'
 
@@ -9,75 +9,82 @@ import ShareModal2 from './Modal/ShareModal2'
 import ConfirmModal from './Modal/ConfirmModal'
 import DotModal from './Modal/DotModal'
 import PriceEdit from './Modal/PriceEdit'
+import FirstModal from '../../Modal/First'
+
 import { useDispatch } from 'react-redux'
 import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({
-    container:{
-        height: '100%',
-        backgroundColor: 'white',
-    },
-    main:{
-      height: '70%',
-    },
-    mainBox:{
-      flexDirection: 'row',
-      padding: 20,
-      alignItems: 'center',
-      backgroundColor: '#F5F5F5',
-    },
-    titleBox:{
-      width: '50%',
-      justifyContent: 'center'
+  container:{
+      flex: 1,
+      backgroundColor: 'white',
   },
-    arrowBox:{
-      position: 'absolute',
-      right: 15,
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
-    mainBox2:{
-      flexDirection: 'row',
-      borderBottomWidth: 1,
-      borderColor: '#F5F5F5',
-    },
-    filterBox:{
-      width: '33.4%',
-      height: 30,
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
-    mainBox3:{
-      flexDirection: 'row',
-      borderBottomWidth: 1,
-      borderColor: '#F5F5F5',
-      paddingLeft: 15,
-      paddingRight: 15,
-    },
-    filterBox2:{
-      width: '33.4%',
-      height: 48,
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexDirection: 'row',
-    },
-    footer:{
-      height: '20%',
-      padding: 15,
-      borderTopWidth: 1,
-      borderColor: '#F5F5F5'
-    },
-    footerBox:{
-      height: 50,
-      justifyContent: 'center',
-    },
-    buttonBox:{
-      height: 56,
-      backgroundColor: '#FEA100',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
+  main:{
+    height: '70%',
+  },
+  mainBox:{
+    flexDirection: 'row',
+    padding: 20,
+    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
+  },
+  titleBox:{
+    width: '50%',
+    justifyContent: 'center'
+},
+  arrowBox:{
+    position: 'absolute',
+    right: 15,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  mainBox2:{
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#F5F5F5',
+  },
+  filterBox:{
+    width: '33.4%',
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  mainBox3:{
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#F5F5F5',
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
+  filterBox2:{
+    width: '33.4%',
+    height: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  footer:{
+    height: '20%',
+    padding: 15,
+    borderTopWidth: 1,
+    borderColor: '#F5F5F5'
+  },
+  footerBox:{
+    height: 50,
+    justifyContent: 'center',
+  },
+  buttonBox:{
+    height: 56,
+    backgroundColor: '#FEA100',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 })
+
 const Talk1Sub = ({route}) => {
 
   const DATA = [
@@ -128,6 +135,7 @@ const Talk1Sub = ({route}) => {
     },
   ];
 
+  const insets = useSafeAreaInsets();
   const dispatch = useDispatch();
   const info = useSelector(state => state.material.data);
   console.log('총 예산 info: ', info);
@@ -199,8 +207,8 @@ const Talk1Sub = ({route}) => {
       if(x.category == title && x.itemName !== null){
           arr.push(
         <TouchableOpacity style={styles.mainBox3} onLongPress={()=>setModal5(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1} key={index}>
-            <View style={[styles.filterBox2, {justifyContent: 'flex-start'}]}><Text style={{fontWeight: '500'}} >{x.needsName}</Text></View>
-            <View style={styles.filterBox2}><Text numberOfLines={2}>{x.itemName == null ? '-' : x.itemName}</Text></View>
+            <View style={[styles.filterBox2, {justifyContent: 'flex-start'}]}><Text style={{fontWeight: '500'}}>{x.needsName}</Text></View>
+            <View style={styles.filterBox2}><Text numberOfLines={2} style={{lineHeight: 20}}>{x.itemName == null ? '-' : x.itemName}</Text></View>
             <TouchableOpacity style={[styles.filterBox2, {justifyContent: 'flex-end'}]} onLongPress={()=>setModal6(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1}>
               <Text style={{fontWeight: '600'}}>{(x.itemPrice).toLocaleString()}</Text>
               <Text> 원</Text>
@@ -235,7 +243,7 @@ const Talk1Sub = ({route}) => {
     );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, Platform.OS == 'ios' ? {paddingBottom: insets.bottom} : {paddingBottom: 0}]}>
 
       <DeleteModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
       <ShareModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modalVisible3={modalVisible3} setModalVisible3={setModalVisible3} />
@@ -243,11 +251,8 @@ const Talk1Sub = ({route}) => {
       <ConfirmModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} />
       <DotModal modal5={modal5} setModal5={setModal5} />
       <PriceEdit modal6={modal6} setModal6={setModal6} />
-      
-
 
       <View style={styles.main}>
-        <View></View>
         <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
               keyExtractor={item => item.id}>
         </FlatList>

@@ -61,15 +61,20 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
 })
-const Main = () => {
+const Main = ({navigation}) => {
 
     const [page, setPage] = useState(0); // 해당 페이지
     console.log('page: ', page);
 
+    const start = async() => {
+        await AsyncStorage.setItem('login', '1');
+        navigation.navigate('로그인 페이지', '로그인');
+    }
+
     const List = () => {
         if(page === 3){
             return(
-                <TouchableOpacity style={styles.footer} onPress={() => AsyncStorage.setItem('login', '1')}>
+                <TouchableOpacity style={styles.footer} onPress={start}>
                   <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>시작하기</Text>
                 </TouchableOpacity>
             )
@@ -93,8 +98,6 @@ const Main = () => {
                 setPage(index);
             }}
             nextButton={<View style={styles.nextButton}></View>}
-            buttonWrapperStyle={{backgroundColor: 'greenyellow'}}
-          
         >
                 <View testID="Page1" style={styles.header2}>
                     <Text style={{fontSize: 20}}>출산 전, 걱정말고</Text>

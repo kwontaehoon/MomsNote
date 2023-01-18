@@ -47,6 +47,9 @@ import MaterialDetail from '../Navigation/SearchTab/Material'
 import CommentDetail from '../Navigation/SearchTab/Comment'
 import ExperienceDetail from '../Navigation/SearchTab/Expreience'
 import MaterialSearch from '../Materials/Search/Search'
+import MyBoard from '../MyPage/MyBoard/Main'
+import MyComment from '../MyPage/MyComment/Main'
+import MyExp from '../MyPage/MyExp/Main'
 
 import Back from '../../../public/assets/svg/Back.svg'
 
@@ -99,17 +102,129 @@ const Navigation = () => {
                 <Stack.Screen name="맘스톡" component={Talk} options={{title: '맘스톡'}}/>
                 <Stack.Screen name="추가 정보 입력" component={AddPage} options={{title: '추가 정보 입력'}}/>
                 <Stack.Screen name="글쓰기" component={Talk1Register} options={{title: '', headerShown: false}} />
-                <Stack.Screen name="1:1 문의" component={Inquiry} />
-                <Stack.Screen name="문의 상세" component={InquiryDetail} />
-                <Stack.Screen name="공지사항" component={Notice} />
+                <Stack.Screen name="1:1 문의" component={Inquiry} 
+                    options={({ navigation, route }) => ({
+                        headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>1:1 문의</Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                            <View></View>
+                        },
+                        headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                            height: 110
+                        },
+                    })}/>
+                <Stack.Screen name="문의 상세" component={InquiryDetail} 
+                    options={({ navigation, route }) => ({
+                        headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>1:1 문의</Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                            <View></View>
+                        },
+                        headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                            height: 110
+                        },
+                    })}/>
+                <Stack.Screen name="공지사항" component={Notice} 
+                    options={({ navigation, route }) => ({
+                        headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>공지사항</Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                            <View></View>
+                        },
+                        headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                            height: 110
+                        },
+                    })}/>
                 <Stack.Screen name="공지사항2" component={NoticeDetail} options={{title: '공지사항'}} />
                 <Stack.Screen name="추천 게시물" component={Like} />
-                <Stack.Screen name="내 정보 수정" component={Edit} />
-                <Stack.Screen name="회원탈퇴" component={Withdraw} />
+                <Stack.Screen name="내 정보 수정" component={Edit} 
+                    options={({ navigation, route }) => ({
+                        headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>내 정보 수정</Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                            <View></View>
+                        },
+                        headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                            height: 110
+                        },
+                    })}/>
+                <Stack.Screen name="회원탈퇴" component={Withdraw} options={({ navigation, route }) => ({
+                        headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>회원탈퇴</Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                            <View></View>
+                        },
+                        headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                            height: 110
+                        },
+                    })}/>
                 <Stack.Screen name="체험단 상세페이지" component={Talk3Detail} options={{title: '', headerShown: false}}/>
                 <Stack.Screen name="출산리스트 공유 상세내용" component={Talk2Detail} options={{title: '', headerShown: false}}/>
                 <Stack.Screen name="출산리스트 공유 등록" component={Talk2Register} options={{title: '', headerShown: false}}/>
-                <Stack.Screen name="출산리스트 비교" component={Compare}/>
+                <Stack.Screen name="출산리스트 비교" component={Compare} options={({ navigation, route }) => ({
+                        headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>출산리스트 비교</Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                            <View></View>
+                        },
+                        headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                            height: 110
+                        },
+                    })}/>
                 <Stack.Screen name="출산리스트" component={MaterialList}/>
                 <Stack.Screen name="신청 정보" component={Apply}  options={{title: '', headerShown: false}}/>
                 <Stack.Screen name="주소 찾기" component={Post}  options={{title: ''}}/>
@@ -123,14 +238,12 @@ const Navigation = () => {
 
                 <Stack.Screen name="검색" component={Search} options={{title: '', headerShown: false}}/>
                 <Stack.Screen name="출산 준비물 검색" component={MaterialSearch} options={{title: '', headerShown: false}}/>
-                <Stack.Screen name="알림" component={Alarm}/>
-                <Stack.Screen name="총 예산" component={Budget}
-                    options={({ navigation, route }) => ({
+                <Stack.Screen name="알림" component={Alarm} options={({ navigation, route }) => ({
                         headerLeft: () => (
                             <View style={styles.header}>
                                 <View style={styles.headerBox}>
                                     <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
-                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>총 예산</Text>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>알림</Text>
                                 </View>
                             </View>
                         ),
@@ -141,14 +254,46 @@ const Navigation = () => {
                             borderWidth: 0,
                             elevation: 0,
                             shadowOpacity: 0,
-                          },
+                            height: 110
+                        },
                     })}/>
+                <Stack.Screen name="총 예산" component={Budget} options={({ navigation, route }) => ({
+                            
+                            headerLeft: () => (
+                                <View style={styles.header}>
+                                    <View style={styles.headerBox}>
+                                        <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                        <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>총 예산</Text>
+                                    </View>
+                                </View>
+                            ),
+                            headerTitle(props) {
+                                <View></View>
+                            },
+                            headerStyle: {
+                                borderWidth: 0,
+                                elevation: 0,
+                                shadowOpacity: 0,
+                                height: 110
+                            },
+                        })}/>
                 <Stack.Screen name="오늘의편지 상세페이지" component={DdayDetail} options={{title: '', headerShown: false}}/>
                 <Stack.Screen name="이시기에는 상세페이지" component={DdayDetail2} options={{title: '', headerShown: false}}/>
-                <Stack.Screen name="신청한 체험단" component={Experience}/>
+                
                 <Stack.Screen name="행사정보 상세페이지" component={Info2Detail} options={{title: '', headerShown: false}}/>
                 <Stack.Screen name="마이페이지" component={MyPage}
                                 options={({ navigation, route }) => ({
+                                    headerLeft: () => (
+                                        <View style={styles.header}>
+                                            <View style={styles.headerBox}>
+                                                <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                                <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>마이페이지</Text>
+                                            </View>
+                                        </View>
+                                    ),
+                                    headerTitle(props) {
+                                        <View></View>
+                                    },
                                     headerRight: () => (
                                         <View style={styles.header}>
                                             <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
@@ -156,6 +301,12 @@ const Navigation = () => {
                                             </View>
                                         </View>
                                     ),
+                                    headerStyle: {
+                                        borderWidth: 0,
+                                        elevation: 0,
+                                        shadowOpacity: 0,
+                                        height: 110
+                                    },
                                 })}/>
                 <Stack.Screen name="갤러리" component={Gallery} options={{title: '', headerShown: false}}/>
                 <Stack.Screen name="리덕스 테스트2" component={ReduxTest2} />
@@ -165,6 +316,63 @@ const Navigation = () => {
                 <Stack.Screen name="댓글 서치" component={CommentDetail} options={{title: '댓글 전체'}}/>
                 <Stack.Screen name="체험단 서치" component={ExperienceDetail} options={{title: '체험단 전체'}}/>
 
+                <Stack.Screen name="내가 쓴 게시물" component={MyBoard} options={({ navigation, route }) => ({
+                            headerLeft: () => (
+                                <View style={styles.header}>
+                                    <View style={styles.headerBox}>
+                                        <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                        <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>내가 쓴 게시물</Text>
+                                    </View>
+                                </View>
+                            ),
+                            headerTitle(props) {
+                                <View></View>
+                            },
+                            headerStyle: {
+                                borderWidth: 0,
+                                elevation: 0,
+                                shadowOpacity: 0,
+                                height: 110
+                            },
+                        })}/>
+                <Stack.Screen name="내가 쓴 댓글" component={MyComment} options={({ navigation, route }) => ({
+                            headerLeft: () => (
+                                <View style={styles.header}>
+                                    <View style={styles.headerBox}>
+                                        <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                        <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>내가 쓴 댓글</Text>
+                                    </View>
+                                </View>
+                            ),
+                            headerTitle(props) {
+                                <View></View>
+                            },
+                            headerStyle: {
+                                borderWidth: 0,
+                                elevation: 0,
+                                shadowOpacity: 0,
+                                height: 110
+                            },
+                        })}/>
+                <Stack.Screen name="신청한 체험단" component={MyExp} options={({ navigation, route }) => ({
+                            headerLeft: () => (
+                                <View style={styles.header}>
+                                    <View style={styles.headerBox}>
+                                        <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                        <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>신청한 체험단</Text>
+                                    </View>
+                                </View>
+                            ),
+                            headerTitle(props) {
+                                <View></View>
+                            },
+                            headerStyle: {
+                                borderWidth: 0,
+                                elevation: 0,
+                                shadowOpacity: 0,
+                                height: 110
+                            },
+                        })}/>
             </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>

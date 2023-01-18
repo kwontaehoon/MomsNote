@@ -10,7 +10,6 @@ const Main = ({navigation}) => {
 
     const isFocused = useIsFocused();
     const [info, setInfo] = useState();
-    console.log('info: ', info);
 
     const test = {
         username: `google_undefined`,
@@ -28,6 +27,7 @@ const Main = ({navigation}) => {
 
     useEffect(()=>{
         const login = async() => {
+            // AsyncStorage.removeItem('login');
             // AsyncStorage.setItem('login', '2');
             // AsyncStorage.setItem('user', JSON.stringify(test));
             const asyncStorage = await AsyncStorage.getItem('login');
@@ -38,7 +38,7 @@ const Main = ({navigation}) => {
     }, [isFocused]);
 
     switch(info){
-        case null : return(<Start />);
+        case null : return(<Start navigation={navigation}/>);
         case '1': return(<Login navigation={navigation} />);
         default: return(<Home />);
     }

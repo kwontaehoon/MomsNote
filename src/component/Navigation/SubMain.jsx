@@ -27,6 +27,8 @@ import Campaign2 from '../../../public/assets/svg/campaign2.svg'
 import Baby2 from '../../../public/assets/svg/Baby2.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import DateTime from '../Test/DateTime'
+
 const styles = StyleSheet.create({
     header:{
         flexDirection: 'row',
@@ -68,7 +70,8 @@ function MainScreen() {
   }, []);
 
   return (
-    <Tab.Navigator initialRouteName='맘스 톡' screenOptions={{ headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
+    <Tab.Navigator initialRouteName='맘스 톡' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
+      : {tabBarStyle: { height: 55, position: 'absolute', paddingBottom: 3}, headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
       <Tab.Screen name="맘스 톡" options={{tabBarIcon: ({focused, color}) => (focused ? <Forum2 /> : <Forum/>)}}>
           {()=>(
                <Stack.Navigator>
@@ -95,6 +98,11 @@ function MainScreen() {
                                 </View>
                             </View>
                           ),
+                          headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                        },
                         })}
                         />
                </Stack.Navigator>   
@@ -108,16 +116,30 @@ function MainScreen() {
                         name="D-280"
                         component={Dday}
                         options={({ navigation, route }) => ({
-                          title: `D-${userInfo}`,
+                        headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>{`D-${userInfo}`}</Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                          <View></View>
+                        },
                           headerRight: () => (
                             <View style={styles.header}>
-                            <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-                                <View style={styles.iconBox}><Search onPress={()=>navigation.navigate('검색')}/></View>
-                                <View style={styles.iconBox}><Bell onPress={()=>navigation.navigate('알림')}/></View>
-                                <View style={styles.iconBox}><MyPage onPress={()=>navigation.navigate('마이페이지')}/></View>
+                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
+                                    <View style={styles.iconBox}><Search onPress={()=>navigation.navigate('검색')}/></View>
+                                    <View style={styles.iconBox}><Bell onPress={()=>navigation.navigate('알림')}/></View>
+                                    <View style={styles.iconBox}><MyPage onPress={()=>navigation.navigate('마이페이지')}/></View>
+                                </View>
                             </View>
-                        </View>
                           ),
+                          headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                        },
                         })}/>
                </Stack.Navigator>   
         )}
@@ -163,15 +185,30 @@ function MainScreen() {
                         name="맘스 정보"
                         component={Information}
                         options={({ navigation, route }) => ({
+                          headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>맘스 정보</Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                          <View></View>
+                        },
                           headerRight: () => (
                             <View style={styles.header}>
-                            <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-                                <View style={styles.iconBox}><Search onPress={()=>navigation.navigate('맘스톡 서치')}/></View>
-                                <View style={styles.iconBox}><Bell onPress={()=>navigation.navigate('알림')}/></View>
-                                <View style={styles.iconBox}><MyPage onPress={()=>navigation.navigate('마이페이지')}/></View>
+                                <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
+                                    <View style={styles.iconBox}><Search onPress={()=>navigation.navigate('검색')}/></View>
+                                    <View style={styles.iconBox}><Bell onPress={()=>navigation.navigate('알림')}/></View>
+                                    <View style={styles.iconBox}><MyPage onPress={()=>navigation.navigate('마이페이지')}/></View>
+                                </View>
                             </View>
-                        </View>
                           ),
+                          headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                        },
                         })}
                         />
                </Stack.Navigator>   

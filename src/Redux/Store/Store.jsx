@@ -28,6 +28,10 @@ import periodCountReducer from '../Slices/PeriodCountSlice'
 import materialShareCountReducer from '../Slices/MaterialShareCountSlice'
 import governmentCountReducer from '../Slices/GovernmentCountSlice'
 import hitsReducer from '../Slices/HitsSlice'
+import MyBoardReducer from '../Slices/MyBoardSlice'
+import MyCommentReducer from '../Slices/MyCommentSlice'
+import MyExpReducer from '../Slices/MyExpSlice'
+
 
 export const store = configureStore({
   reducer: {
@@ -59,6 +63,9 @@ export const store = configureStore({
     periodCount: periodCountReducer,
     materialShareCount: materialShareCountReducer,
     governmentCount: governmentCountReducer,
-    hits: hitsReducer
+    hits: hitsReducer,
+    myBoard: MyBoardReducer,
+    myComment: MyCommentReducer,
+    myExp: MyExpReducer
   },
 })
