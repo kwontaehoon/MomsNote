@@ -8,7 +8,7 @@ import { postGovernmentCount } from '../../../Redux/Slices/GovernmentCountSlice'
 
 const styles = StyleSheet.create({
   container:{
-    height: '82%',
+    height: '92%',
     backgroundColor: 'white',
   },
   header:{
@@ -23,9 +23,9 @@ const styles = StyleSheet.create({
     padding: 15
   },
   main:{
-    height: '100%',
+    height: '87%',
     paddingLeft: 15,
-    paddingRight: 15
+    paddingRight: 15,
   },
   mainBox:{
     borderBottomWidth: 1,

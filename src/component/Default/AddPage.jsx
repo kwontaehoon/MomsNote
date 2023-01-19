@@ -17,9 +17,6 @@ const styles = StyleSheet.create({
     container2:{
         padding: 15
     },
-    header:{
-        height: 30,
-    },
     main:{
         height: 150,
     },
@@ -195,7 +192,6 @@ const AddPage = ({navigation, route}) => {
 
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
-            <View style={styles.header}></View>
             <View style={styles.main}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>닉네임</Text>
                 <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.(특수문자 제외)</Text>

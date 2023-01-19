@@ -25,7 +25,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     container:{
-        flex: 1,
         backgroundColor: '#FEECB3',
         marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
     },
@@ -177,7 +176,7 @@ const styles = StyleSheet.create({
         borderBottomColor: "white",
         position: 'absolute',
         zIndex: 999,
-        bottom: -10,
+        bottom: -13,
         right: 40,
         transform: [{ rotate: "180deg" }],
     },
@@ -455,14 +454,14 @@ const Home = ({navigation}) => {
     
   return infoPopular == '' || infoPopular == undefined || materialPopular == undefined || materialPopular == '' ||  userInfo == undefined ||
             boardPopular == '' || boardPopular == undefined ?
-    <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> :
+    <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '92%', flex: Platform.OS === 'ios' ? 1 : null}]}/> :
     (
         <SafeAreaProvider>
             <SafeAreaView style={{ backgroundColor: '#FEECB3' }}>
                     <StatusBar />
             </SafeAreaView>
             <FocusAwareStatusBar />
-            <SafeAreaView style={styles.container}>
+            <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '92%', flex: Platform.OS === 'ios' ? 1 : null}]}>
             <View style={styles.header}>
             <View style={styles.headerBar}>
                 <Bell style={{marginRight: 12}} onPress={()=>navigation.navigate('알림')}/>

@@ -9,12 +9,13 @@ export const postBoardAppFlag = createAsyncThunk("postBoardAppFlagSlice/async", 
       const response = await axios({
           method: 'post',
           headers: { 
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzM0MDk1NzQsImV4cCI6MTY3NjAwMTU3NH0.dZiHR7Lx_rnecyM176jTqTzvGAP1oW2kFYTa-PieiGI', 
             'Content-Type': 'application/json'
           },
           url: 'https://momsnote.net/api/application/flag',
           data : data
       });
+      console.log('response: ', response.data);
       return response.data;
       }catch(error){
           console.log('boardAppFlag axios error: ', error);

@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
     modalView:{
         width: '100%',
         height: '100%',
-        margin: 20,
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: "center",
         justifyContent: 'center',
@@ -68,7 +67,6 @@ const styles = StyleSheet.create({
         width: '80%',
         height: 220,
         backgroundColor: 'white',
-        marginBottom: 35,
         borderRadius: 15
     },
     modalBox:{
@@ -108,7 +106,7 @@ const Main = ({modal2, setModal2, userId, ani}) => {
     }
 
   return (
-        <Modal animationType="fade" transparent={true} visible={modal2}
+        <Modal animationType="fade" transparent={true} visible={modal2} statusBarTranslucent={true}
             onRequestClose={() => {
             setModal2(!modal2)}}>
             <View style={styles.modalContainer}>

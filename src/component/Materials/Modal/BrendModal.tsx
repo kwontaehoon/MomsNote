@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal, KeyboardAvoidingView } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/AntDesign'
-import Icon2 from 'react-native-vector-icons/Ionicons'
 import axios from 'axios'
 
 import Arrow_Right from '../../../../public/assets/svg/Arrow-Right.svg'
@@ -126,6 +124,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
         needsDataId: null,
         itemBrand: '',
     });
+    console.log('select Brand: ', selectBrand);
 
     useEffect(()=>{
         const commentInfo = async() => {
@@ -171,7 +170,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
     }
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: item.needsBrandId}))}>
+        <TouchableOpacity style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: item.needsBrandId, itemBrand: item.productName}))}>
             <View style={[styles.mainBoxSub, {width: '24%'}]}>
                 <Crwon />
             </View>
@@ -182,13 +181,13 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
             </View>
             <View style={[styles.mainBoxSub, {width: '36%', alignItems: 'flex-end'}]}>
                 <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 3}}>
-                    <Text style={{fontSize: 16, fontWeight: '600', marginRight: 5}}>{item.price}</Text>
+                    <Text style={{fontSize: 16, fontWeight: '600', marginRight: 5}}>{(item.price).toLocaleString()}</Text>
                     <Text>원</Text>
                 </View>
                 
                 <View style={{flexDirection: 'row'}}>
                     <Text style={{fontWeight: '600', fontSize: 13, color: '#FEA100'}}>최저가 보기</Text>
-                    <Arrow_Right fill='red' width={16} height={16}/>
+                    <Arrow_Right fill='#FEA100' width={16} height={16}/>
                 </View>
             </View>
         </TouchableOpacity>
@@ -202,7 +201,10 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
             <View style={styles.modalView}>
                 <View style={styles.modalContainer2}>
                     <View style={styles.header}>
-                        <TouchableOpacity style={styles.closeBox} onPress={()=>setModalVisible2((prevState)=> ({...prevState, open: false}))}><Icon name='close' size={24}/></TouchableOpacity>
+                        <TouchableOpacity style={styles.closeBox} 
+                            onPress={()=>(setSelectBrand(prevState => ({...prevState, itemBrand: '', itemName: ''})),setModalVisible2((prevState)=> ({...prevState, open: false})))}>
+                                <Icon name='close' size={24}/>
+                        </TouchableOpacity>
                         <Text style={{color: '#212121', fontSize: 18, fontWeight: '700'}}>브랜드 선택</Text>
                         <Text style={{color: '#212121'}}>수유브라 Best</Text>
                     </View>
@@ -215,7 +217,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
                     </View>
                     <View style={styles.footer}>
                         <View style={styles.footerBox}>
-                            <TouchableOpacity style={styles.resetBox} onPress={()=>{console.log('zz'); setSelectBrand((preState)=> ({...preState, itemName: '', itemBrand: ''}))}}>
+                            <TouchableOpacity style={styles.resetBox} onPress={()=>{setSelectBrand((preState)=> ({...preState, itemName: '', itemBrand: ''}))}}>
                                 <Text style={{marginRight: 5, color: '#757575'}}>초기화</Text>
                                 <Reset width={18} fill='#757575'/>
                             </TouchableOpacity>
@@ -223,7 +225,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
                         </View>
                         <View style={styles.footerBox2}>
                             <View style={styles.textInput}>
-                                {selectBrand.itemBrand == '' ? <View style={styles.redDot}></View> : ''}
+                                {/* {selectBrand.itemBrand == '' ? <View style={styles.redDot}></View> : ''} */}
                                 <TextInput placeholder='브랜드명' value={selectBrand.itemBrand} numberOfLines={1}
                                     onChangeText={(e) => setSelectBrand(prevState => ({ ...prevState, itemBrand: e}))}>   
                                 </TextInput>
@@ -232,7 +234,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
                             <View style={{width: '6%'}}></View>
 
                             <View style={styles.textInput}>
-                                {selectBrand.itemName == '' ? <View style={[styles.redDot, {right: '65%'}]}></View> : ''}
+                                {/* {selectBrand.itemName == '' ? <View style={[styles.redDot, {right: '65%'}]}></View> : ''} */}
                                 <TextInput placeholder='제품명' value={selectBrand.itemName} numberOfLines={1}
                                     onChangeText={(e) => setSelectBrand(prevState => ({...prevState, itemName: e}))}>   
                                 </TextInput>

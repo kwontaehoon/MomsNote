@@ -222,6 +222,7 @@ const Talk1Sub = ({navigation, route}) => {
     const boardLikeFlagSet = useSelector(state => { return state.boardLikeFlag.refresh });
     const boardLikeSet = useSelector(state => { return state.boardLike.refresh });
     const boardAppFlag = useSelector(state => {return state.boardAppFlag.data});
+    console.log('boardAppFlag: ', boardAppFlag);
     const winList = useSelector(state => { return state.winList.data });
 
     
@@ -343,7 +344,7 @@ const Talk1Sub = ({navigation, route}) => {
     }
 
 
-  return (
+  return boardAppFlag == undefined ? <View></View> : (
     <SafeAreaProvider>
             <SafeAreaView style={{ backgroundColor: 'white' }}>
                     <StatusBar />

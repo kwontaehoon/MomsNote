@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
     modalView:{
         width: '100%',
         height: '100%',
-        margin: 20,
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: "center",
         justifyContent: 'center',
@@ -27,7 +26,6 @@ const styles = StyleSheet.create({
     modalContainer2:{
         width: '80%',
         backgroundColor: 'white',
-        marginBottom: 35,
         borderRadius: 15,
         padding: 20,
     },
@@ -276,7 +274,7 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
     
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modalVisible9}
+    <Modal animationType="fade" transparent={true} visible={modalVisible9} statusBarTranslucent={true}
 
             onRequestClose={() => {
             setModalVisible9(!modalVisible9)}}>

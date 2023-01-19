@@ -217,7 +217,7 @@ const filtering = (e) => {
             <Pencil fill='white'/>
       </TouchableOpacity>
 
-      <Modal animationType="fade" transparent={true} visible={modalVisible.open}
+      <Modal animationType="fade" transparent={true} visible={modalVisible.open} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible(!modalVisible)}}>
             <View style={styles.modalContainer}>

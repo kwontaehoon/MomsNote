@@ -22,10 +22,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     main:{
-        height: '80%',
-    },
-    main2:{
-
+        height: '80%'
     },
     dot:{
       backgroundColor: '#D9D9D9',
@@ -50,7 +47,6 @@ const styles = StyleSheet.create({
     nextButton:{
         width: 100,
         height: 100,
-        position: 'absolute',
     },
     footer:{
       height: 56,
@@ -71,12 +67,11 @@ const Main = ({navigation}) => {
 
     const List = () => {
 
-            return(
-                <TouchableOpacity style={styles.footer} onPress={start}>
-                  <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>시작하기</Text>
-                </TouchableOpacity>
-            )
-        
+        return (
+            <TouchableOpacity style={styles.footer} onPress={start}>
+                <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>시작하기</Text>
+            </TouchableOpacity> 
+        )
     }
 
   return (

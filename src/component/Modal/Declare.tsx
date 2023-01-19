@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, FlatList } from 'react-native'
+import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, FlatList, KeyboardAvoidingView } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/FontAwesome'
-import DropDownPicker from 'react-native-dropdown-picker'
 import axios from 'axios'
 
 const styles = StyleSheet.create({
@@ -21,6 +20,7 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
+        height: 404,
         backgroundColor: 'white',
         borderRadius: 15,
         padding: 20,
@@ -160,13 +160,13 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4, boardId}) => {
     
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modal3}
+    <Modal animationType="fade" transparent={true} visible={modal3} statusBarTranslucent={true}
             onRequestClose={() => {
             setModal3(!modal3)}}>
-            <View style={styles.modalContainer}>
+            <KeyboardAvoidingView behavior='height' style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     
-                    <View style={[styles.modalContainer2, {height: 404}]}>
+                    <View style={styles.modalContainer2}>
                         <View style={styles.header}>
                             <TouchableOpacity style={styles.closeBox} onPress={()=>setModal3(!modal3)}><Icon name='close' size={24}/></TouchableOpacity>
                             <Text style={{color: '#212121', fontSize: 18, fontWeight: '500'}}>신고하기</Text>
@@ -197,7 +197,7 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4, boardId}) => {
                         }
                     </View>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         </Modal>
   )
 }

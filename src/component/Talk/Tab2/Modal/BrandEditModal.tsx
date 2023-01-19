@@ -196,10 +196,10 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
     );
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modalVisible2.open}
+    <Modal animationType="fade" transparent={true} visible={modalVisible2.open} statusBarTranslucent={true}
         onRequestClose={() => {
         setModalVisible2(!modalVisible2)}}>
-    <View style={styles.modalContainer}>
+    <KeyboardAvoidingView behavior='height' style={styles.modalContainer}>
         <View style={styles.modalView}>
             <View style={styles.modalContainer2}>
                 <View style={styles.header}>
@@ -224,7 +224,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
                     </View>
                     <View style={styles.footerBox2}>
                         <View style={styles.textInput}>
-                            {selectBrand.itemBrand == '' ? <View style={styles.redDot}></View> : ''}
+                            {/* {selectBrand.itemBrand == '' ? <View style={styles.redDot}></View> : ''} */}
                             <TextInput placeholder='브랜드명' value={selectBrand.itemBrand}
                                 onChangeText={(e) => setSelectBrand(prevState => ({ ...prevState, itemBrand: e}))}>   
                             </TextInput>
@@ -233,7 +233,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
                         <View style={{width: '6%'}}></View>
 
                         <View style={styles.textInput}>
-                            {selectBrand.itemName == '' ? <View style={[styles.redDot, {right: '70%'}]}></View> : ''}
+                            {/* {selectBrand.itemName == '' ? <View style={[styles.redDot, {right: '70%'}]}></View> : ''} */}
                             <TextInput placeholder='제품명' value={selectBrand.itemName}
                                 onChangeText={(e) => setSelectBrand(prevState => ({...prevState, itemName: e}))}>   
                             </TextInput>
@@ -247,7 +247,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
                 </View>
             </View>
         </View>
-    </View>
+    </KeyboardAvoidingView>
 </Modal>
   )
 }

@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     profileBox:{
         borderWidth: 1,
         width: 30,
+        height: 30,
         borderRadius: 999,
     },
     infoBox:{
@@ -90,8 +91,9 @@ const styles = StyleSheet.create({
         borderColor: '#EEEEEE',
         height: 200,
         marginTop: 20,
-        paddingBottom: 150,
-        paddingLeft: 10,
+        textAlignVertical: "top",
+        padding: 10,
+        lineHeight: 20,
     },
     main:{
         padding: 15,
@@ -444,7 +446,7 @@ const Register = ({navigation, route}) => {
                 </View>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, color: '#424242', fontWeight: '600'}}>내용</Text>
-                    <TextInput style={styles.textBox2} placeholder='내용을 입력해주세요.' placeholderTextColor={'#BDBDBD'} value={info.contents} multiline={true}
+                    <TextInput style={styles.textBox2} placeholder='게시물 내용을 작성해주세요.' placeholderTextColor={'#BDBDBD'} value={info.contents} multiline={true} numberOfLines={100}
                      onChangeText={(e) => setInfo((prevState) => ({ ...prevState, contents: e}))}> 
                      </TextInput>
                 </View>

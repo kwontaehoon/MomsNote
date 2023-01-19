@@ -294,7 +294,7 @@ const Withdraw = ({navigation, route}) => {
                     <View style={styles.timerBox}>
                         <Text style={{color: '#0288D1', fontWeight: '500'}}>{minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Text>
                     </View>
-                    <TextInput style={[styles.textBox, {paddingLeft: 10}]} placeholder='인증번호 입력' onChangeText={(e)=>setSMSInputNumber(e)}></TextInput>
+                    <TextInput style={[styles.textBox, {paddingLeft: SMSFlag.open ? 10 : 0}]} placeholder='인증번호 입력' onChangeText={(e)=>setSMSInputNumber(e)}></TextInput>
 
                     {SMSInputNumber == '' ?
                     <View style={[styles.certificateBox, {backgroundColor: '#E0E0E0'}]}>

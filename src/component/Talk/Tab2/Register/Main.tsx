@@ -39,8 +39,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: '#F5F5F5',
         flexDirection: 'row',
-        paddingLeft: 10,
-        paddingRight: 10,
+        padding: 10,
     },
     mainBox2Sub:{
         width: '80%',
@@ -53,7 +52,6 @@ const styles = StyleSheet.create({
     modalView:{
         width: '100%',
         height: '100%',
-        margin: 20,
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: "center",
         justifyContent: 'center',
@@ -64,7 +62,6 @@ const styles = StyleSheet.create({
         width: '80%',
         height: 144,
         backgroundColor: 'white',
-        marginBottom: 35,
         borderRadius: 15
     },
     modalBox:{
@@ -176,8 +173,8 @@ const Register = ({navigation, route}) => {
                             ...prevState,
                             title: e
                         }))}></TextInput>
-                <TextInput style={[styles.mainBox2, {height: 220, paddingBottom: 180}]} placeholder='게시글 내용을 작성해주세요.' placeholderTextColor={'#BDBDBD'}
-                    value={data.contents} onChangeText={(e) =>
+                <TextInput style={[styles.mainBox2, {height: 220, textAlignVertical: 'top'}]} placeholder='게시글 내용을 작성해주세요.' placeholderTextColor={'#BDBDBD'}
+                    multiline={true} numberOfLines={100} value={data.contents} onChangeText={(e) =>
                         setData((prevState) => ({
                             ...prevState,
                             contents: e
@@ -189,7 +186,7 @@ const Register = ({navigation, route}) => {
 
    return(
         <View style={styles.container}>
-            <Modal animationType="fade" transparent={true} visible={modalVisible}
+            <Modal animationType="fade" transparent={true} visible={modalVisible} statusBarTranslucent={true}
                 onRequestClose={() => {
                 setModalVisible(!modalVisible)}}>
                 <View style={styles.modalContainer}>
@@ -211,7 +208,7 @@ const Register = ({navigation, route}) => {
                     </View>
                 </View>
             </Modal>
-            <Modal animationType="fade" transparent={true} visible={modalVisible2}
+            <Modal animationType="fade" transparent={true} visible={modalVisible2} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible2(!modalVisible2)}}>
             <View style={styles.modalContainer}>

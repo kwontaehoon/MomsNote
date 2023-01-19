@@ -236,10 +236,13 @@ const Talk1Sub = ({navigation, route}) => {
     let exp = 0;
 
     material.filter(x=>{
-      if(x.id == 0 && x.needsBrandId !== null){
+      if(x.id == 0 && x.needsBrandId !== null && x.itemPrice !== null){
+        console.log(x.itemPrice);
         exp += x.itemPrice
       } else sum += x.itemPrice;
     });
+    console.log('sum: ', sum);
+    console.log('exp: ', exp);
     setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
   }, [info]);
 

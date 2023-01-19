@@ -161,7 +161,7 @@ saveModalBox:{
     width: '100%',
     height: 40,
     position: 'absolute',
-    zIndex: 1,
+    zIndex: 10,
     bottom: 20,
     alignItems: 'center',
     justifyContent: 'center',
@@ -240,7 +240,7 @@ const Navigation = ({navigation, route}) => {
 
   const [list, setList] = useState(Array.from({ length: 9 }, () => { return true}));
 
-  const [captureURL, setCaptureURL] = useState(); // 캡쳐 uri
+  const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
   const [purchaseCheckBox, setPurchaseCheckBox] = useState(); // 체크박스 선택시 모달 안나옴
   
   const [modalVisible, setModalVisible] = useState({
@@ -377,7 +377,9 @@ const save = async() => {
             // // const asset = await MediaLibrary.createAssetAsync(captureURL);
         }
     }
-    setCaptureURL(undefined);
+    setTimeout(() => {
+      setCaptureURL(undefined);
+    }, 2000);
   }
 
   const arrow = (e) => { // arrow 누르면 서브페이지 display
@@ -460,9 +462,10 @@ const save = async() => {
             <Text>{x.needsName}</Text>
           </TouchableOpacity>
           <View style={styles.filterBox}>
-            <View style={{width: 24, height: 24, borderRadius: 12, backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
+          {x.itemName == null ?
+          <View style={{width: 24, height: 24, borderRadius: 12, backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
               <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}/> 
-            </View>
+            </View>: <Text numberOfLines={1}>{x.itemName}</Text>}
           </View>
       </View>
       )}
@@ -541,7 +544,7 @@ const save = async() => {
 
         <View style={styles.footer}>
 
-          <Animated.View style={[styles.saveModalBox, {opacity: animation}]}>
+          <Animated.View style={[styles.saveModalBox, {opacity: animation, display: captureURL == undefined ? 'none' : 'flex'}]}>
                 <View style={styles.saveModal}>
                     <Text style={{color: 'white'}}>출산 리스트가 내 앨범에 저장되었습니다.</Text>
                 </View>

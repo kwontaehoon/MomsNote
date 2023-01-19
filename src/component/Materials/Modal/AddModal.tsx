@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, FlatList } from 'react-native'
+import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, FlatList, KeyboardAvoidingView } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
@@ -176,10 +176,10 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8, setModal, info2}) => {
     
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modalVisible8}
+    <Modal animationType="fade" transparent={true} visible={modalVisible8} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible8(!modalVisible8)}}>
-            <View style={styles.modalContainer}>
+            <KeyboardAvoidingView behavior='height' style={styles.modalContainer}>
                 <View style={styles.modalView}>
                 <View style={[styles.scrollBox, {display: titleDisplay ? 'flex' : 'none'}]}>
                                     <FlatList data={DATA} renderItem={renderItem} initialNumToRender={4} 
@@ -211,7 +211,7 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8, setModal, info2}) => {
                         }
                     </View>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         </Modal>
   )
 }
