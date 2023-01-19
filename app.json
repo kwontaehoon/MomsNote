@@ -4,7 +4,7 @@
     "slug": "Project1Type",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./public/assets/icon.png",
+    "icon": "./public/assets/image/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./public/assets/splash.png",
