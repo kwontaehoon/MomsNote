@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Modal, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Modal, ActivityIndicator, Platform } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 import moment from 'moment'
@@ -15,6 +15,8 @@ import Chat from '../../../../public/assets/svg/Chat.svg'
 import Pencil from '../../../../public/assets/svg/pencil.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { postBoardCount, setBoardCountRefresh } from '../../../Redux/Slices/BoardCountSlice'
+import { getStatusBarHeight } from "react-native-status-bar-height"
+
 
 const styles = StyleSheet.create({
   container:{
@@ -67,7 +69,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   main:{
-    height: '74%',
     paddingLeft: 10,
     paddingRight: 10,
     position: 'relative',
@@ -343,7 +344,7 @@ const Talk1 = ({navigation, route}:any) => {
         </Swiper>
       </View>
 
-      <View style={styles.main}>
+      <View style={[styles.main, {height: Platform.OS == 'ios' ? null : '67%', flex: Platform.OS === 'ios' ? 1 : null}]}>
         {info == '' || info == undefined ?
         <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
         :
@@ -355,7 +356,7 @@ const Talk1 = ({navigation, route}:any) => {
         </FlatList>
         }
       </View>
-      <TouchableOpacity style={styles.footer} onPress={()=>
+      <TouchableOpacity style={[styles.footer, {marginBottom: Platform.OS == 'android' ? 20 + getStatusBarHeight() : 0}]} onPress={()=>
         modalVisible.asyncStorage == null ? navigation.navigate('글쓰기') : setModalVisible(prevState => ({...prevState, open: true}))
         }>
             <Pencil fill={'red'}/>

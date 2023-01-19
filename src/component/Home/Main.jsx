@@ -220,7 +220,9 @@ const Home = ({navigation}) => {
     const ref = useRef();
     const [date, setDate] = useState(new Date());
     const boardPopular = useSelector(state => { return state.boardPopular.data });
+    console.log('boardPopular: ', boardPopular == '');
     const materialPopular = useSelector(state => { return state.materialPopular.data });
+    console.log('materialPopular: ', materialPopular);
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
@@ -365,7 +367,7 @@ const Home = ({navigation}) => {
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>출산 리스트</Text></View>
                             <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡')}>+ 더보기</Text></View>
                         </View>
-                        {boardPopular == '' ? 
+                        {boardPopular == '' || boardPopular == undefined || boardPopular.length < 3? 
                             <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
                                 <Text style={{color: '#757575'}}>등록된</Text>
                                 <Text style={{color: '#757575'}}>게시물이 없습니다.</Text>
@@ -375,19 +377,19 @@ const Home = ({navigation}) => {
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>1 </Text>
-                                    <Text numberOfLines={1}> {boardPopular[0].title}</Text>
+                                    <Text numberOfLines={1}> {boardPopular[0].title }</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>2 </Text>
-                                    <Text numberOfLines={1}> {boardPopular[1].title}</Text>
+                                    <Text numberOfLines={1}> {boardPopular[1].title }</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>3 </Text>
-                                    <Text numberOfLines={1}> {boardPopular[2].title}</Text>
+                                    <Text numberOfLines={1}> {boardPopular[2].title }</Text>
                                 </View>
                             </View>
                         </View>}
@@ -397,7 +399,7 @@ const Home = ({navigation}) => {
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>맘스 토크</Text></View>
                             <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡')}>+ 더보기</Text></View>
                         </View>
-                        {materialPopular == '' ? 
+                        {materialPopular == '' || materialPopular == undefined || materialPopular.length < 3 ? 
                         <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
                             <Text style={{color: '#757575'}}>등록된</Text>
                             <Text style={{color: '#757575'}}>게시물이 없습니다.</Text>
@@ -451,7 +453,8 @@ const Home = ({navigation}) => {
         </View>
     );
     
-  return infoPopular == '' || infoPopular == undefined || materialPopular == undefined || materialPopular == '' ||  userInfo == undefined ?
+  return infoPopular == '' || infoPopular == undefined || materialPopular == undefined || materialPopular == '' ||  userInfo == undefined ||
+            boardPopular == '' || boardPopular == undefined ?
     <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> :
     (
         <SafeAreaProvider>

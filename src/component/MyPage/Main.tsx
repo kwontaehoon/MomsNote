@@ -41,28 +41,26 @@ const styles = StyleSheet.create({
         paddingBottom: 8,
     },
     mainBox:{
-        height: 52,
-        padding: 15,
+        padding: 18,
         justifyContent: 'center',
         backgroundColor: 'white',
-
     },
 })
 const Main = ({navigation}) => {
 
-
-    const [image, setImage] = useState();
-
     const [userInfo, setUserInfo] = useState([]);
     console.log('userInfo: ', userInfo);
 
+    const [refresh, setRefresh] = useState(); // 새로고침
+
     useEffect(()=>{
+        console.log('refresh됨');
         const user = async() => {
             const user = await AsyncStorage.getItem('user');
             setUserInfo(JSON.parse(user));
         }
         user();
-    }, []);
+    }, [refresh]);
 
     const pickImage = async () => {
       // No permissions request is necessary for launching the image library
@@ -78,23 +76,24 @@ const Main = ({navigation}) => {
         AsyncStorage.setItem('user', JSON.stringify(Object.assign(userInfo, {profileImage: result.assets[0].uri})));
     }
 
-    // let data = new FormData();
-    // data.append('files', {uri: image, name: 'profile.mp4', type: 'image/png'});
+    let data = new FormData();
+    data.append('files', {uri: result.assets[0].uri, name: 'profile.mp4', type: 'image/png'});
 
-    // try{
-    //     const response = await axios({
-    //           method: 'post',
-    //           url: 'https://momsnote.net/profile/upload',
-    //           headers: { 
-    //             'Authorization': 'Bearer token', 
-    //           },
-    //           data: data
-    //         });
-    //         console.log('response: ', response.data);
-    //     }catch(error){
-    //       console.log('error: ', error);
-    //     }
-    
+    try{
+        const response = await axios({
+              method: 'post',
+              url: 'https://momsnote.net/api/profile/upload',
+              headers: { 
+                'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
+              },
+              data: data
+            });
+            console.log('response: ', response.data);
+        }catch(error){
+          console.log('error: ', error);
+        }
+
+        setRefresh(result.assets[0].uri);
   };
 
   return (

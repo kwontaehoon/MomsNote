@@ -30,6 +30,7 @@ import governmentCountReducer from '../Slices/GovernmentCountSlice'
 import hitsReducer from '../Slices/HitsSlice'
 import MyBoardReducer from '../Slices/MyBoardSlice'
 import MyCommentReducer from '../Slices/MyCommentSlice'
+import MyCommentCountReducer from '../Slices/MyCommentCountSlice'
 import MyExpReducer from '../Slices/MyExpSlice'
 import MaterialSearchReducer from '../Slices/MaterialSearchSlice'
 import MyLikeBoardReducer from '../Slices/MyLikeBoardSlice'
@@ -71,6 +72,7 @@ export const store = configureStore({
     hits: hitsReducer,
     myBoard: MyBoardReducer,
     myComment: MyCommentReducer,
+    myCommentCount: MyCommentCountReducer,
     myExp: MyExpReducer,
     materialSearch: MaterialSearchReducer,
     myLikeBoard: MyLikeBoardReducer,

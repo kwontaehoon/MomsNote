@@ -100,6 +100,7 @@ const AddPage = ({navigation, route}) => {
     console.log('route params: ', route.params);
 
     const [isChecked, setChecked] = useState(Array.from({length: 4}, ()=>{return false})); // check box
+    console.log('isChecked: ', isChecked);
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
 
     const [date, setDate] = useState(new Date());
@@ -118,13 +119,8 @@ const AddPage = ({navigation, route}) => {
     console.log('info: ', info);
 
     const submit = async() => {
-        const userInfo = {
-            profileImage: '',
-            memberName: '',
-            userId: `${route.params[2]}`,
-        }
-        console.log('추가된 info: ', userInfo);
-        AsyncStorage.setItem('user', JSON.stringify(Object.assign(info, userInfo)));
+
+        AsyncStorage.setItem('user', JSON.stringify(info));
 
         const c = await AsyncStorage.getItem('user');
         const d = await AsyncStorage.getAllKeys();
@@ -134,17 +130,17 @@ const AddPage = ({navigation, route}) => {
         try{
             const response = await axios({
                 method: 'post',
-                url: 'http://momsnote.net/signup',
+                url: 'https://momsnote.net/signup',
                 headers: { 
                     'Content-Type': 'application/json'
-                  },
+                },
                 data: info
             });
             console.log('response: ', response.data);
 
             AsyncStorage.setItem('login', '2');
             
-            navigation.navigate('홈');
+            navigation.reset('main');
 
             }catch(error){
                 console.log('회원가입 error:', error);
@@ -154,18 +150,23 @@ const AddPage = ({navigation, route}) => {
     const onChange = (event, selectedDate) => {
 
         const Year = selectedDate.getFullYear();
-        const Month = selectedDate.getMonth()+1;
-        const Date = selectedDate.getDate();
+        let Month = selectedDate.getMonth()+1;
+        Month < 10 ? Month = `0${String(Month)}` : '';
+        console.log('Month: ', Month);
+        let Date = selectedDate.getDate();
+        Date < 10 ? Month = `0${String(Date)}` : '';
+        console.log('Date: ', Date);
 
         setShow(false);
         setInfo((prevState) => ({ ...prevState, dueDate: `${Year}-${Month}-${Date}`}))
       };
     
     const showMode = (currentMode) => {
-        if (Platform.OS === 'android') {
+        if (Platform.OS === 'ios') {
           setShow(true);
           // for iOS, add a button that closes the picker
-        }
+        }else setShow(true);
+
         setMode(currentMode);
     };
     
@@ -212,7 +213,7 @@ const AddPage = ({navigation, route}) => {
                     <TextInput placeholder='날짜 선택' style={[styles.textBox, {borderColor: bottomColor[2] ? '#FEB401' : '#EEEEEE'}]} editable={false}
                         onFocus={showDatepicker} value={info.dueDate}>
                     </TextInput>
-                    <View style={styles.main3Box}><Calendar onPress={showDatepicker}/></View>
+                    <TouchableOpacity onPress={showDatepicker} style={styles.main3Box}><Calendar /></TouchableOpacity>
                 </View>
             </View>
             <View style={styles.main4}>

@@ -24,6 +24,10 @@ export const postMyComment = createAsyncThunk("postMyCommentSlice/async", async 
 const initialState = {
     loading: false,
     data: [],
+    refresh: {
+      count: 1,
+      page: 1
+    }
 }
 
 export const myCommentSlice = createSlice({

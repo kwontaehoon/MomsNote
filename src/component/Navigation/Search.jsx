@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, KeyboardAvoidingView, Image, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, SafeAreaView, Image, StatusBar } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import axios from 'axios'
 import moment from 'moment'
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
 import Back from '../../../public/assets/svg/Back.svg'
 import Search from '../../../public/assets/svg/Search.svg'
@@ -14,7 +18,7 @@ import More from '../../../public/assets/svg/More.svg'
 const styles = StyleSheet.create({
   container:{
     height: '86%',
-    marginTop: getStatusBarHeight(),
+    marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
   },
   header:{
     height: 80,
@@ -87,7 +91,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   }
-
 })
 
 const Main = ({navigation}) => {
@@ -277,7 +280,6 @@ const dayCalculate2 = (date) => {
         </View>
         <Text>{x.contents}</Text>
         </View>
-        
       </TouchableOpacity>
       )
     })
@@ -342,8 +344,12 @@ const dayCalculate2 = (date) => {
   
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <SafeAreaProvider>
+            <SafeAreaView style={{ backgroundColor: 'white' }}>
+                    <StatusBar />
+            </SafeAreaView>
+            <SafeAreaView style={styles.container}>
+            <View style={styles.header}>
         <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
         <View style={styles.textInput}>
           <View style={styles.searchIconBox}><Search width={22}/></View>
@@ -353,13 +359,16 @@ const dayCalculate2 = (date) => {
       </View>
       <View style={styles.main}>
         { experienceSearch !== undefined && momsSearch !== undefined && materialSearch !== undefined && commentSearch !== undefined?
-        <FlatList data={DATA} renderItem={renderItem} 
+        <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
             keyExtractor={item => item.title} >
         </FlatList>
         :  ''
         }
       </View>
-    </View>
+
+	   </SafeAreaView>
+
+</SafeAreaProvider>
   )
 }
 

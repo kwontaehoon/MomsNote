@@ -137,7 +137,7 @@ const CheckBoxModal = ({modal4, setModal4, modal6, setModal6, commentsId}) => {
         try{
             const response = await axios({
                   method: 'post',
-                  url: 'https://momsnote.net/api/report/board',
+                  url: 'https://momsnote.net/api/report/comments',
                   headers: { 
                       'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
                     },

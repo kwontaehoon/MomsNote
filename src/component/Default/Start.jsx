@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
     nextButton:{
         width: 100,
         height: 100,
-        backgroundColor: 'pink',
         position: 'absolute',
     },
     footer:{
@@ -64,7 +63,6 @@ const styles = StyleSheet.create({
 const Main = ({navigation}) => {
 
     const [page, setPage] = useState(0); // 해당 페이지
-    console.log('page: ', page);
 
     const start = async() => {
         await AsyncStorage.setItem('login', '1');
@@ -72,31 +70,22 @@ const Main = ({navigation}) => {
     }
 
     const List = () => {
-        if(page === 3){
+
             return(
                 <TouchableOpacity style={styles.footer} onPress={start}>
                   <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>시작하기</Text>
                 </TouchableOpacity>
             )
-        }else{
-            return(
-                <TouchableOpacity style={styles.footer} onPress={()=>setPage(page+1)}>
-                  <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>다음</Text>
-                </TouchableOpacity>
-            )
-        }
+        
     }
 
   return (
     <View style={styles.container}>
         <View style={styles.header}><Text style={{color: '#757575', fontSize: 16}} onPress={()=>setPage(3)}>건너뛰기</Text></View>
         <View style={styles.main}>
-            <Slick showsButtons={true} loop={false} index={page}
+            <Slick showsButtons={false} loop={false} index={page}
             dot={<View style={styles.dot}/>}
             activeDot={<View style={styles.dotActive}/>}
-            renderPagination={(index, total, context)=>{
-                setPage(index);
-            }}
             nextButton={<View style={styles.nextButton}></View>}
         >
                 <View testID="Page1" style={styles.header2}>

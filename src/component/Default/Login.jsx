@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     footer:{
         height: '30%',
         alignItems: 'center',
+        justifyContent: 'center',
     },
     footerBox:{
         width: '90%',
@@ -129,7 +130,7 @@ const Main = ({navigation, route}) => {
     <SafeAreaProvider>
         <SafeAreaView style={{ backgroundColor: 'white' }}></SafeAreaView>
 
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container, {marginBottom: Platform.OS == 'ios' ? 30 : 0}]}>
 
             <Modal modal={modal} setModal={setModal}/>
 

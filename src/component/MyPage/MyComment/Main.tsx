@@ -6,6 +6,9 @@ import moment from 'moment'
 import More from '../../../../public/assets/svg/More.svg'
 import { useDispatch, useSelector } from 'react-redux'
 import { postMyComment } from '../../../Redux/Slices/MyCommentSlice'
+import { postMyCommentCount } from '../../../Redux/Slices/MyCommentCountSlice'
+
+import Modal from '../../Modal/DotModal'
 
 const styles = StyleSheet.create({
   container:{
@@ -23,38 +26,44 @@ const styles = StyleSheet.create({
   },
   momstalk:{
     height: 80,
-    borderBottomWidth: 1,
+    borderTopWidth: 1,
     alignItems: 'center',
     flexDirection: 'row',
-    borderColor: '#F5F5F5'
-  },
-  mainBox:{
+    borderColor: '#F5F5F5',
+    paddingRight: 65,
     paddingLeft: 15,
-    paddingRight: 15,
   },
   profile:{
     borderWidth: 1,
     width: 30,
     height: 30,
     borderRadius: 15,
-    marginRight: 5,
+    marginRight: 5
   },
   dotBox:{
     position: 'absolute',
-    right: 0,
+    right: 15,
     top: 20,
   },
 })
 
 const Main = () => {
 
-const dispatch = useDispatch();
-const info = useSelector(state => { return state.myComment.data; });
-console.log('내가쓴 댓글: ', info);
-const myCommentSet = useSelector(state => { return state.myComment.refresh; });
+  const dispatch = useDispatch();
+  const info = useSelector(state => { return state.myComment.data; });
+  console.log('내가 쓴 댓글 info: ', info);
+  const myCommentSet = useSelector(state => { return state.myComment.refresh; });
+  const myCommentCountSet = useSelector(state => { return state.myComment.refresh; });
+  const infoCount = useSelector(state => { return state.myCommentCount.data; });
+  console.log('내가 쓴 댓글 info 갯수: ', infoCount);
+
+  const [modal, setModal] = useState({
+
+  });
 
   useEffect(()=>{
-    dispatch(postMyComment());
+    dispatch(postMyComment(myCommentSet));
+    dispatch(postMyCommentCount(myCommentCountSet));
   }, []);
 
 const dayCalculate = (date) => {
@@ -67,28 +76,29 @@ const dayCalculate = (date) => {
 
 
   const renderItem = ({ item }) => (
+  <TouchableOpacity style={styles.momstalk}>
+
+    <More style={styles.dotBox}/>
+
+    <View style={styles.profile}></View>
     <View>
-        <View style={styles.mainBox}>
-            <View style={styles.momstalk}>
-            <View style={styles.dotBox}><More /></View>
-            <View style={styles.profile}></View>
-            <View>
-            <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 3}}>
-            <Text style={{fontWeight: '600'}}>{x.nickname}</Text>
-            <Text style={{marginLeft: 5}}>{dayCalculate(x.commentsDate)}</Text>
-            </View>
-            <Text>{x.contents}</Text>
-            </View>
-            
-        </View>
-        </View>
+      <View style={{flexDirection: 'row', marginBottom: 3}}>
+        <Text style={{fontWeight: '600'}}>{item.nickname}</Text>
+        <Text style={{marginLeft: 5}}>{dayCalculate(item.commentsDate)}</Text>
       </View>
+      <Text numberOfLines={1}>{item.contents}</Text>
+    </View>
+
+  </TouchableOpacity>
   );
 
   
 
   return (
     <View style={styles.container}>
+
+      {/* <Modal modal={modal} setModal={modal} /> */}
+
       <View style={styles.main}>
         <FlatList data={info} renderItem={renderItem}
             keyExtractor={item => item.title} showsVerticalScrollIndicator={false}>

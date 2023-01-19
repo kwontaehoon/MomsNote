@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal, ActivityIndicator, Platform } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
 import axios from 'axios'
 import moment from 'moment'
@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setMaterialShareFilter, setMaterialShareCount } from '../../../Redux/Slices/MaterialShareSlice'
 import { postMaterialShare } from '../../../Redux/Slices/MaterialShareSlice'
 import { postMaterialShareCount } from '../../../Redux/Slices/MaterialShareCountSlice'
+import { getStatusBarHeight } from 'react-native-status-bar-height'
 
 const styles = StyleSheet.create({
   container:{
@@ -199,7 +200,7 @@ const filtering = (e) => {
         </View>
       </View>
 
-      <View style={styles.main}>
+      <View style={[styles.main, {height: Platform.OS == 'ios' ? null : '84.5%', flex: Platform.OS === 'ios' ? 1 : null}]}>
         {info == undefined || info == '' ?
         <View></View>
         :
@@ -211,7 +212,7 @@ const filtering = (e) => {
         </FlatList>}
       </View>
 
-      <TouchableOpacity style={styles.footer} onPress={()=>
+      <TouchableOpacity style={[styles.footer, {marginBottom: Platform.OS == 'android' ? 20 + getStatusBarHeight() : 0}]} onPress={()=>
         modalVisible.asyncStorage == null ? navigation.navigate('출산리스트 공유 등록') : setModalVisible(prevState => ({...prevState, open: true}))}>
             <Pencil fill='white'/>
       </TouchableOpacity>

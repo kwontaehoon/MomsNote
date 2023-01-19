@@ -31,11 +31,12 @@ import Download from '../../../public/assets/svg/Download.svg'
 import Search from '../../../public/assets/svg/Search.svg'
 import Bell from '../../../public/assets/svg/Bell.svg'
 import MyPage from '../../../public/assets/svg/Mypage.svg'
+import ArrowRight from '../../../public/assets/svg/Arrow-Right.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
   container:{
-    height: '90%',
+    height: '95%',
     backgroundColor: 'white',
     marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
   },
@@ -459,9 +460,9 @@ const save = async() => {
             <Text>{x.needsName}</Text>
           </TouchableOpacity>
           <View style={styles.filterBox}>
-            {x.itemName == null ? <View style={{width: 24, height: 24, borderRadius: 12,backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
+            <View style={{width: 24, height: 24, borderRadius: 12, backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
               <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}/> 
-            </View> : <Text numberOfLines={1}>{x.itemName}</Text>}
+            </View>
           </View>
       </View>
       )}
@@ -501,7 +502,7 @@ const save = async() => {
             <StatusBar />
         </SafeAreaView>
 
-		    <SafeAreaView style={styles.container}>
+		    <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? '95%' : '90%'}]}>
 
         <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
         <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modal={modal} setModal={setModal} setModal2={setModal2}/>
@@ -553,7 +554,10 @@ const save = async() => {
               <Text> 원</Text>
             </View>
             <View style={styles.budgetBox2}>
-              <TouchableOpacity style={{borderWidth: 1, padding: 20}} onPress={()=>navigation.navigate('총 예산', info)}><Text>자세히 보기  <Icon name='angle-right' size={15}/></Text></TouchableOpacity>
+              <TouchableOpacity style={{padding: 10, flexDirection: 'row', alignItems: 'center'}} onPress={()=>navigation.navigate('총 예산', info)}>
+                <Text>자세히 보기 </Text>
+                <ArrowRight fill={'black'} width={15} height={15}/>
+              </TouchableOpacity>
             </View>
           </View>
         </View>

@@ -60,7 +60,7 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
     
      useEffect(()=>{
         const getUserId = async() => {
-
+            
             const a = await AsyncStorage.getItem('userId');
             console.log('userId: ', a); // string
             setUserId(Number(a));

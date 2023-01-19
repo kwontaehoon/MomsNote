@@ -100,7 +100,25 @@ const Navigation = () => {
 
                 <Stack.Screen name="로그인 페이지" component={Login} options={{headerShown: false}}/>
                 <Stack.Screen name="맘스톡" component={Talk} options={{title: '맘스톡'}}/>
-                <Stack.Screen name="추가 정보 입력" component={AddPage} options={{title: '추가 정보 입력'}}/>
+                <Stack.Screen name="추가 정보 입력" component={AddPage} options={({ navigation, route }) => ({
+                        headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>추가 정보 입력</Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                            <View></View>
+                        },
+                        headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                            height: 110
+                        },
+                    })}/>
                 <Stack.Screen name="글쓰기" component={Talk1Register} options={{title: '', headerShown: false}} />
                 <Stack.Screen name="1:1 문의" component={Inquiry} 
                     options={({ navigation, route }) => ({
@@ -163,7 +181,26 @@ const Navigation = () => {
                         },
                     })}/>
                 <Stack.Screen name="공지사항2" component={NoticeDetail} options={{title: '공지사항'}} />
-                <Stack.Screen name="추천 게시물" component={Like} />
+                <Stack.Screen name="추천 게시물" component={Like} 
+                options={({ navigation, route }) => ({
+                    headerLeft: () => (
+                        <View style={styles.header}>
+                            <View style={styles.headerBox}>
+                                <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>추천 게시물</Text>
+                            </View>
+                        </View>
+                    ),
+                    headerTitle(props) {
+                        <View></View>
+                    },
+                    headerStyle: {
+                        borderWidth: 0,
+                        elevation: 0,
+                        shadowOpacity: 0,
+                        height: 110
+                    },
+                })}/>
                 <Stack.Screen name="내 정보 수정" component={Edit} 
                     options={({ navigation, route }) => ({
                         headerLeft: () => (

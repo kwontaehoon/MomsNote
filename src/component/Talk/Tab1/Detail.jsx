@@ -155,8 +155,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#F5F5F5',
         justifyContent: 'center',
-        backgroundColor: 'white',
         alignItems: 'center',
+        backgroundColor: 'white'
     },
     regisButton:{
         position: 'absolute',
@@ -193,7 +193,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     console.log('xaxaqewqewq',getStatusBarHeight());
     
-    Keyboard.addListener('keyboardDidShow', () => {
+    Keyboard.addListener('keyboardDidShow', (e) => {
         setPageHeight(true);
     });
     Keyboard.addListener('keyboardDidHide', () => {
