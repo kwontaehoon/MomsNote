@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal, ActivityIndicator } from 'react-native'
-import DropDownPicker from 'react-native-dropdown-picker'
-import axios from 'axios'
 import moment from 'moment'
-import { useIsFocused } from '@react-navigation/native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Like from '../../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../../public/assets/svg/Chat.svg'
-import Pencil from '../../../../../public/assets/svg/pencil.svg'
+
 import { useDispatch, useSelector } from 'react-redux'
-import { setMaterialShareFilter, setMaterialShareCount } from '../../../../Redux/Slices/MaterialShareSlice'
-import { postMaterialShare } from '../../../../Redux/Slices/MaterialShareSlice'
-import { postMaterialShareCount } from '../../../../Redux/Slices/MaterialShareCountSlice'
+import { postMyLikeList } from '../../../../Redux/Slices/MyLikeListSlice'
 
 const styles = StyleSheet.create({
   container:{
@@ -39,31 +33,11 @@ const styles = StyleSheet.create({
 const Talk1 = ({navigation}) => {
 
   const dispatch = useDispatch();
-  const isFocused = useIsFocused();
-  const materialShareSet = useSelector(state => { return state.materialShare.refresh });
-  console.log('materialShareSet: ', materialShareSet);
-  const info = useSelector(state => { return state.materialShare.data});
-  console.log('출산준비물 공유 리스트 info: ', info);
-  const infoCount = useSelector(state => { return state.materialShareCount.data});
-  console.log('출산 준비물 공유 리스트 infoCount: ', infoCount);
-
-  const [loading, setLoading] = useState(false);
-  const [modalVisible, setModalVisible] = useState({
-    open: false,
-    asyncStorage: ''
-  }); // 글쓰기 모달
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('1');
-  const [items, setItems] = useState([
-    {label: '최신 순', value: '1'},
-    {label: '인기 순', value: '2'},
-]);
+  const info = useSelector(state => { return state.myLikeList.data });
+  console.log('like list info: ', info);
 
 useEffect(()=>{
-  setLoading(true);
-  dispatch(postMaterialShare(materialShareSet));
-  dispatch(postMaterialShareCount());
-  setLoading(false);
+  dispatch(postMyLikeList());
 }, []);
 
 const dayCalculate = (date) => {
@@ -92,14 +66,11 @@ const dayCalculate = (date) => {
 
   return info == undefined || info == '' ?  <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
-        {info == undefined || info == '' ?
-        <View></View>
+        {info == undefined ?
+        <View style={{marginTop: 250, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>등록된 게시물이 없습니다.</Text></View>
         :
-        <FlatList data={info} renderItem={renderItem} onEndReached={()=>{
-          dispatch(setMaterialShareCount({page: infoCount > (materialShareSet.page * 30) ? materialShareSet.page + 1 : materialShareSet.page, count: infoCount}))
-        }} onEndReachedThreshold={0}
-          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
-          ListFooterComponent={loading && <ActivityIndicator />}>
+        <FlatList data={info} renderItem={renderItem}
+          keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}>
         </FlatList>}
      </View>
   )

@@ -32,6 +32,9 @@ import MyBoardReducer from '../Slices/MyBoardSlice'
 import MyCommentReducer from '../Slices/MyCommentSlice'
 import MyExpReducer from '../Slices/MyExpSlice'
 import MaterialSearchReducer from '../Slices/MaterialSearchSlice'
+import MyLikeBoardReducer from '../Slices/MyLikeBoardSlice'
+import MyLikeListReducer from '../Slices/MyLikeListSlice'
+import MyLikeExpReducer from '../Slices/MyLikeExpSlice'
 
 
 
@@ -69,6 +72,9 @@ export const store = configureStore({
     myBoard: MyBoardReducer,
     myComment: MyCommentReducer,
     myExp: MyExpReducer,
-    materialSearch: MaterialSearchReducer
+    materialSearch: MaterialSearchReducer,
+    myLikeBoard: MyLikeBoardReducer,
+    myLikeList: MyLikeListReducer,
+    myLikeExp: MyLikeExpReducer
   },
 })

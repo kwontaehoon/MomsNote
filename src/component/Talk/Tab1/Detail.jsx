@@ -34,7 +34,7 @@ import { postHits } from '../../../Redux/Slices/HitsSlice'
 const styles = StyleSheet.create({
     container:{
         backgroundColor: 'white',
-
+        marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
         flex: 1,
     },
     header:{

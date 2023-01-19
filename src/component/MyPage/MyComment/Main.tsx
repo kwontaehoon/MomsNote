@@ -50,7 +50,8 @@ const Main = () => {
 
 const dispatch = useDispatch();
 const info = useSelector(state => { return state.myComment.data; });
-  console.log('내가쓴 댓글: ', info);
+console.log('내가쓴 댓글: ', info);
+const myCommentSet = useSelector(state => { return state.myComment.refresh; });
 
   useEffect(()=>{
     dispatch(postMyComment());

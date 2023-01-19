@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Modal, StatusBar, Image, SafeAreaView } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Modal, StatusBar, Image, SafeAreaView, Platform } from 'react-native'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import ContentsURL from './Modal/ContentsURL'
 import axios from 'axios'
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: 'white',
+        marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
     },
     header:{
         height: 60,
@@ -348,7 +349,7 @@ const Talk1Sub = ({navigation, route}) => {
                     <StatusBar />
             </SafeAreaView>
             <SafeAreaView style={styles.container}>
-                <View style={styles.container}>
+
 
 <Modal animationType="fade" transparent={true} visible={modalVisible} statusBarTranslucent={true}
    onRequestClose={() => {
@@ -462,7 +463,7 @@ const Talk1Sub = ({navigation, route}) => {
    </TouchableOpacity>
    }
 </View>}
-</View>
+
             </SafeAreaView>
 
         </SafeAreaProvider>

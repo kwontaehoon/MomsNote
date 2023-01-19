@@ -30,6 +30,13 @@ export const myCommentSlice = createSlice({
     name: 'myCommentSlice',
     initialState,
     reducers: {
+      setMyCommentCount:(state, action)=>{
+        console.log('카운트');
+        console.log('state: ', state);
+        console.log('action: ', action);
+        state.refresh.page = action.payload.page;
+        state.refresh.count = action.payload.count;
+      },
     },
     extraReducers: (bulider) => {
       bulider.addCase(postMyComment.fulfilled, (state, action) => {
@@ -40,5 +47,7 @@ export const myCommentSlice = createSlice({
   })
 
 export const data = (state) => state.myCommentSlice.data;
+
+export const { setMyCommentCount } = myCommentSlice.actions;
 
 export default myCommentSlice.reducer

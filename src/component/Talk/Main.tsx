@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 })
 const Main = ({navigation}) => {
     
-    const [filter, setFilter] = useState([true, false, false]); // tab
+    const [filter, setFilter] = useState([false, false, true]); // tab
 
     const List = () => {
 

@@ -135,15 +135,13 @@ const Talk3 = ({navigation}: any) => {
         </View>
       </View>
       <View style={styles.main}>
-        {info.length !== 0 ? <FlatList data={info} renderItem={renderItem} numColumns={2} showsVerticalScrollIndicator={false}
-          onEndReached={()=>
-          {
-            dispatch(setExperienceCount({page: infoCount > (experienceSet.page * 30) ? experienceSet.page + 1 :experienceSet.page, count: infoCount}))
-          }} onEndReachedThreshold={0}
-          keyExtractor={item => item.appCount}
-          ListFooterComponent={loading && <ActivityIndicator />}>
-          </FlatList>:
-          <View style={{marginTop: 100, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>모집중인 체험단이 없습니다.</Text></View>}
+        {info == undefined ?
+        <View style={{marginTop: 250, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>모집중인 체험단이 없습니다.</Text></View>
+        :
+        <FlatList data={info} renderItem={renderItem} numColumns={2} showsVerticalScrollIndicator={false}
+          keyExtractor={item => item.appCount}>
+        </FlatList>
+        }
       </View>
      </View>
   )

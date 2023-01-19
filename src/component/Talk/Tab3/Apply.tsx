@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, SafeAreaView, StatusBar } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, SafeAreaView, StatusBar, Platform } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/AntDesign'
 import Checkbox from 'expo-checkbox'
@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         backgroundColor: 'white',
+        marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
     },
     container2:{
     },
@@ -49,6 +50,9 @@ const styles = StyleSheet.create({
     mainBox:{
         marginBottom: 30,
     },
+    mainBox2:{
+        borderWidth: 1,
+    },
     textBox:{
         borderBottomWidth: 1,
         borderColor: '#EEEEEE',
@@ -56,6 +60,15 @@ const styles = StyleSheet.create({
         height: 52,
         paddingLeft: 10,
         justifyContent: 'center'
+    },
+    timerBox:{
+        position: 'absolute',
+        right: 95,
+        bottom: 10,
+        paddingTop: 8,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingBottom: 8,
     },
     certificateBox:{
         borderWidth: 1,
@@ -127,7 +140,6 @@ const styles = StyleSheet.create({
 })
 const Withdraw = ({navigation, route}) => {
 
-    const dispatch = useDispatch();
     console.log('apply route: ', route.params);
 
     const DATA = [
@@ -138,6 +150,15 @@ const Withdraw = ({navigation, route}) => {
     ];
 
     const [isChecked, setChecked] = useState(Array.from({length: 3}, ()=>{ return false })); // check box
+
+    const [SMSFlag, setSMSFlag] = useState({
+        open: false,
+        flag: 0 // 이미 인증했는지 검증
+    }); // 본인인증 확인유무
+    const [SMSNumber, setSMSNumber] = useState(); // SMS 번호
+    const [SMSInputNumber, setSMSInputNumber] = useState(''); // 입력한 SMS 번호
+
+    console.log('smsnumber: ', SMSNumber);
 
     const appFlag = useSelector(state => { return state.boardApp.data; });
     console.log('appFlag: ', appFlag);
@@ -157,17 +178,20 @@ const Withdraw = ({navigation, route}) => {
             address: '',
             addressDetails: '',
             expreienceId: 0,
-            blogUrl: '',
-            instaUrl: '',
-            youtubeUrl: '',
+            blog: null,
+            insta: null,
+            youtube: null,
         }
     );
     console.log('info: ', info);
 
-    useEffect(()=>{
-        // dispatch(postBoardAppFlag({ experienceId: route.params.experienceId}));
-        dispatch(postBoardApp({ experienceId: route.params.experienceId }));
-    }, []);
+    const [minutes, setMinutes] = useState(parseInt(3));
+    const [seconds, setSeconds] = useState(parseInt(0));
+
+    // useEffect(()=>{
+    //     // dispatch(postBoardAppFlag({ experienceId: route.params.experienceId}));
+    //     dispatch(postBoardApp({ experienceId: route.params.experienceId }));
+    // }, []);
 
     useEffect(()=>{
         const load = async() => {
@@ -180,14 +204,50 @@ const Withdraw = ({navigation, route}) => {
                     asyncStorage == undefined ? '' : setInfo(JSON.parse(asyncStorage));
                 } break;
                 case '신청 정보 확인': {
-                    
                 }
             }
-            
-            
         }
         load();
     }, [])
+
+    useEffect(() => {
+        const countdown = setInterval(() => {
+          if (SMSFlag && parseInt(seconds) > 0) {
+            setSeconds(parseInt(seconds) - 1);
+          }
+          if (parseInt(seconds) === 0) {
+            if (parseInt(minutes) === 0) {
+                clearInterval(countdown);
+            } else {
+              setMinutes(parseInt(minutes) - 1);
+              setSeconds(59);
+            }
+          }
+        }, 1000);
+            return () => clearInterval(countdown);
+      }, [minutes, seconds, SMSFlag]);
+
+    const sms = async(e) => {
+        setSMSFlag(prevState => ({...prevState, open: true}));
+
+        e == '재요청' ? (setMinutes(3), setSeconds(0)) : SMSFlag.flag == 1 ? setModal3(!modal3) : ''
+
+        try{
+            const response = await axios({
+                  method: 'post',
+                  url: `https://momsnote.net/api/send/code?phone=${info.tel}`,
+                });
+                console.log('response: ', response.data);
+                setSMSNumber(response.data.data);
+            }catch(error){
+              console.log('error: ', error);
+            }
+    }
+
+    const certificate = () => {
+        SMSNumber == SMSInputNumber ? (setModal(!modal), setSMSFlag(prevState => ({...prevState, open: false, flag: 1}))) : setModal2(!modal2);
+        
+    }
 
     const change = (e) => { // 텍스트 밑줄 색상 변경
         let arr = [...isChecked];
@@ -208,7 +268,7 @@ const Withdraw = ({navigation, route}) => {
             <View style={styles.header}>
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>신청 정보</Text>
                 <TouchableOpacity style={styles.headerBox}><Icon name='close' size={20} onPress={()=>
-                    info.memberName == '' && info.tel == '' && info.blogUrl == '' && info.youtubeUrl == '' && info.instaUrl == '' &&
+                    info.memberName == '' && info.tel == '' && info.blog == '' && info.youtube == '' && info.insta == '' &&
                     info.address == '' && info.addressDetails == '' ? navigation.goBack() : setModal6(!modal6)
                 }/>
                 </TouchableOpacity>
@@ -221,28 +281,42 @@ const Withdraw = ({navigation, route}) => {
                             ...prevState, memberName: e
                         }))}></TextInput>
                 </View>
-                <View>
+                <View style={[styles.mainBox, {marginBottom: SMSFlag.open ? 10 : 30}]}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>연락처</Text>
                     <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info.tel}
                          onChangeText={(e) => setInfo((prevState) => ({...prevState, tel: e}))}>
                     </TextInput>
-                    <View style={styles.certificateBox}><Text style={{fontWeight: '500'}}>인증요청</Text></View>
+                    <TouchableOpacity style={styles.certificateBox} onPress={()=>sms('재요청')}>
+                        <Text style={{fontWeight: '500'}}>{SMSFlag.open ? '재요청' : '인증요청'}</Text>
+                    </TouchableOpacity>
                 </View>
-                <View style={styles.mainBox}>
-                    <TextInput style={styles.textBox} placeholder='인증번호 입력'></TextInput>
-                    <View style={styles.certificateBox}><Text style={{fontWeight: '500'}}>인증완료</Text></View>
+                <View style={[styles.mainBox, {display: SMSFlag.open ? 'flex' : 'none'}]}>
+                    <View style={styles.timerBox}>
+                        <Text style={{color: '#0288D1', fontWeight: '500'}}>{minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Text>
+                    </View>
+                    <TextInput style={[styles.textBox, {paddingLeft: 10}]} placeholder='인증번호 입력' onChangeText={(e)=>setSMSInputNumber(e)}></TextInput>
+
+                    {SMSInputNumber == '' ?
+                    <View style={[styles.certificateBox, {backgroundColor: '#E0E0E0'}]}>
+                        <Text style={{fontWeight: '500', color: 'white'}}>인증완료</Text>
+                    </View>
+                    :
+                    <TouchableOpacity style={[styles.certificateBox, {backgroundColor: '#FEA100'}]} onPress={certificate}>
+                    <Text style={{fontWeight: '500', color: 'white'}}>인증완료</Text>
+                    </TouchableOpacity>}
+
                 </View>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>SNS 계정</Text>
                     <Text style={{color: '#757575', marginTop: 5}}>리뷰에 사용할 계정을 하나 이상 입력해주세요.</Text>
-                    <TextInput style={styles.textBox} placeholder='네이버 블로그' value={info.blogUrl}
+                    <TextInput style={styles.textBox} placeholder='네이버 블로그' value={info.blog}
                         onChangeText={(e) => setInfo((prevState) => ({
                             ...prevState, blogUrl: e
                         }))}></TextInput>
-                    <TextInput style={styles.textBox} placeholder='인스타그램' value={info.instaUrl}
+                    <TextInput style={styles.textBox} placeholder='인스타그램' value={info.insta}
                         onChangeText={(e) => setInfo((prevState) => ({ ...prevState, instaUrl: e }))}>
                     </TextInput>
-                    <TextInput style={styles.textBox} placeholder='유튜브' value={info.youtubeUrl}
+                    <TextInput style={styles.textBox} placeholder='유튜브' value={info.youtube}
                         onChangeText={(e) => setInfo((prevState) => ({ ...prevState, youtubeUrl: e }))}>
                     </TextInput>
                 </View>

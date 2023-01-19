@@ -15,6 +15,7 @@ import Chat from '../../../../../public/assets/svg/Chat.svg'
 import Pencil from '../../../../../public/assets/svg/pencil.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { postBoardCount, setBoardCountRefresh } from '../../../../Redux/Slices/BoardCountSlice'
+import { postMyLikeBoard } from '../../../../Redux/Slices/MyLikeBoardSlice'
 
 const styles = StyleSheet.create({
   container:{
@@ -62,31 +63,13 @@ const styles = StyleSheet.create({
 
 const Talk1 = ({navigation, route}:any) => {
 
-  const isFocused = useIsFocused();
   const dispatch = useDispatch();
-  const info = useSelector((state:unknown) => { return state.board.data; });
-  const boardSet = useSelector(state => { return state.board.refresh; });
-  const boardCountSet = useSelector(state => { return state.boardCount.refresh; });
-  const infoCount = useSelector(state => { return state.boardCount.data; });
-
-  const [loading, setLoading] = useState(false);
+  const info = useSelector((state:unknown) => { return state.myLikeBoard.data; });
+  console.log('like board info: ', info);
 
   useEffect(()=>{
-    setLoading(true);
-    dispatch(postBoard(boardSet));
-    dispatch(postBoardCount(boardCountSet));
-    setLoading(false);
-  }, [boardSet]);
-
-  useEffect(()=>{
-    const momsTalk = async() => {
-      const asyncStorage = await AsyncStorage.getItem('momsTalk');
-      
-      setModalVisible(prevState => ({...prevState, asyncStorage: asyncStorage}));
-    }
-    momsTalk();
-  }, [isFocused]);
-
+    dispatch(postMyLikeBoard());
+  }, []);
 
   const dayCalculate = (date:number) => {
     switch(true){
@@ -139,13 +122,10 @@ const Talk1 = ({navigation, route}:any) => {
   return info == '' && info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
         {info == '' || info == undefined ?
-        <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
+        <View style={{marginTop: 250, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
         :
-        <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{
-          dispatch(setBoardCount({page: infoCount > (boardSet.page * 30) ? boardSet.page + 1 : boardSet.page, count: infoCount}));
-        }} onEndReachedThreshold={0}
-          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
-          ListFooterComponent={loading && <ActivityIndicator />}>
+        <FlatList data={info} renderItem={renderItem2}
+          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
         </FlatList>
         }
      </View>

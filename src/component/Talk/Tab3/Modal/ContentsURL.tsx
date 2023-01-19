@@ -4,6 +4,7 @@ import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import Close from '../../../../../public/assets/svg/Close.svg'
+import axios from 'axios'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -86,17 +87,54 @@ const Main = ({modalVisible3, setModalVisible3}) => {
         },
     ];
 
-    const [info, setInfo] = useState({
-        instagrem: '',
-        naver: '',
-        youtube: '',
+    const [url, setUrl] = useState({
+        sns: 'insta',
+        url: ''
     });
-    console.log('url info: ', info);
+    const [url2, setUrl2] = useState({
+        sns: 'insta',
+        url: ''
+    });
+    const [url3, setUrl3] = useState({
+        sns: 'blog',
+        url: ''
+    });
+    const [url4, setUrl4] = useState({
+        sns: 'blog',
+        url: ''
+    });
+    const [url5, setUrl5] = useState({
+        sns: 'youtube',
+        url: ''
+    });
+    const [url6, setUrl6] = useState({
+        sns: 'youtube',
+        url: ''
+    });
+
     const [urlAdd, setUrlAdd] = useState({
         instagrem: false,
         naver: false,
         youtube: false
     }); // 각 url 갯수
+
+    const register = async() => {
+        const info = [url, url2, url3, url4, url5, url6];
+
+        try{
+            const response = await axios({
+                  method: 'post',
+                  url: 'https://momsnote.net/application/update',
+                  data : {
+                    applicationId: 1,
+                    applicationUrl: info
+                  }
+                });
+                console.log('response: ', response.data);
+            }catch(error){
+              console.log('error: ', error);
+            }
+    }
 
 
     const renderItem = ({ item }) => (
@@ -116,12 +154,12 @@ const Main = ({modalVisible3, setModalVisible3}) => {
                 </View>
                 <View style={styles.contentBox}>
                     <TextInput style={styles.textInput} placeholder='URL주소입력' placeholderTextColor={'#BDBDBD'}
-                        onChangeText={(e)=> setInfo((prevState) => ({ ...prevState, instagrem: e}))}>
+                        onChangeText={(e)=> setUrl(prevState => ({...prevState, sns: 'insta', url: e}))}>
                     </TextInput>
                 </View>
                 <View style={[styles.contentBox, {display: urlAdd.instagrem ? 'flex' : 'none'}]}>
                     <TextInput style={styles.textInput} placeholder='URL주소입력' placeholderTextColor={'#BDBDBD'}
-                        onChangeText={(e)=> setInfo((prevState) => ({ ...prevState, instagrem: e}))}>
+                        onChangeText={(e)=> setUrl2(prevState => ({...prevState, sns: 'insta', url: e}))}>
                     </TextInput>
                 </View>
             </View>
@@ -141,12 +179,12 @@ const Main = ({modalVisible3, setModalVisible3}) => {
                 </View>
                 <View style={styles.contentBox}>
                     <TextInput style={styles.textInput} placeholder='URL주소입력' placeholderTextColor={'#BDBDBD'}
-                        onChangeText={(e)=> setInfo((prevState) => ({ ...prevState, naver: e}))}>
+                        onChangeText={(e)=> setUrl3(prevState => ({...prevState, sns: 'blog', url: e}))}>
                     </TextInput>
                 </View>
                 <View style={[styles.contentBox, {display: urlAdd.naver ? 'flex' : 'none'}]}>
                     <TextInput style={styles.textInput} placeholder='URL주소입력' placeholderTextColor={'#BDBDBD'}
-                        onChangeText={(e)=> setInfo((prevState) => ({ ...prevState, naver: e}))}>
+                        onChangeText={(e)=> setUrl4(prevState => ({...prevState, sns: 'blog', url: e}))}>
                     </TextInput>
                 </View>
             </View>
@@ -166,12 +204,12 @@ const Main = ({modalVisible3, setModalVisible3}) => {
                 </View>
                 <View style={styles.contentBox}>
                     <TextInput style={styles.textInput} placeholder='URL주소입력' placeholderTextColor={'#BDBDBD'}
-                        onChangeText={(e)=> setInfo((prevState) => ({ ...prevState, youtube: e}))}>
+                        onChangeText={(e)=> setUrl5((prevState) => ({ ...prevState, sns: 'youtube', url: e}))}>
                     </TextInput>
                 </View>
                 <View style={[styles.contentBox, {display: urlAdd.youtube ? 'flex' : 'none'}]}>
                     <TextInput style={styles.textInput} placeholder='URL주소입력' placeholderTextColor={'#BDBDBD'}
-                        onChangeText={(e)=> setInfo((prevState) => ({ ...prevState, youtube: e}))}>
+                        onChangeText={(e)=> setUrl6((prevState) => ({ ...prevState, sns: 'youtube', url: e}))}>
                     </TextInput>
                 </View>
             </View>
@@ -196,14 +234,14 @@ const Main = ({modalVisible3, setModalVisible3}) => {
                         </FlatList>
                     </View>
 
-                    {info.instagrem == '' && info.naver == '' && info.youtube == '' ? 
+                    {url.url == '' && url2.url == '' && url3.url == '' && url4.url == '' && url5.url == '' && url6.url == '' ?
                     <View style={styles.footer}>
                         <Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>등록 완료</Text>
                     </View> :
 
-                    <View style={[styles.footer, {backgroundColor: '#FEA100'}]}>
+                    <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={register}>
                         <Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>등록 완료</Text>
-                    </View>
+                    </TouchableOpacity>
                     }
                 </View>
             </View>
