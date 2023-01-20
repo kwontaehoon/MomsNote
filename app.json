@@ -4,11 +4,11 @@
     "slug": "Project1Type",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./public/assets/image/icon.png",
+    "icon": "./public/assets/image/512icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./public/assets/splash.png",
-      "resizeMode": "cover"
+      "resizeMode": "stretch"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,7 +23,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./public/assets/adaptive-icon.png",
+        "foregroundImage": "./public/assets/image/512icon.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.android.test"

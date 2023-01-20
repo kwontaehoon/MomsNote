@@ -1,6 +1,6 @@
 {
   "cli": {
-    "version": ">= 3.0.0"
+    "version": ">= 3.3.2"
   },
   "build": {
     "development": {
@@ -12,7 +12,6 @@
       "android": {
         "buildType": "apk"
       }
-      
     },
     "production": {}
   },

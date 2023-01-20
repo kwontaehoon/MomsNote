@@ -90,8 +90,8 @@ const Navigation = () => {
     return (
         <SafeAreaProvider>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName='초기접근'>
-                <Stack.Screen name="초기접근" component={Initial} options={{headerShown: false}}/>
+                <Stack.Navigator initialRouteName='main'>
+                {/* <Stack.Screen name="초기접근" component={Initial} options={{headerShown: false}}/> */}
 
                 <Stack.Screen name="main" component={SubMain} options={{headerShown: false}}/>
 
