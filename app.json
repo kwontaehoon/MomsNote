@@ -8,7 +8,7 @@
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./public/assets/splash.png",
-      "resizeMode": "stretch"
+      "resizeMode": "cover"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
