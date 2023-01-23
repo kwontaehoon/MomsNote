@@ -218,6 +218,7 @@ const Talk1Sub = ({navigation, route}) => {
     ); // 댓글 입력
     console.log('insert: ', insert);
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요
+    console.log('board Like: ', boardLike);
     const [boardData, setBoardData] = useState({
         order: 'new',
         count: 5,
@@ -254,7 +255,7 @@ const Talk1Sub = ({navigation, route}) => {
             console.log('hits: ', hits);
 
             hits == null || hits.split('|').filter(x => x == String(info[0].boardId)) == '' ? 
-            (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`), setBoardLike('조회수증가')) : ''
+            (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`)) : ''
             
         }
         user();
@@ -269,7 +270,7 @@ const Talk1Sub = ({navigation, route}) => {
                     method: 'post',
                     url: 'https://momsnote.net/api/board/recommend/flag',
                     headers: { 
-                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1OTE0OTIsImV4cCI6MTY3NDE4MzQ5Mn0.d8GpqvEmnnrUZKumuL4OPzp7wSGXiTo47hGkCSM2HO0', 
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTEwMjMzNjUxNDU4NzIyMTkzNDQzIiwiaWQiOjE2LCJpYXQiOjE2NzQ0NjE0NzQsImV4cCI6MTY3NzA1MzQ3NH0.9_lJBzSSenbGLXdKw1-6Jg2Ec8X6HC0joJZQgfIUdwg', 
                         'Content-Type': 'application/json'
                       },
                     data: { boardId : info[0].boardId }
@@ -414,7 +415,7 @@ const Talk1Sub = ({navigation, route}) => {
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
                         {boardLike == 0 | boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000'/>}
-                        <Text style={{color: boardLike == 0 ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { boardLike }</Text>
+                        <Text style={{color: boardLike == 0 || boardLike == undefined ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { boardLike }</Text>
                         <Chat width={16} height={16}/>
                         <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 {item.commentsCount}</Text>
                     </View>

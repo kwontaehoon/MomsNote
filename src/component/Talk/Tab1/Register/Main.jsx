@@ -187,9 +187,6 @@ const styles = StyleSheet.create({
 })
 const Register = ({navigation, route}) => {
 
-    console.log('Register route params: ', route.params);
-    console.log(typeof(route.params) == 'object');
-
     const boardSet = useSelector(state => { return state.board.refresh; });
 
     const DATA = [{ id: '0', title: '전체' }];
@@ -352,7 +349,7 @@ const Register = ({navigation, route}) => {
                       method: 'post',
                       url: 'https://momsnote.net/api/board/update',
                       headers: { 
-                          'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
+                          'Authorization': 'bearer ya29.a0AVvZVsoLwR0uW2G2Fi5Y-uqINP5r6EDnW4X4VRy2Y7J…hgaCgYKARgSARMSFQGbdwaIVDp78b9eKxrun5ahHRDjWg0165'
                         },
                       data: data
                     });
@@ -368,8 +365,8 @@ const Register = ({navigation, route}) => {
                       method: 'post',
                       url: 'https://momsnote.net/api/board/write',
                       headers: { 
-                          'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
-                        },
+                        'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTEwMjMzNjUxNDU4NzIyMTkzNDQzIiwiaWQiOjE2LCJpYXQiOjE2NzQxODI0NTQsImV4cCI6MTY3Njc3NDQ1NH0.ln3ua98ERwVGglqQbo8IaIC8MJy82WMXLNNYC9b0uPQ'
+                      },
                       data: data
                     });
                     console.log('response: ', response.data);

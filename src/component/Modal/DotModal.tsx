@@ -61,9 +61,9 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
      useEffect(()=>{
         const getUserId = async() => {
             
-            const a = await AsyncStorage.getItem('userId');
-            console.log('userId: ', a); // string
-            setUserId(Number(a));
+            const a = await AsyncStorage.getItem('user');
+            console.log('user: ', JSON.parse(a));
+            setUserId(Number(JSON.parse(a).userId));
         }
         getUserId();
     }, []);
@@ -74,7 +74,7 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
                   method: 'delete',
                   url: 'https://momsnote.net/api/board/delete',
                   headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDc1MTksImV4cCI6MTY3NDE5OTUxOX0.AWDHv0yNHklAEqHCojyNWWf0vb38L5dT-jFll4fE6Bk', 
+                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTEwMjMzNjUxNDU4NzIyMTkzNDQzIiwiaWQiOjE2LCJpYXQiOjE2NzQ0NjE0NzQsImV4cCI6MTY3NzA1MzQ3NH0.9_lJBzSSenbGLXdKw1-6Jg2Ec8X6HC0joJZQgfIUdwg', 
                     'Content-Type': 'application/json'
                   },
                   data: { boardId: info[0].boardId }

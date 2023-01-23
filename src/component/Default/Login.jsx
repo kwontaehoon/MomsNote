@@ -94,6 +94,7 @@ const Main = ({navigation, route}) => {
     const GoogleGetId = async(googleAccessToken) => {
         try{
             const response = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${googleAccessToken}`);
+            console.log('response: ', response);
             setGoogleToken(response.data.sub);
             const response2 = await axios({
                 method: 'post',

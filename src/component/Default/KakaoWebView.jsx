@@ -17,15 +17,16 @@ const Main = ({navigation}) => {
 
     const REST_API_KEY = '5b53b00ed1940f2bd5a026d96a0ae0ce'; // 클라이언트 꺼
     const REST_API_KEY2 = '7d1cb1e652f5ee8aaffc2e7ce0547c9b'; // 본인
-    const REDIRECT_URI = 'http://192.168.0.102:19000';
+    const REDIRECT_URI = 'https://www.naver.com';
 
     const runFirst = `window.ReactNativeWebView.postMessage("this is message from web")`;
 
     const kakaoTokenId = async(kakaoAcceess) => {
 
       try{
-        const response = await axios.get(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${REST_API_KEY2}&redirect_uri=${REDIRECT_URI}&code=${kakaoAcceess}`);
+        const response = await axios.get(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${kakaoAcceess}`);
         AsyncStorage.setItem('token', response.data.access_token);
+        console.log('response', response.data);
         console.log(response.data.access_token);
         const response2 = await axios.get(`https://kapi.kakao.com/v1/user/access_token_info`, {
              headers: `Authorization: Bearer ${response.data.access_token}`
@@ -62,7 +63,7 @@ const Main = ({navigation}) => {
     <WebView
       style={styles.container}
       injectedJavaScript={runFirst}
-      source={{ uri: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY2}&redirect_uri=${REDIRECT_URI}&response_type=code`}}
+      source={{ uri: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`}}
       onMessage={event => {
         const data = event.nativeEvent.url;
         let error = '';

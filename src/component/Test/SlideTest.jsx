@@ -1,9 +1,7 @@
-import React, {useState} from 'react'
-import { View, Text, Dimensions, StyleSheet, ScrollView, Image } from 'react-native'
+import React, {useState, useRef} from 'react'
+import { View, Text, Dimensions, StyleSheet, ScrollView, Image, Animated, Button } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-
-    
     const images = [
         'https://cdn.pixabay.com/photo/2023/01/14/09/39/beach-7717811_960_720.jpg',
         'https://cdn.pixabay.com/photo/2023/01/14/06/34/squirrel-7717592_960_720.jpg',
@@ -16,6 +14,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const SlideTest = () => {
 
     const [imgActive, setImgActive] = useState(0);
+    const scrollView = useRef();
+
 
     const onchange = (nativeEvent) => {
         if(nativeEvent){
@@ -29,7 +29,7 @@ const SlideTest = () => {
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.wrap}>
-            <ScrollView onScroll={({nativeEvent})=>onchange(nativeEvent)}
+            <ScrollView onScroll={({nativeEvent})=>onchange(nativeEvent)} ref={scrollView}
             showsHorizontalScrollIndicator={false}
             pagingEnabled
             horizontal
@@ -50,14 +50,16 @@ const SlideTest = () => {
                 
             </ScrollView>
         </View>
+        <Button title='버튼'
+        onPress={()=>scrollView.current.scrollTo({ x: WIDETH }) }></Button>
     </SafeAreaView>
+
   )
 }
 
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        borderWidth: 1
     },
     wrap:{
         width: WIDETH,

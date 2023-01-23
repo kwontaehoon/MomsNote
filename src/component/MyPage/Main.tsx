@@ -54,7 +54,6 @@ const Main = ({navigation}) => {
     const [refresh, setRefresh] = useState(); // 새로고침
 
     useEffect(()=>{
-        console.log('refresh됨');
         const user = async() => {
             const user = await AsyncStorage.getItem('user');
             setUserInfo(JSON.parse(user));
