@@ -225,9 +225,6 @@ const styles = StyleSheet.create({
 })
 const Talk1Sub = ({navigation, route}) => {
 
-    
-    const insets = useSafeAreaInsets();
-
     Keyboard.addListener('keyboardDidShow', () => {
         setPageHeight(true);
     });

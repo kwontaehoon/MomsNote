@@ -42,18 +42,19 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
 
 
     const commentLike = useSelector(state => { return state.commentFlag.data; });
+    console.log('commentLike: ', commentLike);
     console.log('comment info: ', info);
-    console.log(commentData);
 
     const dispatch = useDispatch();
 
     const commentplus = async(id) => { // 댓글 추천
+        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({ 
                   method: 'post',
                   url: 'https://momsnote.net/api/comments/recommend',
                   headers: { 
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
+                    'Authorization': `Bearer ${token}`, 
                     'Content-Type': 'application/json'
                   },
                   data: {
@@ -97,9 +98,8 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                                         setInsert((prevState) => ({...prevState,
                                         boardId: x.boardId,    
                                         ref: x.ref,
-                                        level: 1
-                                    }))
-                                    setCommentsId(x.nickname);}
+                                        level: 1})),
+                                        setCommentsId(x.nickname);}
                                 }>댓글달기
                             </Text> 
                         </View>

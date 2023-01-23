@@ -50,10 +50,8 @@ const styles = StyleSheet.create({
 const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, setModal3, modal6, setModal6, commentsId, info}) => {
 
 
-    console.log('dot info: ', info[0]);
     const dispatch = useDispatch();
     const [userId, setUserId] = useState();
-    console.log('dot modal userId: ', userId);
     const boardSet = useSelector(state => { return state.board.refresh; });
 
     console.log('dotmodal: ', info);
@@ -62,24 +60,23 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
         const getUserId = async() => {
             
             const a = await AsyncStorage.getItem('user');
-            console.log('user: ', JSON.parse(a));
             setUserId(Number(JSON.parse(a).userId));
         }
         getUserId();
     }, []);
 
     const BoardDelete = async() => {
+        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
                   method: 'delete',
                   url: 'https://momsnote.net/api/board/delete',
                   headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTEwMjMzNjUxNDU4NzIyMTkzNDQzIiwiaWQiOjE2LCJpYXQiOjE2NzQ0NjE0NzQsImV4cCI6MTY3NzA1MzQ3NH0.9_lJBzSSenbGLXdKw1-6Jg2Ec8X6HC0joJZQgfIUdwg', 
+                    'Authorization': `bearer ${token}`, 
                     'Content-Type': 'application/json'
                   },
                   data: { boardId: info[0].boardId }
                 });
-                console.log('response: ', response.data);
             }catch(error){
               console.log('error: ', error);
             }
@@ -88,17 +85,17 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
     }
 
     const CommentDelete = async() => {
+        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
                   method: 'delete',
                   url: 'https://momsnote.net/api/comments/delete',
                   headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDc1MTksImV4cCI6MTY3NDE5OTUxOX0.AWDHv0yNHklAEqHCojyNWWf0vb38L5dT-jFll4fE6Bk', 
+                    'Authorization': `bearer ${token}`,
                     'Content-Type': 'application/json'
                   },
                   data: { commentsId: commentsId[1] }
                 });
-                console.log('response: ', response.data);
             }catch(error){
               console.log('error: ', error);
             }

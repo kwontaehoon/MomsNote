@@ -7,9 +7,9 @@ export const postMaterial = createAsyncThunk("postBoardSlice/async", async (data
     try{
       const response = await axios({
           method: 'post',
-          url: 'https://momsnote.net/api/needs/list',
+          url: 'https://momsnote.net/api/needs/list/self',
           headers: { 
-            'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+            'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTEwMjMzNjUxNDU4NzIyMTkzNDQzIiwiaWQiOjE2LCJpYXQiOjE2NzQxMTQ1OTEsImV4cCI6MTY3NjcwNjU5MX0.hZMjy_VUb7bhikdDhYUDZefBZ3g1nODH8VpMmtYpS_w',
             'Content-Type': 'application/json'
           },
           data : data

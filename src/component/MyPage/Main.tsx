@@ -77,19 +77,19 @@ const Main = ({navigation}) => {
 
     let data = new FormData();
     data.append('files', {uri: result.assets[0].uri, name: 'profile.mp4', type: 'image/png'});
-
+    const token = await AsyncStorage.getItem('token');
     try{
         const response = await axios({
               method: 'post',
               url: 'https://momsnote.net/api/profile/upload',
               headers: { 
-                'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
+                'Authorization': `Bearer ${token}`, 
               },
               data: data
             });
             console.log('response: ', response.data);
         }catch(error){
-          console.log('error: ', error);
+          console.log('프로필변경 error: ', error);
         }
 
         setRefresh(result.assets[0].uri);

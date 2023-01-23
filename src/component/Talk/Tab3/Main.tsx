@@ -83,8 +83,6 @@ const Talk3 = ({navigation}: any) => {
   console.log('체험단 infoCount: ', infoCount);
   const experienceSet = useSelector(state => { return state.experience.refresh; });
   console.log('experienceSet: ', experienceSet);
-  const experienceCountSet = useSelector(state => { return state.experience.refresh; });
-  console.log('experienceCountSet: ', experienceCountSet);
 
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -103,7 +101,7 @@ const Talk3 = ({navigation}: any) => {
   useEffect(()=>{
     setLoading(true);
     dispatch(postExperience(experienceSet));
-    dispatch(postExperienceCount(experienceCountSet));
+    dispatch(postExperienceCount(infoCount));
     setLoading(false);
   }, []);
 

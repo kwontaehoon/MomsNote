@@ -201,8 +201,10 @@ const Talk1Sub = ({navigation, route}) => {
     });
 
     const dispatch = useDispatch();
-    const info = [route.params.item];
-    console.log('talk1 info: ', info);
+    const boardInfo = useSelector(state => { return state.board.data});
+    console.log('원래 board info: ', boardInfo);
+    const [info, setInfo] = useState(boardInfo);
+    console.log('board 상세페이지 info: ', info);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
@@ -217,11 +219,11 @@ const Talk1Sub = ({navigation, route}) => {
         }
     ); // 댓글 입력
     console.log('insert: ', insert);
-    const [boardLike, setBoardLike] = useState(); // 게시판 좋아요
+    const [boardLike, setBoardLike] = useState(); // 게시판 좋아요 Flag
     console.log('board Like: ', boardLike);
     const [boardData, setBoardData] = useState({
         order: 'new',
-        count: 5,
+        count: 16,
         page: 1,
         subcategory: '전체'
     })
@@ -231,6 +233,8 @@ const Talk1Sub = ({navigation, route}) => {
         count: 1,
         page: 1
     });
+
+    const [hits, setHits] = useState();
 
     const [modal, setModal] = useState(false); // dot 모달 다른사람게시판 차단 및 신고
     const [modal2, setModal2] = useState(false); // 차단하기
@@ -243,7 +247,7 @@ const Talk1Sub = ({navigation, route}) => {
     const animation = useRef(new Animated.Value(0)).current;
     const flatlistRef = useRef(null);
 
-    useEffect(()=>{ // 댓글 목록
+    useEffect(()=>{
         dispatch(postComment(commentData));
         dispatch(postCommentFlag({boardId: info[0].boardId}));
         const user = async() => {
@@ -255,41 +259,48 @@ const Talk1Sub = ({navigation, route}) => {
             console.log('hits: ', hits);
 
             hits == null || hits.split('|').filter(x => x == String(info[0].boardId)) == '' ? 
-            (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`)) : ''
-            
+            (console.log('hits dispatch 실행'), dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`), hits(String(hits))) : ''
         }
         user();
         hits();
     }, []);
 
+    useEffect(()=>{
+        dispatch(postBoard(boardData));
+        setInfo(boardInfo.filter(x => x.boardId == route.params.item.boardId));
+    }, [hits]);
+
     useEffect(()=>{ // 게시물 추천 Flag
         console.log('게시물 추천 여부 업데이트');
         const likeInfo = async() => {
+            const token = await AsyncStorage.getItem('token');
             try{
                 const response = await axios({
                     method: 'post',
                     url: 'https://momsnote.net/api/board/recommend/flag',
                     headers: { 
-                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTEwMjMzNjUxNDU4NzIyMTkzNDQzIiwiaWQiOjE2LCJpYXQiOjE2NzQ0NjE0NzQsImV4cCI6MTY3NzA1MzQ3NH0.9_lJBzSSenbGLXdKw1-6Jg2Ec8X6HC0joJZQgfIUdwg', 
+                        'Authorization': `Bearer ${token}`, 
                         'Content-Type': 'application/json'
                       },
                     data: { boardId : info[0].boardId }
                 });
                 setBoardLike(response.data);
             }catch(error){
-                console.log('like axios error');
+                console.log('LikeFlag axios error');
+                return undefined;
             }
         }
         likeInfo();
-    }, [boardLike]);
+    }, [boardLike]); 
 
     const commentRegister = async() => { // 댓글 업데이트 필요
+        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({ 
                   method: 'post',
                   url: 'https://momsnote.net/api/comments/write',
                   headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE3NzUwMzAsImV4cCI6MTY3NDM2NzAzMH0.sXaK1MqIIiSpnF-xGkY-TRIu-O-ndUa1QuG9HFkGrMM', 
+                    'Authorization': `Bearer ${token}`, 
                     'Content-Type': 'application/json'
                   },
                   data: insert
@@ -306,12 +317,13 @@ const Talk1Sub = ({navigation, route}) => {
 
     const likeplus = async() => { // 게시판 좋아요
         console.log('likeplus');
+        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
                   method: 'post',
                   url: 'https://momsnote.net/api/board/recommend',
                   headers: { 
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
+                    'Authorization': `Bearer ${token}`, 
                     'Content-Type': 'application/json'
                   },
                   data: {
@@ -321,14 +333,15 @@ const Talk1Sub = ({navigation, route}) => {
                 });
                 console.log('response: ', response.data);
                 dispatch(postBoard(boardData));
+                setBoardLike();
+                setHits(response.data);
             }catch(error){
-              console.log('error: ', error);
+              console.log('게시판 좋아요 error: ', error);
             }
-            setBoardLike();
     }
 
     const ImageBox = () => {
-        const arr:any[] = [];
+        const arr = [];
         const a = (info[0].savedName.split('|')).filter(x => {
             if(x.charAt(x.length-1) === '4'){ arr.push(x); }else return x;
         });
@@ -415,7 +428,7 @@ const Talk1Sub = ({navigation, route}) => {
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
                         {boardLike == 0 | boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000'/>}
-                        <Text style={{color: boardLike == 0 || boardLike == undefined ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { boardLike }</Text>
+                        <Text style={{color: boardLike == 0 || boardLike == undefined ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { item.recommend }</Text>
                         <Chat width={16} height={16}/>
                         <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 {item.commentsCount}</Text>
                     </View>

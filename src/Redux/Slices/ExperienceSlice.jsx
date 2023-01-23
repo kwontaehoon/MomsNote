@@ -24,7 +24,7 @@ const initialState = {
     data: [],
     refresh: {
         order: 'new',
-        count: 1,
+        count: 5,
         page: 1,
     }
 }
@@ -34,16 +34,10 @@ export const experienceSlice = createSlice({
     initialState,
     reducers: {
       setExperienceCount:(state, action)=>{
-        console.log('카운트');
-        console.log('state: ', state);
-        console.log('action: ', action);
         state.refresh.count = action.payload.count;
         state.refresh.page = action.payload.page;
       },
       setExperienceFilter:(state, action)=>{
-        console.log('필터링');
-        console.log('state: ', state);
-        console.log('action: ', action);
         state.refresh.order = action.payload.filter;
       }
     },

@@ -107,6 +107,9 @@ const Main = ({navigation, route}) => {
                 }
             });
             console.log('response2: ', response2);
+            AsyncStorage.setItem('token', response2.data.token);
+            const a = await AsyncStorage.getItem('token');
+            console.log('token async: ', a);
 
             const decoded = jwtDecode(response2.data.token);
             console.log('google decoded: ', decoded);

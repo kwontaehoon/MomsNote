@@ -27,7 +27,7 @@ const Main = ({navigation}) => {
 
     useEffect(()=>{
         const login = async() => {
-            AsyncStorage.removeItem('login');
+            // AsyncStorage.removeItem('login');
             // AsyncStorage.clear()
             // AsyncStorage.setItem('login', '2');
             // AsyncStorage.setItem('user', JSON.stringify(test));
