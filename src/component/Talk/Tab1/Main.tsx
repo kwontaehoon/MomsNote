@@ -372,7 +372,7 @@ const Talk1 = ({navigation, route}:any) => {
         <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{
           dispatch(setBoardCount({page: infoCount > (boardSet.page * 30) ? boardSet.page + 1 : boardSet.page, count: infoCount}));
         }} onEndReachedThreshold={0}
-          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
+          keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}
           ListFooterComponent={loading && <ActivityIndicator />}>
         </FlatList>
         }
