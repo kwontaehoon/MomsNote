@@ -259,15 +259,21 @@ const Talk1Sub = ({navigation, route}) => {
             console.log('hits: ', hits);
 
             hits == null || hits.split('|').filter(x => x == String(info[0].boardId)) == '' ? 
-            (console.log('hits dispatch 실행'), dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`), hits(String(hits))) : ''
+            (console.log('hits dispatch 실행'), dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`), setHits(String(hits))) : ''
         }
         user();
         hits();
     }, []);
 
     useEffect(()=>{
-        dispatch(postBoard(boardData));
+        dispatch(postBoard(boardData), (e) => {
+            console.log('eeeeeee: ', e);
+            console.log('qwer');
+        });
+
+        console.log('1');
         setInfo(boardInfo.filter(x => x.boardId == route.params.item.boardId));
+        console.log('2');
     }, [hits]);
 
     useEffect(()=>{ // 게시물 추천 Flag
@@ -287,7 +293,7 @@ const Talk1Sub = ({navigation, route}) => {
                 setBoardLike(response.data);
             }catch(error){
                 console.log('LikeFlag axios error');
-                return undefined;
+                return undefined; 
             }
         }
         likeInfo();
@@ -318,26 +324,27 @@ const Talk1Sub = ({navigation, route}) => {
     const likeplus = async() => { // 게시판 좋아요
         console.log('likeplus');
         const token = await AsyncStorage.getItem('token');
-        try{
-            const response = await axios({
-                  method: 'post',
-                  url: 'https://momsnote.net/api/board/recommend',
-                  headers: { 
-                    'Authorization': `Bearer ${token}`, 
-                    'Content-Type': 'application/json'
-                  },
-                  data: {
-                    boardId: info[0].boardId,
-                    type: 'plus'
-                  }
-                });
-                console.log('response: ', response.data);
-                dispatch(postBoard(boardData));
-                setBoardLike();
-                setHits(response.data);
-            }catch(error){
-              console.log('게시판 좋아요 error: ', error);
-            }
+        setHits(13);
+        // try{
+        //     const response = await axios({
+        //           method: 'post',
+        //           url: 'https://momsnote.net/api/board/recommend',
+        //           headers: { 
+        //             'Authorization': `Bearer ${token}`, 
+        //             'Content-Type': 'application/json'
+        //           },
+        //           data: {
+        //             boardId: info[0].boardId,
+        //             type: 'plus'
+        //           }
+        //         });
+        //         console.log('response: ', response.data);
+        //         dispatch(postBoard(boardData));
+        //         setBoardLike();
+        //         setHits(response.data);
+        //     }catch(error){
+        //       console.log('게시판 좋아요 error: ', error);
+        //     }
     }
 
     const ImageBox = () => {

@@ -5,6 +5,7 @@ import Icon2 from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 import axios from 'axios'
 import First from '../../Modal/First'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -139,6 +140,7 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8, setModal, info2}) => {
     });
     
     const add = async() => {
+        const token = await AsyncStorage.getItem('token');
         const filter = info2.filter(x => x.category == info.category && x.needsName == info.needsName);
         if(filter == ''){
             try{
@@ -146,7 +148,7 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8, setModal, info2}) => {
                       method: 'post',
                       url: 'https://momsnote.net/api/needs/add/needs',
                       headers: { 
-                        'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+                        'Authorization': `bearer ${token}`, 
                         'Content-Type': 'application/json'
                       },
                       data: info

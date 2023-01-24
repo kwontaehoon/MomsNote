@@ -17,14 +17,13 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 154,
         backgroundColor: 'white',
         borderRadius: 15,
     },
     modalBox:{
-        height: '50%',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 20,
     },
     modal:{
         backgroundColor: '#FEA100',
@@ -47,9 +46,9 @@ const NoticeModal = ({modal, setModal, modal2, setModal2}) => {
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
                         <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, paddingTop: 10}}>브랜드/제품명은 필수 입력 항목입니다.</Text>
+                            <Text style={{fontSize: 16, textAlign: 'center', lineHeight: 25}}>브랜드/제품명은 필수 입력 항목입니다.</Text>
                         </View>
-                        <View style={styles.modalBox}>
+                        <View style={[styles.modalBox, {paddingTop: 0}]}>
                             <TouchableOpacity style={styles.modal} onPress={()=>(setModal(!modal), setModal2(prevState => ({...prevState, open: true})))}><Text style={{color: 'white', fontSize: 16}}>확인</Text></TouchableOpacity>
                         </View>
                     </View>

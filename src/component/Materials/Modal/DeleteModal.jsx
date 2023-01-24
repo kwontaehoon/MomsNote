@@ -7,7 +7,7 @@ import Checkbox from 'expo-checkbox'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         height: 200,
         width: '70%',
-        top: '51%',
+        top: '53%',
         backgroundColor: 'white',
         zIndex: 999,
         shadowColor: "#000",
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         paddingRight: 8,
         marginRight: 5,
         marginLeft: 5,
-        borderRadius: 2,
+        borderRadius: 10,
     },
     footer:{
         height: 44,
@@ -172,58 +172,62 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
     ];
 
     const dispatch = useDispatch();
-    const material = useSelector(state => { return state.material.data; });
+    const material2 = useSelector(state => { return state.material.data; });
+    console.log('delete material2: ', material2);
+    const [material, setMaterial] = useState(material2);
+    console.log('delete material: ', material);
     const materialSet = useSelector(state => { return state.material.refresh; });
     const [titleDisplay, setTitleDisplay] = useState(0); // 품목 리스트 display
 
     const [info, setInfo] = useState();
+    console.log('info: ', info);
 
     const [data, setData] = useState({
         title: '카테고리 선택(필수)',
-        select: [], // 품목 변경되었는지 모달창 띄우기위해 확인용
+        delete: [],
+        deleteCencel: []
     });
-    console.log('data select: ', data.select);
 
     useEffect(()=>{
+        setMaterial(material2);
+    }, [modalVisible9]);
+
+    useEffect(()=>{
+        console.log('zzxxzzxxzzzxㄹ딥ㄹ배랩ㄷ럳배');
         setInfo(material.filter(x => x.category == data.title));
     }, [data.title, material]);
 
-    const delete2 = async(e) => {
-        console.log('delete');
+    const submit = async(e) => {
+        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
                 method: 'post',
                 url: 'https://momsnote.net/api/needs/delete',
                 headers: { 
-                  'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+                  'Authorization': `bearer ${token}`, 
                   'Content-Type': 'application/json'
                 },
-                data: { id: String(e) }
+                data: { id: data.delete.join() }
                 });
                 console.log('response: ', response.data);
             }catch(error){
               console.log('error: ', error);
             }
-            dispatch(postMaterial(materialSet));
-    }
-
-    const deleteCencel = async(e) => {
-        console.log('delete cencel');
         try{
             const response = await axios({
-                method: 'post',
+                 method: 'post',
                 url: 'https://momsnote.net/api/needs/cancel/delete',
                 headers: { 
-                  'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
-                  'Content-Type': 'application/json'
-                },
-                data: { id: String(e) }
+                    'Authorization': `bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                   },
+                data: { id: data.deleteCencel.join() }
                 });
                 console.log('response: ', response.data);
             }catch(error){
-              console.log('error: ', error);
-            }
-            dispatch(postMaterial(materialSet));
+                console.log('error: ', error);
+            }    
+        dispatch(postMaterial(materialSet));
     }
 
     const optionBox = (e) => {
@@ -243,6 +247,33 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
         }
     }
 
+    const add = (e, flag) => {
+        if(flag == 'delete'){
+        const test = material.map(x => {
+            if(x.needsId == e){
+                return {...x , deleteStatus: 0};
+            } return x;
+        })
+        setMaterial(test);
+        const arr = [...data.delete, e];
+        const arr2 = data.deleteCencel.filter(x => x.needsId !== e);
+        setData(prevState => ({...prevState, delete: arr, deleteCencel: arr2}));
+
+
+    }else{
+        let arr = '';
+        const test = material.map(x => {
+            if(x.needsId == e){
+                return {...x , deleteStatus: 1};
+            } return x;
+        })
+        setMaterial(test);
+        console.log(data.delete.includes(e));
+        data.delete.includes(e) ? arr = data.delete.filter(x => x !== e) : arr = [...data.deleteCencel, e];
+        setData(prevState => ({...prevState, deleteCencel: arr}));
+    }
+    }
+
     const renderItem = ({ item }) => (
         <TouchableOpacity style={styles.listBox} onPress={()=>{setData((prevState) => ({ ...prevState, title: item.title})), setTitleDisplay(2)}}>
             <Text>{item.title}</Text>
@@ -258,8 +289,8 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
               color={item.deleteStatus == 0 ? '#FEB401' : undefined}
               onValueChange={()=>{
                 switch(true){
-                  case item.deleteStatus !== 0 : (delete2(item.needsId), setData(prevState => ({...prevState, select: item.needsId}))); break;
-                  default : (deleteCencel(item.needsId), setData(prevState => ({...prevState, select: item.needsId})));
+                  case item.deleteStatus == 1 : add(item.needsId ,'delete'); break;
+                  default : add(item.needsId);
                 }
               }}/></View>
             <View style={[styles.listContent, {width: '20%'}]}>{optionBox(item.grade)}</View>
@@ -312,9 +343,9 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
                 </View>
                 :
                 <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>{
-                    data.select.length == 0 ? (setModal2((prevState) => ({...prevState, open: true, content: ['삭제 혹은 복구된 품목이 없습니다.', '그래도 적용하시겠습니까?'], buttonCount: 2})), setModalVisible9(!modalVisible9))
+                    data.delete.length == 0 && data.deleteCencel.length == 0 ? (setModal2((prevState) => ({...prevState, open: true, content: ['삭제 혹은 복구된 품목이 없습니다.', '그래도 적용하시겠습니까?'], buttonCount: 2})), setModalVisible9(!modalVisible9))
                     :
-                    (delete2(), setModal((prevState) => ({...prevState, open: true, content: '출산준비물 리스트가 변경되었습니다.', buttonCount: 1})), setModalVisible9(!modalVisible9), setData(prevState => ({...prevState, select: []})))}}>
+                    (submit(), setMaterial(material2), setModal((prevState) => ({...prevState, open: true, content: '출산준비물 리스트가 변경되었습니다.', buttonCount: 1})), setModalVisible9(!modalVisible9), setData(prevState => ({...prevState, delete: [], deleteCencel: []})))}}>
                     <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>적용</Text>
                 </TouchableOpacity>}
              </View>

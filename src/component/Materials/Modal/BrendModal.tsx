@@ -8,6 +8,7 @@ import Reset from '../../../../public/assets/svg/Reset.svg'
 import Crwon from '../../../../public/assets/svg/crown.svg'
 import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
 import { useDispatch } from 'react-redux'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -85,7 +86,6 @@ const styles = StyleSheet.create({
     },
     textInput:{
         width: '47%',
-        paddingLeft: 10,
         justifyContent: 'center',
         backgroundColor: 'white',
         borderRadius: 2,
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: '#EF1E1E',
         position: 'absolute',
-        right: '55%',
+        right: '49%',
     },
     footerBox3:{
         backgroundColor: '#FEA100',
@@ -151,12 +151,13 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
     }, [modalVisible2]);
 
     const submit = async() => {
+        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
                 method: 'post',
                 url: 'https://momsnote.net/api/needs/add/brand',
                 headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+                    'Authorization': `bearer ${token}`, 
                     'Content-Type': 'application/json'
                   },
                 data: selectBrand
@@ -225,8 +226,8 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
                         </View>
                         <View style={styles.footerBox2}>
                             <View style={styles.textInput}>
-                                {/* {selectBrand.itemBrand == '' ? <View style={styles.redDot}></View> : ''} */}
-                                <TextInput placeholder='브랜드명' value={selectBrand.itemBrand} numberOfLines={1}
+                                {selectBrand.itemBrand == '' ? <View style={styles.redDot}></View> : ''}
+                                <TextInput placeholder='브랜드명' value={selectBrand.itemBrand} numberOfLines={1} style={{paddingLeft: 10}}
                                     onChangeText={(e) => setSelectBrand(prevState => ({ ...prevState, itemBrand: e}))}>   
                                 </TextInput>
                             </View>
@@ -234,9 +235,9 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
                             <View style={{width: '6%'}}></View>
 
                             <View style={styles.textInput}>
-                                {/* {selectBrand.itemName == '' ? <View style={[styles.redDot, {right: '65%'}]}></View> : ''} */}
-                                <TextInput placeholder='제품명' value={selectBrand.itemName} numberOfLines={1}
-                                    onChangeText={(e) => setSelectBrand(prevState => ({...prevState, itemName: e}))}>   
+                                {selectBrand.itemName == '' ? <View style={[styles.redDot, {right: '58%'}]}></View> : ''}
+                                <TextInput placeholder='제품명' value={selectBrand.itemName} numberOfLines={1} style={{paddingLeft: 10}}
+                                    onChangeText={(e) => setSelectBrand(prevState => ({...prevState, itemName: e}))}>
                                 </TextInput>
                                 </View>
                             </View> 

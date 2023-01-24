@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
     marginRight: 5,
     marginLeft: 5,
     borderRadius: 10,
-    justifyContent: 'center'
   },
   checkbox: {
     width: 24,
@@ -260,7 +259,11 @@ const Navigation = ({navigation, route}) => {
   }); // 구매가이드 모달
 
   const [modalVisible5, setModalVisible5] = useState(false); // 초기화 모달
-  const [modalVisible6, setModalVisible6] = useState(false); // 추천 리스트 변경 확인 모달
+  const [modalVisible6, setModalVisible6] = useState({
+    open: false,
+    content: null // 직접작성인지 추천리스트인지
+  }); // 추천 리스트 변경 확인 모달
+  console.log('modalVisible6: ', modalVisible6);
   const [modalVisible7, setModalVisible7] = useState(false); // 더보기
   const [modalVisible8, setModalVisible8] = useState(false); // 품목 추가
   const [modalVisible9, setModalVisible9] = useState(false); // 품목 삭제  
@@ -284,7 +287,7 @@ const Navigation = ({navigation, route}) => {
       setPurchaseCheckBox(asyncStorage);
     }
     materialPurchase();
-  }, []);
+  }, [modalVisible]);
 
   useEffect(()=>{
     dispatch(postMaterial(materialSet));
@@ -308,12 +311,13 @@ const Navigation = ({navigation, route}) => {
   }, [captureURL]);
 
   const purchase = async(needsId, needsBrandId) =>{
+    const token = await AsyncStorage.getItem('token');
     try{
       const response = await axios({
           method: 'post',
           url: 'https://momsnote.net/api/needs/buy/needs',
           headers: { 
-            'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIyMDczODUsImV4cCI6MTY3NDc5OTM4NX0.LRECgH_NBe10ueCfmefEzEueIrYukBHnXoKRfVqIurQ', 
+            'Authorization': `bearer ${token}`,  
             'Content-Type': 'application/json'
           },
           data: {
@@ -329,14 +333,13 @@ const Navigation = ({navigation, route}) => {
   }
 
   const purchaseCencel = async(needsId) => {
-    console.log('purchaseCencel');
-    console.log(needsId);
+    const token = await AsyncStorage.getItem('token');
     try{
       const response = await axios({
           method: 'post',
           url: 'https://momsnote.net/api/needs/cancel/buy',
           headers: { 
-            'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+            'Authorization': `bearer ${token}`, 
             'Content-Type': 'application/json'
           },
           data : {
@@ -449,7 +452,7 @@ const save = async() => {
               onValueChange={()=>{
                 switch(true){
                   case x.itemName == null: setModal2(prevState => ({...prevState, open: true, buttonCount: 1, content: '브랜드를 체크해주세요'})); break;
-                  case purchaseCheckBox == null : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: x.needsBrandId, needsId: x.needsId})); break;
+                  case x.id == 0 && purchaseCheckBox == null : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: x.needsBrandId, needsId: x.needsId})); break;
                   case x.id == 0 : purchase(x.needsId, x.needsBrandId); break;
                   default : purchaseCencel(x.needsId);
                 }
@@ -462,10 +465,10 @@ const save = async() => {
             <Text>{x.needsName}</Text>
           </TouchableOpacity>
           <View style={styles.filterBox}>
-          {x.itemName == null ?
+            {x.itemName == null ?
           <View style={{width: 24, height: 24, borderRadius: 12, backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
               <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}/> 
-            </View>: <Text numberOfLines={1}>{x.itemName}</Text>}
+            </View>: <Text numberOfLines={1} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}>{x.itemName}</Text>}
           </View>
       </View>
       )}
@@ -513,9 +516,9 @@ const save = async() => {
         <ResetModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
         <ResetModal2 modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
         <DotModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible7={modalVisible7} setModalVisible7={setModalVisible7} modalVisible8={modalVisible8} setModalVisible8={setModalVisible8}
-            modalVisible9={modalVisible9} setModalVisible9={setModalVisible9}/>
+            modalVisible9={modalVisible9} setModalVisible9={setModalVisible9} modal={modal} setModal={setModal}/>
         <AddModal modalVisible8={modalVisible8} setModalVisible8={setModalVisible8} setModal={setModal2} info2={info}/>
-        <DeleteModal modalVisible9={modalVisible9} setModalVisible9={setModalVisible9} setModal={setModal2} setModal2={setModal3}/>
+        <DeleteModal modalVisible9={modalVisible9} setModalVisible9={setModalVisible9} modal={modal} setModal={setModal2} setModal2={setModal3}/>
         <Filter modalVisible10={modalVisible10} setModalVisible10={setModalVisible10} />
         <BrandNameFlag modal={modal} setModal={setModal} modal2={modalVisible2} setModal2={setModalVisible2}/>
         <First modal={modal2} setModal={setModal2}/>

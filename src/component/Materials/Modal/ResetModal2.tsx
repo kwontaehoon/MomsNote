@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Switch, Modal, Platform } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
-import Icon from 'react-native-vector-icons/FontAwesome'
-import DateTimePicker from '@react-native-community/datetimepicker'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
 
 const styles = StyleSheet.create({
     container:{
@@ -18,8 +17,6 @@ const styles = StyleSheet.create({
         height: 60,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingLeft: 15,
-        paddingRight: 15,
     },
     text:{
         fontSize: 15,
@@ -43,11 +40,6 @@ const styles = StyleSheet.create({
         height: 60,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingLeft: 15,
-        paddingRight: 15,
-    },
-    main3:{
-        height: 360,
     },
     modalContainer:{
         justifyContent: "center",
@@ -56,7 +48,6 @@ const styles = StyleSheet.create({
     modalView:{
         width: '100%',
         height: '100%',
-        margin: 20,
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: "center",
         justifyContent: 'center',
@@ -65,15 +56,13 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 220,
         backgroundColor: 'white',
-        marginBottom: 35,
         borderRadius: 15
     },
     modalBox:{
-        height: '50%',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 20,
     },
     modal:{
         backgroundColor: '#FEA100',
@@ -87,28 +76,65 @@ const styles = StyleSheet.create({
 })
 const Main = ({modalVisible6, setModalVisible6}) => {
 
-    const DATA = [
-        {
-          id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-          title: '전체'
-        },
-    ];
+    const confirm = async() => {
+        const token = await AsyncStorage.getItem('token');
+        if(modalVisible6.content == 0){
+            console.log('실제맘 추천 리스트');
+            try{
+                const response = await axios({ 
+                  method: 'post',
+                  url: 'https://momsnote.net/api/needs/list/rec',
+                  headers: { 
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                  },
+                  data: {
+                    order: 'need'
+                  }
+                });
+                console.log('response: ', response.data);
+            }catch(error){
+              console.log('실제맘 추천 리스트 error: ', error);
+            }
+        }else{
+            console.log('직접작성');
+            try{
+                const response = await axios({ 
+                      method: 'post',
+                      url: 'https://momsnote.net/api/needs/list/self',
+                      headers: { 
+                        'Authorization': `Bearer ${token}`, 
+                        'Content-Type': 'application/json'
+                      },
+                      data: {
+                        order: 'need'
+                      }
+                    });
+                    console.log('response: ', response.data);
+                }catch(error){
+                  console.log('직접 작성 error: ', error);
+                }
+        }
+        setModalVisible6(prevState => ({...prevState, open: false, content: null}))
+    }
 
   return (
-        <Modal animationType="fade" transparent={true} visible={modalVisible6} statusBarTranslucent={true}
+        <Modal animationType="fade" transparent={true} visible={modalVisible6.open} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible6(!modalVisible6)}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
-                    <View style={[styles.modalContainer2, {height: 260}]}>
+                    <View style={styles.modalContainer2}>
                         <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, paddingTop: 10}}>추천상품으로 리스트를 변경하면 기존 작성</Text>
-                            <Text style={{fontSize: 16, paddingTop: 5}}>내용은 초기화됩니다.</Text>
-                            <Text style={{fontSize: 16, paddingTop: 5}}>변경하시겠습니까?</Text>
+                            <Text style={{fontSize: 16, textAlign: 'center', lineHeight: 25}}>추천상품으로 리스트를 변경하면 기존 작성내용은 초기화됩니다. 변경하시겠습니까?</Text>
                         </View>
-                        <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal}><Text style={{color: 'white', fontSize: 16}}>확인</Text></TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModalVisible6(!modalVisible6)}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
+                        <View style={[styles.modalBox, {paddingTop: 0}]}>
+                            <TouchableOpacity style={styles.modal} onPress={confirm}>
+                                <Text style={{color: 'white', fontSize: 16}}>확인</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModalVisible6(prevState => ({...prevState, open: false}))}>
+                                <Text style={{color: 'black', fontSize: 16}}>취소</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>

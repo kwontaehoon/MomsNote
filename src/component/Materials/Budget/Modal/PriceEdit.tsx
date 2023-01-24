@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Close from '../../../../../public/assets/svg/Close.svg'
 
@@ -73,11 +74,12 @@ const CheckBoxModal = ({modal6, setModal6}) => {
     console.log('modal6: ', modal6);
 
     const edit = async() => {
+        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
                 method: 'post',
                 headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIyMDczODUsImV4cCI6MTY3NDc5OTM4NX0.LRECgH_NBe10ueCfmefEzEueIrYukBHnXoKRfVqIurQ', 
+                    'Authorization': `bearer ${token}`, 
                     'Content-Type': 'application/json'
                 },
                 url: 'https://momsnote.net/api/needs/update/price',

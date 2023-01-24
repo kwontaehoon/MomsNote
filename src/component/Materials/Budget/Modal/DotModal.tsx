@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { postMaterial } from '../../../../Redux/Slices/MaterialSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -51,12 +52,13 @@ const CheckBoxModal = ({modal5, setModal5}) => {
 
     const delete2 = async() => {
         console.log('delete');
+        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
                 method: 'post',
                 url: 'https://momsnote.net/api/needs/delete',
                 headers: { 
-                  'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+                  'Authorization': `bearer ${token}`, 
                   'Content-Type': 'application/json'
                 },
                 data: { id: modal5.content.needsId }
@@ -66,7 +68,6 @@ const CheckBoxModal = ({modal5, setModal5}) => {
               console.log('error: ', error);
         }
         dispatch(postMaterial({
-            userId: 1,
             order: 'need'
         }));
         setModal5(prevState => ({...prevState, open: false}));

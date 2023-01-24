@@ -64,6 +64,7 @@ const CheckBoxModal = ({modalVisible, setModalVisible}) => {
 
     const purchase = async() =>{
       console.log('purchase');
+      const token = await AsyncStorage.getItem('token');
 
       isChecked ? AsyncStorage.setItem('materialPurchase', '1') : AsyncStorage.removeItem('materialPurchase');
       try{
@@ -71,7 +72,7 @@ const CheckBoxModal = ({modalVisible, setModalVisible}) => {
             method: 'post',
             url: 'https://momsnote.net/api/needs/buy/needs',
             headers: { 
-              'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIyMDczODUsImV4cCI6MTY3NDc5OTM4NX0.LRECgH_NBe10ueCfmefEzEueIrYukBHnXoKRfVqIurQ', 
+              'Authorization': `bearer ${token}`, 
               'Content-Type': 'application/json'
             },
             data: {

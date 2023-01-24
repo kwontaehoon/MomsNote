@@ -4,6 +4,7 @@ import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -59,13 +60,13 @@ const Main = ({modalVisible5, setModalVisible5, modalVisible6, setModalVisible6}
                <View style={[styles.modalBox, {justifyContent: 'flex-start', height: 50}]}>
                     <Text style={{fontSize: 16, fontWeight: '600', textAlign: 'center', lineHeight: 20}}>원하는 출산 준비물 리스트를 선택해주세요.</Text>
                </View>
-               <TouchableOpacity style={styles.modalBox2} onPress={()=>(setModalVisible5(!modalVisible5), setModalVisible6(!modalVisible6))}>
+               <TouchableOpacity style={styles.modalBox2} onPress={()=>(setModalVisible5(!modalVisible5), setModalVisible6(prevState => ({...prevState, open: true, content: 0})))}>
                     <Text style={{color: '#FE7000', fontSize: 15, fontWeight: '500'}} >실제맘 추천 리스트</Text>
                </TouchableOpacity>
                <View style={[styles.modalBox, {height: 70}]}>
                     <Text style={{fontSize: 15, lineHeight: 20}}>많은 임산부들이 추천한 품목을 필수, 권장, 선택 항목으로 나눠서 알기 쉽게 보여준답니다.</Text>
                </View>
-               <TouchableOpacity style={styles.modalBox2}>
+               <TouchableOpacity style={styles.modalBox2} onPress={()=>(setModalVisible5(!modalVisible5), setModalVisible6(prevState => ({...prevState, open: true, content: 1})))}>
                     <Text style={{color: '#FE7000', fontSize: 15, fontWeight: '500'}}>직접 작성</Text>
                </TouchableOpacity>
                <View style={styles.modalBox}>
