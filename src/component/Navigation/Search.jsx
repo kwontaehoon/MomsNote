@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   titleBox:{
-    height: 50,
     padding: 15,
     justifyContent: 'center',
     backgroundColor: '#F5F5F5',
@@ -226,11 +225,11 @@ const dayCalculate2 = (date) => {
         <View>
           <Text>{x.title}</Text>
           <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 4}}>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.nickname}</Text>
-            <Like height={17}/>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.recommend}</Text>
-            <Chat height={17}/>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.commentsCount}</Text>
+            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.nickname} </Text>
+            <Like width={16} height={16} fill='#9E9E9E' />
+            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.recommend} </Text>
+            <Chat width={16} height={16} fill='#9E9E9E'/>
+            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.commentsCount} </Text>
           </View>
         </View>
         
@@ -307,7 +306,7 @@ const dayCalculate2 = (date) => {
   const renderItem = ({ item }) => (
     <View>
         <View style={styles.titleBox}>
-          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('맘스 톡 서치', momsSearch)}><Arrow /></TouchableOpacity>
+          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('맘스 톡 서치', momsSearch)}><Arrow fill='black' height={20}/></TouchableOpacity>
           <Text style={{fontWeight: '600'}}>맘스 톡 {momsSearch !== undefined ?  momsSearch.length : 0}건</Text>
         </View>
         <View style={styles.mainBox}>
@@ -315,7 +314,7 @@ const dayCalculate2 = (date) => {
            <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
         </View>
         <View style={styles.titleBox}>
-          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('출산준비물 공유 서치', materialSearch)}><Arrow /></TouchableOpacity>
+          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('출산준비물 공유 서치', materialSearch)}><Arrow fill='black' height={20}/></TouchableOpacity>
           <Text style={{fontWeight: '600'}}>출산준비물 공유 {materialSearch !== undefined ? materialSearch.length : 0}건</Text>
         </View>
         <View style={styles.mainBox}>
@@ -323,7 +322,7 @@ const dayCalculate2 = (date) => {
            <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
         </View>
         <View style={styles.titleBox}>
-          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('댓글 서치', commentSearch)}><Arrow /></TouchableOpacity>
+          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('댓글 서치', commentSearch)}><Arrow fill='black' height={20}/></TouchableOpacity>
           <Text style={{fontWeight: '600'}}>댓글 {commentSearch !== undefined ? commentSearch.length : 0}건</Text>
         </View>
         <View style={styles.mainBox}>
@@ -331,7 +330,7 @@ const dayCalculate2 = (date) => {
            <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
         </View>
         <View style={styles.titleBox}>
-          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('체험단 서치', experienceSearch)}><Arrow /></TouchableOpacity>
+          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('체험단 서치', experienceSearch)}><Arrow fill='black' height={20}/></TouchableOpacity>
           <Text style={{fontWeight: '600'}}>체험단 {experienceSearch !== undefined ? experienceSearch.length : 0}건</Text>
         </View>
         <View style={styles.mainBox}>

@@ -1,26 +1,24 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
-import Icon from 'react-native-vector-icons/FontAwesome'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // 문의하기
 const styles = StyleSheet.create({
     container:{
-      height: '95%',
-      backgroundColor: 'white',
+      height: '93.5%',
     },
     container2:{
-
     },
     header:{
       paddingTop: 30,
       height: 130,
-      padding: 15,
+      padding: 15
     },
     headerBox:{
       height: 40,
       justifyContent: 'center',
+      
     },
     headerBox2:{
       height: 52,
@@ -28,7 +26,7 @@ const styles = StyleSheet.create({
       justifyContent: 'flex-start',
     },
     header2:{
-      height: 400,
+      height: 300,
       paddingLeft: 15,
       paddingRight: 15,
     },
@@ -49,7 +47,9 @@ const styles = StyleSheet.create({
       borderRadius: 4,
     },
     footer:{
-      marginTop: 30,
+      position: 'absolute',
+      bottom: 10,
+      width: '100%',
       height: 56,
       alignItems: 'center',
       justifyContent: 'center',
@@ -74,17 +74,18 @@ const Inquiry2 = ({filter, setFilter}) => {
   ];
 
   const submit = async() => {
+    const token = await AsyncStorage.getItem('token');
     try{
       const response = await axios({
             method: 'post',
             url: 'https://momsnote.net/api/inquiry/write',
             headers: { 
-              'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIwMzI1OTAsImV4cCI6MTY3NDYyNDU5MH0.ZK2gNgKokbKi_iZM52mC5c0ink21CW2W88-kOXVAAJc', 
+              'Authorization': `bearer ${token}`, 
               'Content-Type': 'application/json'
             },
             data: info
           });
-          console.log('response: ', response.status);
+          console.log('response: ', response.data);
           if(response.data.status === 'success'){
             setFilter(!filter);
           }
@@ -111,14 +112,6 @@ const Inquiry2 = ({filter, setFilter}) => {
               </TextInput>
           </View>
         </View>
-        
-        {info.title.length !== 0 && info.contents.length !== 0 ? 
-        <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={submit}>
-        <Text style={{fontSize: 18, fontWeight: '600', color: 'white'}}>문의하기</Text>
-      </TouchableOpacity>:
-        <View style={[styles.footer, {backgroundColor: '#E0E0E0'}]}>
-          <Text style={{fontSize: 18, fontWeight: '600', color: 'white'}}>문의하기</Text>
-        </View>}
     </View>
   );
 
@@ -127,6 +120,16 @@ const Inquiry2 = ({filter, setFilter}) => {
       <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id}>
       </FlatList>
+
+      {info.title.length !== 0 && info.contents.length !== 0 ? 
+        <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={submit}>
+        <Text style={{fontSize: 18, fontWeight: '600', color: 'white'}}>문의하기</Text>
+      </TouchableOpacity>
+      :
+        <View style={[styles.footer, {backgroundColor: '#E0E0E0'}]}>
+          <Text style={{fontSize: 18, fontWeight: '600', color: 'white'}}>문의하기</Text>
+        </View>}
+
     </View>
   )
 }

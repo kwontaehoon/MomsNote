@@ -229,7 +229,7 @@ const Talk1Sub = ({navigation, route}) => {
   useEffect(()=>{
     dispatch(postMaterial({ order: 'need'}));
     dispatch(postShareList({ boardId: route.params.boardId }))
-  }, []);
+  }, [modal4, modal]);
 
   useEffect(()=>{
     let sum = 0;
@@ -248,7 +248,7 @@ const Talk1Sub = ({navigation, route}) => {
 
 
   const filtering = (e, title) => { // 품목 브랜드 가격 부분 none || flex
-    if(title.filter(x => x.category == e && x.needName !== null) == ''){
+    if(title.filter(x => x.category == e && x.itemBrand !== null) == ''){
       return(
         <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}><Text>검색 결과가 없습니다.</Text></View>
       )
@@ -328,12 +328,12 @@ const Talk1Sub = ({navigation, route}) => {
     const List4 = (e) => {
       let arr = [];
       material.filter((x, index)=>{
-        if(x.category == e.title && x.needsName !== null && x.deleteStatus == 0){
+        if(x.category == e.title && x.itemBrand !== null && x.deleteStatus == 1){
         arr.push(
           <View style={styles.listMain2} key={index}>
               <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
               <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
-              <TouchableOpacity style={styles.filterBox2} onLongPress={()=>setModal4(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1}>
+              <TouchableOpacity style={styles.filterBox2} onLongPress={()=>(setModal4(prevState => ({...prevState, open: true, content: x})))} delayLongPress={1500} activeOpacity={1}>
                 <Text style={{fontWeight: '500'}}>{x.itemPrice == null ? '-' : (x.itemPrice).toLocaleString()}</Text>
                 <Text> 원</Text>
               </TouchableOpacity>
@@ -424,7 +424,7 @@ const Talk1Sub = ({navigation, route}) => {
         <Modal modalVisible2={modal} setModalVisible2={setModal} setModal={setModal3}/>
         <Modal2 modal2={modal2} setModal2={setModal2}/>
         <Modal3 modal={modal3} setModal={setModal3}/>
-        <Modal4 modal6={modal4} setModal6={setModal4} setModal3={setModal3} />
+        <Modal4 modal6={modal4} setModal6={setModal4} setModal7={setModal3} />
     </View>
   )
 }

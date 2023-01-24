@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal, KeyboardAvoidingView } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/AntDesign'
-import Icon2 from 'react-native-vector-icons/Ionicons'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Arrow_Right from '../../../../../public/assets/svg/Arrow-Right.svg'
 import Reset from '../../../../../public/assets/svg/Reset.svg'
@@ -152,12 +152,13 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
     }, [modalVisible2]);
 
     const submit = async() => {
+        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
                 method: 'post',
                 url: 'https://momsnote.net/api/needs/add/brand',
                 headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+                    'Authorization': `bearer ${token}`, 
                     'Content-Type': 'application/json'
                   },
                 data: selectBrand
@@ -187,9 +188,9 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
                     <Text>원</Text>
                 </View>
                 
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={{fontWeight: '600', fontSize: 13, color: '#FEA100'}}>최저가 보기</Text>
-                    <Arrow_Right fill='red' width={16} height={16}/>
+                    <Arrow_Right fill='#FEA100' width={16} height={16}/>
                 </View>
             </View>
         </TouchableOpacity>

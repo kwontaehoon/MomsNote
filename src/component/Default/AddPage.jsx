@@ -111,7 +111,8 @@ const AddPage = ({navigation, route}) => {
         babyName: '',
         provider: `${route.params[0]}`,
         providerId: `${route.params[1]}`,
-        marketingFlag: Number(`${isChecked[3] ? 1 : 0}`)
+        marketingFlag: Number(`${isChecked[3] ? 1 : 0}`),
+        userId: route.params[2]
     })
     console.log('info: ', info);
 

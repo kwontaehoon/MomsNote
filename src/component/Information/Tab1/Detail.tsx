@@ -153,7 +153,6 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 3}}>{item.title}</Text>
-                    <Text>일정: {moment(item.boardDate).format("YY.MM.DD")}</Text>
                 </View>
                 <View style={styles.mainBox2}>
                     <Text style={{lineHeight: 20}}>{item.contents}</Text>

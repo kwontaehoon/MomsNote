@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, FlatList, K
 import Icon from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/FontAwesome'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -132,12 +133,13 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4, boardId}) => {
     });
 
     const submit = async() => {
+        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
                   method: 'post',
                   url: 'https://momsnote.net/api/report/board',
                   headers: { 
-                      'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
+                      'Authorization': `bearer ${token}`
                     },
                     data: info
                 });

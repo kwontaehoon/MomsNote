@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     header:{
         height: 60,
         flexDirection: 'row',
+        borderWidth: 1,
     },
     headerBox:{
         alignItems: 'center',

@@ -1,87 +1,74 @@
-import React, { useState, useEffect} from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
-import Icon from 'react-native-vector-icons/FontAwesome'
+import React, { useEffect, useState } from 'react'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 
+// 문의내역
 const styles = StyleSheet.create({
     container:{
-        height: '100%',
-        backgroundColor: 'white',
+      height: '100%',
+      backgroundColor: 'white',
     },
     main:{
-        height: 80,
-        borderTopWidth: 1,
-        borderColor: '#F5F5F5',
-        justifyContent: 'center',
-        padding: 20,
-    }
+      borderBottomWidth: 1,
+      borderColor: '#F5F5F5',
+      height: 80,
+      padding: 20,
+      justifyContent: 'center'
+    },
+    main2:{
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '80%',
+    },
+    statusBox:{
+      position: 'absolute',
+      right: 20,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
 })
-const InquiryDetail = ({navigation}) => {
+const Inquiry3 = ({navigation}) => {
 
+  const [info, setInfo] = useState([]);
+  console.log('공지사항 info: ', info);
 
-    const [info, setInfo] = useState([
-        {
-          inquiryId: 1,
-          title: '문의사항 제목',
-          contents: '문의사항 내용입니다',
-          status: '대기중',
-          answerDate: '2022.05.21',
-          inquiryDate: '2022.05.21'
-        },{
-          inquiryId: 2,
-          title: '문의사항 입니다.....',
-          contents: '문의사항 내용.....',
-          status: '답변완료',
-          answerDate: '2022.05.01',
-          inquiryDate: '2022.05.01'
-        },{
-          inquiryId: 3,
-          title: 'Setting up the development',
-          contents: 'contents',
-          status: '대기중',
-          answerDate: '2022.06.26',
-          inquiryDate: '2022.06.26'
-        },{
-          inquiryId: 4,
-          title: 'This page will help',
-          contents: 'ccccccccccccccccccccccc',
-          status: '답변완료',
-          answerDate: '2022.11.01',
-          inquiryDate: '2022.11.01'
+  useEffect(()=>{
+    const Inquiry = async() => {
+      const token = await AsyncStorage.getItem('token');
+      const response = await axios({
+        method: 'post',
+        url: 'https://momsnote.net/api/board/notice',
+        headers: { 
+          'Content-Type': 'application/json'
         },
-      ]);
-      console.log('info: ', info);
-
-    useEffect(()=>{
-        get();
-      });
-    
-      const get = async() => {
-        try{
-          const response = await axios.get('http://192.168.1.140:4000/test');
-          if(response.status === 200){
-              console.log('response: ', response.data);
-          }
-        }catch(error){
-          console.log('error: ', error);
+        data: {
+          count: 1,
+          page: 1
         }
-      }
+    });
+    setInfo(response.data);
+    }
+    Inquiry();
+  }, []);
 
-    const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.main} onPress={()=>navigation.navigate('공지사항2', item)} activeOpacity={1}>
-           <Text style={{fontSize: 15, fontWeight: '600', marginBottom: 3, color: '#424242'}}>{item.title}</Text>
-            <Text style={{color: '#9E9E9E'}}>{item.inquiryDate}</Text>
-        </TouchableOpacity>
-      );
+  const renderItem = ({ item }) => (
+    <TouchableOpacity style={styles.main} onPress={()=>navigation.navigate('문의 상세', item)} activeOpacity={1}>
+      <View style={styles.statusBox}><Text style={{color: '#757575'}}>{item.status}</Text></View>
+        <Text style={{fontSize: 15, fontWeight: '600', marginBottom: 3, color: '#424242'}} numberOfLines={1}>{item.title}</Text>
+        <Text style={{color: '#9E9E9E'}}>{`${item.boardDate.split('-')[0]}/${item.boardDate.split('-')[1]}/${item.boardDate.split('-')[2].substring(0, 2)}`}</Text>
+    </TouchableOpacity>
+  );
 
-  return (
+  return info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
-        <FlatList data={info} renderItem={renderItem}
-          keyExtractor={item => item.title} >
+      {info.length == 0 ? <View style={styles.main2}><Text style={{color: '#757575', fontSize: 16}}>문의하신 내역이 없습니다.</Text></View> :
+        <FlatList data={info} renderItem={renderItem} showsVerticalScrollIndicator={false}
+          keyExtractor={item => String(item.boardId)}>
         </FlatList>
+      }
     </View>
   )
 }
 
-export default InquiryDetail
+export default Inquiry3

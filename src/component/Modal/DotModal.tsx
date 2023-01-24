@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../Redux/Slices/BoardSlice'
 import { postComment } from '../../Redux/Slices/CommentSlice'
+import { postMaterialShare } from '../../Redux/Slices/MaterialShareSlice'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -50,9 +51,12 @@ const styles = StyleSheet.create({
 const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, setModal3, modal6, setModal6, commentsId, info}) => {
 
 
+    console.log('info: ', info);
     const dispatch = useDispatch();
     const [userId, setUserId] = useState();
+    console.log('userId: ', userId);
     const boardSet = useSelector(state => { return state.board.refresh; });
+    const materialShareSet = useSelector(state => { return state.materialShare.refresh });
 
     console.log('dotmodal: ', info);
     
@@ -60,6 +64,8 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
         const getUserId = async() => {
             
             const a = await AsyncStorage.getItem('user');
+        
+            console.log(a);
             setUserId(Number(JSON.parse(a).userId));
         }
         getUserId();
@@ -81,6 +87,7 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
               console.log('error: ', error);
             }
         dispatch(postBoard(boardSet));
+        dispatch(postMaterialShare(materialShareSet));
         setModal(!modal);
     }
 

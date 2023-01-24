@@ -6,6 +6,8 @@ import Checkbox from 'expo-checkbox'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
+import Check from '.././../../../public/assets/svg/Check.svg'
+
 import Modal from './Modal/AuthComplete'
 import Modal2 from './Modal/AuthFail'
 import Modal3 from './Modal/AuthReady'
@@ -155,6 +157,7 @@ const Withdraw = ({navigation, route}) => {
         open: false,
         flag: 0 // 이미 인증했는지 검증
     }); // 본인인증 확인유무
+    console.log('SMSFlag: ', SMSFlag);
     const [SMSNumber, setSMSNumber] = useState(); // SMS 번호
     const [SMSInputNumber, setSMSInputNumber] = useState(''); // 입력한 SMS 번호
 
@@ -205,14 +208,15 @@ const Withdraw = ({navigation, route}) => {
                 } break;
                 case '신청 정보 확인': {
                 }
+                default: setInfo(prvState => ({...prvState, address: route.params}));
             }
         }
         load();
-    }, [])
+    }, [route])
 
     useEffect(() => {
         const countdown = setInterval(() => {
-          if (SMSFlag && parseInt(seconds) > 0) {
+          if (SMSFlag.open && parseInt(seconds) > 0) {
             setSeconds(parseInt(seconds) - 1);
           }
           if (parseInt(seconds) === 0) {
@@ -225,7 +229,7 @@ const Withdraw = ({navigation, route}) => {
           }
         }, 1000);
             return () => clearInterval(countdown);
-      }, [minutes, seconds, SMSFlag]);
+      }, []);
 
     const sms = async(e) => {
         setSMSFlag(prevState => ({...prevState, open: true}));
@@ -262,13 +266,40 @@ const Withdraw = ({navigation, route}) => {
             setChecked(arr);
         }
     }
+    const button = () => {
+        switch(true){
+            case SMSFlag.open == true: return '재요청';
+            case SMSFlag.open == false: return '인증요청';
+            default: return '변경';
+        }
+    }
+
+    const submit = async() => {
+        const token = await AsyncStorage.getItem('token');
+        try{
+            const response = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/api/application/regi',
+                headers: { 
+                    'Authorization': `bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                data: info
+            });
+            console.log('체험단 신청 response: ', response.data);
+            AsyncStorage.setItem('applicationFlag', '1');
+            navigation.goBack();
+        }catch(error){
+            console.log('체험단 신청 error: ', error);
+        }
+    }
     
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
             <View style={styles.header}>
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>신청 정보</Text>
                 <TouchableOpacity style={styles.headerBox}><Icon name='close' size={20} onPress={()=>
-                    info.memberName == '' && info.tel == '' && info.blog == '' && info.youtube == '' && info.insta == '' &&
+                    info.memberName == '' && info.tel == '' && info.blog == null && info.youtube == null && info.insta == null &&
                     info.address == '' && info.addressDetails == '' ? navigation.goBack() : setModal6(!modal6)
                 }/>
                 </TouchableOpacity>
@@ -283,18 +314,22 @@ const Withdraw = ({navigation, route}) => {
                 </View>
                 <View style={[styles.mainBox, {marginBottom: SMSFlag.open ? 10 : 30}]}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>연락처</Text>
-                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info.tel}
+                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info.tel} keyboardType='number-pad'
                          onChangeText={(e) => setInfo((prevState) => ({...prevState, tel: e}))}>
                     </TextInput>
-                    <TouchableOpacity style={styles.certificateBox} onPress={()=>sms('재요청')}>
-                        <Text style={{fontWeight: '500'}}>{SMSFlag.open ? '재요청' : '인증요청'}</Text>
+                    <TouchableOpacity style={styles.certificateBox} onPress={()=>SMSFlag.flag == 1 ?  setModal3(!modal3) : info.tel == '' ? '' : sms('재요청')}>
+                        <Text style={{fontWeight: '500'}}>{button()}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.mainBox, {display: SMSFlag.open ? 'flex' : 'none'}]}>
                     <View style={styles.timerBox}>
+                    {SMSFlag.flag == 0 ?
                         <Text style={{color: '#0288D1', fontWeight: '500'}}>{minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Text>
+                        :
+                        <Check fill={'#4CAF50'}/>
+                    }
                     </View>
-                    <TextInput style={[styles.textBox, {paddingLeft: SMSFlag.open ? 10 : 0}]} placeholder='인증번호 입력' onChangeText={(e)=>setSMSInputNumber(e)}></TextInput>
+                    <TextInput style={[styles.textBox, {paddingLeft: SMSFlag.open ? 10 : 0}]} keyboardType='number-pad' placeholder='인증번호 입력' onChangeText={(e)=>setSMSInputNumber(e)}></TextInput>
 
                     {SMSInputNumber == '' ?
                     <View style={[styles.certificateBox, {backgroundColor: '#E0E0E0'}]}>
@@ -323,10 +358,11 @@ const Withdraw = ({navigation, route}) => {
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>배송지</Text>
                     <View>
-                        <View style={styles.textBox}>
-                            <Text>주소 검색하기</Text>
-                        </View>
-                        <View style={styles.postBox}><Icon name='right' size={15} onPress={()=>navigation.navigate('주소 찾기')}/></View>
+                        <TouchableOpacity style={styles.textBox} activeOpacity={1} onPress={()=>navigation.navigate('주소 찾기')}>
+                            {info.address == '' ? <Text>주소 검색하기</Text>
+                            : <Text>{info.address}</Text>}
+                        </TouchableOpacity>
+                        <View style={styles.postBox}><Icon name='right' size={15}/></View>
                     </View>
                     <TextInput style={styles.textBox} placeholder='상세주소 입력' value={info.addressDetails} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, addressDetails: e }))}></TextInput>
                 </View>
@@ -356,7 +392,9 @@ const Withdraw = ({navigation, route}) => {
                     <View style={{position: 'absolute', right: 0, width: 20, height: '100%', justifyContent :'center'}}><Icon name='right' size={12} style={{color: '#616161'}}/></View>
                 </View>
                 <View style={[styles.mainBox, {alignItems: 'center'}]}>
-                    {isChecked[0] ? <View style={[styles.buttonBox, {backgroundColor: '#FEA100'}]}><Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text></View>
+                    {isChecked[0] ? <TouchableOpacity style={[styles.buttonBox, {backgroundColor: '#FEA100'}]} onPress={submit}>
+                        <Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text>
+                    </TouchableOpacity>
                     : <View style={styles.buttonBox}><Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text></View>}
                 </View>
             </View>

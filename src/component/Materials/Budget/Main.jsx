@@ -152,6 +152,11 @@ const Talk1Sub = ({route}) => {
     open: false,
     content: null,
   }); // onLongPress 가격 수정 모달
+  const [modal7, setModal7] = useState({ // 수정되었습니다 모달
+    open: false,
+    content: '출산리스트가 수정되었습니다.',
+    buttonCount: 1
+  });
 
   const [sumResult, setSumResult] = useState({
     sum: 0,
@@ -246,7 +251,8 @@ const Talk1Sub = ({route}) => {
       <ShareModal2 modalVisible3={modalVisible3} setModalVisible3={setModalVisible3} modalVisible4={modalVisible4} setModalVisible4={setModalVisible4}/>
       <ConfirmModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} />
       <DotModal modal5={modal5} setModal5={setModal5} />
-      <PriceEdit modal6={modal6} setModal6={setModal6} />
+      <PriceEdit modal6={modal6} setModal6={setModal6} setModal7={setModal7} />
+      <FirstModal modal={modal7} setModal={setModal7} />
 
       <View style={styles.main}>
         <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}

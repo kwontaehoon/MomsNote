@@ -78,11 +78,11 @@ const Main = ({navigation, route}) => {
         <View>
           <Text>{x.title}</Text>
           <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 4}}>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.nickname}</Text>
-            <Like height={17}/>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.recommend}</Text>
-            <Chat height={17}/>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.commentsCount}</Text>
+            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.nickname} </Text>
+            <Like width={16} height={16} fill='#9E9E9E' />
+            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.recommend} </Text>
+            <Chat width={16} height={16} fill='#9E9E9E'/>
+            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.commentsCount} </Text>
           </View>
         </View>
         

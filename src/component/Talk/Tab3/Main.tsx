@@ -103,7 +103,7 @@ const Talk3 = ({navigation}: any) => {
     dispatch(postExperience(experienceSet));
     dispatch(postExperienceCount(infoCount));
     setLoading(false);
-  }, []);
+  }, [value]);
 
   const filtering = (e) => {
     e.label == '인기 순' ? dispatch(setExperienceFilter({filter: 'best'})) : dispatch(setExperienceFilter({filter: 'new'}))

@@ -216,7 +216,7 @@ const Register = ({navigation, route}) => {
     const dispatch = useDispatch();
     const [modalVisible, setModalVisible] = useState(false); // 완료시 모달창
     const [modalVisible2, setModalVisible2] = useState(false); // 취소시 모달창
-    const [modal2Content, setModal2Content] = useState(''); // 완료시 모달 내용
+    const [modal2Content, setModal2Content] = useState(false); // 완료시 모달 내용
     const [filter, setFilter] = useState(Array.from({length: 5}, () => {return false})); // 카테고리
     const [userInfo, setUserInfo] = useState();
     
@@ -229,14 +229,15 @@ const Register = ({navigation, route}) => {
             video: [],
         }
     );
-    console.log('info: ', info);
+    console.log('글쓰기 info: ', info);
 
     useEffect(()=>{
         const load = async() => {
             const asyncStorage = await AsyncStorage.getItem('momsTalk');
+            console.log('asyncStorage: ', asyncStorage);
             const user = await AsyncStorage.getItem('user');
             switch(typeof(route.params)){
-                case '게시글 불러오기': setInfo(JSON.parse(asyncStorage)); break;
+                case 'string': setInfo(JSON.parse(asyncStorage)); break;
                 case 'object': {
                         setInfo(prevState => ({...prevState, title: route.params[0].title, contents: route.params[0].contents,
                             imageFile: [],
@@ -315,13 +316,14 @@ const Register = ({navigation, route}) => {
             case filter.filter(x => x===true).length === 0: setModal2Content('카테고리를 선택해주세요.'); break;
             case info.title === '': setModal2Content('제목을 입력해주세요.'); break;
             case info.contents === '': setModal2Content('게시글 내용을 입력해주세요.'); break;
+            case typeof(route.params) == 'object': edit(), navigation.navigate('맘스 톡'); return;
             default: submit(), navigation.goBack(); return;
         }
         setModalVisible2(!modalVisible2);
     }
 
     const submit = async() => {
-
+        const token = await AsyncStorage.getItem('token');
         let data = new FormData();
         data.append('category', '맘스 토크');
         data.append('subcategory', DATA2[filter.findIndex(x => x === true)].title);
@@ -331,7 +333,6 @@ const Register = ({navigation, route}) => {
 
         if(info.imageFile !== undefined){
             info.imageFile.filter(x => {
-                console.log('x: ', x);
                 data.append('files', {uri: x, name: 'board.jpg', type: 'image/jpeg'});
             })
         }
@@ -343,37 +344,44 @@ const Register = ({navigation, route}) => {
         }
         console.log('data: ', data);
 
-        if(route.params == 'object'){
             try{
                 const response = await axios({
-                      method: 'post',
-                      url: 'https://momsnote.net/api/board/update',
-                      headers: { 
-                          'Authorization': 'bearer ya29.a0AVvZVsoLwR0uW2G2Fi5Y-uqINP5r6EDnW4X4VRy2Y7J…hgaCgYKARgSARMSFQGbdwaIVDp78b9eKxrun5ahHRDjWg0165'
-                        },
-                      data: data
-                    });
-                    console.log('response: ', response.data);
-                }catch(error){
-                  console.log('error: ', error);
-                }
+                    method: 'post',
+                    url: 'https://momsnote.net/api/board/write',
+                    headers: { 
+                    'Authorization': `bearer ${token}`
+                    },
+                    data: data
+                });
+                console.log('response: ', response.data);
+            }catch(error){
+                console.log('error: ', error);
+            }
+        dispatch(postBoard(boardSet));
+    }
 
-        }else{
+    const edit = async() => {
+        
+        const token = await AsyncStorage.getItem('token');
+        let data = new FormData();
+        data.append('title', info.title);
+        data.append('contents', info.contents);
+        route.params[0] !== undefined ? data.append('boardId', route.params[0].boardId) : ''
+        // data.append('files', {uri: info.video, name: 'board.mp4', type: 'video/mp4'});
 
-            try{
-                const response = await axios({
-                      method: 'post',
-                      url: 'https://momsnote.net/api/board/write',
-                      headers: { 
-                        'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTEwMjMzNjUxNDU4NzIyMTkzNDQzIiwiaWQiOjE2LCJpYXQiOjE2NzQxODI0NTQsImV4cCI6MTY3Njc3NDQ1NH0.ln3ua98ERwVGglqQbo8IaIC8MJy82WMXLNNYC9b0uPQ'
-                      },
-                      data: data
-                    });
-                    console.log('response: ', response.data);
-                }catch(error){
-                  console.log('error: ', error);
-                }
-
+        console.log('게시글 수정');
+        try{
+            const response = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/api/board/update',
+                headers: { 
+                    'Authorization': `bearer ${token}`
+                },
+                data: data
+            });
+            console.log('response: ', response.data);
+        }catch(error){
+            console.log('게시판 수정 error: ', error);
         }
         dispatch(postBoard(boardSet));
     }

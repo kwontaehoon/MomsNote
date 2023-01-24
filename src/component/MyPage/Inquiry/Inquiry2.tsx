@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
-import Icon from 'react-native-vector-icons/FontAwesome'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 
 // 문의내역
@@ -36,11 +35,12 @@ const Inquiry3 = ({navigation}) => {
 
   useEffect(()=>{
     const Inquiry = async() => {
+      const token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'post',
         url: 'https://momsnote.net/api/inquiry/list',
         headers: { 
-          'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIwMzI1OTAsImV4cCI6MTY3NDYyNDU5MH0.ZK2gNgKokbKi_iZM52mC5c0ink21CW2W88-kOXVAAJc', 
+          'Authorization': `bearer ${token}`, 
           'Content-Type': 'application/json'
         },
         data: {}

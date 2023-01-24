@@ -7,6 +7,8 @@ const CutdownTimer = () => {
     const [seconds, setSeconds] = useState(parseInt(9));
     const [kk, setKK] = useState(false);
 
+    console.log('fda');
+
     useEffect(() => {
         const countdown = setInterval(() => {
           if (parseInt(seconds) > 0 && kk) {

@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
 const Main = ({modal3, setModal3}) => {
 
   return (
-        <Modal animationType="fade" transparent={true} visible={modal3}
+        <Modal animationType="fade" transparent={true} visible={modal3} statusBarTranslucent={true}
             onRequestClose={() => {
             setModal3(!modal3)}}>
             <View style={styles.modalContainer}>

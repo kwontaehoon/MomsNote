@@ -28,28 +28,13 @@ const styles = StyleSheet.create({
 const Withdraw = ({navigation}) => {
    
     const [filter, setFilter] = useState([true, false]); // filter tab
-    const [application , setApplication] = useState(); // 체험단 신청정보
+    const [application , setApplication] = useState(); // 체험단 신청정보 있는지 유무
     console.log('체험단 신청정보: ', application);
 
-    // useEffect(()=>{
-    //     AsyncStorage.setItem('nickname',JSON.stringify({'nickname': 'User1', 'phonenumber': '010-xxxx-xxxx'}), () => {
-    //         console.log('유저정보 저장 완료');
-    //     });
-
-    //     console.log('aaaaaaaaaaaaaaaaaaa', AsyncStorage.getItem('nickname', (error, result) =>{
-    //     const userInfo = JSON.parse(result);
-    //     console.log(userInfo.nickname);
-    // }));
-
-    // }, []);
     useEffect(()=>{
-        const all = AsyncStorage.getAllKeys();
-        console.log('all: ', all);
-        AsyncStorage.setItem('application', '1');
 
         const applicationInfo = async() => {
-            const application = await AsyncStorage.getItem('application');
-            console.log('application: ', application);
+            const application = await AsyncStorage.getItem('applicationFlag');
             setApplication(application);
         }
         applicationInfo();

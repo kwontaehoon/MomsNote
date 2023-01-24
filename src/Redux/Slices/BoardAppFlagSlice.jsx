@@ -5,11 +5,12 @@ import axios from 'axios'
 export const postBoardAppFlag = createAsyncThunk("postBoardAppFlagSlice/async", async (data) => {
   console.log('postBoardAppFlag 업데이트됨');
   console.log('data: ', data);
+  const token = await AsyncStorage.getItem('token');
     try{
       const response = await axios({
           method: 'post',
           headers: { 
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzM0MDk1NzQsImV4cCI6MTY3NjAwMTU3NH0.dZiHR7Lx_rnecyM176jTqTzvGAP1oW2kFYTa-PieiGI', 
+            'Authorization': `Bearer ${token}`, 
             'Content-Type': 'application/json'
           },
           url: 'https://momsnote.net/api/application/flag',

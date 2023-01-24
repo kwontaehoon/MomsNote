@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Switch, Modal, Platform } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
-import Icon from 'react-native-vector-icons/FontAwesome'
-import DateTimePicker from '@react-native-community/datetimepicker'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     container:{
@@ -38,7 +36,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     main2:{
-        height: 120,
     },
     main2Box:{
         height: 60,
@@ -48,7 +45,6 @@ const styles = StyleSheet.create({
         paddingRight: 15,
     },
     main3:{
-        height: 360,
     },
     modalContainer:{
         justifyContent: "center",
@@ -70,9 +66,9 @@ const styles = StyleSheet.create({
         borderRadius: 15
     },
     modalBox:{
-        height: '50%',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 20,
     },
     modal:{
         backgroundColor: '#FEA100',
@@ -87,12 +83,13 @@ const styles = StyleSheet.create({
 const Main = ({modal2, setModal2, userId, ani}) => {
 
     const submit = async() => {
+        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
                 method: 'post',
                 url: 'https://momsnote.net/api/block',
                 headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE3ODY2MDAsImV4cCI6MTY3NDM3ODYwMH0.84a-3YTmTMeE9YnQ7OF-jLUkUt-EwN-fmvZNK705eCo', 
+                    'Authorization': `bearer ${token}`, 
                     'Content-Type': 'application/json'
                 },
                 data: {
@@ -113,10 +110,9 @@ const Main = ({modal2, setModal2, userId, ani}) => {
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
                         <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, paddingTop: 10}}>사용자를 차단하시면 게시물과 댓글을 볼</Text>
-                            <Text style={{fontSize: 16, paddingTop: 5}}>수 없습니다. 그래도 차단하시겠습니까?</Text>
+                            <Text style={{fontSize: 16, textAlign: 'center', lineHeight: 25}}>사용자를 차단하시면 게시물과 댓글을 볼 수 없습니다. 그래도 차단하시겠습니까?</Text>
                         </View>
-                        <View style={styles.modalBox}>
+                        <View style={[styles.modalBox, {paddingTop: 0}]}>
                             <TouchableOpacity style={styles.modal} onPress={()=>{submit(), ani() ,setModal2(!modal2)}}><Text style={{color: 'white', fontSize: 16}}>차단하기</Text></TouchableOpacity>
                             <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModal2(!modal2)}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
                         </View>

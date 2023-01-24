@@ -6,6 +6,8 @@ import { getStatusBarHeight } from "react-native-status-bar-height"
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useSelector, useDispatch } from 'react-redux'
+import { postMaterialShare } from '../../../../Redux/Slices/MaterialShareSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -91,6 +93,8 @@ const Register = ({navigation, route}) => {
         },
       ];
 
+    const dispatch = useDispatch();
+    const materialShareSet = useSelector(state => { return state.materialShare.refresh });
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible2, setModalVisible2] = useState(false);
     const [modal2Content, setModal2Content] = useState(''); // 완료시 모달 내용
@@ -121,13 +125,13 @@ const Register = ({navigation, route}) => {
     }
 
     const submit = async() => {
-
+        const token = await AsyncStorage.getItem('token');
         try{
           const response = await axios({
                 method: 'post',
                 url: 'https://momsnote.net/api/needs/share/save',
                 headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIyMDczODUsImV4cCI6MTY3NDc5OTM4NX0.LRECgH_NBe10ueCfmefEzEueIrYukBHnXoKRfVqIurQ', 
+                    'Authorization': `bearer ${token}`, 
                     'Content-Type': 'application/json'
                   },
                 data: data
@@ -136,6 +140,7 @@ const Register = ({navigation, route}) => {
           }catch(error){
             console.log('error: ', error);
           }
+          dispatch(postMaterialShare(materialShareSet));
     }
 
     const boardSave = async(e) => {

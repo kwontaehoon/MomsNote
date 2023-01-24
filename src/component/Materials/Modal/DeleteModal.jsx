@@ -193,7 +193,6 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
     }, [modalVisible9]);
 
     useEffect(()=>{
-        console.log('zzxxzzxxzzzxㄹ딥ㄹ배랩ㄷ럳배');
         setInfo(material.filter(x => x.category == data.title));
     }, [data.title, material]);
 

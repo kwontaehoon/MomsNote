@@ -439,12 +439,12 @@ const Talk1Sub = ({navigation, route}) => {
    {boardLikeFlag == 0 ? 
    <TouchableOpacity style={[styles.footerBox, {width: '20%'}]} onPress={recommend}>
        <Like width={20} fill='#BDBDBD'/>  
-       <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {boardLike}</Text>
+       <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {info.recommend}</Text>
    </TouchableOpacity>
    :
    <View style={[styles.footerBox, {width: '20%'}]}>
        <Heart width={20} fill='#FEA100'/> 
-       <Text style={{fontSize: 16, fontWeight: '500', color: '#FEA100'}}> {boardLike}</Text>
+       <Text style={{fontSize: 16, fontWeight: '500', color: '#FEA100'}}> {info.recommend}</Text>
    </View>
    }
 

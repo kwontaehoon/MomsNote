@@ -20,7 +20,7 @@ import { getStatusBarHeight } from "react-native-status-bar-height"
 
 const styles = StyleSheet.create({
   container:{
-    height: '91%',
+    height: '89%',
     backgroundColor: 'white',
   },
   header:{
@@ -128,7 +128,6 @@ const styles = StyleSheet.create({
   modalView:{
       width: '100%',
       height: '100%',
-      margin: 20,
       backgroundColor: "rgba(0,0,0,0.5)",
       alignItems: "center",
       justifyContent: 'center',
@@ -137,9 +136,8 @@ const styles = StyleSheet.create({
   },
   modalContainer2:{
       width: '80%',
-      height: 144,
+      height: 220,
       backgroundColor: 'white',
-      marginBottom: 35,
       borderRadius: 15
   },
   modalBox:{
@@ -196,12 +194,10 @@ const Talk1 = ({navigation, route}:any) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.board.data; });
-  console.log('info: ', info);
   const boardSet = useSelector(state => { return state.board.refresh; });
-  console.log('boardSet: ', boardSet);
   const boardCountSet = useSelector(state => { return state.boardCount.refresh; });
   const infoCount = useSelector(state => { return state.boardCount.data; });
-  console.log('boardCount: ', infoCount);
+  const boardPopular = useSelector(state => { return state.boardPopular.data });
 
   const [loading, setLoading] = useState(false);
 
@@ -222,7 +218,7 @@ const Talk1 = ({navigation, route}:any) => {
     dispatch(postBoard(boardSet));
     dispatch(postBoardCount(boardCountSet));
     setLoading(false);
-  }, [filter]);
+  }, [filter, value]);
 
   useEffect(()=>{
     const momsTalk = async() => {
@@ -273,7 +269,6 @@ const Talk1 = ({navigation, route}:any) => {
   }
 
   const filtering = (e) => {
-    console.log('e: ', e.label == '인기 순');
     e.label == '인기 순' ? dispatch(setBoardFilter({filter: 'best'})) : dispatch(setBoardFilter({filter: 'new'}))
   }
 
@@ -309,6 +304,30 @@ const Talk1 = ({navigation, route}:any) => {
 
   return info == '' && info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
+
+  <Modal animationType="fade" transparent={true} visible={modalVisible.open} statusBarTranslucent={true}
+            onRequestClose={() => {
+            setModalVisible(!modalVisible)}}>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                    <View style={styles.modalContainer2}>
+                        <View style={styles.modalBox}>
+                            <Text style={{fontSize: 16, paddingTop: 10}}>작성 중이던 게시글이 존재합니다.</Text>
+                            <Text style={{fontSize: 16, paddingTop: 5}}>임시저장된 게시글을 불러오시겠습니까?</Text>
+                        </View>
+                        <View style={styles.modalBox}>
+                            <TouchableOpacity style={styles.modal} onPress={()=>{setModalVisible(prevState => ({...prevState, open: false})), navigation.navigate('글쓰기', '게시글 불러오기')}}>
+                              <Text style={{color: 'white', fontSize: 16}}>게시글 불러오기</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>{setModalVisible(prevState => ({...prevState, open: true})), navigation.navigate('글쓰기')}}>
+                              <Text style={{color: 'black', fontSize: 16}}>새로 작성하기</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+
       <View style={styles.header}>
         <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -335,13 +354,13 @@ const Talk1 = ({navigation, route}:any) => {
           showsPagination={false}
           >
           <View style={styles.slide}>
-            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] 5주차 맘 입덧 질문있어요 슬라이딩 ~</Text>
+            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {boardPopular[0].title}</Text>
           </View>
           <View style={styles.slide}>
-            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] 임신 7주차 병원 방문시기</Text>
+            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {boardPopular[1].title}</Text>
           </View>
           <View style={styles.slide}>
-            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] 임신확인서 받았어요!!</Text>
+            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {boardPopular[2].title}</Text>
           </View>
         </Swiper>
       </View>

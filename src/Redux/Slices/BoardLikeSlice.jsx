@@ -4,11 +4,12 @@ import axios from 'axios'
 export const postBoardLike = createAsyncThunk("postBoardLikeSlice/async", async (data) => {
   console.log('postBoardLike 업데이트됨');
   console.log('data: ', data);
+  const token = await AsyncStorage.getItem('token');
     try{
       const response = await axios({
           method: 'post',
           headers: { 
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
+            'Authorization': `Bearer ${token}`, 
             'Content-Type': 'application/json'
           },
           url: 'https://momsnote.net/api/board/recommend',

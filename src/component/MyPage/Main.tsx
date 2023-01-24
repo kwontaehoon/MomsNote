@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         paddingBottom: 8,
     },
     mainBox:{
-        padding: 18,
+        padding: 16,
         justifyContent: 'center',
         backgroundColor: 'white',
     },

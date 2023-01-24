@@ -133,6 +133,12 @@ const styles = StyleSheet.create({
         position: 'absolute',
         right: 15,
     },
+    profileBox:{
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        borderWidth: 1,
+    },
     footer:{
         width: '100%',
         height: 60,
@@ -223,6 +229,7 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal6, setModal6] = useState(false); // comment 신고 하기
 
     const [userInfo, setUserInfo] = useState();
+    console.log('오늘 이시기에는 userInfo: ', userInfo);
 
     const animation = useRef(new Animated.Value(0)).current;
     const flatlistRef = useRef(null);
@@ -250,11 +257,12 @@ const Talk1Sub = ({navigation, route}) => {
         console.log('게시물 추천 여부 업데이트');
         const likeInfo = async() => {
             try{
+                const token = await AsyncStorage.getItem('token');
                 const response = await axios({
                     method: 'post',
                     url: 'https://momsnote.net/api/board/recommend/flag',
                     headers: { 
-                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1OTE0OTIsImV4cCI6MTY3NDE4MzQ5Mn0.d8GpqvEmnnrUZKumuL4OPzp7wSGXiTo47hGkCSM2HO0', 
+                        'Authorization': `Bearer ${token}`, 
                         'Content-Type': 'application/json'
                       },
                     data: { boardId : info[0].boardId }
@@ -268,12 +276,13 @@ const Talk1Sub = ({navigation, route}) => {
     }, [boardLike]);
 
     const commentRegister = async() => { // 댓글 업데이트 필요
+        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({ 
                   method: 'post',
                   url: 'https://momsnote.net/api/comments/write',
                   headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE3NzUwMzAsImV4cCI6MTY3NDM2NzAzMH0.sXaK1MqIIiSpnF-xGkY-TRIu-O-ndUa1QuG9HFkGrMM', 
+                    'Authorization': `bearer ${token}`, 
                     'Content-Type': 'application/json'
                   },
                   data: insert
@@ -290,12 +299,13 @@ const Talk1Sub = ({navigation, route}) => {
 
     const likeplus = async() => { // 게시판 좋아요
         console.log('likeplus');
+        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
                   method: 'post',
                   url: 'https://momsnote.net/api/board/recommend',
                   headers: { 
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1MjMyMDMsImV4cCI6MTY3NDExNTIwM30.dv8l7-7MWKAPpc9kXwxxgUSy84pz_7gvpsJPpa4TX0M', 
+                    'Authorization': `Bearer ${token}`, 
                     'Content-Type': 'application/json'
                   },
                   data: {
@@ -428,10 +438,10 @@ const Talk1Sub = ({navigation, route}) => {
             <Modal6 modal4={modal4} setModal4={setModal4} modal6={modal6} setModal6={setModal6} commentsId={commentsId}/>
 
             <View style={styles.header}>
-                    <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
+                    <TouchableOpacity onPress={()=>navigation.goBack()} style={{height: '100%'}}><Back /></TouchableOpacity>
                     <View style={styles.headerBar}>
                         <Share style={{marginRight: 12}}/>
-                        <TouchableOpacity onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}><More/></TouchableOpacity>
+                        <More onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}/>
                     </View>
             </View>
 

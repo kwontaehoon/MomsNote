@@ -67,8 +67,6 @@ const CheckBoxModal = ({modal6, setModal6, setModal3}) => {
         needsName: ''
     });
 
-    console.log('modal6: ', modal6);
-
   return modal6.content == null ? <View></View> : (
     <Modal animationType="fade" transparent={true} visible={modal6.open}
             onRequestClose={() => {

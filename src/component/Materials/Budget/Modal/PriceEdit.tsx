@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 
 })
 
-const CheckBoxModal = ({modal6, setModal6}) => {
+const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
 
     const [info, setInfo] = useState({
         needsId: 0,
@@ -90,6 +90,7 @@ const CheckBoxModal = ({modal6, setModal6}) => {
              console.log('가격 수정 axios error: ', error);
         }
         setModal6(prevState=>({...prevState, open: false}));
+        setModal7(prevState=>({...prevState, open: true}));
     }
 
   return modal6.content == null ? <View></View> : (

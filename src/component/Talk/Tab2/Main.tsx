@@ -144,7 +144,7 @@ useEffect(()=>{
     (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`)) : ''
   }
   hits();
-}, []);
+}, [value]);
 
 
 useEffect(()=>{
