@@ -171,7 +171,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
     }
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: item.needsBrandId, itemBrand: item.productName}))}>
+        <TouchableOpacity style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: item.needsBrandId, itemBrand: item.productName, needsDataId: item.needsBrandId }))}>
             <View style={[styles.mainBoxSub, {width: '24%'}]}>
                 <Crwon />
             </View>

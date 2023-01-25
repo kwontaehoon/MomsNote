@@ -181,12 +181,13 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 144,
+        height: 220,
         backgroundColor: 'white',
         borderRadius: 15
     },
     modalBox:{
         height: '50%',
+        padding: 20,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -240,7 +241,7 @@ const Talk1Sub = ({navigation, route}) => {
     useEffect(()=>{
         dispatch(postBoardLikeFlag({ boardId: info.boardId}));
         // dispatch(postBoardLike({ boardId: info.boardId, type: 'plus'}));
-        dispatch(postBoardAppFlag({ experienceId: route.params.experienceId }));
+        dispatch(postBoardAppFlag({ experienceId: info.experienceId }));
         dispatch(postWinList({ experienceId: info.experienceId }));
 
         const hits = async() => {
@@ -357,11 +358,9 @@ const Talk1Sub = ({navigation, route}) => {
    setModalVisible(!modalVisible)}}>
    <View style={styles.modalContainer}>
        <View style={styles.modalView}>
-           <View style={[styles.modalContainer2, {height: 220}]}>
+           <View style={styles.modalContainer2}>
                <View style={styles.modalBox}>
-                   <Text style={{fontSize: 16, paddingTop: 10}}>체험단 신청을 하시려면</Text>
-                   <Text style={{fontSize: 16, paddingTop: 5}}>신청정보를 먼저 작성하셔야 합니다.</Text>
-                   <Text style={{fontSize: 16, paddingTop: 5}}>지금 작성하시겠습니까?</Text>
+                   <Text style={{fontSize: 16, lineHeight: 25, textAlign: 'center'}}>체험단 신청을 하시려면 신청정보를 먼저 작성하셔야 합니다. 지금 작성하시겠습니까?</Text>
                </View>
                <View style={styles.modalBox}>
                    <TouchableOpacity style={styles.modal} onPress={()=>{setModalVisible(!modalVisible), navigation.navigate('신청 정보', route.params)}}>
@@ -396,7 +395,7 @@ const Talk1Sub = ({navigation, route}) => {
    setModal4(!modal4)}}>
    <View style={styles.modalContainer}>
        <View style={styles.modalView}>
-           <View style={[styles.modalContainer2, {height: 220}]}>
+           <View style={styles.modalContainer2}>
                <View style={styles.modalBox}>
                    <Text style={{fontSize: 16, paddingTop: 10}}>작성 중이던 게시글이 존재합니다.</Text>
                    <Text style={{fontSize: 16, paddingTop: 5}}>임시저장된 게시글을 불러오시겠습니까?</Text>
@@ -449,7 +448,11 @@ const Talk1Sub = ({navigation, route}) => {
    }
 
    <View style={[styles.footerBox, {width: '3%', borderWidth: 0}]}></View>
-   { boardAppFlag.applicationId == null ?
+   { boardAppFlag.status == 200 ?
+    <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={()=>navigation.navigate('신청 정보 확인', route.params)}>
+        <Text style={{fontSize: 20, fontWeight: '500'}}>신청 정보 확인</Text>
+    </TouchableOpacity>
+    :
    <TouchableOpacity style={styles.footerBox2} onPress={()=>
        {
            async == null ? setModalVisible(!modalVisible) : setModal4(!modal4);
@@ -457,10 +460,6 @@ const Talk1Sub = ({navigation, route}) => {
        }
    }>
        <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
-   </TouchableOpacity>
-   :
-   <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={()=>navigation.navigate('신청 정보', route.params)}>
-       <Text style={{fontSize: 20, fontWeight: '500'}}>신청 정보 확인</Text>
    </TouchableOpacity>
    }
 </View>}

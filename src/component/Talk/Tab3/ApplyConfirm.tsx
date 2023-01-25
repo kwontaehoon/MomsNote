@@ -195,23 +195,6 @@ const Withdraw = ({navigation, route}) => {
     //     dispatch(postBoardApp({ experienceId: route.params.experienceId }));
     // }, []);
 
-    useEffect(()=>{
-        const load = async() => {
-            switch(true){
-                case route.params == '신청 정보 불러오기': {
-                    console.log('신청 정보 불러오기');
-                    const asyncStorage = await AsyncStorage.getItem('application');
-
-                    console.log('apply async: ', asyncStorage);
-        
-                    asyncStorage == null ? '' : setInfo(JSON.parse(asyncStorage));
-                } break;
-                case typeof(route.params) == 'string': setInfo(prvState => ({...prvState, address: route.params}));
-                default: console.log('default');
-            }
-        }
-        load();
-    }, [route])
 
     useEffect(() => {
         const countdown = setInterval(() => {

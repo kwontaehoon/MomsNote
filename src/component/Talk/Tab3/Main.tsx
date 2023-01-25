@@ -135,7 +135,7 @@ const Talk3 = ({navigation}: any) => {
     </TouchableOpacity>
   ); 
 
-  return (
+  return info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
 
       <Modal modal={modal} setModal={setModal}/>

@@ -6,7 +6,6 @@ import Icon5 from 'react-native-vector-icons/Feather'
 import SubMain from './SubMain'
 import AddPage from '../Default/AddPage'
 import Talk from '../Talk/Main'
-import Detail from './Detail'
 import Talk1Tab1Detail from '../Talk/Tab1/Detail'
 import Talk1Register from '../Talk/Tab1/Register/Main'
 import Inquiry from '../MyPage/Inquiry/Main'
@@ -22,6 +21,7 @@ import InquiryDetail from '../MyPage/Inquiry/InquiryDetail'
 import Login from '../Default/Login'
 import Talk3Detail from '../Talk/Tab3/Tab3Detail'
 import Apply from '../Talk/Tab3/Apply'
+import ApplyConfirm from '../Talk/Tab3/ApplyConfirm'
 import Post from '../Talk/Tab3/Post'
 import Setting from '../MyPage/Setting/Main'
 import Search from '../Navigation/Search'
@@ -33,7 +33,6 @@ import Budget from '../Materials/Budget/Main'
 import KakaoWebView from '../Default/KakaoWebView'
 import DdayDetail from '../Dday/Tab1/Detail'
 import DdayDetail2 from '../Dday/Tab2/Detail'
-import Experience from '../MyPage/Experience/Main'
 import Info2Detail from '../Information/Tab2/Detail'
 import MyPage from '../MyPage/Main'
 import Alarm from '../Navigation/Alarm'
@@ -264,6 +263,7 @@ const Navigation = () => {
                     })}/>
                 <Stack.Screen name="출산리스트" component={MaterialList}/>
                 <Stack.Screen name="신청 정보" component={Apply}  options={{title: '', headerShown: false}}/>
+                <Stack.Screen name="신청 정보 확인" component={ApplyConfirm}  options={{title: '', headerShown: false}}/>
                 <Stack.Screen name="주소 찾기" component={Post}  options={{title: ''}}/>
                 <Stack.Screen name="설정" component={Setting}/>
                 <Stack.Screen name="차단한 사용자" component={Block}/>
