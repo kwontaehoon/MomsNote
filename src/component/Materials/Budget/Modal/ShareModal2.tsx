@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, Animated, KeyboardAvoidingView } from 'react-native'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -90,13 +91,14 @@ const CheckBoxModal = ({modalVisible3, setModalVisible3, modalVisible4, setModal
     }
 
     const submit = async() => {
+        const token = await AsyncStorage.getItem('token');
         if(info.title == '' || info.contents == ''){
             opacity_ani()
         }else try{
                 const response = await axios({
                     method: 'post',
                     headers: { 
-                        'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIyMDczODUsImV4cCI6MTY3NDc5OTM4NX0.LRECgH_NBe10ueCfmefEzEueIrYukBHnXoKRfVqIurQ', 
+                        'Authorization': `bearer ${token}`, 
                         'Content-Type': 'application/json'
                     },
                     url: 'https://momsnote.net/api/needs/share/save',

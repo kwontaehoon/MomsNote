@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '90%',
-        height: 570,
+        height: 550,
         backgroundColor: 'white',
         marginBottom: 35,
         borderRadius: 15,
@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
         height: 60,
         justifyContent: 'center',
         alignItems: 'center',
-
     },
     closeBox:{
         position: 'absolute',

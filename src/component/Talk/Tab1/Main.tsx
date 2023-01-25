@@ -375,7 +375,7 @@ const Talk1 = ({navigation, route}:any) => {
 
       <View style={[styles.main, {height: Platform.OS == 'ios' ? null : '67%', flex: Platform.OS === 'ios' ? 1 : null}]}>
         {info == '' || info == undefined ?
-        <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
+        <View style={{marginTop: 80, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
         :
         <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{
           dispatch(setBoardCount({page: infoCount > (boardSet.page * 30) ? boardSet.page + 1 : boardSet.page, count: infoCount}));

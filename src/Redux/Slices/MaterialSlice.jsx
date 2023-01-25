@@ -9,7 +9,7 @@ export const postMaterial = createAsyncThunk("postBoardSlice/async", async (data
     try{
       const response = await axios({
           method: 'post',
-          url: 'https://momsnote.net/api/needs/list/self',
+          url: 'https://momsnote.net/api/needs/list/rec',
           headers: { 
             'Authorization': `bearer ${token}`,
             'Content-Type': 'application/json'
@@ -18,7 +18,7 @@ export const postMaterial = createAsyncThunk("postBoardSlice/async", async (data
       });
       return response.data;
       }catch(error){
-          console.log('material redux axios error: ', error);
+          console.log('Mymaterial redux axios error: ', error);
           return undefined
       }
 });

@@ -218,17 +218,14 @@ const Home = ({navigation}) => {
     const ref = useRef();
     const [date, setDate] = useState(new Date());
     const boardPopular = useSelector(state => { return state.boardPopular.data });
-    console.log('boardPopular: ', boardPopular == '');
     const materialPopular = useSelector(state => { return state.materialPopular.data });
-    console.log('materialPopular: ', materialPopular);
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
-    const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
+    const [modal, setModal] = useState(true); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
 
     const [userInfo, setUserInfo] = useState();
-    console.log('home userInfo: ', userInfo);
 
     useEffect(()=>{
         const recommendList = async() => {
@@ -434,9 +431,11 @@ const Home = ({navigation}) => {
                     </View>
                 </View>
                 <View style={styles.main4Box2}>
-                {infoPopular !== '' ? <FlatList data={infoPopular} renderItem={renderItem2} showsHorizontalScrollIndicator={false}
+                {infoPopular == '' ? <View><Text style={{color: '#757575'}}>새로운 정보가 없습니다.</Text></View>
+                :
+                <FlatList data={infoPopular} renderItem={renderItem2} showsHorizontalScrollIndicator={false}
                         keyExtractor={item => item.boardId} horizontal={true}>
-                </FlatList> : <View><Text style={{color: '#757575'}}>새로운 정보가 없습니다.</Text></View>}
+                </FlatList>}
                 </View>
             </View>
             

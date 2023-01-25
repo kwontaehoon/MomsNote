@@ -14,7 +14,7 @@ import Modal from '../../Modal/First'
 
 const styles = StyleSheet.create({
   container:{
-    height: '91%',
+    height: '83%',
     backgroundColor: 'white',
   },
   header:{
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   main:{
-    height: '90%',
+    height: '91%',
     padding: 10,
     position: 'relative',
     zIndex: -100,
@@ -160,7 +160,7 @@ const Talk3 = ({navigation}: any) => {
           {
             dispatch(setExperienceCount({page: infoCount > (experienceSet.page * 30) ? experienceSet.page + 1 :experienceSet.page, count: infoCount}))
           }} onEndReachedThreshold={0}
-          keyExtractor={item => item.appCount}
+          keyExtractor={(item, index) => String(index)}
           ListFooterComponent={loading && <ActivityIndicator />}>
           </FlatList>:
           <View style={{marginTop: 100, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>모집중인 체험단이 없습니다.</Text></View>}

@@ -189,12 +189,9 @@ const Talk1Sub = ({navigation, route}) => {
         },
     ];
 
-    console.log('route params: ', route.params);
     const dispatch = useDispatch();
     const info = useSelector(state => { return state.shareList.data; });
-    console.log('info: ', info);
     const material = useSelector(state => { return state.material.data; });
-    console.log('compare material: ', material);
     const [list, setList] = useState(Array.from({length: 9}, () => {return true})); // list display
     const animation = useRef(new Animated.Value(0)).current;
     const [myList, setMyList] = useState(false);
@@ -237,14 +234,13 @@ const Talk1Sub = ({navigation, route}) => {
 
     material.filter(x=>{
       if(x.id == 0 && x.needsBrandId !== null && x.itemPrice !== null){
-        console.log(x.itemPrice);
         exp += x.itemPrice
-      } else sum += x.itemPrice;
+      } else {
+        sum += x.itemPrice;
+      }
     });
-    console.log('sum: ', sum);
-    console.log('exp: ', exp);
     setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
-  }, [info]);
+  }, [material]);
 
 
   const filtering = (e, title) => { // 품목 브랜드 가격 부분 none || flex

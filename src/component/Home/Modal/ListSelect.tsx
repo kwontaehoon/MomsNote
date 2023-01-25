@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Switch, Modal, Platform } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
-import Icon from 'react-native-vector-icons/FontAwesome'
-import DateTimePicker from '@react-native-community/datetimepicker'
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -43,9 +41,48 @@ const styles = StyleSheet.create({
 })
 const Main = ({modal, setModal}) => {
 
-    const click = async() => {
-        await AsyncStorage.setItem('recommendList', '1');
-        setModal(!modal);
+    const rec = async() => {
+        const token = await AsyncStorage.getItem('token');
+            try{
+                const response = await axios({ 
+                  method: 'post',
+                  url: 'https://momsnote.net/api/needs/list/rec',
+                  headers: { 
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                  },
+                  data: {
+                    order: 'need'
+                  }
+                });
+                console.log('실제맘 추천 리스트 response: ', response.data);
+            }catch(error){
+              console.log('실제맘 추천 리스트 error: ', error);
+            }
+            AsyncStorage.setItem('recommendList', '1');
+            setModal(!modal);
+    }
+
+    const self = async() => {
+        const token = await AsyncStorage.getItem('token');
+            try{
+                const response = await axios({ 
+                method: 'post',
+                url: 'https://momsnote.net/api/needs/list/self',
+                headers: { 
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    order: 'need'
+                }
+                });
+                console.log('직접 작성 response: ', response.data);
+            }catch(error){
+            console.log('직접 작성 error: ', error);
+            }
+            AsyncStorage.setItem('recommendList', '1');
+            setModal(!modal);
     }
 
   return (
@@ -55,16 +92,16 @@ const Main = ({modal, setModal}) => {
     <View style={styles.modalContainer}>
         <View style={styles.modalView}>
             <View style={styles.modalContainer2}>
-               <View style={[styles.modalBox, {justifyContent: 'flex-start', height: 50}]}>
-                    <Text style={{fontSize: 16, fontWeight: '600', textAlign: 'center', lineHeight: 20}}>원하는 출산 준비물 리스트를 선택해주세요.</Text>
+               <View style={[styles.modalBox, {justifyContent: 'flex-start'}]}>
+                    <Text style={{fontSize: 16, fontWeight: '600', textAlign: 'center', lineHeight: 25}}>원하는 출산 준비물 리스트를 선택해주세요.</Text>
                </View>
-               <View style={styles.modalBox2}>
-                    <Text style={{color: '#FE7000', fontSize: 15, fontWeight: '500'}} onPress={click}>실제맘 추천 리스트</Text>
-               </View>
+               <TouchableOpacity style={styles.modalBox2} onPress={rec}>
+                    <Text style={{color: '#FE7000', fontSize: 15, fontWeight: '500'}}>실제맘 추천 리스트</Text>
+               </TouchableOpacity>
                <View style={[styles.modalBox, {height: 70}]}>
                     <Text style={{fontSize: 15, lineHeight: 20}}>많은 임산부들이 추천한 품목을 필수, 권장, 선택 항목으로 나눠서 알기 쉽게 보여준답니다.</Text>
                </View>
-               <TouchableOpacity style={styles.modalBox2} onPress={click}>
+               <TouchableOpacity style={styles.modalBox2} onPress={self}>
                     <Text style={{color: '#FE7000', fontSize: 15, fontWeight: '500'}}>직접 작성</Text>
                </TouchableOpacity>
                <View style={styles.modalBox}>

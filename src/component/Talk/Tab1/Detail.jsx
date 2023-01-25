@@ -191,8 +191,8 @@ const styles = StyleSheet.create({
 })
 const Talk1Sub = ({navigation, route}) => {
 
-    console.log('xaxaqewqewq',getStatusBarHeight());
-    
+    console.log('route: ', route.params.item.boardId);
+
     Keyboard.addListener('keyboardDidShow', (e) => {
         setPageHeight(true);
     });
@@ -212,7 +212,7 @@ const Talk1Sub = ({navigation, route}) => {
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
     const [insert, setInsert] = useState(
         {
-            boardId: info[0].boardId,
+            boardId: route.params.item.boardId,
             contents: '',
             ref: 1,
             level: 0
@@ -229,7 +229,7 @@ const Talk1Sub = ({navigation, route}) => {
     })
 
     const [commentData, setCommentData] = useState({
-        boardId: info[0].boardId,
+        boardId: route.params.item.boardId,
         count: 1,
         page: 1
     });
@@ -248,8 +248,12 @@ const Talk1Sub = ({navigation, route}) => {
     const flatlistRef = useRef(null);
 
     useEffect(()=>{
-        dispatch(postComment(commentData));
-        dispatch(postCommentFlag({boardId: info[0].boardId}));
+        dispatch(postComment({
+            boardId: route.params.item.boardId,
+            count: 1,
+            page: 1
+        }));
+        dispatch(postCommentFlag({boardId: route.params.item.boardId}));
         const user = async() => {
             const user = await AsyncStorage.getItem('user');
             setUserInfo(JSON.parse(user));
@@ -259,7 +263,7 @@ const Talk1Sub = ({navigation, route}) => {
             console.log('hits: ', hits);
 
             hits == null || hits.split('|').filter(x => x == String(info[0].boardId)) == '' ? 
-            (console.log('hits dispatch 실행'), dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`), setHits(String(hits))) : ''
+            (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`), setHits(String(hits))) : ''
         }
         user();
         hits();
@@ -386,14 +390,14 @@ const Talk1Sub = ({navigation, route}) => {
             )
             default: return(
                 <View style={styles.mainBox2ImageBox2}>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리')} activeOpacity={1}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)} activeOpacity={1}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image2}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)} activeOpacity={1}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)} activeOpacity={1}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[1]}`}} style={styles.image2}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)} activeOpacity={1}>
-                        <Image source={{uri: `https://reactnative.dev/img/tiny_logo.png`}} style={styles.image2}/>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)} activeOpacity={1}>
+                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[2]}`}} style={styles.image2}/>
                         <View style={{position: 'absolute', top: '40%', left: '40%'}}><Text style={{color: 'white', fontSize: 20, fontWeight: '600'}}>+{info[0].savedName.split('|').length-3}</Text></View>
                     </TouchableOpacity>
                 </View>

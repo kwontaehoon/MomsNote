@@ -59,14 +59,12 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
 
     console.log('dotmodal: ', info);
+    console.log(commentsId);
     
      useEffect(()=>{
         const getUserId = async() => {
-            
-            const a = await AsyncStorage.getItem('user');
-        
-            console.log(a);
-            setUserId(Number(JSON.parse(a).userId));
+            const b = await AsyncStorage.getItem('userId');
+            setUserId(b);
         }
         getUserId();
     }, []);
@@ -119,7 +117,7 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
     const DotFilter = () => {
 
         switch(true){
-            case commentsId[0] !== undefined && commentsId[0] === userId: return(
+            case commentsId[0] !== undefined && String(commentsId[0]) === userId: return(
                 <View style={[styles.main, {height: 62}]}>
                     <TouchableOpacity style={[styles.mainBox, {borderColor: '#424242'}]} onPress={()=>{CommentDelete()}}><Text style={{color: '#F23737', fontSize: 20}}>삭제하기</Text></TouchableOpacity>
                 </View>

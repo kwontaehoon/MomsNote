@@ -14,6 +14,7 @@ import { setMaterialShareFilter, setMaterialShareCount } from '../../../Redux/Sl
 import { postMaterialShare } from '../../../Redux/Slices/MaterialShareSlice'
 import { postMaterialShareCount } from '../../../Redux/Slices/MaterialShareCountSlice'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
+import { postBoardAppFlag } from '../../../Redux/Slices/BoardAppFlagSlice'
 
 const styles = StyleSheet.create({
   container:{
@@ -112,11 +113,8 @@ const Talk1 = ({navigation}) => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const materialShareSet = useSelector(state => { return state.materialShare.refresh });
-  console.log('materialShareSet: ', materialShareSet);
   const info = useSelector(state => { return state.materialShare.data});
-  console.log('출산준비물 공유 리스트 info: ', info);
   const infoCount = useSelector(state => { return state.materialShareCount.data});
-  console.log('출산 준비물 공유 리스트 infoCount: ', infoCount);
 
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState({

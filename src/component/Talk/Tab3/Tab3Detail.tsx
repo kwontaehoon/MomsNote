@@ -205,6 +205,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     const info = route.params;
     console.log('체험단 상세: ', info);
+    console.log(info.experienceId);
 
     const DATA = [
         {
@@ -222,7 +223,7 @@ const Talk1Sub = ({navigation, route}) => {
     const boardLike = useSelector(state => { return state.boardLikeFlag.data });
     const boardLikeFlagSet = useSelector(state => { return state.boardLikeFlag.refresh });
     const boardLikeSet = useSelector(state => { return state.boardLike.refresh });
-    const boardAppFlag = useSelector(state => {return state.boardAppFlag.data});
+    const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
     console.log('boardAppFlag: ', boardAppFlag);
     const winList = useSelector(state => { return state.winList.data });
 
@@ -345,7 +346,7 @@ const Talk1Sub = ({navigation, route}) => {
     }
 
 
-  return boardAppFlag == undefined ? <View></View> : (
+  return (
     <SafeAreaProvider>
             <SafeAreaView style={{ backgroundColor: 'white' }}>
                     <StatusBar />
@@ -435,7 +436,7 @@ const Talk1Sub = ({navigation, route}) => {
        </TouchableOpacity>
    </View>
    : <View style={styles.footer}>
-   {boardLikeFlag == 0 ? 
+   {/* {boardLikeFlag == 0 ? 
    <TouchableOpacity style={[styles.footerBox, {width: '20%'}]} onPress={recommend}>
        <Like width={20} fill='#BDBDBD'/>  
        <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {info.recommend}</Text>
@@ -445,10 +446,10 @@ const Talk1Sub = ({navigation, route}) => {
        <Heart width={20} fill='#FEA100'/> 
        <Text style={{fontSize: 16, fontWeight: '500', color: '#FEA100'}}> {info.recommend}</Text>
    </View>
-   }
+   } */}
 
    <View style={[styles.footerBox, {width: '3%', borderWidth: 0}]}></View>
-   { boardAppFlag.status == 200 ?
+   {/* { boardAppFlag.status == 200 ?
     <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={()=>navigation.navigate('신청 정보 확인', route.params)}>
         <Text style={{fontSize: 20, fontWeight: '500'}}>신청 정보 확인</Text>
     </TouchableOpacity>
@@ -461,7 +462,7 @@ const Talk1Sub = ({navigation, route}) => {
    }>
        <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
    </TouchableOpacity>
-   }
+   } */}
 </View>}
 
             </SafeAreaView>

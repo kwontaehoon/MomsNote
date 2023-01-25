@@ -230,9 +230,7 @@ const Navigation = ({navigation, route}) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.material.data; });
-  console.log('출산준비물 리스트: ', info);
   const materialSet = useSelector(state => { return state.material.refresh; });
-  console.log('material set: ', materialSet);
   const [sumResult, setSumResult] = useState({
     sum: 0,
     exp: 0

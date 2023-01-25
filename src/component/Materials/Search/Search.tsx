@@ -173,10 +173,13 @@ const Navigation = ({navigation, route}) => {
   ]
 
 
+  const dispatch = useDispatch();
   const [search, setSearch] = useState('');
   console.log('search: ', search);
   const [materialSearch, setMaterialSearch] = useState();
   console.log('materialSearch: ', materialSearch);
+  const materialSet = useSelector(state => { return state.material.refresh; });
+  console.log('material set: ', materialSet);
   const [refresh, setRefresh] = useState();
 
   const ref = useRef();
@@ -199,6 +202,7 @@ const Navigation = ({navigation, route}) => {
     open: false,
     content: '',
   }); // 구매가이드 모달
+  console.log('modalvisible4: ', modalVisible4)
 
   const [modal, setModal] = useState(false); // 브랜드 제품명 필수값 유무
   const [modal2, setModal2] = useState({
@@ -243,49 +247,50 @@ const Navigation = ({navigation, route}) => {
     boardSearch();
 }, [search, modalVisible2, refresh]);
 
-  const purchase = async(needsId, needsBrandId) =>{
-    console.log('purchase');
-    try{
-      const response = await axios({
-          method: 'post',
-          url: 'https://momsnote.net/api/needs/buy/needs',
-          headers: { 
-            'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIyMDczODUsImV4cCI6MTY3NDc5OTM4NX0.LRECgH_NBe10ueCfmefEzEueIrYukBHnXoKRfVqIurQ', 
-            'Content-Type': 'application/json'
-          },
-          data: {
-            needsBrandId: needsBrandId == null ? 0 : needsBrandId,
-            needsId: needsId
-          }
-      });
-      console.log('response: ', response.data);
-      }catch(error){
-          console.log('출산준비물 구매 error:', error);
-      }
-      setRefresh(`구매${needsId}`);
-  }
+const purchase = async(needsId, needsBrandId) =>{
+  const token = await AsyncStorage.getItem('token');
+  try{
+    const response = await axios({
+        method: 'post',
+        url: 'https://momsnote.net/api/needs/buy/needs',
+        headers: { 
+          'Authorization': `bearer ${token}`,  
+          'Content-Type': 'application/json'
+        },
+        data: {
+          needsBrandId: needsBrandId == null ? 0 : needsBrandId,
+          needsId: needsId
+        }
+    });
+    console.log('response: ', response.data);
+    }catch(error){
+        console.log('출산준비물 구매 error:', error);
+    }
+    dispatch(postMaterial(materialSet));
+    setRefresh(`구매${needsBrandId}`);
+}
 
-  const purchaseCencel = async(needsId) => {
-    console.log('purchaseCencel');
-    console.log(needsId);
-    try{
-      const response = await axios({
-          method: 'post',
-          url: 'https://momsnote.net/api/needs/cancel/buy',
-          headers: { 
-            'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
-            'Content-Type': 'application/json'
-          },
-          data : {
-            needsId: needsId
-          }
-      });
-      console.log('response: ', response.data);
-      }catch(error){
-          console.log('출산준비물 리스트 error:', error);
-      }
-      setRefresh(`구매캔슬${needsId}`);
-  }
+const purchaseCencel = async(needsId) => {
+  const token = await AsyncStorage.getItem('token');
+  try{
+    const response = await axios({
+        method: 'post',
+        url: 'https://momsnote.net/api/needs/cancel/buy',
+        headers: { 
+          'Authorization': `bearer ${token}`, 
+          'Content-Type': 'application/json'
+        },
+        data : {
+          needsId: needsId
+        }
+    });
+    console.log('response: ', response.data);
+    }catch(error){
+        console.log('출산준비물 리스트 error:', error);
+    }
+    dispatch(postMaterial(materialSet));
+    setRefresh(`구매캔슬${needsId}`);
+}
 
 
   const arrow = (e) => { // arrow 누르면 서브페이지 display
@@ -336,7 +341,7 @@ const Navigation = ({navigation, route}) => {
               onValueChange={()=>{
                 switch(true){
                   case x.itemName == null: setModal2(prevState => ({...prevState, open: true, buttonCount: 1, content: '브랜드를 체크해주세요'})); break;
-                  case purchaseCheckBox == null : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: x.needsBrandId, needsId: x.needsId})); break;
+                  case x.id == 0 && purchaseCheckBox == null : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: x.needsBrandId, needsId: x.needsId})); break;
                   case x.id == 0 : purchase(x.needsId, x.needsBrandId); break;
                   default : purchaseCencel(x.needsId);
                 }
@@ -349,9 +354,10 @@ const Navigation = ({navigation, route}) => {
             <Text>{x.needsName}</Text>
           </TouchableOpacity>
           <View style={styles.filterBox}>
-            {x.itemName == null ? <View style={{width: 24, height: 24, borderRadius: 12,backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
+          {x.itemName == null ?
+          <View style={{width: 24, height: 24, borderRadius: 12, backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
               <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}/> 
-            </View> : <Text>{x.itemName}</Text>}
+            </View>: <Text numberOfLines={1} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}>{x.itemName}</Text>}
           </View>
       </View>
       )}

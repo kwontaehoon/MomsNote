@@ -227,7 +227,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
                         <View style={styles.footerBox2}>
                             <View style={styles.textInput}>
                                 {/* {selectBrand.itemBrand == '' ? <View style={styles.redDot}></View> : ''} */}
-                                <TextInput placeholder='브랜드명' value={selectBrand.itemBrand} numberOfLines={1} style={{paddingLeft: 10}}
+                                <TextInput placeholder='브랜드명' value={selectBrand.itemBrand} numberOfLines={1}  style={{paddingLeft: 10}}
                                     onChangeText={(e) => setSelectBrand(prevState => ({ ...prevState, itemBrand: e}))}>   
                                 </TextInput>
                             </View>

@@ -3,6 +3,7 @@ import axios from 'axios'
 
 export const postComment = createAsyncThunk("postCommentSlice/async", async (data) => {
   console.log('postComment 업데이트됨');
+  console.log('data: ', data);
     try{
       const response = await axios({
           method: 'post',
