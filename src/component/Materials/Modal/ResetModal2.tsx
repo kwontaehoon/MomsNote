@@ -92,7 +92,7 @@ const Main = ({modalVisible6, setModalVisible6}) => {
                     order: 'need'
                   }
                 });
-                console.log('response: ', response.data);
+                console.log('실제맘 추천 리스트 response: ', response.data);
             }catch(error){
               console.log('실제맘 추천 리스트 error: ', error);
             }
@@ -110,7 +110,7 @@ const Main = ({modalVisible6, setModalVisible6}) => {
                         order: 'need'
                       }
                     });
-                    console.log('response: ', response.data);
+                    console.log('직접 작성 response: ', response.data);
                 }catch(error){
                   console.log('직접 작성 error: ', error);
                 }

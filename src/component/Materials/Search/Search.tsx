@@ -222,12 +222,13 @@ const Navigation = ({navigation, route}) => {
 
   useEffect(()=>{
     const boardSearch = async() => {
+      const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
                 method: 'post',
                 url: 'https://momsnote.net/api/search/needslist',
                 headers: { 
-                  'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzI4ODU1NDAsImV4cCI6MTY3NTQ3NzU0MH0.IIEc85n1yAqgQ1HZZ8_yiSJWOXlX3E2BUXDIoaqYJD8', 
+                  'Authorization': `bearer ${token}`, 
                   'Content-Type': 'application/json'
                 },
                 data: { keyword: search}

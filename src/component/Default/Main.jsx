@@ -13,7 +13,7 @@ const Main = ({navigation}) => {
 
     const test = {
         username: `google_110233651458722193443`,
-        nickname: 'test닉',
+        nickname: '게스트',
         email: 'test@test.com',
         dueDate: '2023-05-13',
         babyName: '테스트애기',

@@ -218,7 +218,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
                     </View>
                     <View style={styles.footer}>
                         <View style={styles.footerBox}>
-                            <TouchableOpacity style={styles.resetBox} onPress={()=>{setSelectBrand((preState)=> ({...preState, itemName: '', itemBrand: ''}))}}>
+                            <TouchableOpacity style={styles.resetBox} onPress={()=>{setSelectBrand((prevState)=> ({...prevState, itemName: '', itemBrand: ''}))}}>
                                 <Text style={{marginRight: 5, color: '#757575'}}>초기화</Text>
                                 <Reset width={18} fill='#757575'/>
                             </TouchableOpacity>
@@ -226,7 +226,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
                         </View>
                         <View style={styles.footerBox2}>
                             <View style={styles.textInput}>
-                                {selectBrand.itemBrand == '' ? <View style={styles.redDot}></View> : ''}
+                                {/* {selectBrand.itemBrand == '' ? <View style={styles.redDot}></View> : ''} */}
                                 <TextInput placeholder='브랜드명' value={selectBrand.itemBrand} numberOfLines={1} style={{paddingLeft: 10}}
                                     onChangeText={(e) => setSelectBrand(prevState => ({ ...prevState, itemBrand: e}))}>   
                                 </TextInput>
@@ -235,7 +235,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
                             <View style={{width: '6%'}}></View>
 
                             <View style={styles.textInput}>
-                                {selectBrand.itemName == '' ? <View style={[styles.redDot, {right: '58%'}]}></View> : ''}
+                                {/* {selectBrand.itemName == '' ? <View style={[styles.redDot, {right: '58%'}]}></View> : ''} */}
                                 <TextInput placeholder='제품명' value={selectBrand.itemName} numberOfLines={1} style={{paddingLeft: 10}}
                                     onChangeText={(e) => setSelectBrand(prevState => ({...prevState, itemName: e}))}>
                                 </TextInput>

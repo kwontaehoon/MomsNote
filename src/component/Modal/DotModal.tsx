@@ -72,6 +72,7 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
     }, []);
 
     const BoardDelete = async() => {
+        console.log('게시판 삭제');
         const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
@@ -83,6 +84,7 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
                   },
                   data: { boardId: info[0].boardId }
                 });
+                console.log('게시판 삭제 response: ', response.data);
             }catch(error){
               console.log('error: ', error);
             }

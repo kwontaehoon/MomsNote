@@ -100,9 +100,13 @@ const dayCalculate = (date) => {
       {/* <Modal modal={modal} setModal={modal} /> */}
 
       <View style={styles.main}>
+      {info == '' || info == undefined ?
+        <View style={{marginTop: 200, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 댓글이 없습니다.</Text></View>
+        :
         <FlatList data={info} renderItem={renderItem}
-            keyExtractor={item => item.title} showsVerticalScrollIndicator={false}>
+          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
         </FlatList>
+        }
       </View>
     </View>
   )

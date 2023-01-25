@@ -364,6 +364,7 @@ const Register = ({navigation, route}) => {
         
         const token = await AsyncStorage.getItem('token');
         let data = new FormData();
+        data.append('subcategory', DATA2[filter.findIndex(x => x === true)].title);
         data.append('title', info.title);
         data.append('contents', info.contents);
         route.params[0] !== undefined ? data.append('boardId', route.params[0].boardId) : ''

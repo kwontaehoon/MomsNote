@@ -9,6 +9,7 @@ import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import Swiper from 'react-native-swiper'
 import { setBoardRefresh, setBoardCount, setBoardFilter } from '../../../Redux/Slices/BoardSlice'
 import { useIsFocused } from '@react-navigation/native'
+import { useFocusEffect } from '@react-navigation/native'
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
@@ -16,6 +17,7 @@ import Pencil from '../../../../public/assets/svg/pencil.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { postBoardCount, setBoardCountRefresh } from '../../../Redux/Slices/BoardCountSlice'
 import { getStatusBarHeight } from "react-native-status-bar-height"
+import { postBoardPopular } from '../../../Redux/Slices/BoardPopularSlice'
 
 
 const styles = StyleSheet.create({
@@ -194,10 +196,12 @@ const Talk1 = ({navigation, route}:any) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.board.data; });
+  console.log('board info: ', info);
   const boardSet = useSelector(state => { return state.board.refresh; });
   const boardCountSet = useSelector(state => { return state.boardCount.refresh; });
   const infoCount = useSelector(state => { return state.boardCount.data; });
   const boardPopular = useSelector(state => { return state.boardPopular.data });
+  console.log('인기글: ', boardPopular);
 
   const [loading, setLoading] = useState(false);
 
@@ -217,6 +221,8 @@ const Talk1 = ({navigation, route}:any) => {
     setLoading(true);
     dispatch(postBoard(boardSet));
     dispatch(postBoardCount(boardCountSet));
+    dispatch(postBoardPopular());
+
     setLoading(false);
   }, [filter, value]);
 
@@ -225,6 +231,8 @@ const Talk1 = ({navigation, route}:any) => {
       const asyncStorage = await AsyncStorage.getItem('momsTalk');
       const token = await AsyncStorage.getItem('token');
       console.log('token: ', token);
+      const a = await AsyncStorage.getItem('user');
+      console.log(JSON.parse(a));
       
       setModalVisible(prevState => ({...prevState, asyncStorage: asyncStorage}));
     }
@@ -354,13 +362,13 @@ const Talk1 = ({navigation, route}:any) => {
           showsPagination={false}
           >
           <View style={styles.slide}>
-            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {boardPopular[0].title}</Text>
+            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {boardPopular == '' ? '' : boardPopular[0].title}</Text>
           </View>
           <View style={styles.slide}>
-            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {boardPopular[1].title}</Text>
+            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {boardPopular == '' ?  '' : boardPopular[0].title}</Text>
           </View>
           <View style={styles.slide}>
-            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {boardPopular[2].title}</Text>
+            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {boardPopular == '' ?  '' : boardPopular[0].title}</Text>
           </View>
         </Swiper>
       </View>

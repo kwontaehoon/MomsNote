@@ -173,14 +173,11 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
 
     const dispatch = useDispatch();
     const material2 = useSelector(state => { return state.material.data; });
-    console.log('delete material2: ', material2);
     const [material, setMaterial] = useState(material2);
-    console.log('delete material: ', material);
     const materialSet = useSelector(state => { return state.material.refresh; });
     const [titleDisplay, setTitleDisplay] = useState(0); // 품목 리스트 display
 
     const [info, setInfo] = useState();
-    console.log('info: ', info);
 
     const [data, setData] = useState({
         title: '카테고리 선택(필수)',

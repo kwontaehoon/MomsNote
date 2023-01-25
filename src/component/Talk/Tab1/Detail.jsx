@@ -325,26 +325,26 @@ const Talk1Sub = ({navigation, route}) => {
         console.log('likeplus');
         const token = await AsyncStorage.getItem('token');
         setHits(13);
-        // try{
-        //     const response = await axios({
-        //           method: 'post',
-        //           url: 'https://momsnote.net/api/board/recommend',
-        //           headers: { 
-        //             'Authorization': `Bearer ${token}`, 
-        //             'Content-Type': 'application/json'
-        //           },
-        //           data: {
-        //             boardId: info[0].boardId,
-        //             type: 'plus'
-        //           }
-        //         });
-        //         console.log('response: ', response.data);
-        //         dispatch(postBoard(boardData));
-        //         setBoardLike();
-        //         setHits(response.data);
-        //     }catch(error){
-        //       console.log('게시판 좋아요 error: ', error);
-        //     }
+        try{
+            const response = await axios({
+                  method: 'post',
+                  url: 'https://momsnote.net/api/board/recommend',
+                  headers: { 
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                  },
+                  data: {
+                    boardId: info[0].boardId,
+                    type: 'plus'
+                  }
+                });
+                console.log('response: ', response.data);
+                dispatch(postBoard(boardData));
+                setBoardLike();
+                setHits(response.data);
+            }catch(error){
+              console.log('게시판 좋아요 error: ', error);
+            }
     }
 
     const ImageBox = () => {
@@ -354,12 +354,16 @@ const Talk1Sub = ({navigation, route}) => {
         });
         
         const infoFiltering = [...arr, ...a];
-        console.log('infoFiltering: ', infoFiltering);
         switch(true){
     
             case info[0].savedName.split('|').length == 1: return(
                 <TouchableOpacity style={styles.mainBox2ImageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)} activeOpacity={1}>
+                    {
+                    infoFiltering[0].charAt(infoFiltering[0].length-1) !== '4' ?
                     <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${infoFiltering[0]}`}} style={styles.image}/>
+                    :
+                    <Video source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${infoFiltering[0]}`}} style={styles.image2} resizeMode='cover'/>
+                    }
                 </TouchableOpacity>
             )
             case info[0].savedName.split('|').length < 4: return(

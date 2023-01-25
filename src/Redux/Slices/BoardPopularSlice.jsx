@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-export const postBoardPopularSlice = createAsyncThunk("postBoardPopularSlice/async", async () => {
+export const postBoardPopular = createAsyncThunk("postBoardPopularSlice/async", async () => {
   console.log('postBoardPopularSlice 업데이트됨');
     try{
       const response = await axios({
@@ -29,7 +29,7 @@ export const boardPopularSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (bulider) => {
-      bulider.addCase(postBoardPopularSlice.fulfilled, (state, action) => {
+      bulider.addCase(postBoardPopular.fulfilled, (state, action) => {
         state.loading = 'success';
         state.data = action.payload;
       },

@@ -17,7 +17,7 @@ import Filter from './Modal/Filter'
 import BrandNameFlag from './Modal/BrendNameFlag'
 import First from '../Modal/First'
 import Second from '../Modal/Second'
-
+import { useIsFocused } from '@react-navigation/native'
 import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
 import axios from 'axios'
@@ -227,10 +227,12 @@ const Navigation = ({navigation, route}) => {
     },
   ]
 
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.material.data; });
   console.log('출산준비물 리스트: ', info);
   const materialSet = useSelector(state => { return state.material.refresh; });
+  console.log('material set: ', materialSet);
   const [sumResult, setSumResult] = useState({
     sum: 0,
     exp: 0
@@ -291,7 +293,7 @@ const Navigation = ({navigation, route}) => {
 
   useEffect(()=>{
     dispatch(postMaterial(materialSet));
-  }, [modalVisible, modalVisible8, modalVisible9]);
+  }, [modalVisible, modalVisible8, modalVisible9, isFocused]);
 
   useEffect(()=>{
     let sum = 0;
@@ -501,7 +503,7 @@ const save = async() => {
     </View>
   );
 
-  return info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return info == ''|| info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <SafeAreaProvider>
 
         <SafeAreaView style={{ backgroundColor: 'white' }}>

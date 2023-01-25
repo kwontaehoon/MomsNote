@@ -22,7 +22,7 @@ const initialState = {
     data: [],
     refresh: {
       order: 'new',
-      count: 16,
+      count: 1,
       page: 1,
       subcategory: '전체'
     }

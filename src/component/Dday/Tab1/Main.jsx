@@ -62,7 +62,7 @@ const Talk1 = ({navigation, week}) => {
   return info.length !== 0 ? 
     <View style={styles.container}>
          <FlatList data={info} renderItem={renderItem}
-            keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
+            keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}>
         </FlatList>
      </View> : <View style={{marginTop: 180, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
 }

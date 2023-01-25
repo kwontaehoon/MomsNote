@@ -195,7 +195,7 @@ const Talk1Sub = ({navigation, route}) => {
     console.log('info: ', info);
     const material = useSelector(state => { return state.material.data; });
     console.log('compare material: ', material);
-    const [list, setList] = useState(Array.from({length: 8}, () => {return true})); // list display
+    const [list, setList] = useState(Array.from({length: 9}, () => {return true})); // list display
     const animation = useRef(new Animated.Value(0)).current;
     const [myList, setMyList] = useState(false);
 

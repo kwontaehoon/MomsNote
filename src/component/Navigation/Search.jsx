@@ -7,6 +7,7 @@ import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
+import Modal from './Modal/DotModal'
 
 import Back from '../../../public/assets/svg/Back.svg'
 import Search from '../../../public/assets/svg/Search.svg'
@@ -104,13 +105,11 @@ const Main = ({navigation}) => {
   const [search, setSearch] = useState('');
 
   const [momsSearch, setMomsSearch] = useState();
-  console.log('moms: ', momsSearch);
   const [materialSearch, setMaterialSearch] = useState();
-  console.log('material: ', materialSearch);
   const [commentSearch, setCommentSearch] = useState();
-  console.log('comment: ', commentSearch);
   const [experienceSearch, setExperienceSearch] = useState();
-  console.log('exp: ', experienceSearch)
+
+  const [modal, setModal] = useState(true);
 
   useEffect(()=>{
     const boardSearch = async() => {
@@ -270,7 +269,7 @@ const dayCalculate2 = (date) => {
     commentSearch.filter((x, index) => {
       arr.push(
        <TouchableOpacity style={styles.momstalk} key={index}>
-          <View style={styles.dotBox}><More /></View>
+          <TouchableOpacity style={styles.dotBox} onPress={()=>setModal(!modal)}><More /></TouchableOpacity>
           <View style={styles.profile}></View>
         <View>
         <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 3}}>
@@ -348,6 +347,9 @@ const dayCalculate2 = (date) => {
                     <StatusBar />
             </SafeAreaView>
             <SafeAreaView style={styles.container}>
+
+      <Modal modal={modal} setModal={setModal} />
+
             <View style={styles.header}>
         <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
         <View style={styles.textInput}>

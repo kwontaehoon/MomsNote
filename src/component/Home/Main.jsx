@@ -16,8 +16,7 @@ import { useIsFocused } from '@react-navigation/native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 
 import { useSelector, useDispatch } from 'react-redux'
-import { postBoard } from '../../Redux/Slices/BoardSlice'
-import { postBoardPopularSlice } from '../../Redux/Slices/BoardPopularSlice'
+import { postBoardPopular } from '../../Redux/Slices/BoardPopularSlice'
 import { postMaterialPopularSlice } from '../../Redux/Slices/MaterialPopularSlice'
 import { postInfoPopularSlice } from '../../Redux/Slices/InfoPopularSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -211,7 +210,7 @@ const Home = ({navigation}) => {
     const dispatch = useDispatch();
     
     useEffect(()=>{
-        dispatch(postBoardPopularSlice());
+        dispatch(postBoardPopular());
         dispatch(postMaterialPopularSlice());
         dispatch(postInfoPopularSlice());
     }, []);

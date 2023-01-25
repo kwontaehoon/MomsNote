@@ -1,7 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const postMaterial = createAsyncThunk("postBoardSlice/async", async (data) => {
+  const token = await AsyncStorage.getItem('token');
   console.log('data: ', data);
   console.log('postMaterial 업데이트됨');
     try{
@@ -9,7 +11,7 @@ export const postMaterial = createAsyncThunk("postBoardSlice/async", async (data
           method: 'post',
           url: 'https://momsnote.net/api/needs/list/self',
           headers: { 
-            'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTE4MjQxNDA1ODc4MzUwNzk2MDM4IiwiaWQiOjIyLCJpYXQiOjE2NzQ0ODQ2MzAsImV4cCI6MTY3NzA3NjYzMH0.CcOYuhqs5GlyFozTZfc2WjzX1qFNvErwqtfYb9VeCZM',
+            'Authorization': `bearer ${token}`,
             'Content-Type': 'application/json'
           },
           data : data
