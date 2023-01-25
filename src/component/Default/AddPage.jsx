@@ -6,6 +6,8 @@ import Checkbox from 'expo-checkbox'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import jwtDecode from 'jwt-decode'
+
 
 import Calendar from '../../../public/assets/svg/Calendar.svg'
 
@@ -112,7 +114,6 @@ const AddPage = ({navigation, route}) => {
         provider: `${route.params[0]}`,
         providerId: `${route.params[1]}`,
         marketingFlag: Number(`${isChecked[3] ? 1 : 0}`),
-        userId: route.params[2]
     })
     console.log('info: ', info);
 
@@ -134,15 +135,21 @@ const AddPage = ({navigation, route}) => {
                 },
                 data: info
             });
-            console.log('response: ', response.data);
-
-            AsyncStorage.setItem('login', '2');
+            console.log('회원가입 response: ', response.data);
+            AsyncStorage.setItem('token', response.data.token);
+            const decoded = jwtDecode(response.data.token);
+            console.log('decoded: ', decoded);
             
-            navigation.reset('main');
+            
+            AsyncStorage.setItem('userId', String(decoded.id));
+            AsyncStorage.setItem('login', '2');
+            navigation.reset({routes: [{name: "main"}]})
+            return;
 
             }catch(error){
                 console.log('회원가입 error:', error);
             }
+
     }
 
     const onChange = (event, selectedDate) => {

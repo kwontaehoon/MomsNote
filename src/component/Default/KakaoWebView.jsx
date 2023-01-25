@@ -4,7 +4,7 @@ import { getStatusBarHeight } from "react-native-status-bar-height"
 import { WebView } from 'react-native-webview';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import jwtDecode from 'jwt-decode'
+
 
 const styles = StyleSheet.create({
     container:{
@@ -27,7 +27,6 @@ const Main = ({navigation}) => {
         const response = await axios.get(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${kakaoAcceess}`);
         AsyncStorage.setItem('token', response.data.access_token);
         console.log('response', response.data);
-        console.log(response.data.access_token);
         const response2 = await axios.get(`https://kapi.kakao.com/v1/user/access_token_info`, {
              headers: `Authorization: Bearer ${response.data.access_token}`
         })
@@ -45,13 +44,10 @@ const Main = ({navigation}) => {
 
         console.log('response3: ', response3.data);
         
-        const decoded = jwtDecode(response3.data.token);
-        console.log('kakao decoded: ', decoded);
-        
         const asyncStorage = await AsyncStorage.getItem('login');
         console.log('kakao asyncStorage: ', asyncStorage);
 
-        response3.data.status == 'success' ? (navigation.navigate('main'), AsyncStorage.setItem('login', '2')) : navigation.navigate('추가 정보 입력', ['kakao', response.data.sub, decoded.id]);
+        response3.data.status == 'success' ? (navigation.navigate('main'), AsyncStorage.setItem('login', '2')) : navigation.navigate('추가 정보 입력', ['kakao', response2.data.id]);
 
     }catch(error){
         console.log('kakao error: ', error);

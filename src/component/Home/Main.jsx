@@ -451,10 +451,7 @@ const Home = ({navigation}) => {
         </View>
     );
     
-  return infoPopular == '' || infoPopular == undefined || materialPopular == undefined || materialPopular == '' ||  userInfo == undefined ||
-            boardPopular == '' || boardPopular == undefined ?
-    <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '92%', flex: Platform.OS === 'ios' ? 1 : null}]}/> :
-    (
+  return userInfo == '' || userInfo == undefined ? <View></View> : (
         <SafeAreaProvider>
             <SafeAreaView style={{ backgroundColor: '#FEECB3' }}>
                     <StatusBar />

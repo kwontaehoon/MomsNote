@@ -13,16 +13,24 @@ const Main = ({navigation}) => {
 
     const test = {
         username: `google_110233651458722193443`,
-        nickname: '게스트',
-        email: 'test@test.com',
-        dueDate: '2023-05-13',
-        babyName: '테스트애기',
+        nickname: '태훈구글',
+        email: 'gju04195@gmail.com',
+        dueDate: '2023-08-100',
+        babyName: '애기',
+        providerId: '110233651458722193443',
         provider: 'google',
-        providerId: undefined,
         marketingFlag: 0,
-        profileImage: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540gju04195%252FProject1Type/ImagePicker/6e1beb2a-4143-4ac9-bf23-8af13fe6dc8e.jpeg',
-        memberName: '권신청',
-        userId: 16
+    }
+
+    const test2 = {
+        username: `kakao_2625386229"`,
+        nickname: "서브카카오",
+        email: "Sub@gmail.com",
+        dueDate: '2023-07-13',
+        babyName: '애기',
+        providerId: '2625386229',
+        provider: 'kakao',
+        marketingFlag: 0,
     }
 
     useEffect(()=>{

@@ -14,7 +14,6 @@ import * as Linking from 'expo-linking';
 import axios from 'axios'
 import Modal from './Modal/WithdrawModal'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import jwtDecode from 'jwt-decode'
 import {
     SafeAreaProvider,
     useSafeAreaInsets,
@@ -108,13 +107,8 @@ const Main = ({navigation, route}) => {
             });
             console.log('response2: ', response2);
             AsyncStorage.setItem('token', response2.data.token);
-            const a = await AsyncStorage.getItem('token');
-            console.log('token async: ', a);
 
-            const decoded = jwtDecode(response2.data.token);
-            console.log('google decoded: ', decoded);
-
-            response2.data.status == 'success' ? (navigation.navigate('main'), AsyncStorage.setItem('login', '2')) : navigation.navigate('추가 정보 입력', ['google', response.data.sub, decoded.id]);
+            response2.data.status == 'success' ? (navigation.navigate('main'), AsyncStorage.setItem('login', '2')) : navigation.navigate('추가 정보 입력', ['google', response.data.sub]);
 
 
         }catch(error){
