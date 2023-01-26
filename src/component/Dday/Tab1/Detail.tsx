@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
         height: 60,
         justifyContent: 'center',
         padding: 20,
+        
     },
     headerBar:{
         position: 'absolute',
@@ -53,13 +54,14 @@ const styles = StyleSheet.create({
         marginLeft: 7,
     },
     main:{
+
     },
     mainBox:{
-        height: 70,
-        padding: 20,
+        padding: 20
     },
     mainBox2:{
         padding: 20,
+        paddingBottom: 40,
     },
     mainBox2ImageBox:{
         height: 400,
@@ -392,7 +394,7 @@ const Talk1Sub = ({navigation, route}) => {
         <View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
-                    <Text style={{fontSize: 20, fontWeight: '400', lineHeight: 20}}>{item.title}</Text>
+                    <Text style={{fontSize: 20, fontWeight: '400', lineHeight: 30}}>{item.title}</Text>
                 </View>
                 <View style={styles.mainBox2}>
                     <Text style={{lineHeight: 20}}>{item.contents}</Text>

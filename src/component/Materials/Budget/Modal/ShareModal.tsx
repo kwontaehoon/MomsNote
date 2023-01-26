@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         height: 220,
         backgroundColor: 'white',
         borderRadius: 15,
-        padding: 15
+        marginBottom: 35,
     },
     modalBox:{
         height: '50%',

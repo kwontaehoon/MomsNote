@@ -203,7 +203,7 @@ const AddPage = ({navigation, route}) => {
             <View style={styles.main}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>닉네임</Text>
                 <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.(특수문자 제외)</Text>
-                    <TextInput placeholder='닉네임 입력' style={[styles.textBox, {borderColor: bottomColor[0] ? '#FEB401' : '#EEEEEE'}]}
+                    <TextInput placeholder='닉네임 입력' style={[styles.textBox, {borderColor: bottomColor[0] ? '#FEB401' : '#EEEEEE'}]} maxLength={8}
                     onFocus={()=>change(0)} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, nickname: e}))}></TextInput>
             </View>
             <View style={styles.main2}>
@@ -223,7 +223,7 @@ const AddPage = ({navigation, route}) => {
             <View style={styles.main4}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>태명</Text>
                 <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.(특수문자 제외)</Text>
-                <TextInput placeholder='태명 입력' style={[styles.textBox, {borderColor: bottomColor[3] ? '#FEB401' : '#EEEEEE'}]}
+                <TextInput placeholder='태명 입력' style={[styles.textBox, {borderColor: bottomColor[3] ? '#FEB401' : '#EEEEEE'}]} maxLength={8}
                 onFocus={()=>change(3)} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, babyName: e}))}></TextInput>
             </View>
             <View style={styles.main5}>

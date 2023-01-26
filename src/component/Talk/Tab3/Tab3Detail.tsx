@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 220,
+        height: 240,
         backgroundColor: 'white',
         borderRadius: 15
     },
@@ -290,9 +290,9 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
                 <View style={styles.mainBox2}>
                     <View>
-                        <View><Text style={{margin: 2, fontSize: 15}}>신청기간: {moment(info.applicationStartDate).format('YY.MM.DD')} ~ {moment(info.applicationEndDate).format('YY.MM.DD')}</Text></View>
-                        <View><Text style={{margin: 2, fontSize: 15}}>발표일자: {moment(info.openDate).format('YY.MM.DD')}</Text></View>
-                        <View><Text style={{margin: 2, fontSize: 15}}>등록기간: {moment(info.registrationStartDate).format('YY.MM.DD')} ~ {moment(info.registrationEndDate).format('YY.MM.DD')}</Text></View>
+                        <View><Text style={{margin: 2, fontSize: 13}}>신청기간: {moment(info.applicationStartDate).format('YY.MM.DD')} ~ {moment(info.applicationEndDate).format('YY.MM.DD')}</Text></View>
+                        <View><Text style={{margin: 2, fontSize: 13}}>발표일자: {moment(info.openDate).format('YY.MM.DD')}</Text></View>
+                        <View><Text style={{margin: 2, fontSize: 13}}>등록기간: {moment(info.registrationStartDate).format('YY.MM.DD')} ~ {moment(info.registrationEndDate).format('YY.MM.DD')}</Text></View>
                     </View>
                 </View>
             </View>
@@ -421,8 +421,7 @@ const Talk1Sub = ({navigation, route}) => {
 <View style={styles.header}>
    <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
    <View style={styles.headerBar}>
-   <Share style={{marginRight: 12}} />
-   <More />
+   <Share style={{marginRight: 15}} />
    </View>
 </View>
 
@@ -436,7 +435,7 @@ const Talk1Sub = ({navigation, route}) => {
        </TouchableOpacity>
    </View>
    : <View style={styles.footer}>
-   {/* {boardLikeFlag == 0 ? 
+   {boardLikeFlag == 0 ? 
    <TouchableOpacity style={[styles.footerBox, {width: '20%'}]} onPress={recommend}>
        <Like width={20} fill='#BDBDBD'/>  
        <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {info.recommend}</Text>
@@ -446,10 +445,10 @@ const Talk1Sub = ({navigation, route}) => {
        <Heart width={20} fill='#FEA100'/> 
        <Text style={{fontSize: 16, fontWeight: '500', color: '#FEA100'}}> {info.recommend}</Text>
    </View>
-   } */}
+   }
 
    <View style={[styles.footerBox, {width: '3%', borderWidth: 0}]}></View>
-   {/* { boardAppFlag.status == 200 ?
+   { boardAppFlag.status == 200 ?
     <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={()=>navigation.navigate('신청 정보 확인', route.params)}>
         <Text style={{fontSize: 20, fontWeight: '500'}}>신청 정보 확인</Text>
     </TouchableOpacity>
@@ -462,7 +461,7 @@ const Talk1Sub = ({navigation, route}) => {
    }>
        <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
    </TouchableOpacity>
-   } */}
+   }
 </View>}
 
             </SafeAreaView>

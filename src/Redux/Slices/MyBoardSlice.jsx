@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const postMyBoard = createAsyncThunk("postMyBoardSlice/async", async (data) => {
   console.log('postMyBoard 업데이트됨');
@@ -10,7 +11,7 @@ export const postMyBoard = createAsyncThunk("postMyBoardSlice/async", async (dat
           method: 'post',
           url: 'https://momsnote.net/api/board/myboard',
           headers: { 
-            'Authorization': `bearer ${token}`, 
+            'Authorization': `bearer ${token}`,
             'Content-Type': 'application/json'
           },
           data : data

@@ -68,20 +68,15 @@ const styles = StyleSheet.create({
     content:{
         height: 60,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     filterSub:{
-        height: 20,
+        paddingTop: 4,
+        paddingBottom: 4,
         paddingLeft: 8,
-        paddingTop: 2,
-        paddingbottom: 2,
         paddingRight: 8,
-        marginRight: 5,
-        marginLeft: 5,
-        justifyContent: 'center',
-        alignItems: 'center'
-        
-    },
+        borderRadius: 3,
+      },
     footer:{
         height: 50,
         backgroundColor: '#FEA100',

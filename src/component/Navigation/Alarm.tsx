@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
 
 const styles = StyleSheet.create({
   container:{
@@ -31,7 +30,10 @@ const Main = () => {
     <View style={styles.container}>
       {info.length !== 0 ? <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
-      </FlatList> : <View style={{alignItems: 'center', justifyContent: 'center', height: '80%'}}><Image source={require('../../../public/assets/image/rainbow.png')}/></View>}
+      </FlatList> : <View style={{alignItems: 'center', justifyContent: 'center', height: '80%'}}>
+        <Image source={require('../../../public/assets/image/rainbow.png')}/>
+        <Text style={{fontSize: 16, color: '#757575', marginTop: 24}}>아직 받은 알림이 없습니다.</Text>
+        </View>}
     </View>
   )
 }

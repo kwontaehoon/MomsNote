@@ -191,6 +191,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = useSelector(state => { return state.shareList.data; });
+    console.log('출산리스트 상대방: ', info);
     const material = useSelector(state => { return state.material.data; });
     const [list, setList] = useState(Array.from({length: 9}, () => {return true})); // list display
     const animation = useRef(new Animated.Value(0)).current;
@@ -208,7 +209,6 @@ const Talk1Sub = ({navigation, route}) => {
       open: false,
       needsId: null,
       needsBrandId: null,
-      needsDateId: null
     });
     const [modal2, setModal2] = useState(false); // 수정 내용 적용하시겠습니까 모달
 
@@ -285,7 +285,7 @@ const Talk1Sub = ({navigation, route}) => {
         
           if(x.category == e.title && x.itemName !== null){
               arr.push(
-                   <TouchableOpacity style={styles.listMain2} onLongPress={()=>setModal(prevState => ({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId, needsBrandId: x.needsBrandId}))} delayLongPress={1500} activeOpacity={1} key={index}>
+                   <TouchableOpacity style={styles.listMain2} onLongPress={()=>setModal(prevState => ({...prevState, open: true, needsId: x.needsId, needsBrandId: x.needsBrandId}))} delayLongPress={1500} activeOpacity={1} key={index}>
                       <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
                       <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
                       <View style={styles.filterBox2}>

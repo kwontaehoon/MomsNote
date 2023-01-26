@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal, KeyboardAvoidingView } from 'react-native'
-import Icon from 'react-native-vector-icons/AntDesign'
 import axios from 'axios'
 
 import Arrow_Right from '../../../../public/assets/svg/Arrow-Right.svg'
 import Reset from '../../../../public/assets/svg/Reset.svg'
-import Crwon from '../../../../public/assets/svg/crown.svg'
+import Crown from '../../../../public/assets/svg/crown.svg'
+import Crown2 from '../../../../public/assets/svg/crown2.svg'
+import Crown3 from '../../../../public/assets/svg/crown3.svg'
+import Close from '../../../../public/assets/svg/Close.svg'
+
 import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
 import { useDispatch } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -18,7 +21,6 @@ const styles = StyleSheet.create({
     modalView:{
         width: '100%',
         height: '100%',
-        margin: 20,
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: "center",
         justifyContent: 'center',
@@ -37,11 +39,11 @@ const styles = StyleSheet.create({
         borderColor: '#EEEEEE',
         height: '13%',
         justifyContent: 'center',
-        padding: 15,
+        padding: 20,
     },
     closeBox:{
         position: 'absolute',
-        right: 15,
+        right: 20,
         alignItems: 'flex-end',
         justifyContent: 'center',
         zIndex: 10
@@ -90,14 +92,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 2,
     },
-    redDot:{
-        width: 5,
-        height: 5,
-        borderRadius: 5,
-        backgroundColor: '#EF1E1E',
-        position: 'absolute',
-        right: '49%',
-    },
     footerBox3:{
         backgroundColor: '#FEA100',
         alignItems: 'center',
@@ -112,6 +106,8 @@ const styles = StyleSheet.create({
 })
 
 const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => {
+
+    console.log('visible2: ', modalVisible2);
 
     const dispatch = useDispatch();
     const [info, setInfo] = useState(); // 브랜드 lists
@@ -128,12 +124,13 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
 
     useEffect(()=>{
         const commentInfo = async() => {
+            const token = await AsyncStorage.getItem('token');
             try{
             const response = await axios({
                 method: 'post',
                 url: 'https://momsnote.net/api/needs/brand/list',
                 headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+                    'Authorization': `bearer ${token}`, 
                     'Content-Type': 'application/json'
                   },
                 data: { 
@@ -147,8 +144,17 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
             }
         } 
         commentInfo();
-        setSelectBrand(prevState => ({...prevState, needsId: modalVisible2.needsId, needsDataId: modalVisible2.needsDataId == null ? 0 : modalVisible2.needsDataId}));
+        setSelectBrand(prevState => ({...prevState, needsId: modalVisible2.needsId, needsBrandId: modalVisible2.needsBrandId == null ? 0 : modalVisible2.needsBrandId, needsDataId: modalVisible2.needsDataId == null ? 0 : modalVisible2.needsDataId}));
     }, [modalVisible2]);
+
+    const crown = (e) => {
+        switch(e){
+            case 1: return <Crown/>
+            case 2: return <Crown2/>
+            case 3: return <Crown3/>
+            default: return (<Text style={{fontSize: 30, fontWeight: '600'}}>{e}</Text>);
+        }
+    }
 
     const submit = async() => {
         const token = await AsyncStorage.getItem('token');
@@ -171,9 +177,9 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
     }
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: item.needsBrandId, itemBrand: item.productName, needsDataId: item.needsBrandId }))}>
+        <TouchableOpacity style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: modalVisible2.needsBrandId, itemBrand: item.productName }))}>
             <View style={[styles.mainBoxSub, {width: '24%'}]}>
-                <Crwon />
+                {crown(item.needsBrandId)}
             </View>
             <View style={[styles.mainBoxSub, {width: '40%', alignItems: 'flex-start'}]}>
                 <Text style={{fontWeight: '500', marginBottom: 3}}>[{item.brandName}]</Text>
@@ -204,7 +210,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
                     <View style={styles.header}>
                         <TouchableOpacity style={styles.closeBox} 
                             onPress={()=>(setSelectBrand(prevState => ({...prevState, itemBrand: '', itemName: ''})),setModalVisible2((prevState)=> ({...prevState, open: false})))}>
-                                <Icon name='close' size={24}/>
+                                <Close fill={'black'}/>
                         </TouchableOpacity>
                         <Text style={{color: '#212121', fontSize: 18, fontWeight: '700'}}>브랜드 선택</Text>
                         <Text style={{color: '#212121'}}>수유브라 Best</Text>
@@ -226,8 +232,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
                         </View>
                         <View style={styles.footerBox2}>
                             <View style={styles.textInput}>
-                                {/* {selectBrand.itemBrand == '' ? <View style={styles.redDot}></View> : ''} */}
-                                <TextInput placeholder='브랜드명' value={selectBrand.itemBrand} numberOfLines={1}  style={{paddingLeft: 10}}
+                                <TextInput placeholder='브랜드명(필수)' value={selectBrand.itemBrand} numberOfLines={1}  style={{paddingLeft: 10}} maxLength={11}
                                     onChangeText={(e) => setSelectBrand(prevState => ({ ...prevState, itemBrand: e}))}>   
                                 </TextInput>
                             </View>
@@ -235,8 +240,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
                             <View style={{width: '6%'}}></View>
 
                             <View style={styles.textInput}>
-                                {/* {selectBrand.itemName == '' ? <View style={[styles.redDot, {right: '58%'}]}></View> : ''} */}
-                                <TextInput placeholder='제품명' value={selectBrand.itemName} numberOfLines={1} style={{paddingLeft: 10}}
+                                <TextInput placeholder='제품명(필수)' value={selectBrand.itemName} numberOfLines={1} style={{paddingLeft: 10}}
                                     onChangeText={(e) => setSelectBrand(prevState => ({...prevState, itemName: e}))}>
                                 </TextInput>
                                 </View>

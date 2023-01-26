@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const postMyExp = createAsyncThunk("postMyExpSlice/async", async (data) => {
   console.log('postMyExp 업데이트됨');

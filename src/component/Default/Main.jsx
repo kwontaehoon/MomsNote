@@ -15,30 +15,23 @@ const Main = ({navigation}) => {
         username: `google_110233651458722193443`,
         nickname: '태훈구글',
         email: 'gju04195@gmail.com',
-        dueDate: '2023-08-100',
+        dueDate: '2023-08-10',
         babyName: '애기',
         providerId: '110233651458722193443',
         provider: 'google',
         marketingFlag: 0,
     }
 
-    const test2 = {
-        username: `kakao_2625386229"`,
-        nickname: "서브카카오",
-        email: "Sub@gmail.com",
-        dueDate: '2023-07-13',
-        babyName: '애기',
-        providerId: '2625386229',
-        provider: 'kakao',
-        marketingFlag: 0,
-    }
-
     useEffect(()=>{
         const login = async() => {
+            // AsyncStorage.setItem('userId', 45);
+            // AsyncStorage.setItem('token', 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTE4MjQxNDA1ODc4MzUwNzk2MDM4IiwiaWQiOjQ1LCJpYXQiOjE2NzQ2NDA3ODEsImV4cCI6MTY3NzIzMjc4MX0.7aJjw8QViTrnaqC3y1TOp9wmddFkf6RaLU6WSTzAENo')
+            // AsyncStorage.setItem('user', JSON.stringify(test));
+
             // AsyncStorage.removeItem('login');
             // AsyncStorage.clear()
             // AsyncStorage.setItem('login', '2');
-            // AsyncStorage.setItem('user', JSON.stringify(test));
+            
             const asyncStorage = await AsyncStorage.getItem('login');
             setInfo(asyncStorage);
         }

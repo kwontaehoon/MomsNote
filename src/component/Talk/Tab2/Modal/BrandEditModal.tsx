@@ -125,16 +125,18 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
         needsDataId: null,
         itemBrand: '',
     });
+    console.log('modalvisible2: ', modalVisible2);
     console.log('selectBrand: ', selectBrand);
 
     useEffect(()=>{
         const commentInfo = async() => {
+            const token = await AsyncStorage.getItem('token');
             try{
             const response = await axios({
                 method: 'post',
                 url: 'https://momsnote.net/api/needs/brand/list',
                 headers: { 
-                    'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzIxMzQ3OTQsImV4cCI6MTY3NDcyNjc5NH0.mWpz6urUmqTP138MEO8_7WcgaNcG2VkX4ZmrjU8qESo', 
+                    'Authorization': `bearer ${token}`, 
                     'Content-Type': 'application/json'
                   },
                 data: { 
@@ -148,7 +150,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
             }
         } 
         commentInfo();
-        setSelectBrand(prevState => ({...prevState, needsId: modalVisible2.needsId, needsDataId: modalVisible2.needsDataId == null ? 0 : modalVisible2.needsDataId}));
+        setSelectBrand(prevState => ({...prevState, needsId: modalVisible2.needsId, needsBrandId: modalVisible2.needsBrandId == null ? 0 : modalVisible2.needsBrandId, needsDataId: modalVisible2.needsId == null ? 0 : modalVisible2.needsId}));
     }, [modalVisible2]);
 
     const submit = async() => {
@@ -173,7 +175,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
     }
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: item.needsBrandId, itemBrand: item.productName}))}>
+         <TouchableOpacity style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: modalVisible2.needsBrandId, itemBrand: item.productName, needsDataId: item.needsId }))}>
             <View style={[styles.mainBoxSub, {width: '24%'}]}>
                 <Crwon />
             </View>

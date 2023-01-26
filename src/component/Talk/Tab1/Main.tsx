@@ -285,7 +285,7 @@ const Talk1 = ({navigation, route}:any) => {
     <View style={{justifyContent: 'center'}}>
       <View style={[styles.headerFilterBox, {backgroundColor: filter[item.id] ? '#FEA100' : 'white'}]}>
         <TouchableOpacity onPress={()=>change(item.id)}>
-          <Text style={{color: filter[item.id] ? 'white' : 'black', fontWeight: '400'}}>{item.title}</Text>
+          <Text style={{color: filter[item.id] ? 'white' : 'black', fontWeight: '400', fontSize: 14}}>{item.title}</Text>
         </TouchableOpacity>
       </View>
     </View>

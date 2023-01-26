@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, Animated, KeyboardAvoidingView } from 'react-native'
+import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, Animated, KeyboardAvoidingView, Platform } from 'react-native'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
     main:{
         backgroundColor: 'white',
         borderTopStartRadius: 15,
-        borderTopEndRadius: 15
+        borderTopEndRadius: 15,
+        paddingBottom: 35,
     },
     mainBox:{
         height: 70,
@@ -121,14 +122,14 @@ const CheckBoxModal = ({modalVisible3, setModalVisible3, modalVisible4, setModal
                 <View style={styles.modalView}>
                     <KeyboardAvoidingView style={styles.modalContainer2} behavior='padding'>
 
-                       <View style={styles.main}>
+                       <View style={[styles.main, {paddingBottom: Platform.OS == 'ios' ? 35 : 0}]}>
                             <View style={styles.mainBox}><Text style={{fontSize: 15}}>출산 리스트 공유</Text></View>
                             <View style={styles.mainBox2}>
                                 <Animated.View style={[styles.noticeModal, {opacity: animation}]}>
                                     <View style={styles.notice}><Text style={{color: 'white', fontSize: 13, fontWeight: '500'}}>제목과 내용은 필수 항목입니다.</Text></View>
                                 </Animated.View>
                                 <TextInput style={styles.textInput} placeholder='글 제목' placeholderTextColor='#9E9E9E'  onChangeText={(e) => setInfo((prevState) => ({ ...prevState, title: e}))} ></TextInput>
-                                <TextInput style={[styles.textInput, {marginTop: 10, height: 200, paddingBottom: 140}]} placeholder='간단한 내용을 입력해주세요.' placeholderTextColor='#9E9E9E' multiline={true}
+                                <TextInput style={[styles.textInput, {marginTop: 10, paddingTop: 15, height: 200}]} textAlignVertical={'top'} placeholder='간단한 내용을 입력해주세요.' placeholderTextColor='#9E9E9E' multiline={true}
                                     onChangeText={(e) => setInfo((prevState) => ({ ...prevState, contents: e}))}>
                                 </TextInput>
                             </View>

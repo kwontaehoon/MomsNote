@@ -517,10 +517,6 @@ const Talk1Sub = ({navigation, route}) => {
         return arr;
     }
 
-    const FocusAwareStatusBar = () => {
-        const isFocused = useIsFocused();
-        return isFocused ? <StatusBar backgroundColor='#FEECB3' /> : null;
-    }
 
     const renderItem = ({ item }) => (
         <View>

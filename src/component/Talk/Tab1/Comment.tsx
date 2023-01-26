@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSelector, useDispatch } from 'react-redux'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
 import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
+import moment from 'moment'
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
@@ -74,6 +75,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
     const List = () => {
         let arr = [];
         info.filter((x, index) => {
+            console.log('x: ', x);
             if(x.step === 0){
                 arr.push(
                     <View key={index}>
@@ -82,7 +84,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                             <View style={styles.profileBox}></View>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Text style={{fontSize: 16, fontWeight: '600', paddingRight: 8}}>{x.nickname}</Text>
-                                <Text style={{fontSize: 13, fontWeight: '500', color: '#BDBDBD'}}>16분 전</Text>
+                                <Text style={{fontSize: 13, fontWeight: '500', color: '#BDBDBD'}}>{moment().diff(moment(x.commentsDate), "minute")}분 전</Text>
                             </View>
                         </View>
                         <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>{x.contents}</Text>

@@ -112,7 +112,7 @@ const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
                             <View style={styles.mainBox}>
                                 <View style={styles.priceBox}><Text>원</Text></View>
                                 <TextInput style={{fontWeight: '600'}} textAlign='right' placeholder={`${(modal6.content.itemPrice).toLocaleString()}`} placeholderTextColor={'black'}
-                                    onChangeText={(e) => setInfo((prevState) => ({ ...prevState, needsId: modal6.content.needsId, itemPrice: Number(e)}))}
+                                    onChangeText={(e) => setInfo((prevState) => ({ ...prevState, needsId: modal6.content.needsId, itemPrice: Number(e)}))} maxLength={8}
                                     value={info.itemPrice} keyboardType='number-pad'>
                                 </TextInput>
                             </View>

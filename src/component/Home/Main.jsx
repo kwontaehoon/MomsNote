@@ -222,7 +222,7 @@ const Home = ({navigation}) => {
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
-    const [modal, setModal] = useState(true); // 모달 원하는 출산준비물 리스트
+    const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
 
     const [userInfo, setUserInfo] = useState();
@@ -232,6 +232,8 @@ const Home = ({navigation}) => {
             const all = await AsyncStorage.getAllKeys();
             const asyncStorage = await AsyncStorage.getItem('recommendList');
             const user = await  AsyncStorage.getItem('user');
+            const a = await AsyncStorage.getItem('token');
+            console.log('a: ', a);
             setUserInfo(JSON.parse(user));
 
             console.log('all: ', all);
@@ -426,7 +428,7 @@ const Home = ({navigation}) => {
             <View style={styles.main4}>
                 <View style={styles.main4Box}>
                     <View style={[styles.titleBox, {height: '100%'}]}>
-                        <View style={styles.title}><Text style={{fontSize: 20, fontWeight: 'bold'}}>맘스 정보</Text></View>
+                        <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}} onPress={()=>navigation.navigate('맘스 정보', item)}>맘스 정보</Text></View>
                         <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}}>+ 더보기</Text></View>
                     </View>
                 </View>
@@ -444,10 +446,10 @@ const Home = ({navigation}) => {
     );
     
     const renderItem2 = ({ item }) => (
-        <View style={styles.albumBox}>
+        <TouchableOpacity style={styles.albumBox} onPress={()=>navigation.navigate('맘스정보')}>
             <View style={styles.albumPhoto}></View>
             <View style={styles.albumTitle}><Text>{item.title}</Text></View>
-        </View>
+        </TouchableOpacity>
     );
     
   return userInfo == '' || userInfo == undefined ? <View></View> : (
@@ -459,7 +461,7 @@ const Home = ({navigation}) => {
             <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '92%', flex: Platform.OS === 'ios' ? 1 : null}]}>
             <View style={styles.header}>
             <View style={styles.headerBar}>
-                <Bell style={{marginRight: 12}} onPress={()=>navigation.navigate('알림')}/>
+                <Bell style={{marginRight: 20}} onPress={()=>navigation.navigate('알림')}/>
                 <MyPage style={{marginRight: 5}} onPress={()=>navigation.navigate('마이페이지')}/>
             </View>
         </View>

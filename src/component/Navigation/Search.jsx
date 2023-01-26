@@ -109,7 +109,7 @@ const Main = ({navigation}) => {
   const [commentSearch, setCommentSearch] = useState();
   const [experienceSearch, setExperienceSearch] = useState();
 
-  const [modal, setModal] = useState(true);
+  const [modal, setModal] = useState(false);
 
   useEffect(()=>{
     const boardSearch = async() => {

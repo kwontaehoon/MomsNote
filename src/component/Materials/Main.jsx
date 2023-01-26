@@ -36,7 +36,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
   container:{
-    height: '95%',
     backgroundColor: 'white',
     marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
   },
@@ -105,11 +104,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   filterSub:{
-    height: 20,
     paddingLeft: 8,
-    paddingTop: 2,
-    paddingbottom: 2,
+    paddingTop: 4,
     paddingRight: 8,
+    paddingBottom: 4,
     marginRight: 5,
     marginLeft: 5,
     borderRadius: 10,
@@ -230,6 +228,7 @@ const Navigation = ({navigation, route}) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.material.data; });
+  console.log('출산준비물: ', info);
   const materialSet = useSelector(state => { return state.material.refresh; });
   const [sumResult, setSumResult] = useState({
     sum: 0,
@@ -251,7 +250,7 @@ const Navigation = ({navigation, route}) => {
     open: false,
     needsId: null,
     needsBrandId: null,
-    needsDateId: null
+    needsDataId: null
   }); // 브랜드 추가 모달
   const [modalVisible4, setModalVisible4] = useState({
     open: false,
@@ -428,8 +427,8 @@ const save = async() => {
       <View style={styles.main3Box} key={e.title}>
         <View style={styles.main3BoxHeader}>
           <View style={[styles.filterBox, {width: '12%'}]}><Text>구매</Text></View>
-          <View style={[styles.filterBox, {width: '44%'}]}><Text>품목</Text></View>
-          <View style={[styles.filterBox, {width: '44%'}]}><Text>브랜드</Text></View>
+          <View style={[styles.filterBox, {width: '60%'}]}><Text>품목</Text></View>
+          <View style={[styles.filterBox, {width: '28%'}]}><Text>브랜드</Text></View>
         </View>
         <List2 title={e.title}/>
       </View>
@@ -459,16 +458,16 @@ const save = async() => {
               }}
               />
           </View>
-          <TouchableOpacity style={[styles.filterBox, {flexDirection: 'row', justifyContent: 'flex-start'}]}
+          <TouchableOpacity style={[styles.filterBox, {flexDirection: 'row', justifyContent: 'flex-start', width: '60%'}]}
             onPress={()=>setModalVisible4(prevState => ({...prevState, open: true, content: x}))}>
             {optionBox(x.grade)}
-            <Text>{x.needsName}</Text>
+            <Text style={{fontSize: 13}}>{x.needsName}</Text>
           </TouchableOpacity>
-          <View style={styles.filterBox}>
+          <View style={[styles.filterBox, {width: '28%'}]}>
             {x.itemName == null ?
           <View style={{width: 24, height: 24, borderRadius: 12, backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
-              <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}/> 
-            </View>: <Text numberOfLines={1} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}>{x.itemName}</Text>}
+              <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDataId: x.needsDataId}))}/> 
+            </View>: <Text numberOfLines={1} ellipsizeMode='tail' onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDataId: x.needsDataId, needsBrandId: x.needsBrandId}))}>{x.itemBrand}</Text>}
           </View>
       </View>
       )}
@@ -508,7 +507,7 @@ const save = async() => {
             <StatusBar />
         </SafeAreaView>
 
-		    <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? '95%' : '90%'}]}>
+		    <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '89%'}]}>
 
         <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
         <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modal={modal} setModal={setModal} setModal2={setModal2}/>
@@ -527,9 +526,9 @@ const save = async() => {
         <View style={styles.header}>
         <Text style={{fontSize: 18, fontWeight: '600'}}>출산준비물</Text>
         <View style={styles.headerBar}>
-            <TouchableOpacity style={{marginRight: 12}} onPress={capture}><Download/></TouchableOpacity>
-            <TouchableOpacity style={{marginRight: 12}} onPress={()=>navigation.navigate('출산 준비물 검색')}><Search/></TouchableOpacity>
-            <TouchableOpacity style={{marginRight: 12}} onPress={()=>navigation.navigate('알림')}><Bell/></TouchableOpacity>
+            <TouchableOpacity style={{marginRight: 16}} onPress={capture}><Download/></TouchableOpacity>
+            <TouchableOpacity style={{marginRight: 16}} onPress={()=>navigation.navigate('출산 준비물 검색')}><Search/></TouchableOpacity>
+            <TouchableOpacity style={{marginRight: 16}} onPress={()=>navigation.navigate('알림')}><Bell/></TouchableOpacity>
             <TouchableOpacity style={{marginRight: 5}} onPress={()=>navigation.navigate('마이페이지')}><MyPage/></TouchableOpacity>
         </View>
       </View>
@@ -556,12 +555,11 @@ const save = async() => {
           <View style={styles.footerBox}>
             <View style={styles.budgetBox}>
               <Text>총 예산: </Text>
-              <Text style={{fontSize: 18, fontWeight: '500'}}>{(sumResult.sum).toLocaleString()}</Text>
-              <Text> 원</Text>
+              <Text style={{fontWeight: '500'}}>{(sumResult.sum).toLocaleString()} 원</Text>
             </View>
             <View style={styles.budgetBox2}>
               <TouchableOpacity style={{padding: 10, flexDirection: 'row', alignItems: 'center'}} onPress={()=>navigation.navigate('총 예산', info)}>
-                <Text>자세히 보기 </Text>
+                <Text style={{fontSize: 12}}>자세히 보기 </Text>
                 <ArrowRight fill={'black'} width={15} height={15}/>
               </TouchableOpacity>
             </View>

@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         height: 70,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     headerBox:{
         position: 'absolute',
@@ -53,13 +53,15 @@ const styles = StyleSheet.create({
         marginBottom: 30,
     },
     mainBox2:{
-        borderWidth: 1,
+
     },
     textBox:{
         marginTop: 10,
         height: 52,
         paddingLeft: 10,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderBottomWidth: 1,
+        borderColor: '#F5F5F5'
     },
     timerBox:{
         position: 'absolute',
@@ -67,7 +69,7 @@ const styles = StyleSheet.create({
         bottom: 10,
         paddingTop: 8,
         paddingLeft: 10,
-        paddingRight: 10,
+        paddingRight: 17,
         paddingBottom: 8,
     },
     certificateBox:{
@@ -267,9 +269,9 @@ const Withdraw = ({navigation, route}) => {
     }
     const button = () => {
         switch(true){
-            case SMSFlag.open == true: return '재요청';
-            case SMSFlag.open == false: return '인증요청';
-            default: return '변경';
+            case SMSFlag.flag == 1 : return (<Text style={{fontWeight: '500'}} onPress={()=>(setSMSFlag(prevState => ({...prevState, flag: 0}), setInfo(prevState => ({...prevState, tel: ''}))))}>변경</Text>)
+            case SMSFlag.open == true: return (<Text style={{fontWeight: '500'}}>재요청</Text>)
+            case SMSFlag.open == false: return (<Text style={{fontWeight: '500'}}>인증요청</Text>)
         }
     }
 
@@ -313,17 +315,16 @@ const Withdraw = ({navigation, route}) => {
                 </View>
                 <View style={[styles.mainBox, {marginBottom: SMSFlag.open ? 10 : 30}]}>
 
-                    { SMSFlag.flag == 1 && SMSFlag.open == false ?<View style={styles.timerBox}>
+                    { SMSFlag.flag == 1 && SMSFlag.open == false ?<View style={[styles.timerBox, {right: 70}]}>
                          <Check fill='#4CAF50'/>
                     </View> : ''}
 
                     <Text style={{fontSize: 16, fontWeight: '500'}}>연락처</Text>
-                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info.tel} keyboardType='number-pad'
+                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info.tel} keyboardType='number-pad' editable={SMSFlag.flag == 0 ? true : false}
                          onChangeText={(e) => setInfo((prevState) => ({...prevState, tel: e}))}>
                     </TextInput>
-                    <TouchableOpacity style={styles.certificateBox} onPress={()=>SMSFlag.flag == 1 ?  setModal3(!modal3) : info.tel == '' ? '' : sms('재요청')}>
-
-                        <Text style={{fontWeight: '500'}}>{button()}</Text>
+                    <TouchableOpacity style={styles.certificateBox} onPress={()=>(sms('재요청'), setSMSFlag(prevState => ({...prevState, flag: 0})))}>
+                        {button()}
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.mainBox, {display: SMSFlag.open ? 'flex' : 'none'}]}>

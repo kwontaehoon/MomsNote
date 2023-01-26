@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
     modalContainer2:{
         width: '80%',
         backgroundColor: 'white',
+        marginBottom: 35,
         borderRadius: 15,
-        padding: 20,
     },
     header:{
         height: 50,

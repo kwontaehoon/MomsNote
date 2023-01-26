@@ -133,11 +133,11 @@ const Main = ({navigation}:any) => {
     <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '92.5%', flex: Platform.OS === 'ios' ? 1 : null}]}>
       <StatusBar backgroundColor={'white'} />
       <View style={styles.header}>
-            <TouchableOpacity style={[styles.headerBox, {width: '50%', borderBottomColor: filter[0] ? 'orange' : '#BDBDBD'}]} onPress={()=>filter_func(0)}>
-                <Text style={{fontWeight: 'bold', fontSize: 18, color: filter[0] ? 'orange' : '#BDBDBD'}}>오늘의편지</Text>
+            <TouchableOpacity style={[styles.headerBox, {width: '50%', borderBottomColor: filter[0] ? 'orange' : '#EEEEEE'}]} onPress={()=>filter_func(0)}>
+                <Text style={{fontWeight: 'bold', fontSize: 16, color: filter[0] ? 'orange' : '#BDBDBD'}}>오늘의편지</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.headerBox, {width: '50%', borderBottomColor: filter[1] ? 'orange' : '#BDBDBD'}]} onPress={()=>filter_func(1)}>
-                <Text style={{fontWeight: 'bold', fontSize: 18, color: filter[1] ? 'orange' : '#BDBDBD'}}>이 시기에는?</Text>
+            <TouchableOpacity style={[styles.headerBox, {width: '50%', borderBottomColor: filter[1] ? 'orange' : '#EEEEEE'}]} onPress={()=>filter_func(1)}>
+                <Text style={{fontWeight: 'bold', fontSize: 16, color: filter[1] ? 'orange' : '#BDBDBD'}}>이 시기에는?</Text>
             </TouchableOpacity>
         </View>
         <View style={styles.header2}>

@@ -76,7 +76,7 @@ const Main = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-        <View style={styles.header}><Text style={{color: '#757575', fontSize: 16}} onPress={()=>setPage(3)}>건너뛰기</Text></View>
+        <View style={styles.header}><Text style={{color: '#757575', fontSize: 16}} onPress={start}>건너뛰기</Text></View>
         <View style={styles.main}>
             <Slick showsButtons={false} loop={false} index={page}
             dot={<View style={styles.dot}/>}

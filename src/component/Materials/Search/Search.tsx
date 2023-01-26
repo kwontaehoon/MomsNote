@@ -94,11 +94,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   filterSub:{
-    height: 20,
     paddingLeft: 8,
-    paddingTop: 2,
-    paddingbottom: 2,
+    paddingTop: 4,
     paddingRight: 8,
+    paddingBottom: 4,
     marginRight: 5,
     marginLeft: 5,
     borderRadius: 10,
@@ -312,9 +311,9 @@ const purchaseCencel = async(needsId) => {
     return (
       <View style={styles.main3Box} key={item.id}>
         <View style={styles.main3BoxHeader}>
-          <View style={[styles.filterBox, {width: '12%'}]}><Text>구매</Text></View>
-          <View style={styles.filterBox}><Text>품목</Text></View>
-          <View style={styles.filterBox}><Text>브랜드</Text></View>
+        <View style={[styles.filterBox, {width: '12%'}]}><Text>구매</Text></View>
+          <View style={[styles.filterBox, {width: '60%'}]}><Text>품목</Text></View>
+          <View style={[styles.filterBox, {width: '28%'}]}><Text>브랜드</Text></View>
         </View>
         {
         materialSearch.filter(x=> x.category == item.title) == '' ? 
@@ -348,16 +347,16 @@ const purchaseCencel = async(needsId) => {
               }}
               />
           </View>
-          <TouchableOpacity style={[styles.filterBox, {flexDirection: 'row', justifyContent: 'flex-start'}]}
+          <TouchableOpacity style={[styles.filterBox, {flexDirection: 'row', justifyContent: 'flex-start', width: '60%'}]}
             onPress={()=>setModalVisible4(prevState => ({...prevState, open: true, content: x}))}>
             {optionBox(x.grade)}
             <Text>{x.needsName}</Text>
           </TouchableOpacity>
-          <View style={styles.filterBox}>
+          <View style={[styles.filterBox, {width: '28%'}]}>
           {x.itemName == null ?
           <View style={{width: 24, height: 24, borderRadius: 12, backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
               <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}/> 
-            </View>: <Text numberOfLines={1} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}>{x.itemName}</Text>}
+            </View>: <Text numberOfLines={1} ellipsizeMode='tail' onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}>{x.itemName}</Text>}
           </View>
       </View>
       )}
