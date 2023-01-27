@@ -218,6 +218,7 @@ const Home = ({navigation}) => {
     const ref = useRef();
     const [date, setDate] = useState(new Date());
     const boardPopular = useSelector(state => { return state.boardPopular.data });
+    console.log('홈 맘스토크: ', boardPopular);
     const materialPopular = useSelector(state => { return state.materialPopular.data });
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     const [test, setTest] = useState(); // 캡쳐 uri
@@ -373,20 +374,20 @@ const Home = ({navigation}) => {
                         <View style={styles.contentBox}>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
-                                    <Text style={{fontWeight: '700'}}>1 </Text>
-                                    <Text numberOfLines={1}> {boardPopular[0].title }</Text>
+                                    <Text style={{fontWeight: '700'}} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}>1 </Text>
+                                    <Text numberOfLines={1}> {materialPopular[0].title }</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
-                                    <Text style={{fontWeight: '700'}}>2 </Text>
-                                    <Text numberOfLines={1}> {boardPopular[1].title }</Text>
+                                    <Text style={{fontWeight: '700'}} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}>2 </Text>
+                                    <Text numberOfLines={1}> {materialPopular[1].title }</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
-                                    <Text style={{fontWeight: '700'}}>3 </Text>
-                                    <Text numberOfLines={1}> {boardPopular[2].title }</Text>
+                                    <Text style={{fontWeight: '700'}} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}>3 </Text>
+                                    <Text numberOfLines={1}> {materialPopular[2].title }</Text>
                                 </View>
                             </View>
                         </View>}
@@ -406,19 +407,19 @@ const Home = ({navigation}) => {
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>1 </Text>
-                                    <Text numberOfLines={1}> {materialPopular[0].title}</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}> {boardPopular[0].title}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>2 </Text>
-                                    <Text numberOfLines={1}> {materialPopular[1].title}</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', boardPopular[1])}> {boardPopular[1].title}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>3 </Text>
-                                    <Text numberOfLines={1}> {materialPopular[2].title}</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[2]})}> {boardPopular[2].title}</Text>
                                 </View>
                             </View>
                         </View> }
@@ -458,7 +459,7 @@ const Home = ({navigation}) => {
                     <StatusBar />
             </SafeAreaView>
             <FocusAwareStatusBar />
-            <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '92%', flex: Platform.OS === 'ios' ? 1 : null}]}>
+            <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}>
             <View style={styles.header}>
             <View style={styles.headerBar}>
                 <Bell style={{marginRight: 20}} onPress={()=>navigation.navigate('알림')}/>

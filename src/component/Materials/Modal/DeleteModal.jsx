@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, FlatList } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/FontAwesome'
-import DropDownPicker from 'react-native-dropdown-picker'
 import Checkbox from 'expo-checkbox'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+
+import Close from '../../../../public/assets/svg/Close.svg'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -26,8 +27,8 @@ const styles = StyleSheet.create({
     modalContainer2:{
         width: '80%',
         backgroundColor: 'white',
-        marginBottom: 35,
         borderRadius: 15,
+        padding: 20,
     },
     header:{
         height: 50,
@@ -109,11 +110,10 @@ const styles = StyleSheet.create({
         borderColor: '#E0E0E0',
     },
     filterSub:{
-        height: 20,
         paddingLeft: 8,
-        paddingTop: 2,
-        paddingbottom: 2,
+        paddingTop: 4,
         paddingRight: 8,
+        paddingBottom: 4,
         marginRight: 5,
         marginLeft: 5,
         borderRadius: 10,
@@ -159,7 +159,7 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
         },
         {
             id: '6',
-            title: '발육용품',
+            title: '외출용품',
         },
         {
             id: '7',
@@ -315,7 +315,9 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
                     </View>
                         <View style={[styles.modalContainer2]}>
                         <View style={styles.header}>
-                    <TouchableOpacity style={styles.closeBox} onPress={()=>setModalVisible9(!modalVisible9)}><Icon name='close' size={24}/></TouchableOpacity>
+                    <TouchableOpacity style={styles.closeBox} onPress={()=>setModalVisible9(!modalVisible9)}>
+                        <Close fill={'black'}/>
+                    </TouchableOpacity>
                     <Text style={{color: '#212121', fontSize: 18, fontWeight: '500'}}>품목 삭제</Text>
                 </View>
                 <View style={styles.main}>

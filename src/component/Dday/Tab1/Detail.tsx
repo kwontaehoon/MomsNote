@@ -6,7 +6,7 @@ import Modal2 from '../../Modal/Block'
 import Modal3 from '../..//Modal/Declare'
 import Modal4 from '../..//Modal/DelareConfirm'
 import Modal6 from '../../Modal/Declare2'
-import moment from 'moment'
+
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../Redux/Slices/BoardSlice'
@@ -20,15 +20,18 @@ import {
 import { useIsFocused } from '@react-navigation/native'
 import Comment from './Comment'
 import axios from 'axios'
+import ViewShot from 'react-native-view-shot'
+import * as MediaLibrary from 'expo-media-library'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Chat from '../../../../public/assets/svg/Chat.svg'
 import Like from '../../../../public/assets/svg/Like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
-import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
+import Download from '../../../../public/assets/svg/Download.svg'
+
 import { postHits } from '../../../Redux/Slices/HitsSlice'
 
 const styles = StyleSheet.create({
@@ -41,7 +44,6 @@ const styles = StyleSheet.create({
         height: 60,
         justifyContent: 'center',
         padding: 20,
-        
     },
     headerBar:{
         position: 'absolute',
@@ -54,14 +56,12 @@ const styles = StyleSheet.create({
         marginLeft: 7,
     },
     main:{
-
     },
     mainBox:{
         padding: 20
     },
     mainBox2:{
-        padding: 20,
-        paddingBottom: 40,
+        padding: 20
     },
     mainBox2ImageBox:{
         height: 400,
@@ -196,6 +196,10 @@ const Talk1Sub = ({navigation, route}) => {
     const dispatch = useDispatch();
     const info = [route.params.item];
     console.log('talk1 info: ', info);
+    const ref = useRef();
+
+
+    const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
@@ -231,9 +235,13 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal6, setModal6] = useState(false); // comment 신고 하기
 
     const [userInfo, setUserInfo] = useState();
-
+    console.log('오늘 이시기에는 userInfo: ', userInfo);
     const animation = useRef(new Animated.Value(0)).current;
     const flatlistRef = useRef(null);
+
+    useEffect(()=>{
+        save();
+    }, [captureURL]);
 
     useEffect(()=>{ // 댓글 목록
         dispatch(postComment(commentData));
@@ -322,6 +330,61 @@ const Talk1Sub = ({navigation, route}) => {
             setBoardLike();
     }
 
+    const save = async() => {
+   
+        if(captureURL !== undefined){
+            let { status } = await MediaLibrary.requestPermissionsAsync();
+            const asset = await MediaLibrary.createAssetAsync(captureURL);
+            // const moms = await MediaLibrary.getAlbumAsync('맘스노트');
+    
+            console.log('status: ', status);
+            console.log('asset: ', asset);
+            // console.log('moms: ', moms);
+           
+            
+            if(status === 'granted'){
+                // const kwon = await MediaLibrary.getAlbumAsync('DCIM');
+                // const moms = await MediaLibrary.getAlbumAsync('맘스노트');split
+                // if(moms === null){
+                //     MediaLibrary.createAlbumAsync('맘스노트', asset);
+                // }
+                // MediaLibrary.addAssetsToAlbumAsync(moms, moms.id);
+                // MediaLibrary.migrateAlbumIfNeededAsync(moms.id);
+                // const album = await MediaLibrary.getAlbumAsync('맘스노트');
+                // // console.log('album: ', album);
+    
+                // MediaLibrary.createAlbumAsync('맘스노트', asset);
+                // // const asset = await MediaLibrary.createAssetAsync(captureURL);
+            }
+        }
+        setTimeout(() => {
+          setCaptureURL(undefined);
+        }, 2000);
+      }
+    
+      const opacity_ani = () => {
+        Animated.timing(animation, {
+            toValue: 1,
+            useNativeDriver: true,
+            duration: 1500,
+        }).start(()=>{
+            Animated.timing(animation, {
+                toValue: 0,
+                useNativeDriver: true,
+                duration: 1500,
+            }).start();
+        });
+      }
+    
+      const capture = async() => {
+        opacity_ani();
+        setCaptureURL('1');
+    
+        ref.current.capture().then(uri => {
+            setCaptureURL(uri);
+          });
+      }
+
     const ImageBox = () => {
         const arr:any[] = [];
         const a = (info[0].savedName.split('|')).filter(x => {
@@ -372,20 +435,6 @@ const Talk1Sub = ({navigation, route}) => {
         }
     }
 
-    const opacity_ani = () => {
-        Animated.timing(animation, {
-            toValue: 1,
-            useNativeDriver: true,
-            duration: 1500,
-        }).start(()=>{
-            Animated.timing(animation, {
-                toValue: 0,
-                useNativeDriver: true,
-                duration: 1500,
-            }).start();
-        });
-    }
-
     const onPressFunction = () => {
         flatlistRef.current?.scrollToEnd();
     };
@@ -393,12 +442,14 @@ const Talk1Sub = ({navigation, route}) => {
     const renderItem = ({ item }) => (
         <View>
             <View style={styles.main}>
+                <ViewShot ref={ref} options={{ fileName: "MomsNote", format: "png", quality: 1 }}>
                 <View style={styles.mainBox}>
-                    <Text style={{fontSize: 20, fontWeight: '400', lineHeight: 30}}>{item.title}</Text>
+                    <Text style={{fontSize: 20, fontWeight: '400', lineHeight: 20}}>{item.title}</Text>
                 </View>
                 <View style={styles.mainBox2}>
                     <Text style={{lineHeight: 20}}>{item.contents}</Text>
                 </View>
+                </ViewShot>
                 {item.savedName === null ? <View></View> : ImageBox()}
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
@@ -427,8 +478,8 @@ const Talk1Sub = ({navigation, route}) => {
     <SafeAreaProvider>
         <SafeAreaView style={styles.container}>
 
-            <Animated.View style={[styles.alarmBox, {opacity: animation}]}>
-                <View style={styles.alarm}><Text style={{color: 'white', fontSize: 13, fontWeight: '500'}}>{info[0].nickname}님을 차단하였습니다.</Text></View>
+            <Animated.View style={[styles.alarmBox, {opacity: animation, display: captureURL == undefined ? 'none' : 'flex'}]}>
+                <View style={styles.alarm}><Text style={{color: 'white', fontSize: 13, fontWeight: '500'}}>게시글이 내 앨범에 저장되었습니다.</Text></View>
             </Animated.View>
 
             <Modal navigation={navigation} modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3} commentsId={commentsId} info={info}
@@ -441,8 +492,8 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.header}>
                     <TouchableOpacity onPress={()=>navigation.goBack()} style={{height: '100%'}}><Back /></TouchableOpacity>
                     <View style={styles.headerBar}>
-                        <Share style={{marginRight: 12}}/>
-                        <More onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}/>
+                        <TouchableOpacity style={{marginRight: 16}} onPress={capture}><Download/></TouchableOpacity>
+                        <TouchableOpacity><Share /></TouchableOpacity>
                     </View>
             </View>
 

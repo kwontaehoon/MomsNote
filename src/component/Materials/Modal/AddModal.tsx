@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, FlatList, KeyboardAvoidingView } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/FontAwesome'
-import DropDownPicker from 'react-native-dropdown-picker'
 import axios from 'axios'
-import First from '../../Modal/First'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+
+import Close from '../../../../public/assets/svg/Close.svg'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -23,13 +23,12 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 294,
         backgroundColor: 'white',
         borderRadius: 15,
         padding: 20,
     },
     header:{
-        height: '25%',
+        height: 70,
         alignItems: 'center',
     },
     closeBox:{
@@ -40,9 +39,8 @@ const styles = StyleSheet.create({
         zIndex: 1
     },
     main:{
-        height: '50%',
-    },
-    
+
+    },    
     mainBox:{
         width: '100%',
         height: 44,
@@ -61,7 +59,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         height: 200,
         width: '70%',
-        top: '48%',
+        top: '50%',
         backgroundColor: 'white',
         zIndex: 999,
         shadowColor: "#000",
@@ -81,7 +79,7 @@ const styles = StyleSheet.create({
     },
     footer:{
         height: 44,
-        marginTop: 20,
+        marginTop: 30,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 4,
@@ -120,7 +118,7 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8, setModal, info2}) => {
         },
         {
             id: '6',
-            title: '발육용품',
+            title: '외출용품',
         },
         {
             id: '7',
@@ -190,7 +188,9 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8, setModal, info2}) => {
                                 </View>
                     <View style={styles.modalContainer2}>
                         <View style={styles.header}>
-                            <TouchableOpacity style={styles.closeBox} onPress={()=>setModalVisible8(!modalVisible8)}><Icon name='close' size={24}/></TouchableOpacity>
+                            <TouchableOpacity style={styles.closeBox} onPress={()=>setModalVisible8(!modalVisible8)}>
+                                <Close fill={'black'}/>
+                            </TouchableOpacity>
                             <Text style={{color: '#212121', fontSize: 18, fontWeight: '500'}}>품목 추가</Text>
                         </View>
                         <View style={styles.main}>

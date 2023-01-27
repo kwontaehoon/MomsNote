@@ -24,13 +24,15 @@ const Main = ({navigation}) => {
 
     useEffect(()=>{
         const login = async() => {
-            // AsyncStorage.setItem('userId', 45);
-            // AsyncStorage.setItem('token', 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTE4MjQxNDA1ODc4MzUwNzk2MDM4IiwiaWQiOjQ1LCJpYXQiOjE2NzQ2NDA3ODEsImV4cCI6MTY3NzIzMjc4MX0.7aJjw8QViTrnaqC3y1TOp9wmddFkf6RaLU6WSTzAENo')
+            // AsyncStorage.removeItem('userId');
+            // AsyncStorage.setItem('userId', '45');
             // AsyncStorage.setItem('user', JSON.stringify(test));
-
             // AsyncStorage.removeItem('login');
-            // AsyncStorage.clear()
             // AsyncStorage.setItem('login', '2');
+
+           
+            // AsyncStorage.clear()
+           
             
             const asyncStorage = await AsyncStorage.getItem('login');
             setInfo(asyncStorage);

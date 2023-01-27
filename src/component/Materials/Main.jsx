@@ -6,7 +6,6 @@ import Icon3 from 'react-native-vector-icons/Feather'
 import Checkbox from 'expo-checkbox';
 import BrendModal from './Modal/BrendModal'
 import CheckboxModal from './Modal/CheckBoxModal';
-import NoticeModal from './Modal/NoticeModal';
 import GuideModal from './Modal/GuideModal'
 import ResetModal from './Modal/ResetModal'
 import ResetModal2 from './Modal/ResetModal2'
@@ -40,11 +39,9 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
   },
   header:{
-    height: 60,
+    height: 59,
     justifyContent: 'center',
     padding: 15,
-    borderBottomWidth: 1,
-    borderColor: '#F5F5F5'
   },
   headerBar:{
       position: 'absolute',
@@ -200,7 +197,7 @@ const Navigation = ({navigation, route}) => {
     },
     {
       id: 6,
-      title: '발육용품',
+      title: '외출용품',
       icon: require('../../../public/assets/image/7.png'),
     },
     {
@@ -524,7 +521,7 @@ const save = async() => {
         <Second modal={modal3} setModal={setModal3}/>
 
         <View style={styles.header}>
-        <Text style={{fontSize: 18, fontWeight: '600'}}>출산준비물</Text>
+        <Text style={{fontSize: 17, fontWeight: '600'}}>출산준비물</Text>
         <View style={styles.headerBar}>
             <TouchableOpacity style={{marginRight: 16}} onPress={capture}><Download/></TouchableOpacity>
             <TouchableOpacity style={{marginRight: 16}} onPress={()=>navigation.navigate('출산 준비물 검색')}><Search/></TouchableOpacity>

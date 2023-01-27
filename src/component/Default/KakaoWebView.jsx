@@ -17,7 +17,7 @@ const Main = ({navigation}) => {
 
     const REST_API_KEY = '5b53b00ed1940f2bd5a026d96a0ae0ce'; // 클라이언트 꺼
     const REST_API_KEY2 = '7d1cb1e652f5ee8aaffc2e7ce0547c9b'; // 본인
-    const REDIRECT_URI = 'https://www.naver.com';
+    const REDIRECT_URI = 'https://momsnote.s3.ap-northeast-2.amazonaws.com/setting/splash.png';
 
     const runFirst = `window.ReactNativeWebView.postMessage("this is message from web")`;
 

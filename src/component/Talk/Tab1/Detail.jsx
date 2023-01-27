@@ -6,6 +6,7 @@ import Modal2 from '../../Modal/Block'
 import Modal3 from '../..//Modal/Declare'
 import Modal4 from '../..//Modal/DelareConfirm'
 import Modal6 from '../../Modal/Declare2'
+import Modal7 from '../../Modal/CommentDelete'
 import moment from 'moment'
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
@@ -191,9 +192,9 @@ const styles = StyleSheet.create({
 })
 const Talk1Sub = ({navigation, route}) => {
 
-    console.log('route: ', route.params.item.boardId);
+    console.log('route: ', route.params.item);
 
-    Keyboard.addListener('keyboardDidShow', (e) => {
+    Keyboard.addListener('keyboardDidShow', () => {
         setPageHeight(true);
     });
     Keyboard.addListener('keyboardDidHide', () => {
@@ -223,7 +224,7 @@ const Talk1Sub = ({navigation, route}) => {
     console.log('board Like: ', boardLike);
     const [boardData, setBoardData] = useState({
         order: 'new',
-        count: 16,
+        count: 1,
         page: 1,
         subcategory: '전체'
     })
@@ -241,6 +242,7 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal3, setModal3] = useState(false); // 게시물 신고 하기 
     const [modal4, setModal4] = useState(false); // 신고 확인
     const [modal6, setModal6] = useState(false); // comment 신고 하기
+    const [modal7, setModal7] = useState(false); // comment 정말 삭제?
 
     const [userInfo, setUserInfo] = useState();
 
@@ -426,7 +428,7 @@ const Talk1Sub = ({navigation, route}) => {
     const renderItem = ({ item }) => (
         <View>
             <View style={styles.header2}>
-                <View style={styles.profileBox}></View>
+                <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.profileImage}`}} style={styles.profileBox}/>
                 <View style={styles.infoBox}>
                     <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{item.nickname}</Text>
                     <Text style={{color: '#9E9E9E', fontSize: 13}}>{moment().diff(moment(item.boardDate), "days")}일 전</Text>
@@ -472,17 +474,18 @@ const Talk1Sub = ({navigation, route}) => {
             </Animated.View>
 
             <Modal navigation={navigation} modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3} commentsId={commentsId} info={info}
-                modal6={modal6} setModal6={setModal6} commentData={commentData}/>
+                modal6={modal6} setModal6={setModal6} commentData={commentData} modal7={modal7} setModal7={setModal7}/>
             <Modal2 modal2={modal2} setModal2={setModal2} userId={info[0].userId} ani={opacity_ani}/>
             <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4} boardId={info[0].boardId}/>
             <Modal4 modal4={modal4} setModal4={setModal4} />
             <Modal6 modal4={modal4} setModal4={setModal4} modal6={modal6} setModal6={setModal6} commentsId={commentsId}/>
+            <Modal7 modal7={modal7} setModal7={setModal7} info={info}  commentsId={commentsId}/>
 
             <View style={styles.header}>
                     <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
                     <View style={styles.headerBar}>
                         <Share style={{marginRight: 12}}/>
-                        <More onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}/>
+                        <TouchableOpacity onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}><More /></TouchableOpacity>
                     </View>
             </View>
 

@@ -22,20 +22,18 @@ const styles = StyleSheet.create({
     },
       modalContainer2:{
         width: '80%',
-        height: 326,
         backgroundColor: 'white',
         borderRadius: 15,
         padding: 20
     },
       modalBox:{
-        height: '40%',
         justifyContent: 'center',
         alignItems: 'center',
     },
       modalBoxSub:{
         flexDirection: 'row',
-        height: '20%',
         alignItems: 'center',
+        padding: 15
     },
       modal:{
         backgroundColor: '#FEA100',
@@ -44,7 +42,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 4,
-        marginBottom: 7,
+        marginBottom: 10,
     },
     checkbox: {
         width: 24,
@@ -111,7 +109,9 @@ const CheckBoxModal = ({modalVisible, setModalVisible}) => {
                           </View>
                         <View style={styles.modalBox}>
                             <TouchableOpacity style={styles.modal} onPress={purchase}><Text style={{color: 'white', fontSize: 16}}>구매 완료</Text></TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModalVisible(prevState => ({...prevState, open: false}))}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModalVisible(prevState => ({...prevState, open: false}))}>
+                              <Text style={{color: 'black', fontSize: 16}}>취소</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>

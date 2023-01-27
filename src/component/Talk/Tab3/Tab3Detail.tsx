@@ -303,7 +303,7 @@ const Talk1Sub = ({navigation, route}) => {
                         <Text style={{fontWeight: 'bold', fontSize: 18, color: filter ? '#BDBDBD' : 'orange'}}>체험 정보</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.main3FilterBox, {borderBottomColor: filter ? 'orange' : 'lightgrey'}]} 
-                        onPress={()=>moment(info.openDate).diff(moment(), "days") <= 0 ? setFilter(true) : setModal(prevState => ({...prevState, open: true}))}>
+                        onPress={()=>moment(info.openDate).diff(moment(), "days") >= 0 ? setFilter(true) : setModal(prevState => ({...prevState, open: true}))}>
                         <Text style={{fontWeight: 'bold', fontSize: 18, color: filter ? 'orange' : 'lightgrey'}}>선정 인원</Text>
                     </TouchableOpacity>
                 </View>

@@ -24,9 +24,8 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     modalBox:{
-        height: 60,
         justifyContent: 'center',
-
+        padding: 10,
     },
     modalBox2:{
         height: 44,
@@ -35,6 +34,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 4,
         alignItems: 'center',
+        backgroundColor: '#FE7000'
     },
 
 
@@ -96,13 +96,13 @@ const Main = ({modal, setModal}) => {
                     <Text style={{fontSize: 16, fontWeight: '600', textAlign: 'center', lineHeight: 25}}>원하는 출산 준비물 리스트를 선택해주세요.</Text>
                </View>
                <TouchableOpacity style={styles.modalBox2} onPress={rec}>
-                    <Text style={{color: '#FE7000', fontSize: 15, fontWeight: '500'}}>실제맘 추천 리스트</Text>
+                    <Text style={{fontSize: 15, fontWeight: '500', color: 'white'}}>네, 추천 리스트로 보여주세요.</Text>
                </TouchableOpacity>
-               <View style={[styles.modalBox, {height: 70}]}>
-                    <Text style={{fontSize: 15, lineHeight: 20}}>많은 임산부들이 추천한 품목을 필수, 권장, 선택 항목으로 나눠서 알기 쉽게 보여준답니다.</Text>
+               <View style={styles.modalBox}>
+                    <Text style={{fontSize: 15, lineHeight: 20}}>많은 임산부들이 추천한 품목을 필수, 권장, 선택 항목으로 나눠서 알기 쉽게 보여줘요!</Text>
                </View>
                <TouchableOpacity style={styles.modalBox2} onPress={self}>
-                    <Text style={{color: '#FE7000', fontSize: 15, fontWeight: '500'}}>직접 작성</Text>
+                    <Text style={{fontSize: 15, fontWeight: '500', color: 'white'}}>아니요, 직접 작성할게요.</Text>
                </TouchableOpacity>
                <View style={styles.modalBox}>
                     <Text style={{fontSize: 15, lineHeight: 20}}>카테고리만 기본 제공하며, 필요한 품목을 직접 작성할 수 있어요.</Text>

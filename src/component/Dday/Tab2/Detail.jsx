@@ -6,7 +6,7 @@ import Modal2 from '../../Modal/Block'
 import Modal3 from '../..//Modal/Declare'
 import Modal4 from '../..//Modal/DelareConfirm'
 import Modal6 from '../../Modal/Declare2'
-import moment from 'moment'
+
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../Redux/Slices/BoardSlice'
@@ -26,9 +26,10 @@ import Chat from '../../../../public/assets/svg/Chat.svg'
 import Like from '../../../../public/assets/svg/Like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
-import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
+import Download from '../../../../public/assets/svg/Download.svg'
+
 import { postHits } from '../../../Redux/Slices/HitsSlice'
 
 const styles = StyleSheet.create({
@@ -55,7 +56,6 @@ const styles = StyleSheet.create({
     main:{
     },
     mainBox:{
-        height: 70,
         padding: 20,
     },
     mainBox2:{
@@ -440,8 +440,8 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.header}>
                     <TouchableOpacity onPress={()=>navigation.goBack()} style={{height: '100%'}}><Back /></TouchableOpacity>
                     <View style={styles.headerBar}>
-                        <Share style={{marginRight: 12}}/>
-                        <More onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}/>
+                        <Download style={{marginRight: 12}} onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}/>
+                        <Share />
                     </View>
             </View>
 

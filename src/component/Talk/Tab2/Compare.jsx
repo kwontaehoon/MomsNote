@@ -173,7 +173,7 @@ const Talk1Sub = ({navigation, route}) => {
         },
         {
           id: '6',
-          title: '발육용품',
+          title: '외출용품',
           icon: require('../../../../public/assets/image/7.png'),
         },
         {

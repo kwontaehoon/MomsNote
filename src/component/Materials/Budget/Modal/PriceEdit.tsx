@@ -102,7 +102,7 @@ const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
                     <KeyboardAvoidingView style={styles.modalContainer2} behavior='padding'>
                         <View style={styles.header}>
                             <TouchableOpacity style={styles.closeBox} onPress={()=>setModal6(prevState=>({...prevState, open: false}))}>
-                                <Close />
+                                <Close fill={'black'}/>
                             </TouchableOpacity>
                             <Text style={{color: '#212121', fontSize: 18, fontWeight: '500'}}>가격 수정</Text>
                         </View>

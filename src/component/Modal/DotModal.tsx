@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../Redux/Slices/BoardSlice'
-import { postComment } from '../../Redux/Slices/CommentSlice'
 import { postMaterialShare } from '../../Redux/Slices/MaterialShareSlice'
 
 const styles = StyleSheet.create({
@@ -24,7 +23,7 @@ const styles = StyleSheet.create({
     modalContainer2:{
         width: '94%',
         borderRadius: 15,
-        marginBottom: 20,
+        marginBottom: 35,
     },
     main:{
         height: 124,
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
     }
 })
 
-const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, setModal3, modal6, setModal6, commentsId, info}) => {
+const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, setModal3, modal6, setModal6, modal7, setModal7, commentsId, info}) => {
 
 
     console.log('info: ', info);
@@ -91,35 +90,12 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
         setModal(!modal);
     }
 
-    const CommentDelete = async() => {
-        const token = await AsyncStorage.getItem('token');
-        try{
-            const response = await axios({
-                  method: 'delete',
-                  url: 'https://momsnote.net/api/comments/delete',
-                  headers: { 
-                    'Authorization': `bearer ${token}`,
-                    'Content-Type': 'application/json'
-                  },
-                  data: { commentsId: commentsId[1] }
-                });
-            }catch(error){
-              console.log('error: ', error);
-            }
-            dispatch(postComment({
-                count: 1,
-                page: 1,
-                boardId: info[0].boardId
-            }))
-            setModal(!modal);
-    }
-
     const DotFilter = () => {
 
         switch(true){
             case commentsId[0] !== undefined && String(commentsId[0]) === userId: return(
                 <View style={[styles.main, {height: 62}]}>
-                    <TouchableOpacity style={[styles.mainBox, {borderColor: '#424242'}]} onPress={()=>{CommentDelete()}}><Text style={{color: '#F23737', fontSize: 20}}>삭제하기</Text></TouchableOpacity>
+                    <TouchableOpacity style={[styles.mainBox, {borderColor: '#424242'}]} onPress={()=>{setModal(!modal), setModal7(!modal7)}}><Text style={{color: '#F23737', fontSize: 20}}>삭제하기</Text></TouchableOpacity>
                 </View>
             );
             case commentsId[0] !== undefined && commentsId[0] !== userId: return(

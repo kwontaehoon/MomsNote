@@ -14,7 +14,7 @@ import Modal from '../../Modal/First'
 
 const styles = StyleSheet.create({
   container:{
-    height: '83%',
+    height: '86%',
     backgroundColor: 'white',
   },
   header:{

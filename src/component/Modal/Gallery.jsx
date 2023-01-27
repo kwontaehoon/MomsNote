@@ -1,11 +1,11 @@
 import React from 'react'
-import { Text, View, StyleSheet, Image, StatusBar, Button, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, Image, StatusBar, Button, TouchableOpacity, SafeAreaView, Platform } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Swiper from 'react-native-swiper'
 import { useIsFocused } from '@react-navigation/native'
 import { Video, AVPlaybackStatus } from 'expo-av';
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-import Icon from 'react-native-vector-icons/FontAwesome'
 import Close from '../../../public/assets/svg/Close.svg'
 
 const styles = StyleSheet.create({
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   container:{
     backgroundColor: 'black',
     height: '97%',
-    marginTop: getStatusBarHeight(),
+    marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
   },
   header:{
     height: '20%',
@@ -79,19 +79,18 @@ const Gallery = ({navigation, route}) => {
   }
 
   const video = React.useRef(null);
-  const [status, setStatus] = React.useState({});
+
 
   console.log('이미지 길이: ', route.params);
   const saveName = route.params;
   console.log('saveName: ', saveName);
 
   return(
-    <View style={styles.container}>
-
-      <FocusAwareStatusBar />
+    <SafeAreaProvider>
+            <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '92%', flex: Platform.OS === 'ios' ? 1 : null}]}>
 
         <View style={styles.header}>
-          <View style={styles.closeBox}><Close fill={'white'} onPress={()=>navigation.goBack()}/></View>
+          <TouchableOpacity style={styles.closeBox} onPress={()=>navigation.goBack()}><Close fill={'white'}/></TouchableOpacity>
         </View>
         <View style={styles.main}>
 
@@ -126,7 +125,8 @@ const Gallery = ({navigation, route}) => {
       </Swiper>
         
         </View>
-    </View>
+    </SafeAreaView>
+    </SafeAreaProvider>
   )
 }
 

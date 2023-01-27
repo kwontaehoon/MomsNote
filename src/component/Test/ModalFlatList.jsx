@@ -59,7 +59,7 @@ const ModalFlatList = () => {
         },
         {
             id: '6',
-            title: '발육 용품',
+            title: '외출 용품',
         },
         {
             id: '7',

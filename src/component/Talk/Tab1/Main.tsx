@@ -22,8 +22,9 @@ import { postBoardPopular } from '../../../Redux/Slices/BoardPopularSlice'
 
 const styles = StyleSheet.create({
   container:{
-    height: '89%',
+    height: '90%',
     backgroundColor: 'white',
+    borderWidth: 1,
   },
   header:{
     height: '10%',
@@ -361,15 +362,15 @@ const Talk1 = ({navigation, route}:any) => {
           autoplayTimeout={4.5}
           showsPagination={false}
           >
-          <View style={styles.slide}>
+          <TouchableOpacity style={styles.slide} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}>
             <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {boardPopular == '' ? '' : boardPopular[0].title}</Text>
-          </View>
-          <View style={styles.slide}>
-            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {boardPopular == '' ?  '' : boardPopular[0].title}</Text>
-          </View>
-          <View style={styles.slide}>
-            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {boardPopular == '' ?  '' : boardPopular[0].title}</Text>
-          </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.slide} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[1]})}>
+            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {boardPopular == '' ?  '' : boardPopular[1].title}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.slide} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[2]})}>
+            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {boardPopular == '' ?  '' : boardPopular[2].title}</Text>
+          </TouchableOpacity>
         </Swiper>
       </View>
 

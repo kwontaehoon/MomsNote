@@ -18,15 +18,14 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 220,
         backgroundColor: 'white',
         borderRadius: 15,
-        marginBottom: 35,
+        paddingTop: 20
     },
     modalBox:{
-        height: '50%',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 15,
     },
     modal:{
         backgroundColor: '#FEA100',
@@ -35,7 +34,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 3,
-        marginBottom: 3,
+        marginBottom: 10,
     },
 })
 

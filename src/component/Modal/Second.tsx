@@ -17,14 +17,13 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 154,
         backgroundColor: 'white',
         borderRadius: 15,
     },
     modalBox:{
-        height: '50%',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 15,
     },
     modal:{
         backgroundColor: '#FEA100',
@@ -63,14 +62,14 @@ const NoticeModal = ({modal, setModal}) => {
             setModal(!modal)}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
-                    <View style={[styles.modalContainer2, {height: 224}]}>
+                    <View style={styles.modalContainer2}>
                         <View style={styles.modalBox}>
                             <Text style={{fontSize: 16, paddingTop: 10}}>{modal.content[0]}</Text>
                             <Text style={{fontSize: 16, paddingTop: 5}}>{modal.content[1]}</Text>
                         </View>
                         <View style={styles.modalBox}>
                             <TouchableOpacity style={styles.modal} onPress={()=>setModal((prevState) => ({...prevState, open: false}))}><Text style={{color: 'white', fontSize: 16}}>확인</Text></TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white'}]} onPress={()=>setModal((prevState) => ({...prevState, open: false}))}><Text style={{fontSize: 16}}>취소</Text></TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModal((prevState) => ({...prevState, open: false}))}><Text style={{fontSize: 16}}>취소</Text></TouchableOpacity>
                         </View>
                     </View>
                 </View>

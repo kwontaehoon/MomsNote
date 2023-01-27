@@ -17,14 +17,14 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 154,
         backgroundColor: 'white',
         borderRadius: 15,
     },
     modalBox:{
-        height: '50%',
         justifyContent: 'center',
         alignItems: 'center',
+
+        padding: 15
     },
     modal:{
         backgroundColor: '#FEA100',
