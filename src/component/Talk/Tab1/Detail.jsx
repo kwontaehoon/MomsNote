@@ -192,7 +192,11 @@ const styles = StyleSheet.create({
 })
 const Talk1Sub = ({navigation, route}) => {
 
+    console.log('route: ', route.params);
     console.log('route: ', route.params.item);
+    
+    const info3 = route.params;
+    console.log('info3: ', info3);
 
     Keyboard.addListener('keyboardDidShow', () => {
         setPageHeight(true);
@@ -250,6 +254,9 @@ const Talk1Sub = ({navigation, route}) => {
     const flatlistRef = useRef(null);
 
     useEffect(()=>{
+        console.log(info3.item.boardId);
+        dispatch(postBoard(boardData));
+        setInfo(boardInfo.filter(x => x.boardId == route.params.item.boardId));
         dispatch(postComment({
             boardId: route.params.item.boardId,
             count: 1,
@@ -272,14 +279,7 @@ const Talk1Sub = ({navigation, route}) => {
     }, []);
 
     useEffect(()=>{
-        dispatch(postBoard(boardData), (e) => {
-            console.log('eeeeeee: ', e);
-            console.log('qwer');
-        });
-
-        console.log('1');
-        setInfo(boardInfo.filter(x => x.boardId == route.params.item.boardId));
-        console.log('2');
+        
     }, [hits]);
 
     useEffect(()=>{ // 게시물 추천 Flag

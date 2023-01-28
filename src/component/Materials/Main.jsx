@@ -227,6 +227,7 @@ const Navigation = ({navigation, route}) => {
   const info = useSelector(state => { return state.material.data; });
   console.log('출산준비물: ', info);
   const materialSet = useSelector(state => { return state.material.refresh; });
+  const [purchaseCount, setPurchaseCount] = useState(null); // 전체 구매 갯수
   const [sumResult, setSumResult] = useState({
     sum: 0,
     exp: 0
@@ -259,7 +260,6 @@ const Navigation = ({navigation, route}) => {
     open: false,
     content: null // 직접작성인지 추천리스트인지
   }); // 추천 리스트 변경 확인 모달
-  console.log('modalVisible6: ', modalVisible6);
   const [modalVisible7, setModalVisible7] = useState(false); // 더보기
   const [modalVisible8, setModalVisible8] = useState(false); // 품목 추가
   const [modalVisible9, setModalVisible9] = useState(false); // 품목 삭제  
@@ -299,6 +299,7 @@ const Navigation = ({navigation, route}) => {
       } else sum += x.itemPrice;
     });
     setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
+    setPurchaseCount(info.filter(x => x.id == 1));
   }, [info]);
 
 
@@ -534,7 +535,7 @@ const save = async() => {
             <TouchableOpacity activeOpacity={1} style={{paddingRight: 20}} onPress={()=>setModalVisible10(!modalVisible10)}><Sort /></TouchableOpacity>
             <TouchableOpacity activeOpacity={1} onPress={()=>setModalVisible7(!modalVisible7)}><More /></TouchableOpacity>
           </View>
-          <Text style={{fontSize: 16, fontWeight: '600'}}>전체 (5/37)</Text>
+          <Text style={{fontSize: 16, fontWeight: '600'}}>전체 ({purchaseCount.length}/{info.length})</Text>
         </View>
         
         {info !== '' ? <FlatList data={DATA3} renderItem={renderItem}

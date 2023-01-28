@@ -291,7 +291,9 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = [route.params];
+    console.log('출산리스트 route: ', info);
     const info2 = useSelector(state => { return state.shareList.data }); // 게시글 리스트
+    console.log('출산리스트 info : ', info2);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });

@@ -10,6 +10,7 @@ import jwtDecode from 'jwt-decode'
 
 
 import Calendar from '../../../public/assets/svg/Calendar.svg'
+import ArrowRight from '../../../public/assets/svg/Arrow-Right.svg'
 
 const styles = StyleSheet.create({
     container:{
@@ -66,12 +67,16 @@ const styles = StyleSheet.create({
     main5Box2:{
         width: '100%',
         height: '20%',
+        alignItems: 'center',
         flexDirection: 'row',
     },
     main5Box2Sub:{
-        width: '90%',
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    arrowBox:{
+        position: 'absolute',
+        right: 10,
     },
     footer:{
         height: 60,
@@ -121,11 +126,6 @@ const AddPage = ({navigation, route}) => {
 
         AsyncStorage.setItem('user', JSON.stringify(info));
 
-        const c = await AsyncStorage.getItem('user');
-        const d = await AsyncStorage.getAllKeys();
-        console.log('c: ', JSON.parse(c));
-        console.log('d: ', d);
-
         try{
             const response = await axios({
                 method: 'post',
@@ -157,10 +157,8 @@ const AddPage = ({navigation, route}) => {
         const Year = selectedDate.getFullYear();
         let Month = selectedDate.getMonth()+1;
         Month < 10 ? Month = `0${String(Month)}` : '';
-        console.log('Month: ', Month);
         let Date = selectedDate.getDate();
         Date < 10 ? Month = `0${String(Date)}` : '';
-        console.log('Date: ', Date);
 
         setShow(false);
         setInfo((prevState) => ({ ...prevState, dueDate: `${Year}-${Month}-${Date}`}))
@@ -204,7 +202,13 @@ const AddPage = ({navigation, route}) => {
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>닉네임</Text>
                 <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.(특수문자 제외)</Text>
                     <TextInput placeholder='닉네임 입력' style={[styles.textBox, {borderColor: bottomColor[0] ? '#FEB401' : '#EEEEEE'}]} maxLength={8}
-                    onFocus={()=>change(0)} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, nickname: e}))}></TextInput>
+                    value={info.nickname}
+                    onFocus={()=>change(0)}
+                    onChangeText={(e) => {
+                        let regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$÷×￦%&\'\"\\\(\=]/gi;
+                        regExp.test(e) ? (e = e.substring(0, e.length - 1), setInfo((prevState) => ({ ...prevState, nickname: e}))) : setInfo((prevState) => ({ ...prevState, nickname: e}));
+                    }}>
+                    </TextInput>
             </View>
             <View style={styles.main2}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>이메일</Text>
@@ -223,8 +227,14 @@ const AddPage = ({navigation, route}) => {
             <View style={styles.main4}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>태명</Text>
                 <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.(특수문자 제외)</Text>
-                <TextInput placeholder='태명 입력' style={[styles.textBox, {borderColor: bottomColor[3] ? '#FEB401' : '#EEEEEE'}]} maxLength={8}
-                onFocus={()=>change(3)} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, babyName: e}))}></TextInput>
+                    <TextInput placeholder='태명 입력' style={[styles.textBox, {borderColor: bottomColor[3] ? '#FEB401' : '#EEEEEE'}]} maxLength={8}
+                    value={info.babyName}
+                    onFocus={()=>change(3)}
+                    onChangeText={(e) => {
+                        let regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$÷×￦%&\'\"\\\(\=]/gi;
+                        regExp.test(e) ? (e = e.substring(0, e.length - 1), setInfo((prevState) => ({ ...prevState, babyName: e}))) : setInfo((prevState) => ({ ...prevState, babyName: e}));
+                    }}>
+                    </TextInput>
             </View>
             <View style={styles.main5}>
                 <View style={styles.main5Box}>
@@ -233,9 +243,10 @@ const AddPage = ({navigation, route}) => {
                         value={isChecked[0]}
                         onValueChange={()=>change2(0)}
                         color={isChecked[0] ? '#FEB401' : undefined}/>
-                    <Text>이용악관 전체동의</Text>
+                    <Text style={{fontWeight: '600', fontSize: 16}}>이용악관 전체동의</Text>
                 </View>
                 <View style={styles.main5Box2}>
+                    <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('이용약관')}><ArrowRight fill={'#BDBDBD'}/></TouchableOpacity>
                     <View style={styles.main5Box2Sub}>
                         <Checkbox
                             style={styles.checkbox}
@@ -244,9 +255,9 @@ const AddPage = ({navigation, route}) => {
                             color={isChecked[1] ? '#FEB401' : undefined}/>
                         <Text>맘스노트 이용악관 동의(필수)</Text>
                     </View>
-                    <View style={[styles.main5Box2Sub, {justifyContent: 'flex-end', paddingRight: 10, width: '10%'}]}><Icon name='angle-right' size={15} /></View>
                 </View>
                 <View style={styles.main5Box2}>
+                    <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('개인정보처리방침')}><ArrowRight fill={'#BDBDBD'}/></TouchableOpacity>
                     <View style={styles.main5Box2Sub}>
                         <Checkbox
                             style={styles.checkbox}
@@ -255,9 +266,9 @@ const AddPage = ({navigation, route}) => {
                             color={isChecked[2] ? '#FEB401' : undefined}/>
                         <Text>개인정보 수집 이용 동의(필수)</Text>
                     </View>
-                    <View style={[styles.main5Box2Sub, {justifyContent: 'flex-end', paddingRight: 10, width: '10%'}]}><Icon name='angle-right' size={15} /></View>
                 </View>
                 <View style={styles.main5Box2}>
+                    <View style={styles.arrowBox}><ArrowRight fill={'#BDBDBD'}/></View>
                     <View style={styles.main5Box2Sub}>
                         <Checkbox
                             style={styles.checkbox}
@@ -266,7 +277,6 @@ const AddPage = ({navigation, route}) => {
                             color={isChecked[3] ? '#FEB401' : undefined}/>
                         <Text>마케팅정보 메일, SNS 수신동의(선택)</Text>
                     </View>
-                    <View style={[styles.main5Box2Sub, {justifyContent: 'flex-end', paddingRight: 10, width: '10%'}]}><Icon name='angle-right' size={15} /></View>
                 </View>
             </View>
             <View style={styles.footer}>

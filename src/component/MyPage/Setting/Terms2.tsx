@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
 import axios from 'axios'
 
 const styles = StyleSheet.create({
@@ -10,18 +8,22 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',  
     },
     header:{
-      height: '12%',
+      margin: 40,
       alignItems: 'center',
       justifyContent: 'center',
     },
     main:{
-      height: '88%',
-      padding: 10,
+      padding: 20,
     },
 })
 const Terms1 = () => {
 
-  const [info, setInfo] = useState();
+  const DATA = [
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      title: 'First Item',
+    },
+  ];
 
   useEffect(()=>{
     const terms = async() => {
@@ -37,14 +39,24 @@ const Terms1 = () => {
     terms();
   }, []);
 
-  return (
-    <View style={styles.container}>
+  const [info, setInfo] = useState();
+
+  const renderItem = () => {
+    return (
+      <View>
         <View style={styles.header}>
           <Text style={{fontSize: 24, fontWeight: '700'}}>맘스노트 개인정보처리방침</Text>
         </View>
         <View style={styles.main}>
-          <Text style={{fontSize: 16}}>{info}</Text>
+          <Text style={{fontSize: 16, lineHeight: 22}}>{info}</Text>
         </View>
+    </View>
+    )
+  }
+
+  return info == undefined || info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+    <View style={styles.container}>
+      <FlatList data={DATA} renderItem={renderItem} keyExtractor={index => String(index)} showsVerticalScrollIndicator={false}></FlatList>
     </View>
   )
 }

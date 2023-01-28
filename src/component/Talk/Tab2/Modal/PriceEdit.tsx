@@ -67,6 +67,13 @@ const CheckBoxModal = ({modal6, setModal6, setModal3}) => {
         needsName: ''
     });
 
+    const [test, setTest] = useState(0);
+    const comma = (e) => {
+        e = e.replaceAll(',', '');
+        setInfo(prevState => ({ ...prevState, needsId: modal6.content.needsId, itemPrice: Number(e)}));
+        setTest(e.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+    }
+
   return modal6.content == null ? <View></View> : (
     <Modal animationType="fade" transparent={true} visible={modal6.open}
             onRequestClose={() => {

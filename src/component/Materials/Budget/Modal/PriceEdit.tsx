@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -68,10 +68,12 @@ const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
         needsId: 0,
         itemPrice: 0,
     });
-
-    console.log('구매수정 info: ', info);
-
-    console.log('modal6: ', modal6);
+    const [test, setTest] = useState(0);
+    const comma = (e) => {
+        e = e.replaceAll(',', '');
+        setInfo(prevState => ({ ...prevState, needsId: modal6.content.needsId, itemPrice: Number(e)}));
+        setTest(e.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+    }
 
     const edit = async() => {
         const token = await AsyncStorage.getItem('token');
@@ -112,8 +114,8 @@ const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
                             <View style={styles.mainBox}>
                                 <View style={styles.priceBox}><Text>원</Text></View>
                                 <TextInput style={{fontWeight: '600'}} textAlign='right' placeholder={`${(modal6.content.itemPrice).toLocaleString()}`} placeholderTextColor={'black'}
-                                    onChangeText={(e) => setInfo((prevState) => ({ ...prevState, needsId: modal6.content.needsId, itemPrice: Number(e)}))} maxLength={8}
-                                    value={info.itemPrice} keyboardType='number-pad'>
+                                    value={test} onChangeText={(e)=>comma(e)} maxLength={11}
+                                    keyboardType='decimal-pad'>
                                 </TextInput>
                             </View>
                         </View>

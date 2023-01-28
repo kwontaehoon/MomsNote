@@ -46,11 +46,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#FEECB3',
     },
     mainBox:{
-        height: '20%',
+        height: 100,
         justifyContent: 'center',
     },
     mainBox2:{
-        height: '60%',
+        height: 300,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -72,8 +72,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     mainBox3:{
-        height: '20%',
+        height: 100,
         flexDirection: 'row',
+        alignItems: 'flex-start'
     },
     mainBox3Sub:{
         width: '30%',
@@ -341,6 +342,7 @@ const Home = ({navigation}) => {
                     </View>
 
                     <View style={styles.imageBox}><MainImage width={300} height={300} onPress={bubbleRandom}/></View>
+
                 </View>
                 <View style={styles.mainBox3}>
                     <View style={styles.mainBox3Sub}>
@@ -351,7 +353,7 @@ const Home = ({navigation}) => {
                     <View style={[styles.mainBox3Sub, {width: '70%'}]}>
                         <View style={styles.DdayBox}>
                             <Text style={{color: '#FE9000', fontSize: 24, fontWeight: '700', marginBottom: 3}}>
-                                D-{moment(userInfo.dueDate).diff(moment(), "days")} ({moment(userInfo.dueDate).diff(moment(), "week")}주차 {moment(userInfo.dueDate).diff(moment(), "day")%7}일)</Text>
+                                D-{moment(userInfo.dueDate).diff(moment(), "days") + 1 } ({moment(userInfo.dueDate).diff(moment(), "week")}주차 {moment(userInfo.dueDate).diff(moment(), "day")%7 + 1}일)</Text>
                             <Text style={{color: '#424242', fontSize: 15}}>
                                 예정일 : {moment(userInfo.dueDate).format("YYYY")}년 {moment(userInfo.dueDate).format("MM")}월 {moment(userInfo.dueDate).format("DD")}일</Text>
                         </View>
@@ -374,20 +376,20 @@ const Home = ({navigation}) => {
                         <View style={styles.contentBox}>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
-                                    <Text style={{fontWeight: '700'}} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}>1 </Text>
-                                    <Text numberOfLines={1}> {materialPopular[0].title }</Text>
+                                    <Text style={{fontWeight: '700'}}>1 </Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[0])}> {materialPopular[0].title }</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
-                                    <Text style={{fontWeight: '700'}} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}>2 </Text>
-                                    <Text numberOfLines={1}> {materialPopular[1].title }</Text>
+                                    <Text style={{fontWeight: '700'}}>2 </Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[1])}> {materialPopular[1].title }</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
-                                    <Text style={{fontWeight: '700'}} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}>3 </Text>
-                                    <Text numberOfLines={1}> {materialPopular[2].title }</Text>
+                                    <Text style={{fontWeight: '700'}}>3 </Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[2])}> {materialPopular[2].title }</Text>
                                 </View>
                             </View>
                         </View>}
@@ -413,7 +415,7 @@ const Home = ({navigation}) => {
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>2 </Text>
-                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', boardPopular[1])}> {boardPopular[1].title}</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[1]})}> {boardPopular[1].title}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>

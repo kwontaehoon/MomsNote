@@ -232,13 +232,8 @@ const Talk1Sub = ({route}) => {
           </View>
           <View style={{display: list[item.id] ? 'none' : 'flex'}}>
            { 
-          //  <View style={styles.mainBox2}>
-          //     <View style={styles.filterBox}><Text>품목</Text></View>
-          //     <View style={styles.filterBox}><Text>브랜드</Text></View>
-          //     <View style={styles.filterBox}><Text>금액</Text></View>
-          //   </View>
-          filtering(item.title)
-            }
+            filtering(item.title)
+          }
               <List title={item.title}/>
           </View>
       </View>
