@@ -6,27 +6,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 // 문의하기
 const styles = StyleSheet.create({
     container:{
-      height: '93.5%',
+      height: '94.5%',
     },
     container2:{
     },
     header:{
-      paddingTop: 30,
-      height: 130,
-      padding: 15
+      height: '25%',
+      padding: 15,
     },
     headerBox:{
-      height: 40,
+      paddingTop: 10,
+      paddingBottom: 10,
       justifyContent: 'center',
-      
-    },
-    headerBox2:{
-      height: 52,
-      alignItems: 'center',
-      justifyContent: 'flex-start',
     },
     header2:{
-      height: 300,
+      height: '75%',
       paddingLeft: 15,
       paddingRight: 15,
     },
@@ -48,7 +42,7 @@ const styles = StyleSheet.create({
     },
     footer:{
       position: 'absolute',
-      bottom: 10,
+      bottom: 0,
       width: '100%',
       height: 56,
       alignItems: 'center',
@@ -98,16 +92,16 @@ const Inquiry2 = ({filter, setFilter}) => {
     <View style={styles.container2}>
         <View style={styles.header}>
           <View style={styles.headerBox}><Text style={{fontWeight: 'bold', fontSize: 15}}>제목</Text></View>
-          <View style={styles.headerBox2}>
+          <View style={styles.headerBox}>
             <TextInput style={styles.inputBox} placeholder='문의제목 입력' placeholderTextColor={'#BDBDBD'}
               onChangeText={(e) => setInfo((prevState) => ({ ...prevState, title: e}))}> 
              </TextInput>
           </View>
         </View>
         <View style={styles.header2}>
-          <View style={styles.header2Box}><Text style={{fontWeight: 'bold', fontSize: 15}}>내용</Text></View>
-          <View style={styles.header2Box2}>
-            <TextInput style={[styles.inputBox, {height: 340, paddingBottom: 290}]} placeholder='문의내용 입력' placeholderTextColor={'#BDBDBD'} multiline={true}
+          <View style={styles.headerBox}><Text style={{fontWeight: 'bold', fontSize: 15}}>내용</Text></View>
+          <View style={styles.headerBox}>
+            <TextInput style={[styles.inputBox, {height: 300, paddingTop: 15}]} placeholder='문의내용 입력' textAlignVertical='top' placeholderTextColor={'#BDBDBD'} multiline={true}
                onChangeText={(e) => setInfo((prevState) => ({ ...prevState, contents: e}))}> 
               </TextInput>
           </View>
@@ -129,7 +123,6 @@ const Inquiry2 = ({filter, setFilter}) => {
         <View style={[styles.footer, {backgroundColor: '#E0E0E0'}]}>
           <Text style={{fontSize: 18, fontWeight: '600', color: 'white'}}>문의하기</Text>
         </View>}
-
     </View>
   )
 }

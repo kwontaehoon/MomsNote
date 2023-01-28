@@ -113,11 +113,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     main3Box2:{
-        padding: 20
+        padding: 20,
     },
     main3Box3:{
-        paddingTop: 20,
-        paddingBottom: 20,
+        borderWidth: 1,
     },
     main3Box3Header:{
         justifyContent: 'center',
@@ -125,6 +124,8 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     main3Box3Main:{
+        paddingTop: 60,
+        paddingBottom: 60,
         flexDirection: 'row',
     },
     winBox:{
@@ -146,8 +147,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 10,
         justifyContent: 'center',
-        borderTopWidth: 1,
-        borderColor: '#EEEEEE',
+        alignItems: 'center',
+        borderColor: '#F5F5F5'
     },
     footerBox:{
         borderWidth: 1,
@@ -219,6 +220,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     const [async, setAsync] = useState(); // 임시저장 및 체험단 정보 저장 유무
     const [userInfo, setUserInfo] = useState(); // user 정보 asyncStorage
+    console.log('userInfo: ', userInfo);
     const boardLikeFlag = useSelector(state => { return state.boardLikeFlag.data });
     const boardLike = useSelector(state => { return state.boardLikeFlag.data });
     const boardLikeFlagSet = useSelector(state => { return state.boardLikeFlag.refresh });
@@ -226,6 +228,21 @@ const Talk1Sub = ({navigation, route}) => {
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
     console.log('boardAppFlag: ', boardAppFlag);
     const winList = useSelector(state => { return state.winList.data });
+    console.log('winList: ', winList);
+
+    const [winList2, setWinList] = useState([
+        {
+            nickname: '태훈구글',
+            profileImage: 1,
+
+        },{
+            nickname: '태훈2',
+            profileImage: 2,
+        },{
+            nickname: '태훈3',
+            profileImage: 3,
+        }
+    ]);
 
     
     const [filter, setFilter] = useState(false);
@@ -254,13 +271,14 @@ const Talk1Sub = ({navigation, route}) => {
             
         }
         hits();
+
     }, []);
 
     useEffect(()=>{
         const load = async() => {
             const asyncStorage = await AsyncStorage.getItem('application');
             const asyncStorage2 = await AsyncStorage.getItem('user');
-            setUserInfo(asyncStorage2);
+            setUserInfo(JSON.parse(asyncStorage2));
             setAsync(asyncStorage);            
         }
         load();
@@ -303,7 +321,7 @@ const Talk1Sub = ({navigation, route}) => {
                         <Text style={{fontWeight: 'bold', fontSize: 18, color: filter ? '#BDBDBD' : 'orange'}}>체험 정보</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.main3FilterBox, {borderBottomColor: filter ? 'orange' : 'lightgrey'}]} 
-                        onPress={()=>moment(info.openDate).diff(moment(), "days") >= 0 ? setFilter(true) : setModal(prevState => ({...prevState, open: true}))}>
+                        onPress={()=>moment(info.openDate).diff(moment(), "days") <= 0 ? setFilter(true) : setModal(prevState => ({...prevState, open: true}))}>
                         <Text style={{fontWeight: 'bold', fontSize: 18, color: filter ? 'orange' : 'lightgrey'}}>선정 인원</Text>
                     </TouchableOpacity>
                 </View>
@@ -312,6 +330,18 @@ const Talk1Sub = ({navigation, route}) => {
         </View>
       );
 
+    const renderItem2 = () => {
+        return(
+            <>
+
+<FlatList data={DATA} renderItem={renderItem}
+ keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
+</FlatList>
+
+</>
+        )
+    }
+
     const List = ({item}:any) => {
         switch(filter){
             case false : return (
@@ -319,7 +349,7 @@ const Talk1Sub = ({navigation, route}) => {
                     <Text>체험정보 입니다.</Text>
                 </View>
             )
-            case true : return (
+            case true && winList.length !== 0 : return (
                 <View style={styles.main3Box3}>
                     <View style={styles.main3Box3Header}>
                         <Text style={{fontSize: 20}}>축하합니다.</Text>
@@ -334,12 +364,17 @@ const Talk1Sub = ({navigation, route}) => {
                         {winList.map((x, index)=>{
                             return(
                                 <View style={styles.winBox} key={index}>
-                                    <View style={styles.profileBox}></View>
+                                    <Image source={{uri: x.profileImage}} style={styles.profileBox}/>
                                     <Text style={{fontSize: 15, marginLeft: 3}}>{x.nickname} 님</Text>
                                 </View>
                                 ) 
                         })}
                     </View>
+                </View>
+            )
+            case true && winList.length == 0  : return (
+                <View style={{justifyContent: 'center', alignItems: 'center', padding: 40, height: 200}}>
+                    <Text style={{fontSize: 20}}>아직 선정된 인원이 없습니다.</Text>
                 </View>
             )
         }
@@ -352,6 +387,16 @@ const Talk1Sub = ({navigation, route}) => {
                     <StatusBar />
             </SafeAreaView>
             <SafeAreaView style={styles.container}>
+            <View style={styles.header}>
+   <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
+   <View style={styles.headerBar}>
+   <Share style={{marginRight: 15}} />
+   </View>
+</View>
+
+            <FlatList data={DATA} renderItem={renderItem2}
+                keyExtractor={index => String(index)} showsVerticalScrollIndicator={false}>
+            </FlatList>
 
 
 <Modal animationType="fade" transparent={true} visible={modalVisible} statusBarTranslucent={true}
@@ -417,18 +462,7 @@ const Talk1Sub = ({navigation, route}) => {
    <ContentsURL modalVisible3={modalVisible3} setModalVisible3={setModalVisible3}/>
    <Modal2 modal={modal} setModal={setModal} />
 
-
-<View style={styles.header}>
-   <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
-   <View style={styles.headerBar}>
-   <Share style={{marginRight: 15}} />
-   </View>
-</View>
-
-<FlatList data={DATA} renderItem={renderItem}
- keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
-</FlatList>
-{filter ? winList.filter(x=> x.nickname == JSON.parse(userInfo).babyName) == '' ?  '' :
+   {filter ? winList.filter(x=> x.nickname == userInfo.nickname) == '' ?  '' :
    <View style={styles.footer}>
        <TouchableOpacity style={[styles.footerBox2, {width: '100%'}]} onPress={()=>setModalVisible3(!modalVisible3)}>
            <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>컨텐츠 등록</Text>

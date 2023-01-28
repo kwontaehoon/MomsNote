@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
   },
   header:{
-    height: 59,
+    height: 55,
     justifyContent: 'center',
-    padding: 15,
+    padding: 17,
   },
   headerBar:{
       position: 'absolute',
@@ -498,14 +498,16 @@ const save = async() => {
     </View>
   );
 
-  return info == ''|| info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return (
     <SafeAreaProvider>
 
         <SafeAreaView style={{ backgroundColor: 'white' }}>
             <StatusBar />
         </SafeAreaView>
 
-		    <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '89%'}]}>
+		    { info == ''|| info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '89%'}]}/>
+        :
+        <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '90%'}]}>
 
         <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
         <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modal={modal} setModal={setModal} setModal2={setModal2}/>
@@ -563,7 +565,7 @@ const save = async() => {
             </View>
           </View>
         </View>
-		</SafeAreaView>
+		</SafeAreaView>}
     </SafeAreaProvider>
 
         

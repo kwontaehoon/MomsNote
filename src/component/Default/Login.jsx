@@ -55,6 +55,8 @@ const styles = StyleSheet.create({
     },
 })
 const Main = ({navigation, route}) => {
+
+    console.log('로그인 route: ', route);
     
     const [modal, setModal] = useState(false); // 회원탈퇴시 모달창
 

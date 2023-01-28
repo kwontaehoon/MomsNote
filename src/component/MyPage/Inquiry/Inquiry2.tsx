@@ -60,7 +60,8 @@ const Inquiry3 = ({navigation}) => {
 
   return info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
-      {info.length == 0 ? <View style={styles.main2}><Text style={{color: '#757575', fontSize: 16}}>문의하신 내역이 없습니다.</Text></View> :
+      {info.length == 0 ? <View style={styles.main2}><Text style={{color: '#757575', fontSize: 16}}>문의하신 내역이 없습니다.</Text></View>
+      :
         <FlatList data={info} renderItem={renderItem} showsVerticalScrollIndicator={false}
           keyExtractor={item => String(item.inquiryId)}>
         </FlatList>

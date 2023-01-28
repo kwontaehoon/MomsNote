@@ -8,7 +8,7 @@ import Talk2 from './Tab2/Main'
 
 const styles = StyleSheet.create({
     container:{
-      height: '92.5%',
+      height: '93%',
       backgroundColor: 'white',
     },
     container2:{
@@ -130,7 +130,7 @@ const Main = ({navigation}:any) => {
     ); 
 
   return (
-    <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '92.5%', flex: Platform.OS === 'ios' ? 1 : null}]}>
+    <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '93%', flex: Platform.OS === 'ios' ? 1 : null}]}>
       <StatusBar backgroundColor={'white'} />
       <View style={styles.header}>
             <TouchableOpacity style={[styles.headerBox, {width: '50%', borderBottomColor: filter[0] ? 'orange' : '#EEEEEE'}]} onPress={()=>filter_func(0)}>

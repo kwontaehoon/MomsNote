@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList, Modal } 
 import Icon from 'react-native-vector-icons/Entypo'
 import Checkbox from 'expo-checkbox'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
 
 const styles = StyleSheet.create({
     container:{
@@ -13,18 +14,16 @@ const styles = StyleSheet.create({
 
     },
     header:{
-        height: 150,
+        height: 120,
         justifyContent: 'center',
         padding: 15,
         borderBottomWidth: 1,
         borderColor: '#EEEEEE',
     },
     main:{
-        height: 400,
         padding: 15,
     },
     mainBox:{
-        height: 150,
         justifyContent: 'center',
     },
     checkBox:{
@@ -39,10 +38,12 @@ const styles = StyleSheet.create({
         paddingBottom: 100,
     },
     main2:{
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
         height: 60,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 50
     },
     modalContainer:{
         justifyContent: "center",
@@ -51,7 +52,6 @@ const styles = StyleSheet.create({
     modalView:{
         width: '100%',
         height: '100%',
-        margin: 20,
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: "center",
         justifyContent: 'center',
@@ -60,13 +60,11 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 220,
         backgroundColor: 'white',
-        marginBottom: 35,
         borderRadius: 15,
     },
     modalBox:{
-        height: '45%',
+        padding: 15,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -77,10 +75,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 3,
-        marginBottom: 3,
+        marginBottom: 10,
     },
 })
 const Main = ({navigation}) => {
+
     const DATA = [
         {
           id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -89,34 +88,44 @@ const Main = ({navigation}) => {
     ];
 
     const [isChecked, setCheck] = useState(false); // 체크박스
-    const [modalVisible, setModalVisible] = useState(false); // modal
+    const [modalVisible, setModalVisible] = useState(false); //회원탈퇴 확인 modal
+    const [modal, setModal] = useState(false); // 회원탈퇴 감사했습니다 모달
 
     const withdraw = async() => {
+        const token = await AsyncStorage.getItem('token');
+        const response = await axios({
+            method: 'post',
+            url: 'https://momsnote.net/api/inquiry/list',
+            headers: { 
+            'Authorization': `bearer ${token}`, 
+            'Content-Type': 'application/json'
+            },
+            data: {}
+        });
         AsyncStorage.setItem('login', '1');
         
         setModalVisible(!modalVisible);
+        setModal(!modal);
 
         navigation.navigate('초기접근');
     }
 
     const renderItem = ({ item }) => (
-        <View style={styles.container2}>
+        <View>
         <View style={styles.header}>
             <Text style={[{fontSize: 20}, {marginBottom: 5}]}>회원 탈퇴 전,</Text>
             <Text style={{fontSize: 20}}>아래의 안내 사항을 꼭 확인해주세요.</Text>
         </View>
         <View style={styles.main}>
             <View style={styles.mainBox}>
-                <Text style={{fontWeight: 'bold', fontSize: 15, marginBottom: 7}}>[회원 탈퇴 시 유의사항]</Text>
-                <Text style={{marginBottom: 3}}><Icon name='dot-single' size={15}/>
-                탈퇴 후 회원님이 직접 등록하신 데이터는 모두 삭제 처리되며,</Text>
-                <Text style={{marginBottom: 5}}>재 가입 시 확인이 불가합니다.</Text>
-                <Text><Icon name='dot-single' size={15}/>
-                탈퇴 후 동일 이메일로 재 가입이 불가합니다.</Text>
+                <Text style={{fontWeight: 'bold', fontSize: 15, marginBottom: 10}}>[회원 탈퇴 시 유의사항]</Text>
+                <Text style={{marginBottom: 15, lineHeight: 20}}><Icon name='dot-single' size={15}/>
+                    탈퇴 후 회원님이 직접 등록하신 데이터는 모두 삭제 처리되며, 재 가입 시 확인이 불가합니다.
+                </Text>
+                <Text style={{marginBottom: 15}}><Icon name='dot-single' size={15}/>탈퇴 후 동일 이메일로 재 가입이 불가합니다.</Text>
             </View>
             <View style={[styles.mainBox, {height: 50}]}>
-                <Text style={{marginBottom: 3}}>모든 항목에 동의하시면 아래에 체크 후 탈퇴 사유를 적어주세요.</Text>
-                <Text>더 좋은 서비스를 제공하기 위해 소중한 정보로 활용하겠습니다.</Text>
+                <Text style={{marginBottom: 3, lineHeight: 20}}>모든 항목에 동의하시면 아래에 체크 후 탈퇴 사유를 적어주세요. 더 좋은 서비스를 제공하기 위해 소중한 정보로 활용하겠습니다.</Text>
             </View>
             <View style={[styles.mainBox, {flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', height: 50}]}>
                 <View><Checkbox style={styles.checkBox}
@@ -126,17 +135,14 @@ const Main = ({navigation}) => {
                 </View>
                 <Text style={{marginLeft: 5}}>탈퇴 시 유의사항을 모두 숙지하고 동의</Text>
             </View>
-            <TextInput style={styles.mainBox2} placeholder='탈퇴 사유를 작성해주세요.' multiline={true}/>
+            <TextInput style={styles.mainBox2} placeholder='탈퇴 사유를 작성해주세요.' textAlignVertical='top' multiline={true}/>
         </View>
-        <TouchableOpacity style={[styles.main2, {backgroundColor: isChecked ? '#FEA100' : '#E0E0E0'}]} onPress={()=>{isChecked ? setModalVisible(!modalVisible) : ''}}>
-            <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>회원탈퇴</Text>
-        </TouchableOpacity>
     </View>
       );
       
   return (
     <View style={styles.container}>
-        <Modal animationType="fade" transparent={true} visible={modalVisible}
+        <Modal animationType="fade" transparent={true} visible={modalVisible} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible(!modalVisible)}}>
             <View style={styles.modalContainer}>
@@ -157,9 +163,34 @@ const Main = ({navigation}) => {
                 </View>
             </View>
         </Modal>
+        <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
+            onRequestClose={() => {
+            setModalVisible(!modal)}}>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                    <View style={styles.modalContainer2}>
+                        <View style={styles.modalBox}>
+                            <Text style={{fontSize: 16, paddingTop: 10}}>회원탈퇴가 완료되었습니다.</Text>
+                            <Text style={{fontSize: 16, paddingTop: 5}}>맘스노트를 이용해주셔서 감사합니다.</Text>
+                        </View>
+                        <View style={styles.modalBox}>
+                        <TouchableOpacity style={styles.modal} onPress={()=>setModal(!modal)}>
+                            <Text style={{color: 'white', fontSize: 16}}>확인</Text>
+                        </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+        
         <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
         </FlatList>
+
+        <TouchableOpacity style={[styles.main2, {backgroundColor: isChecked ? '#FEA100' : '#E0E0E0'}]} onPress={()=>{isChecked ? setModalVisible(!modalVisible) : ''}}>
+            <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>회원탈퇴</Text>
+        </TouchableOpacity>
+
     </View>
   )
 }

@@ -23,20 +23,17 @@ const styles = StyleSheet.create({
     },
     main:{
         borderBottomWidth: 1,
+        
+        borderColor: '#EEEEEE',
+        justifyContent: 'center',
         padding: 20,
-        borderColor: '#EEEEEE'
     },
     main2:{
         justifyContent: 'center',
         padding: 20,
     },
-    main2Box:{
-
-    },
 })
 const InquiryDetail = ({route}) => {
-
-    console.log('route: ', route.params);
 
     const renderItem = ({ item }) => (
         <View>
