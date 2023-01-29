@@ -7,7 +7,7 @@ import { setGuideCountRefresh } from '../../../Redux/Slices/GuideCountSlice'
 
 const styles = StyleSheet.create({
   container:{
-    height: '89%',
+    flex: 1,
     backgroundColor: 'white',
   },
   header:{
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header2:{
-    height: 50,
+    height: '10%',
     flexDirection: 'row',
     backgroundColor: '#F5F5F5',
   },
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     borderRadius: 0,
   },
   main:{
-    height: '77%',
+    height: '75%',
     paddingLeft: 10,
     paddingRight: 10,
   },

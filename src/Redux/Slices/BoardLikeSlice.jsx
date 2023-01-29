@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const postBoardLike = createAsyncThunk("postBoardLikeSlice/async", async (data) => {
   console.log('postBoardLike 업데이트됨');
@@ -15,6 +16,7 @@ export const postBoardLike = createAsyncThunk("postBoardLikeSlice/async", async 
           url: 'https://momsnote.net/api/board/recommend',
           data : data
       });
+      console.log('response: ', response.data);
       return response.data;
       }catch(error){
           console.log('boardLike axios error: ', error);

@@ -20,6 +20,8 @@ import {
 import { useIsFocused } from '@react-navigation/native'
 import Comment from './Comment'
 import axios from 'axios'
+import ViewShot from 'react-native-view-shot'
+import * as MediaLibrary from 'expo-media-library'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Chat from '../../../../public/assets/svg/Chat.svg'
@@ -31,6 +33,8 @@ import Close from '../../../../public/assets/svg/Close.svg'
 import Download from '../../../../public/assets/svg/Download.svg'
 
 import { postHits } from '../../../Redux/Slices/HitsSlice'
+import { postDdayToday } from '../../../Redux/Slices/DdayTodaySlice'
+import { postDdayTerm } from '../../../Redux/Slices/DdayTermSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -56,10 +60,10 @@ const styles = StyleSheet.create({
     main:{
     },
     mainBox:{
-        padding: 20,
+        padding: 20
     },
     mainBox2:{
-        padding: 20,
+        padding: 20
     },
     mainBox2ImageBox:{
         height: 400,
@@ -181,8 +185,6 @@ const styles = StyleSheet.create({
     }
 })
 const Talk1Sub = ({navigation, route}) => {
-
-    console.log('xaxaqewqewq',getStatusBarHeight());
     
     Keyboard.addListener('keyboardDidShow', (e) => {
         setPageHeight(true);
@@ -193,7 +195,13 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = [route.params.item];
-    console.log('talk1 info: ', info);
+    console.log('오늘의 편지 info: ', info);
+    const info2 = useSelector(state => { return state.ddayTerm.data }); 
+    console.log('오늘의 편지 info2:' , info2);
+    const [info3, setInfo3] = useState(info2);
+    console.log('오늘의 편지 info3: ', info3);
+    const ref = useRef();
+    const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
@@ -230,28 +238,41 @@ const Talk1Sub = ({navigation, route}) => {
 
     const [userInfo, setUserInfo] = useState();
     console.log('오늘 이시기에는 userInfo: ', userInfo);
-
     const animation = useRef(new Animated.Value(0)).current;
     const flatlistRef = useRef(null);
+
+    useEffect(()=>{
+        save();
+    }, [captureURL]);
 
     useEffect(()=>{ // 댓글 목록
         dispatch(postComment(commentData));
         dispatch(postCommentFlag({boardId: info[0].boardId}));
+        dispatch(postDdayTerm({subcategory: `${info[0].weeks}주`}));
+
         const user = async() => {
             const user = await AsyncStorage.getItem('user');
             setUserInfo(JSON.parse(user));
         }
         const hits = async() => {
             const hits = await AsyncStorage.getItem('hits');
-            console.log('hits: ', hits);
 
             hits == null || hits.split('|').filter(x => x == String(info[0].boardId)) == '' ? 
-            (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`), setBoardLike('조회수증가')) : ''
-            
+            (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`)) : ''
         }
+
+        setTimeout(() => {
+            dispatch(postDdayTerm({subcategory: `${info[0].weeks}주`}));
+        }, 100);
+
         user();
         hits();
     }, []);
+
+    useEffect(()=>{
+        setInfo3(info2.filter(x => x.boardId == info[0].boardId));
+    }, [info2]);
+    
 
     useEffect(()=>{ // 게시물 추천 Flag
         console.log('게시물 추천 여부 업데이트');
@@ -314,12 +335,65 @@ const Talk1Sub = ({navigation, route}) => {
                   }
                 });
                 console.log('response: ', response.data);
-                dispatch(postBoard(boardData));
+                dispatch(postDdayTerm({subcategory: `${info[0].weeks}주`}));
+                setBoardLike();
             }catch(error){
               console.log('error: ', error);
             }
-            setBoardLike();
+            
     }
+
+    const save = async() => {
+   
+        if(captureURL !== undefined){
+            let { status } = await MediaLibrary.requestPermissionsAsync();
+            const asset = await MediaLibrary.createAssetAsync(captureURL);
+            // const moms = await MediaLibrary.getAlbumAsync('맘스노트');
+            // console.log('moms: ', moms);
+           
+            
+            if(status === 'granted'){
+                // const kwon = await MediaLibrary.getAlbumAsync('DCIM');
+                // const moms = await MediaLibrary.getAlbumAsync('맘스노트');split
+                // if(moms === null){
+                //     MediaLibrary.createAlbumAsync('맘스노트', asset);
+                // }
+                // MediaLibrary.addAssetsToAlbumAsync(moms, moms.id);
+                // MediaLibrary.migrateAlbumIfNeededAsync(moms.id);
+                // const album = await MediaLibrary.getAlbumAsync('맘스노트');
+                // // console.log('album: ', album);
+    
+                // MediaLibrary.createAlbumAsync('맘스노트', asset);
+                // // const asset = await MediaLibrary.createAssetAsync(captureURL);
+            }
+        }
+        setTimeout(() => {
+          setCaptureURL(undefined);
+        }, 2000);
+      }
+    
+      const opacity_ani = () => {
+        Animated.timing(animation, {
+            toValue: 1,
+            useNativeDriver: true,
+            duration: 1500,
+        }).start(()=>{
+            Animated.timing(animation, {
+                toValue: 0,
+                useNativeDriver: true,
+                duration: 1500,
+            }).start();
+        });
+    }
+    
+      const capture = async() => {
+        opacity_ani();
+        setCaptureURL('1');
+    
+        ref.current.capture().then(uri => {
+            setCaptureURL(uri);
+          });
+      }
 
     const ImageBox = () => {
         const arr:any[] = [];
@@ -371,20 +445,6 @@ const Talk1Sub = ({navigation, route}) => {
         }
     }
 
-    const opacity_ani = () => {
-        Animated.timing(animation, {
-            toValue: 1,
-            useNativeDriver: true,
-            duration: 1500,
-        }).start(()=>{
-            Animated.timing(animation, {
-                toValue: 0,
-                useNativeDriver: true,
-                duration: 1500,
-            }).start();
-        });
-    }
-
     const onPressFunction = () => {
         flatlistRef.current?.scrollToEnd();
     };
@@ -392,17 +452,21 @@ const Talk1Sub = ({navigation, route}) => {
     const renderItem = ({ item }) => (
         <View>
             <View style={styles.main}>
+
+                <ViewShot ref={ref} options={{ fileName: "MomsNote", format: "png", quality: 1 }} style={{backgroundColor: 'white'}}>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 20, fontWeight: '400', lineHeight: 20}}>{item.title}</Text>
                 </View>
                 <View style={styles.mainBox2}>
                     <Text style={{lineHeight: 20}}>{item.contents}</Text>
                 </View>
+                </ViewShot>
+                
                 {item.savedName === null ? <View></View> : ImageBox()}
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
                         {boardLike == 0 | boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000'/>}
-                        <Text style={{color: boardLike == 0 ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { boardLike }</Text>
+                        <Text style={{color: boardLike == 0 ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { item.recommend }</Text>
                         <Chat width={16} height={16}/>
                         <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 {item.commentsCount}</Text>
                     </View>
@@ -426,8 +490,8 @@ const Talk1Sub = ({navigation, route}) => {
     <SafeAreaProvider>
         <SafeAreaView style={styles.container}>
 
-            <Animated.View style={[styles.alarmBox, {opacity: animation}]}>
-                <View style={styles.alarm}><Text style={{color: 'white', fontSize: 13, fontWeight: '500'}}>{info[0].nickname}님을 차단하였습니다.</Text></View>
+            <Animated.View style={[styles.alarmBox, {opacity: animation, display: captureURL == undefined ? 'none' : 'flex'}]}>
+                <View style={styles.alarm}><Text style={{color: 'white', fontSize: 13, fontWeight: '500'}}>게시글이 내 앨범에 저장되었습니다.</Text></View>
             </Animated.View>
 
             <Modal navigation={navigation} modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3} commentsId={commentsId} info={info}
@@ -438,14 +502,14 @@ const Talk1Sub = ({navigation, route}) => {
             <Modal6 modal4={modal4} setModal4={setModal4} modal6={modal6} setModal6={setModal6} commentsId={commentsId}/>
 
             <View style={styles.header}>
-                    <TouchableOpacity onPress={()=>navigation.goBack()} style={{height: '100%'}}><Back /></TouchableOpacity>
+                    <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
                     <View style={styles.headerBar}>
-                        <Download style={{marginRight: 12}} onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}/>
-                        <Share />
+                        <TouchableOpacity style={{marginRight: 16}} onPress={capture}><Download/></TouchableOpacity>
+                        <TouchableOpacity><Share /></TouchableOpacity>
                     </View>
             </View>
 
-            <FlatList ref={flatlistRef} data={info} renderItem={renderItem} showsVerticalScrollIndicator={false}
+            <FlatList ref={flatlistRef} data={info3} renderItem={renderItem} showsVerticalScrollIndicator={false}
                 keyExtractor={item => String(item.boardId)}>
             </FlatList>
 

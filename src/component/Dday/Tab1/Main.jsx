@@ -36,7 +36,7 @@ const Talk1 = ({navigation, week}) => {
 
   const [info, setInfo] = useState([]);
   console.log('오늘의편지 info: ', info);
-  const [refresh, setRefresh] = useState(false); // 추천, 댓글 등록, 댓글 삭제 누르면 정보를 다시받아야해서 새로고침 state
+  console.log('week: ', week.findIndex(x => x === true)+1);
 
     useEffect(()=>{
       const Government = async() => {
@@ -50,10 +50,10 @@ const Talk1 = ({navigation, week}) => {
       setInfo(response.data);
       }
       Government();
-    }, [refresh]);
+    }, []);
     
-    const renderItem = ({ item }) => (
-           <TouchableOpacity style={styles.main} onPress={()=>navigation.navigate('오늘의편지 상세페이지', {item, refresh, setRefresh})}>
+    const renderItem = ({ item, index }) => (
+           <TouchableOpacity style={styles.main} onPress={()=>navigation.navigate('오늘의편지 상세페이지', {item})}>
               <View style={styles.mainBox}><Text>사진</Text></View>
               <View style={styles.mainBox2}><Text style={{fontSize: 15}}>{item.title}</Text></View>
           </TouchableOpacity>

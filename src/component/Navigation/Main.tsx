@@ -294,26 +294,7 @@ const Navigation = () => {
                             height: 110
                         },
                     })}/>
-                <Stack.Screen name="총 예산" component={Budget} options={({ navigation, route }) => ({
-                            
-                            headerLeft: () => (
-                                <View style={styles.header}>
-                                    <View style={styles.headerBox}>
-                                        <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
-                                        <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>총 예산</Text>
-                                    </View>
-                                </View>
-                            ),
-                            headerTitle(props) {
-                                <View></View>
-                            },
-                            headerStyle: {
-                                borderWidth: 0,
-                                elevation: 0,
-                                shadowOpacity: 0,
-                                height: 110
-                            },
-                        })}/>
+                <Stack.Screen name="총 예산" component={Budget} options={{title: '', headerShown: false}}/>
                 <Stack.Screen name="오늘의편지 상세페이지" component={DdayDetail} options={{title: '', headerShown: false}}/>
                 <Stack.Screen name="이시기에는 상세페이지" component={DdayDetail2} options={{title: '', headerShown: false}}/>
                 

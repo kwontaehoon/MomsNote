@@ -18,17 +18,14 @@ import { postBoardAppFlag } from '../../../Redux/Slices/BoardAppFlagSlice'
 
 const styles = StyleSheet.create({
   container:{
-    height: '91%',
+    flex: 1,
     backgroundColor: 'white',
-  },
-  header:{
-    height: 10,
-    backgroundColor: '#F5F5F5',
   },
   header2:{
     height: 50,
     flexDirection: 'row',
     backgroundColor: '#F5F5F5',
+    paddingTop: 10,
   },
   header2FilterBox:{
     width: '68%',

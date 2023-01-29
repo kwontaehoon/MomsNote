@@ -30,6 +30,7 @@ import { postWinList } from '../../../Redux/Slices/WinListSlice'
 import { postHits } from '../../../Redux/Slices/HitsSlice'
 
 import Modal2 from '../../Modal/First'
+import { postExperience } from '../../../Redux/Slices/ExperienceSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -207,6 +208,10 @@ const Talk1Sub = ({navigation, route}) => {
     const info = route.params;
     console.log('체험단 상세: ', info);
     console.log(info.experienceId);
+    const exp = useSelector(state => { return state.experience.data; });
+    console.log('exp: ', exp);
+    const [info2, setInfo2] = useState(exp);
+    console.log('체험단 info2: ', info2);
 
     const DATA = [
         {
@@ -222,6 +227,7 @@ const Talk1Sub = ({navigation, route}) => {
     const [userInfo, setUserInfo] = useState(); // user 정보 asyncStorage
     console.log('userInfo: ', userInfo);
     const boardLikeFlag = useSelector(state => { return state.boardLikeFlag.data });
+    console.log('boardLikeFlag: ', boardLikeFlag);
     const boardLike = useSelector(state => { return state.boardLikeFlag.data });
     const boardLikeFlagSet = useSelector(state => { return state.boardLikeFlag.refresh });
     const boardLikeSet = useSelector(state => { return state.boardLike.refresh });
@@ -229,21 +235,6 @@ const Talk1Sub = ({navigation, route}) => {
     console.log('boardAppFlag: ', boardAppFlag);
     const winList = useSelector(state => { return state.winList.data });
     console.log('winList: ', winList);
-
-    const [winList2, setWinList] = useState([
-        {
-            nickname: '태훈구글',
-            profileImage: 1,
-
-        },{
-            nickname: '태훈2',
-            profileImage: 2,
-        },{
-            nickname: '태훈3',
-            profileImage: 3,
-        }
-    ]);
-
     
     const [filter, setFilter] = useState(false);
     const [modalVisible, setModalVisible] = useState(false); // 체험단 신청정보 입력 -> asnyc storage
@@ -258,21 +249,19 @@ const Talk1Sub = ({navigation, route}) => {
 
     useEffect(()=>{
         dispatch(postBoardLikeFlag({ boardId: info.boardId}));
-        // dispatch(postBoardLike({ boardId: info.boardId, type: 'plus'}));
+        dispatch(postExperience({
+            order: 'new',
+            count: 1,
+            page: 1,
+        }));
         dispatch(postBoardAppFlag({ experienceId: info.experienceId }));
         dispatch(postWinList({ experienceId: info.experienceId }));
 
-        const hits = async() => {
-            const hits = await AsyncStorage.getItem('hits');
-            console.log('hits: ', hits);
-
-            hits == null || hits.split('|').filter(x => x == String(info.boardId)) == '' ? 
-            (dispatch(postHits({boardId: info.boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info.boardId}`)) : ''
-            
-        }
-        hits();
-
     }, []);
+
+    useEffect(()=>{
+        setInfo2(exp.filter(x => x.boardId == info.boardId));
+    }, [exp]);
 
     useEffect(()=>{
         const load = async() => {
@@ -286,6 +275,12 @@ const Talk1Sub = ({navigation, route}) => {
 
     const recommend = async() => {
         dispatch(postBoardLike({ boardId: route.params.boardId, type: 'plus'}));
+        dispatch(postBoardLikeFlag({ boardId: info.boardId}));
+        dispatch(postExperience({
+            order: 'new',
+            count: 1,
+            page: 1,
+        }));
     }
 
     const renderItem = ({ item }:any) => (
@@ -472,12 +467,12 @@ const Talk1Sub = ({navigation, route}) => {
    {boardLikeFlag == 0 ? 
    <TouchableOpacity style={[styles.footerBox, {width: '20%'}]} onPress={recommend}>
        <Like width={20} fill='#BDBDBD'/>  
-       <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {info.recommend}</Text>
+       <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {info2[0].recommend}</Text>
    </TouchableOpacity>
    :
    <View style={[styles.footerBox, {width: '20%'}]}>
        <Heart width={20} fill='#FEA100'/> 
-       <Text style={{fontSize: 16, fontWeight: '500', color: '#FEA100'}}> {info.recommend}</Text>
+       <Text style={{fontSize: 16, fontWeight: '500', color: '#FEA100'}}> {info2[0].recommend}</Text>
    </View>
    }
 

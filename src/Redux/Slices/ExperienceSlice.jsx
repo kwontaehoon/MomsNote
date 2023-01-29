@@ -24,7 +24,7 @@ const initialState = {
     data: [],
     refresh: {
         order: 'new',
-        count: 5,
+        count: 1,
         page: 1,
     }
 }

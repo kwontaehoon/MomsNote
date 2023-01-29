@@ -6,7 +6,7 @@ import Checkbox from 'expo-checkbox'
 
 const styles = StyleSheet.create({
     container:{
-        height: '91%',
+        height: '90.5%',
         backgroundColor: 'white',
     },
     container2:{
@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
     main:{
         padding: 20,
         paddingTop: 40,
-        height: 850,
     },
     mainBox:{
         marginBottom: 30,
@@ -61,18 +60,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     footer:{
-        height: 60,
         alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 10,
     },
     footerBox:{
         width: '90%',
-        height: '100%',
+        height: 56,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#FEA100',
-        borderRadius: 3,
+        borderRadius: 4,
     }
 })
 const Withdraw = ({navigation}) => {
@@ -140,7 +136,7 @@ const Withdraw = ({navigation}) => {
   return (
     <View style={styles.container}>
        <FlatList data={DATA} renderItem={renderItem}
-          keyExtractor={item => item.id} showsHorizontalScrollIndicator={false}>
+          keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
         </FlatList>
     </View>
   )

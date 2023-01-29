@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
   container:{
     height: '90%',
     backgroundColor: 'white',
-    borderWidth: 1,
   },
   header:{
     height: '10%',

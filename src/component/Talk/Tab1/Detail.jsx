@@ -192,12 +192,6 @@ const styles = StyleSheet.create({
 })
 const Talk1Sub = ({navigation, route}) => {
 
-    console.log('route: ', route.params);
-    console.log('route: ', route.params.item);
-    
-    const info3 = route.params;
-    console.log('info3: ', info3);
-
     Keyboard.addListener('keyboardDidShow', () => {
         setPageHeight(true);
     });
@@ -207,13 +201,11 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const boardInfo = useSelector(state => { return state.board.data});
-    console.log('원래 board info: ', boardInfo);
     const [info, setInfo] = useState(boardInfo);
     console.log('board 상세페이지 info: ', info);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
-    console.log('comment: ', comment);
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
     const [insert, setInsert] = useState(
         {
@@ -223,9 +215,7 @@ const Talk1Sub = ({navigation, route}) => {
             level: 0
         }
     ); // 댓글 입력
-    console.log('insert: ', insert);
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요 Flag
-    console.log('board Like: ', boardLike);
     const [boardData, setBoardData] = useState({
         order: 'new',
         count: 1,
@@ -238,8 +228,6 @@ const Talk1Sub = ({navigation, route}) => {
         count: 1,
         page: 1
     });
-
-    const [hits, setHits] = useState();
 
     const [modal, setModal] = useState(false); // dot 모달 다른사람게시판 차단 및 신고
     const [modal2, setModal2] = useState(false); // 차단하기
@@ -254,9 +242,7 @@ const Talk1Sub = ({navigation, route}) => {
     const flatlistRef = useRef(null);
 
     useEffect(()=>{
-        console.log(info3.item.boardId);
         dispatch(postBoard(boardData));
-        setInfo(boardInfo.filter(x => x.boardId == route.params.item.boardId));
         dispatch(postComment({
             boardId: route.params.item.boardId,
             count: 1,
@@ -269,18 +255,22 @@ const Talk1Sub = ({navigation, route}) => {
         }
         const hits = async() => {
             const hits = await AsyncStorage.getItem('hits');
-            console.log('hits: ', hits);
 
             hits == null || hits.split('|').filter(x => x == String(info[0].boardId)) == '' ? 
-            (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`), setHits(String(hits))) : ''
+            (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`)) : ''
         }
+        
+        setTimeout(() => {
+            dispatch(postBoard(boardData));
+        }, 100);
+
         user();
         hits();
     }, []);
 
     useEffect(()=>{
-        
-    }, [hits]);
+        setInfo(boardInfo.filter(x => x.boardId == route.params.item.boardId));
+    }, [boardInfo]);
 
     useEffect(()=>{ // 게시물 추천 Flag
         console.log('게시물 추천 여부 업데이트');
@@ -289,7 +279,7 @@ const Talk1Sub = ({navigation, route}) => {
             try{
                 const response = await axios({
                     method: 'post',
-                    url: 'https://momsnote.net/api/board/recommend/flag',
+                    url: 'https://momsnote.net/api/board/recommend/flag', 
                     headers: { 
                         'Authorization': `Bearer ${token}`, 
                         'Content-Type': 'application/json'
@@ -330,7 +320,6 @@ const Talk1Sub = ({navigation, route}) => {
     const likeplus = async() => { // 게시판 좋아요
         console.log('likeplus');
         const token = await AsyncStorage.getItem('token');
-        setHits(13);
         try{
             const response = await axios({
                   method: 'post',
@@ -347,7 +336,6 @@ const Talk1Sub = ({navigation, route}) => {
                 console.log('response: ', response.data);
                 dispatch(postBoard(boardData));
                 setBoardLike();
-                setHits(response.data);
             }catch(error){
               console.log('게시판 좋아요 error: ', error);
             }

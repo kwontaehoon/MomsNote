@@ -27,15 +27,7 @@ const styles = StyleSheet.create({
 })
 const Main = ({navigation, route}) => {
 
-    console.log('fadsfewfqeeqfqe: ', route.params);
-
     const [filter, setFilter] = useState([true, false, false]); // tab
-
-    useEffect(()=>{
-        const arr = [false, true, false];
-        console.log('맘스 톡 route: ', route.params);
-        route.params == '2' ? setFilter(arr) : ''
-    }, []);
 
     const List = () => {
 

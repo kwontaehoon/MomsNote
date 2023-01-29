@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     },
 })
 
-const CheckBoxModal = ({modalVisible4, setModalVisible4}) => {
+const CheckBoxModal = ({navigation, modalVisible4, setModalVisible4}) => {
 
   return (
     <Modal animationType="fade" transparent={true} visible={modalVisible4} statusBarTranslucent={true}
@@ -50,7 +50,9 @@ const CheckBoxModal = ({modalVisible4, setModalVisible4}) => {
             <View style={styles.modalContainer2}>
                 <View style={styles.modalBox}><Text style={{fontSize: 16, textAlign: 'center', lineHeight: 25}}>출산 리스트 공유 게시판에 등록되었습니다.</Text></View>
                 <View style={styles.modalBox}>
-                    <TouchableOpacity style={styles.modal} onPress={()=>setModalVisible4(!modalVisible4)}><Text style={{color: 'white', fontSize: 16}}>확인</Text></TouchableOpacity>
+                    <TouchableOpacity style={styles.modal} onPress={()=>{setModalVisible4(!modalVisible4), navigation.navigate('맘스 톡', '2')}}>
+                        <Text style={{color: 'white', fontSize: 16}}>확인</Text>
+                    </TouchableOpacity>
                 </View>
                 </View>
             </View>

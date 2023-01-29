@@ -73,9 +73,9 @@ const dayCalculate = (date) => {
           <View style={{flexDirection: 'row', marginTop: 4}}>
             <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.nickname}</Text>
             <Like height={17}/>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.recommend}</Text>
+            <Text style={{fontSize: 13, color: '#9E9E9E'}}> {x.recommend}</Text>
             <Chat height={17}/>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{x.commentsCount}</Text>
+            <Text style={{fontSize: 13, color: '#9E9E9E'}}> {x.commentsCount}</Text>
           </View>
         </View>
 

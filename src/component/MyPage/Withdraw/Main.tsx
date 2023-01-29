@@ -124,7 +124,7 @@ const Main = ({navigation}) => {
                 </Text>
                 <Text style={{marginBottom: 15}}><Icon name='dot-single' size={15}/>탈퇴 후 동일 이메일로 재 가입이 불가합니다.</Text>
             </View>
-            <View style={[styles.mainBox, {height: 50}]}>
+            <View style={styles.mainBox}>
                 <Text style={{marginBottom: 3, lineHeight: 20}}>모든 항목에 동의하시면 아래에 체크 후 탈퇴 사유를 적어주세요. 더 좋은 서비스를 제공하기 위해 소중한 정보로 활용하겠습니다.</Text>
             </View>
             <View style={[styles.mainBox, {flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', height: 50}]}>

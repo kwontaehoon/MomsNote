@@ -12,7 +12,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
 import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
-import { postCommentRecommend } from '../../../Redux/Slices/CommentRecommendSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
     SafeAreaProvider,
@@ -32,7 +31,8 @@ import Share from '../../../../public/assets/svg/Share.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
 import { postShareList } from '../../../Redux/Slices/ShareListSlice'
 import { postHits } from '../../../Redux/Slices/HitsSlice'
-import { useIsFocused } from '@react-navigation/native'
+import { useFocusEffect, useIsFocused } from '@react-navigation/native'
+import { postMaterialShare } from '../../../Redux/Slices/MaterialShareSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -293,7 +293,12 @@ const Talk1Sub = ({navigation, route}) => {
     const info = [route.params];
     console.log('출산리스트 route: ', info);
     const info2 = useSelector(state => { return state.shareList.data }); // 게시글 리스트
-    console.log('출산리스트 info : ', info2);
+    console.log('출산리스트 info2 : ', info2);
+    const materialShareSet = useSelector(state => { return state.materialShare.refresh });
+    const materialShare = useSelector(state => { return state.materialShare.data });
+    console.log('materialShare: ', materialShare);
+    const [info3, setInfo3] = useState(materialShare);
+    console.log('출산리스트 info3: ', info3);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
@@ -306,7 +311,6 @@ const Talk1Sub = ({navigation, route}) => {
             level: 0
         }
     ); // 댓글 입력
-    console.log('insert: ', insert);
     const [list, setList] = useState(Array.from({length: 9}, () => {return true})); // list display
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요
     const [boardData, setBoardData] = useState({
@@ -341,6 +345,8 @@ const Talk1Sub = ({navigation, route}) => {
         dispatch(postComment(commentData));
         dispatch(postCommentFlag({boardId: info[0].boardId}));
         dispatch(postShareList({boardId: info[0].boardId}));
+        dispatch(postMaterialShare(materialShareSet));
+
         const user = async() => {
             const user = await AsyncStorage.getItem('user');
             setUserInfo(JSON.parse(user));
@@ -352,11 +358,19 @@ const Talk1Sub = ({navigation, route}) => {
 
             hits == null || hits.split('|').filter(x => x == String(info[0].boardId)) == '' ? 
             (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`)) : ''
-            
         }
+
+        setTimeout(() => {
+            dispatch(postMaterialShare(materialShareSet));
+        }, 100);
+
         user();
         hits();
     }, []);
+
+    useEffect(()=>{
+        setInfo3(materialShare.filter(x => x.boardId == info[0].boardId));
+    }, [materialShare]);
 
     useEffect(()=>{
         let sum = 0;
@@ -430,11 +444,12 @@ const Talk1Sub = ({navigation, route}) => {
                   }
                 });
                 console.log('response: ', response.data);
-                dispatch(postBoard(boardData));
+                dispatch(postMaterialShare(materialShareSet));
+                setBoardLike();
             }catch(error){
               console.log('error: ', error);
             }
-            setBoardLike();
+            
     }
 
     const arrow = (e) => { // arrow 누르면 서브페이지 display
@@ -572,12 +587,12 @@ const Talk1Sub = ({navigation, route}) => {
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
                         {boardLike == 0 | boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000'/>}
-                        <Text style={{color: boardLike == 0 ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { info[0].recommend }</Text>
+                        <Text style={{color: boardLike == 0 ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { info3[0].recommend }</Text>
                         <Chat width={16} height={16}/>
-                        <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 {info[0].commentsCount}</Text>
+                        <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 {info3[0].commentsCount}</Text>
                     </View>
                     <View style={styles.lookupBox}>
-                        <Text style={{fontSize: 13, color: '#9E9E9E'}}>조회수 {info[0].hits}</Text>
+                        <Text style={{fontSize: 13, color: '#9E9E9E'}}>조회수 {info3[0].hits}</Text>
                     </View>
                 </View>
                 <View style={styles.mainBox4}>

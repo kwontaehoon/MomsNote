@@ -14,15 +14,13 @@ import Modal from '../../Modal/First'
 
 const styles = StyleSheet.create({
   container:{
-    height: '86%',
+    flex: 1,
     backgroundColor: 'white',
-  },
-  header:{
-    height: 10,
   },
   header2:{
     height: 50,
     flexDirection: 'row',
+    paddingTop: 10,
   },
   header2FilterBox:{
     width: '68%',

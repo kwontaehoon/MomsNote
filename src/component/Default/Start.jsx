@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import React, { useState } from 'react'
+import React, { useState, useRef, useCallback } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
-import Slick from 'react-native-slick'
+import Swiper from 'react-native-swiper'
+import { Navigation } from 'react-native-swiper'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 
 const styles = StyleSheet.create({
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
       marginBottom: 3
     },
     dotActive:{
-      backgroundColor: '#000',
+      backgroundColor: '#FEA100',
       width: 8,
       height: 8,
       borderRadius: 4,
@@ -60,6 +61,8 @@ const Main = ({navigation}) => {
 
     const [page, setPage] = useState(0); // 해당 페이지
 
+    const swiper = useRef(null)
+
     const start = async() => {
         await AsyncStorage.setItem('login', '1');
         navigation.navigate('로그인 페이지', '로그인');
@@ -67,9 +70,13 @@ const Main = ({navigation}) => {
 
     const List = () => {
 
-        return (
-            <TouchableOpacity style={styles.footer} onPress={start}>
+        return page == 3 ? (
+            <TouchableOpacity style={styles.footer} activeOpacity={1} onPress={start}>
                 <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>시작하기</Text>
+            </TouchableOpacity> 
+        ) : (
+            <TouchableOpacity style={styles.footer} onPress={() => swiper.current.scrollTo(page+1)} activeOpacity={1}>
+                <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>다음</Text>
             </TouchableOpacity> 
         )
     }
@@ -78,7 +85,7 @@ const Main = ({navigation}) => {
     <View style={styles.container}>
         <View style={styles.header}><Text style={{color: '#757575', fontSize: 16}} onPress={start}>건너뛰기</Text></View>
         <View style={styles.main}>
-            <Slick showsButtons={false} loop={false} index={page}
+            <Swiper showsButtons={false} loop={false} ref={swiper} onIndexChanged={(e)=>setPage(e)}
             dot={<View style={styles.dot}/>}
             activeDot={<View style={styles.dotActive}/>}
             nextButton={<View style={styles.nextButton}></View>}
@@ -102,7 +109,7 @@ const Main = ({navigation}) => {
                 <Text style={{fontSize: 20}}>다른 엄마들은 어떻게 준비할까?</Text>
                     <Text style={{fontSize: 20, fontWeight: 'bold'}}>출산리스트를 비교해 보세요</Text>
                 </View>
-            </Slick>
+            </Swiper>
         </View>
         <List/>
     </View>

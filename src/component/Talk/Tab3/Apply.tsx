@@ -182,9 +182,9 @@ const Withdraw = ({navigation, route}) => {
             address: '',
             addressDetails: '',
             expreienceId: 0,
-            blog: null,
-            insta: null,
-            youtube: null,
+            blog: '',
+            insta: '',
+            youtube: '',
         }
     );
     console.log('info: ', info);
@@ -276,6 +276,7 @@ const Withdraw = ({navigation, route}) => {
     }
 
     const submit = async() => {
+        
         const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
@@ -348,13 +349,13 @@ const Withdraw = ({navigation, route}) => {
                     <Text style={{color: '#757575', marginTop: 5}}>리뷰에 사용할 계정을 하나 이상 입력해주세요.</Text>
                     <TextInput style={styles.textBox} placeholder='네이버 블로그' value={info.blog}
                         onChangeText={(e) => setInfo((prevState) => ({
-                            ...prevState, blogUrl: e
+                            ...prevState, blog: e
                         }))}></TextInput>
                     <TextInput style={styles.textBox} placeholder='인스타그램' value={info.insta}
-                        onChangeText={(e) => setInfo((prevState) => ({ ...prevState, instaUrl: e }))}>
+                        onChangeText={(e) => setInfo((prevState) => ({ ...prevState, insta: e }))}>
                     </TextInput>
                     <TextInput style={styles.textBox} placeholder='유튜브' value={info.youtube}
-                        onChangeText={(e) => setInfo((prevState) => ({ ...prevState, youtubeUrl: e }))}>
+                        onChangeText={(e) => setInfo((prevState) => ({ ...prevState, youtube: e }))}>
                     </TextInput>
                 </View>
                 <View style={styles.mainBox}>
@@ -394,10 +395,11 @@ const Withdraw = ({navigation, route}) => {
                     <View style={{position: 'absolute', right: 0, width: 20, height: '100%', justifyContent :'center'}}><Icon name='right' size={12} style={{color: '#616161'}}/></View>
                 </View>
                 <View style={[styles.mainBox, {alignItems: 'center'}]}>
-                    {isChecked[0] ? <TouchableOpacity style={[styles.buttonBox, {backgroundColor: '#FEA100'}]} onPress={submit}>
+                    {info.memberName == '' || info.tel == '' || info.address == '' || info.addressDetails == '' ||
+        (info.blog == '' && info.youtube == '' && info.insta == '') || SMSFlag.flag == 0 || !isChecked[0] ?
+        <View style={styles.buttonBox}><Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text></View> : <TouchableOpacity style={[styles.buttonBox, {backgroundColor: '#FEA100'}]} onPress={submit}>
                         <Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text>
-                    </TouchableOpacity>
-                    : <View style={styles.buttonBox}><Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text></View>}
+                    </TouchableOpacity>}
                 </View>
             </View>
         </View>

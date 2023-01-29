@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, 
 import Icon2 from 'react-native-vector-icons/Feather'
 import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
-import axios from 'axios'
 import Modal from './Modal/ListSelect'
 import moment from 'moment'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -33,13 +32,13 @@ const styles = StyleSheet.create({
         height: 60,
         justifyContent: 'center',
         padding: 15,
-      },
-      headerBar:{
-          position: 'absolute',
-          right: 20,
-          alignItems: 'center',
-          flexDirection: 'row',
-      },
+    },
+    headerBar:{
+        position: 'absolute',
+         right: 20,
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
     main:{
         height: 500,
         padding: 20,
@@ -367,7 +366,7 @@ const Home = ({navigation}) => {
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>출산 리스트</Text></View>
                             <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡')}>+ 더보기</Text></View>
                         </View>
-                        {boardPopular == '' || boardPopular == undefined || boardPopular.length < 3? 
+                        {boardPopular == '' || boardPopular == undefined || boardPopular.length < 3 ? 
                             <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
                                 <Text style={{color: '#757575'}}>등록된</Text>
                                 <Text style={{color: '#757575'}}>게시물이 없습니다.</Text>

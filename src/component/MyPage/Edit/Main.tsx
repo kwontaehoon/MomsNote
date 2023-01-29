@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
     container:{
         height: '100%',
         backgroundColor: 'white',
-        position: 'relative',
     },
     container2:{
 
@@ -35,7 +34,7 @@ const Withdraw = ({navigation}) => {
 
         const applicationInfo = async() => {
             const application = await AsyncStorage.getItem('applicationFlag');
-            setApplication(application);
+            setApplication(123);
         }
         applicationInfo();
 
@@ -50,7 +49,7 @@ const Withdraw = ({navigation}) => {
     }
     const List = ():any => {
         switch(true){
-            case filter[0] === true: return <Tab1 navigation={navigation}/>
+            case filter[0] === true: return <Tab1 navigation={navigation} application={application}/>
             case filter[1] === true: return <Tab2 navigation={navigation}/>
         }
     }

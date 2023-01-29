@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const postBoardLikeFlag = createAsyncThunk("postBoardLikeFlagSlice/async", async (data) => {
   console.log('postBoardLikeFlag 업데이트됨');

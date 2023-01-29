@@ -222,12 +222,12 @@ const Navigation = ({navigation, route}) => {
     },
   ]
 
-  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.material.data; });
   console.log('출산준비물: ', info);
   const materialSet = useSelector(state => { return state.material.refresh; });
   const [purchaseCount, setPurchaseCount] = useState(null); // 전체 구매 갯수
+  console.log('purchaseCount: ', purchaseCount);
   const [sumResult, setSumResult] = useState({
     sum: 0,
     exp: 0
@@ -287,7 +287,7 @@ const Navigation = ({navigation, route}) => {
 
   useEffect(()=>{
     dispatch(postMaterial(materialSet));
-  }, [modalVisible, modalVisible8, modalVisible9, isFocused]);
+  }, [modalVisible, modalVisible8, modalVisible9]);
 
   useEffect(()=>{
     let sum = 0;
@@ -505,11 +505,11 @@ const save = async() => {
             <StatusBar />
         </SafeAreaView>
 
-		    { info == ''|| info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '89%'}]}/>
+		    { info == ''|| info == undefined || purchaseCount == '' || purchaseCount == null ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '89%'}]}/>
         :
         <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '90%'}]}>
 
-        <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+        {/* <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
         <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modal={modal} setModal={setModal} setModal2={setModal2}/>
         <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
         <ResetModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
@@ -521,7 +521,7 @@ const save = async() => {
         <Filter modalVisible10={modalVisible10} setModalVisible10={setModalVisible10} />
         <BrandNameFlag modal={modal} setModal={setModal} modal2={modalVisible2} setModal2={setModalVisible2}/>
         <First modal={modal2} setModal={setModal2}/>
-        <Second modal={modal3} setModal={setModal3}/>
+        <Second modal={modal3} setModal={setModal3}/> */}
 
         <View style={styles.header}>
         <Text style={{fontSize: 17, fontWeight: '600'}}>출산준비물</Text>

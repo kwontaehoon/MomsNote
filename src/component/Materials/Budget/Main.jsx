@@ -1,14 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator, Platform } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Animated, Platform } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSelector } from 'react-redux'
-
+import { getStatusBarHeight } from 'react-native-status-bar-height'
+import * as MediaLibrary from 'expo-media-library'
+import ViewShot from 'react-native-view-shot'
 import ShareModal from './Modal/ShareModal'
 import ShareModal2 from './Modal/ShareModal2'
 import ConfirmModal from './Modal/ConfirmModal'
 import DotModal from './Modal/DotModal'
 import PriceEdit from './Modal/PriceEdit'
 import FirstModal from '../../Modal/First'
+
+import Download from '../../../../public/assets/svg/Download.svg'
+import Back from '../../../../public/assets/svg/Back.svg'
 
 import { useDispatch } from 'react-redux'
 import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
@@ -21,9 +26,23 @@ const styles = StyleSheet.create({
   container:{
       flex: 1,
       backgroundColor: 'white',
+      marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
   },
+  header:{
+    justifyContent: 'center',
+    padding: 18,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+},
+headerBar:{
+    position: 'absolute',
+    right: 20,
+    alignItems: 'center',
+    flexDirection: 'row',
+},
   main:{
-    height: '70%',
+    height: '65%',
   },
   mainBox:{
     flexDirection: 'row',
@@ -67,24 +86,43 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   footer:{
-    height: '20%',
+    height: 200,
     padding: 15,
-    borderTopWidth: 1,
-    borderColor: '#F5F5F5'
   },
   footerBox:{
     height: 50,
     justifyContent: 'center',
   },
   buttonBox:{
+    width: '100%',
     height: 56,
     backgroundColor: '#FEA100',
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'absolute',
+    bottom: 0,
   },
+  saveModal:{
+    width: '90%',
+    height: 40,
+    backgroundColor: 'black',
+    opacity: 0.7,
+    borderRadius: 10,
+    justifyContent: 'center',
+    paddingLeft: 20,
+},
+saveModalBox:{
+    width: '100%',
+    height: 40,
+    position: 'absolute',
+    zIndex: 1,
+    bottom: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+},
 })
 
-const Talk1Sub = ({route}) => {
+const Talk1Sub = ({navigation, route}) => {
 
   const DATA = [
     {
@@ -135,10 +173,13 @@ const Talk1Sub = ({route}) => {
   ];
 
   const insets = useSafeAreaInsets();
+  const ref = useRef();
   const dispatch = useDispatch();
   const info = useSelector(state => state.material.data);
   console.log('총 예산 info: ', info);
   const materialSet = useSelector(state => state.material.refresh);
+  const animation = useRef(new Animated.Value(0)).current;
+  const [test, setTest] = useState(); // 캡쳐 uri
   const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
   const [modalVisible2, setModalVisible2] = useState(false); // 공유 확인 유무 
   const [modalVisible3, setModalVisible3] = useState(false); // 공유 작성
@@ -181,6 +222,48 @@ const Talk1Sub = ({route}) => {
     setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
   }, [info]);
 
+  useEffect(()=>{
+    save();
+}, [test]);
+
+const save = async() => {
+   
+    if(test !== undefined){
+        let { status } = await MediaLibrary.requestPermissionsAsync();
+        const asset = await MediaLibrary.createAssetAsync(test);
+        const moms = await MediaLibrary.getAlbumAsync('맘스노트');
+
+        console.log('status: ', status);
+        console.log('asset: ', asset);
+        console.log('moms: ', moms);
+             
+        // if(status === 'granted'){
+            // const kwon = await MediaLibrary.getAlbumAsync('DCIM');
+            // const moms = await MediaLibrary.getAlbumAsync('맘스노트');
+            // if(moms === null){
+            //     MediaLibrary.createAlbumAsync('맘스노트', asset);
+            // }
+            // MediaLibrary.addAssetsToAlbumAsync(moms, moms.id);
+            // MediaLibrary.migrateAlbumIfNeededAsync(moms.id);
+            // const album = await MediaLibrary.getAlbumAsync('맘스노트');
+            // // console.log('album: ', album);
+
+            // MediaLibrary.createAlbumAsync('맘스노트', asset);
+            // // const asset = await MediaLibrary.createAssetAsync(test);
+        // }
+    }
+    setTest(undefined);
+}
+
+const capture = async() => {
+    opacity_ani();
+    setTest('1');
+
+    ref.current.capture().then(uri => {
+        setTest(uri);
+      });
+}
+
   const arrow = (e) => { // arrow 누르면 서브페이지 display
     let arr = [...list];
     arr[e] = !arr[e];
@@ -200,6 +283,20 @@ const Talk1Sub = ({route}) => {
         </View>
     )
   }
+
+  const opacity_ani = () => {
+    Animated.timing(animation, {
+        toValue: 1,
+        useNativeDriver: true,
+        duration: 1500,
+    }).start(()=>{
+        Animated.timing(animation, {
+            toValue: 0,
+            useNativeDriver: true,
+            duration: 1500,
+        }).start();
+    });
+}
 
 
   const List = ({title}) => {
@@ -242,13 +339,29 @@ const Talk1Sub = ({route}) => {
   return (
     <View style={[styles.container, Platform.OS == 'ios' ? {paddingBottom: insets.bottom} : {paddingBottom: 0}]}>
 
+      <Animated.View style={[styles.saveModalBox, {opacity: animation}]}>
+                <View style={styles.saveModal}>
+                    <Text style={{color: 'white'}}>총 예산이 내 앨범에 저장되었습니다.</Text>
+                </View>
+      </Animated.View>
+
       <ShareModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modalVisible3={modalVisible3} setModalVisible3={setModalVisible3} />
       <ShareModal2 modalVisible3={modalVisible3} setModalVisible3={setModalVisible3} modalVisible4={modalVisible4} setModalVisible4={setModalVisible4}/>
-      <ConfirmModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} />
+      <ConfirmModal navigation={navigation} modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} />
       <DotModal modal5={modal5} setModal5={setModal5} />
       <PriceEdit modal6={modal6} setModal6={setModal6} setModal7={setModal7} />
       <FirstModal modal={modal7} setModal={setModal7} />
 
+      <View style={styles.header}>
+          
+                    <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
+                    <Text style={{fontSize: 18, fontWeight: '600', marginLeft: 10}}>총 예산</Text>
+                  <View style={styles.headerBar}>
+                      <TouchableOpacity style={{marginRight: 5}} onPress={capture}><Download/></TouchableOpacity>
+                  </View>
+        </View>
+
+      <ViewShot ref={ref} options={{ fileName: "MomsNote", format: "png", quality: 1 }} style={{backgroundColor: 'white'}}>
       <View style={styles.main}>
         <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
               keyExtractor={item => item.id}>
@@ -273,9 +386,10 @@ const Talk1Sub = ({route}) => {
           <Text style={{color: '#616161'}}>ㄴ 구매 예정 금액</Text>
         </View>
       </View>
-      <TouchableOpacity style={styles.buttonBox} onPress={()=>setModalVisible2(!modalVisible2)}>
-        <Text style={{color: 'white', fontWeight: '600', fontSize: 16}}>출산 리스트 게시판 공유</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonBox} onPress={()=>setModalVisible2(!modalVisible2)}>
+          <Text style={{color: 'white', fontWeight: '600', fontSize: 16}}>출산 리스트 게시판 공유</Text>
+        </TouchableOpacity>
+        </ViewShot>
     </View>
   )
 }

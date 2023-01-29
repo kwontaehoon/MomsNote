@@ -30,6 +30,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTime from '../Test/DateTime'
 import CutDownTimer from '../Test/CutdownTimer'
 import SlideTest from '../Test/SlideTest'
+import SlideTest2 from '../Test/SlideTest2'
 
 const styles = StyleSheet.create({
     header:{

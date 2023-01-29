@@ -36,6 +36,8 @@ import MaterialSearchReducer from '../Slices/MaterialSearchSlice'
 import MyLikeBoardReducer from '../Slices/MyLikeBoardSlice'
 import MyLikeListReducer from '../Slices/MyLikeListSlice'
 import MyLikeExpReducer from '../Slices/MyLikeExpSlice'
+import DdayTodayReducer from '../Slices/DdayTodaySlice'
+import DdayTermReducer from '../Slices/DdayTermSlice'
 
 
 
@@ -77,6 +79,8 @@ export const store = configureStore({
     materialSearch: MaterialSearchReducer,
     myLikeBoard: MyLikeBoardReducer,
     myLikeList: MyLikeListReducer,
-    myLikeExp: MyLikeExpReducer
+    myLikeExp: MyLikeExpReducer,
+    ddayToday: DdayTodayReducer,
+    ddayTerm: DdayTermReducer
   },
 })
