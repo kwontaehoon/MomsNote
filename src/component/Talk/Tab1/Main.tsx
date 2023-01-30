@@ -45,13 +45,18 @@ const styles = StyleSheet.create({
   },
   header2:{
     height: '8%',
-    flexDirection: 'row',
+    justifyContent: 'center',
     backgroundColor: '#F5F5F5',
   },
   header2FilterBox:{
-    width: '68%',
     justifyContent: 'center',
     paddingLeft: 20,
+  },
+  filterBox:{
+    width: 85,
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
   },
   InputBox:{
     borderWidth: 0,
@@ -138,14 +143,13 @@ const styles = StyleSheet.create({
   },
   modalContainer2:{
       width: '80%',
-      height: 220,
       backgroundColor: 'white',
       borderRadius: 15
   },
   modalBox:{
-      height: '50%',
       justifyContent: 'center',
       alignItems: 'center',
+      padding: 10,
   },
   modal:{
       backgroundColor: '#FEA100',
@@ -154,7 +158,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 3,
-      marginBottom: 3,
+      marginBottom: 7,
   },
 })
 
@@ -187,10 +191,13 @@ const Talk1 = ({navigation, route}:any) => {
       title: '질문게시판'
     }
   ];
-  interface Data {
-    id: string;
-    title: string;
-  }
+
+  const DATA2 = [
+    {
+      id: '0',
+      title: '전체'
+    },
+  ]
 
 
   const isFocused = useIsFocused();
@@ -308,7 +315,13 @@ const Talk1 = ({navigation, route}:any) => {
          {dayCalculate(item.boardDate)}
         </View>
     </TouchableOpacity>
-  ); 
+  );
+
+  const renderItem3 = ({item}) => (
+    <View>
+
+    </View>
+  )
 
   return info == '' && info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
@@ -348,9 +361,9 @@ const Talk1 = ({navigation, route}:any) => {
             <Text style={{fontSize: 16}}> 건</Text>
           </View>
         </View>
-        <View style={[styles.header2FilterBox, {width: '32%'}]}>
+        <View style={styles.filterBox}>
         <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순' onSelectItem={(e)=>filtering(e)}
-              textStyle={{fontSize: 12}} dropDownContainerStyle={{backgroundColor: 'white', borderColor: 'white'}} modalTitleStyle={{borderWidth: 1}}
+              textStyle={{fontSize: 12}} dropDownContainerStyle={{borderColor: 'white'}} modalTitleStyle={{borderWidth: 1}}
               setOpen={setOpen} setValue={setValue} setItems={setItems} />
         </View>
       </View>
@@ -385,11 +398,19 @@ const Talk1 = ({navigation, route}:any) => {
         </FlatList>
         }
       </View>
+
+
+      <FlatList data={DATA2} renderItem={renderItem3} 
+           keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}>
+      </FlatList>
+
+
       <TouchableOpacity style={[styles.footer, {marginBottom: Platform.OS == 'android' ? 20 + getStatusBarHeight() : 0}]} onPress={()=>
         modalVisible.asyncStorage == null ? navigation.navigate('글쓰기') : setModalVisible(prevState => ({...prevState, open: true}))
         }>
             <Pencil fill={'red'}/>
       </TouchableOpacity>
+
 
      
      </View>

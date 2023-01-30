@@ -20,17 +20,16 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '100%',
-        borderRadius: 15,
     },
     main:{
-        height: 250,
         backgroundColor: 'white',
-        borderRadius: 10,
+        borderTopStartRadius: 10,
+        borderTopEndRadius: 10,
     },
     mainBox:{
         height: 70,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     mainBox2:{
         height: 70,

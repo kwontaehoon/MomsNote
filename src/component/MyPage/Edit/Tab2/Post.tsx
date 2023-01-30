@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 })
 const Post = ({navigation, route}) => {
 
-    console.log('daum 주소: ', route);
+    console.log('daum 주소: ', route.params);
 
     const getAddressData = data => {
         let defaultAddress = ''; // 기본주소
@@ -22,10 +22,10 @@ const Post = ({navigation, route}) => {
             defaultAddress = data.buildingName;
         }
         if(data.userSelectedType === 'R'){
-            navigation.navigate('신청 정보', data.roadAddress);
+            navigation.navigate('내 정보 수정', data.roadAddress);
         }else
          {
-            navigation.navigate('신청 정보', data.jibunAddress);
+            navigation.navigate('내 정보 수정', data.jibunAddress);
         }
     };
 

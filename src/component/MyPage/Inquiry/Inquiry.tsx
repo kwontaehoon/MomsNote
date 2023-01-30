@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 // 문의하기
 const styles = StyleSheet.create({
     container:{
-      height: '94.5%',
+      height: '93.5%',
     },
     container2:{
     },

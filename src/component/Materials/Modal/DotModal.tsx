@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     modalContainer2:{
         width: '94%',
         height: 144,
-        marginBottom: 35,
+        marginBottom: 25,
         borderRadius: 15,
     },
     main:{

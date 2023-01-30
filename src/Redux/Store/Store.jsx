@@ -38,6 +38,7 @@ import MyLikeListReducer from '../Slices/MyLikeListSlice'
 import MyLikeExpReducer from '../Slices/MyLikeExpSlice'
 import DdayTodayReducer from '../Slices/DdayTodaySlice'
 import DdayTermReducer from '../Slices/DdayTermSlice'
+import ListPopularReducer from '../Slices/ListPopularSlice'
 
 
 
@@ -81,6 +82,7 @@ export const store = configureStore({
     myLikeList: MyLikeListReducer,
     myLikeExp: MyLikeExpReducer,
     ddayToday: DdayTodayReducer,
-    ddayTerm: DdayTermReducer
+    ddayTerm: DdayTermReducer,
+    ListPopular: ListPopularReducer
   },
 })

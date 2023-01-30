@@ -23,6 +23,7 @@ import Talk3Detail from '../Talk/Tab3/Tab3Detail'
 import Apply from '../Talk/Tab3/Apply'
 import ApplyConfirm from '../Talk/Tab3/ApplyConfirm'
 import Post from '../Talk/Tab3/Post'
+import Post2 from '../MyPage/Edit/Tab2/Post'
 import Setting from '../MyPage/Setting/Main'
 import Search from '../Navigation/Search'
 import Talk2Detail from '../Talk/Tab2/Tab2Detail'
@@ -103,7 +104,7 @@ const Navigation = () => {
                         headerLeft: () => (
                             <View style={styles.header}>
                                 <View style={styles.headerBox}>
-                                    <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                    <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.navigate('로그인 페이지')}><Back/></TouchableOpacity>
                                     <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>추가 정보 입력</Text>
                                 </View>
                             </View>
@@ -265,6 +266,8 @@ const Navigation = () => {
                 <Stack.Screen name="신청 정보" component={Apply}  options={{title: '', headerShown: false}}/>
                 <Stack.Screen name="신청 정보 확인" component={ApplyConfirm}  options={{title: '', headerShown: false}}/>
                 <Stack.Screen name="주소 찾기" component={Post}  options={{title: ''}}/>
+                <Stack.Screen name="주소 찾기2" component={Post2}  options={{title: ''}}/>
+                
                 <Stack.Screen name="설정" component={Setting}/>
                 <Stack.Screen name="차단한 사용자" component={Block}/>
                 <Stack.Screen name="이용약관" component={Term1}/>

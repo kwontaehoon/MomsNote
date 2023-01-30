@@ -126,16 +126,16 @@ const Talk1Sub = ({navigation, route}) => {
             )
             default: return(
                 <View style={styles.mainBox2ImageBox2}>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리')}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리')} activeOpacity={1}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image2}/>
                     </TouchableOpacity>
-                    <View style={styles.imageBox}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리')} activeOpacity={1}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[1]}`}} style={styles.image2}/>
-                    </View>
-                    <View style={styles.imageBox}>
-                        <Image source={{uri: `https://reactnative.dev/img/tiny_logo.png`}} style={styles.image2}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리')} activeOpacity={1}>
+                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[2]}`}} style={styles.image2}/>
                         <View style={{position: 'absolute', top: '40%', left: '40%'}}><Text style={{color: 'white', fontSize: 20, fontWeight: '600'}}>+{info[0].savedName.split('|').length-3}</Text></View>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             )
         }

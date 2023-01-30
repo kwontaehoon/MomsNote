@@ -332,6 +332,7 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal6, setModal6] = useState(false); // comment 신고 하기 
 
     const [userInfo, setUserInfo] = useState();
+    console.log('userInfo: ', userInfo);
 
     const animation = useRef(new Animated.Value(0)).current;
     const flatlistRef = useRef(null);
@@ -538,7 +539,7 @@ const Talk1Sub = ({navigation, route}) => {
     const renderItem = ({ item }) => (
         <View>
             <View style={styles.header2}>
-                <TouchableOpacity style={styles.profileBox}></TouchableOpacity>
+                <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${info[0].profileImage}`}} style={styles.profileBox}/>
                 <View style={styles.infoBox}>
                     <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{info[0].nickname}</Text>
                     <Text style={{color: '#9E9E9E', fontSize: 13}}>{moment().diff(moment(info[0].boardDate), "days")}일 전</Text>
@@ -643,7 +644,7 @@ const Talk1Sub = ({navigation, route}) => {
                 <Text style={{color: '#757575'}}> 님에게 답변 남기기</Text>
             </View>
             <View style={styles.footer}>
-                <Image source={{ uri: userInfo.profileImage }} style={styles.profileBox}/>
+                <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profileImage}`}} style={styles.profileBox}/>
                 <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: '', level: 0}))}}>
                     <Text style={{color: '#1E88E5', fontWeight: '600'}}>등록</Text>
                 </TouchableOpacity>

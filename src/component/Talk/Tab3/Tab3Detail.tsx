@@ -183,13 +183,11 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 240,
         backgroundColor: 'white',
         borderRadius: 15
     },
     modalBox:{
-        height: '50%',
-        padding: 20,
+        padding: 15,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -200,7 +198,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 3,
-        marginBottom: 3,
+        marginBottom: 7,
     },
 })
 const Talk1Sub = ({navigation, route}) => {
@@ -225,16 +223,12 @@ const Talk1Sub = ({navigation, route}) => {
 
     const [async, setAsync] = useState(); // 임시저장 및 체험단 정보 저장 유무
     const [userInfo, setUserInfo] = useState(); // user 정보 asyncStorage
-    console.log('userInfo: ', userInfo);
     const boardLikeFlag = useSelector(state => { return state.boardLikeFlag.data });
-    console.log('boardLikeFlag: ', boardLikeFlag);
     const boardLike = useSelector(state => { return state.boardLikeFlag.data });
     const boardLikeFlagSet = useSelector(state => { return state.boardLikeFlag.refresh });
     const boardLikeSet = useSelector(state => { return state.boardLike.refresh });
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
-    console.log('boardAppFlag: ', boardAppFlag);
     const winList = useSelector(state => { return state.winList.data });
-    console.log('winList: ', winList);
     
     const [filter, setFilter] = useState(false);
     const [modalVisible, setModalVisible] = useState(false); // 체험단 신청정보 입력 -> asnyc storage
@@ -275,12 +269,15 @@ const Talk1Sub = ({navigation, route}) => {
 
     const recommend = async() => {
         dispatch(postBoardLike({ boardId: route.params.boardId, type: 'plus'}));
+
+        setTimeout(()=>{
+            dispatch(postExperience({
+                order: 'new',
+                count: 1,
+                page: 1,
+            }));
+        }, 100)
         dispatch(postBoardLikeFlag({ boardId: info.boardId}));
-        dispatch(postExperience({
-            order: 'new',
-            count: 1,
-            page: 1,
-        }));
     }
 
     const renderItem = ({ item }:any) => (
@@ -400,7 +397,7 @@ const Talk1Sub = ({navigation, route}) => {
    <View style={styles.modalContainer}>
        <View style={styles.modalView}>
            <View style={styles.modalContainer2}>
-               <View style={styles.modalBox}>
+               <View style={[styles.modalBox, {justifyContent: 'flex-end'}]}>
                    <Text style={{fontSize: 16, lineHeight: 25, textAlign: 'center'}}>체험단 신청을 하시려면 신청정보를 먼저 작성하셔야 합니다. 지금 작성하시겠습니까?</Text>
                </View>
                <View style={styles.modalBox}>

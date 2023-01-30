@@ -29,16 +29,16 @@ const styles = StyleSheet.create({
     container2:{
     },
     header:{
-        height: 60,
+        height: 55,
         justifyContent: 'center',
-        padding: 15,
-    },
-    headerBar:{
-        position: 'absolute',
-         right: 20,
-        alignItems: 'center',
-        flexDirection: 'row',
-    },
+        padding: 17,
+      },
+      headerBar:{
+          position: 'absolute',
+          right: 20,
+          alignItems: 'center',
+          flexDirection: 'row',
+      },
     main:{
         height: 500,
         padding: 20,
@@ -364,7 +364,7 @@ const Home = ({navigation}) => {
                     <View style={styles.main3Box2}>
                         <View style={styles.titleBox}>
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>출산 리스트</Text></View>
-                            <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡')}>+ 더보기</Text></View>
+                            <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡', 12345)}>+ 더보기</Text></View>
                         </View>
                         {boardPopular == '' || boardPopular == undefined || boardPopular.length < 3 ? 
                             <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
@@ -430,8 +430,8 @@ const Home = ({navigation}) => {
             <View style={styles.main4}>
                 <View style={styles.main4Box}>
                     <View style={[styles.titleBox, {height: '100%'}]}>
-                        <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}} onPress={()=>navigation.navigate('맘스 정보', item)}>맘스 정보</Text></View>
-                        <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}}>+ 더보기</Text></View>
+                        <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>맘스 정보</Text></View>
+                        <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.reset({routes: [{name: "맘스정보"}]})}>+ 더보기</Text></View>
                     </View>
                 </View>
                 <View style={styles.main4Box2}>

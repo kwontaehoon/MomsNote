@@ -27,11 +27,9 @@ const Main = ({navigation}) => {
             // AsyncStorage.removeItem('userId');
             // AsyncStorage.setItem('userId', '45');
             // AsyncStorage.setItem('user', JSON.stringify(test));
+            // AsyncStorage.setItem('login', '2');
             // AsyncStorage.removeItem('login');
-            AsyncStorage.setItem('login', '2');
-
             // AsyncStorage.clear()
-           
             
             const asyncStorage = await AsyncStorage.getItem('login');
             setInfo(asyncStorage);

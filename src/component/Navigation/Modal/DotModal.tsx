@@ -44,30 +44,7 @@ const styles = StyleSheet.create({
     }
 })
 
-const CheckBoxModal = ({modal, setModal}) => {
-
-    const delete2 = async() => {
-        console.log('delete');
-        const token = await AsyncStorage.getItem('token');
-        // try{
-        //     const response = await axios({
-        //         method: 'post',
-        //         url: 'https://momsnote.net/api/needs/delete',
-        //         headers: { 
-        //           'Authorization': `bearer ${token}`, 
-        //           'Content-Type': 'application/json'
-        //         },
-        //         data: { id: modal5.content.needsId }
-        //         });
-        //         console.log('response: ', response.data);
-        //     }catch(error){
-        //       console.log('error: ', error);
-        // }
-        // dispatch(postMaterial({
-        //     order: 'need'
-        // }));
-        // setModal5(prevState => ({...prevState, open: false}));
-    }
+const CheckBoxModal = ({modal, setModal, modal2, setModal2}) => {
 
   return (
     <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
@@ -76,8 +53,8 @@ const CheckBoxModal = ({modal, setModal}) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
-                       <TouchableOpacity style={styles.main} activeOpacity={1} onPress={delete2}>
-                            <Text style={{color: '#F23737', fontWeight: '600', fontSize: 20}}>품목 삭제</Text>
+                       <TouchableOpacity style={styles.main} activeOpacity={1} onPress={()=>(setModal2(!modal2), setModal(!modal))}>
+                            <Text style={{color: '#F23737', fontWeight: '600', fontSize: 20}}>삭제하기</Text>
                        </TouchableOpacity>
                        <View style={{height: 10}}></View>
                        <TouchableOpacity style={styles.footer} onPress={()=>setModal(!modal)} activeOpacity={1}>

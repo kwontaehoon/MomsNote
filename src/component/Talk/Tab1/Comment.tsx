@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Keyboard } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Keyboard, Image } from 'react-native'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSelector, useDispatch } from 'react-redux'
@@ -72,22 +72,33 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
             dispatch(postCommentFlag({boardId: info[0].boardId}));
     }
 
+    const dayCalculate = (date:number) => {
+        
+        switch(true){
+          case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
+          case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
+          default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'day')}일 전</Text>
+        }
+      }
+
     const List = () => {
         let arr = [];
         info.filter((x, index) => {
-            console.log('x: ', x);
+            console.log('x: ', x.commentsDate);
             if(x.step === 0){
                 arr.push(
                     <View key={index}>
                         <View style={styles.box}>
                             <TouchableOpacity style={styles.dotBox} onPress={()=>{setModal(!modal), setCommentsId([x.userId, x.commentsId])}}><More /></TouchableOpacity>
-                            <View style={styles.profileBox}></View>
+                                <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${x.profileImage}`}} style={styles.profileBox}/>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Text style={{fontSize: 16, fontWeight: '600', paddingRight: 8}}>{x.nickname}</Text>
-                                <Text style={{fontSize: 13, fontWeight: '500', color: '#BDBDBD'}}>{moment().diff(moment(x.commentsDate), "minute")}분 전</Text>
+                                <Text style={{fontSize: 13, fontWeight: '500', color: '#BDBDBD'}}>{dayCalculate(x.commentsDate)}</Text>
                             </View>
                         </View>
-                        <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>{x.contents}</Text>
+                        
+                        {x.deleteFlag ? <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>삭제된 댓글 입니다.</Text>
+                        : <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>{x.contents}</Text>}
                         <View style={styles.likeBox}>
                             {commentLike.includes(x.commentsId) ? <Like2 width={16} height={16} fill='#FE9000'/>
                             :
@@ -120,11 +131,12 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                 <View style={{paddingLeft: 27}} key={index}>
                     <View style={styles.box}>
                         <TouchableOpacity style={styles.dotBox} onPress={()=>{setModal(!modal), setCommentsId([x.userId, x.commentsId])}}><More /></TouchableOpacity>
-                        <View style={styles.profileBox}></View>
+                            <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${x.profileImage}`}} style={styles.profileBox}/>
                         <Text style={{fontSize: 16, fontWeight: '600', paddingRight: 8}}>{x.nickname}</Text>
-                        <Text style={{fontSize: 13, fontWeight: '500', color: '#BDBDBD'}}>16분 전</Text>
+                        <Text style={{fontSize: 13, fontWeight: '500', color: '#BDBDBD'}}>{dayCalculate(x.commentsDate)}</Text>
                     </View>
-                    <Text style={{paddingLeft: 45, marginBottom: 10, marginRight: 25, lineHeight: 20}}>{x.contents}</Text>
+                    {x.deleteFlag ? <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>삭제된 댓글 입니다.</Text>
+                        : <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>{x.contents}</Text>}
                     <View style={styles.likeBox}>
                         {commentLike.includes(x.commentsId) ? <Like2 width={16} height={16} fill='#FE9000'/>
                         :

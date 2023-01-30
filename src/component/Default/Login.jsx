@@ -57,8 +57,6 @@ const styles = StyleSheet.create({
 const Main = ({navigation, route}) => {
 
     console.log('로그인 route: ', route);
-    
-    const [modal, setModal] = useState(false); // 회원탈퇴시 모달창
 
     const [googleToken, setGoogleToken] = useState([]);
     console.log('googleToken: ', googleToken);
@@ -84,13 +82,6 @@ const Main = ({navigation, route}) => {
             GoogleGetId(authentication.accessToken);
         }
     }, [response]);
-
-    useEffect(()=>{
-        console.log('route: ', route);
-        if(route !== undefined){
-            route.params == '로그인' ? '' : setModal(!modal)
-        }
-    }, [route]);
 
     const GoogleGetId = async(googleAccessToken) => {
         try{
@@ -131,8 +122,6 @@ const Main = ({navigation, route}) => {
         <SafeAreaView style={{ backgroundColor: 'white' }}></SafeAreaView>
 
         <SafeAreaView style={[styles.container, {marginBottom: Platform.OS == 'ios' ? 30 : 0}]}>
-
-            <Modal modal={modal} setModal={setModal}/>
 
             <View style={styles.header}>
                 <Logo width={230} height={112}/>

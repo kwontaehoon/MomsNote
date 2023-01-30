@@ -65,15 +65,13 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 220,
         backgroundColor: 'white',
-        marginBottom: 35,
         borderRadius: 15
     },
     modalBox:{
-        height: '50%',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 20
     },
     modal:{
         backgroundColor: '#FEA100',
@@ -82,7 +80,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 3,
-        marginBottom: 3,
+        marginBottom: 7,
     },
 })
 const Main = ({navigation}) => {
@@ -94,13 +92,12 @@ const Main = ({navigation}) => {
         },
     ];
 
-    const REST_API_KEY = '7d1cb1e652f5ee8aaffc2e7ce0547c9b';
-    const LOGOUT_REDIRECT_URI = 'https://www.naver.com';
 
     const [isEnabled, setIsEnabled] = useState(Array.from({length: 3}, () => { return false })); // 스위치 토글
     const [clockDisplay, setClockDisplay] = useState(false); // 시작 종료 시간 display
-    const [modalVisible, setModalVisible] = useState(false); // 알람 끄기 modal
+    const [modalVisible, setModalVisible] = useState(true); // 알람 끄기 modal
     const [modalVisible2, setModalVisible2] = useState(false); // 로그아웃 modal
+    const [modal2, setModal2] = useState(false); // 마케팅 수신동의
 
     const [date, setDate] = useState(new Date(1598051730000));
     const [mode, setMode] = useState('time');
@@ -132,10 +129,21 @@ const Main = ({navigation}) => {
         }
     }
 
+    const modal3 = (e) => {
+        let arr= [...isEnabled];
+        arr[0] = false;
+        setIsEnabled(arr);
+        setModal2(!modal2);
+    }
+
     const toggleSwitch = (e) => {
         let arr = [...isEnabled];
+        if(e === 0 && isEnabled[0] == true){
+            setModal2(!modal2);
+            return;
+        }
 
-        if(e === 2 && isEnabled[2] === true){
+        if(e === 1 && isEnabled[1] === true){
             setModalVisible(!modalVisible);
             return;
         }
@@ -148,9 +156,7 @@ const Main = ({navigation}) => {
         setIsEnabled(arr);
     }
   
-    const onChange = (event, selectedDate) => {
-        // console.log(selectedDate.format("YYYY.MM.DD HH:mm"));
-        console.log('selectedDate: ', selectedDate);
+    const onChange = (event, selectedDate) => {;
 
         let Hours = selectedDate.getHours();
         let Minutes = selectedDate.getMinutes();
@@ -287,12 +293,12 @@ const Main = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-        <Modal animationType="fade" transparent={true} visible={modalVisible}
+        <Modal animationType="fade" transparent={true} visible={modalVisible} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible(!modalVisible)}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
-                    <View style={[styles.modalContainer2, {height: 220}]}>
+                    <View style={styles.modalContainer2}>
                         <View style={styles.modalBox}>
                             <Text style={{fontSize: 16, paddingTop: 10}}>알림을 끄시면 체험단 선정 알림을</Text>
                             <Text style={{fontSize: 16, paddingTop: 5}}>받으실 수 없습니다.</Text>
@@ -311,12 +317,29 @@ const Main = ({navigation}) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
-                        <View style={[styles.modalBox, {height: '45%'}]}>
+                        <View style={styles.modalBox}>
                             <Text style={{fontSize: 16, paddingTop: 10}}>로그아웃 하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
                             <TouchableOpacity style={styles.modal} onPress={logout}><Text style={{color: 'white', fontSize: 16}}>로그아웃</Text></TouchableOpacity>
                             <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModalVisible2(!modalVisible2)}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+        <Modal animationType="fade" transparent={true} visible={modal2} statusBarTranslucent={true}
+            onRequestClose={() => {
+            setModal2(!modal2)}}>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                    <View style={styles.modalContainer2}>
+                        <View style={styles.modalBox}>
+                            <Text style={{fontSize: 16, lineHeight: 25, textAlign: 'center'}}>각종 이벤트 알림을 받으실 수 없습니다. 마케팅 수신동의를 해제하시겠습니까?</Text>
+                        </View>
+                        <View style={styles.modalBox}>
+                            <TouchableOpacity style={styles.modal} onPress={()=>modal3(1)}><Text style={{color: 'white', fontSize: 16}}>해제</Text></TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModal2(!modal2)}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
                         </View>
                     </View>
                 </View>

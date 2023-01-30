@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 3,
-        marginBottom: 3,
+        marginBottom: 7,
     },
 })
 const Main = ({modalVisible6, setModalVisible6}) => {

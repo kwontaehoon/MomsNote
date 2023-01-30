@@ -429,7 +429,6 @@ const Talk1Sub = ({navigation, route}) => {
                 <Back onPress={()=>navigation.goBack()}/>
                 <View style={styles.headerBar}>
                     <Share style={{marginRight: 12}}/>
-                    <More style={{marginRight: 5}} onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}/>
                 </View>
         </View>
 

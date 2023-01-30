@@ -14,6 +14,7 @@ import Modal3 from './Modal/AuthReady'
 import Modal4 from './Modal/Cencel'
 import Modal5 from './Modal/CencelConfirm'
 import Modal6 from './Modal/Save'
+import Modal7 from './Modal/PhoneNumber'
 import { useDispatch } from 'react-redux'
 import { postBoardAppFlag } from '../../../Redux/Slices/BoardAppFlagSlice'
 import { postBoardApp } from '../../../Redux/Slices/BoardApp'
@@ -173,6 +174,7 @@ const Withdraw = ({navigation, route}) => {
     const [modal4, setModal4] = useState(false); // 취소
     const [modal5, setModal5] = useState(false); // 취소 확인
     const [modal6, setModal6] = useState(false); // 임시 저장
+    const [modal7, setModal7] = useState(false); // 폰 넘버 갯수 11자이하
     
     const [info, setInfo] = useState( // post info
         {
@@ -309,7 +311,7 @@ const Withdraw = ({navigation, route}) => {
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>이름</Text>
-                    <TextInput style={styles.textBox} placeholder='이름 입력' value={info.memberName}
+                    <TextInput style={styles.textBox} placeholder='이름 입력' value={info.memberName} maxLength={8}
                         onChangeText={(e) => setInfo((prevState) => ({
                             ...prevState, memberName: e
                         }))}></TextInput>
@@ -321,10 +323,10 @@ const Withdraw = ({navigation, route}) => {
                     </View> : ''}
 
                     <Text style={{fontSize: 16, fontWeight: '500'}}>연락처</Text>
-                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info.tel} keyboardType='number-pad' editable={SMSFlag.flag == 0 ? true : false}
+                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info.tel} keyboardType='number-pad' editable={SMSFlag.flag == 0 ? true : false} maxLength={11}
                          onChangeText={(e) => setInfo((prevState) => ({...prevState, tel: e}))}>
                     </TextInput>
-                    <TouchableOpacity style={styles.certificateBox} onPress={()=>(sms('재요청'), setSMSFlag(prevState => ({...prevState, flag: 0})))}>
+                    <TouchableOpacity style={styles.certificateBox} onPress={()=>( info.tel.length < 11 ? setModal7(!modal7) : sms('재요청'), setSMSFlag(prevState => ({...prevState, flag: 0})))}>
                         {button()}
                     </TouchableOpacity>
                 </View>
@@ -418,7 +420,8 @@ const Withdraw = ({navigation, route}) => {
             <Modal3 modal3={modal3} setModal3={setModal3} />
             <Modal4 navigation={navigation} modal4={modal4} setModal4={setModal4} />
             <Modal5 modal5={modal5} setModal5={setModal5} />
-            <Modal6 navigation={navigation}modal6={modal6} setModal6={setModal6} info={info} />
+            <Modal6 navigation={navigation} modal6={modal6} setModal6={setModal6} info={info} />
+            <Modal7 modal7={modal7} setModal7={setModal7} />
             
 
             <FlatList data={DATA} renderItem={renderItem}

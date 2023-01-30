@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
 import Checkbox from 'expo-checkbox'
-import { postComment } from '../../Redux/Slices/CommentSlice'
+import { postComment } from '../../../Redux/Slices/CommentSlice'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch } from 'react-redux'

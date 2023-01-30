@@ -8,6 +8,7 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import Modal from './Modal/DotModal'
+import Modal2 from './Modal/CommentDelete'
 
 import Back from '../../../public/assets/svg/Back.svg'
 import Search from '../../../public/assets/svg/Search.svg'
@@ -110,6 +111,7 @@ const Main = ({navigation}) => {
   const [experienceSearch, setExperienceSearch] = useState();
 
   const [modal, setModal] = useState(false);
+  const [modal2, setModal2] = useState(false);
 
   useEffect(()=>{
     const boardSearch = async() => {
@@ -348,7 +350,8 @@ const dayCalculate2 = (date) => {
             </SafeAreaView>
             <SafeAreaView style={styles.container}>
 
-      <Modal modal={modal} setModal={setModal} />
+      <Modal modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} />
+      <Modal2 modal7={modal2} setModal7={setModal2} />
 
             <View style={styles.header}>
         <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>

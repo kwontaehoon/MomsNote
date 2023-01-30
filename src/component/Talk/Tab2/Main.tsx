@@ -15,6 +15,8 @@ import { postMaterialShare } from '../../../Redux/Slices/MaterialShareSlice'
 import { postMaterialShareCount } from '../../../Redux/Slices/MaterialShareCountSlice'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import { postBoardAppFlag } from '../../../Redux/Slices/BoardAppFlagSlice'
+import Swiper from 'react-native-swiper'
+import { postListPopular } from '../../../Redux/Slices/ListPopularSlice'
 
 const styles = StyleSheet.create({
   container:{
@@ -25,16 +27,30 @@ const styles = StyleSheet.create({
     height: 50,
     flexDirection: 'row',
     backgroundColor: '#F5F5F5',
-    paddingTop: 10,
+    alignItems: 'center',
   },
   header2FilterBox:{
-    width: '68%',
     justifyContent: 'center',
     paddingLeft: 20,
+  },
+  filterBox:{
+    width: 90,
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
   },
   InputBox:{
     borderWidth: 0,
     backgroundColor: '#F5F5F5',
+  },
+  header3:{
+    height: '8%',
+    justifyContent: 'center',
+    paddingLeft: 20,
+    borderBottomWidth: 1,
+    borderColor: '#EEEEEE',
+    position: 'relative',
+    zIndex: -100,
   },
   main:{
     flex: 1,
@@ -84,14 +100,13 @@ const styles = StyleSheet.create({
   },
   modalContainer2:{
       width: '80%',
-      height: 220,
       backgroundColor: 'white',
       borderRadius: 15
   },
   modalBox:{
-      height: '50%',
       justifyContent: 'center',
       alignItems: 'center',
+      padding: 10,
   },
   modal:{
       backgroundColor: '#FEA100',
@@ -100,7 +115,11 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       borderRadius: 3,
-      marginBottom: 3,
+      marginBottom: 7,
+  },
+  slide:{
+    height: '100%',
+    justifyContent: 'center'
   },
 })
 
@@ -112,6 +131,9 @@ const Talk1 = ({navigation}) => {
   const materialShareSet = useSelector(state => { return state.materialShare.refresh });
   const info = useSelector(state => { return state.materialShare.data});
   const infoCount = useSelector(state => { return state.materialShareCount.data});
+
+  const ListPopular = useSelector(state => { return state.ListPopular.data });
+  console.log('ListPopular: ', ListPopular);
 
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState({
@@ -129,6 +151,9 @@ useEffect(()=>{
   setLoading(true);
   dispatch(postMaterialShare(materialShareSet));
   dispatch(postMaterialShareCount());
+  dispatch(postListPopular());
+
+
   setLoading(false);
 
   const hits = async() => {
@@ -182,17 +207,35 @@ const filtering = (e) => {
     <View style={styles.container}>
       <View style={styles.header}></View>
       <View style={styles.header2}>
-        <View style={[styles.header2FilterBox, {paddingBottom: 5}]}>
+        <View style={styles.header2FilterBox}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={{fontSize: 16, fontWeight: '600'}}>{infoCount}</Text>
             <Text style={{fontSize: 16}}> 건</Text>
           </View>
         </View>
-        <View style={[styles.header2FilterBox, {width: '32%'}]}>
+        <View style={styles.filterBox}>
         <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순' onSelectItem={(e)=>filtering(e)}
               textStyle={{fontSize: 13}} dropDownContainerStyle={{backgroundColor: 'white', borderColor: 'white'}}
               setOpen={setOpen} setValue={setValue} setItems={setItems}/>
         </View>
+      </View>
+
+      <View style={[styles.header3, {display: info == undefined || info == '' ? 'none' : 'flex'}]}>
+          <Swiper horizontal={false}
+          autoplay={true}
+          autoplayTimeout={4.5}
+          showsPagination={false}
+          >
+          <TouchableOpacity style={styles.slide}>
+            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {ListPopular == '' ? '' : ListPopular[0].title}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.slide}>
+            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {ListPopular == '' ?  '' : ListPopular[1].title}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.slide}>
+            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {ListPopular == '' ?  '' : ListPopular[2].title}</Text>
+          </TouchableOpacity>
+        </Swiper>
       </View>
 
       <View style={[styles.main, {height: Platform.OS == 'ios' ? null : '84.5%', flex: Platform.OS === 'ios' ? 1 : null}]}>

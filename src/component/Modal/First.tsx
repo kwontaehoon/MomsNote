@@ -23,8 +23,7 @@ const styles = StyleSheet.create({
     modalBox:{
         justifyContent: 'center',
         alignItems: 'center',
-
-        padding: 15
+        padding: 15,
     },
     modal:{
         backgroundColor: '#FEA100',
@@ -63,7 +62,7 @@ const NoticeModal = ({modal, setModal}) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
-                        <View style={[styles.modalBox, {height: 220}]}>
+                        <View style={styles.modalBox}>
                             <Text style={{fontSize: 16, paddingTop: 10}}>로그아웃 하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>

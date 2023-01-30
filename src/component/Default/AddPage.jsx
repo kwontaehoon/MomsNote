@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Platform } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
-import Icon from 'react-native-vector-icons/FontAwesome'
 import Checkbox from 'expo-checkbox'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import jwtDecode from 'jwt-decode'
+import moment from 'moment'
+import Modal from './Modal/Calendar'
 
 
 import Calendar from '../../../public/assets/svg/Calendar.svg'
 import ArrowRight from '../../../public/assets/svg/Arrow-Right.svg'
+import Check from '../../../public/assets/svg/Check.svg'
 
 const styles = StyleSheet.create({
     container:{
@@ -27,6 +28,13 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderColor: '#EEEEEE',
         padding: 10,
+        justifyContent: 'center'
+    },
+    emailcon:{
+        position: 'absolute',
+        right: 15,
+        borderRadius: 999,
+        backgroundColor: '#FEB401'
     },
     main2:{
         height: 120,
@@ -122,6 +130,9 @@ const AddPage = ({navigation, route}) => {
     })
     console.log('info: ', info);
 
+    const [modal, setModal] = useState(false);
+    const [emailcon, setEmailCon] = useState(false);
+
     const submit = async() => {
 
         AsyncStorage.setItem('user', JSON.stringify(info));
@@ -143,13 +154,13 @@ const AddPage = ({navigation, route}) => {
             
             AsyncStorage.setItem('userId', String(decoded.id));
             AsyncStorage.setItem('login', '2');
+            AsyncStorage.setItem('user', JSON.stringify(Object.assign(info, {profileImage: 'ico_basic.png'})));
             navigation.reset({routes: [{name: "main"}]})
             return;
 
             }catch(error){
                 console.log('회원가입 error:', error);
             }
-
     }
 
     const onChange = (event, selectedDate) => {
@@ -158,8 +169,14 @@ const AddPage = ({navigation, route}) => {
         let Month = selectedDate.getMonth()+1;
         Month < 10 ? Month = `0${String(Month)}` : '';
         let Date = selectedDate.getDate();
-        Date < 10 ? Month = `0${String(Date)}` : '';
+        Date < 10 ? Date = `0${String(Date)}` : '';
+        
+        console.log('selectDate: ', moment(selectedDate).diff(moment(), 'day'));
 
+        
+
+        moment(selectedDate).diff(moment(), 'day') > 280 ? (setShow(false), setModal(!modal))
+        :
         setShow(false);
         setInfo((prevState) => ({ ...prevState, dueDate: `${Year}-${Month}-${Date}`}))
       };
@@ -196,6 +213,16 @@ const AddPage = ({navigation, route}) => {
         }
     }
 
+    const emailconfig = (e) => {
+        setInfo((prevState) => ({ ...prevState, email: e}))
+
+        const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
+        console.log(info.email.match(regExp));
+
+        info.email.match(regExp) == null ? setEmailCon(false) : setEmailCon(true);
+    }
+
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
             <View style={styles.main}>
@@ -212,9 +239,16 @@ const AddPage = ({navigation, route}) => {
             </View>
             <View style={styles.main2}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>이메일</Text>
-                <TextInput placeholder='이메일 입력' style={[styles.textBox, {borderColor: bottomColor[1] ? '#FEB401' : '#EEEEEE'}]}
-                onFocus={()=>change(1)} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, email: e}))}></TextInput>
+                <View style={[styles.textBox, {borderColor: bottomColor[1] ? '#FEB401' : '#EEEEEE'}]}>
+                    <View style={[styles.emailcon, {display: emailcon ? 'flex' : 'none'}]}>
+                        <Check fill={'white'}/>
+                    </View>
+                    <TextInput placeholder='이메일 입력'
+                        onFocus={()=>change(1)} onChangeText={(e) => emailconfig(e)}>
+                    </TextInput>
+                </View>
             </View>
+            
             <View style={styles.main3}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>출산 예정일</Text>
                 <View>
@@ -268,7 +302,6 @@ const AddPage = ({navigation, route}) => {
                     </View>
                 </View>
                 <View style={styles.main5Box2}>
-                    <View style={styles.arrowBox}><ArrowRight fill={'#BDBDBD'}/></View>
                     <View style={styles.main5Box2Sub}>
                         <Checkbox
                             style={styles.checkbox}
@@ -280,7 +313,9 @@ const AddPage = ({navigation, route}) => {
                 </View>
             </View>
             <View style={styles.footer}>
-                {(isChecked[1] && isChecked[2]) || isChecked[0] ? <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#FEA100'}]} onPress={submit}>
+                {(isChecked[1] && isChecked[2] && info.nickname !== '' && info.babyName !== '' && info.dueDate !== '' && info.email !== '' && emailcon)
+                ?
+                <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#FEA100'}]} onPress={submit}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>완료</Text>
                 </TouchableOpacity> : <View style={[styles.footerBox, {backgroundColor: '#E0E0E0'}]}>
                 <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>완료</Text></View>}
@@ -290,6 +325,9 @@ const AddPage = ({navigation, route}) => {
 
   return route.params == undefined ? <View></View> : (
     <View style={styles.container}>
+
+        <Modal modal={modal} setModal={setModal} show={show} setShow={setShow}/>
+
         {show && (
           <DateTimePicker
             testID="dateTimePicker"

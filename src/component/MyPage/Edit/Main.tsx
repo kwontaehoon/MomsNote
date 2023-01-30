@@ -24,19 +24,19 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
     },
 })
-const Withdraw = ({navigation}) => {
+const Withdraw = ({navigation, route}) => {
    
+    console.log('route: ', route);
     const [filter, setFilter] = useState([true, false]); // filter tab
     const [application , setApplication] = useState(); // 체험단 신청정보 있는지 유무
-    console.log('체험단 신청정보: ', application);
 
     useEffect(()=>{
 
         const applicationInfo = async() => {
             const application = await AsyncStorage.getItem('applicationFlag');
-            setApplication(123);
+            console.log('application: ', application);
         }
-        applicationInfo();
+        applicationInfo(application);
 
     }, [])
 
@@ -50,7 +50,7 @@ const Withdraw = ({navigation}) => {
     const List = ():any => {
         switch(true){
             case filter[0] === true: return <Tab1 navigation={navigation} application={application}/>
-            case filter[1] === true: return <Tab2 navigation={navigation}/>
+            case filter[1] === true: return <Tab2 navigation={navigation} route={route.params}/>
         }
     }
 

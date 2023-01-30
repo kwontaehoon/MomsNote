@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         width: '80%',
         height: 140,
         backgroundColor: 'white',
-        marginBottom: 35,
+        marginBottom: 25,
         borderRadius: 15
     },
     modalBox:{

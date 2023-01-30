@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Platform } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import axios from 'axios'
 
 import Calendar from '../../../../../public/assets/svg/Calendar.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -88,17 +89,42 @@ const Talk1 = ({navigation, application}: any) => {
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
 
     const [date, setDate] = useState(new Date());
-    const [date2, setDate2] = useState('');
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
     useEffect(()=>{
         const userInfo = async() => {
             const user = await AsyncStorage.getItem('user');
+            const a = JSON.parse(user);
+            console.log('a: ', a);
             setInfo(JSON.parse(user));
         }
         userInfo();
     }, []);
+
+    const submit = async() => {
+
+        const token = await AsyncStorage.getItem('token');
+        try{
+            const response = await axios({ 
+                  method: 'post',
+                  url: 'https://momsnote.net/api/account/update',
+                  headers: { 
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                  },
+                  data: {
+                    nickname: `${info.nickname}`,
+                    dueDate: `${info.dueDate}`,
+                    babyName: `${info.babyName}`
+                  }
+                });
+                console.log('response: ', response.data);
+                await AsyncStorage.setItem('user', JSON.stringify(info));
+            }catch(error){
+              console.log('댓글 작성 error: ', error);
+            }
+    }
 
     const onChange = (event, selectedDate) => {
 
@@ -175,9 +201,9 @@ const Talk1 = ({navigation, application}: any) => {
                 </View>
             </View>
             <View style={styles.footer}>
-                <View style={styles.footerBox}>
+                <TouchableOpacity style={styles.footerBox} onPress={submit}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>적용</Text>
-                </View>
+                </TouchableOpacity>
             </View>
         </View>
     );

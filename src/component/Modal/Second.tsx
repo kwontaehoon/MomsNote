@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 3,
-        marginBottom: 3,
+        marginBottom: 7,
     },
 })
 
@@ -57,7 +57,7 @@ const NoticeModal = ({modal, setModal}) => {
             </View>
         </Modal>
   ):
-  <Modal animationType="fade" transparent={true} visible={modal.open}
+  <Modal animationType="fade" transparent={true} visible={modal.open} statusBarTranslucent={true}
             onRequestClose={() => {
             setModal(!modal)}}>
             <View style={styles.modalContainer}>

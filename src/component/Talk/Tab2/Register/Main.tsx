@@ -62,14 +62,13 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 144,
         backgroundColor: 'white',
         borderRadius: 15
     },
     modalBox:{
-        height: '50%',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 10
     },
     modal:{
         backgroundColor: '#FEA100',
@@ -78,7 +77,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 3,
-        marginBottom: 3,
+        marginBottom: 7,
     },
     
 })
@@ -196,7 +195,7 @@ const Register = ({navigation, route}) => {
                 setModalVisible(!modalVisible)}}>
                 <View style={styles.modalContainer}>
                     <View style={styles.modalView}>
-                        <View style={[styles.modalContainer2, {height: 220}]}>
+                        <View style={styles.modalContainer2}>
                             <View style={styles.modalBox}>
                                 <Text style={{fontSize: 16, paddingTop: 10}}>작성 중인 게시글을 취소합니다.</Text>
                                 <Text style={{fontSize: 16, paddingTop: 5}}>해당 내용을 임시저장하시겠습니까?</Text>

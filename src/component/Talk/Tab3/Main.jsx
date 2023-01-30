@@ -20,12 +20,16 @@ const styles = StyleSheet.create({
   header2:{
     height: 50,
     flexDirection: 'row',
-    paddingTop: 10,
   },
   header2FilterBox:{
-    width: '68%',
     justifyContent: 'center',
     paddingLeft: 20,
+  },
+  filterBox:{
+    width: 90,
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
   },
   InputBox:{
     borderWidth: 0,
@@ -146,7 +150,7 @@ const Talk3 = ({navigation}: any) => {
             <Text style={{fontSize: 16}}> 건</Text>
           </View>
         </View>
-        <View style={[styles.header2FilterBox, {width: '32%'}]}>
+        <View style={styles.filterBox}>
         <DropDownPicker open={open} value={value} items={items} style={styles.InputBox} placeholder='최신 순' onSelectItem={(e)=>filtering(e)}
               textStyle={{fontSize: 13}} dropDownContainerStyle={{backgroundColor: 'white', borderColor: 'white'}}
               setOpen={setOpen} setValue={setValue} setItems={setItems}/>
