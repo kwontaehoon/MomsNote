@@ -130,6 +130,7 @@ const Talk1 = ({navigation}) => {
   const isFocused = useIsFocused();
   const materialShareSet = useSelector(state => { return state.materialShare.refresh });
   const info = useSelector(state => { return state.materialShare.data});
+  console.log('info: ', info);
   const infoCount = useSelector(state => { return state.materialShareCount.data});
 
   const ListPopular = useSelector(state => { return state.ListPopular.data });
@@ -192,7 +193,7 @@ const filtering = (e) => {
         <View style={styles.clockBox}>
           <Text style={{color: '#9E9E9E', fontSize: 12}}>{dayCalculate(item.boardDate)}</Text>
         </View>
-        <Text>{item.title}</Text>
+        <Text numberOfLines={2} ellipsizeMode={'tail'}>{item.title}</Text>
         <View style={styles.infoBox}>
               <Text style={{color: '#9E9E9E', fontSize: 13}}>{item.nickname} </Text>
               <Like fill='#9E9E9E' width={13} height={17}/>
@@ -203,7 +204,7 @@ const filtering = (e) => {
     </TouchableOpacity>
   ); 
 
-  return info == undefined || info == '' ?  <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return info.length == 0 ?  <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
       <View style={styles.header}></View>
       <View style={styles.header2}>
@@ -238,9 +239,9 @@ const filtering = (e) => {
         </Swiper>
       </View>
 
-      <View style={[styles.main, {height: Platform.OS == 'ios' ? null : '84.5%', flex: Platform.OS === 'ios' ? 1 : null}]}>
-        {info == undefined || info == '' ?
-        <View></View>
+      <View style={[styles.main, {height: Platform.OS == 'ios' ? null : '89%', flex: Platform.OS === 'ios' ? 1 : null}]}>
+        {info.lenth == 0 ?
+        <View style={{height: '70%', alignItems: 'center', justifyContent: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시글이 없습니다.</Text></View>
         :
         <FlatList data={info} renderItem={renderItem} onEndReached={()=>{
           dispatch(setMaterialShareCount({page: infoCount > (materialShareSet.page * 30) ? materialShareSet.page + 1 : materialShareSet.page, count: infoCount}))
@@ -261,7 +262,7 @@ const filtering = (e) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
-                        <View style={styles.modalBox}>
+                        <View style={[styles.modalBox, {paddingTop: 15}]}>
                             <Text style={{fontSize: 16, paddingTop: 10}}>작성 중이던 게시글이 존재합니다.</Text>
                             <Text style={{fontSize: 16, paddingTop: 5}}>임시저장된 게시글을 불러오시겠습니까?</Text>
                         </View>

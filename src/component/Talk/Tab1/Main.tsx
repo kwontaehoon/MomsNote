@@ -8,8 +8,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import Swiper from 'react-native-swiper'
 import { setBoardRefresh, setBoardCount, setBoardFilter } from '../../../Redux/Slices/BoardSlice'
-import { useIsFocused } from '@react-navigation/native'
-import { useFocusEffect } from '@react-navigation/native'
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
@@ -18,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { postBoardCount, setBoardCountRefresh } from '../../../Redux/Slices/BoardCountSlice'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import { postBoardPopular } from '../../../Redux/Slices/BoardPopularSlice'
+import { postAlarm } from '../../../Redux/Slices/AlarmSlice'
 
 
 const styles = StyleSheet.create({
@@ -199,8 +198,7 @@ const Talk1 = ({navigation, route}:any) => {
     },
   ]
 
-
-  const isFocused = useIsFocused();
+  
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.board.data; });
   console.log('board info: ', info);
@@ -236,15 +234,11 @@ const Talk1 = ({navigation, route}:any) => {
   useEffect(()=>{
     const momsTalk = async() => {
       const asyncStorage = await AsyncStorage.getItem('momsTalk');
-      const token = await AsyncStorage.getItem('token');
-      console.log('token: ', token);
-      const a = await AsyncStorage.getItem('user');
-      console.log(JSON.parse(a));
       
       setModalVisible(prevState => ({...prevState, asyncStorage: asyncStorage}));
     }
     momsTalk();
-  }, [isFocused]);
+  }, []);
 
   const change = (e) => { // 카테고리 배경색상, 글자 색상 변경 onpress
     let arr = Array.from({length: 6}, () => {return false});
@@ -323,7 +317,7 @@ const Talk1 = ({navigation, route}:any) => {
     </View>
   )
 
-  return info == '' && info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return info == '' || info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
 
   <Modal animationType="fade" transparent={true} visible={modalVisible.open} statusBarTranslucent={true}
@@ -387,8 +381,8 @@ const Talk1 = ({navigation, route}:any) => {
       </View>
 
       <View style={[styles.main, {height: Platform.OS == 'ios' ? null : '67%', flex: Platform.OS === 'ios' ? 1 : null}]}>
-        {info == '' || info == undefined ?
-        <View style={{marginTop: 80, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
+        {info.length == 0 ?
+        <View style={{height: '70%', alignItems: 'center', justifyContent: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
         :
         <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{
           dispatch(setBoardCount({page: infoCount > (boardSet.page * 30) ? boardSet.page + 1 : boardSet.page, count: infoCount}));

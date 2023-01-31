@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native'
 import moment from 'moment'
-import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { postEvent, setEventRefresh } from '../../../Redux/Slices/EventSlice'
-import { postGuide } from '../../../Redux/Slices/GuideSlice'
 import { postEventCount } from '../../../Redux/Slices/EventCountSlice'
 import { setEventCount } from '../../../Redux/Slices/EventSlice'
 
@@ -110,13 +108,10 @@ const Talk1 = ({navigation}: any) => {
   
     const dispatch = useDispatch();
     const eventSet = useSelector(state => { return state.event.refresh });
-    console.log('eventSet: ', eventSet);
     const info = useSelector(state => { return state.event.data; });
-    console.log('행사정보: ', info);
     const [week, setWeek] = useState([true, false, false, false, false, false,
     false, false, false, false, false, false]);
     const infoCount = useSelector(state => { return state.eventCount.data; });
-    console.log('행사정보 갯수: ', infoCount);
 
     const [loading, setLoading] = useState(false);
 
@@ -128,7 +123,6 @@ const Talk1 = ({navigation}: any) => {
     }, [eventSet]);
 
     const change = (e) => { // 몇 주차 border, 글자두께 변경
-      console.log('첫번째 e: ', e);
       let arr = Array.from({length: 12}, ()=>{ return false});
 
       arr[e] = !arr[e];
@@ -137,8 +131,6 @@ const Talk1 = ({navigation}: any) => {
         if(e-9 < 0){
           e = '0' + (e+1);
         } else e += 1;
-      
-      console.log('두번째 e: ', e);
 
       dispatch(setEventRefresh({
         page: 1,

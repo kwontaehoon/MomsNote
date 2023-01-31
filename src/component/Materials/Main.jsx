@@ -531,9 +531,9 @@ const save = async() => {
         <View style={styles.header}>
         <Text style={{fontSize: 17, fontWeight: '600'}}>출산준비물</Text>
         <View style={styles.headerBar}>
-            <TouchableOpacity style={{marginRight: 16}} onPress={capture}><Download/></TouchableOpacity>
-            <TouchableOpacity style={{marginRight: 16}} onPress={()=>navigation.navigate('출산 준비물 검색')}><Search/></TouchableOpacity>
-            <TouchableOpacity style={{marginRight: 16}} onPress={()=>navigation.navigate('알림')}><Bell/></TouchableOpacity>
+            <TouchableOpacity style={{marginRight: 20}} onPress={capture}><Download/></TouchableOpacity>
+            <TouchableOpacity style={{marginRight: 20}} onPress={()=>navigation.navigate('출산 준비물 검색')}><Search/></TouchableOpacity>
+            <TouchableOpacity style={{marginRight: 20}} onPress={()=>navigation.navigate('알림')}><Bell/></TouchableOpacity>
             <TouchableOpacity style={{marginRight: 5}} onPress={()=>navigation.navigate('마이페이지')}><MyPage/></TouchableOpacity>
         </View>
       </View>

@@ -84,15 +84,10 @@ const Talk1 = ({navigation}) => {
     const [filter, setFilter] = useState([true, false, false]); // 서브 카테고리
 
     const [info, setInfo] = useState([]);
-    console.log('임신상담 info: ', info);
     const [info2, setInfo2] = useState([]);
-    console.log('출산상담: ', info2);
 
     const [infoDisplay, setInfoDisplay] = useState([]);
-    console.log('infoDisplay: ', infoDisplay);
     const [info2Display, setInfo2Display] = useState([]);
-    console.log('info2Display: ', info2Display);
-
 
     useEffect(()=>{
         const Pregnant = async() => {
@@ -131,7 +126,6 @@ const Talk1 = ({navigation}) => {
     }
 
     const answer = (category, index) => {
-        console.log(category, index);
         let arr = [];
         if(category === '임신상담'){
             arr = [...infoDisplay];

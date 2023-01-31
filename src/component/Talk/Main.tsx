@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal, StatusBar } 
 import Talk1 from './Tab1/Main'
 import Talk2 from './Tab2/Main'
 import Talk3 from './Tab3/Main'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useIsFocused } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
     container:{
@@ -27,6 +27,13 @@ const styles = StyleSheet.create({
 })
 const Main = ({navigation, route}) => {
 
+    
+    const isFocused = useIsFocused();
+
+    useEffect(()=>{
+        console.log('아아ㅏ아아아아아아앙');
+    }, [isFocused]);
+    
     console.log('맘스 톡 route: ', route);
 
     const [filter, setFilter] = useState([true, false, false]); // tab

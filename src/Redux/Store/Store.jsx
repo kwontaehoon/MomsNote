@@ -39,6 +39,7 @@ import MyLikeExpReducer from '../Slices/MyLikeExpSlice'
 import DdayTodayReducer from '../Slices/DdayTodaySlice'
 import DdayTermReducer from '../Slices/DdayTermSlice'
 import ListPopularReducer from '../Slices/ListPopularSlice'
+import AlarmReducer from '../Slices/AlarmSlice'
 
 
 
@@ -83,6 +84,7 @@ export const store = configureStore({
     myLikeExp: MyLikeExpReducer,
     ddayToday: DdayTodayReducer,
     ddayTerm: DdayTermReducer,
-    ListPopular: ListPopularReducer
+    ListPopular: ListPopularReducer,
+    alarm: AlarmReducer
   },
 })

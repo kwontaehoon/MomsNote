@@ -1,11 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
-import moment from 'moment'
-import { Video, AVPlaybackStatus } from 'expo-av';
+import { Video } from 'expo-av';
 
 import Back from '../../../../public/assets/svg/Back.svg'
-import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -102,10 +100,8 @@ const styles = StyleSheet.create({
 const Talk1Sub = ({navigation, route}) => {
 
     const info = [route.params];
-    console.log('info: ', info);
 
     const date = new Date();
-    console.log('date: ', date);
 
     const ImageBox = () => {
         const arr = [];
@@ -167,7 +163,6 @@ const Talk1Sub = ({navigation, route}) => {
                 <Back onPress={()=>navigation.goBack()}/>
                 <View style={styles.headerBar}>
                     <Share style={{marginRight: 12}}/>
-                    <More />
                 </View>
             </View>
             <View style={styles.main}>

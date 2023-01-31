@@ -3,6 +3,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack'
 import { View, Button, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native';
 import moment from 'moment';
+import { useSelector, useDispatch } from 'react-redux'
+
 import Home from '../Home/Main'
 import Talk from '../Talk/Main'
 import Dday from '../Dday/Main'
@@ -27,10 +29,7 @@ import Campaign2 from '../../../public/assets/svg/campaign2.svg'
 import Baby2 from '../../../public/assets/svg/Baby2.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import DateTime from '../Test/DateTime'
-import CutDownTimer from '../Test/CutdownTimer'
-import SlideTest from '../Test/SlideTest'
-import SlideTest2 from '../Test/SlideTest2'
+import { postAlarm } from '../../Redux/Slices/AlarmSlice';
 
 const styles = StyleSheet.create({
     header:{
@@ -43,8 +42,17 @@ const styles = StyleSheet.create({
       paddingRight: 15
     },
     iconBox:{
-      paddingLeft: 5,
-      padding: 10
+      padding: 10,
+    },
+    redDot:{
+      position: 'absolute',
+      top: 10,
+      right: 12,
+      backgroundColor: 'red',
+      width: 7,
+      height: 7,
+      borderRadius: 40,
+      zIndex: 999,
     },
     header2:{
       width: 300,
@@ -59,12 +67,18 @@ function MainScreen() {
   const Tab = createBottomTabNavigator();
   const Stack = createStackNavigator();
 
+  const dispatch = useDispatch();
+  const Alarm = useSelector(state => { return state.alarm.data; });
+  console.log('Alarm: ', Alarm);
+
   const [userInfo, setUserInfo] = useState();
+  const [AlarmFlag, setAlarmFlag] = useState(false);
+  console.log('AlarmFlag: ', AlarmFlag);
 
   useEffect(()=>{
     const userInfo = async()=> {
-    
     const asyncStorage = await AsyncStorage.getItem('user');
+    dispatch(postAlarm());
 
     setUserInfo(moment(JSON.parse(asyncStorage).dueDate).diff(moment(), "days"));
   
@@ -72,12 +86,20 @@ function MainScreen() {
     userInfo();
   }, []);
 
+  const alarmFunc = () => {
+    dispatch(postAlarm());
+    Alarm.filter(x => x.readFlag == true) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+  }
+
   return (
-    <Tab.Navigator initialRouteName='출산 준비물' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
+    <Tab.Navigator initialRouteName='맘스 톡' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
       : {tabBarStyle: { height: 55, position: 'absolute', paddingBottom: 5, elevation: 0 }, headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
 
 
-      <Tab.Screen name="맘스 톡" options={{tabBarIcon: ({focused, color}) => (focused ? <Forum2 /> : <Forum/>), unmountOnBlur:true}}>
+      <Tab.Screen name="맘스 톡" options={{tabBarIcon: ({focused, color}) => (focused ? <Forum2 /> : <Forum/>), unmountOnBlur:true}}
+      listeners={{tabPress: (e)=>{
+        alarmFunc()  
+      }}}>
           {()=>(
                <Stack.Navigator>
                     <Stack.Screen 
@@ -98,7 +120,10 @@ function MainScreen() {
                             <View style={styles.header}>
                                 <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
                                     <View style={styles.iconBox}><Search onPress={()=>navigation.navigate('검색')}/></View>
-                                    <View style={styles.iconBox}><Bell onPress={()=>navigation.navigate('알림')}/></View>
+                                    <View style={styles.iconBox}>
+                                      <View style={[styles.redDot, {display: AlarmFlag ? 'flex' : 'none'}]} />
+                                      <Bell onPress={()=>navigation.navigate('알림')}/>
+                                    </View>
                                     <View style={styles.iconBox}><MyPage onPress={()=>navigation.navigate('마이페이지')}/></View>
                                 </View>
                             </View>
@@ -114,7 +139,10 @@ function MainScreen() {
             )}
           </Tab.Screen>
 
-          <Tab.Screen name="Dday" options={{tabBarIcon: ({focused, color}) => (focused ? <Baby2 /> : <Baby />), tabBarLabel: `D-${userInfo}` , unmountOnBlur:true}}>
+          <Tab.Screen name="Dday" options={{tabBarIcon: ({focused, color}) => (focused ? <Baby2 /> : <Baby />), tabBarLabel: `D-${userInfo}` , unmountOnBlur:true}}
+          listeners={{tabPress: (e)=>{
+            alarmFunc()  
+          }}}>
         {()=>(
                <Stack.Navigator>
                     <Stack.Screen 
@@ -135,7 +163,10 @@ function MainScreen() {
                             <View style={styles.header}>
                                 <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
                                     <View style={styles.iconBox}><Search onPress={()=>navigation.navigate('검색')}/></View>
-                                    <View style={styles.iconBox}><Bell onPress={()=>navigation.navigate('알림')}/></View>
+                                    <View style={styles.iconBox}>
+                                      <View style={[styles.redDot, {display: AlarmFlag ? 'flex' : 'none'}]} />
+                                      <Bell onPress={()=>navigation.navigate('알림')}/>
+                                    </View>
                                     <View style={styles.iconBox}><MyPage onPress={()=>navigation.navigate('마이페이지')}/></View>
                                 </View>
                             </View>
@@ -159,6 +190,7 @@ function MainScreen() {
                         options={({ navigation, route }) => ({
                             title: '', headerShown: false,
                             headerStyle:{backgroundColor: '#FEECB3'},
+                            
                           })}
                         />
                </Stack.Navigator>
@@ -183,7 +215,10 @@ function MainScreen() {
           )}
       </Tab.Screen>
 
-      <Tab.Screen name="맘스정보" options={{tabBarIcon: ({focused, color}) => (focused ? <Campaign2 /> : <Campaign />), unmountOnBlur:true}}>
+      <Tab.Screen name="맘스정보" options={{tabBarIcon: ({focused, color}) => (focused ? <Campaign2 /> : <Campaign />), unmountOnBlur:true}}
+      listeners={{tabPress: (e)=>{
+        alarmFunc()  
+      }}}>
         {()=>(
                <Stack.Navigator>
                     <Stack.Screen 
@@ -204,7 +239,10 @@ function MainScreen() {
                             <View style={styles.header}>
                                 <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
                                     <View style={styles.iconBox}><Search onPress={()=>navigation.navigate('검색')}/></View>
-                                    <View style={styles.iconBox}><Bell onPress={()=>navigation.navigate('알림')}/></View>
+                                    <View style={styles.iconBox}>
+                                      <View style={[styles.redDot, {display: AlarmFlag ? 'flex' : 'none'}]} />
+                                      <Bell onPress={()=>navigation.navigate('알림')}/>
+                                    </View>
                                     <View style={styles.iconBox}><MyPage onPress={()=>navigation.navigate('마이페이지')}/></View>
                                 </View>
                             </View>

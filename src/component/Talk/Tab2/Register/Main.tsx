@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, SafeAreaView, Modal, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Modal } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import Icon2 from 'react-native-vector-icons/AntDesign'
 import { getStatusBarHeight } from "react-native-status-bar-height"
-import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSelector, useDispatch } from 'react-redux'
@@ -83,8 +81,6 @@ const styles = StyleSheet.create({
 })
 const Register = ({navigation, route}) => {
 
-    console.log('materialList route params: ', route.params);
-
     const DATA = [
         {
           id: '0',
@@ -104,7 +100,6 @@ const Register = ({navigation, route}) => {
             contents: '',
         }
     );
-    console.log('data: ', data);
 
     useEffect(()=>{
         const load = async() => {
@@ -135,9 +130,8 @@ const Register = ({navigation, route}) => {
                   },
                 data: data
               });
-              console.log('response: ', response.data);
           }catch(error){
-            console.log('error: ', error);
+            console.log('출산리스트 글쓰기 error: ', error);
           }
           dispatch(postMaterialShare(materialShareSet));
     }
@@ -196,7 +190,7 @@ const Register = ({navigation, route}) => {
                 <View style={styles.modalContainer}>
                     <View style={styles.modalView}>
                         <View style={styles.modalContainer2}>
-                            <View style={styles.modalBox}>
+                            <View style={[styles.modalBox, {paddingTop: 15}]}>
                                 <Text style={{fontSize: 16, paddingTop: 10}}>작성 중인 게시글을 취소합니다.</Text>
                                 <Text style={{fontSize: 16, paddingTop: 5}}>해당 내용을 임시저장하시겠습니까?</Text>
                             </View>

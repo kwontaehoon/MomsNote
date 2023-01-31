@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native'
-import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { postGovernment, setGovernmentCount } from '../../../Redux/Slices/Government'
@@ -52,10 +51,8 @@ const Talk1 = ({navigation}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.government.data });
-  console.log('정부지원혜택 info: ', info);
   const governmentSet = useSelector(state => { return state.government.refresh });
   const infoCount = useSelector(state => { return state.governmentCount.data });
-  console.log('정부지원혜택 갯수: ', infoCount);
 
   const [loading, setLoading] = useState(false);
 

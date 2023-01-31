@@ -200,6 +200,7 @@ const Talk1Sub = ({navigation, route}) => {
     console.log('오늘의 편지 info2:' , info2);
     const [info3, setInfo3] = useState(info2);
     console.log('오늘의 편지 info3: ', info3);
+    
     const ref = useRef();
     const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
 

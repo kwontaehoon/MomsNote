@@ -8,7 +8,6 @@ import Modal4 from '../..//Modal/DelareConfirm'
 import Modal6 from '../../Modal/Declare2'
 import Modal7 from '../../Modal/CommentDelete'
 import moment from 'moment'
-import { Video, AVPlaybackStatus } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
@@ -16,12 +15,20 @@ import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
     SafeAreaProvider,
-    useSafeAreaInsets,
   } from 'react-native-safe-area-context';
 
 import Comment from './Comment'
 import axios from 'axios'
 
+import M1 from '../../../../public/assets/svg/1.svg'
+import M2 from '../../../../public/assets/svg/2.svg'
+import M3 from '../../../../public/assets/svg/3.svg'
+import M4 from '../../../../public/assets/svg/4.svg'
+import M5 from '../../../../public/assets/svg/5.svg'
+import M6 from '../../../../public/assets/svg/6.svg'
+import M7 from '../../../../public/assets/svg/7.svg'
+import M8 from '../../../../public/assets/svg/8.svg'
+import M9 from '../../../../public/assets/svg/9.svg'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Chat from '../../../../public/assets/svg/Chat.svg'
 import Like from '../../../../public/assets/svg/Like.svg'
@@ -32,7 +39,6 @@ import Share from '../../../../public/assets/svg/Share.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
 import { postShareList } from '../../../Redux/Slices/ShareListSlice'
 import { postHits } from '../../../Redux/Slices/HitsSlice'
-import { useFocusEffect, useIsFocused } from '@react-navigation/native'
 import { postMaterialShare } from '../../../Redux/Slices/MaterialShareSlice'
 
 const styles = StyleSheet.create({
@@ -73,7 +79,6 @@ const styles = StyleSheet.create({
     main:{
     },
     mainBox:{
-        height: 70,
         padding: 20,
     },
     mainBox2:{
@@ -244,62 +249,49 @@ const Talk1Sub = ({navigation, route}) => {
         {
           id: '0',
           title: '산모용품',
-          icon: require('../../../../public/assets/image/1.png'),
         },
         {
           id: '1',
           title: '수유용품',
-          icon: require('../../../../public/assets/image/2.png'),
         },
         {
           id: '2',
           title: '위생용품',
-          icon: require('../../../../public/assets/image/3.png'),
         },
         {
           id: '3',
           title: '목욕용품',
-          icon: require('../../../../public/assets/image/4.png'),
         },
         {
           id: '4',
           title: '침구류',
-          icon: require('../../../../public/assets/image/5.png'),
         },
         {
           id: '5',
           title: '아기의류',
           color: '#FFADAD',
-          icon: require('../../../../public/assets/image/6.png'),
         },
         {
           id: '6',
           title: '외출용품',
-          icon: require('../../../../public/assets/image/7.png'),
         },
         {
           id: '7',
           title: '가전용품',
           color: '#FFADAD',
-          icon: require('../../../../public/assets/image/8.png'),
         },
         {
           id: '8',
           title: '놀이용품',
-          icon: require('../../../../public/assets/image/9.png'),
         },
     ];
 
     const dispatch = useDispatch();
     const info = [route.params];
-    console.log('출산리스트 route: ', info);
     const info2 = useSelector(state => { return state.shareList.data }); // 게시글 리스트
-    console.log('출산리스트 info2 : ', info2);
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
     const materialShare = useSelector(state => { return state.materialShare.data });
-    console.log('materialShare: ', materialShare);
     const [info3, setInfo3] = useState(materialShare);
-    console.log('출산리스트 info3: ', info3);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
@@ -334,7 +326,6 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal7, setModal7] = useState(false); // comment 삭제모달
 
     const [userInfo, setUserInfo] = useState();
-    console.log('userInfo: ', userInfo);
 
     const animation = useRef(new Animated.Value(0)).current;
     const flatlistRef = useRef(null);
@@ -357,7 +348,6 @@ const Talk1Sub = ({navigation, route}) => {
 
         const hits = async() => {
             const hits = await AsyncStorage.getItem('hits');
-            console.log('hits: ', hits);
 
             hits == null || hits.split('|').filter(x => x == String(info[0].boardId)) == '' ? 
             (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`)) : ''
@@ -372,7 +362,6 @@ const Talk1Sub = ({navigation, route}) => {
     }, []);
 
     useEffect(()=>{
-        console.log('zvczvzvczvzvzvcz')
         setInfo3(materialShare.filter(x => x.boardId == info[0].boardId));
     }, [materialShare]);
 
@@ -389,7 +378,6 @@ const Talk1Sub = ({navigation, route}) => {
       }, [info2]);
 
     useEffect(()=>{ // 게시물 추천 Flag
-        console.log('게시물 추천 여부 업데이트');
         const likeInfo = async() => {
             const token = await AsyncStorage.getItem('token');
             try{
@@ -422,9 +410,8 @@ const Talk1Sub = ({navigation, route}) => {
                   },
                   data: insert
                 });
-                console.log('response: ', response.data);
             }catch(error){
-              console.log('댓글 작성 error: ', error);
+              console.log('출산 리스트 댓글 작성 error: ', error);
             }
         dispatch(postBoard(boardData));
         dispatch(postComment(commentData));
@@ -447,16 +434,15 @@ const Talk1Sub = ({navigation, route}) => {
                     type: 'plus'
                   }
                 });
-                console.log('response: ', response.data);
                 dispatch(postMaterialShare(materialShareSet));
                 setBoardLike();
             }catch(error){
-              console.log('error: ', error);
+              console.log('출산 리스트 좋아요 error: ', error);
             }
     }
 
     const likeminus = async() => { // 게시판 좋아요 취소
-        console.log('likeminus');
+
         const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
@@ -471,11 +457,10 @@ const Talk1Sub = ({navigation, route}) => {
                     type: 'minus'
                   }
                 });
-                console.log('response: ', response.data);
                 dispatch(postMaterialShare(materialShareSet));
                 setBoardLike();
             }catch(error){
-              console.log('게시판 좋아요 error: ', error);
+              console.log('출산 리스트 좋아요 error: ', error);
             }
     }
 
@@ -519,6 +504,20 @@ const Talk1Sub = ({navigation, route}) => {
         flatlistRef.current?.scrollToEnd();
     };
 
+    const SVGSelect = (e) => {
+        switch(e){
+            case 0: return(<M1 />) 
+            case 1: return(<M2 />) 
+            case 2: return(<M3 />) 
+            case 3: return(<M4 />) 
+            case 4: return(<M5 />) 
+            case 5: return(<M6 />) 
+            case 6: return(<M7 />) 
+            case 7: return(<M8 />) 
+            case 8: return(<M9 />) 
+        }
+    }
+
 
     const List = () => {
         let arr = [];
@@ -529,7 +528,7 @@ const Talk1Sub = ({navigation, route}) => {
                         <TouchableOpacity style={styles.arrowBox}
                             onPress={()=>arrow(x.id)}>{list[x.id] ? <Icon name="angle-up" size={22}/> : <Icon name='angle-down' size={22}/>}
                         </TouchableOpacity>
-                        <Image source={x.icon} width={20} height={20}/>
+                        {SVGSelect(index)}
                         <Text style={{fontSize: 15}}> {x.title}</Text>
                     </View>
                     <View style={{display: list[index] ? 'flex' : 'none'}}>
@@ -671,7 +670,7 @@ const Talk1Sub = ({navigation, route}) => {
                 <Text style={{color: '#757575'}}> 님에게 답변 남기기</Text>
             </View>
             <View style={styles.footer}>
-                <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profileImage}`}} style={styles.profileBox}/>
+                <Image source={{uri: `${userInfo.profileImage}`}} style={styles.profileBox}/>
                 <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: '', level: 0}))}}>
                     <Text style={{color: '#1E88E5', fontWeight: '600'}}>등록</Text>
                 </TouchableOpacity>

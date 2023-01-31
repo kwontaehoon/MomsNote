@@ -15,13 +15,9 @@ import Modal4 from './Modal/Cencel'
 import Modal5 from './Modal/CencelConfirm'
 import Modal6 from './Modal/Save'
 import Modal7 from './Modal/PhoneNumber'
-import { useDispatch } from 'react-redux'
-import { postBoardAppFlag } from '../../../Redux/Slices/BoardAppFlagSlice'
-import { postBoardApp } from '../../../Redux/Slices/BoardApp'
 import { useSelector } from 'react-redux'
 import {
-    SafeAreaProvider,
-    useSafeAreaInsets,
+    SafeAreaProvider
   } from 'react-native-safe-area-context';
 
 
@@ -194,16 +190,10 @@ const Withdraw = ({navigation, route}) => {
     const [minutes, setMinutes] = useState(parseInt(3));
     const [seconds, setSeconds] = useState(parseInt(0));
 
-    // useEffect(()=>{
-    //     // dispatch(postBoardAppFlag({ experienceId: route.params.experienceId}));
-    //     dispatch(postBoardApp({ experienceId: route.params.experienceId }));
-    // }, []);
-
     useEffect(()=>{
         const load = async() => {
             switch(true){
                 case route.params == '신청 정보 불러오기': {
-                    console.log('신청 정보 불러오기');
                     const asyncStorage = await AsyncStorage.getItem('application');
 
                     console.log('apply async: ', asyncStorage);

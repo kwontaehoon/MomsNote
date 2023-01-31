@@ -88,13 +88,9 @@ const Talk1 = ({navigation}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.guide.data });
-  console.log('맘스가이드 info: ', info);
   const guideSet = useSelector(state => { return state.guide.refresh });
-  console.log('guideSet: ', guideSet);
   const infoCount = useSelector(state => { return state.guideCount.data });
-  console.log('맘스가이드 info 갯수: ', infoCount);
   const guideCountSet = useSelector(state => { return state.guideCount.refresh });
-  console.log('guideCountSet: ', guideCountSet);
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
 

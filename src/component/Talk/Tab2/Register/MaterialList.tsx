@@ -4,6 +4,16 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSelector, useDispatch } from 'react-redux'
 import { postMaterial } from '../../../../Redux/Slices/MaterialSlice'
 
+import M1 from '../../../../../public/assets/svg/1.svg'
+import M2 from '../../../../../public/assets/svg/2.svg'
+import M3 from '../../../../../public/assets/svg/3.svg'
+import M4 from '../../../../../public/assets/svg/4.svg'
+import M5 from '../../../../../public/assets/svg/5.svg'
+import M6 from '../../../../../public/assets/svg/6.svg'
+import M7 from '../../../../../public/assets/svg/7.svg'
+import M8 from '../../../../../public/assets/svg/8.svg'
+import M9 from '../../../../../public/assets/svg/9.svg'
+
 const styles = StyleSheet.create({
     container:{
         height: '100%',
@@ -116,14 +126,11 @@ const Talk1Sub = ({route}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => state.material.data);
-  console.log('총 예산 info: ', info);
   const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
-  console.log('list: ', list);
   const [sumResult, setSumResult] = useState({
     sum: 0,
     exp: 0
   });
-  console.log(sumResult);
 
   useEffect(()=>{
     dispatch(postMaterial({ order: 'buy' }));
@@ -161,6 +168,20 @@ const Talk1Sub = ({route}) => {
     )
   }
 
+  const SVGSelect = (e) => {
+    switch(e){
+        case 0: return(<M1 />) 
+        case 1: return(<M2 />) 
+        case 2: return(<M3 />) 
+        case 3: return(<M4 />) 
+        case 4: return(<M5 />) 
+        case 5: return(<M6 />) 
+        case 6: return(<M7 />) 
+        case 7: return(<M8 />) 
+        case 8: return(<M9 />) 
+    }
+}
+
 
   const List = ({title}) => {
     let arr = [];
@@ -181,22 +202,17 @@ const Talk1Sub = ({route}) => {
     return arr;
   }
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item, index }) => (
       <View>
           <View style={styles.mainBox}>
             <TouchableOpacity style={styles.arrowBox}
                 onPress={()=>arrow(item.id)}>{list[item.id] ? <Icon name="angle-down" size={22}/> : <Icon name='angle-up' size={22}/>}
             </TouchableOpacity>
-            <Image source={item.icon} width={20} height={20}/>
+            {SVGSelect(index)}
             <View style={[styles.titleBox, {marginLeft: 8}]}><Text style={{fontSize: 16, fontWeight: '500'}}>{item.title}</Text></View>
           </View>
           <View style={{display: list[item.id] ? 'none' : 'flex'}}>
            { 
-          //  <View style={styles.mainBox2}>
-          //     <View style={styles.filterBox}><Text>품목</Text></View>
-          //     <View style={styles.filterBox}><Text>브랜드</Text></View>
-          //     <View style={styles.filterBox}><Text>금액</Text></View>
-          //   </View>
           filtering(item.title)
             }
               <List title={item.title}/>
@@ -216,18 +232,18 @@ const Talk1Sub = ({route}) => {
         <View style={styles.footerBox}>
           <View style={[styles.arrowBox, {right: 0}]}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontSize: 18, fontWeight: '500'}}>{(sumResult.sum + sumResult.exp).toLocaleString()} </Text>
+              <Text style={{fontSize: 18, fontWeight: '500'}}>{(sumResult.sum + sumResult.exp).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} </Text>
               <Text>원</Text>
             </View>
           </View>
           <Text style={{fontSize: 18, fontWeight: '500'}}>총 예산</Text>
         </View>
         <View style={[styles.footerBox, {paddingLeft: 20, height: 25}]}>
-          <View style={[styles.arrowBox, {right: 0}]}><Text>{(sumResult.sum).toLocaleString()} 원</Text></View>
+          <View style={[styles.arrowBox, {right: 0}]}><Text>{(sumResult.sum).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</Text></View>
           <Text style={{color: '#616161'}}>ㄴ 구매 금액</Text>
         </View>
         <View style={[styles.footerBox, {paddingLeft: 20, height: 25}]}>
-          <View style={[styles.arrowBox, {right: 0}]}><Text>{(sumResult.exp).toLocaleString()} 원</Text></View>
+          <View style={[styles.arrowBox, {right: 0}]}><Text>{(sumResult.exp).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</Text></View>
           <Text style={{color: '#616161'}}>ㄴ 구매 예정 금액</Text>
         </View>
       </View>

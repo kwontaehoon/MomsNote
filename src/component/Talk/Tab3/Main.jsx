@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ActivityIndicator } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
-import axios from 'axios'
+
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
@@ -80,11 +80,8 @@ const Talk3 = ({navigation}: any) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => {return state.experience.data});
-  console.log('체험단 info: ', info);
   const infoCount = useSelector(state => { return state.experienceCount.data});
-  console.log('체험단 infoCount: ', infoCount);
   const experienceSet = useSelector(state => { return state.experience.refresh; });
-  console.log('experienceSet: ', experienceSet);
 
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -137,12 +134,13 @@ const Talk3 = ({navigation}: any) => {
     </TouchableOpacity>
   ); 
 
-  return info == '' || info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return info == '' || info == undefined ?
+      <View style={{height: '70%', alignItems: 'center', justifyContent: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>모집중인 체험단이 없습니다.</Text></View>
+      : (
     <View style={styles.container}>
 
       <Modal modal={modal} setModal={setModal}/>
 
-      <View style={styles.header}></View>
       <View style={styles.header2}>
         <View style={[styles.header2FilterBox, {paddingBottom: 5}]}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -156,16 +154,19 @@ const Talk3 = ({navigation}: any) => {
               setOpen={setOpen} setValue={setValue} setItems={setItems}/>
         </View>
       </View>
+
       <View style={styles.main}>
-        {info.length !== 0 ? <FlatList data={info} renderItem={renderItem} numColumns={2} showsVerticalScrollIndicator={false}
+        { info.length == 0 ? <View style={{height: '70%', alignItems: 'center', justifyContent: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시글이 없습니다.</Text></View>
+        :
+        <FlatList data={info} renderItem={renderItem} numColumns={2} showsVerticalScrollIndicator={false}
           onEndReached={()=>
           {
             dispatch(setExperienceCount({page: infoCount > (experienceSet.page * 30) ? experienceSet.page + 1 :experienceSet.page, count: infoCount}))
           }} onEndReachedThreshold={0}
           keyExtractor={(item, index) => String(index)}
           ListFooterComponent={loading && <ActivityIndicator />}>
-          </FlatList>:
-          <View style={{marginTop: 100, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>모집중인 체험단이 없습니다.</Text></View>}
+          </FlatList>
+}
       </View>
      </View>
   )

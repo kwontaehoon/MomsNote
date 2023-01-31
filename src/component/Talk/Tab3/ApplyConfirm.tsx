@@ -1,26 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, SafeAreaView, StatusBar, Platform } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/AntDesign'
-import Checkbox from 'expo-checkbox'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Check from '.././../../../public/assets/svg/Check.svg'
 
-import Modal from './Modal/AuthComplete'
-import Modal2 from './Modal/AuthFail'
-import Modal3 from './Modal/AuthReady'
-import Modal4 from './Modal/Cencel'
-import Modal5 from './Modal/CencelConfirm'
-import Modal6 from './Modal/Save'
-import { useDispatch } from 'react-redux'
-import { postBoardAppFlag } from '../../../Redux/Slices/BoardAppFlagSlice'
-import { postBoardApp } from '../../../Redux/Slices/BoardApp'
-import { useSelector } from 'react-redux'
 import {
     SafeAreaProvider,
-    useSafeAreaInsets,
   } from 'react-native-safe-area-context';
 
 
@@ -59,89 +47,25 @@ const styles = StyleSheet.create({
         marginTop: 10,
         height: 52,
         paddingLeft: 10,
-        justifyContent: 'center'
-    },
-    timerBox:{
-        position: 'absolute',
-        right: 95,
-        bottom: 10,
-        paddingTop: 8,
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingBottom: 8,
+        justifyContent: 'center',
+        backgroundColor: '#F5F5F5'
     },
     certificateBox:{
-        borderWidth: 1,
-        borderColor: '#EEEEEE',
-        position: 'absolute',
-        right: 15,
-        bottom: 10,
-        borderRadius: 5,
-        paddingTop: 8,
-        paddingLeft: 16,
-        paddingRight: 16,
-        paddingBottom: 8,
-    },
-    postBox:{
         position: 'absolute',
         right: 15,
         bottom: 15,
-    },
-    checkbox: {
-        width: 18,
-        height: 18,
-        marginRight: 8,
-        borderRadius: 3,
-        borderColor: '#E0E0E0',
     },
     buttonBox:{
         width: '90%',
         height: 56,
         borderRadius: 5,
-        backgroundColor: '#E0E0E0',
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    modalContainer:{
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    modalView:{
-        width: '100%',
-        height: '100%',
-        margin: 20,
-        backgroundColor: "rgba(0,0,0,0.5)",
-        alignItems: "center",
-        justifyContent: 'center',
-        shadowColor: "#000",
-        elevation: 5,
-    },
-    modalContainer2:{
-        width: '80%',
-        height: 144,
-        backgroundColor: 'white',
-        marginBottom: 35,
-        borderRadius: 15
-    },
-    modalBox:{
-        height: '50%',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    modal:{
-        backgroundColor: '#FEA100',
-        width: '90%',
-        height: 44,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 3,
-        marginBottom: 3,
+        borderWidth: 1,
+        borderColor: '#EEEEEE',
     },
 })
-const Withdraw = ({navigation, route}) => {
-
-    console.log('apply route: ', route.params);
-    console.log(typeof(route.params));
+const Withdraw = ({navigation}) => {
 
     const DATA = [
         {
@@ -150,129 +74,25 @@ const Withdraw = ({navigation, route}) => {
         },
     ];
 
-    const [isChecked, setChecked] = useState(Array.from({length: 3}, ()=>{ return false })); // check box
-
     const [SMSFlag, setSMSFlag] = useState({
         open: false,
         flag: 0 // 이미 인증했는지 검증
     }); // 본인인증 확인유무
-    console.log('SMSFlag: ', SMSFlag);
-    const [SMSNumber, setSMSNumber] = useState(); // SMS 번호
-    const [SMSInputNumber, setSMSInputNumber] = useState(''); // 입력한 SMS 번호
-
-    console.log('smsnumber: ', SMSNumber);
-
-    const appFlag = useSelector(state => { return state.boardApp.data; });
-    console.log('appFlag: ', appFlag);
-
-    const [modal, setModal] = useState(false); // 핸드폰 인증 완료
-    const [modal2, setModal2] = useState(false); // 핸드폰 인증 실패
-    const [modal3, setModal3] = useState(false); // 핸드폰 인증 이미 완료
-    const [modal4, setModal4] = useState(false); // 취소
-    const [modal5, setModal5] = useState(false); // 취소 확인
-    const [modal6, setModal6] = useState(false); // 임시 저장
     
-    const [info, setInfo] = useState( // post info
-        {
-            applicationId: 0,
-            memberName: '',
-            tel: '',
-            address: '',
-            addressDetails: '',
-            expreienceId: 0,
-            blog: null,
-            insta: null,
-            youtube: null,
-        }
-    );
-    console.log('info: ', info);
-
-    const [minutes, setMinutes] = useState(parseInt(3));
-    const [seconds, setSeconds] = useState(parseInt(0));
-
-    // useEffect(()=>{
-    //     // dispatch(postBoardAppFlag({ experienceId: route.params.experienceId}));
-    //     dispatch(postBoardApp({ experienceId: route.params.experienceId }));
-    // }, []);
-
-
-    useEffect(() => {
-        const countdown = setInterval(() => {
-          if (SMSFlag.open && parseInt(seconds) > 0) {
-            setSeconds(parseInt(seconds) - 1);
-          }
-          if (parseInt(seconds) === 0) {
-            if (parseInt(minutes) === 0) {
-                clearInterval(countdown);
-            } else {
-              setMinutes(parseInt(minutes) - 1);
-              setSeconds(59);
-            }
-          }
-        }, 1000);
-            return () => clearInterval(countdown);
-      }, [minutes, seconds, SMSFlag]);
-
-    const sms = async(e) => {
-        setSMSFlag(prevState => ({...prevState, open: true}));
-
-        e == '재요청' ? (setMinutes(3), setSeconds(0)) : SMSFlag.flag == 1 ? setModal3(!modal3) : ''
-
-        try{
-            const response = await axios({
-                  method: 'post',
-                  url: `https://momsnote.net/api/send/code?phone=${info.tel}`,
-                });
-                console.log('response: ', response.data);
-                setSMSNumber(response.data.data);
-            }catch(error){
-              console.log('error: ', error);
-            }
-    }
-
-    const certificate = () => {
-        SMSNumber == SMSInputNumber ? (setModal(!modal), setSMSFlag(prevState => ({...prevState, open: false, flag: 1}))) : setModal2(!modal2);
-        
-    }
-
-    const change = (e) => { // 텍스트 밑줄 색상 변경
-        let arr = [...isChecked];
-
-        switch(true){
-            case e === 0 && arr[e] === false: arr = Array.from({length: 3}, ()=>{return true}); setChecked(arr); break;
-            case e === 0 && arr[e] === true: arr = Array.from({length: 3}, ()=>{return false}); setChecked(arr); break;
-            case e !== 0: arr[0] = false; arr[e] = !arr[e]; setChecked(arr); break;
-        }
-        if(arr[1] === true && arr[2] === true){
-            arr = Array.from({length: 3}, ()=>{return true});
-            setChecked(arr);
-        }
-    }
-    const button = () => {
-        switch(true){
-            case SMSFlag.open == true: return '재요청';
-            case SMSFlag.open == false: return '인증요청';
-            default: return '변경';
-        }
-    }
-
     const submit = async() => {
         const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
                 method: 'post',
-                url: 'https://momsnote.net/api/application/regi',
+                url: 'https://momsnote.net/application/delete',
                 headers: { 
                     'Authorization': `bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
-                data: info
+                data: {}
             });
-            console.log('체험단 신청 response: ', response.data);
-            AsyncStorage.setItem('applicationFlag', '1');
-            navigation.goBack();
         }catch(error){
-            console.log('체험단 신청 error: ', error);
+            console.log('체험단 신청 취소 error: ', error);
         }
     }
     
@@ -280,106 +100,43 @@ const Withdraw = ({navigation, route}) => {
         <View style={styles.container2}>
             <View style={styles.header}>
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>신청 정보</Text>
-                <TouchableOpacity style={styles.headerBox}><Icon name='close' size={20} onPress={()=>
-                    info.memberName == '' && info.tel == '' && info.blog == null && info.youtube == null && info.insta == null &&
-                    info.address == '' && info.addressDetails == '' ? navigation.goBack() : setModal6(!modal6)
-                }/>
+                <TouchableOpacity style={styles.headerBox}>
+                    <Icon name='close' size={20} onPress={()=> navigation.goBack()}/>
                 </TouchableOpacity>
             </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>이름</Text>
-                    <TextInput style={styles.textBox} placeholder='이름 입력' value={info.memberName}
-                        onChangeText={(e) => setInfo((prevState) => ({
-                            ...prevState, memberName: e
-                        }))}></TextInput>
+                    <View style={styles.textBox}><Text>이름입력</Text></View>
                 </View>
                 <View style={[styles.mainBox, {marginBottom: SMSFlag.open ? 10 : 30}]}>
 
-                    { SMSFlag.flag == 1 && SMSFlag.open == false ?<View style={styles.timerBox}>
-                         <Check fill='#4CAF50'/>
-                    </View> : ''}
-
                     <Text style={{fontSize: 16, fontWeight: '500'}}>연락처</Text>
-                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info.tel} keyboardType='number-pad'
-                         onChangeText={(e) => setInfo((prevState) => ({...prevState, tel: e}))}>
-                    </TextInput>
-                    <TouchableOpacity style={styles.certificateBox} onPress={()=>SMSFlag.flag == 1 ?  setModal3(!modal3) : info.tel == '' ? '' : sms('재요청')}>
-
-                        <Text style={{fontWeight: '500'}}>{button()}</Text>
+                    <View style={styles.textBox}>
+                        <Text>연락처 입력</Text>
+                    </View>
+                    <TouchableOpacity style={styles.certificateBox}>
+                        <Check fill={'green'}/>
                     </TouchableOpacity>
                 </View>
-                <View style={[styles.mainBox, {display: SMSFlag.open ? 'flex' : 'none'}]}>
-                    <View style={styles.timerBox}>
-                        <Text style={{color: '#0288D1', fontWeight: '500'}}>{minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Text>
-                    </View>
-                    <TextInput style={[styles.textBox, {paddingLeft: SMSFlag.open ? 10 : 0}]} keyboardType='number-pad' placeholder='인증번호 입력' onChangeText={(e)=>setSMSInputNumber(e)}></TextInput>
 
-                    {SMSInputNumber == '' ?
-                    <View style={[styles.certificateBox, {backgroundColor: '#E0E0E0'}]}>
-                        <Text style={{fontWeight: '500', color: 'white'}}>인증완료</Text>
-                    </View>
-                    :
-                    <TouchableOpacity style={[styles.certificateBox, {backgroundColor: '#FEA100'}]} onPress={certificate}>
-                    <Text style={{fontWeight: '500', color: 'white'}}>인증완료</Text>
-                    </TouchableOpacity>}
-
-                </View>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>SNS 계정</Text>
                     <Text style={{color: '#757575', marginTop: 5}}>리뷰에 사용할 계정을 하나 이상 입력해주세요.</Text>
-                    <TextInput style={styles.textBox} placeholder='네이버 블로그' value={info.blog}
-                        onChangeText={(e) => setInfo((prevState) => ({
-                            ...prevState, blogUrl: e
-                        }))}></TextInput>
-                    <TextInput style={styles.textBox} placeholder='인스타그램' value={info.insta}
-                        onChangeText={(e) => setInfo((prevState) => ({ ...prevState, instaUrl: e }))}>
-                    </TextInput>
-                    <TextInput style={styles.textBox} placeholder='유튜브' value={info.youtube}
-                        onChangeText={(e) => setInfo((prevState) => ({ ...prevState, youtubeUrl: e }))}>
-                    </TextInput>
+                    <View style={styles.textBox}><Text>블로그 입력</Text></View>
+                    <View style={styles.textBox}><Text>인스타 입력</Text></View>
+                    <View style={styles.textBox}><Text>유튜브 입력</Text></View>
                 </View>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>배송지</Text>
                     <View>
-                        <TouchableOpacity style={styles.textBox} activeOpacity={1} onPress={()=>navigation.navigate('주소 찾기')}>
-                            {info.address == '' ? <Text>주소 검색하기</Text>
-                            : <Text>{info.address}</Text>}
-                        </TouchableOpacity>
-                        <View style={styles.postBox}><Icon name='right' size={15}/></View>
+                        <View style={styles.textBox}><Text>주소 입력</Text></View>
                     </View>
-                    <TextInput style={styles.textBox} placeholder='상세주소 입력' value={info.addressDetails} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, addressDetails: e }))}></TextInput>
+                    <View style={styles.textBox}><Text>상세주소 입력</Text></View>
                 </View>
-                <View style={[styles.mainBox, {flexDirection: 'row', borderBottomWidth: 1, height: 40, borderColor: '#EEEEEE', marginBottom: 15}]}>
-                <Checkbox
-                    style={styles.checkbox}
-                    value={isChecked[0]}
-                    onValueChange={()=>change(0)}
-                    color={isChecked[0] ? '#FEB401' : undefined}/>
-                    <Text>전체동의</Text>
-                </View>
-                <View style={[styles.mainBox, {flexDirection: 'row',  marginBottom: 15}]}>
-                <Checkbox
-                    style={styles.checkbox}
-                    value={isChecked[1]}
-                    onValueChange={()=>change(1)}
-                    color={isChecked[1] ? '#FEB401' : undefined}/>
-                    <Text style={{color: '#616161'}}>초상권 활용에 동의합니다.</Text>
-                </View>
-                <View style={[styles.mainBox, {flexDirection: 'row'}]}>
-                    <Checkbox
-                        style={styles.checkbox}
-                        value={isChecked[2]}
-                        onValueChange={()=>change(2)}
-                        color={isChecked[2] ? '#FEB401' : undefined}/>
-                    <Text style={{color: '#616161'}}>켐페인 유의사항 및 제 3자 제공에 동의합니다.</Text>
-                    <View style={{position: 'absolute', right: 0, width: 20, height: '100%', justifyContent :'center'}}><Icon name='right' size={12} style={{color: '#616161'}}/></View>
-                </View>
+                
                 <View style={[styles.mainBox, {alignItems: 'center'}]}>
-                    {isChecked[0] ? <TouchableOpacity style={[styles.buttonBox, {backgroundColor: '#FEA100'}]} onPress={submit}>
-                        <Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text>
-                    </TouchableOpacity>
-                    : <View style={styles.buttonBox}><Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text></View>}
+                    <View style={styles.buttonBox}><Text style={{fontSize: 18}}>신청 취소</Text></View>
                 </View>
             </View>
         </View>
@@ -392,15 +149,7 @@ const Withdraw = ({navigation, route}) => {
                     <StatusBar />
             </SafeAreaView>
             <SafeAreaView style={styles.container}>
-
-            <Modal modal={modal} setModal={setModal}/>
-            <Modal2 modal2={modal2} setModal2={setModal2} />
-            <Modal3 modal3={modal3} setModal3={setModal3} />
-            <Modal4 navigation={navigation} modal4={modal4} setModal4={setModal4} />
-            <Modal5 modal5={modal5} setModal5={setModal5} />
-            <Modal6 navigation={navigation}modal6={modal6} setModal6={setModal6} info={info} />
             
-
             <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
             </FlatList>

@@ -1,18 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, Keyboard } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Modal from '../../Modal/DotModal'
 import Modal2 from '../../Modal/Block'
 import Modal3 from '../..//Modal/Declare'
 import Modal4 from '../..//Modal/DelareConfirm'
 import Modal6 from '../../Modal/Declare2'
+import Modal7 from '../../Modal/CommentDelete'
 import moment from 'moment'
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
 import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
-import { postCommentRecommend } from '../../../Redux/Slices/CommentRecommendSlice'
+import { postHits } from '../../../Redux/Slices/HitsSlice'
 
 import Comment from './Comment'
 import axios from 'axios'
@@ -22,10 +23,10 @@ import Chat from '../../../../public/assets/svg/Chat.svg'
 import Like from '../../../../public/assets/svg/Like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
-import More from '../../../../public/assets/svg/More.svg'
 import Share from '../../../../public/assets/svg/Share.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { postEvent } from '../../../Redux/Slices/EventSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -194,10 +195,13 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = [route.params];
+    const info2 = useSelector(state => { return state.event.data; });
+    const [info3, setInfo3] = useState();
+
+    const eventSet = useSelector(state => { return state.event.refresh });
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
-    console.log('comment: ', comment);
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
     const [insert, setInsert] = useState(
         {
@@ -207,7 +211,6 @@ const Talk1Sub = ({navigation, route}) => {
             level: 0
         }
     ); // 댓글 입력
-    console.log('insert: ', insert);
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요
     const [boardData, setBoardData] = useState({
         order: 'new',
@@ -226,7 +229,8 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal2, setModal2] = useState(false); // 차단하기
     const [modal3, setModal3] = useState(false); // 게시물 신고 하기 
     const [modal4, setModal4] = useState(false); // 신고 확인
-    const [modal6, setModal6] = useState(false); // comment 신고 하기 
+    const [modal6, setModal6] = useState(false); // comment 신고 하기
+    const [modal7, setModal7] = useState(false);
 
     const [userInfo, setUserInfo] = useState();
 
@@ -240,11 +244,26 @@ const Talk1Sub = ({navigation, route}) => {
             const user = await AsyncStorage.getItem('user');
             setUserInfo(JSON.parse(user));
         }
+        const hits = async() => {
+            const hits = await AsyncStorage.getItem('hits');
+
+            hits == null || hits.split('|').filter(x => x == String(info[0].boardId)) == '' ? 
+            (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`)) : ''
+        }
+        
+        setTimeout(() => {
+            dispatch(postEvent(eventSet));
+        }, 100);
+        
         user();
+        hits();
     }, []);
 
+    useEffect(()=>{
+        setInfo3(info2.filter(x => x.boardId == info[0].boardId));
+    }, [info2]);
+
     useEffect(()=>{ // 게시물 추천 Flag
-        console.log('게시물 추천 여부 업데이트');
         const likeInfo = async() => {
             const token = await AsyncStorage.getItem('token');
             try{
@@ -259,7 +278,6 @@ const Talk1Sub = ({navigation, route}) => {
                 });
                 setBoardLike(response.data);
             }catch(error){
-                console.log('like axios error');
             }
         }
         likeInfo();
@@ -277,9 +295,7 @@ const Talk1Sub = ({navigation, route}) => {
                   },
                   data: insert
                 });
-                console.log('response: ', response.data);
             }catch(error){
-              console.log('댓글 작성 error: ', error);
             }
         dispatch(postBoard(boardData));
         dispatch(postComment(commentData));
@@ -287,7 +303,6 @@ const Talk1Sub = ({navigation, route}) => {
     }
 
     const likeplus = async() => { // 게시판 좋아요
-        console.log('likeplus');
         const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
@@ -302,7 +317,6 @@ const Talk1Sub = ({navigation, route}) => {
                     type: 'plus'
                   }
                 });
-                console.log('response: ', response.data);
                 dispatch(postBoard(boardData));
             }catch(error){
               console.log('error: ', error);
@@ -311,7 +325,6 @@ const Talk1Sub = ({navigation, route}) => {
     }
 
     const likeminus = async() => {
-        console.log('likeplus');
         const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
@@ -326,10 +339,8 @@ const Talk1Sub = ({navigation, route}) => {
                     type: 'minus'
                   }
                 });
-                console.log('response: ', response.data);
                 dispatch(postBoard(boardData));
             }catch(error){
-              console.log('error: ', error);
             }
             setBoardLike();
     }
@@ -443,11 +454,12 @@ const Talk1Sub = ({navigation, route}) => {
         </Animated.View>
 
         <Modal navigation={navigation} modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3} commentsId={commentsId} info={info}
-            modal6={modal6} setModal6={setModal6} commentData={commentData}/>
+            modal6={modal6} setModal6={setModal6} modal7={modal7} setModal7={setModal7} commentData={commentData}/>
         <Modal2 modal2={modal2} setModal2={setModal2} userId={info[0].userId} ani={opacity_ani}/>
         <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4} boardId={info[0].boardId}/>
         <Modal4 modal4={modal4} setModal4={setModal4} />
         <Modal6 modal4={modal4} setModal4={setModal4} modal6={modal6} setModal6={setModal6} commentsId={commentsId}/>
+        <Modal7 modal7={modal7} setModal7={setModal7} info={info}  commentsId={commentsId}/>
         
         <View style={styles.header}>
                 <Back onPress={()=>navigation.goBack()}/>
@@ -456,7 +468,7 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
         </View>
 
-        <FlatList ref={flatlistRef} data={info} renderItem={renderItem}
+        <FlatList ref={flatlistRef} data={info3} renderItem={renderItem}
             keyExtractor={item => String(item.boardId)}>
         </FlatList>
         <View style={[styles.commentRes, {display: insert.level === 0 ? 'none' : 'flex'}]}>
