@@ -77,6 +77,10 @@ const Main = ({navigation}) => {
     }
     console.log(result.assets[0].uri);
 
+    userInfo.provider == 'google' ? AsyncStorage.setItem('google_user', JSON.stringify(Object.assign(userInfo, {profileImage: result.assets[0].uri})))
+    :
+    AsyncStorage.setItem('kakao_user', JSON.stringify(Object.assign(userInfo, {profileImage: result.assets[0].uri})))
+
     let data = new FormData();
     data.append('file', {uri: result.assets[0].uri, name: 'profile.jpg', type: 'image/jpeg'});
     const token = await AsyncStorage.getItem('token');

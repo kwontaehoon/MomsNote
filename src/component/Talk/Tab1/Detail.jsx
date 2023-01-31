@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, ActivityIndicator, Keyboard, SafeAreaView, Platform, KeyboardAvoidingView } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, ActivityIndicator, Keyboard, SafeAreaView, Platform, KeyboardAvoidingView, Share } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Modal from '../../Modal/DotModal'
 import Modal2 from '../../Modal/Block'
@@ -28,7 +28,7 @@ import Like from '../../../../public/assets/svg/Like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
 import More from '../../../../public/assets/svg/More.svg'
-import Share from '../../../../public/assets/svg/Share.svg'
+import Share2 from '../../../../public/assets/svg/Share.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
 import { postHits } from '../../../Redux/Slices/HitsSlice'
 
@@ -198,6 +198,8 @@ const Talk1Sub = ({navigation, route}) => {
     Keyboard.addListener('keyboardDidHide', () => {
         setPageHeight(false);
     });
+
+    console.log('route: ', route);
 
     const dispatch = useDispatch();
     const boardInfo = useSelector(state => { return state.board.data});
@@ -437,6 +439,12 @@ const Talk1Sub = ({navigation, route}) => {
         flatlistRef.current?.scrollToEnd();
     };
 
+    const socialShare = () => {
+        Share.share({
+            message: `[맘스노트] ${route.params.item.title}`,
+        })
+    }
+
     const renderItem = ({ item }) => (
         <View>
             <View style={styles.header2}>
@@ -496,7 +504,7 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.header}>
                     <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
                     <View style={styles.headerBar}>
-                        <Share style={{marginRight: 12}}/>
+                        <TouchableOpacity onPress={socialShare}><Share2 style={{marginRight: 12}}/></TouchableOpacity>
                         <TouchableOpacity onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}><More /></TouchableOpacity>
                     </View>
             </View>

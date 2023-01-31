@@ -204,7 +204,7 @@ const filtering = (e) => {
     </TouchableOpacity>
   ); 
 
-  return info.length == 0 ?  <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return info == undefined ?  <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
       <View style={styles.header}></View>
       <View style={styles.header2}>

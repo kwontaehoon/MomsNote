@@ -317,7 +317,7 @@ const Talk1 = ({navigation, route}:any) => {
     </View>
   )
 
-  return info == '' || info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
 
   <Modal animationType="fade" transparent={true} visible={modalVisible.open} statusBarTranslucent={true}

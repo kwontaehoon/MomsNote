@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Modal, StatusBar, Image, SafeAreaView, Platform } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Modal, StatusBar, Image, SafeAreaView, Platform, Share } from 'react-native'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import ContentsURL from './Modal/ContentsURL'
 import axios from 'axios'
@@ -9,7 +9,7 @@ import Swiper from 'react-native-swiper'
 import Like from '../../../../public/assets/svg/Like.svg'
 import Heart from '../../../../public/assets/svg/Heart-1.svg'
 import More from '../../../../public/assets/svg/More.svg'
-import Share from '../../../../public/assets/svg/Share.svg'
+import Share2 from '../../../../public/assets/svg/Share.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
 
 import { getStatusBarHeight } from "react-native-status-bar-height"
@@ -292,7 +292,12 @@ const Talk1Sub = ({navigation, route}) => {
             }));
             dispatch(postBoardLikeFlag({ boardId: info.boardId}));
         }, 100);
-        
+    }
+
+    const socialShare = () => {
+        Share.share({
+            message: `[맘스노트] ${info2[0].title}`,
+        })
     }
 
     const renderItem = ({ item }:any) => (
@@ -397,7 +402,7 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.header}>
    <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
    <View style={styles.headerBar}>
-   <Share style={{marginRight: 15}} />
+   <TouchableOpacity onPress={socialShare}><Share2 style={{marginRight: 15}}/></TouchableOpacity>
    </View>
 </View>
 

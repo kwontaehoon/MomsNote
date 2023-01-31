@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
 const Main = ({navigation}) => {
 
     const REST_API_KEY = '5b53b00ed1940f2bd5a026d96a0ae0ce'; // 클라이언트 꺼
-    const REST_API_KEY2 = '7d1cb1e652f5ee8aaffc2e7ce0547c9b'; // 본인
     const REDIRECT_URI = 'https://momsnote.s3.ap-northeast-2.amazonaws.com/setting/splash.png';
 
     const runFirst = `window.ReactNativeWebView.postMessage("this is message from web")`;
@@ -25,7 +24,6 @@ const Main = ({navigation}) => {
 
       try{
         const response = await axios.get(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${kakaoAcceess}`);
-        AsyncStorage.setItem('token', response.data.access_token);
         console.log('response', response.data);
         const response2 = await axios.get(`https://kapi.kakao.com/v1/user/access_token_info`, {
              headers: `Authorization: Bearer ${response.data.access_token}`
@@ -41,13 +39,23 @@ const Main = ({navigation}) => {
             username: `kakao_${response2.data.id}`
           }
         });
-
         console.log('response3: ', response3.data);
-        
-        const asyncStorage = await AsyncStorage.getItem('login');
-        console.log('kakao asyncStorage: ', asyncStorage);
 
-        response3.data.status == 'success' ? (navigation.navigate('main'), AsyncStorage.setItem('login', '2')) : navigation.navigate('추가 정보 입력', ['kakao', response2.data.id]);
+        const user = await AsyncStorage.getItem('kakao_user');
+        const userId = await AsyncStorage.getItem('kakao_userId');
+        const token = await AsyncStorage.getItem('kakao_token');
+
+        response3.data.status == 'success' ? 
+        (
+          console.log('엥'),
+          AsyncStorage.setItem('user', user),
+          AsyncStorage.setItem('userId', userId),
+          AsyncStorage.setItem('token', token),
+          navigation.navigate('main'),
+          AsyncStorage.setItem('login', '2')
+        )
+        :
+        navigation.navigate('추가 정보 입력', ['kakao', response2.data.id]);
 
     }catch(error){
         console.log('kakao error: ', error);

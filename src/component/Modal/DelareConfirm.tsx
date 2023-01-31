@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
     modalView:{
         width: '100%',
         height: '100%',
-        margin: 20,
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: "center",
         justifyContent: 'center',
@@ -20,15 +19,14 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 140,
         backgroundColor: 'white',
         marginBottom: 25,
         borderRadius: 15
     },
     modalBox:{
-        height: '50%',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 20
     },
     modal:{
         backgroundColor: '#FEA100',
@@ -37,7 +35,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 3,
-        marginBottom: 3,
+        marginBottom: 7,
     },
 })
 
@@ -50,8 +48,8 @@ const NoticeModal = ({modal4, setModal4}) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
-                        <View style={[styles.modalBox, {height: '45%'}]}>
-                            <Text style={{fontSize: 16, paddingTop: 10}}>신고가 접수되었습니다.</Text>
+                        <View style={styles.modalBox}>
+                            <Text style={{fontSize: 16, paddingTop: 20}}>신고가 접수되었습니다.</Text>
                         </View>
                         <View style={styles.modalBox}>
                             <TouchableOpacity style={styles.modal} onPress={()=>setModal4(!modal4)}><Text style={{color: 'white', fontSize: 16}}>확인</Text></TouchableOpacity>

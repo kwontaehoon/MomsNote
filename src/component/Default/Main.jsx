@@ -11,22 +11,9 @@ const Main = ({navigation}) => {
     const isFocused = useIsFocused();
     const [info, setInfo] = useState();
 
-    const test = {
-        username: `google_110233651458722193443`,
-        nickname: '태훈구글',
-        email: 'gju04195@gmail.com',
-        dueDate: '2023-08-10',
-        babyName: '애기',
-        providerId: '110233651458722193443',
-        provider: 'google',
-        marketingFlag: 0,
-    }
-
     useEffect(()=>{
         const login = async() => {
             // AsyncStorage.removeItem('userId');
-            // AsyncStorage.setItem('userId', '45');
-            // AsyncStorage.setItem('user', JSON.stringify(test));
             // AsyncStorage.setItem('login', '2');
             // AsyncStorage.removeItem('login');
             // AsyncStorage.clear()

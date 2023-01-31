@@ -120,11 +120,17 @@ const Talk1 = ({navigation, application}: any) => {
                   }
                 });
                 console.log('response: ', response.data);
-                await AsyncStorage.setItem('user', JSON.stringify(info));
+                info.provider == 'google' ?
+                AsyncStorage.setItem('google_user', JSON.stringify(info))
+                :
+                AsyncStorage.setItem('kakao_user', JSON.stringify(info));
+                
+                AsyncStorage.setItem('user', JSON.stringify(info));
+                
                 navigation.goBack();
             }catch(error){
-              console.log('댓글 작성 error: ', error);
-            }
+              console.log('내 정보 수정 tab1 error: ', error);
+            } 
     }
 
     const onChange = (event, selectedDate) => {

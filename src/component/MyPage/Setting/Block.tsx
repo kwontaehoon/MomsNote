@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 
 const styles = StyleSheet.create({
@@ -53,12 +53,13 @@ const Block = () => {
 
     useEffect(()=>{
         const block = async() => {
+            const token = await AsyncStorage.getItem('token');
             try{
                 const response = await axios({
                     method: 'post',
                     url: 'https://momsnote.net/api/blocklist',
                     headers: { 
-                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE1OTE0OTIsImV4cCI6MTY3NDE4MzQ5Mn0.d8GpqvEmnnrUZKumuL4OPzp7wSGXiTo47hGkCSM2HO0', 
+                        'Authorization': `Bearer ${token}`, 
                         'Content-Type': 'application/json'
                       },
                     data: {}
@@ -72,12 +73,13 @@ const Block = () => {
     }, []);
 
     const unlock = async(id) => {
+        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
                 method: 'post',
                 url: 'https://momsnote.net/api/unblock',
                 headers: { 
-                  'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE3ODY2MDAsImV4cCI6MTY3NDM3ODYwMH0.84a-3YTmTMeE9YnQ7OF-jLUkUt-EwN-fmvZNK705eCo', 
+                  'Authorization': `bearer ${token}`, 
                   'Content-Type': 'application/json'
                 },
                 data: { blockUserId: id }
@@ -105,7 +107,7 @@ const Block = () => {
                     :
                     <Text style={{fontWeight: '600', color: '#FEA100'}}>차단 해제</Text>}
                 </TouchableOpacity>
-                <View style={styles.circleBox}></View>
+                <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${item.profileImage}`}} style={styles.circleBox}/>
                 <Text>{item.nickname}</Text>
             </View>
            
@@ -114,6 +116,7 @@ const Block = () => {
 
   return (
     <View style={styles.container}>
+
         <FlatList data={info} renderItem={renderItem}
             keyExtractor={item => String(item.blockId)} showsVerticalScrollIndicator={false}>
         </FlatList>

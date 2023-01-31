@@ -99,9 +99,24 @@ const Main = ({navigation, route}) => {
                 }
             });
             console.log('response2: ', response2);
-            AsyncStorage.setItem('token', response2.data.token);
 
-            response2.data.status == 'success' ? (navigation.navigate('main'), AsyncStorage.setItem('login', '2')) : navigation.navigate('추가 정보 입력', ['google', response.data.sub]);
+            const user = await AsyncStorage.getItem('google_user');
+            const userId = await AsyncStorage.getItem('google_userId');
+            const token = await AsyncStorage.getItem('google_token');
+
+            response2.data.status == 'success' ?
+            (
+
+                AsyncStorage.setItem('user', user),
+                AsyncStorage.setItem('userId', userId),
+                AsyncStorage.setItem('token', token),
+                navigation.navigate('main'),
+                AsyncStorage.setItem('login', '2')
+            )
+            :
+            (
+                navigation.navigate('추가 정보 입력', ['google', response.data.sub])
+            )
 
 
         }catch(error){

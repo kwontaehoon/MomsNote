@@ -151,11 +151,23 @@ const AddPage = ({navigation, route}) => {
                 data: info
             });
             console.log('회원가입 response: ', response.data);
-            AsyncStorage.setItem('token', response.data.token);
             const decoded = jwtDecode(response.data.token);
             console.log('decoded: ', decoded);
+
+            route.params[0] == 'google' ?
+            (
+                AsyncStorage.setItem('google_token', response.data.token),
+                AsyncStorage.setItem('google_userId', String(decoded.id)),
+                AsyncStorage.setItem('google_user', JSON.stringify(Object.assign(info, {profileImage: 'https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/ico_basic.png'})))
+            )
+            :
+            (
+                AsyncStorage.setItem('kakao_token', response.data.token),
+                AsyncStorage.setItem('kakao_userId', String(decoded.id)),
+                AsyncStorage.setItem('kakao_user', JSON.stringify(Object.assign(info, {profileImage: 'https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/ico_basic.png'})))
+            )
             
-            
+            AsyncStorage.setItem('token', response.data.token);
             AsyncStorage.setItem('userId', String(decoded.id));
             AsyncStorage.setItem('login', '2');
             AsyncStorage.setItem('user', JSON.stringify(Object.assign(info, {profileImage: 'https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/ico_basic.png'})));
@@ -219,14 +231,8 @@ const AddPage = ({navigation, route}) => {
 
     const emailconfig = (e) => {
         setInfo((prevState) => ({ ...prevState, email: e}))
-
-        // console.log(info.email.match(regExp));
-
-        // info.email.match(regExp) == null ? setEmailCon(false) : setEmailCon(true);
     }
     const test = (e) => {
-
-        console.log('완료');
 
         info.email.match(regExp) == null ? setEmailCon(1) : setEmailCon(2);
     }
@@ -247,7 +253,7 @@ const AddPage = ({navigation, route}) => {
             </View>
             <View style={styles.main2}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>이메일</Text>
-                <View style={[styles.textBox, {borderColor: bottomColor[1] ? '#FEB401' : '#EEEEEE'}]}>
+                <View style={[styles.textBox, {borderColor: bottomColor[1] ? emailcon == 1 ? 'red' : '#FEB401' : '#EEEEEE'}]}>
                     <View style={[styles.emailcon, {display: emailcon == 2 ? 'flex' : 'none'}]}>
                         <Check fill={'white'}/>
                     </View>

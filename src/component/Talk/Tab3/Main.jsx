@@ -134,7 +134,7 @@ const Talk3 = ({navigation}: any) => {
     </TouchableOpacity>
   ); 
 
-  return info == '' || info == undefined ?
+  return info == undefined ?
       <View style={{height: '70%', alignItems: 'center', justifyContent: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>모집중인 체험단이 없습니다.</Text></View>
       : (
     <View style={styles.container}>

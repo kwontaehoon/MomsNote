@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, Keyboard } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, Keyboard, Share } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Modal from '../../Modal/DotModal'
 import Modal2 from '../../Modal/Block'
@@ -23,7 +23,7 @@ import Chat from '../../../../public/assets/svg/Chat.svg'
 import Like from '../../../../public/assets/svg/Like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
-import Share from '../../../../public/assets/svg/Share.svg'
+import Share2 from '../../../../public/assets/svg/Share.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { postEvent } from '../../../Redux/Slices/EventSlice'
@@ -412,6 +412,12 @@ const Talk1Sub = ({navigation, route}) => {
         flatlistRef.current?.scrollToEnd();
     };
 
+    const socialShare = () => {
+        Share.share({
+            message: `[맘스노트] ${info3[0].title}`,
+        })
+    }
+
     const renderItem = ({ item }) => (
         <View>
             <View style={styles.main}>
@@ -464,7 +470,7 @@ const Talk1Sub = ({navigation, route}) => {
         <View style={styles.header}>
                 <Back onPress={()=>navigation.goBack()}/>
                 <View style={styles.headerBar}>
-                    <Share style={{marginRight: 12}}/>
+                    <TouchableOpacity onPress={socialShare}><Share2 style={{marginRight: 12}}/></TouchableOpacity>
                 </View>
         </View>
 

@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     modalBox:{
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 20
+        padding: 15
     },
     modal:{
         backgroundColor: '#FEA100',
@@ -47,8 +47,8 @@ const NoticeModal = ({modal, setModal, show, setShow}) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
-                        <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, paddingTop: 10}}>D-280일 전으로 선택하실 수 있습니다.</Text>
+                        <View style={[styles.modalBox, {paddingTop: 30}]}>
+                            <Text style={{fontSize: 16}}>D-280일 전으로 선택하실 수 있습니다.</Text>
                         </View>
                         <View style={styles.modalBox}>
                             <TouchableOpacity style={styles.modal} onPress={()=>{setShow(!show), setModal(!modal)}}><Text style={{color: 'white', fontSize: 16}}>확인</Text></TouchableOpacity>

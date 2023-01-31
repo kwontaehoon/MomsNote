@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Share } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import { Video } from 'expo-av';
 
 import Back from '../../../../public/assets/svg/Back.svg'
-import Share from '../../../../public/assets/svg/Share.svg'
+import Share2 from '../../../../public/assets/svg/Share.svg'
 
 const styles = StyleSheet.create({
     container:{
@@ -155,12 +155,18 @@ const Talk1Sub = ({navigation, route}) => {
         }
     }
 
+    const socialShare = () => {
+        Share.share({
+            message: `[맘스노트] ${info[0].title}`,
+        })
+    }
+
     const renderItem = ({ item }) => (
         <View>
             <View style={styles.header}>
                 <Back onPress={()=>navigation.goBack()}/>
                 <View style={styles.headerBar}>
-                    <Share style={{marginRight: 12}}/>
+                    <TouchableOpacity onPress={socialShare}><Share2 style={{marginRight: 12}}/></TouchableOpacity>
                 </View>
             </View>
             <View style={styles.main}>

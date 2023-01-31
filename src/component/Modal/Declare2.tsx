@@ -162,7 +162,7 @@ const CheckBoxModal = ({modal4, setModal4, modal6, setModal6, commentsId}) => {
     
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modal6}
+    <Modal animationType="fade" transparent={true} visible={modal6} statusBarTranslucent={true}
             onRequestClose={() => {
             setModal6(!modal6)}}>
             <View style={styles.modalContainer}>
