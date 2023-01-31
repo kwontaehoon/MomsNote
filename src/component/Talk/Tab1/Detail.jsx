@@ -341,6 +341,30 @@ const Talk1Sub = ({navigation, route}) => {
             }
     }
 
+    const likeminus = async() => { // 게시판 좋아요 취소
+        console.log('likeminus');
+        const token = await AsyncStorage.getItem('token');
+        try{
+            const response = await axios({
+                  method: 'post',
+                  url: 'https://momsnote.net/api/board/recommend',
+                  headers: { 
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                  },
+                  data: {
+                    boardId: info[0].boardId,
+                    type: 'minus'
+                  }
+                });
+                console.log('response: ', response.data);
+                dispatch(postBoard(boardData));
+                setBoardLike();
+            }catch(error){
+              console.log('게시판 좋아요 error: ', error);
+            }
+    }
+
     const ImageBox = () => {
         const arr = [];
         const a = (info[0].savedName.split('|')).filter(x => {
@@ -432,7 +456,7 @@ const Talk1Sub = ({navigation, route}) => {
                 {item.savedName === null ? <View></View> : ImageBox()}
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
-                        {boardLike == 0 | boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000'/>}
+                        {boardLike == 0 | boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000' onPress={likeminus}/>}
                         <Text style={{color: boardLike == 0 || boardLike == undefined ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { item.recommend }</Text>
                         <Chat width={16} height={16}/>
                         <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 {item.commentsCount}</Text>

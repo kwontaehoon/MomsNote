@@ -17,16 +17,13 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 150,
         backgroundColor: 'white',
         borderRadius: 15
     },
     modalBox:{
         justifyContent: 'center',
         alignItems: 'center',
-        paddingLeft: 20,
-        paddingRight: 20,
-        paddingTop: 20
+        padding: 15,
     },
     modal:{
         backgroundColor: '#FEA100',
@@ -35,7 +32,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 3,
-        marginBottom: 3,
+        marginBottom: 7,
     },
 })
 
@@ -48,9 +45,9 @@ const CheckBoxModal = ({navigation, modalVisible4, setModalVisible4}) => {
     <View style={styles.modalContainer}>
         <View style={styles.modalView}>
             <View style={styles.modalContainer2}>
-                <View style={styles.modalBox}><Text style={{fontSize: 16, textAlign: 'center', lineHeight: 25}}>출산 리스트 공유 게시판에 등록되었습니다.</Text></View>
+                <View style={[styles.modalBox, {paddingTop: 25}]}><Text style={{fontSize: 16, textAlign: 'center', lineHeight: 25}}>출산 리스트 공유 게시판에 등록되었습니다.</Text></View>
                 <View style={styles.modalBox}>
-                    <TouchableOpacity style={styles.modal} onPress={()=>{setModalVisible4(!modalVisible4), navigation.navigate('맘스 톡', '2')}}>
+                    <TouchableOpacity style={styles.modal} onPress={()=>{setModalVisible4(!modalVisible4), navigation.navigate('맘스 톡')}}>
                         <Text style={{color: 'white', fontSize: 16}}>확인</Text>
                     </TouchableOpacity>
                 </View>

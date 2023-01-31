@@ -9,7 +9,7 @@ export const postMaterial = createAsyncThunk("postBoardSlice/async", async (data
     try{
       const response = await axios({
           method: 'post',
-          url: 'https://momsnote.net/api/needs/list/rec',
+          url: 'https://momsnote.net/api/needs/list',
           headers: { 
             'Authorization': `bearer ${token}`,
             'Content-Type': 'application/json'

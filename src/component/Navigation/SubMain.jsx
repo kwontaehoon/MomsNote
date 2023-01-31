@@ -73,11 +73,11 @@ function MainScreen() {
   }, []);
 
   return (
-    <Tab.Navigator initialRouteName='홈' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
+    <Tab.Navigator initialRouteName='출산 준비물' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
       : {tabBarStyle: { height: 55, position: 'absolute', paddingBottom: 5, elevation: 0 }, headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
 
 
-      <Tab.Screen name="맘스 톡" options={{tabBarIcon: ({focused, color}) => (focused ? <Forum2 /> : <Forum/>)}}>
+      <Tab.Screen name="맘스 톡" options={{tabBarIcon: ({focused, color}) => (focused ? <Forum2 /> : <Forum/>), unmountOnBlur:true}}>
           {()=>(
                <Stack.Navigator>
                     <Stack.Screen 
@@ -114,7 +114,7 @@ function MainScreen() {
             )}
           </Tab.Screen>
 
-          <Tab.Screen name="Dday" options={{tabBarIcon: ({focused, color}) => (focused ? <Baby2 /> : <Baby />), tabBarLabel: `D-${userInfo}`}}>
+          <Tab.Screen name="Dday" options={{tabBarIcon: ({focused, color}) => (focused ? <Baby2 /> : <Baby />), tabBarLabel: `D-${userInfo}` , unmountOnBlur:true}}>
         {()=>(
                <Stack.Navigator>
                     <Stack.Screen 
@@ -150,7 +150,7 @@ function MainScreen() {
         )}
       </Tab.Screen>
 
-      <Tab.Screen name="홈" options={{tabBarIcon: ({focused, color}) => (focused ? <Home3 /> : <Home2 />)}}>
+      <Tab.Screen name="홈" options={{tabBarIcon: ({focused, color}) => (focused ? <Home3 /> : <Home2 />) , unmountOnBlur:true}}>
         {()=>(
                <Stack.Navigator>
                     <Stack.Screen 
@@ -169,7 +169,7 @@ function MainScreen() {
 
       
 
-      <Tab.Screen name="출산 준비물" options={{tabBarIcon: ({focused, color}) => (focused ? <Note2 /> : <Note />)}}>
+      <Tab.Screen name="출산 준비물" options={{tabBarIcon: ({focused, color}) => (focused ? <Note2 /> : <Note />), unmountOnBlur:true}}>
       {()=>(
                <Stack.Navigator>
                     <Stack.Screen 
@@ -183,7 +183,7 @@ function MainScreen() {
           )}
       </Tab.Screen>
 
-      <Tab.Screen name="맘스정보" options={{tabBarIcon: ({focused, color}) => (focused ? <Campaign2 /> : <Campaign />)}}>
+      <Tab.Screen name="맘스정보" options={{tabBarIcon: ({focused, color}) => (focused ? <Campaign2 /> : <Campaign />), unmountOnBlur:true}}>
         {()=>(
                <Stack.Navigator>
                     <Stack.Screen 

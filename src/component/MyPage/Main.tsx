@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
     container:{
@@ -49,9 +50,9 @@ const styles = StyleSheet.create({
 const Main = ({navigation}) => {
 
     const [userInfo, setUserInfo] = useState([]);
-    console.log('userInfo: ', userInfo);
 
     const [refresh, setRefresh] = useState(); // 새로고침
+    const isFocused = useIsFocused();
 
     useEffect(()=>{
         const user = async() => {
@@ -59,7 +60,7 @@ const Main = ({navigation}) => {
             setUserInfo(JSON.parse(user));
         }
         user();
-    }, [refresh]);
+    }, [refresh, isFocused]);
 
     const pickImage = async () => {
       // No permissions request is necessary for launching the image library
@@ -77,7 +78,7 @@ const Main = ({navigation}) => {
     console.log(result.assets[0].uri);
 
     let data = new FormData();
-    data.append('files', {uri: result.assets[0].uri, name: 'profile.jpg', type: 'image/jpeg'});
+    data.append('file', {uri: result.assets[0].uri, name: 'profile.jpg', type: 'image/jpeg'});
     const token = await AsyncStorage.getItem('token');
     try{
         const response = await axios({

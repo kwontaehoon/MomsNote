@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal, KeyboardAvoidingView } from 'react-native'
 import axios from 'axios'
+import { WebView } from 'react-native-webview';
 
 import Arrow_Right from '../../../../public/assets/svg/Arrow-Right.svg'
 import Reset from '../../../../public/assets/svg/Reset.svg'
@@ -105,9 +106,7 @@ const styles = StyleSheet.create({
     },
 })
 
-const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => {
-
-    console.log('visible2: ', modalVisible2);
+const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, modal4, setModal4}) => {
 
     const dispatch = useDispatch();
     const [info, setInfo] = useState(); // 브랜드 lists
@@ -128,7 +127,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
             try{
             const response = await axios({
                 method: 'post',
-                url: 'https://momsnote.net/api/needs/list',
+                url: 'https://momsnote.net/api/needs/brand/list',
                 headers: { 
                     'Authorization': `bearer ${token}`, 
                     'Content-Type': 'application/json'
@@ -145,7 +144,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
         } 
         commentInfo();
         setSelectBrand(prevState => ({...prevState, needsId: modalVisible2.needsId, needsBrandId: modalVisible2.needsBrandId == null ? 0 : modalVisible2.needsBrandId, needsDataId: modalVisible2.needsDataId == null ? 0 : modalVisible2.needsDataId}));
-    }, [modalVisible2]);
+    }, [modalVisible2, modal4]);
 
     const crown = (e) => {
         switch(e){
@@ -176,8 +175,10 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
             dispatch(postMaterial({order: 'need'}));
     }
 
+
+
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: modalVisible2.needsBrandId, itemBrand: item.productName }))}>
+        <View style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: modalVisible2.needsBrandId, itemBrand: item.productName }))}>
             <View style={[styles.mainBoxSub, {width: '24%'}]}>
                 {crown(item.needsBrandId)}
             </View>
@@ -188,16 +189,16 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2}) => 
             </View>
             <View style={[styles.mainBoxSub, {width: '36%', alignItems: 'flex-end'}]}>
                 <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 3}}>
-                    <Text style={{fontSize: 16, fontWeight: '600', marginRight: 5}}>{(item.price)}</Text>
+                    <Text style={{fontSize: 16, fontWeight: '600', marginRight: 5}}>{(item.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
                     <Text>원</Text>
                 </View>
                 
-                <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>{setModalVisible2(prevState => ({...prevState, open: false})), setModal4(prevState=>({...prevState, open: true, link: item.url}))}}>
                     <Text style={{fontWeight: '600', fontSize: 13, color: '#FEA100'}}>최저가 보기</Text>
                     <Arrow_Right fill='#FEA100' width={16} height={16}/>
-                </View>
+                </TouchableOpacity>
             </View>
-        </TouchableOpacity>
+        </View>
     );
 
   return (

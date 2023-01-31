@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     padding: 18,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
 },
 headerBar:{
     position: 'absolute',
@@ -42,7 +42,7 @@ headerBar:{
     flexDirection: 'row',
 },
   main:{
-    height: '65%',
+    height: '70%',
   },
   mainBox:{
     flexDirection: 'row',
@@ -86,11 +86,10 @@ headerBar:{
     flexDirection: 'row',
   },
   footer:{
-    height: 200,
-    padding: 15,
+    height: '26.5%',
   },
   footerBox:{
-    height: 50,
+    padding: 15,
     justifyContent: 'center',
   },
   buttonBox:{
@@ -116,7 +115,7 @@ saveModalBox:{
     height: 40,
     position: 'absolute',
     zIndex: 1,
-    bottom: 20,
+    bottom: 40,
     alignItems: 'center',
     justifyContent: 'center',
 },
@@ -369,7 +368,7 @@ const capture = async() => {
       </View>
       <View style={styles.footer}>
         <View style={styles.footerBox}>
-          <View style={[styles.arrowBox, {right: 0}]}>
+          <View style={styles.arrowBox}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={{fontSize: 18, fontWeight: '500'}}>{(sumResult.sum + sumResult.exp).toLocaleString()} </Text>
               <Text>원</Text>
@@ -377,18 +376,19 @@ const capture = async() => {
           </View>
           <Text style={{fontSize: 18, fontWeight: '500'}}>총 예산</Text>
         </View>
-        <View style={[styles.footerBox, {paddingLeft: 20, height: 25}]}>
-          <View style={[styles.arrowBox, {right: 0}]}><Text>{(sumResult.sum).toLocaleString()} 원</Text></View>
+        <View style={[styles.footerBox, {padding: 5, paddingLeft: 20}]}>
+          <View style={styles.arrowBox}><Text>{(sumResult.sum).toLocaleString()} 원</Text></View>
           <Text style={{color: '#616161'}}>ㄴ 구매 금액</Text>
         </View>
-        <View style={[styles.footerBox, {paddingLeft: 20, height: 25}]}>
-          <View style={[styles.arrowBox, {right: 0}]}><Text>{(sumResult.exp).toLocaleString()} 원</Text></View>
+        <View style={[styles.footerBox, {padding: 5, paddingLeft: 20}]}>
+          <View style={styles.arrowBox}><Text>{(sumResult.exp).toLocaleString()} 원</Text></View>
           <Text style={{color: '#616161'}}>ㄴ 구매 예정 금액</Text>
         </View>
-      </View>
         <TouchableOpacity style={styles.buttonBox} onPress={()=>setModalVisible2(!modalVisible2)}>
           <Text style={{color: 'white', fontWeight: '600', fontSize: 16}}>출산 리스트 게시판 공유</Text>
         </TouchableOpacity>
+      </View>
+        
         </ViewShot>
     </View>
   )

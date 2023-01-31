@@ -64,9 +64,9 @@ const dayCalculate = (date) => {
     </TouchableOpacity>
   ); 
 
-  return info == undefined || info == '' ?  <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return (
     <View style={styles.container}>
-        {info == undefined ?
+        {info == undefined || info == '' ?
         <View style={{marginTop: 250, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>등록된 게시물이 없습니다.</Text></View>
         :
         <FlatList data={info} renderItem={renderItem}

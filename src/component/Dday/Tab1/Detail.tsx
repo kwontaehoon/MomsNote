@@ -6,6 +6,7 @@ import Modal2 from '../../Modal/Block'
 import Modal3 from '../..//Modal/Declare'
 import Modal4 from '../..//Modal/DelareConfirm'
 import Modal6 from '../../Modal/Declare2'
+import Modal7 from '../../Modal/CommentDelete'
 
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
@@ -234,6 +235,7 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal3, setModal3] = useState(false); // 게시물 신고 하기 
     const [modal4, setModal4] = useState(false); // 신고 확인
     const [modal6, setModal6] = useState(false); // comment 신고 하기
+    const [modal7, setModal7] = useState(false);
 
     const [userInfo, setUserInfo] = useState();
     console.log('오늘 이시기에는 userInfo: ', userInfo);
@@ -339,7 +341,30 @@ const Talk1Sub = ({navigation, route}) => {
             }catch(error){
               console.log('error: ', error);
             }
-            
+    }
+
+    const likeminus = async() => { // 게시판 좋아요
+        console.log('likeplus');
+        const token = await AsyncStorage.getItem('token');
+        try{
+            const response = await axios({
+                  method: 'post',
+                  url: 'https://momsnote.net/api/board/recommend',
+                  headers: { 
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                  },
+                  data: {
+                    boardId: info[0].boardId,
+                    type: 'minus'
+                  }
+                });
+                console.log('response: ', response.data);
+                dispatch(postDdayToday({subcategory: `${info[0].weeks}주`}));
+                setBoardLike();
+            }catch(error){
+              console.log('error: ', error);
+            } 
     }
 
     const save = async() => {
@@ -461,10 +486,10 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
                 </ViewShot>
                 
-                {item.savedName === null ? <View></View> : ImageBox()}
+                {item.savedName === null }
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
-                        {boardLike == 0 | boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000'/>}
+                        {boardLike == 0 | boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000' onPress={likeminus}/>}
                         <Text style={{color: boardLike == 0 ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { item.recommend }</Text>
                         <Chat width={16} height={16}/>
                         <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 {item.commentsCount}</Text>
@@ -494,11 +519,12 @@ const Talk1Sub = ({navigation, route}) => {
             </Animated.View>
 
             <Modal navigation={navigation} modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} modal3={modal3} setModal3={setModal3} commentsId={commentsId} info={info}
-                modal6={modal6} setModal6={setModal6} commentData={commentData}/>
+                modal6={modal6} setModal6={setModal6} modal7={modal7} setModal7={setModal7} commentData={commentData}/>
             <Modal2 modal2={modal2} setModal2={setModal2} userId={info[0].userId} ani={opacity_ani}/>
             <Modal3 modal3={modal3} setModal3={setModal3} modal4={modal4} setModal4={setModal4} boardId={info[0].boardId}/>
             <Modal4 modal4={modal4} setModal4={setModal4} />
             <Modal6 modal4={modal4} setModal4={setModal4} modal6={modal6} setModal6={setModal6} commentsId={commentsId}/>
+            <Modal7 modal7={modal7} setModal7={setModal7} info={info}  commentsId={commentsId}/>
 
             <View style={styles.header}>
                     <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>

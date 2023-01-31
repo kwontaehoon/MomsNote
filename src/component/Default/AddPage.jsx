@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderColor: '#EEEEEE',
         padding: 10,
-        justifyContent: 'center'
+        justifyContent: 'center',
+
     },
     emailcon:{
         position: 'absolute',
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FEB401'
     },
     main2:{
-        height: 120,
+        marginBottom: 30
     },
     main3:{
         height: 120,
@@ -111,6 +112,8 @@ const AddPage = ({navigation, route}) => {
 
     console.log('route params: ', route.params);
 
+    const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
     const [isChecked, setChecked] = useState(Array.from({length: 4}, ()=>{return false})); // check box
     console.log('isChecked: ', isChecked);
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
@@ -131,7 +134,8 @@ const AddPage = ({navigation, route}) => {
     console.log('info: ', info);
 
     const [modal, setModal] = useState(false);
-    const [emailcon, setEmailCon] = useState(false);
+    const [emailcon, setEmailCon] = useState(0);
+    console.log('emailcon: ', emailcon);
 
     const submit = async() => {
 
@@ -154,7 +158,7 @@ const AddPage = ({navigation, route}) => {
             
             AsyncStorage.setItem('userId', String(decoded.id));
             AsyncStorage.setItem('login', '2');
-            AsyncStorage.setItem('user', JSON.stringify(Object.assign(info, {profileImage: 'ico_basic.png'})));
+            AsyncStorage.setItem('user', JSON.stringify(Object.assign(info, {profileImage: 'https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/ico_basic.png'})));
             navigation.reset({routes: [{name: "main"}]})
             return;
 
@@ -216,11 +220,15 @@ const AddPage = ({navigation, route}) => {
     const emailconfig = (e) => {
         setInfo((prevState) => ({ ...prevState, email: e}))
 
-        const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+        // console.log(info.email.match(regExp));
 
-        console.log(info.email.match(regExp));
+        // info.email.match(regExp) == null ? setEmailCon(false) : setEmailCon(true);
+    }
+    const test = (e) => {
 
-        info.email.match(regExp) == null ? setEmailCon(false) : setEmailCon(true);
+        console.log('완료');
+
+        info.email.match(regExp) == null ? setEmailCon(1) : setEmailCon(2);
     }
 
     const renderItem = ({ item }) => (
@@ -240,15 +248,18 @@ const AddPage = ({navigation, route}) => {
             <View style={styles.main2}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>이메일</Text>
                 <View style={[styles.textBox, {borderColor: bottomColor[1] ? '#FEB401' : '#EEEEEE'}]}>
-                    <View style={[styles.emailcon, {display: emailcon ? 'flex' : 'none'}]}>
+                    <View style={[styles.emailcon, {display: emailcon == 2 ? 'flex' : 'none'}]}>
                         <Check fill={'white'}/>
                     </View>
-                    <TextInput placeholder='이메일 입력'
-                        onFocus={()=>change(1)} onChangeText={(e) => emailconfig(e)}>
+                    <TextInput placeholder='이메일 입력' onEndEditing={test}
+                        onFocus={()=>(change(1), setEmailCon(0))} onChangeText={(e) => emailconfig(e)}>
                     </TextInput>
                 </View>
+                <View style={{padding: 8, display: emailcon == 1 ? 'flex' : 'none'}}>
+                    <Text style={{color: 'red'}}>유효한 이메일 주소를 입력해주세요.</Text>
+                </View>
             </View>
-            
+
             <View style={styles.main3}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>출산 예정일</Text>
                 <View>

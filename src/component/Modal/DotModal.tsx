@@ -106,7 +106,7 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
             case info[0].userId == userId: return(
                 <View style={styles.main}>
                     <TouchableOpacity style={styles.mainBox} onPress={()=>{setModal(!modal), navigation.navigate('글쓰기', info)}}><Text style={{color: '#1E88E5', fontSize: 20}}>게시물 수정</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.mainBox} onPress={()=>{setModal(!modal), BoardDelete(), navigation.goBack()}}><Text style={{color: '#F23737', fontSize: 20}}>삭제하기</Text></TouchableOpacity>
+                    <TouchableOpacity style={styles.mainBox} onPress={()=>{setModal(!modal), BoardDelete(), navigation.reset({routes: [{name: "맘스 톡"}]})}}><Text style={{color: '#F23737', fontSize: 20}}>삭제하기</Text></TouchableOpacity>
                 </View>
             )
             

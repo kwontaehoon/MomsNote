@@ -218,9 +218,11 @@ const Home = ({navigation}) => {
     const ref = useRef();
     const [date, setDate] = useState(new Date());
     const boardPopular = useSelector(state => { return state.boardPopular.data });
-    console.log('홈 맘스토크: ', boardPopular);
+    console.log('홈 맘스토크 인기글: ', boardPopular);
     const materialPopular = useSelector(state => { return state.materialPopular.data });
+    console.log('홈 출산준비물 인기글: ', materialPopular);
     const infoPopular = useSelector(state => { return state.infoPopular.data });
+    console.log('홈 맘스정보 인기글: ', infoPopular);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
@@ -233,8 +235,8 @@ const Home = ({navigation}) => {
             const all = await AsyncStorage.getAllKeys();
             const asyncStorage = await AsyncStorage.getItem('recommendList');
             const user = await  AsyncStorage.getItem('user');
+            console.log('user: ', JSON.parse(user));
             const a = await AsyncStorage.getItem('token');
-            console.log('a: ', a);
             setUserInfo(JSON.parse(user));
 
             console.log('all: ', all);
@@ -366,7 +368,7 @@ const Home = ({navigation}) => {
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>출산 리스트</Text></View>
                             <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡', 12345)}>+ 더보기</Text></View>
                         </View>
-                        {boardPopular == '' || boardPopular == undefined || boardPopular.length < 3 ? 
+                        {boardPopular == '' || boardPopular == undefined ? 
                             <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
                                 <Text style={{color: '#757575'}}>등록된</Text>
                                 <Text style={{color: '#757575'}}>게시물이 없습니다.</Text>
@@ -398,7 +400,7 @@ const Home = ({navigation}) => {
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>맘스 토크</Text></View>
                             <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡')}>+ 더보기</Text></View>
                         </View>
-                        {materialPopular == '' || materialPopular == undefined || materialPopular.length < 3 ? 
+                        {materialPopular == '' || materialPopular == undefined ? 
                         <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
                             <Text style={{color: '#757575'}}>등록된</Text>
                             <Text style={{color: '#757575'}}>게시물이 없습니다.</Text>

@@ -205,7 +205,6 @@ const Talk1Sub = ({navigation, route}) => {
 
     const info = route.params;
     console.log('체험단 상세: ', info);
-    console.log(info.experienceId);
     const exp = useSelector(state => { return state.experience.data; });
     console.log('exp: ', exp);
     const [info2, setInfo2] = useState(exp);
@@ -224,6 +223,7 @@ const Talk1Sub = ({navigation, route}) => {
     const [async, setAsync] = useState(); // 임시저장 및 체험단 정보 저장 유무
     const [userInfo, setUserInfo] = useState(); // user 정보 asyncStorage
     const boardLikeFlag = useSelector(state => { return state.boardLikeFlag.data });
+    console.log('체험단 boardLikeFlag: ', boardLikeFlag);
     const boardLike = useSelector(state => { return state.boardLikeFlag.data });
     const boardLikeFlagSet = useSelector(state => { return state.boardLikeFlag.refresh });
     const boardLikeSet = useSelector(state => { return state.boardLike.refresh });
@@ -255,7 +255,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     useEffect(()=>{
         setInfo2(exp.filter(x => x.boardId == info.boardId));
-    }, [exp]);
+    }, [exp, boardLikeFlag]);
 
     useEffect(()=>{
         const load = async() => {
@@ -268,16 +268,31 @@ const Talk1Sub = ({navigation, route}) => {
     }, [isFocused]);
 
     const recommend = async() => {
+        console.log('plus');
         dispatch(postBoardLike({ boardId: route.params.boardId, type: 'plus'}));
-
         setTimeout(()=>{
             dispatch(postExperience({
                 order: 'new',
                 count: 1,
                 page: 1,
             }));
-        }, 100)
-        dispatch(postBoardLikeFlag({ boardId: info.boardId}));
+            dispatch(postBoardLikeFlag({ boardId: info.boardId}));
+        }, 100);
+        
+    }
+
+    const recommendminus = async() => {
+        console.log('minus');
+        dispatch(postBoardLike({ boardId: route.params.boardId, type: 'minus'})); 
+        setTimeout(()=>{
+            dispatch(postExperience({
+                order: 'new',
+                count: 1,
+                page: 1,
+            }));
+            dispatch(postBoardLikeFlag({ boardId: info.boardId}));
+        }, 100);
+        
     }
 
     const renderItem = ({ item }:any) => (
@@ -467,10 +482,10 @@ const Talk1Sub = ({navigation, route}) => {
        <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {info2[0].recommend}</Text>
    </TouchableOpacity>
    :
-   <View style={[styles.footerBox, {width: '20%'}]}>
+   <TouchableOpacity style={[styles.footerBox, {width: '20%'}]}  onPress={recommendminus}>
        <Heart width={20} fill='#FEA100'/> 
        <Text style={{fontSize: 16, fontWeight: '500', color: '#FEA100'}}> {info2[0].recommend}</Text>
-   </View>
+   </TouchableOpacity>
    }
 
    <View style={[styles.footerBox, {width: '3%', borderWidth: 0}]}></View>

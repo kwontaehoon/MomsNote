@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
     modalView:{
         width: '100%',
         height: '100%',
-        margin: 20,
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: "center",
         justifyContent: 'center',
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
     modalBox:{
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 20
+        padding: 20,
     },
     modal:{
         backgroundColor: '#FEA100',
@@ -95,7 +94,7 @@ const Main = ({navigation}) => {
 
     const [isEnabled, setIsEnabled] = useState(Array.from({length: 3}, () => { return false })); // 스위치 토글
     const [clockDisplay, setClockDisplay] = useState(false); // 시작 종료 시간 display
-    const [modalVisible, setModalVisible] = useState(true); // 알람 끄기 modal
+    const [modalVisible, setModalVisible] = useState(false); // 알람 끄기 modal
     const [modalVisible2, setModalVisible2] = useState(false); // 로그아웃 modal
     const [modal2, setModal2] = useState(false); // 마케팅 수신동의
 
@@ -317,7 +316,7 @@ const Main = ({navigation}) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
-                        <View style={styles.modalBox}>
+                        <View style={[styles.modalBox, {paddingTop: 30}]}>
                             <Text style={{fontSize: 16, paddingTop: 10}}>로그아웃 하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
@@ -334,7 +333,7 @@ const Main = ({navigation}) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
-                        <View style={styles.modalBox}>
+                        <View style={[styles.modalBox, {paddingTop: 30}]}>
                             <Text style={{fontSize: 16, lineHeight: 25, textAlign: 'center'}}>각종 이벤트 알림을 받으실 수 없습니다. 마케팅 수신동의를 해제하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>

@@ -121,6 +121,7 @@ const Talk1 = ({navigation, application}: any) => {
                 });
                 console.log('response: ', response.data);
                 await AsyncStorage.setItem('user', JSON.stringify(info));
+                navigation.goBack();
             }catch(error){
               console.log('댓글 작성 error: ', error);
             }
@@ -173,10 +174,11 @@ const Talk1 = ({navigation, application}: any) => {
                             regExp.test(e) ? (e = e.substring(0, e.length - 1), setInfo((prevState) => ({ ...prevState, nickname: e}))) : setInfo((prevState) => ({ ...prevState, nickname: e}));
                         }}></TextInput>
                 </View>
-                <View style={styles.mainBox2}>
+                <View style={[styles.mainBox2, {height: 130}]}>
                     <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>이메일</Text>
-                    <TextInput placeholder='이메일 입력' style={[styles.textBox, {borderColor: bottomColor[1] ? '#FEB401' : '#EEEEEE'}]}
-                    value={info.email} onFocus={()=>change(1)} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, email: e}))}></TextInput>
+                    <Text style={{fontSize: 15, paddingTop: 5, paddingBottom: 5, color: '#757575'}}>이메일 정보는 변경이 불가합니다.</Text>
+                    <TextInput placeholder='이메일 입력' style={[styles.textBox, {borderColor: bottomColor[1] ? '#FEB401' : '#EEEEEE', backgroundColor: '#EEEEEE'}]}
+                    value={info.email} onFocus={()=>change(1)} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, email: e}))} editable={false}></TextInput>
                 </View>
                 <View style={styles.mainBox3}>
                     <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>출산 예정일</Text>

@@ -33,9 +33,8 @@ const styles = StyleSheet.create({
     mainBox2:{
         borderWidth: 1,
         borderColor: '#EEEEEE',
-        height: 150,
         padding: 15,
-        paddingBottom: 100,
+        height: 200,
     },
     main2:{
         position: 'absolute',

@@ -35,13 +35,13 @@ const Withdraw = ({navigation, route}) => {
         const applicationInfo = async() => {
             const application = await AsyncStorage.getItem('applicationFlag');
             console.log('application: ', application);
+            setApplication(application);
         }
-        applicationInfo(application);
+        applicationInfo();
 
-    }, [])
+    }, []);
 
-     
-
+    
     const filter_func = (e) => { // filter tab 변경
         let arr = [false, false];
         arr[e] = true;

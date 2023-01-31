@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 // 문의하기
 const styles = StyleSheet.create({
     container:{
-      height: '93.5%',
+      height: '94.5%',
     },
     container2:{
     },
@@ -58,7 +58,6 @@ const Inquiry2 = ({filter, setFilter}) => {
       contents: "",
     }
   );
-  console.log('1:1문의 작성: ', info);
 
   const DATA = [
     {

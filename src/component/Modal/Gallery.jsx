@@ -12,8 +12,8 @@ const styles = StyleSheet.create({
   wrapper: {},
   container:{
     backgroundColor: 'black',
-    height: '97%',
     marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
+    borderWidth: 1,
   },
   header:{
     height: '20%',
@@ -80,14 +80,17 @@ const Gallery = ({navigation, route}) => {
 
   const video = React.useRef(null);
 
-
   console.log('이미지 길이: ', route.params);
   const saveName = route.params;
   console.log('saveName: ', saveName);
 
   return(
     <SafeAreaProvider>
-            <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '92%', flex: Platform.OS === 'ios' ? 1 : null}]}>
+       <SafeAreaView>
+                    <StatusBar />
+            </SafeAreaView>
+            <FocusAwareStatusBar />
+            <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '100%', flex: Platform.OS === 'ios' ? 1 : null}]}>
 
         <View style={styles.header}>
           <TouchableOpacity style={styles.closeBox} onPress={()=>navigation.goBack()}><Close fill={'white'}/></TouchableOpacity>
@@ -105,16 +108,12 @@ const Gallery = ({navigation, route}) => {
           )}else{
             return(
               <View style={styles.mainBox}>
-                {/* <TouchableOpacity style={styles.videoImage}><Icon name='play' size={30} style={{color: 'white'}}
-                  onPress={() => status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()}/>
-                </TouchableOpacity> */}
                 <Video source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}}
                   style={styles.image}
                   useNativeControls
                   resizeMode='cover'
                   ref={video}
                   isLooping={false}
-                  // onPlaybackStatusUpdate={status => setStatus(() => status)}
                   />
               </View>
             )

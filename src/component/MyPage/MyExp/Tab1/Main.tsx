@@ -86,7 +86,7 @@ const Talk3 = ({navigation}: any) => {
   }, []);
 
   useEffect(()=>{
-    setInfo2(info.filter(x => moment(x.applicationEndDate).diff(moment(), "days") >= 0));
+    setInfo2(info.filter(x => moment(x.applicationEndDate).diff(moment(), "days") > 0));
   }, []);
 
   const renderItem = ({ item }) =>

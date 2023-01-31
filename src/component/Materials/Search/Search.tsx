@@ -356,7 +356,7 @@ const purchaseCencel = async(needsId) => {
           {x.itemName == null ?
           <View style={{width: 24, height: 24, borderRadius: 12, backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
               <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}/> 
-            </View>: <Text numberOfLines={1} ellipsizeMode='tail' onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}>{x.itemName}</Text>}
+            </View>: <Text numberOfLines={1} ellipsizeMode='tail' onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDateId: x.needsDateId}))}>{x.itemBrand}</Text>}
           </View>
       </View>
       )}

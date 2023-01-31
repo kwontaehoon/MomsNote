@@ -87,6 +87,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
             console.log('x: ', x.commentsDate);
             if(x.step === 0){
                 arr.push(
+                    
                     <View key={index}>
                         <View style={styles.box}>
                             <TouchableOpacity style={styles.dotBox} onPress={()=>{setModal(!modal), setCommentsId([x.userId, x.commentsId])}}><More /></TouchableOpacity>
@@ -97,8 +98,9 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                             </View>
                         </View>
                         
-                        {x.deleteFlag ? <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>삭제된 댓글 입니다.</Text>
-                        : <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>{x.contents}</Text>}
+                        { x.deleteFlag == 1 ? <View style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>
+                            <Text>삭제된 댓글입니다.</Text></View> : <View>
+                        <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>{x.contents}</Text>
                         <View style={styles.likeBox}>
                             {commentLike.includes(x.commentsId) ? <Like2 width={16} height={16} fill='#FE9000'/>
                             :
@@ -116,6 +118,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                                 }>댓글달기
                             </Text> 
                         </View>
+                        </View>}
                         <List2 number={x.ref}/>
                     </View>
                 )
@@ -123,6 +126,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
         })
         return arr;
     }
+
     const List2 = (e) => {
         let arr = [];
         info.filter((x, index)=>{
@@ -135,8 +139,10 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                         <Text style={{fontSize: 16, fontWeight: '600', paddingRight: 8}}>{x.nickname}</Text>
                         <Text style={{fontSize: 13, fontWeight: '500', color: '#BDBDBD'}}>{dayCalculate(x.commentsDate)}</Text>
                     </View>
-                    {x.deleteFlag ? <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>삭제된 댓글 입니다.</Text>
-                        : <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>{x.contents}</Text>}
+                  
+                  { x.deleteFlag == 1 ? <View style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>
+                            <Text>삭제된 댓글입니다.</Text></View> : <View>
+                    <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>{x.contents}</Text>
                     <View style={styles.likeBox}>
                         {commentLike.includes(x.commentsId) ? <Like2 width={16} height={16} fill='#FE9000'/>
                         :
@@ -145,6 +151,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                         :
                         <Text style={{color: '#9E9E9E', fontSize: 13, paddingRight: 10}}> 추천 {x.recommend}</Text>}
                     </View>
+                    </View>}
                 </View>
             )
             }

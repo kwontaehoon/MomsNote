@@ -8,7 +8,7 @@ import Tab4 from './Tab4/Main'
 
 const styles = StyleSheet.create({
   container:{
-    height: '92%',
+    height: '93%',
     backgroundColor: 'white',
   },
   header:{
