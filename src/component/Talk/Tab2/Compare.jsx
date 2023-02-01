@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, SafeAreaView, StatusBar } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSelector, useDispatch } from 'react-redux'
@@ -13,6 +13,7 @@ import Modal4 from '../../Materials/Budget/Modal/PriceEdit'
 import ArrowTop from '../../../../public/assets/svg/Arrow-Top.svg'
 import ArrowBottom from '../../../../public/assets/svg/Arrow-Bottom.svg'
 import { postShareList } from '../../../Redux/Slices/ShareListSlice'
+import { SafeAreaProvider } from 'react-native-safe-area-context' 
 
 
 const styles = StyleSheet.create({
@@ -378,8 +379,13 @@ const Talk1Sub = ({navigation, route}) => {
     );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaProvider>
 
+    <SafeAreaView style={{ backgroundColor: 'white' }}>
+        <StatusBar />
+    </SafeAreaView>
+
+    <SafeAreaView style={styles.container}>
       <TouchableOpacity style={[styles.myList, {display: myList ? 'none' : 'flex'}]} onPress={()=>{opacity_ani(), setMyList(!myList)}}>
         <View style={styles.myListBox}>
           <Text style={{color: 'white', fontWeight: '500', fontSize: 16, marginRight: 5}}>나의 출산준비물</Text>
@@ -421,7 +427,8 @@ const Talk1Sub = ({navigation, route}) => {
         <Modal2 modal2={modal2} setModal2={setModal2}/>
         <Modal3 modal={modal3} setModal={setModal3}/>
         <Modal4 modal6={modal4} setModal6={setModal4} setModal7={setModal3} />
-    </View>
+    </SafeAreaView>
+    </SafeAreaProvider>
   )
 }
 

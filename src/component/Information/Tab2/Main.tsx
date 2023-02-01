@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, StatusBar, SafeAreaView } from 'react-native'
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { postEvent, setEventRefresh } from '../../../Redux/Slices/EventSlice'
 import { postEventCount } from '../../../Redux/Slices/EventCountSlice'
 import { setEventCount } from '../../../Redux/Slices/EventSlice'
+import { SafeAreaProvider } from 'react-native-safe-area-context' 
+import { Platform } from 'expo-modules-core'
 
 const styles = StyleSheet.create({
   container:{
-    height: '92%',
     backgroundColor: 'white',
   },
   container2:{
@@ -18,7 +19,6 @@ const styles = StyleSheet.create({
   header:{
     borderBottomWidth: 1,
     borderColor: '#EEEEEE',
-    height: 100,
     borderWidth: 1,
   },
   headerBox:{
@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   main:{
-    height: '68%',
   },
   main2:{
     borderWidth: 1,
@@ -167,7 +166,13 @@ const Talk1 = ({navigation}: any) => {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaProvider>
+
+        <SafeAreaView style={{ backgroundColor: 'white' }}>
+            <StatusBar />
+        </SafeAreaView>
+
+        <SafeAreaView style={[styles.container, {flex: Platform.OS == 'ios' ?  0 : 1}]}>
        <View style={styles.header}>
           <View style={styles.headerBox}><Text style={{fontSize: 18, fontWeight: '600'}}>{moment().format('YYYY')}년</Text></View>
           <View style={styles.headerBox2}>
@@ -186,7 +191,8 @@ const Talk1 = ({navigation}: any) => {
         </FlatList> : 
         <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}
         </View>
-     </View>
+     </SafeAreaView>
+     </SafeAreaProvider>
   )
 }
 

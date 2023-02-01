@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, ScrollView, Keyboard, SafeAreaView, StatusBar, Share } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, ScrollView, Keyboard, SafeAreaView, StatusBar, Share, KeyboardAvoidingView } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Modal from '../../Modal/DotModal'
 import Modal2 from '../../Modal/Block'
@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 20,
-        borderWidth: 1,
     },
     infoBox:{
         height: 42,
@@ -191,12 +190,9 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 60,
         flexDirection: 'row',
-        borderWidth: 1,
-        borderColor: '#F5F5F5',
         justifyContent: 'center',
         backgroundColor: 'white',
         alignItems: 'center',
-        borderWidth: 1,
     },
     regisButton:{
         position: 'absolute',
@@ -675,6 +671,7 @@ const Talk1Sub = ({navigation, route}) => {
                 <Text style={{fontSize: 15}}>{commentsId}</Text>
                 <Text style={{color: '#757575'}}> 님에게 답변 남기기</Text>
             </View>
+            <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : ''} keyboardVerticalOffset={Platform.OS == 'ios' ? 50 : ''}>
             <View style={styles.footer}>
                 <Image source={{uri: `${userInfo.profileImage}`}} style={styles.profileBox}/>
                 <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: '', level: 0}))}}>
@@ -688,6 +685,7 @@ const Talk1Sub = ({navigation, route}) => {
                         ref: comment.length+1,
                         level: 0}))} placeholderTextColor={'#BDBDBD'}></TextInput>
             </View>
+            </KeyboardAvoidingView>
         </SafeAreaView>
     </SafeAreaProvider>
   )

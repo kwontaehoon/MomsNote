@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, SafeAreaView, Modal, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, SafeAreaView, Modal, Image, StatusBar, Platform } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import { getStatusBarHeight } from "react-native-status-bar-height"
@@ -8,12 +8,12 @@ import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../../Redux/Slices/BoardSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { NavigationAction } from '@react-navigation/native'
 import moment from 'moment'
+import { SafeAreaProvider } from 'react-native-safe-area-context' 
 
 const styles = StyleSheet.create({
     container:{
-        marginTop: getStatusBarHeight(),
+        marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
         backgroundColor: 'white',
         flex: 1,
     },
@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     profileBox:{
-        borderWidth: 1,
         width: 30,
         height: 30,
         borderRadius: 999,
@@ -515,8 +514,15 @@ const Register = ({navigation, route}) => {
     );
 
     
-    return userInfo == undefined ? <View></View> : (
-        <View style={styles.container}>
+    return (
+        <SafeAreaProvider>
+
+        <SafeAreaView style={{ backgroundColor: 'white' }}>
+            <StatusBar />
+        </SafeAreaView>
+
+        { userInfo == undefined ? <View></View> : <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '90.5%'}]}>
+
             <Modal animationType="fade" transparent={true} visible={modalVisible} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible(!modalVisible)}}>
@@ -555,7 +561,8 @@ const Register = ({navigation, route}) => {
             <FlatList data={DATA} renderItem={renderItem}
                 keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
             </FlatList>
-        </View>
+        </SafeAreaView>}
+        </SafeAreaProvider>
   )
 }
 

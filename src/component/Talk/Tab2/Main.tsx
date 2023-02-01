@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   filterBox:{
-    width: 90,
+    width: 100,
     position: 'absolute',
     right: 0,
     bottom: 0,

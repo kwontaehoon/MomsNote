@@ -31,7 +31,7 @@ const Main = ({navigation}) => {
   console.log('알림 board: ', board);
   const boardSet = useSelector(state => { return state.board.refresh; });
 
-  const [info, setInfo] = useState([]);
+  const [info, setInfo] = useState();
   console.log('알람 info: ', info);
 
   useEffect(()=>{
@@ -62,22 +62,25 @@ const Main = ({navigation}) => {
 
   const navi = async(boardId, category, notificationId) => {
     
-    const momsTalk = materialShare.filter(x => x.boardId == boardId);
-    const materialList = board.filter(x => x.boardId == boardId);
 
-    try{
-      const response = await axios({
-            method: 'post',
-            url: 'http://localhost/api/user/notification/update',
-            data: {notificationId: notificationId}
-          });
-          console.log('response: ', response);
-          setInfo(response.data.data);
-      }catch(error){
-        console.log('알림 error: ', error);
-      }
+    const momsTalk = board.filter(x => x.boardId == boardId);
+    const materialList = materialShare.filter(x => x.boardId == boardId);
+    console.log('mosmTalk: ', momsTalk);
+    
 
-    momsTalk == '' ? navigation.navigate('맘스토크 상세내용', {item: materialList}) : navigation.navigate('출산리스트 공유 상세내용', momsTalk);
+    // try{
+    //   const response = await axios({
+    //         method: 'post',
+    //         url: 'http://localhost/api/user/notification/update',
+    //         data: {notificationId: notificationId}
+    //       });
+    //       console.log('response: ', response);
+    //       setInfo(response.data.data);
+    //   }catch(error){
+    //     console.log('알림 error: ', error);
+    //   }
+
+    momsTalk == '' ?  navigation.navigate('출산리스트 공유 상세내용', materialList) : navigation.navigate('맘스토크 상세내용', {item: momsTalk});
   }
 
   const List = () => {
@@ -98,7 +101,7 @@ const Main = ({navigation}) => {
       <List />
   );
 
-  return info.length == 0 ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
+  return info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
   :
     <View style={styles.container}>
       

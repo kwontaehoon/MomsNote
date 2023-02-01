@@ -93,7 +93,7 @@ const Main = ({modal, setModal}) => {
         <View style={styles.modalView}>
             <View style={styles.modalContainer2}>
                <View style={[styles.modalBox, {justifyContent: 'flex-start'}]}>
-                    <Text style={{fontSize: 16, fontWeight: '600', textAlign: 'center', lineHeight: 25}}>원하는 출산 준비물 리스트를 선택해주세요.</Text>
+                    <Text style={{fontSize: 15, textAlign: 'center', lineHeight: 20}}>출산 준비물 리스트를 생성합니다. 실제 맘들이 추천한 리스트로 보시겠어요?</Text>
                </View>
                <TouchableOpacity style={styles.modalBox2} onPress={rec}>
                     <Text style={{fontSize: 15, fontWeight: '500', color: 'white'}}>네, 추천 리스트로 보여주세요.</Text>

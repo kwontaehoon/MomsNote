@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     profileBox:{
-        borderWidth: 1,
         width: 28,
         height: 28,
         borderRadius: 14,

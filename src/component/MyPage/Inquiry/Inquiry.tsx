@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, StatusBar, SafeAreaView } from 'react-native'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 // 문의하기
 const styles = StyleSheet.create({
@@ -109,7 +110,13 @@ const Inquiry2 = ({filter, setFilter}) => {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaProvider>
+
+        <SafeAreaView style={{ backgroundColor: 'white' }}>
+            <StatusBar />
+        </SafeAreaView>
+
+        <SafeAreaView style={styles.container}>
       <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id}>
       </FlatList>
@@ -122,7 +129,8 @@ const Inquiry2 = ({filter, setFilter}) => {
         <View style={[styles.footer, {backgroundColor: '#E0E0E0'}]}>
           <Text style={{fontSize: 18, fontWeight: '600', color: 'white'}}>문의하기</Text>
         </View>}
-    </View>
+    </SafeAreaView>
+    </SafeAreaProvider>
   )
 }
 

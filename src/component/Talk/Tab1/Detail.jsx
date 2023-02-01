@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 20,
-        borderWidth: 1,
     },
     infoBox:{
         height: 42,
@@ -201,9 +200,11 @@ const Talk1Sub = ({navigation, route}) => {
 
     console.log('route: ', route);
 
+    const isFocused = useIsFocused();
     const dispatch = useDispatch();
     const boardInfo = useSelector(state => { return state.board.data});
-    const [info, setInfo] = useState(boardInfo);
+    console.log('board 상세페이지 boardInfo: ', boardInfo);
+    const [info, setInfo] = useState(useSelector(state => { return state.board.data} ));
     console.log('board 상세페이지 info: ', info);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
@@ -268,7 +269,7 @@ const Talk1Sub = ({navigation, route}) => {
 
         user();
         hits();
-    }, []);
+    }, [isFocused]);
 
     useEffect(()=>{
         setInfo(boardInfo.filter(x => x.boardId == route.params.item.boardId));
@@ -518,7 +519,8 @@ const Talk1Sub = ({navigation, route}) => {
                 <Text style={{fontSize: 15}}>{commentsId}</Text>
                 <Text style={{color: '#757575'}}> 님에게 답변 남기기</Text>
             </View>
-            <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : ''} keyboardVerticalOffset={Platform.OS == 'ios' ? 30 : ''} style={styles.footer}>
+            <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : ''}>
+            <View style={styles.footer}>
                     <Image source={{ uri: userInfo.profileImage }} style={styles.profileBox}/>
                 <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: '', level: 0}))}}>
                     <Text style={{color: '#1E88E5', fontWeight: '600'}}>등록</Text>
@@ -530,6 +532,7 @@ const Talk1Sub = ({navigation, route}) => {
                         contents: e,
                         ref: comment.length+1,
                         level: 0}))} placeholderTextColor={'#BDBDBD'}></TextInput>
+            </View>
             </KeyboardAvoidingView>
             </SafeAreaView>
         </SafeAreaProvider>

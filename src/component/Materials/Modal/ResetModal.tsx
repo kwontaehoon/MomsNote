@@ -27,9 +27,8 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     modalBox:{
-        height: 60,
         justifyContent: 'center',
-
+        padding: 15,
     },
     modalBox2:{
         height: 44,
@@ -45,6 +44,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 10
+    },
+    button:{
+        borderWidth: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 5,
+        borderRadius: 5,
+        borderColor: '#EEEEEE',
+        height: 50
     }
 })
 const Main = ({modalVisible5, setModalVisible5, modalVisible6, setModalVisible6}) => {
@@ -56,13 +64,13 @@ const Main = ({modalVisible5, setModalVisible5, modalVisible6, setModalVisible6}
     <View style={styles.modalContainer}>
         <View style={styles.modalView}>
             <View style={styles.modalContainer2}>
-               <View style={[styles.modalBox, {justifyContent: 'flex-start', height: 50}]}>
-                    <Text style={{fontSize: 16, fontWeight: '600', textAlign: 'center', lineHeight: 20}}>원하는 출산 준비물 리스트를 선택해주세요.</Text>
+               <View style={[styles.modalBox, {justifyContent: 'flex-start'}]}>
+                    <Text style={{fontSize: 15, textAlign: 'center', lineHeight: 20}}>출산 준비물 리스트를 초기화합니다. 실제 맘들이 추천한 리스트로 보시겠어요?</Text>
                </View>
                <TouchableOpacity style={styles.modalBox2} onPress={()=>(setModalVisible5(!modalVisible5), setModalVisible6(prevState => ({...prevState, open: true, content: 0})))}>
                     <Text style={{color: 'white', fontSize: 15, fontWeight: '500'}} >실제맘 추천 리스트</Text>
                </TouchableOpacity>
-               <View style={[styles.modalBox, {height: 70}]}>
+               <View style={styles.modalBox}>
                     <Text style={{fontSize: 15, lineHeight: 20}}>많은 임산부들이 추천한 품목을 필수, 권장, 선택 항목으로 나눠서 알기 쉽게 보여준답니다.</Text>
                </View>
                <TouchableOpacity style={styles.modalBox2} onPress={()=>(setModalVisible5(!modalVisible5), setModalVisible6(prevState => ({...prevState, open: true, content: 1})))}>
@@ -75,6 +83,9 @@ const Main = ({modalVisible5, setModalVisible5, modalVisible6, setModalVisible6}
                     <Text style={{color: '#EF1E1E', fontSize: 13, lineHeight: 20}}>Tip! 
                         <Text style={{color: '#757575', fontSize: 13}}> 초보 엄마라면 추천 리스트를 바탕으로 나에게 맞는 출산준비물 리스트를 작성해 보세요.</Text>
                     </Text>
+               </View>
+               <View style={styles.modalBox}>
+                    <TouchableOpacity style={styles.button} onPress={()=>setModalVisible5(!modalVisible5)}><Text>취소</Text></TouchableOpacity>
                </View>
             </View>
         </View>

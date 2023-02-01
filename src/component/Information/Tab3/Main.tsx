@@ -63,7 +63,7 @@ const Talk1 = ({navigation}) => {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('정부지원혜택 상세내용', item)}>
-        <View style={styles.mainBox2}><Text style={{fontSize: 15}}>{item.title}</Text></View>
+        <View style={styles.mainBox2}><Text style={{fontSize: 15}} numberOfLines={1} ellipsizeMode={'tail'}>{item.title}</Text></View>
     </TouchableOpacity>
   ); 
 
@@ -75,7 +75,7 @@ const Talk1 = ({navigation}) => {
             <Text style={{fontSize: 16}}> 건</Text>
       </View>
       <View style={styles.main}>
-      {info == '' || info == undefined ?
+      {info == '' ?
         <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
         :
         <FlatList data={info} renderItem={renderItem} onEndReached={()=>{

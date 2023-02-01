@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList, Modal } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList, Modal, SafeAreaView, StatusBar, Platform } from 'react-native'
 import Icon from 'react-native-vector-icons/Entypo'
 import Checkbox from 'expo-checkbox'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 const styles = StyleSheet.create({
     container:{
@@ -38,7 +39,6 @@ const styles = StyleSheet.create({
     },
     main2:{
         position: 'absolute',
-        bottom: 0,
         width: '100%',
         height: 60,
         alignItems: 'center',
@@ -140,7 +140,13 @@ const Main = ({navigation}) => {
       );
       
   return (
-    <View style={styles.container}>
+    <SafeAreaProvider>
+
+        <SafeAreaView style={{ backgroundColor: 'white' }}>
+            <StatusBar />
+        </SafeAreaView>
+
+        <SafeAreaView style={styles.container}>
         <Modal animationType="fade" transparent={true} visible={modalVisible} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible(!modalVisible)}}>
@@ -186,11 +192,12 @@ const Main = ({navigation}) => {
             keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
         </FlatList>
 
-        <TouchableOpacity style={[styles.main2, {backgroundColor: isChecked ? '#FEA100' : '#E0E0E0'}]} onPress={()=>{isChecked ? setModalVisible(!modalVisible) : ''}}>
+        <TouchableOpacity style={[styles.main2, {backgroundColor: isChecked ? '#FEA100' : '#E0E0E0', bottom: Platform.OS == 'ios' ? 30 : 0}]} onPress={()=>{isChecked ? setModalVisible(!modalVisible) : ''}}>
             <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>회원탈퇴</Text>
         </TouchableOpacity>
 
-    </View>
+    </SafeAreaView>
+    </SafeAreaProvider>
   )
 }
 

@@ -146,12 +146,13 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
         setSelectBrand(prevState => ({...prevState, needsId: modalVisible2.needsId, needsBrandId: modalVisible2.needsBrandId == null ? 0 : modalVisible2.needsBrandId, needsDataId: modalVisible2.needsDataId == null ? 0 : modalVisible2.needsDataId}));
     }, [modalVisible2, modal4]);
 
-    const crown = (e) => {
-        switch(e){
+    const crown = (index) => {
+        console.log(index);
+        switch(index+1){
             case 1: return <Crown/>
             case 2: return <Crown2/>
             case 3: return <Crown3/>
-            default: return (<Text style={{fontSize: 30, fontWeight: '600'}}>{e}</Text>);
+            default: return (<Text style={{fontSize: 30, fontWeight: '600'}}>{index+1}</Text>);
         }
     }
 
@@ -177,16 +178,16 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
 
 
 
-    const renderItem = ({ item }) => (
-        <View style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: modalVisible2.needsBrandId, itemBrand: item.productName }))}>
+    const renderItem = ({ item, index }) => (
+        <View style={styles.mainBox}>
             <View style={[styles.mainBoxSub, {width: '24%'}]}>
-                {crown(item.needsBrandId)}
+                {crown(index)}
             </View>
-            <View style={[styles.mainBoxSub, {width: '40%', alignItems: 'flex-start'}]}>
+            <TouchableOpacity style={[styles.mainBoxSub, {width: '40%', alignItems: 'flex-start'}]} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: modalVisible2.needsBrandId, itemBrand: item.productName }))}>
                 <Text style={{fontWeight: '500', marginBottom: 3}}>[{item.brandName}]</Text>
                 <Text style={{marginBottom: 3, color: '#757575'}} ellipsizeMode='tail' numberOfLines={1}>{item.productName}</Text>
                 <Text style={{color: '#9E9E9E'}}>구매 344건</Text>
-            </View>
+            </TouchableOpacity>
             <View style={[styles.mainBoxSub, {width: '36%', alignItems: 'flex-end'}]}>
                 <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 3}}>
                     <Text style={{fontSize: 16, fontWeight: '600', marginRight: 5}}>{(item.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>

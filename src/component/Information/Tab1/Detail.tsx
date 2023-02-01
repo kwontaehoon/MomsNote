@@ -1,7 +1,8 @@
 import React from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, Share } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, Image, Animated, Share, StatusBar, SafeAreaView} from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import { Video } from 'expo-av';
+import { SafeAreaProvider } from 'react-native-safe-area-context' 
 
 import Back from '../../../../public/assets/svg/Back.svg'
 import Share2 from '../../../../public/assets/svg/Share.svg'
@@ -9,9 +10,9 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 const styles = StyleSheet.create({
     container:{
-        height: '96%',
+        height: '97%',
         backgroundColor: 'white',
-        marginTop: getStatusBarHeight(),
+        marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
     },
     header:{
         height: 60,
@@ -183,11 +184,18 @@ const Talk1Sub = ({navigation, route}) => {
 
 
   return (
-    <View style={styles.container}>
+    <SafeAreaProvider>
+
+        <SafeAreaView style={{ backgroundColor: 'white' }}>
+            <StatusBar />
+        </SafeAreaView>
+
+        <SafeAreaView style={styles.container}>
         <FlatList data={info} renderItem={renderItem}
             keyExtractor={index => String(index)}>
         </FlatList>
-    </View>
+    </SafeAreaView>
+    </SafeAreaProvider>
   )
 }
 

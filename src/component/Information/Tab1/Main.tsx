@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { postGuideCount } from '../../../Redux/Slices/GuideCountSlice'
 import { postGuide, setGuideRefresh, setGuideCount } from '../../../Redux/Slices/GuideSlice'
 import { setGuideCountRefresh } from '../../../Redux/Slices/GuideCountSlice'
+import { Platform } from 'expo-modules-core'
 
 const styles = StyleSheet.create({
   container:{
@@ -130,7 +131,7 @@ const Talk1 = ({navigation}) => {
   ); 
 
   return info == undefined ? <View></View> : (
-    <View style={styles.container}>
+    <View style={[styles.container, {flex: Platform.OS == 'ios' ?  0 : 1}]}>
       <View style={styles.header}>
         <FlatList data={DATA} renderItem={renderItem}
           keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>

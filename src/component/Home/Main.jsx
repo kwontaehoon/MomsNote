@@ -220,6 +220,7 @@ const Home = ({navigation}) => {
     const boardPopular = useSelector(state => { return state.boardPopular.data });
     const materialPopular = useSelector(state => { return state.materialPopular.data });
     const infoPopular = useSelector(state => { return state.infoPopular.data });
+    console.log('infoPopular: ', infoPopular);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트

@@ -50,6 +50,7 @@ import MaterialSearch from '../Materials/Search/Search'
 import MyBoard from '../MyPage/MyBoard/Main'
 import MyComment from '../MyPage/MyComment/Main'
 import MyExp from '../MyPage/MyExp/Main'
+import Guide from '../MyPage/Guide/Main'
 
 import Back from '../../../public/assets/svg/Back.svg'
 
@@ -268,10 +269,82 @@ const Navigation = () => {
                 <Stack.Screen name="주소 찾기" component={Post}  options={{title: ''}}/>
                 <Stack.Screen name="주소 찾기2" component={Post2}  options={{title: ''}}/>
                 
-                <Stack.Screen name="설정" component={Setting}/>
-                <Stack.Screen name="차단한 사용자" component={Block}/>
-                <Stack.Screen name="이용약관" component={Term1}/>
-                <Stack.Screen name="개인정보처리방침" component={Term2}/>
+                <Stack.Screen name="설정" component={Setting} options={({ navigation, route }) => ({
+                        headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>설정</Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                            <View></View>
+                        },
+                        headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                            height: 110
+                        },
+                    })}/>
+                <Stack.Screen name="차단한 사용자" component={Block} options={({ navigation, route }) => ({
+                        headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>차단한 사용자</Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                            <View></View>
+                        },
+                        headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                            height: 110
+                        },
+                    })}/>
+                <Stack.Screen name="이용약관" component={Term1} options={({ navigation, route }) => ({
+                        headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>이용약관</Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                            <View></View>
+                        },
+                        headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                            height: 110
+                        },
+                    })}/>
+                <Stack.Screen name="개인정보처리방침" component={Term2} options={({ navigation, route }) => ({
+                        headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>개인정보처리방침</Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                            <View></View>
+                        },
+                        headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                            height: 110
+                        },
+                    })}/>
                 <Stack.Screen name="맘스토크 상세내용" component={Talk1Tab1Detail} options={{headerShown: false}} />
                 <Stack.Screen name="맘스가이드 상세내용" component={GuideDetail} options={{title: '', headerShown: false}}/>
                 <Stack.Screen name="정부지원혜택 상세내용" component={Government} options={{title: '', headerShown: false}}/>
@@ -336,6 +409,25 @@ const Navigation = () => {
                 <Stack.Screen name="출산준비물 공유 서치" component={MaterialDetail} options={{title: '출산리스트 공유 전체'}}/>
                 <Stack.Screen name="댓글 서치" component={CommentDetail} options={{title: '댓글 전체'}}/>
                 <Stack.Screen name="체험단 서치" component={ExperienceDetail} options={{title: '체험단 전체'}}/>
+                <Stack.Screen name="어플 이용 가이드" component={Guide} options={({ navigation, route }) => ({
+                            headerLeft: () => (
+                                <View style={styles.header}>
+                                    <View style={styles.headerBox}>
+                                        <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                        <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>어플 이용 가이드</Text>
+                                    </View>
+                                </View>
+                            ),
+                            headerTitle(props) {
+                                <View></View>
+                            },
+                            headerStyle: {
+                                borderWidth: 0,
+                                elevation: 0,
+                                shadowOpacity: 0,
+                                height: 110
+                            },
+                        })}/>
 
                 <Stack.Screen name="내가 쓴 게시물" component={MyBoard} options={({ navigation, route }) => ({
                             headerLeft: () => (

@@ -304,10 +304,10 @@ const Talk1Sub = ({navigation, route}) => {
         
         <View>
             <Swiper style={styles.header2} showsButtons={false} dot={<View style={styles.dot}/>} activeDot={<View style={styles.dotActive}/>}>
-                {(info.savedName.split('|')).map((x, index)=>{
+                {info.savedName == null ? '' : (info.savedName.split('|')).map((x, index)=>{
                     return(
                         <View style={styles.slide}>
-                            <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image} key={x}/>
+                            <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image} key={index}/>
                         </View>
                     )
                 })}
@@ -417,8 +417,8 @@ const Talk1Sub = ({navigation, route}) => {
    <View style={styles.modalContainer}>
        <View style={styles.modalView}>
            <View style={styles.modalContainer2}>
-               <View style={[styles.modalBox, {justifyContent: 'flex-end'}]}>
-                   <Text style={{fontSize: 16, lineHeight: 25, textAlign: 'center'}}>체험단 신청을 하시려면 신청정보를 먼저 작성하셔야 합니다. 지금 작성하시겠습니까?</Text>
+               <View style={styles.modalBox}>
+                   <Text style={{fontSize: 16, lineHeight: 25, textAlign: 'center', paddingTop: 20}}>체험단 신청을 하시려면 신청정보를 먼저 작성하셔야 합니다. 지금 작성하시겠습니까?</Text>
                </View>
                <View style={styles.modalBox}>
                    <TouchableOpacity style={styles.modal} onPress={()=>{setModalVisible(!modalVisible), navigation.navigate('신청 정보', route.params)}}>

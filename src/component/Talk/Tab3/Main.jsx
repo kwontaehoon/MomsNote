@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   filterBox:{
-    width: 90,
+    width: 100,
     position: 'absolute',
     right: 0,
     bottom: 0,
@@ -80,6 +80,7 @@ const Talk3 = ({navigation}: any) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => {return state.experience.data});
+  console.log('체험단: ', info);
   const infoCount = useSelector(state => { return state.experienceCount.data});
   const experienceSet = useSelector(state => { return state.experience.refresh; });
 
@@ -109,7 +110,7 @@ const Talk3 = ({navigation}: any) => {
   }
 
   const renderItem = ({ item }) =>
-    item.appCount >= item.maxPeople || moment(item.applicationEndDate).diff(moment(), "days") <= 0 ?
+    item.appCount >= item.maxPeople || moment(item.applicationEndDate).diff(moment(), "days") < 0 ?
     (
       <TouchableOpacity style={[styles.mainBox, {opacity: 0.5}]} onPress={()=>setModal(prevState=> ({...prevState, open: true}))}>
         <View style={styles.imageBox}>
@@ -127,7 +128,7 @@ const Talk3 = ({navigation}: any) => {
         { item.savedName !== null ?<Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} /> : ''}
       </View>
       <View style={styles.contentBox}>
-        <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>{moment(item.applicationEndDate).diff(moment(), "days")}일 남음</Text></View>
+        <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>{moment(item.applicationEndDate).diff(moment(), "days")+1}일 남음</Text></View>
         <View style={styles.content}><Text style={{fontWeight: '500'}}>{item.title}</Text></View>
         <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>신청 {item.appCount}명/모집 {item.maxPeople}명</Text></View>
       </View>

@@ -25,6 +25,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { postMaterial } from '../../Redux/Slices/MaterialSlice'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
+import M1 from '../../../public/assets/svg/1.svg'
+import M2 from '../../../public/assets/svg/2.svg'
+import M3 from '../../../public/assets/svg/3.svg'
+import M4 from '../../../public/assets/svg/4.svg'
+import M5 from '../../../public/assets/svg/5.svg'
+import M6 from '../../../public/assets/svg/6.svg'
+import M7 from '../../../public/assets/svg/7.svg'
+import M8 from '../../../public/assets/svg/8.svg'
+import M9 from '../../../public/assets/svg/9.svg'
 import More from '../../../public/assets/svg/More.svg'
 import Sort from '../../../public/assets/svg/Sort.svg'
 import Download from '../../../public/assets/svg/Download.svg'
@@ -354,6 +363,19 @@ const Navigation = ({navigation, route}) => {
       }
       dispatch(postMaterial(materialSet));
   }
+  const SVGSelect = (e) => {
+    switch(e){
+        case 0: return(<M1 />) 
+        case 1: return(<M2 />) 
+        case 2: return(<M3 />) 
+        case 3: return(<M4 />) 
+        case 4: return(<M5 />) 
+        case 5: return(<M6 />) 
+        case 6: return(<M7 />) 
+        case 7: return(<M8 />) 
+        case 8: return(<M9 />) 
+    }
+}
 
 const save = async() => {
    
@@ -487,10 +509,10 @@ const save = async() => {
     </View>
   );
 
-  const renderItem3 = ({ item }) => (
+  const renderItem3 = ({ item, index }) => (
     <View style={styles.mainBox}>
         <View style={styles.mainBox2}>
-          <Image source={item.icon} width={20} height={20}/>
+          {SVGSelect(index)}
             <View style={[styles.titleBox, {marginLeft: 8}]}><Text style={{fontSize: 16, fontWeight: '500'}}>{item.title}</Text></View>
             <TouchableOpacity style={styles.arrowBox}
               onPress={()=>arrow(item.id)}>{list[item.id] ? <Icon name="angle-up" size={22}/> : <Icon name='angle-down' size={22}/>}

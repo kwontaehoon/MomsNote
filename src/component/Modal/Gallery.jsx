@@ -86,10 +86,9 @@ const Gallery = ({navigation, route}) => {
 
   return(
     <SafeAreaProvider>
-       <SafeAreaView>
-                    <StatusBar />
-            </SafeAreaView>
-            <FocusAwareStatusBar />
+          <SafeAreaView style={{ backgroundColor: 'black' }}>
+            <StatusBar />
+        </SafeAreaView>
             <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '100%', flex: Platform.OS === 'ios' ? 1 : null}]}>
 
         <View style={styles.header}>

@@ -16,12 +16,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { postBoardCount, setBoardCountRefresh } from '../../../Redux/Slices/BoardCountSlice'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import { postBoardPopular } from '../../../Redux/Slices/BoardPopularSlice'
-import { postAlarm } from '../../../Redux/Slices/AlarmSlice'
 
 
 const styles = StyleSheet.create({
   container:{
-    height: '90%',
+    height: '91.5%',
     backgroundColor: 'white',
   },
   header:{
@@ -52,7 +51,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   filterBox:{
-    width: 85,
+    width: 100,
     position: 'absolute',
     right: 0,
     bottom: 0,
@@ -318,7 +317,7 @@ const Talk1 = ({navigation, route}:any) => {
   )
 
   return info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
-    <View style={styles.container}>
+    <View style={[styles.container]}>
 
   <Modal animationType="fade" transparent={true} visible={modalVisible.open} statusBarTranslucent={true}
             onRequestClose={() => {
@@ -380,7 +379,7 @@ const Talk1 = ({navigation, route}:any) => {
         </Swiper>
       </View>
 
-      <View style={[styles.main, {height: Platform.OS == 'ios' ? null : '67%', flex: Platform.OS === 'ios' ? 1 : null}]}>
+      <View style={[styles.main, {height: Platform.OS == 'ios' ? '76%' : '67%'}]}>
         {info.length == 0 ?
         <View style={{height: '70%', alignItems: 'center', justifyContent: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
         :

@@ -31,7 +31,6 @@ const Main = ({navigation, route}) => {
     const isFocused = useIsFocused();
 
     useEffect(()=>{
-        console.log('아아ㅏ아아아아아아앙');
     }, [isFocused]);
     
     console.log('맘스 톡 route: ', route);

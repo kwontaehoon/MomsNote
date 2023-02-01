@@ -7,7 +7,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Arrow_Right from '../../../../../public/assets/svg/Arrow-Right.svg'
 import Reset from '../../../../../public/assets/svg/Reset.svg'
-import Crwon from '../../../../../public/assets/svg/crown.svg'
+import Crown from '../../../../../public/assets/svg/crown.svg'
+import Crown2 from '../../../../../public/assets/svg/crown2.svg'
+import Crown3 from '../../../../../public/assets/svg/crown3.svg'
 import { postMaterial } from '../../../../Redux/Slices/MaterialSlice'
 import { useDispatch } from 'react-redux'
 
@@ -153,6 +155,17 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
         setSelectBrand(prevState => ({...prevState, needsId: modalVisible2.needsId, needsBrandId: modalVisible2.needsBrandId == null ? 0 : modalVisible2.needsBrandId, needsDataId: modalVisible2.needsId == null ? 0 : modalVisible2.needsId}));
     }, [modalVisible2]);
 
+
+    const crown = (index) => {
+        console.log(index);
+        switch(index+1){
+            case 1: return <Crown/>
+            case 2: return <Crown2/>
+            case 3: return <Crown3/>
+            default: return (<Text style={{fontSize: 30, fontWeight: '600'}}>{index+1}</Text>);
+        }
+    }
+
     const submit = async() => {
         const token = await AsyncStorage.getItem('token');
         try{
@@ -174,10 +187,10 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
             setModalVisible2(prevState => ({...prevState, open: false}));
     }
 
-    const renderItem = ({ item }) => (
-         <TouchableOpacity style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: modalVisible2.needsBrandId, itemBrand: item.productName, needsDataId: item.needsId }))}>
+    const renderItem = ({ item, index }) => (
+         <TouchableOpacity style={styles.mainBox} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: modalVisible2.needsBrandId, itemBrand: item.productName, needsDataId: item.needsBrandId }))}>
             <View style={[styles.mainBoxSub, {width: '24%'}]}>
-                <Crwon />
+                {crown(index)}
             </View>
             <View style={[styles.mainBoxSub, {width: '40%', alignItems: 'flex-start'}]}>
                 <Text style={{fontWeight: '500', marginBottom: 3}}>[{item.brandName}]</Text>

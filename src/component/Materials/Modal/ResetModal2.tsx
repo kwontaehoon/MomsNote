@@ -83,6 +83,20 @@ const Main = ({modalVisible6, setModalVisible6}) => {
             try{
                 const response = await axios({ 
                   method: 'post',
+                  url: 'https://momsnote.net/api/needs/list/reset',
+                  headers: { 
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                  },
+                  data: {}
+                });
+            }catch(error){
+              console.log('실제맘 추천 리스트 error: ', error);
+            }
+
+            try{
+                const response = await axios({ 
+                  method: 'post',
                   url: 'https://momsnote.net/api/needs/list/rec',
                   headers: { 
                     'Authorization': `Bearer ${token}`, 
@@ -92,12 +106,26 @@ const Main = ({modalVisible6, setModalVisible6}) => {
                     order: 'need'
                   }
                 });
-                console.log('실제맘 추천 리스트 response: ', response.data);
             }catch(error){
               console.log('실제맘 추천 리스트 error: ', error);
             }
         }else{
             console.log('직접작성');
+
+            try{
+                const response = await axios({ 
+                  method: 'post',
+                  url: 'https://momsnote.net/api/needs/list/reset',
+                  headers: { 
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                  },
+                  data: {}
+                });
+            }catch(error){
+              console.log('실제맘 추천 리스트 error: ', error);
+            }
+
             try{
                 const response = await axios({ 
                       method: 'post',
@@ -110,7 +138,6 @@ const Main = ({modalVisible6, setModalVisible6}) => {
                         order: 'need'
                       }
                     });
-                    console.log('직접 작성 response: ', response.data);
                 }catch(error){
                   console.log('직접 작성 error: ', error);
                 }
@@ -126,9 +153,9 @@ const Main = ({modalVisible6, setModalVisible6}) => {
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
                         <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, textAlign: 'center', lineHeight: 25}}>추천상품으로 리스트를 변경하면 기존 작성내용은 초기화됩니다. 변경하시겠습니까?</Text>
+                            <Text style={{fontSize: 16, textAlign: 'center', lineHeight: 25, paddingTop: 10}}>추천상품으로 리스트를 변경하면 기존 작성내용은 초기화됩니다. 변경하시겠습니까?</Text>
                         </View>
-                        <View style={[styles.modalBox, {paddingTop: 0}]}>
+                        <View style={styles.modalBox}>
                             <TouchableOpacity style={styles.modal} onPress={confirm}>
                                 <Text style={{color: 'white', fontSize: 16}}>확인</Text>
                             </TouchableOpacity>

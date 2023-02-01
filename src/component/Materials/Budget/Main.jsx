@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Animated, Platform } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Animated, Platform, SafeAreaView, StatusBar } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSelector } from 'react-redux'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
@@ -21,6 +21,16 @@ import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
+
+import M1 from '../../../../public/assets/svg/1.svg'
+import M2 from '../../../../public/assets/svg/2.svg'
+import M3 from '../../../../public/assets/svg/3.svg'
+import M4 from '../../../../public/assets/svg/4.svg'
+import M5 from '../../../../public/assets/svg/5.svg'
+import M6 from '../../../../public/assets/svg/6.svg'
+import M7 from '../../../../public/assets/svg/7.svg'
+import M8 from '../../../../public/assets/svg/8.svg'
+import M9 from '../../../../public/assets/svg/9.svg'
 
 const styles = StyleSheet.create({
   container:{
@@ -225,6 +235,20 @@ const Talk1Sub = ({navigation, route}) => {
     save();
 }, [test]);
 
+const SVGSelect = (e) => {
+  switch(e){
+      case 0: return(<M1 />) 
+      case 1: return(<M2 />) 
+      case 2: return(<M3 />) 
+      case 3: return(<M4 />) 
+      case 4: return(<M5 />) 
+      case 5: return(<M6 />) 
+      case 6: return(<M7 />) 
+      case 7: return(<M8 />) 
+      case 8: return(<M9 />) 
+  }
+}
+
 const save = async() => {
    
     if(test !== undefined){
@@ -308,7 +332,7 @@ const capture = async() => {
             <View style={[styles.filterBox2, {justifyContent: 'flex-start'}]}><Text style={{fontWeight: '500'}}>{x.needsName}</Text></View>
             <View style={styles.filterBox2}><Text numberOfLines={2} style={{lineHeight: 20}}>{x.itemName == null ? '-' : x.itemName}</Text></View>
             <TouchableOpacity style={[styles.filterBox2, {justifyContent: 'flex-end'}]} onLongPress={()=>setModal6(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1}>
-              <Text style={{fontWeight: '600'}}>{(x.itemPrice).toLocaleString()}</Text>
+              <Text style={{fontWeight: '600'}}>{(x.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
               <Text> 원</Text>
             </TouchableOpacity>
         </TouchableOpacity>
@@ -317,13 +341,13 @@ const capture = async() => {
     return arr;
   }
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item, index }) => (
       <View>
           <View style={styles.mainBox}>
             <TouchableOpacity style={styles.arrowBox}
                 onPress={()=>arrow(item.id)}>{list[item.id] ? <Icon name="angle-down" size={22}/> : <Icon name='angle-up' size={22}/>}
             </TouchableOpacity>
-            <Image source={item.icon} width={20} height={20}/>
+            {SVGSelect(index)}
             <View style={[styles.titleBox, {marginLeft: 8}]}><Text style={{fontSize: 16, fontWeight: '500'}}>{item.title}</Text></View>
           </View>
           <View style={{display: list[item.id] ? 'none' : 'flex'}}>
@@ -336,7 +360,14 @@ const capture = async() => {
     );
 
   return (
-    <View style={[styles.container, Platform.OS == 'ios' ? {paddingBottom: insets.bottom} : {paddingBottom: 0}]}>
+    
+    <SafeAreaProvider>
+
+        <SafeAreaView style={{ backgroundColor: 'white' }}>
+            <StatusBar />
+        </SafeAreaView>
+
+        <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '90.5%'}]}>
 
       <Animated.View style={[styles.saveModalBox, {opacity: animation}]}>
                 <View style={styles.saveModal}>
@@ -370,18 +401,18 @@ const capture = async() => {
         <View style={styles.footerBox}>
           <View style={styles.arrowBox}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontSize: 18, fontWeight: '500'}}>{(sumResult.sum + sumResult.exp).toLocaleString()} </Text>
+              <Text style={{fontSize: 18, fontWeight: '500'}}>{(sumResult.sum + sumResult.exp).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} </Text>
               <Text>원</Text>
             </View>
           </View>
           <Text style={{fontSize: 18, fontWeight: '500'}}>총 예산</Text>
         </View>
         <View style={[styles.footerBox, {padding: 5, paddingLeft: 20}]}>
-          <View style={styles.arrowBox}><Text>{(sumResult.sum).toLocaleString()} 원</Text></View>
+          <View style={styles.arrowBox}><Text>{(sumResult.sum).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</Text></View>
           <Text style={{color: '#616161'}}>ㄴ 구매 금액</Text>
         </View>
         <View style={[styles.footerBox, {padding: 5, paddingLeft: 20}]}>
-          <View style={styles.arrowBox}><Text>{(sumResult.exp).toLocaleString()} 원</Text></View>
+          <View style={styles.arrowBox}><Text>{(sumResult.exp).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</Text></View>
           <Text style={{color: '#616161'}}>ㄴ 구매 예정 금액</Text>
         </View>
         <TouchableOpacity style={styles.buttonBox} onPress={()=>setModalVisible2(!modalVisible2)}>
@@ -390,7 +421,8 @@ const capture = async() => {
       </View>
         
         </ViewShot>
-    </View>
+        </SafeAreaView>
+        </SafeAreaProvider>
   )
 }
 

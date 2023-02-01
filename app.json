@@ -4,28 +4,29 @@
     "slug": "Project1Type",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./public/assets/image/512icon.png",
+    "icon": "./public/assets/image/1024icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./public/assets/splash.png"
+      "image": "./public/assets/splash.png",
+      "resizeMode": "cover"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ios.test"
+      "bundleIdentifier": "com.momsnote.test"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./public/assets/image/Logo.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./public/assets/image/playstore.png",
+        "backgroundColor": "#FFFFFF",
+        "googleServicesFile": "./googleServicesFile"
       },
-      "package": "com.android.test"
+      "package": "com.momsnote.test"
     },
     "web": {
       "favicon": "./public/assets/favicon.png"

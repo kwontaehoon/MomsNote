@@ -130,7 +130,7 @@ const Main = ({navigation}) => {
         <View style={{backgroundColor: '#F5F5F5', height: '1%'}}></View>
         <View style={styles.main2}>
             <View style={styles.mainBox}><Text style={{fontWeight: 'bold'}}>고객센터</Text></View>
-            <View style={styles.mainBox}><Text style={{fontSize: 15}}>어플 이용 가이드</Text></View>
+            <View style={styles.mainBox}><Text style={{fontSize: 15}} onPress={()=>navigation.navigate('어플 이용 가이드')}>어플 이용 가이드</Text></View>
             <View style={styles.mainBox}><Text style={{fontSize: 15}}>카카오톡 초대</Text></View>
             <View style={styles.mainBox}><Text style={{fontSize: 15}} onPress={()=>navigation.navigate('공지사항')}>공지사항</Text></View>
             <View style={styles.mainBox}><Text onPress={()=>navigation.navigate('1:1 문의')}>1:1 문의</Text></View>

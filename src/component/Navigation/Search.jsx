@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
     paddingRight: 15,
   },
   profile:{
-    borderWidth: 1,
     width: 30,
     height: 30,
     borderRadius: 15,
@@ -269,10 +268,11 @@ const dayCalculate2 = (date) => {
   const Comment = () => {
     let arr = [];
     commentSearch.filter((x, index) => {
+      console.log('x: ', x);
       arr.push(
        <TouchableOpacity style={styles.momstalk} key={index}>
           <TouchableOpacity style={styles.dotBox} onPress={()=>setModal(!modal)}><More /></TouchableOpacity>
-          <View style={styles.profile}></View>
+          <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${x.profileImage}`}} style={styles.profile}/>
         <View>
         <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 3}}>
           <Text style={{fontWeight: '600'}}>{x.nickname}</Text>
@@ -292,7 +292,7 @@ const dayCalculate2 = (date) => {
        <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('체험단 상세페이지', x)}>
           <View style={styles.dateBox}>{dayCalculate2(x.applicationEndDate)}</View>
           <View style={styles.profile2}>
-            <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%'}} />
+            {x.savedName !== null ? '' : <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%'}} />}
           </View>
         <View>
             <Text style={{fontSize: 15, marginBottom: 3}}>{x.title}</Text>
