@@ -2,8 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useState, useRef, useCallback } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import Swiper from 'react-native-swiper'
-import { Navigation } from 'react-native-swiper'
 import { getStatusBarHeight } from "react-native-status-bar-height"
+
+import OnBoarding1 from '../../../public/assets/svg/onBoarding1.svg'
+import OnBoarding2 from '../../../public/assets/svg/onBoarding2.svg'
+import OnBoarding3 from '../../../public/assets/svg/onBoarding3.svg'
 
 const styles = StyleSheet.create({
     container:{
@@ -12,18 +15,29 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
     },
+    main:{
+        height: '80%',
+    },
+    main2:{
+        height: '100%',
+    },
     header:{
         height: '10%',
         justifyContent: 'center',
         alignItems: 'flex-end',
     },
-    header2:{
+    headerBox:{
         height: '15%',
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: 'center'
     },
-    main:{
-        height: '80%'
+    main2Box:{
+        height: '75%',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    image:{
+        width: '100%',
+        height: '100%'
     },
     dot:{
       backgroundColor: '#D9D9D9',
@@ -70,7 +84,7 @@ const Main = ({navigation}) => {
 
     const List = () => {
 
-        return page == 3 ? (
+        return page == 2 ? (
             <TouchableOpacity style={styles.footer} activeOpacity={1} onPress={start}>
                 <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>시작하기</Text>
             </TouchableOpacity> 
@@ -90,25 +104,36 @@ const Main = ({navigation}) => {
             activeDot={<View style={styles.dotActive}/>}
             nextButton={<View style={styles.nextButton}></View>}
         >
-                <View testID="Page1" style={styles.header2}>
-                    <Text style={{fontSize: 20}}>출산 전, 걱정말고</Text>
-                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>필요한 준비물 미리 준비해요</Text>
+                <View testID="Page1" style={styles.main2}>
+                    <View style={styles.headerBox}>
+                        <Text style={{fontSize: 20}}>출산 전, 걱정말고</Text>
+                        <Text style={{fontSize: 20, fontWeight: 'bold'}}>필요한 준비물 미리 준비해요</Text>
+                    </View>
+                    <View style={styles.main2Box}>
+                        <OnBoarding1 style={styles.image}/>
+                    </View>
                 </View>
         
-                <View testID="Page2" style={styles.header2}>
-                <Text style={{fontSize: 20}}>첫 임신, 궁금한게 많으시죠?</Text>
-                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>맘스노트가 해결해드립니다.</Text>
+                <View testID="Page2" style={styles.main2}>
+                    <View style={styles.headerBox}>
+                        <Text style={{fontSize: 20}}>어떤 브랜드가 좋을까?</Text>
+                        <Text style={{fontSize: 20, fontWeight: 'bold'}}>추천상품을 확인해 보세요</Text>
+                    </View>
+                    <View style={styles.main2Box}>
+                        <OnBoarding2 style={styles.image}/>
+                    </View>
                 </View>
 
-                <View testID="Page3" style={styles.header2}>
-                <Text style={{fontSize: 20}}>어떤 브랜드가 좋을까?</Text>
-                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>추천상품을 확인해보세요</Text>
+                <View testID="Page3" style={styles.main2}>
+                    <View style={styles.headerBox}>
+                        <Text style={{fontSize: 20}}>다른 엄마들은 어떻게 준비할까?</Text>
+                        <Text style={{fontSize: 20, fontWeight: 'bold'}}>출산리스트를 비교해 보세요</Text>
+                    </View>
+                    <View style={styles.main2Box}>
+                        <OnBoarding3 style={styles.image}/>
+                    </View>
                 </View>
 
-                <View testID="Page4" style={styles.header2}>
-                <Text style={{fontSize: 20}}>다른 엄마들은 어떻게 준비할까?</Text>
-                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>출산리스트를 비교해 보세요</Text>
-                </View>
             </Swiper>
         </View>
         <List/>

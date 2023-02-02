@@ -18,7 +18,11 @@ import {
     SafeAreaProvider,
     useSafeAreaInsets,
   } from 'react-native-safe-area-context';
-
+import { AppleAuthenticationCredentialState } from 'expo-apple-authentication'
+import jwtDecode from 'jwt-decode'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { postUser } from '../../Redux/Slices/UserSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -56,7 +60,7 @@ const styles = StyleSheet.create({
 })
 const Main = ({navigation, route}) => {
 
-    console.log('로그인 route: ', route);
+    const dispatch = useDispatch();
 
     const [googleToken, setGoogleToken] = useState([]);
     console.log('googleToken: ', googleToken);
@@ -86,7 +90,7 @@ const Main = ({navigation, route}) => {
     const GoogleGetId = async(googleAccessToken) => {
         try{
             const response = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${googleAccessToken}`);
-            console.log('response: ', response);
+            console.log('response: ', response.data);
             setGoogleToken(response.data.sub);
             const response2 = await axios({
                 method: 'post',
@@ -98,37 +102,37 @@ const Main = ({navigation, route}) => {
                     username: `google_${response.data.sub}`
                 }
             });
-            console.log('response2: ', response2);
+            console.log('response: ', response2);
+            AsyncStorage.setItem('token', response2.data.token);
+                        
+            if(response2.data.status == 'success'){
+                try{
+                    const response3 = await axios({
+                        method: 'post',
+                        headers: { 
+                          'Authorization': `bearer ${response2.data.token}`, 
+                          'Content-Type': 'application/json'
+                        },
+                        url: 'https://momsnote.net/api/dday/show',
+                        data : { dDayId: 1 }
+                    });
+                    console.log(response3.data);
+                    AsyncStorage.setItem('user', JSON.stringify(response3.data[0]));
+                    }catch(error){
+                        console.log('user axios error: ', error);
+                        return undefined;
+                    }
 
-            const user = await AsyncStorage.getItem('google_user');
-            const userId = await AsyncStorage.getItem('google_userId');
-            const token = await AsyncStorage.getItem('google_token');
-
-            response2.data.status == 'success' ?
-            (
-
-                AsyncStorage.setItem('user', user),
-                AsyncStorage.setItem('userId', userId),
-                AsyncStorage.setItem('token', token),
-                navigation.navigate('main'),
-                AsyncStorage.setItem('login', '2')
-            )
-            :
-            (
-                navigation.navigate('추가 정보 입력', ['google', response.data.sub])
-            )
+                navigation.navigate('main');
+                AsyncStorage.setItem('login', '2');
+            }else{
+                navigation.navigate('추가 정보 입력', ['google', response.data.sub]);
+            }
 
 
         }catch(error){
             console.log('error: ', error);
         }
-        // await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${googleAccessToken}`) 
-        // .then(function(response){
-        //     setGoogleToken(response.data.sub);
-        //     navigation.navigate('추가 정보 입력', ['google', response.data.sub]);
-        // }).catch(function(error){
-        //     console.log('error');
-        // })
     }
 
   return (
@@ -160,11 +164,57 @@ const Main = ({navigation, route}) => {
                             ],
                         });
                         // signed in
+                        console.log(credential.identityToken);
+                        const decode = jwtDecode(credential.identityToken);
+                        console.log('decoded: ', decode.sub);
+
+                        const response = await axios({
+                            method: 'post',
+                            url: 'https://momsnote.net/login',
+                            headers: { 
+                            'Content-Type': 'application/json'
+                            },
+                            data : {
+                                username: `apple_${jwtDecode(credential.identityToken).sub}`
+                            }
+                        });
+                        console.log('response: ', response.data);
+                        AsyncStorage.setItem('token', response.data.token);
+                        
+                        if(response.data.status == 'success'){
+                            try{
+                                const response2 = await axios({
+                                    method: 'post',
+                                    headers: { 
+                                      'Authorization': `bearer ${response.data.token}`, 
+                                      'Content-Type': 'application/json'
+                                    },
+                                    url: 'https://momsnote.net/api/dday/show',
+                                    data : { dDayId: 1 }
+                                });
+                                console.log(response2.data);
+                                AsyncStorage.setItem('user', JSON.stringify(response2.data[0]));
+                                }catch(error){
+                                    console.log('user axios error: ', error);
+                                    return undefined;
+                                }
+            
+                            navigation.navigate('main');
+                            AsyncStorage.setItem('login', '2');
+                        }else{
+                            console.log(decode.sub);
+                            navigation.navigate('추가 정보 입력', ['apple', decode.sub]);
+                        }
+                        
+                            
+                       
+
                         } catch (e) {
                         if (e.code === 'ERR_CANCELED') {
                             // handle that the user canceled the sign-in flow
                         } else {
                             // handle other errors
+                            
                         }
                         }
                     }}>

@@ -235,24 +235,11 @@ const Home = ({navigation}) => {
             console.log('user: ', JSON.parse(user));
             const a = await AsyncStorage.getItem('token');
             console.log('token: ', a);
-            const google = await AsyncStorage.getItem('google_user');
-            const google2 = await AsyncStorage.getItem('google_token');
-            const google3 = await AsyncStorage.getItem('google_userId');
-            const kakao = await AsyncStorage.getItem('kakao_user');
-            const kakao2 = await AsyncStorage.getItem('kakao_token');
-            const kakao3 = await AsyncStorage.getItem('kakao_userId');
-            console.log('google user: ', google);
-            console.log('google userId: ', google3);
-            console.log('google token: ', google2);
-            console.log('kakao user: ', kakao);
-            console.log('kakao userId: ', kakao3);
-            console.log('kakao token: ', kakao2);
             setUserInfo(JSON.parse(user));
 
             asyncStorage == null ? setModal(true) : '';
         }
         recommendList();
-        
     }, []);
 
     useEffect(()=>{

@@ -210,6 +210,7 @@ const Talk1Sub = ({navigation, route}) => {
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
+    console.log('commentsId: ', commentsId);
     const [insert, setInsert] = useState(
         {
             boardId: route.params.item.boardId,
@@ -521,7 +522,7 @@ const Talk1Sub = ({navigation, route}) => {
             </View>
             <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : ''}>
             <View style={styles.footer}>
-                    <Image source={{ uri: userInfo.profileImage }} style={styles.profileBox}/>
+                    <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profileImage}` }} style={styles.profileBox}/>
                 <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: '', level: 0}))}}>
                     <Text style={{color: '#1E88E5', fontWeight: '600'}}>등록</Text>
                 </TouchableOpacity>

@@ -40,22 +40,32 @@ const Main = ({navigation}) => {
           }
         });
         console.log('response3: ', response3.data);
+        console.log(response3.data.token);
+        AsyncStorage.setItem('token', response3.data.token);
 
-        const user = await AsyncStorage.getItem('kakao_user');
-        const userId = await AsyncStorage.getItem('kakao_userId');
-        const token = await AsyncStorage.getItem('kakao_token');
+        if(response3.data.status == 'success'){
+          try{
+              const response4 = await axios({
+                  method: 'post',
+                  headers: { 
+                    'Authorization': `bearer ${response3.data.token}`, 
+                    'Content-Type': 'application/json'
+                  },
+                  url: 'https://momsnote.net/api/dday/show',
+                  data : { dDayId: 1 }
+              });
+              console.log(response4.data);
+              AsyncStorage.setItem('user', JSON.stringify(response4.data[0]));
+              }catch(error){
+                  console.log('user axios error: ', error);
+                  return undefined;
+              }
 
-        response3.data.status == 'success' ? 
-        (
-          console.log('엥'),
-          AsyncStorage.setItem('user', user),
-          AsyncStorage.setItem('userId', userId),
-          AsyncStorage.setItem('token', token),
-          navigation.navigate('main'),
-          AsyncStorage.setItem('login', '2')
-        )
-        :
-        navigation.navigate('추가 정보 입력', ['kakao', response2.data.id]);
+          navigation.navigate('main');
+          AsyncStorage.setItem('login', '2');
+      }else{
+          navigation.navigate('추가 정보 입력', ['kakao', response2.data.id]);
+      }
 
     }catch(error){
         console.log('kakao error: ', error);

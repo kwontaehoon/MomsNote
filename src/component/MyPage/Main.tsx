@@ -77,9 +77,7 @@ const Main = ({navigation}) => {
     }
     console.log(result.assets[0].uri);
 
-    userInfo.provider == 'google' ? AsyncStorage.setItem('google_user', JSON.stringify(Object.assign(userInfo, {profileImage: result.assets[0].uri})))
-    :
-    AsyncStorage.setItem('kakao_user', JSON.stringify(Object.assign(userInfo, {profileImage: result.assets[0].uri})))
+    AsyncStorage.setItem('user', JSON.stringify(Object.assign(userInfo, {profileImage: result.assets[0].uri})))
 
     let data = new FormData();
     data.append('file', {uri: result.assets[0].uri, name: 'profile.jpg', type: 'image/jpeg'});
@@ -107,7 +105,7 @@ const Main = ({navigation}) => {
             <View style={styles.headerBox}>
                 <TouchableOpacity style={styles.profileBox} onPress={pickImage}>
                     {userInfo.profileImage === undefined ? <Image source={require('../../../public/assets/image/baby1.png')}/>
-                    :  <Image source={{ uri: userInfo.profileImage }} style={{ width: 72, height: 72, borderRadius: 36}}/>}
+                    :  <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profileImage}` }} style={{ width: 72, height: 72, borderRadius: 36}}/>}
                 </TouchableOpacity>
                 <View style={styles.infoBox}>
                     <Text style={{fontSize: 20, fontWeight : 'bold'}}>{userInfo.nickname}</Text>

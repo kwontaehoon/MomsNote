@@ -76,7 +76,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
         switch(true){
           case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
           case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
-          default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'day')}일 전</Text>
+          default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(date).format('YY.MM.DD')}</Text>
         }
       }
 
@@ -141,7 +141,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                   
                   { x.deleteFlag == 1 ? <View style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>
                             <Text>삭제된 댓글입니다.</Text></View> : <View>
-                    <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>{x.contents}</Text>
+                    <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>[]{x.contents}</Text>
                     <View style={styles.likeBox}>
                         {commentLike.includes(x.commentsId) ? <Like2 width={16} height={16} fill='#FE9000'/>
                         :

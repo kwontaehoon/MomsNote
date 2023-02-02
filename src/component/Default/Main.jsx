@@ -22,7 +22,6 @@ const Main = ({navigation}) => {
             setInfo(asyncStorage);
         }
         login();
-
     }, [isFocused]);
 
     switch(info){

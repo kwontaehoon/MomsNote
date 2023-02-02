@@ -128,7 +128,7 @@ const AddPage = ({navigation, route}) => {
         dueDate: '',
         babyName: '',
         provider: `${route.params[0]}`,
-        providerId: `${route.params[1]}`,
+        providerId: typeof(route.params[1]) == 'number' ? `${route.params[1]}` : route.params[1],
         marketingFlag: Number(`${isChecked[3] ? 1 : 0}`),
     })
     console.log('info: ', info);
@@ -154,26 +154,27 @@ const AddPage = ({navigation, route}) => {
             const decoded = jwtDecode(response.data.token);
             console.log('decoded: ', decoded);
 
-            route.params[0] == 'google' ?
-            (
-                AsyncStorage.setItem('google_token', response.data.token),
-                AsyncStorage.setItem('google_userId', String(decoded.id)),
-                AsyncStorage.setItem('google_user', JSON.stringify(Object.assign(info, {profileImage: 'https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/ico_basic.png'})))
-            )
-            :
-            (
-                AsyncStorage.setItem('kakao_token', response.data.token),
-                AsyncStorage.setItem('kakao_userId', String(decoded.id)),
-                AsyncStorage.setItem('kakao_user', JSON.stringify(Object.assign(info, {profileImage: 'https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/ico_basic.png'})))
-            )
-            
             AsyncStorage.setItem('token', response.data.token);
-            AsyncStorage.setItem('userId', String(decoded.id));
-            AsyncStorage.setItem('login', '2');
-            AsyncStorage.setItem('user', JSON.stringify(Object.assign(info, {profileImage: 'https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/ico_basic.png'})));
-            navigation.reset({routes: [{name: "main"}]})
-            return;
 
+            try{
+                const response2 = await axios({
+                    method: 'post',
+                    headers: { 
+                      'Authorization': `bearer ${response.data.token}`, 
+                      'Content-Type': 'application/json'
+                    },
+                    url: 'https://momsnote.net/api/dday/show',
+                    data : { dDayId: 1 }
+                });
+
+                console.log(response2.data);
+                AsyncStorage.setItem('user', JSON.stringify(response2.data[0]));
+                navigation.reset({routes: [{name: "main"}]})
+
+                }catch(error){
+                    console.log('user axios error: ', error);
+                    return undefined;
+                }
             }catch(error){
                 console.log('회원가입 error:', error);
             }

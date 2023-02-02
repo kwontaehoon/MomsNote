@@ -40,6 +40,7 @@ import DdayTodayReducer from '../Slices/DdayTodaySlice'
 import DdayTermReducer from '../Slices/DdayTermSlice'
 import ListPopularReducer from '../Slices/ListPopularSlice'
 import AlarmReducer from '../Slices/AlarmSlice'
+import UserReducer from '../Slices/UserSlice'
 
 
 
@@ -85,6 +86,7 @@ export const store = configureStore({
     ddayToday: DdayTodayReducer,
     ddayTerm: DdayTermReducer,
     ListPopular: ListPopularReducer,
-    alarm: AlarmReducer
+    alarm: AlarmReducer,
+    user: UserReducer
   },
 })

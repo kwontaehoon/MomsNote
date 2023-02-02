@@ -18,15 +18,15 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.momsnote.test"
+      "bundleIdentifier": "com.momsnote"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./public/assets/image/playstore.png",
+        "foregroundImage": "./public/assets/image/1024icon.png",
         "backgroundColor": "#FFFFFF",
         "googleServicesFile": "./googleServicesFile"
       },
-      "package": "com.momsnote.test"
+      "package": "com.momsnote"
     },
     "web": {
       "favicon": "./public/assets/favicon.png"

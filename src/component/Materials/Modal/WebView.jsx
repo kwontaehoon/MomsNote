@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     modalContainer2:{
-        width: '100%',
+        width: '90%',
         backgroundColor: 'white',
         borderRadius: 15,
         height: '90%',
@@ -26,8 +26,6 @@ const styles = StyleSheet.create({
 })
 
 const Main = ({modal4, setModal4, modalVisible2, setModalVisible2}) => {
-
-    console.log('modal4: ', modal4.link);
 
     const runFirst = `window.ReactNativeWebView.postMessage("this is message from web")`;
 
