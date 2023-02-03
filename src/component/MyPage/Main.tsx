@@ -104,8 +104,8 @@ const Main = ({navigation}) => {
         <View style={styles.header}>
             <View style={styles.headerBox}>
                 <TouchableOpacity style={styles.profileBox} onPress={pickImage}>
-                    {userInfo.profileImage === undefined ? <Image source={require('../../../public/assets/image/baby1.png')}/>
-                    :  <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profileImage}` }} style={{ width: 72, height: 72, borderRadius: 36}}/>}
+                    {userInfo.profile === undefined ? <Image source={require('../../../public/assets/image/baby1.png')}/>
+                    :  <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profile}` }} style={{ width: 72, height: 72, borderRadius: 36}}/>}
                 </TouchableOpacity>
                 <View style={styles.infoBox}>
                     <Text style={{fontSize: 20, fontWeight : 'bold'}}>{userInfo.nickname}</Text>

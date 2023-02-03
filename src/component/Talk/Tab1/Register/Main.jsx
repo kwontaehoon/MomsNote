@@ -422,7 +422,7 @@ const Register = ({navigation, route}) => {
             </View>
             <View style={styles.header2}>
                 <View style={styles.header2Box}>
-                    <Image source={{ uri: userInfo.profileImage }} style={styles.profileBox}/>
+                    <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profile}` }} style={styles.profileBox}/>
                     <View style={styles.infoBox}><Text style={{fontSize: 20, fontWeight : 'bold'}}>{userInfo.nickname}</Text></View>
                 </View>
                 <View style={styles.header2Box2}>

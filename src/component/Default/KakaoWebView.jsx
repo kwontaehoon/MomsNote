@@ -4,7 +4,7 @@ import { getStatusBarHeight } from "react-native-status-bar-height"
 import { WebView } from 'react-native-webview';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import Modal from './Modal/Withdraw'
 
 const styles = StyleSheet.create({
     container:{
@@ -19,6 +19,8 @@ const Main = ({navigation}) => {
     const REDIRECT_URI = 'https://momsnote.s3.ap-northeast-2.amazonaws.com/setting/splash.png';
 
     const runFirst = `window.ReactNativeWebView.postMessage("this is message from web")`;
+
+    const [modal, setModal] = useState(false);
 
     const kakaoTokenId = async(kakaoAcceess) => {
 
@@ -46,16 +48,15 @@ const Main = ({navigation}) => {
         if(response3.data.status == 'success'){
           try{
               const response4 = await axios({
-                  method: 'post',
+                  method: 'get',
                   headers: { 
                     'Authorization': `bearer ${response3.data.token}`, 
                     'Content-Type': 'application/json'
                   },
                   url: 'https://momsnote.net/api/dday/show',
-                  data : { dDayId: 1 }
               });
               console.log(response4.data);
-              AsyncStorage.setItem('user', JSON.stringify(response4.data[0]));
+              AsyncStorage.setItem('user', JSON.stringify(response4.data.data));
               }catch(error){
                   console.log('user axios error: ', error);
                   return undefined;
@@ -63,8 +64,10 @@ const Main = ({navigation}) => {
 
           navigation.navigate('main');
           AsyncStorage.setItem('login', '2');
+      }else if(response3.data.status == 'expire'){
+          setModal(!modal);
       }else{
-          navigation.navigate('추가 정보 입력', ['kakao', response2.data.id]);
+        navigation.navigate('추가 정보 입력', ['kakao', response2.data.id]);
       }
 
     }catch(error){

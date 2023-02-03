@@ -129,7 +129,7 @@ const Talk3 = ({navigation}: any) => {
       </View>
       <View style={styles.contentBox}>
         <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>{moment(item.applicationEndDate).diff(moment(), "days")+1}일 남음</Text></View>
-        <View style={styles.content}><Text style={{fontWeight: '500'}}>{item.title}</Text></View>
+        <View style={styles.content}><Text style={{fontWeight: '500'}} numberOfLines={1} ellipsizeMode='tail'>{item.title}</Text></View>
         <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>신청 {item.appCount}명/모집 {item.maxPeople}명</Text></View>
       </View>
     </TouchableOpacity>

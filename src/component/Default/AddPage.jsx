@@ -158,17 +158,16 @@ const AddPage = ({navigation, route}) => {
 
             try{
                 const response2 = await axios({
-                    method: 'post',
+                    method: 'get',
                     headers: { 
                       'Authorization': `bearer ${response.data.token}`, 
                       'Content-Type': 'application/json'
                     },
-                    url: 'https://momsnote.net/api/dday/show',
-                    data : { dDayId: 1 }
+                    url: 'https://momsnote.net/api/main/data',
                 });
 
-                console.log(response2.data);
-                AsyncStorage.setItem('user', JSON.stringify(response2.data[0]));
+                console.log(response2.data.data);
+                AsyncStorage.setItem('user', JSON.stringify(response2.data.data));
                 navigation.reset({routes: [{name: "main"}]})
 
                 }catch(error){

@@ -551,7 +551,7 @@ const Talk1Sub = ({navigation, route}) => {
                 <Text style={{color: '#757575'}}> 님에게 답변 남기기</Text>
             </View>
             <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : ''} keyboardVerticalOffset={Platform.OS == 'ios' ? 30 : ''} style={styles.footer}>
-                <Image source={{ uri: userInfo.profileImage }} style={styles.profileBox}/>
+                <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profile}` }} style={styles.profileBox}/>
                 <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: '', level: 0}))}}>
                     <Text style={{color: '#1E88E5', fontWeight: '600'}}>등록</Text>
                 </TouchableOpacity>

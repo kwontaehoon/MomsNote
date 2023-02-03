@@ -63,15 +63,14 @@ const styles = StyleSheet.create({
   header3:{
     height: '8%',
     justifyContent: 'center',
-    paddingLeft: 20,
-    borderBottomWidth: 1,
-    borderColor: '#EEEEEE',
     position: 'relative',
+    paddingLeft: 20,
+    paddingRight: 20,
     zIndex: -100,
   },
   slide:{
     height: '100%',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   main:{
     paddingLeft: 10,
@@ -368,13 +367,13 @@ const Talk1 = ({navigation, route}:any) => {
           showsPagination={false}
           >
           <TouchableOpacity style={styles.slide} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}>
-            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {boardPopular == '' ? '' : boardPopular[0].title}</Text>
+            <Text style={{color: 'orange', fontWeight: 'bold'}} numberOfLines={1} ellipsizeMode={'tail'}>[인기글] {boardPopular == '' ? '' : boardPopular[0].title}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.slide} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[1]})}>
-            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {boardPopular == '' ?  '' : boardPopular[1].title}</Text>
+            <Text style={{color: 'orange', fontWeight: 'bold'}} numberOfLines={1} ellipsizeMode={'tail'}>[인기글] {boardPopular == '' || boardPopular.length < 2 ?  '' : boardPopular[1].title}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.slide} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[2]})}>
-            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {boardPopular == '' ?  '' : boardPopular[2].title}</Text>
+            <Text style={{color: 'orange', fontWeight: 'bold'}} numberOfLines={1} ellipsizeMode={'tail'}>[인기글] {boardPopular == '' || boardPopular.length < 3 ?  '' : boardPopular[2].title}</Text>
           </TouchableOpacity>
         </Swiper>
       </View>

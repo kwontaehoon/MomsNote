@@ -216,9 +216,11 @@ const Talk1Sub = ({navigation, route}) => {
             boardId: route.params.item.boardId,
             contents: '',
             ref: 1,
-            level: 0
+            level: 0,
+            tag: null,
         }
     ); // 댓글 입력
+    console.log('insert: ', insert);
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요 Flag
     const [boardData, setBoardData] = useState({
         order: 'new',
@@ -369,6 +371,14 @@ const Talk1Sub = ({navigation, route}) => {
             }
     }
 
+    const dayCalculate = (date:number) => {
+        switch(true){
+          case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
+          case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
+          default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(date).format('YY.MM.DD')}</Text>
+        }
+      }
+
     const ImageBox = () => {
         const arr = [];
         const a = (info[0].savedName.split('|')).filter(x => {
@@ -453,7 +463,7 @@ const Talk1Sub = ({navigation, route}) => {
                     <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${item.profileImage}`}} style={styles.profileBox}/>
                 <View style={styles.infoBox}>
                     <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{item.nickname}</Text>
-                    <Text style={{color: '#9E9E9E', fontSize: 13}}>{moment().diff(moment(item.boardDate), "days")}일 전</Text>
+                    <Text style={{color: '#9E9E9E', fontSize: 13}}>{dayCalculate(item.boardDate)}</Text>
                 </View>
             </View>
             <View style={styles.main}>
@@ -516,13 +526,13 @@ const Talk1Sub = ({navigation, route}) => {
             </FlatList>
 
             <View style={[styles.commentRes, {display: insert.level === 0 ? 'none' : 'flex'}]}>
-                <View style={styles.closeBox}><Close width={20} fill='#757575' onPress={()=>setInsert((prevState) => ({...prevState, level: 0}))}/></View>
+                <View style={styles.closeBox}><Close width={20} fill='#757575' onPress={()=>setInsert((prevState) => ({...prevState, level: 0, tag: null}))}/></View>
                 <Text style={{fontSize: 15}}>{commentsId}</Text>
                 <Text style={{color: '#757575'}}> 님에게 답변 남기기</Text>
             </View>
             <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : ''}>
             <View style={styles.footer}>
-                    <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profileImage}` }} style={styles.profileBox}/>
+                    <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profile}` }} style={styles.profileBox}/>
                 <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: '', level: 0}))}}>
                     <Text style={{color: '#1E88E5', fontWeight: '600'}}>등록</Text>
                 </TouchableOpacity>

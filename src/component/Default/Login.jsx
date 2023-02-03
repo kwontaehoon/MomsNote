@@ -12,7 +12,7 @@ import * as Google from 'expo-auth-session/providers/google'
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Linking from 'expo-linking';
 import axios from 'axios'
-import Modal from './Modal/WithdrawModal'
+import Modal from './Modal/Withdraw'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
     SafeAreaProvider,
@@ -71,6 +71,8 @@ const Main = ({navigation, route}) => {
     const [AppleToken, setAppleToken] = useState([]);
     console.log('AppleToken: ', AppleToken);
 
+    const [modal, setModal] = useState(false);
+
     WebBrowser.maybeCompleteAuthSession();
     const [request, response, promptAsync] = Google.useAuthRequest({
         expoClientId: '673560692803-8gner3okerjtf8444afhnqptdjfeh6vl.apps.googleusercontent.com',
@@ -108,16 +110,15 @@ const Main = ({navigation, route}) => {
             if(response2.data.status == 'success'){
                 try{
                     const response3 = await axios({
-                        method: 'post',
+                        method: 'get',
                         headers: { 
                           'Authorization': `bearer ${response2.data.token}`, 
                           'Content-Type': 'application/json'
                         },
-                        url: 'https://momsnote.net/api/dday/show',
-                        data : { dDayId: 1 }
+                        url: 'https://momsnote.net/api/main/data',
                     });
-                    console.log(response3.data);
-                    AsyncStorage.setItem('user', JSON.stringify(response3.data[0]));
+                    console.log(response3.data.data);
+                    AsyncStorage.setItem('user', JSON.stringify(response3.data.data));
                     }catch(error){
                         console.log('user axios error: ', error);
                         return undefined;
@@ -125,6 +126,8 @@ const Main = ({navigation, route}) => {
 
                 navigation.navigate('main');
                 AsyncStorage.setItem('login', '2');
+            }else if(response2.data.status == 'expire'){
+                setModal(!modal);
             }else{
                 navigation.navigate('추가 정보 입력', ['google', response.data.sub]);
             }
@@ -141,6 +144,8 @@ const Main = ({navigation, route}) => {
         <SafeAreaView style={{ backgroundColor: 'white' }}></SafeAreaView>
 
         <SafeAreaView style={[styles.container, {marginBottom: Platform.OS == 'ios' ? 30 : 0}]}>
+
+            <Modal modal={modal} setModal={setModal}/>
 
             <View style={styles.header}>
                 <Logo width={230} height={112}/>
@@ -184,16 +189,15 @@ const Main = ({navigation, route}) => {
                         if(response.data.status == 'success'){
                             try{
                                 const response2 = await axios({
-                                    method: 'post',
+                                    method: 'get',
                                     headers: { 
                                       'Authorization': `bearer ${response.data.token}`, 
                                       'Content-Type': 'application/json'
                                     },
-                                    url: 'https://momsnote.net/api/dday/show',
-                                    data : { dDayId: 1 }
+                                    url: 'https://momsnote.net/api/main/data',
                                 });
                                 console.log(response2.data);
-                                AsyncStorage.setItem('user', JSON.stringify(response2.data[0]));
+                                AsyncStorage.setItem('user', JSON.stringify(response2.data));
                                 }catch(error){
                                     console.log('user axios error: ', error);
                                     return undefined;
@@ -201,14 +205,12 @@ const Main = ({navigation, route}) => {
             
                             navigation.navigate('main');
                             AsyncStorage.setItem('login', '2');
+                        }else if(response.data.status == 'expire'){
+                            setModal(!modal);
                         }else{
-                            console.log(decode.sub);
                             navigation.navigate('추가 정보 입력', ['apple', decode.sub]);
                         }
                         
-                            
-                       
-
                         } catch (e) {
                         if (e.code === 'ERR_CANCELED') {
                             // handle that the user canceled the sign-in flow

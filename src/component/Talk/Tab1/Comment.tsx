@@ -71,6 +71,31 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
             dispatch(postCommentFlag({boardId: info[0].boardId}));
     }
 
+    const commentminus = async(id) => { // 댓글 추천 취소
+        console.log('commentminus');
+        const token = await AsyncStorage.getItem('token');
+        try{
+            const response = await axios({
+                  method: 'post',
+                  url: 'https://momsnote.net/api/comments/recommend',
+                  headers: { 
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                  },
+                  data: {
+                    boardId: info[0].boardId,
+                    commentsId: id,
+                    type: 'minus'
+                  }
+                });
+                console.log('response: ', response.data);
+                dispatch(postComment(commentData));
+                dispatch(postCommentFlag({boardId: info[0].boardId}));
+            }catch(error){
+              console.log('게시판 좋아요 error: ', error);
+            }
+    }
+
     const dayCalculate = (date:number) => {
         
         switch(true){
@@ -83,7 +108,6 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
     const List = () => {
         let arr = [];
         info.filter((x, index) => {
-            console.log('x: ', x.commentsDate);
             if(x.step === 0){
                 arr.push(
                     
@@ -101,7 +125,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                             <Text>삭제된 댓글입니다.</Text></View> : <View>
                         <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>{x.contents}</Text>
                         <View style={styles.likeBox}>
-                            {commentLike.includes(x.commentsId) ? <Like2 width={16} height={16} fill='#FE9000'/>
+                            {commentLike.includes(x.commentsId) ? <Like2 width={16} height={16} fill='#FE9000' onPress={()=>commentminus(x.commentsId)}/>
                             :
                             <Like width={16} height={16} fill='#9E9E9E' onPress={()=>commentplus(x.commentsId)}/>}
                             {commentLike.includes(x.commentsId) ? <Text style={{color: '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 {x.recommend}</Text>
@@ -112,7 +136,8 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                                         setInsert((prevState) => ({...prevState,
                                         boardId: x.boardId,    
                                         ref: x.ref,
-                                        level: 1})),
+                                        level: 1,
+                                        tag: x.nickname})),
                                         setCommentsId(x.nickname);}
                                 }>댓글달기
                             </Text> 
@@ -140,10 +165,14 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                     </View>
                   
                   { x.deleteFlag == 1 ? <View style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>
-                            <Text>삭제된 댓글입니다.</Text></View> : <View>
-                    <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>[]{x.contents}</Text>
-                    <View style={styles.likeBox}>
-                        {commentLike.includes(x.commentsId) ? <Like2 width={16} height={16} fill='#FE9000'/>
+                            <Text>삭제된 댓글입니다.</Text></View>
+                    : <View>
+                        <View style={{flexDirection: 'row', paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>
+                            <Text style={{fontWeight: '500'}}>[{x.tag}] </Text>
+                            <Text>{x.contents}</Text>
+                        </View>
+                        <View style={styles.likeBox}>
+                        {commentLike.includes(x.commentsId) ? <Like2 width={16} height={16} fill='#FE9000' onPress={()=>commentminus(x.commentsId)}/>
                         :
                         <Like width={16} height={16} fill='#9E9E9E' onPress={()=>commentplus(x.commentsId)}/>}
                         {commentLike.includes(x.commentsId) ? <Text style={{color: '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 {x.recommend}</Text>

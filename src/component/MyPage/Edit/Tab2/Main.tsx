@@ -16,8 +16,7 @@ import Modal5 from '../../../Talk/Tab3/Modal/CencelConfirm'
 import Modal6 from '../../../Talk/Tab3/Modal/Save'
 import Modal7 from '../../../Talk/Tab3/Modal/PhoneNumber'
 import { useDispatch } from 'react-redux'
-import { postBoardAppFlag } from '../../../../Redux/Slices/BoardAppFlagSlice'
-import { postBoardApp } from '../../../../Redux/Slices/BoardApp'
+
 import { useSelector } from 'react-redux'
 import {
     SafeAreaProvider,
@@ -179,11 +178,6 @@ const Withdraw = ({navigation, route}) => {
 
     const [minutes, setMinutes] = useState(parseInt(3));
     const [seconds, setSeconds] = useState(parseInt(0));
-
-    // useEffect(()=>{
-    //     // dispatch(postBoardAppFlag({ experienceId: route.params.experienceId}));
-    //     dispatch(postBoardApp({ experienceId: route.params.experienceId }));
-    // }, []);
 
     useEffect(()=>{
        setInfo(prvState => ({...prvState, address: route == undefined ? '' : route}));

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, SafeAreaView, StatusBar, Platform } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/AntDesign'
@@ -10,6 +10,9 @@ import Check from '.././../../../public/assets/svg/Check.svg'
 import {
     SafeAreaProvider,
   } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux'
+import { postBoardAppFlag } from '../../../Redux/Slices/BoardAppFlagSlice'
+import { useSelector } from 'react-redux'
 
 
 const styles = StyleSheet.create({
@@ -65,7 +68,9 @@ const styles = StyleSheet.create({
         borderColor: '#EEEEEE',
     },
 })
-const Withdraw = ({navigation}) => {
+const Withdraw = ({navigation,route}) => {
+
+    console.log('신청 정보 취소 route: ', route.params);
 
     const DATA = [
         {
@@ -73,11 +78,18 @@ const Withdraw = ({navigation}) => {
           title: '전체'
         },
     ];
+    const dispatch = useDispatch();
+    const info = useSelector(state => { return state.boardAppFlag.data });
+    console.log('info: ', info);
 
     const [SMSFlag, setSMSFlag] = useState({
         open: false,
         flag: 0 // 이미 인증했는지 검증
     }); // 본인인증 확인유무
+
+    useEffect(()=>{
+        dispatch(postBoardAppFlag({experienceId: route.params.experienceId}));
+    }, []);
     
     const submit = async() => {
         const token = await AsyncStorage.getItem('token');
@@ -107,13 +119,13 @@ const Withdraw = ({navigation}) => {
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>이름</Text>
-                    <View style={styles.textBox}><Text>이름입력</Text></View>
+                    <View style={styles.textBox}><Text>{info.data.memberName}</Text></View>
                 </View>
                 <View style={[styles.mainBox, {marginBottom: SMSFlag.open ? 10 : 30}]}>
 
                     <Text style={{fontSize: 16, fontWeight: '500'}}>연락처</Text>
                     <View style={styles.textBox}>
-                        <Text>연락처 입력</Text>
+                        <Text>{info.data.memberName}</Text>
                     </View>
                     <TouchableOpacity style={styles.certificateBox}>
                         <Check fill={'green'}/>
@@ -123,16 +135,16 @@ const Withdraw = ({navigation}) => {
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>SNS 계정</Text>
                     <Text style={{color: '#757575', marginTop: 5}}>리뷰에 사용할 계정을 하나 이상 입력해주세요.</Text>
-                    <View style={styles.textBox}><Text>블로그 입력</Text></View>
-                    <View style={styles.textBox}><Text>인스타 입력</Text></View>
-                    <View style={styles.textBox}><Text>유튜브 입력</Text></View>
+                    <View style={styles.textBox}><Text>{info.data.blog}</Text></View>
+                    <View style={styles.textBox}><Text>{info.data.insta}</Text></View>
+                    <View style={styles.textBox}><Text>{info.data.youtube}</Text></View>
                 </View>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>배송지</Text>
                     <View>
-                        <View style={styles.textBox}><Text>주소 입력</Text></View>
+                        <View style={styles.textBox}><Text>{info.data.address}</Text></View>
                     </View>
-                    <View style={styles.textBox}><Text>상세주소 입력</Text></View>
+                    <View style={styles.textBox}><Text>{info.data.addressDetails}</Text></View>
                 </View>
                 
                 <View style={[styles.mainBox, {alignItems: 'center'}]}>

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, SafeAreaView, StatusBar, Animated, Platform } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, SafeAreaView, StatusBar, Animated, Platform, Image } from 'react-native'
 import Icon2 from 'react-native-vector-icons/Feather'
 import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
@@ -19,6 +19,7 @@ import { postBoardPopular } from '../../Redux/Slices/BoardPopularSlice'
 import { postMaterialPopularSlice } from '../../Redux/Slices/MaterialPopularSlice'
 import { postInfoPopularSlice } from '../../Redux/Slices/InfoPopularSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { postUser } from '../../Redux/Slices/UserSlice'
 
 
 const styles = StyleSheet.create({
@@ -64,11 +65,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         transtion: '1s',
     },  
-    imageBox:{
-        width: '90%',
-        height: '90%',
-        alignItems: 'center',
-        justifyContent: 'center',
+    profileBox:{
+        width: 300,
+        height: 300,
+        borderRadius: 150,
     },
     mainBox3:{
         height: 100,
@@ -218,9 +218,13 @@ const Home = ({navigation}) => {
     const ref = useRef();
     const [date, setDate] = useState(new Date());
     const boardPopular = useSelector(state => { return state.boardPopular.data });
+    console.log('boardPopular: ', boardPopular);
     const materialPopular = useSelector(state => { return state.materialPopular.data });
+    console.log('materialPopular: ', materialPopular);
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     console.log('infoPopular: ', infoPopular);
+    const mainData = useSelector(state => {return state.user.data; });
+    console.log('mainData: ', mainData);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
@@ -240,6 +244,8 @@ const Home = ({navigation}) => {
             asyncStorage == null ? setModal(true) : '';
         }
         recommendList();
+
+        dispatch(postUser());
     }, []);
 
     useEffect(()=>{
@@ -252,21 +258,6 @@ const Home = ({navigation}) => {
             let { status } = await MediaLibrary.requestPermissionsAsync();
             const asset = await MediaLibrary.createAssetAsync(test);
             const moms = await MediaLibrary.getAlbumAsync('맘스노트');
-                 
-            // if(status === 'granted'){
-                // const kwon = await MediaLibrary.getAlbumAsync('DCIM');
-                // const moms = await MediaLibrary.getAlbumAsync('맘스노트');
-                // if(moms === null){
-                //     MediaLibrary.createAlbumAsync('맘스노트', asset);
-                // }
-                // MediaLibrary.addAssetsToAlbumAsync(moms, moms.id);
-                // MediaLibrary.migrateAlbumIfNeededAsync(moms.id);
-                // const album = await MediaLibrary.getAlbumAsync('맘스노트');
-                // // console.log('album: ', album);
-    
-                // MediaLibrary.createAlbumAsync('맘스노트', asset);
-                // // const asset = await MediaLibrary.createAssetAsync(test);
-            // }
         }
         setTest(undefined);
     }
@@ -309,14 +300,23 @@ const Home = ({navigation}) => {
 
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
-            <ViewShot style={[styles.main]} ref={ref} options={{ fileName: "MomsNote", format: "png", quality: 1 }}>
+            <ViewShot style={styles.main} ref={ref} options={{ fileName: "MomsNote", format: "png", quality: 1 }}>
                 <View style={styles.mainBox}>
                     <Text style={{color: '#424242', fontSize: 18, marginBottom: 3}}>{date.getFullYear()}년 {moment(date).format("MM")}월 {date.getDate()}일</Text>
                     <Text style={{color: '#212121', fontSize: 32, fontWeight: '700'}}>{userInfo.babyName}</Text>
                 </View>
                 <View style={styles.mainBox2}>
 
-                    <View style={[styles.bubble, {top: 20, right: 20, display: bubble[0] ? 'flex' : 'none'}]}>
+                    {mainData.message[0] == null ? '' :  mainData.message.map(x => {
+                        console.log('x: ', x);
+                        return(
+                            <View style={[styles.bubble, {top: 20, right: 20, display: bubble[0] ? 'flex' : 'none'}]}>
+                                <View style={[styles.triangle, {borderBottomColor: bubble[0] ? 'white' : 'transparent'}]}></View>
+                                <Text>{x}</Text>
+                            </View>
+                        )
+                    })}
+                    {/* <View style={[styles.bubble, {top: 20, right: 20, display: bubble[0] ? 'flex' : 'none'}]}>
                         <View style={[styles.triangle, {borderBottomColor: bubble[0] ? 'white' : 'transparent'}]}></View>
                         <Text>아무말이나 하고싶어요</Text>
                     </View>
@@ -331,9 +331,11 @@ const Home = ({navigation}) => {
                     <View style={[styles.bubble, {top: 40, right: 80, display: bubble[3] ? 'flex' : 'none'}]}>
                         <View style={[styles.triangle, {borderBottomColor: bubble[3] ? 'white' : 'transparent'}]}></View>
                         <Text>IDENITIDENITIDENITIDENIT</Text>
-                    </View>
+                    </View> */}
 
-                    <View style={styles.imageBox}><MainImage width={300} height={300} onPress={bubbleRandom}/></View>
+                    <View style={styles.imageBox}>
+                        <Image style={styles.profileBox} source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/d-day/${mainData.weekImage}`}} onPress={bubbleRandom}/>
+                    </View>
 
                 </View>
                 <View style={styles.mainBox3}>
@@ -345,7 +347,7 @@ const Home = ({navigation}) => {
                     <View style={[styles.mainBox3Sub, {width: '70%'}]}>
                         <View style={styles.DdayBox}>
                             <Text style={{color: '#FE9000', fontSize: 24, fontWeight: '700', marginBottom: 3}}>
-                                D-{moment(userInfo.dueDate).diff(moment(), "days") + 1 } ({moment(userInfo.dueDate).diff(moment(), "week")}주차 {moment(userInfo.dueDate).diff(moment(), "day")%7 + 1}일)</Text>
+                                D-{mainData.dday} ({mainData.week}주차 {mainData.day}일)</Text>
                             <Text style={{color: '#424242', fontSize: 15}}>
                                 예정일 : {moment(userInfo.dueDate).format("YYYY")}년 {moment(userInfo.dueDate).format("MM")}월 {moment(userInfo.dueDate).format("DD")}일</Text>
                         </View>
@@ -366,7 +368,7 @@ const Home = ({navigation}) => {
                             </View>
                         :
                         <View style={styles.contentBox}>
-                            <View style={styles.content}>
+                            {/* <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>1 </Text>
                                     <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[0])}> {materialPopular == '' ? '' : materialPopular[0].title }</Text>
@@ -383,7 +385,7 @@ const Home = ({navigation}) => {
                                     <Text style={{fontWeight: '700'}}>3 </Text>
                                     <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[2])}> {materialPopular == '' ? '' : materialPopular[2].title }</Text>
                                 </View>
-                            </View>
+                            </View> */}
                         </View>}
                     </View>
                     <View style={[styles.main3Box2, {borderLeftWidth: 1, borderColor: '#EEEEEE',}]}>
@@ -398,7 +400,7 @@ const Home = ({navigation}) => {
                         </View>
                         :
                         <View style={styles.contentBox}>
-                            <View style={styles.content}>
+                            {/* <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>1 </Text>
                                     <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}> {boardPopular == '' ? '' : boardPopular[0].title}</Text>
@@ -415,7 +417,7 @@ const Home = ({navigation}) => {
                                     <Text style={{fontWeight: '700'}}>3 </Text>
                                     <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[2]})}> {boardPopular == '' ? '' :boardPopular[2].title}</Text>
                                 </View>
-                            </View>
+                            </View> */}
                         </View> }
                     </View>
                 </View>

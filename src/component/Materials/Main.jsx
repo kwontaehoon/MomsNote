@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   },
   footer:{
     width: '100%',
-    height: 70,
+    height: 80,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -160,8 +160,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     paddingLeft: 20,
-},
-saveModalBox:{
+  },
+  saveModalBox:{
     width: '100%',
     height: 40,
     position: 'absolute',
@@ -169,7 +169,7 @@ saveModalBox:{
     bottom: 20,
     alignItems: 'center',
     justifyContent: 'center',
-},
+  },
 })
 
 const Navigation = ({navigation, route}) => {
@@ -390,18 +390,6 @@ const save = async() => {
        
         
         if(status === 'granted'){
-            // const kwon = await MediaLibrary.getAlbumAsync('DCIM');
-            // const moms = await MediaLibrary.getAlbumAsync('맘스노트');split
-            // if(moms === null){
-            //     MediaLibrary.createAlbumAsync('맘스노트', asset);
-            // }
-            // MediaLibrary.addAssetsToAlbumAsync(moms, moms.id);
-            // MediaLibrary.migrateAlbumIfNeededAsync(moms.id);
-            // const album = await MediaLibrary.getAlbumAsync('맘스노트');
-            // // console.log('album: ', album);
-
-            // MediaLibrary.createAlbumAsync('맘스노트', asset);
-            // // const asset = await MediaLibrary.createAssetAsync(captureURL);
         }
     }
     setTimeout(() => {

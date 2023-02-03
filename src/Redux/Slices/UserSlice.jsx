@@ -7,15 +7,14 @@ export const postUser = createAsyncThunk("postUserSlice/async", async (data) => 
   const token = await AsyncStorage.getItem('token');
     try{
       const response = await axios({
-          method: 'post',
+          method: 'get',
           headers: { 
             'Authorization': `bearer ${token}`, 
             'Content-Type': 'application/json'
           },
-          url: 'https://momsnote.net/api/dday/show',
-          data : { dDayId: 1}
+          url: 'https://momsnote.net/api/main/data',
       });
-      return response.data;
+      return response.data.data;
       }catch(error){
           console.log('user axios error: ', error);
           return undefined;

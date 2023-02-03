@@ -228,6 +228,7 @@ const Talk1Sub = ({navigation, route}) => {
     const boardLikeFlagSet = useSelector(state => { return state.boardLikeFlag.refresh });
     const boardLikeSet = useSelector(state => { return state.boardLike.refresh });
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
+    console.log('체험단 상세정보 boardAppFlag: ', boardAppFlag);
     const winList = useSelector(state => { return state.winList.data });
     
     const [filter, setFilter] = useState(false);

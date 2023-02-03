@@ -14,7 +14,6 @@ import { setMaterialShareFilter, setMaterialShareCount } from '../../../Redux/Sl
 import { postMaterialShare } from '../../../Redux/Slices/MaterialShareSlice'
 import { postMaterialShareCount } from '../../../Redux/Slices/MaterialShareCountSlice'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
-import { postBoardAppFlag } from '../../../Redux/Slices/BoardAppFlagSlice'
 import Swiper from 'react-native-swiper'
 import { postListPopular } from '../../../Redux/Slices/ListPopularSlice'
 
@@ -153,18 +152,7 @@ useEffect(()=>{
   dispatch(postMaterialShare(materialShareSet));
   dispatch(postMaterialShareCount());
   dispatch(postListPopular());
-
-
   setLoading(false);
-
-  const hits = async() => {
-    const hits = await AsyncStorage.getItem('hits');
-    console.log('hits: ', hits);
-
-    hits == null || hits.split('|').filter(x => x == String(info[0].boardId)) == '' ? 
-    (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`)) : ''
-  }
-  hits();
 }, [value]);
 
 
@@ -231,16 +219,16 @@ const filtering = (e) => {
             <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {ListPopular == '' ? '' : ListPopular[0].title}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.slide}>
-            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {ListPopular == '' ?  '' : ListPopular[1].title}</Text>
+            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {ListPopular == '' || ListPopular.length < 2 ?  '' : ListPopular[1].title}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.slide}>
-            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {ListPopular == '' ?  '' : ListPopular[2].title}</Text>
+            <Text style={{color: 'orange', fontWeight: 'bold'}}>[인기글] {ListPopular == '' || ListPopular.length < 3 ?  '' : ListPopular[2].title}</Text>
           </TouchableOpacity>
         </Swiper>
       </View>
 
       <View style={[styles.main, {height: Platform.OS == 'ios' ? null : '89%', flex: Platform.OS === 'ios' ? 1 : null}]}>
-        {info.lenth == 0 ?
+        {info == '' ?
         <View style={{height: '70%', alignItems: 'center', justifyContent: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시글이 없습니다.</Text></View>
         :
         <FlatList data={info} renderItem={renderItem} onEndReached={()=>{

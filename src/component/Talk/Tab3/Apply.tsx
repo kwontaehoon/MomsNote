@@ -156,7 +156,7 @@ const Withdraw = ({navigation, route}) => {
         flag: 0 // 이미 인증했는지 검증
     }); // 본인인증 확인유무
     console.log('SMSFlag: ', SMSFlag);
-    const [SMSNumber, setSMSNumber] = useState(); // SMS 번호
+    const [SMSNumber, setSMSNumber] = useState(null); // SMS 번호
     const [SMSInputNumber, setSMSInputNumber] = useState(''); // 입력한 SMS 번호
 
     console.log('smsnumber: ', SMSNumber);
@@ -174,12 +174,11 @@ const Withdraw = ({navigation, route}) => {
     
     const [info, setInfo] = useState( // post info
         {
-            applicationId: 0,
             memberName: '',
             tel: '',
             address: '',
             addressDetails: '',
-            expreienceId: 0,
+            expreienceId: route.params.experienceId,
             blog: '',
             insta: '',
             youtube: '',
@@ -324,7 +323,8 @@ const Withdraw = ({navigation, route}) => {
                     <View style={styles.timerBox}>
                         <Text style={{color: '#0288D1', fontWeight: '500'}}>{minutes}:{seconds < 10 ? `0${seconds}` : seconds}</Text>
                     </View>
-                    <TextInput style={[styles.textBox, {paddingLeft: SMSFlag.open ? 10 : 0}]} keyboardType='number-pad' placeholder='인증번호 입력' onChangeText={(e)=>setSMSInputNumber(e)}></TextInput>
+                    <TextInput style={[styles.textBox, {paddingLeft: SMSFlag.open ? 10 : 0}]} keyboardType='number-pad' placeholder='인증번호 입력'
+                     onChangeText={(e)=>setSMSInputNumber(e)}></TextInput>
 
                     {SMSInputNumber == '' ?
                     <View style={[styles.certificateBox, {backgroundColor: '#E0E0E0'}]}>

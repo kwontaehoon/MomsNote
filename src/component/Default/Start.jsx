@@ -74,8 +74,10 @@ const styles = StyleSheet.create({
 const Main = ({navigation}) => {
 
     const [page, setPage] = useState(0); // 해당 페이지
+    console.log('page: ', page);
 
-    const swiper = useRef(null)
+    const swiper = useRef(null);
+    console.log('swiper: ', swiper.current);
 
     const start = async() => {
         await AsyncStorage.setItem('login', '1');
@@ -89,7 +91,7 @@ const Main = ({navigation}) => {
                 <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>시작하기</Text>
             </TouchableOpacity> 
         ) : (
-            <TouchableOpacity style={styles.footer} onPress={() => swiper.current.scrollTo(page+1)} activeOpacity={1}>
+            <TouchableOpacity style={styles.footer} onPress={() => {swiper.current.scrollBy(1); setPage(page + 1)}} activeOpacity={1}>
                 <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>다음</Text>
             </TouchableOpacity> 
         )
@@ -99,7 +101,7 @@ const Main = ({navigation}) => {
     <View style={styles.container}>
         <View style={styles.header}><Text style={{color: '#757575', fontSize: 16}} onPress={start}>건너뛰기</Text></View>
         <View style={styles.main}>
-            <Swiper showsButtons={false} loop={false} ref={swiper} onIndexChanged={(e)=>setPage(e)}
+            <Swiper showsButtons={false} loop={false} ref={swiper}
             dot={<View style={styles.dot}/>}
             activeDot={<View style={styles.dotActive}/>}
             nextButton={<View style={styles.nextButton}></View>}

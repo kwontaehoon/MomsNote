@@ -482,6 +482,14 @@ const Talk1Sub = ({navigation, route}) => {
         )
       }
 
+      const dayCalculate = (date:number) => {
+        switch(true){
+          case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
+          case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
+          default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(date).format('YY.MM.DD')}</Text>
+        }
+      }
+
     const opacity_ani = () => {
         Animated.timing(animation, {
             toValue: 1,
@@ -569,7 +577,7 @@ const Talk1Sub = ({navigation, route}) => {
                 <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${info[0].profileImage}`}} style={styles.profileBox}/>
                 <View style={styles.infoBox}>
                     <Text style={{color: '#212121', fontSize: 16, fontWeight: '500'}}>{info[0].nickname}</Text>
-                    <Text style={{color: '#9E9E9E', fontSize: 13}}>{moment().diff(moment(info[0].boardDate), "days")}일 전</Text>
+                    <Text style={{color: '#9E9E9E', fontSize: 13}}>{dayCalculate(info[0].boardDate)}</Text>
                 </View>
             </View>
             <View style={styles.main}>
@@ -673,7 +681,7 @@ const Talk1Sub = ({navigation, route}) => {
             </View>
             <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : ''} keyboardVerticalOffset={Platform.OS == 'ios' ? 50 : ''}>
             <View style={styles.footer}>
-                <Image source={{uri: `${userInfo.profileImage}`}} style={styles.profileBox}/>
+                <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profile}`}} style={styles.profileBox}/>
                 <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: '', level: 0}))}}>
                     <Text style={{color: '#1E88E5', fontWeight: '600'}}>등록</Text>
                 </TouchableOpacity>
