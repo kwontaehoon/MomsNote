@@ -36,6 +36,9 @@ import Download from '../../../../public/assets/svg/Download.svg'
 import { postHits } from '../../../Redux/Slices/HitsSlice'
 import { postDdayToday } from '../../../Redux/Slices/DdayTodaySlice'
 
+import { useWindowDimensions } from 'react-native';
+import RenderHtml from 'react-native-render-html';
+
 const styles = StyleSheet.create({
     container:{
         backgroundColor: 'white',
@@ -367,7 +370,7 @@ const Talk1Sub = ({navigation, route}) => {
               console.log('error: ', error);
             } 
     }
-
+    const { width } = useWindowDimensions();
     const save = async() => {
    
         if(captureURL !== undefined){
@@ -479,8 +482,8 @@ const Talk1Sub = ({navigation, route}) => {
             message: `[맘스노트] ${info3[0].title}`,
         })
     }
-
     const renderItem = ({ item }) => (
+        
         <View>
             <View style={styles.main}>
 
@@ -489,14 +492,16 @@ const Talk1Sub = ({navigation, route}) => {
                     <Text style={{fontSize: 20, fontWeight: '400', lineHeight: 20}}>{item.title}</Text>
                 </View>
                 <View style={styles.mainBox2}>
-                    <Text style={{lineHeight: 20}}>{item.contents}</Text>
+                    <Text style={{lineHeight: 20}}>
+                    <RenderHtml contentWidth={width} source={{html: `<div>${item.contents}</div>`}} />
+                    </Text>
                 </View>
                 </ViewShot>
                 
                 {item.savedName === null }
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
-                        {boardLike == 0 | boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000' onPress={likeminus}/>}
+                        {boardLike == 0 || boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000' onPress={likeminus}/>}
                         <Text style={{color: boardLike == 0 ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { item.recommend }</Text>
                         <Chat width={16} height={16}/>
                         <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 {item.commentsCount}</Text>

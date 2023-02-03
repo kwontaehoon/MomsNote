@@ -29,6 +29,8 @@ import Campaign2 from '../../../public/assets/svg/campaign2.svg'
 import Baby2 from '../../../public/assets/svg/Baby2.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import Push from '../Test/Push'
+
 import { postAlarm } from '../../Redux/Slices/AlarmSlice';
 
 const styles = StyleSheet.create({
@@ -104,7 +106,7 @@ function MainScreen() {
                <Stack.Navigator>
                     <Stack.Screen 
                         name="맘스톡"
-                        component={Talk}
+                        component={Push}
                         options={({ navigation, route }) => ({
                           headerLeft: () => (
                             <View style={styles.header}>

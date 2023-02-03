@@ -1,39 +1,39 @@
 {
-    "project_info": {
-      "project_number": "88885970746",
-      "project_id": "momsnote-6ce4a",
-      "storage_bucket": "momsnote-6ce4a.appspot.com"
-    },
-    "client": [
-      {
-        "client_info": {
-          "mobilesdk_app_id": "1:88885970746:android:7157d5740cb49a9465b203",
-          "android_client_info": {
-            "package_name": "com.android.test"
-          }
-        },
-        "oauth_client": [
-          {
-            "client_id": "88885970746-tsicmcj13s5a62d6q9op1qk1r1tr1j56.apps.googleusercontent.com",
-            "client_type": 3
-          }
-        ],
-        "api_key": [
-          {
-            "current_key": "AIzaSyApNYsPJclIjYTGZ30aACQSnVrCUaD_jn4"
-          }
-        ],
-        "services": {
-          "appinvite_service": {
-            "other_platform_oauth_client": [
-              {
-                "client_id": "88885970746-tsicmcj13s5a62d6q9op1qk1r1tr1j56.apps.googleusercontent.com",
-                "client_type": 3
-              }
-            ]
-          }
+  "project_info": {
+    "project_number": "88885970746",
+    "project_id": "momsnote-6ce4a",
+    "storage_bucket": "momsnote-6ce4a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88885970746:android:f37f37a9827ece9465b203",
+        "android_client_info": {
+          "package_name": "com.momsnote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "88885970746-tsicmcj13s5a62d6q9op1qk1r1tr1j56.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApNYsPJclIjYTGZ30aACQSnVrCUaD_jn4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88885970746-tsicmcj13s5a62d6q9op1qk1r1tr1j56.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
-    ],
-    "configuration_version": "1"
-  }
+    }
+  ],
+  "configuration_version": "1"
+}

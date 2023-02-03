@@ -316,7 +316,7 @@ const Home = ({navigation}) => {
                             </View>
                         )
                     })}
-                    {/* <View style={[styles.bubble, {top: 20, right: 20, display: bubble[0] ? 'flex' : 'none'}]}>
+                    <View style={[styles.bubble, {top: 20, right: 20, display: bubble[0] ? 'flex' : 'none'}]}>
                         <View style={[styles.triangle, {borderBottomColor: bubble[0] ? 'white' : 'transparent'}]}></View>
                         <Text>아무말이나 하고싶어요</Text>
                     </View>
@@ -331,7 +331,7 @@ const Home = ({navigation}) => {
                     <View style={[styles.bubble, {top: 40, right: 80, display: bubble[3] ? 'flex' : 'none'}]}>
                         <View style={[styles.triangle, {borderBottomColor: bubble[3] ? 'white' : 'transparent'}]}></View>
                         <Text>IDENITIDENITIDENITIDENIT</Text>
-                    </View> */}
+                    </View>
 
                     <View style={styles.imageBox}>
                         <Image style={styles.profileBox} source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/d-day/${mainData.weekImage}`}} onPress={bubbleRandom}/>
@@ -368,7 +368,7 @@ const Home = ({navigation}) => {
                             </View>
                         :
                         <View style={styles.contentBox}>
-                            {/* <View style={styles.content}>
+                            <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>1 </Text>
                                     <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[0])}> {materialPopular == '' ? '' : materialPopular[0].title }</Text>
@@ -385,7 +385,7 @@ const Home = ({navigation}) => {
                                     <Text style={{fontWeight: '700'}}>3 </Text>
                                     <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[2])}> {materialPopular == '' ? '' : materialPopular[2].title }</Text>
                                 </View>
-                            </View> */}
+                            </View>
                         </View>}
                     </View>
                     <View style={[styles.main3Box2, {borderLeftWidth: 1, borderColor: '#EEEEEE',}]}>
@@ -400,7 +400,7 @@ const Home = ({navigation}) => {
                         </View>
                         :
                         <View style={styles.contentBox}>
-                            {/* <View style={styles.content}>
+                            <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>1 </Text>
                                     <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}> {boardPopular == '' ? '' : boardPopular[0].title}</Text>
@@ -417,7 +417,7 @@ const Home = ({navigation}) => {
                                     <Text style={{fontWeight: '700'}}>3 </Text>
                                     <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[2]})}> {boardPopular == '' ? '' :boardPopular[2].title}</Text>
                                 </View>
-                            </View> */}
+                            </View>
                         </View> }
                     </View>
                 </View>
