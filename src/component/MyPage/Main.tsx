@@ -4,6 +4,9 @@ import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { postUser } from '../../Redux/Slices/UserSlice';
 
 const styles = StyleSheet.create({
     container:{
@@ -49,6 +52,9 @@ const styles = StyleSheet.create({
 })
 const Main = ({navigation}) => {
 
+    const dispatch = useDispatch();
+    const user = useSelector(state => { return state.user.data });
+    console.log('user: ', user);
     const [userInfo, setUserInfo] = useState();
     console.log('userInfo: ', userInfo);
 
@@ -56,6 +62,8 @@ const Main = ({navigation}) => {
     const isFocused = useIsFocused();
 
     useEffect(()=>{
+        dispatch(postUser());
+        
         const user = async() => {
             const user = await AsyncStorage.getItem('user');
             setUserInfo(JSON.parse(user));

@@ -80,7 +80,7 @@ const Main = ({navigation}) => {
     //     console.log('알림 error: ', error);
     //   }
 
-    momsTalk == '' ?  navigation.navigate('출산리스트 공유 상세내용', materialList) : navigation.navigate('맘스토크 상세내용', {item: momsTalk});
+    // momsTalk == '' ?  navigation.navigate('출산리스트 공유 상세내용', materialList) : navigation.navigate('맘스토크 상세내용', {item: momsTalk});
   }
 
   const List = () => {
