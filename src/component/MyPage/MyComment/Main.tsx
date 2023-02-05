@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, KeyboardAvoidingView, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Image } from 'react-native'
 import axios from 'axios'
 import moment from 'moment'
 
@@ -9,6 +9,7 @@ import { postMyComment } from '../../../Redux/Slices/MyCommentSlice'
 import { postMyCommentCount } from '../../../Redux/Slices/MyCommentCountSlice'
 
 import Modal from '../../Modal/DotModal'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
   container:{
@@ -57,13 +58,17 @@ const Main = () => {
   const infoCount = useSelector(state => { return state.myCommentCount.data; });
   console.log('내가 쓴 댓글 info 갯수: ', infoCount);
 
-  const [modal, setModal] = useState({
-
-  });
+  const [userInfo, setUserInfo] = useState();
 
   useEffect(()=>{
     dispatch(postMyComment(myCommentSet));
     dispatch(postMyCommentCount(myCommentCountSet));
+
+    const user = async() => {
+      const user = await AsyncStorage.getItem('user');
+      setUserInfo(JSON.parse(user));
+  }
+  user();
   }, []);
 
 const dayCalculate = (date) => {
@@ -80,9 +85,10 @@ const dayCalculate = (date) => {
 
     <More style={styles.dotBox}/>
 
-    <View style={styles.profile}></View>
+    <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profile}` }} style={styles.profile}/>
+
     <View>
-      <View style={{flexDirection: 'row', marginBottom: 3}}>
+      <View style={{flexDirection: 'row', marginBottom: 3, alignItems: 'center'}}>
         <Text style={{fontWeight: '600'}}>{item.nickname}</Text>
         <Text style={{marginLeft: 5}}>{dayCalculate(item.commentsDate)}</Text>
       </View>
@@ -94,7 +100,8 @@ const dayCalculate = (date) => {
 
   
 
-  return (
+  return userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
+  : (
     <View style={styles.container}>
 
       {/* <Modal modal={modal} setModal={modal} /> */}
@@ -104,7 +111,7 @@ const dayCalculate = (date) => {
         <View style={{marginTop: 200, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 댓글이 없습니다.</Text></View>
         :
         <FlatList data={info} renderItem={renderItem}
-          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
+          keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}>
         </FlatList>
         }
       </View>

@@ -10,7 +10,7 @@ export const postEvent = createAsyncThunk("postEventSlice/async", async (data) =
           url: 'https://momsnote.net/api/eventboard/list',
           data : data
       });
-      return response.data;
+      if(response.data == ''){ return '0'; }else return response.data;
       }catch(error){
           console.log('event axios error: ', error);
       }

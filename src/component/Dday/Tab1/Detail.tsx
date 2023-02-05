@@ -221,6 +221,7 @@ const Talk1Sub = ({navigation, route}) => {
     ); // 댓글 입력
     console.log('insert: ', insert);
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요
+    console.log('boardLike: ', boardLike);
     const [boardData, setBoardData] = useState({
         order: 'new',
         count: 5,
@@ -376,24 +377,8 @@ const Talk1Sub = ({navigation, route}) => {
         if(captureURL !== undefined){
             let { status } = await MediaLibrary.requestPermissionsAsync();
             const asset = await MediaLibrary.createAssetAsync(captureURL);
-            // const moms = await MediaLibrary.getAlbumAsync('맘스노트');
-            // console.log('moms: ', moms);
            
-            
-            if(status === 'granted'){
-                // const kwon = await MediaLibrary.getAlbumAsync('DCIM');
-                // const moms = await MediaLibrary.getAlbumAsync('맘스노트');split
-                // if(moms === null){
-                //     MediaLibrary.createAlbumAsync('맘스노트', asset);
-                // }
-                // MediaLibrary.addAssetsToAlbumAsync(moms, moms.id);
-                // MediaLibrary.migrateAlbumIfNeededAsync(moms.id);
-                // const album = await MediaLibrary.getAlbumAsync('맘스노트');
-                // // console.log('album: ', album);
-    
-                // MediaLibrary.createAlbumAsync('맘스노트', asset);
-                // // const asset = await MediaLibrary.createAssetAsync(captureURL);
-            }
+            if(status === 'granted'){}
         }
         setTimeout(() => {
           setCaptureURL(undefined);
@@ -498,7 +483,7 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
                 </ViewShot>
                 
-                {item.savedName === null }
+                {item.savedName === null ? <View></View> : ImageBox()}
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
                         {boardLike == 0 || boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000' onPress={likeminus}/>}
@@ -511,7 +496,7 @@ const Talk1Sub = ({navigation, route}) => {
                     </View>
                 </View>
                 <View style={styles.mainBox4}>
-                    {comment == '' ?
+                    {comment == '0' ?
                     <View style={{alignItems: 'center', justifyContent: 'center', height: 200}}>
                         <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
                         <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
@@ -522,7 +507,7 @@ const Talk1Sub = ({navigation, route}) => {
       );
 
 
-  return comment == undefined || userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return comment == '' || userInfo == undefined || boardLike == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <SafeAreaProvider>
         <SafeAreaView style={styles.container}>
 

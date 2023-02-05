@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
     modalView:{
         width: '100%',
         height: '100%',
-        margin: 20,
         backgroundColor: "rgba(0,0,0,0.5)",
         alignItems: "center",
         justifyContent: 'center',
@@ -66,15 +65,13 @@ const styles = StyleSheet.create({
     },
     modalContainer2:{
         width: '80%',
-        height: 220,
         backgroundColor: 'white',
-        marginBottom: 35,
         borderRadius: 15
     },
     modalBox:{
-        height: '50%',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 15
     },
     modal:{
         backgroundColor: '#FEA100',
@@ -83,7 +80,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 3,
-        marginBottom: 3,
+        marginBottom: 7,
     },
 })
 const Main = ({navigation, modal6, setModal6, info}) => {
@@ -100,7 +97,7 @@ const Main = ({navigation, modal6, setModal6, info}) => {
     setModal6(!modal6)}}>
     <View style={styles.modalContainer}>
         <View style={styles.modalView}>
-            <View style={[styles.modalContainer2, {height: 220}]}>
+            <View style={styles.modalContainer2}>
                 <View style={styles.modalBox}>
                     <Text style={{fontSize: 16, paddingTop: 10}}>작성 중인 내용이 존재합니다.</Text>
                     <Text style={{fontSize: 16, paddingTop: 5}}>해당 내용을 임시저장하시겠습니까?</Text>

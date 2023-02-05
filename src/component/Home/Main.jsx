@@ -71,9 +71,9 @@ const styles = StyleSheet.create({
         borderRadius: 150,
     },
     mainBox3:{
-        height: 100,
         flexDirection: 'row',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        marginTop: 10
     },
     mainBox3Sub:{
         width: '30%',
@@ -227,6 +227,7 @@ const Home = ({navigation}) => {
     console.log('mainData: ', mainData);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
+    console.log('bubble: ', bubble);
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
 
@@ -235,10 +236,12 @@ const Home = ({navigation}) => {
     useEffect(()=>{
         const recommendList = async() => {
             const asyncStorage = await AsyncStorage.getItem('recommendList');
-            const user = await  AsyncStorage.getItem('user');
+            const user = await AsyncStorage.getItem('user');
+            const userId = await AsyncStorage.getItem('userId');
             console.log('user: ', JSON.parse(user));
             const a = await AsyncStorage.getItem('token');
             console.log('token: ', a);
+            console.log('userId: ', userId);
             setUserInfo(JSON.parse(user));
 
             asyncStorage == null ? setModal(true) : '';
@@ -272,6 +275,7 @@ const Home = ({navigation}) => {
     }
 
     const bubbleRandom = () => {
+        console.log('fdaf');
         let number = bubble.indexOf(true);
         let arr = Array.from({length: 4}, ()=>{return false});
         if(number === 3){ number = -1 }
@@ -333,9 +337,9 @@ const Home = ({navigation}) => {
                         <Text>IDENITIDENITIDENITIDENIT</Text>
                     </View>
 
-                    <View style={styles.imageBox}>
-                        <Image style={styles.profileBox} source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/d-day/${mainData.weekImage}`}} onPress={bubbleRandom}/>
-                    </View>
+                    <TouchableOpacity style={styles.profileBox} activeOpacity={1} onPress={bubbleRandom}>
+                        <Image style={styles.profileBox} source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/d-day/${mainData.weekImage}`}} />
+                    </TouchableOpacity>
 
                 </View>
                 <View style={styles.mainBox3}>
@@ -449,13 +453,14 @@ const Home = ({navigation}) => {
         </TouchableOpacity>
     );
     
-  return userInfo == '' || userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}/> : (
+  return (
         <SafeAreaProvider>
             <SafeAreaView style={{ backgroundColor: '#FEECB3' }}>
                     <StatusBar />
             </SafeAreaView>
             <FocusAwareStatusBar />
-            <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}>
+            { userInfo == '' || userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}/>
+                : <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}>
             <View style={styles.header}>
             <View style={styles.headerBar}>
                 <Bell style={{marginRight: 20}} onPress={()=>navigation.navigate('알림')}/>
@@ -474,9 +479,7 @@ const Home = ({navigation}) => {
                 </View>
             </Animated.View>
 
-            </SafeAreaView>
-
-        
+            </SafeAreaView>}
         </SafeAreaProvider>
     )
 }

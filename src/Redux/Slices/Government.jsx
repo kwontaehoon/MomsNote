@@ -10,7 +10,7 @@ export const postGovernment = createAsyncThunk("postGovernmentSlice/async", asyn
           url: 'https://momsnote.net/api/benefits/list',
           data : data
       });
-      return response.data;
+      if(response.data == ''){ return '0'; }else return response.data;
       }catch(error){
           console.log('government axios error: ', error);
       }

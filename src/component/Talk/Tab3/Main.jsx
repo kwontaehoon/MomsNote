@@ -135,8 +135,7 @@ const Talk3 = ({navigation}: any) => {
     </TouchableOpacity>
   ); 
 
-  return info == undefined ?
-      <View style={{height: '70%', alignItems: 'center', justifyContent: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>모집중인 체험단이 없습니다.</Text></View>
+  return info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
       : (
     <View style={styles.container}>
 
@@ -157,7 +156,7 @@ const Talk3 = ({navigation}: any) => {
       </View>
 
       <View style={styles.main}>
-        { info.length == 0 ? <View style={{height: '70%', alignItems: 'center', justifyContent: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시글이 없습니다.</Text></View>
+        { info == 0 ? <View style={{height: '70%', alignItems: 'center', justifyContent: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>모집중인 체험단이 없습니다.</Text></View>
         :
         <FlatList data={info} renderItem={renderItem} numColumns={2} showsVerticalScrollIndicator={false}
           onEndReached={()=>

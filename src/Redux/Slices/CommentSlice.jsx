@@ -13,8 +13,8 @@ export const postComment = createAsyncThunk("postCommentSlice/async", async (dat
           },
           data : data
       });
-      console.log('zzzzzzzzzzzzzzzz', response.data);
-      return response.data;
+      console.log('comment redux: ', response.data);
+      if(response.data == ''){ return '0'; }else return response.data;
       }catch(error){
           console.log('comment axios error: ', error);
       }

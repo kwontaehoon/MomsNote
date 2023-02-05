@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
     main:{
     },
     mainBox:{
-        height: 70,
         padding: 20,
     },
     mainBox2:{
@@ -171,7 +170,7 @@ const Talk1Sub = ({navigation, route}) => {
             </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
-                    <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 3}}>{item.title}</Text>
+                    <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 3, lineHeight: 25}}>{item.title}</Text>
                 </View>
                 <View style={styles.mainBox2}>
                     <Text style={{lineHeight: 20}}>{item.contents}</Text>

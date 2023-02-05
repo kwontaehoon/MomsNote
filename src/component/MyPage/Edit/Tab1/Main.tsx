@@ -5,6 +5,7 @@ import axios from 'axios'
 
 import Calendar from '../../../../../public/assets/svg/Calendar.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import moment from 'moment'
 
 const styles = StyleSheet.create({
     container:{
@@ -190,7 +191,8 @@ const Talk1 = ({navigation, application}: any) => {
                     <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>출산 예정일</Text>
                     <View>
                         <TextInput placeholder='날짜 선택' style={[styles.textBox, {borderColor: bottomColor[2] ? '#FEB401' : '#EEEEEE'}]} editable={false}
-                        value={info.dueDate} onFocus={()=>change(2)}></TextInput>
+                            value={moment(info.dueDate).format('YYYY년 MM월 DD일')} onFocus={()=>change(2)}>
+                        </TextInput>
                         <TouchableOpacity style={styles.main3Box} onPress={showDatepicker}><Calendar /></TouchableOpacity>
                     </View>
                 </View>

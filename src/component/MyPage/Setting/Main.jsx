@@ -316,7 +316,7 @@ const Main = ({navigation}) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
-                        <View style={[styles.modalBox, {paddingTop: 30}]}>
+                        <View style={[styles.modalBox, {paddingTop: 20}]}>
                             <Text style={{fontSize: 16, paddingTop: 10}}>로그아웃 하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>

@@ -7,7 +7,7 @@ import { postGovernmentCount } from '../../../Redux/Slices/GovernmentCountSlice'
 
 const styles = StyleSheet.create({
   container:{
-    height: '92%',
+    height: '91%',
     backgroundColor: 'white',
   },
   header:{
@@ -67,7 +67,10 @@ const Talk1 = ({navigation}) => {
     </TouchableOpacity>
   ); 
 
-  return info == undefined ? <View></View> : (
+  return info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
+  : info == '0' ?
+  <View style={[styles.container, {justifyContent: 'center', alignItems: 'center'}]}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
+  : (
     <View style={styles.container}>
       <View style={styles.header}></View>
       <View style={styles.header2}>
@@ -75,16 +78,12 @@ const Talk1 = ({navigation}) => {
             <Text style={{fontSize: 16}}> 건</Text>
       </View>
       <View style={styles.main}>
-      {info == '' ?
-        <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
-        :
         <FlatList data={info} renderItem={renderItem} onEndReached={()=>{
           dispatch(setGovernmentCount({page: infoCount > (governmentSet.page * 30) ? governmentSet.page + 1 : governmentSet.page, count: infoCount}));
         }} onEndReachedThreshold={0}
           keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
           ListFooterComponent={loading && <ActivityIndicator />}>
         </FlatList>
-        }
       </View>
      </View>
   )

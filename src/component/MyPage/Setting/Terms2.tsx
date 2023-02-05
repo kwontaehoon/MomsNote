@@ -32,9 +32,10 @@ const Terms1 = () => {
         url: 'https://momsnote.net/policy',
         data : {
           sort: "개인정보처리방침",
+          page: 0
       }
     });
-    setInfo(response.data);
+    setInfo(response.data.data);
     }
     terms();
   }, []);

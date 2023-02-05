@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, ScrollView, Keyboard, SafeAreaView, StatusBar, Share, KeyboardAvoidingView } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, ScrollView, Keyboard, SafeAreaView, StatusBar, Share, KeyboardAvoidingView, ActivityIndicator } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Modal from '../../Modal/DotModal'
 import Modal2 from '../../Modal/Block'
@@ -284,9 +284,12 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = [route.params];
+    console.log('info: ', info);
     const info2 = useSelector(state => { return state.shareList.data }); // 게시글 리스트
-    const materialShareSet = useSelector(state => { return state.materialShare.refresh });
+    console.log('info2: ', info2);
     const materialShare = useSelector(state => { return state.materialShare.data });
+    console.log('materialShare: ', materialShare);
+    const materialShareSet = useSelector(state => { return state.materialShare.refresh });
     const [info3, setInfo3] = useState(materialShare);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
@@ -322,6 +325,7 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal7, setModal7] = useState(false); // comment 삭제모달
 
     const [userInfo, setUserInfo] = useState();
+    console.log('userinfo: ', userInfo);
 
     const animation = useRef(new Animated.Value(0)).current;
     const flatlistRef = useRef(null);
@@ -339,6 +343,7 @@ const Talk1Sub = ({navigation, route}) => {
 
         const user = async() => {
             const user = await AsyncStorage.getItem('user');
+            console.log('user: ', user );
             setUserInfo(JSON.parse(user));
         }
 
@@ -632,7 +637,7 @@ const Talk1Sub = ({navigation, route}) => {
                     </View>
                 </View>
                 <View style={styles.mainBox4}>
-                    {comment.length == 0 ?
+                    {comment == '0' ?
                     <View style={{alignItems: 'center', justifyContent: 'center', height: 200}}>
                         <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
                         <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
@@ -643,7 +648,8 @@ const Talk1Sub = ({navigation, route}) => {
       );
 
 
-  return info2 == undefined || userInfo == undefined ? <View><Text>gg</Text></View> : (
+  return info2 == '' || userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
+  : (
     <SafeAreaProvider>
         <SafeAreaView style={{ backgroundColor: 'white' }}>
             <StatusBar />
@@ -671,7 +677,7 @@ const Talk1Sub = ({navigation, route}) => {
             </View>
 
             <FlatList ref={flatlistRef} data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
-                keyExtractor={item => String(item.boardId)}>
+                keyExtractor={(item, index) => String(index)}>
             </FlatList>
 
             <View style={[styles.commentRes, {display: insert.level === 0 ? 'none' : 'flex'}]}>

@@ -3,14 +3,13 @@ import axios from 'axios'
 
 export const postBoard = createAsyncThunk("postBoardSlice/async", async (data) => {
   console.log('postBoard 업데이트됨');
-  console.log('data: ', data);
     try{
       const response = await axios({
           method: 'post',
           url: 'https://momsnote.net/api/board/list',
           data : data
       });
-      return response.data;
+      if(response.data == ''){ return 0; }else return response.data;
       }catch(error){
           console.log('board axios error: ', error);
           return undefined;

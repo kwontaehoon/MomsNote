@@ -89,6 +89,7 @@ const Talk1 = ({navigation}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.guide.data });
+  console.log('맘스가이드 info: ', info);
   const guideSet = useSelector(state => { return state.guide.refresh });
   const infoCount = useSelector(state => { return state.guideCount.data });
   const guideCountSet = useSelector(state => { return state.guideCount.refresh });
@@ -130,7 +131,8 @@ const Talk1 = ({navigation}) => {
     </TouchableOpacity>
   ); 
 
-  return info == undefined ? <View></View> : (
+  return info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {flex: Platform.OS == 'ios' ?  0 : 1}]}/>
+  : (
     <View style={[styles.container, {flex: Platform.OS == 'ios' ?  0 : 1}]}>
       <View style={styles.header}>
         <FlatList data={DATA} renderItem={renderItem}
@@ -146,14 +148,14 @@ const Talk1 = ({navigation}) => {
         </View>
       </View>
       <View style={styles.main}>
-        {info.length !== 0 ?
+        {info == '0' ? <View style={{marginTop: 150, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
+        :
         <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{
           dispatch(setGuideCount({page: infoCount > (guideSet.page * 30) ? guideSet.page + 1 : guideSet.page, count: infoCount}));
         }} onEndReachedThreshold={0}
           keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
           ListFooterComponent={loading && <ActivityIndicator />}>
-        </FlatList> : 
-        <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}
+        </FlatList>}
       </View>
      </View>
   )

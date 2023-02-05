@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
 })
 const Main = ({navigation}) => {
 
-    const [userInfo, setUserInfo] = useState([]);
+    const [userInfo, setUserInfo] = useState();
+    console.log('userInfo: ', userInfo);
 
     const [refresh, setRefresh] = useState(); // 새로고침
     const isFocused = useIsFocused();
@@ -73,11 +74,11 @@ const Main = ({navigation}) => {
 
 
     if (!result.canceled) {
-        AsyncStorage.setItem('user', JSON.stringify(Object.assign(userInfo, {profileImage: result.assets[0].uri})));
+        AsyncStorage.setItem('user', JSON.stringify(Object.assign(userInfo, {profile: result.assets[0].uri})));
     }
     console.log(result.assets[0].uri);
 
-    AsyncStorage.setItem('user', JSON.stringify(Object.assign(userInfo, {profileImage: result.assets[0].uri})))
+    AsyncStorage.setItem('user', JSON.stringify(Object.assign(userInfo, {profile: result.assets[0].uri})))
 
     let data = new FormData();
     data.append('file', {uri: result.assets[0].uri, name: 'profile.jpg', type: 'image/jpeg'});
@@ -99,12 +100,12 @@ const Main = ({navigation}) => {
         setRefresh(result.assets[0].uri);
   };
 
-  return (
+  return userInfo == undefined ? <View></View> : (
     <View style={styles.container}>
         <View style={styles.header}>
             <View style={styles.headerBox}>
                 <TouchableOpacity style={styles.profileBox} onPress={pickImage}>
-                    {userInfo.profile === undefined ? <Image source={require('../../../public/assets/image/baby1.png')}/>
+                    {userInfo.profile == undefined ? <Image source={require('../../../public/assets/image/baby1.png')}/>
                     :  <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profile}` }} style={{ width: 72, height: 72, borderRadius: 36}}/>}
                 </TouchableOpacity>
                 <View style={styles.infoBox}>

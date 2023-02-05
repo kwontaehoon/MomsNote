@@ -209,8 +209,8 @@ const Talk1Sub = ({navigation, route}) => {
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
+    console.log('comment: ', comment);
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
-    console.log('commentsId: ', commentsId);
     const [insert, setInsert] = useState(
         {
             boardId: route.params.item.boardId,
@@ -220,7 +220,6 @@ const Talk1Sub = ({navigation, route}) => {
             tag: null,
         }
     ); // 댓글 입력
-    console.log('insert: ', insert);
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요 Flag
     const [boardData, setBoardData] = useState({
         order: 'new',
@@ -243,6 +242,7 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal7, setModal7] = useState(false); // comment 정말 삭제?
 
     const [userInfo, setUserInfo] = useState();
+    console.log('talk1 userInfo: ', userInfo);
 
     const animation = useRef(new Animated.Value(0)).current;
     const flatlistRef = useRef(null);
@@ -276,10 +276,9 @@ const Talk1Sub = ({navigation, route}) => {
 
     useEffect(()=>{
         setInfo(boardInfo.filter(x => x.boardId == route.params.item.boardId));
-    }, [boardInfo]);
+    }, [boardInfo, isFocused]);
 
     useEffect(()=>{ // 게시물 추천 Flag
-        console.log('게시물 추천 여부 업데이트');
         const likeInfo = async() => {
             const token = await AsyncStorage.getItem('token');
             try{
@@ -313,7 +312,6 @@ const Talk1Sub = ({navigation, route}) => {
                   },
                   data: insert
                 });
-                console.log('response: ', response.data);
             }catch(error){
               console.log('댓글 작성 error: ', error);
             }
@@ -324,7 +322,6 @@ const Talk1Sub = ({navigation, route}) => {
 
 
     const likeplus = async() => { // 게시판 좋아요
-        console.log('likeplus');
         const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
@@ -339,7 +336,6 @@ const Talk1Sub = ({navigation, route}) => {
                     type: 'plus'
                   }
                 });
-                console.log('response: ', response.data);
                 dispatch(postBoard(boardData));
                 setBoardLike();
             }catch(error){
@@ -348,7 +344,6 @@ const Talk1Sub = ({navigation, route}) => {
     }
 
     const likeminus = async() => { // 게시판 좋아요 취소
-        console.log('likeminus');
         const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
@@ -363,7 +358,6 @@ const Talk1Sub = ({navigation, route}) => {
                     type: 'minus'
                   }
                 });
-                console.log('response: ', response.data);
                 dispatch(postBoard(boardData));
                 setBoardLike();
             }catch(error){
@@ -486,7 +480,7 @@ const Talk1Sub = ({navigation, route}) => {
                     </View>
                 </View>
                 <View style={styles.mainBox4}>
-                    {comment == '' ?
+                    {comment == '0' ?
                     <View style={{alignItems: 'center', justifyContent: 'center', height: 200}}>
                         <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
                         <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
@@ -497,7 +491,8 @@ const Talk1Sub = ({navigation, route}) => {
       );
 
 
-  return comment == undefined || userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return comment == '' || userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
+  : (
     <SafeAreaProvider>
         <SafeAreaView style={styles.container}>
 

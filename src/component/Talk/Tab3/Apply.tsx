@@ -292,7 +292,7 @@ const Withdraw = ({navigation, route}) => {
             <View style={styles.header}>
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>신청 정보</Text>
                 <TouchableOpacity style={styles.headerBox}><Icon name='close' size={20} onPress={()=>
-                    info.memberName == '' && info.tel == '' && info.blog == null && info.youtube == null && info.insta == null &&
+                    info.memberName == '' && info.tel == '' && info.blog == '' && info.youtube == '' && info.insta == '' &&
                     info.address == '' && info.addressDetails == '' ? navigation.goBack() : setModal6(!modal6)
                 }/>
                 </TouchableOpacity>

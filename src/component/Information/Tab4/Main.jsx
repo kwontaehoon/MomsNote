@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         height: '85%',
     },
     mainBox:{
-        marginTop: 10
+
     },
     titleBox:{
         justifyContent: 'center',

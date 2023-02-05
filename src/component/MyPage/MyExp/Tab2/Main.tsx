@@ -66,6 +66,7 @@ const Talk3 = ({navigation}: any) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => {return state.experience.data});
+  console.log('종료된 체험단 info: ', info);
   const [info2, setInfo2] = useState();
   const infoCount = useSelector(state => { return state.experienceCount.data});
   const experienceSet = useSelector(state => { return state.experience.refresh; });
@@ -93,7 +94,7 @@ const Talk3 = ({navigation}: any) => {
     (
       <TouchableOpacity style={[styles.mainBox, {opacity: 0.5}]} onPress={()=>setModal(prevState=> ({...prevState, open: true}))}>
         <View style={styles.imageBox}>
-          <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} />
+          {item.savedName == null ? '' : <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} />}
         </View>
         <View style={styles.contentBox}>
           <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#757575', fontSize: 13, fontWeight: '600'}}>모집 종료</Text></View>
@@ -104,7 +105,7 @@ const Talk3 = ({navigation}: any) => {
     ):(
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('체험단 상세페이지', item)}>
       <View style={styles.imageBox}>
-        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} />
+        {item.savedName == null ? '' : <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} />}
       </View>
       <View style={styles.contentBox}>
         <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>{moment(item.applicationEndDate).diff(moment(), "days")}일 남음</Text></View>
@@ -114,7 +115,8 @@ const Talk3 = ({navigation}: any) => {
     </TouchableOpacity>
   ); 
 
-  return (
+  return info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
+  : (
     <View style={styles.container}>
 
       <Modal modal={modal} setModal={setModal}/>
@@ -130,7 +132,6 @@ const Talk3 = ({navigation}: any) => {
           keyExtractor={item => item.appCount}
           ListFooterComponent={loading && <ActivityIndicator />}>
           </FlatList>
-          
           }
       </View>
      </View>

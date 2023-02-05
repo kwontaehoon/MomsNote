@@ -7,7 +7,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 // 문의하기
 const styles = StyleSheet.create({
     container:{
-      height: '94.5%',
+      height: '100%',
     },
     container2:{
     },

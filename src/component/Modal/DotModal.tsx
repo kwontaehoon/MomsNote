@@ -50,15 +50,10 @@ const styles = StyleSheet.create({
 const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, setModal3, modal6, setModal6, modal7, setModal7, commentsId, info}) => {
 
 
-    console.log('info: ', info);
     const dispatch = useDispatch();
     const [userId, setUserId] = useState();
-    console.log('userId: ', userId);
     const boardSet = useSelector(state => { return state.board.refresh; });
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
-
-    console.log('dotmodal: ', info);
-    console.log(commentsId);
     
      useEffect(()=>{
         const getUserId = async() => {
@@ -81,7 +76,7 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
                   },
                   data: { boardId: info[0].boardId }
                 });
-                console.log('게시판 삭제 response: ', response.data);
+                console.log('response: ', response.data);
             }catch(error){
               console.log('error: ', error);
             }

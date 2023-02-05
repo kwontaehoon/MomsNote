@@ -108,6 +108,7 @@ const Talk1 = ({navigation}: any) => {
     const dispatch = useDispatch();
     const eventSet = useSelector(state => { return state.event.refresh });
     const info = useSelector(state => { return state.event.data; });
+    console.log('행사정보 info: ', info);
     const [week, setWeek] = useState([true, false, false, false, false, false,
     false, false, false, false, false, false]);
     const infoCount = useSelector(state => { return state.eventCount.data; });
@@ -150,10 +151,10 @@ const Talk1 = ({navigation}: any) => {
 
   const renderItem = ({ item }) => (
     <>
-      {info.length !== 0 ? <TouchableOpacity style={styles.main2} onPress={()=>navigation.navigate('행사정보 상세페이지', item)}>
+      {<TouchableOpacity style={styles.main2} onPress={()=>navigation.navigate('행사정보 상세페이지', item)}>
           <View style={styles.dateBox}>{dateFilter(item)}</View>
           <Text style={{fontWeight: '500'}}>{item.title}</Text>
-      </TouchableOpacity> : <View style={styles.main2}><Text>gg</Text></View>}
+      </TouchableOpacity>}
 
     </>
   );
@@ -168,12 +169,14 @@ const Talk1 = ({navigation}: any) => {
   return (
     <SafeAreaProvider>
 
-        <SafeAreaView style={{ backgroundColor: 'white' }}>
-            <StatusBar />
-        </SafeAreaView>
+      <SafeAreaView style={{ backgroundColor: 'white' }}>
+          <StatusBar />
+      </SafeAreaView>
 
-        <SafeAreaView style={[styles.container, {flex: Platform.OS == 'ios' ?  0 : 1}]}>
-       <View style={styles.header}>
+      {info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {flex: Platform.OS == 'ios' ?  0 : 1}]}/>
+      :
+      <SafeAreaView style={[styles.container, {flex: Platform.OS == 'ios' ?  0 : 1}]}>
+        <View style={styles.header}>
           <View style={styles.headerBox}><Text style={{fontSize: 18, fontWeight: '600'}}>{moment().format('YYYY')}년</Text></View>
           <View style={styles.headerBox2}>
           <FlatList data={DATA2} renderItem={renderItem2}
@@ -182,16 +185,17 @@ const Talk1 = ({navigation}: any) => {
           </View>
         </View>
         <View style={styles.main}>
-        {info !== undefined ?
+        {info == '0' ? <View style={{marginTop: 150, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
+        :
         <FlatList data={info} renderItem={renderItem} onEndReached={()=>{
           dispatch(setEventCount({page: infoCount > (eventSet.page * 30) ? eventSet.page + 1 : eventSet.page, count: infoCount}));
         }} onEndReachedThreshold={0}
           keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
           ListFooterComponent={loading && <ActivityIndicator />}>
-        </FlatList> : 
-        <View style={{marginTop: 50, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>}
+        </FlatList> 
+        }
         </View>
-     </SafeAreaView>
+     </SafeAreaView>}
      </SafeAreaProvider>
   )
 }

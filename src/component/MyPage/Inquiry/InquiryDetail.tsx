@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
     },
     header:{
         backgroundColor: '#F5F5F5',
-        height: 80,
         padding: 20,
         justifyContent: 'center',
         borderTopWidth: 1,
@@ -23,7 +22,6 @@ const styles = StyleSheet.create({
     },
     main:{
         borderBottomWidth: 1,
-        
         borderColor: '#EEEEEE',
         justifyContent: 'center',
         padding: 20,

@@ -5,6 +5,7 @@ import { WebView } from 'react-native-webview';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Modal from './Modal/Withdraw'
+import jwtDecode from 'jwt-decode';
 
 const styles = StyleSheet.create({
     container:{
@@ -43,7 +44,10 @@ const Main = ({navigation}) => {
         });
         console.log('response3: ', response3.data);
         console.log(response3.data.token);
+        const decode = jwtDecode(response3.data.token);
+        console.log('decode: ', decode);
         AsyncStorage.setItem('token', response3.data.token);
+        AsyncStorage.setItem('userId', String(decode.id));
 
         if(response3.data.status == 'success'){
           try{
@@ -53,7 +57,7 @@ const Main = ({navigation}) => {
                     'Authorization': `bearer ${response3.data.token}`, 
                     'Content-Type': 'application/json'
                   },
-                  url: 'https://momsnote.net/api/dday/show',
+                  url: 'https://momsnote.net/api/main/data',
               });
               console.log(response4.data);
               AsyncStorage.setItem('user', JSON.stringify(response4.data.data));

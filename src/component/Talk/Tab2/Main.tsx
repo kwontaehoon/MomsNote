@@ -192,7 +192,7 @@ const filtering = (e) => {
     </TouchableOpacity>
   ); 
 
-  return info == undefined ?  <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return info == '' ?  <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
       <View style={styles.header}></View>
       <View style={styles.header2}>
@@ -228,7 +228,7 @@ const filtering = (e) => {
       </View>
 
       <View style={[styles.main, {height: Platform.OS == 'ios' ? null : '89%', flex: Platform.OS === 'ios' ? 1 : null}]}>
-        {info == '' ?
+        {info == 0 ?
         <View style={{height: '70%', alignItems: 'center', justifyContent: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시글이 없습니다.</Text></View>
         :
         <FlatList data={info} renderItem={renderItem} onEndReached={()=>{

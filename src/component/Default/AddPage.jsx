@@ -153,7 +153,7 @@ const AddPage = ({navigation, route}) => {
             console.log('회원가입 response: ', response.data);
             const decoded = jwtDecode(response.data.token);
             console.log('decoded: ', decoded);
-
+            AsyncStorage.setItem('userId', String(decoded.id));
             AsyncStorage.setItem('token', response.data.token);
 
             try{

@@ -104,8 +104,11 @@ const Main = ({navigation, route}) => {
                     username: `google_${response.data.sub}`
                 }
             });
-            console.log('response: ', response2);
+            console.log('response2: ', response2.data);
+            const decode = jwtDecode(response2.data.token);
+            console.log('decode: ', decode);
             AsyncStorage.setItem('token', response2.data.token);
+            AsyncStorage.setItem('userId', String(decode.id));
                         
             if(response2.data.status == 'success'){
                 try{
@@ -172,6 +175,7 @@ const Main = ({navigation, route}) => {
                         console.log(credential.identityToken);
                         const decode = jwtDecode(credential.identityToken);
                         console.log('decoded: ', decode.sub);
+                        AsyncStorage.setItem('userId', jwtDecode(String(decode.id)));
 
                         const response = await axios({
                             method: 'post',
