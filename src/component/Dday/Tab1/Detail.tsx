@@ -61,12 +61,13 @@ const styles = StyleSheet.create({
         marginLeft: 7,
     },
     main:{
+
     },
     mainBox:{
         padding: 20
     },
     mainBox2:{
-        padding: 20
+        padding: 20,
     },
     mainBox2ImageBox:{
         height: 400,
@@ -478,7 +479,7 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
                 <View style={styles.mainBox2}>
                     <Text style={{lineHeight: 20}}>
-                    <RenderHtml contentWidth={width} source={{html: `<div>${item.contents}</div>`}} />
+                        <RenderHtml contentWidth={width} source={{html: `<div>${item.contents}</div>`}} />
                     </Text>
                 </View>
                 </ViewShot>

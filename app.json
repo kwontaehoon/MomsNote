@@ -23,7 +23,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./public/assets/image/1024icon.png",
-        "backgroundColor": "#FFFFFF",
+        "backgroundColor": "#FAA61A",
         "googleServicesFile": "./google-services.json"
       },
       "package": "com.momsnote"
