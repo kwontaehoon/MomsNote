@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Modal, StatusBar, Image, SafeAreaView, Platform, Share } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Modal, StatusBar, Image, SafeAreaView, Platform, Share } from 'react-native'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import ContentsURL from './Modal/ContentsURL'
 import axios from 'axios'
@@ -252,7 +252,7 @@ const Talk1Sub = ({navigation, route}) => {
         dispatch(postBoardAppFlag({ experienceId: info.experienceId }));
         dispatch(postWinList({ experienceId: info.experienceId }));
 
-    }, []);
+    }, [isFocused]);
 
     useEffect(()=>{
         setInfo2(exp.filter(x => x.boardId == info.boardId));
@@ -394,7 +394,8 @@ const Talk1Sub = ({navigation, route}) => {
     }
 
 
-  return (
+  return boardAppFlag == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
+  : (
     <SafeAreaProvider>
             <SafeAreaView style={{ backgroundColor: 'white' }}>
                     <StatusBar />

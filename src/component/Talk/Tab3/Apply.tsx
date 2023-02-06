@@ -15,6 +15,8 @@ import Modal4 from './Modal/Cencel'
 import Modal5 from './Modal/CencelConfirm'
 import Modal6 from './Modal/Save'
 import Modal7 from './Modal/PhoneNumber'
+import Modal8 from './Modal/Complete'
+
 import { useSelector } from 'react-redux'
 import {
     SafeAreaProvider
@@ -161,8 +163,8 @@ const Withdraw = ({navigation, route}) => {
 
     console.log('smsnumber: ', SMSNumber);
 
-    const appFlag = useSelector(state => { return state.boardApp.data; });
-    console.log('appFlag: ', appFlag);
+    const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
+    console.log('boardAppFlag: ', boardAppFlag);
 
     const [modal, setModal] = useState(false); // 핸드폰 인증 완료
     const [modal2, setModal2] = useState(false); // 핸드폰 인증 실패
@@ -171,6 +173,7 @@ const Withdraw = ({navigation, route}) => {
     const [modal5, setModal5] = useState(false); // 취소 확인
     const [modal6, setModal6] = useState(false); // 임시 저장
     const [modal7, setModal7] = useState(false); // 폰 넘버 갯수 11자이하
+    const [modal8, setModal8] = useState(false); // 체험단 신청 완료
     
     const [info, setInfo] = useState( // post info
         {
@@ -281,7 +284,7 @@ const Withdraw = ({navigation, route}) => {
             });
             console.log('체험단 신청 response: ', response.data);
             AsyncStorage.setItem('applicationFlag', '1');
-            navigation.goBack();
+            setModal8(!modal8);
         }catch(error){
             console.log('체험단 신청 error: ', error);
         }
@@ -411,6 +414,7 @@ const Withdraw = ({navigation, route}) => {
             <Modal5 modal5={modal5} setModal5={setModal5} />
             <Modal6 navigation={navigation} modal6={modal6} setModal6={setModal6} info={info} />
             <Modal7 modal7={modal7} setModal7={setModal7} />
+            <Modal8 navigation={navigation} modal={modal8} setModal={setModal8} />
             
 
             <FlatList data={DATA} renderItem={renderItem}

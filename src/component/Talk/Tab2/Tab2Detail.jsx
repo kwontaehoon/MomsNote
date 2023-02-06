@@ -19,6 +19,7 @@ import {
 
 import Comment from './Comment'
 import axios from 'axios'
+import { useIsFocused } from '@react-navigation/native'
 
 import M1 from '../../../../public/assets/svg/1.svg'
 import M2 from '../../../../public/assets/svg/2.svg'
@@ -283,6 +284,7 @@ const Talk1Sub = ({navigation, route}) => {
     ];
 
     const dispatch = useDispatch();
+    const isFocused = useIsFocused();
     const info = [route.params];
     console.log('info: ', info);
     const info2 = useSelector(state => { return state.shareList.data }); // 게시글 리스트
@@ -361,7 +363,7 @@ const Talk1Sub = ({navigation, route}) => {
 
         user();
         hits();
-    }, []);
+    }, [isFocused]);
 
     useEffect(()=>{
         setInfo3(materialShare.filter(x => x.boardId == info[0].boardId));
@@ -649,7 +651,7 @@ const Talk1Sub = ({navigation, route}) => {
       );
 
 
-  return info2 == '' || userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
+  return userInfo == undefined || materialShare == '' || info3 == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
   : (
     <SafeAreaProvider>
         <SafeAreaView style={{ backgroundColor: 'white' }}>

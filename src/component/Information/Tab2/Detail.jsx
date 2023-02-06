@@ -194,10 +194,14 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = [route.params];
+    console.log('행사정보 route: ', info);
     const info2 = useSelector(state => { return state.event.data; });
+    console.log('행사정보 info2: ', info2);
     const [info3, setInfo3] = useState();
+    console.log('행사정보 info3: ', info3);
 
     const eventSet = useSelector(state => { return state.event.refresh });
+    console.log('eventSet: ', eventSet);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
@@ -451,7 +455,7 @@ const Talk1Sub = ({navigation, route}) => {
       );
 
 
-  return info3 == '' || userInfo == undefined || boardLike == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: pageHeight ? '94%' : '97%'}]}/> : (
+  return  userInfo == undefined || info2 == '' || boardLike == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: pageHeight ? '94%' : '97%'}]}/> : (
     <View style={[styles.container, {height: pageHeight ? '94%' : '97%'}]}>
 
         <Animated.View style={[styles.alarmBox, {opacity: animation}]}>

@@ -10,6 +10,7 @@ import { postBoard } from '../../../../Redux/Slices/BoardSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
 import { SafeAreaProvider } from 'react-native-safe-area-context' 
+import { postUser } from '../../../../Redux/Slices/UserSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -215,6 +216,7 @@ const Register = ({navigation, route}) => {
     const [modal2Content, setModal2Content] = useState(false); // 완료시 모달 내용
     const [filter, setFilter] = useState(Array.from({length: 5}, () => {return false})); // 카테고리
     const [userInfo, setUserInfo] = useState();
+    const user = useSelector(state => { return state.user.data; });
     
     const [info, setInfo] = useState( // post info
         {
@@ -228,6 +230,8 @@ const Register = ({navigation, route}) => {
     console.log('글쓰기 info: ', info);
 
     useEffect(()=>{
+
+        dispatch(postUser());
         const load = async() => {
             const asyncStorage = await AsyncStorage.getItem('momsTalk');
             console.log('asyncStorage: ', asyncStorage);
@@ -422,7 +426,7 @@ const Register = ({navigation, route}) => {
             </View>
             <View style={styles.header2}>
                 <View style={styles.header2Box}>
-                    <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profile}` }} style={styles.profileBox}/>
+                    <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${user.profile}` }} style={styles.profileBox}/>
                     <View style={styles.infoBox}><Text style={{fontSize: 20, fontWeight : 'bold'}}>{userInfo.nickname}</Text></View>
                 </View>
                 <View style={styles.header2Box2}>

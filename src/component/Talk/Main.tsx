@@ -27,14 +27,12 @@ const styles = StyleSheet.create({
 })
 const Main = ({navigation, route}) => {
 
-    
+    console.log('맘스 톡 route: ', route.params);
     const isFocused = useIsFocused();
 
     useEffect(()=>{
     }, [isFocused]);
     
-    console.log('맘스 톡 route: ', route);
-
     const [filter, setFilter] = useState([true, false, false]); // tab
 
     const List = () => {

@@ -20,6 +20,7 @@ import { postMaterialPopularSlice } from '../../Redux/Slices/MaterialPopularSlic
 import { postInfoPopularSlice } from '../../Redux/Slices/InfoPopularSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { postUser } from '../../Redux/Slices/UserSlice'
+import { postEvent, setEventRefresh } from '../../Redux/Slices/EventSlice'
 
 
 const styles = StyleSheet.create({
@@ -55,16 +56,35 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     bubble:{
-        width: 250,
-        height: 30,
+        paddingTop: 8,
+        paddingBottom: 8,
+        paddingLeft: 15,
+        paddingRight: 15,
         position: 'absolute',
         zIndex: 999,
-        borderRadius: 30,
+        // borderRadius: 30,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'white',
         transtion: '1s',
-    },  
+    },
+    triangle:{
+        width: 0,
+        height: 0,
+        backgroundColor: "transparent",
+        borderStyle: "solid",
+        borderLeftWidth: 25,
+        borderRightWidth: 5,
+        borderBottomWidth: 20,
+        borderLeftColor: "transparent",
+        borderRightColor: "transparent",
+        borderBottomColor: "white",
+        position: 'absolute',
+        zIndex: 900,
+        bottom: -15,
+        right: 0,
+        transform: [{ rotate: "180deg" }],
+    },
     profileBox:{
         width: 300,
         height: 300,
@@ -162,23 +182,6 @@ const styles = StyleSheet.create({
         height: 30,
         justifyContent: 'center',
     },
-    triangle:{
-        width: 0,
-        height: 0,
-        backgroundColor: "transparent",
-        borderStyle: "solid",
-        borderLeftWidth: 25,
-        borderRightWidth: 5,
-        borderBottomWidth: 20,
-        borderLeftColor: "transparent",
-        borderRightColor: "transparent",
-        borderBottomColor: "white",
-        position: 'absolute',
-        zIndex: 999,
-        bottom: -13,
-        right: 40,
-        transform: [{ rotate: "180deg" }],
-    },
     saveModal:{
         width: '90%',
         height: 40,
@@ -226,7 +229,7 @@ const Home = ({navigation}) => {
     const mainData = useSelector(state => { return state.user.data; });
     console.log('mainData: ', mainData);
     const [test, setTest] = useState(); // 캡쳐 uri
-    const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
+    const [bubble, setBubble] = useState([true]); // 말풍선
     console.log('bubble: ', bubble);
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
@@ -277,7 +280,8 @@ const Home = ({navigation}) => {
     const bubbleRandom = () => {
         console.log('fdaf');
         let number = bubble.indexOf(true);
-        let arr = Array.from({length: 4}, ()=>{return false});
+        let arr = Array.from({length: mainData.message.length}, ()=>{return false});
+        console.log('arr: ', arr);
         if(number === 3){ number = -1 }
         arr[number+1] = !arr[number+1];
         setBubble(arr); 
@@ -295,6 +299,23 @@ const Home = ({navigation}) => {
                 duration: 1500,
             }).start();
         });
+    }
+
+    const eventNavi = (item) => {
+        let e = item.month - 1;
+
+        if(e-9 < 0){
+            e = '0' + (e+1);
+          } else e += 1;
+
+        dispatch(setEventRefresh({
+            page: 1,
+            count: 1,
+            start: `${new Date().getFullYear()}-${e}`,
+            end: `${new Date().getFullYear()}-${e}`
+        }));
+
+        navigation.navigate('행사정보 상세페이지', item)
     }
 
     const FocusAwareStatusBar = () => {
@@ -320,7 +341,7 @@ const Home = ({navigation}) => {
                             </View>
                         )
                     })}
-                    <View style={[styles.bubble, {top: 20, right: 20, display: bubble[0] ? 'flex' : 'none'}]}>
+                    {/* <View style={[styles.bubble, {top: 20, right: 20, display: bubble[0] ? 'flex' : 'none'}]}>
                         <View style={[styles.triangle, {borderBottomColor: bubble[0] ? 'white' : 'transparent'}]}></View>
                         <Text>아무말이나 하고싶어요</Text>
                     </View>
@@ -335,7 +356,7 @@ const Home = ({navigation}) => {
                     <View style={[styles.bubble, {top: 40, right: 80, display: bubble[3] ? 'flex' : 'none'}]}>
                         <View style={[styles.triangle, {borderBottomColor: bubble[3] ? 'white' : 'transparent'}]}></View>
                         <Text>IDENITIDENITIDENITIDENIT</Text>
-                    </View>
+                    </View> */}
 
                     <TouchableOpacity style={styles.profileBox} activeOpacity={1} onPress={bubbleRandom}>
                         <Image style={styles.profileBox} source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/d-day/${mainData.weekImage}`}} />
@@ -363,7 +384,7 @@ const Home = ({navigation}) => {
                     <View style={styles.main3Box2}>
                         <View style={styles.titleBox}>
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>출산 리스트</Text></View>
-                            <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡', 12345)}>+ 더보기</Text></View>
+                            <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡', '12345')}>+ 더보기</Text></View>
                         </View>
                         {materialPopular == '' ? 
                             <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
@@ -395,7 +416,7 @@ const Home = ({navigation}) => {
                     <View style={[styles.main3Box2, {borderLeftWidth: 1, borderColor: '#EEEEEE',}]}>
                         <View style={styles.titleBox}>
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>맘스 토크</Text></View>
-                            <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡')}>+ 더보기</Text></View>
+                            <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡', '맘')}>+ 더보기</Text></View>
                         </View>
                         {boardPopular == '' ? 
                         <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
@@ -437,7 +458,7 @@ const Home = ({navigation}) => {
                 {infoPopular == '' ? <View><Text style={{color: '#757575'}}>새로운 정보가 없습니다.</Text></View>
                 :
                 <FlatList data={infoPopular} renderItem={renderItem2} showsHorizontalScrollIndicator={false}
-                        keyExtractor={item => item.boardId} horizontal={true}>
+                        keyExtractor={item => String(item.boardId)} horizontal={true}>
                 </FlatList>}
                 </View>
             </View>
@@ -446,8 +467,8 @@ const Home = ({navigation}) => {
         </View>
     );
     
-    const renderItem2 = ({ item }) => (
-        <TouchableOpacity style={styles.albumBox} onPress={()=>navigation.navigate('맘스정보')}>
+    const renderItem2 = ({ item, index }) => (
+        <TouchableOpacity style={styles.albumBox} onPress={()=>eventNavi(item)} key={index}>
             <View style={styles.albumPhoto}></View>
             <View style={styles.albumTitle}><Text>{item.title}</Text></View>
         </TouchableOpacity>
@@ -459,7 +480,7 @@ const Home = ({navigation}) => {
                     <StatusBar />
             </SafeAreaView>
             <FocusAwareStatusBar />
-            { userInfo == '' || userInfo == undefined || mainData == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}/>
+            { userInfo == '' || userInfo == undefined || mainData == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}/>
                 : <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}>
             <View style={styles.header}>
             <View style={styles.headerBar}>

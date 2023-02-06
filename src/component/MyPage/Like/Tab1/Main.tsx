@@ -119,15 +119,12 @@ const Talk1 = ({navigation, route}:any) => {
     </TouchableOpacity>
   ); 
 
-  return info == '' && info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return info == '0' ? <View style={{marginTop: 250, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>등록된 게시물이 없습니다.</Text></View>
+  : (
     <View style={styles.container}>
-        {info == '' || info == undefined ?
-        <View style={{marginTop: 250, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
-        :
         <FlatList data={info} renderItem={renderItem2}
           keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
         </FlatList>
-        }
      </View>
   )
 }

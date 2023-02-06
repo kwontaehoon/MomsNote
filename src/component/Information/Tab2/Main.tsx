@@ -123,6 +123,7 @@ const Talk1 = ({navigation}: any) => {
     }, [eventSet]);
 
     const change = (e) => { // 몇 주차 border, 글자두께 변경
+      console.log('e: ', e);
       let arr = Array.from({length: 12}, ()=>{ return false});
 
       arr[e] = !arr[e];

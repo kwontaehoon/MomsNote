@@ -54,6 +54,8 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
     const [userId, setUserId] = useState();
     const boardSet = useSelector(state => { return state.board.refresh; });
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
+
+    console.log('DotModal info: ', info[0].boardId);
     
      useEffect(()=>{
         const getUserId = async() => {

@@ -15,7 +15,7 @@ export const postMyLikeExp = createAsyncThunk("postMyLikeExpSlice/async", async 
           },
           data : {}
       });
-      return response.data;
+      if(response.data == ''){return '0';}else return response.data;
       }catch(error){
           console.log('myLikeExp axios error: ', error);
           return undefined;

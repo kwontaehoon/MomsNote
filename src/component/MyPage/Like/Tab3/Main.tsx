@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 import { postExperience } from '../../../../Redux/Slices/ExperienceSlice'
 import { setExperienceCount, setExperienceFilter } from '../../../../Redux/Slices/ExperienceSlice'
 import { postExperienceCount } from '../../../../Redux/Slices/ExperienceCountSlice'
+import { postMyLikeExp } from '../../../../Redux/Slices/MyLikeExpSlice'
 
 
 const styles = StyleSheet.create({
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
 const Talk3 = ({navigation}: any) => {
 
   const dispatch = useDispatch();
-  const info = useSelector(state => {return state.experience.data});
+  const info = useSelector(state => {return state.myLikeExp.data});
   console.log('체험단 info: ', info);
   const infoCount = useSelector(state => { return state.experienceCount.data});
   console.log('체험단 infoCount: ', infoCount);
@@ -86,7 +87,6 @@ const Talk3 = ({navigation}: any) => {
   const experienceCountSet = useSelector(state => { return state.experience.refresh; });
   console.log('experienceCountSet: ', experienceCountSet);
 
-  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');
   const [items, setItems] = useState([
@@ -95,10 +95,8 @@ const Talk3 = ({navigation}: any) => {
   ]);
 
   useEffect(()=>{
-    setLoading(true);
-    dispatch(postExperience(experienceSet));
+    dispatch(postMyLikeExp());
     dispatch(postExperienceCount(experienceCountSet));
-    setLoading(false);
   }, []);
 
   const filtering = (e) => {
@@ -118,7 +116,8 @@ const Talk3 = ({navigation}: any) => {
     </TouchableOpacity>
   ); 
 
-  return (
+  return info == '0' ? <View style={{marginTop: 250, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>모집중인 체험단이 없습니다.</Text></View>
+  : (
     <View style={styles.container}>
       <View style={styles.header}></View>
       <View style={styles.header2}>
@@ -135,13 +134,9 @@ const Talk3 = ({navigation}: any) => {
         </View>
       </View>
       <View style={styles.main}>
-        {info == undefined ?
-        <View style={{marginTop: 250, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>모집중인 체험단이 없습니다.</Text></View>
-        :
         <FlatList data={info} renderItem={renderItem} numColumns={2} showsVerticalScrollIndicator={false}
           keyExtractor={item => item.appCount}>
         </FlatList>
-        }
       </View>
      </View>
   )

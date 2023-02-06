@@ -66,7 +66,7 @@ const dayCalculate = (date) => {
 
   return (
     <View style={styles.container}>
-        {info == undefined || info == '' ?
+        {info == '0' ?
         <View style={{marginTop: 250, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>등록된 게시물이 없습니다.</Text></View>
         :
         <FlatList data={info} renderItem={renderItem}

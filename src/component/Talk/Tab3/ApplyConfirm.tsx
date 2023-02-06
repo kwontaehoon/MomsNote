@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, SafeAreaView, StatusBar, Platform } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, SafeAreaView, StatusBar, Platform, Modal } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/AntDesign'
 import axios from 'axios'
@@ -67,6 +67,38 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#EEEEEE',
     },
+    modalContainer:{
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    modalView:{
+        width: '100%',
+        height: '100%',
+        backgroundColor: "rgba(0,0,0,0.5)",
+        alignItems: "center",
+        justifyContent: 'center',
+        shadowColor: "#000",
+        elevation: 5,
+    },
+    modalContainer2:{
+        width: '80%',
+        backgroundColor: 'white',
+        borderRadius: 15
+    },
+    modalBox:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 15,
+    },
+    modal:{
+        backgroundColor: '#FEA100',
+        width: '90%',
+        height: 44,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 3,
+        marginBottom: 7,
+    },
 })
 const Withdraw = ({navigation,route}) => {
 
@@ -87,22 +119,23 @@ const Withdraw = ({navigation,route}) => {
         flag: 0 // 이미 인증했는지 검증
     }); // 본인인증 확인유무
 
+    const [modal, setModal] = useState(false); // 취소flag
+    const [modal2, setModal2] = useState(false); // 취소
+
     useEffect(()=>{
         dispatch(postBoardAppFlag({experienceId: route.params.experienceId}));
     }, []);
     
     const submit = async() => {
-        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
                 method: 'post',
                 url: 'https://momsnote.net/application/delete',
-                headers: { 
-                    'Authorization': `bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                data: {}
+                data: { applicationId: info.data.applicationId }
             });
+            console.log('체험단 신청 취소 response: ', response.data);
+            setModal(!modal);
+            setModal2(!modal2);
         }catch(error){
             console.log('체험단 신청 취소 error: ', error);
         }
@@ -148,7 +181,7 @@ const Withdraw = ({navigation,route}) => {
                 </View>
                 
                 <View style={[styles.mainBox, {alignItems: 'center'}]}>
-                    <View style={styles.buttonBox}><Text style={{fontSize: 18}}>신청 취소</Text></View>
+                    <TouchableOpacity style={styles.buttonBox} onPress={()=>setModal(!modal)}><Text style={{fontSize: 18}}>신청 취소</Text></TouchableOpacity>
                 </View>
             </View>
         </View>
@@ -165,6 +198,49 @@ const Withdraw = ({navigation,route}) => {
             <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
             </FlatList>
+
+            <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
+    onRequestClose={() => {
+    setModal(!modal)}}>
+    <View style={styles.modalContainer}>
+        <View style={styles.modalView}>
+            <View style={styles.modalContainer2}>
+                <View style={styles.modalBox}>
+                    <Text style={{fontSize: 16, paddingTop: 10}}>체험단 신청을 취소하시겠습니까?</Text>
+                    <Text style={{fontSize: 16, paddingTop: 5}}>취소할 경우 선정자에서 제외됩니다.</Text>
+                </View>
+                <View style={styles.modalBox}>
+                    <TouchableOpacity style={styles.modal} onPress={submit}>
+                        <Text style={{color: 'white', fontSize: 16}}>네</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModal(!modal)}>
+                        <Text style={{color: 'black', fontSize: 16}}>아니요</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </View>
+    </View>
+</Modal>
+
+            <Modal animationType="fade" transparent={true} visible={modal2} statusBarTranslucent={true}
+            onRequestClose={() => {
+            setModal2(!modal2)}}>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                    <View style={styles.modalContainer2}>
+                        <View style={styles.modalBox}>
+                            <Text style={{fontSize: 16, paddingTop: 10}}>참가하신 체험단 신청이 취소되었습니다.</Text>
+                        </View>
+                        <View style={styles.modalBox}>
+                            <TouchableOpacity style={styles.modal} onPress={()=>{setModal2(!modal2), navigation.goBack()}}>
+                                <Text style={{color: 'white', fontSize: 16}}>확인</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+
         </SafeAreaView>
 
 </SafeAreaProvider>
