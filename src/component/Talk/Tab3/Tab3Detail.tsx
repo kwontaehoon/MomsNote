@@ -317,7 +317,7 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{color: '#9E9E9E', marginBottom: 3}}>신청 36명/모집 {info.maxPeople}명</Text>
-                    <Text style={{fontSize: 25}}>맘스노트 신규체험단 모집</Text>
+                    <Text style={{fontSize: 25}}>{info.title}</Text>
                 </View>
                 <View style={styles.mainBox2}>
                     <View>

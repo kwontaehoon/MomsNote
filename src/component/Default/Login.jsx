@@ -127,7 +127,7 @@ const Main = ({navigation, route}) => {
                         return undefined;
                     }
 
-                navigation.navigate('main');
+                navigation.reset({routes: [{name: "main"}]});
                 AsyncStorage.setItem('login', '2');
             }else if(response2.data.status == 'expire'){
                 setModal(!modal);
@@ -207,7 +207,7 @@ const Main = ({navigation, route}) => {
                                     return undefined;
                                 }
             
-                            navigation.navigate('main');
+                            navigation.reset({routes: [{name: "main"}]});
                             AsyncStorage.setItem('login', '2');
                         }else if(response.data.status == 'expire'){
                             setModal(!modal);

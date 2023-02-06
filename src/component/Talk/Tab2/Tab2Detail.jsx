@@ -291,6 +291,7 @@ const Talk1Sub = ({navigation, route}) => {
     console.log('materialShare: ', materialShare);
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
     const [info3, setInfo3] = useState(materialShare);
+    console.log('info3: ', info3);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });

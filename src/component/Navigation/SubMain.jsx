@@ -30,6 +30,7 @@ import Baby2 from '../../../public/assets/svg/Baby2.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Push from '../Test/Push'
+import DateTime22 from '../Test/DateTime2'
 
 import { postAlarm } from '../../Redux/Slices/AlarmSlice';
 
@@ -94,7 +95,7 @@ function MainScreen() {
   }
 
   return (
-    <Tab.Navigator initialRouteName='홈' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
+    <Tab.Navigator initialRouteName='맘스 톡' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
       : {tabBarStyle: { height: 55, position: 'absolute', paddingBottom: 5, elevation: 0 }, headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
 
 
@@ -106,7 +107,7 @@ function MainScreen() {
                <Stack.Navigator>
                     <Stack.Screen 
                         name="맘스톡"
-                        component={Talk}
+                        component={DateTime22}
                         options={({ navigation, route }) => ({
                           headerLeft: () => (
                             <View style={styles.header}>

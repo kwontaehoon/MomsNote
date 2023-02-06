@@ -66,7 +66,7 @@ const Main = ({navigation}) => {
                   return undefined;
               }
 
-          navigation.navigate('main');
+          navigation.reset({routes: [{name: "main"}]});
           AsyncStorage.setItem('login', '2');
       }else if(response3.data.status == 'expire'){
           setModal(!modal);

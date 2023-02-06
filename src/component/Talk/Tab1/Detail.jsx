@@ -31,6 +31,7 @@ import More from '../../../../public/assets/svg/More.svg'
 import Share2 from '../../../../public/assets/svg/Share.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
 import { postHits } from '../../../Redux/Slices/HitsSlice'
+import { postUser } from '../../../Redux/Slices/UserSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -241,6 +242,9 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal6, setModal6] = useState(false); // comment 신고 하기
     const [modal7, setModal7] = useState(false); // comment 정말 삭제?
 
+    const user = useSelector(state => { return state.user.data; });
+    console.log('user: ', user);
+
     const [userInfo, setUserInfo] = useState();
     console.log('talk1 userInfo: ', userInfo);
 
@@ -249,6 +253,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     useEffect(()=>{
         dispatch(postBoard(boardData));
+        dispatch(postUser());
         dispatch(postComment({
             boardId: route.params.item.boardId,
             count: 1,
@@ -527,7 +532,7 @@ const Talk1Sub = ({navigation, route}) => {
             </View>
             <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : ''}>
             <View style={styles.footer}>
-                    <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profile}` }} style={styles.profileBox}/>
+                    <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${user.profile}` }} style={styles.profileBox}/>
                 <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: '', level: 0}))}}>
                     <Text style={{color: '#1E88E5', fontWeight: '600'}}>등록</Text>
                 </TouchableOpacity>

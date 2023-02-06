@@ -178,7 +178,7 @@ const Withdraw = ({navigation, route}) => {
             tel: '',
             address: '',
             addressDetails: '',
-            expreienceId: route.params.experienceId,
+            experienceId: Number(28),
             blog: '',
             insta: '',
             youtube: '',
@@ -384,7 +384,6 @@ const Withdraw = ({navigation, route}) => {
                         onValueChange={()=>change(2)}
                         color={isChecked[2] ? '#FEB401' : undefined}/>
                     <Text style={{color: '#616161'}}>켐페인 유의사항 및 제 3자 제공에 동의합니다.</Text>
-                    <View style={{position: 'absolute', right: 0, width: 20, height: '100%', justifyContent :'center'}}><Icon name='right' size={12} style={{color: '#616161'}}/></View>
                 </View>
                 <View style={[styles.mainBox, {alignItems: 'center'}]}>
                     {info.memberName == '' || info.tel == '' || info.address == '' || info.addressDetails == '' ||

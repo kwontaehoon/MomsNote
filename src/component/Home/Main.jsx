@@ -223,7 +223,7 @@ const Home = ({navigation}) => {
     console.log('materialPopular: ', materialPopular);
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     console.log('infoPopular: ', infoPopular);
-    const mainData = useSelector(state => {return state.user.data; });
+    const mainData = useSelector(state => { return state.user.data; });
     console.log('mainData: ', mainData);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true, false, false, false]); // 말풍선
@@ -459,7 +459,7 @@ const Home = ({navigation}) => {
                     <StatusBar />
             </SafeAreaView>
             <FocusAwareStatusBar />
-            { userInfo == '' || userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}/>
+            { userInfo == '' || userInfo == undefined || mainData == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}/>
                 : <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}>
             <View style={styles.header}>
             <View style={styles.headerBar}>

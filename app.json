@@ -27,7 +27,7 @@
         "backgroundColor": "#FAA61A",
         "googleServicesFile": "./google-services.json"
       },
-      "package": "com.momsnote"
+      "package": "com.momsnote2"
     },
     "web": {
       "favicon": "./public/assets/favicon.png"
