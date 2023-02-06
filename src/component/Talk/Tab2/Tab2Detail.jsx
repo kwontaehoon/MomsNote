@@ -41,6 +41,7 @@ import Close from '../../../../public/assets/svg/Close.svg'
 import { postShareList } from '../../../Redux/Slices/ShareListSlice'
 import { postHits } from '../../../Redux/Slices/HitsSlice'
 import { postMaterialShare } from '../../../Redux/Slices/MaterialShareSlice'
+import { postUser } from '../../../Redux/Slices/UserSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -286,14 +287,12 @@ const Talk1Sub = ({navigation, route}) => {
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
     const info = [route.params];
-    console.log('info: ', info);
     const info2 = useSelector(state => { return state.shareList.data }); // 게시글 리스트
-    console.log('info2: ', info2);
     const materialShare = useSelector(state => { return state.materialShare.data });
-    console.log('materialShare: ', materialShare);
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
     const [info3, setInfo3] = useState(materialShare);
-    console.log('info3: ', info3);
+
+    const user = useSelector(state => { return state.user.data; });
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
@@ -343,6 +342,7 @@ const Talk1Sub = ({navigation, route}) => {
         dispatch(postCommentFlag({boardId: info[0].boardId}));
         dispatch(postShareList({boardId: info[0].boardId}));
         dispatch(postMaterialShare(materialShareSet));
+        dispatch(postUser());
 
         const user = async() => {
             const user = await AsyncStorage.getItem('user');
@@ -690,7 +690,7 @@ const Talk1Sub = ({navigation, route}) => {
             </View>
             <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : ''} keyboardVerticalOffset={Platform.OS == 'ios' ? 50 : ''}>
             <View style={styles.footer}>
-                <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profile}`}} style={styles.profileBox}/>
+                <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${user.profile}` }} style={styles.profileBox}/>
                 <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: '', level: 0}))}}>
                     <Text style={{color: '#1E88E5', fontWeight: '600'}}>등록</Text>
                 </TouchableOpacity>

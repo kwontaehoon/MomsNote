@@ -1,20 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Modal, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import DropDownPicker from 'react-native-dropdown-picker'
 import moment from 'moment'
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
-import { postBoard } from '../../../../Redux/Slices/BoardSlice'
-import Swiper from 'react-native-swiper'
-import { setBoardRefresh, setBoardCount, setBoardFilter } from '../../../../Redux/Slices/BoardSlice'
-import { useIsFocused } from '@react-navigation/native'
 
 import Like from '../../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../../public/assets/svg/Chat.svg'
-import Pencil from '../../../../../public/assets/svg/pencil.svg'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { postBoardCount, setBoardCountRefresh } from '../../../../Redux/Slices/BoardCountSlice'
 import { postMyLikeBoard } from '../../../../Redux/Slices/MyLikeBoardSlice'
 
 const styles = StyleSheet.create({
@@ -123,7 +115,7 @@ const Talk1 = ({navigation, route}:any) => {
   : (
     <View style={styles.container}>
         <FlatList data={info} renderItem={renderItem2}
-          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
+          keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}>
         </FlatList>
      </View>
   )

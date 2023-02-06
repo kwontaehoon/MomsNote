@@ -10,6 +10,7 @@ import { postExperience } from '../../../../Redux/Slices/ExperienceSlice'
 import { setExperienceCount, setExperienceFilter } from '../../../../Redux/Slices/ExperienceSlice'
 import { postExperienceCount } from '../../../../Redux/Slices/ExperienceCountSlice'
 import Modal from '../../../Modal/First'
+import { postMyExp } from '../../../../Redux/Slices/MyExpSlice'
 
 
 const styles = StyleSheet.create({
@@ -65,12 +66,7 @@ const styles = StyleSheet.create({
 const Talk3 = ({navigation}: any) => {
 
   const dispatch = useDispatch();
-  const info = useSelector(state => {return state.experience.data});
-  const [info2, setInfo2] = useState(info);
-  const infoCount = useSelector(state => { return state.experienceCount.data});
-  const experienceSet = useSelector(state => { return state.experience.refresh; });
-
-  const [loading, setLoading] = useState(false);
+  const info = useSelector(state => {return state.myExp.data});
 
   const [modal, setModal] = useState({
     open: false,
@@ -79,33 +75,13 @@ const Talk3 = ({navigation}: any) => {
   });
 
   useEffect(()=>{
-    setLoading(true);
-    dispatch(postExperience(experienceSet));
-    dispatch(postExperienceCount(infoCount));
-    setLoading(false);
+    dispatch(postMyExp());
   }, []);
 
-  useEffect(()=>{
-    setInfo2(info.filter(x => moment(x.applicationEndDate).diff(moment(), "days") > 0));
-  }, []);
-
-  const renderItem = ({ item }) =>
-    item.appCount >= item.maxPeople || moment(item.applicationEndDate).diff(moment(), "days") <= 0 ?
-    (
-      <TouchableOpacity style={[styles.mainBox, {opacity: 0.5}]} onPress={()=>setModal(prevState=> ({...prevState, open: true}))}>
-        <View style={styles.imageBox}>
-          {item.savedName == null ? '' :<Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} />}
-        </View>
-        <View style={styles.contentBox}>
-          <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#757575', fontSize: 13, fontWeight: '600'}}>모집 종료</Text></View>
-          <View style={styles.content}><Text style={{fontWeight: '500'}}>{item.title}</Text></View>
-          <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>신청 {item.appCount}명/모집 {item.maxPeople}명</Text></View>
-        </View>
-      </TouchableOpacity>
-    ):(
+  const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('체험단 상세페이지', item)}>
       <View style={styles.imageBox}>
-        {item.savedName == null ? '' : <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} />}
+        {item.savedName == null ? '' : <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item[0].savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} />}
       </View>
       <View style={styles.contentBox}>
         <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>{moment(item.applicationEndDate).diff(moment(), "days")}일 남음</Text></View>
@@ -122,15 +98,10 @@ const Talk3 = ({navigation}: any) => {
       <Modal modal={modal} setModal={setModal}/>
       
       <View style={styles.main}>
-        {info2 == '' ? <View style={{marginTop: 180, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>모집중인 체험단이 없습니다.</Text></View>
+        {info == '0' ? <View style={{marginTop: 180, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>모집중인 체험단이 없습니다.</Text></View>
         :
-        <FlatList data={info2} renderItem={renderItem} numColumns={2} showsVerticalScrollIndicator={false}
-          onEndReached={()=>
-          {
-            dispatch(setExperienceCount({page: infoCount > (experienceSet.page * 30) ? experienceSet.page + 1 :experienceSet.page, count: infoCount}))
-          }} onEndReachedThreshold={0}
-          keyExtractor={item => item.appCount}
-          ListFooterComponent={loading && <ActivityIndicator />}>
+        <FlatList data={info} renderItem={renderItem} numColumns={2} showsVerticalScrollIndicator={false}
+          keyExtractor={item => item.appCount}>
           </FlatList>    
           }
       </View>

@@ -221,16 +221,11 @@ const Home = ({navigation}) => {
     const ref = useRef();
     const [date, setDate] = useState(new Date());
     const boardPopular = useSelector(state => { return state.boardPopular.data });
-    console.log('boardPopular: ', boardPopular);
     const materialPopular = useSelector(state => { return state.materialPopular.data });
-    console.log('materialPopular: ', materialPopular);
     const infoPopular = useSelector(state => { return state.infoPopular.data });
-    console.log('infoPopular: ', infoPopular);
     const mainData = useSelector(state => { return state.user.data; });
-    console.log('mainData: ', mainData);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
-    console.log('bubble: ', bubble);
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
 
@@ -278,7 +273,6 @@ const Home = ({navigation}) => {
     }
 
     const bubbleRandom = () => {
-        console.log('fdaf');
         let number = bubble.indexOf(true);
         let arr = Array.from({length: mainData.message.length}, ()=>{return false});
         console.log('arr: ', arr);

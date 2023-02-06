@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, SafeAreaView, StatusBar, Platform } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, SafeAreaView, StatusBar, Modal } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Checkbox from 'expo-checkbox'
 import axios from 'axios'
@@ -8,20 +7,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Check from '.././../../../../public/assets/svg/Check.svg'
 
-import Modal from '../../../Talk/Tab3/Modal/AuthComplete'
-import Modal2 from '../../../Talk/Tab3/Modal/AuthFail'
-import Modal3 from '../../../Talk/Tab3/Modal/AuthReady'
-import Modal4 from '../../../Talk/Tab3/Modal/Cencel'
-import Modal5 from '../../../Talk/Tab3/Modal/CencelConfirm'
-import Modal6 from '../../../Talk/Tab3/Modal/Save'
-import Modal7 from '../../../Talk/Tab3/Modal/PhoneNumber'
-import { useDispatch } from 'react-redux'
-
 import { useSelector } from 'react-redux'
 import {
     SafeAreaProvider,
     useSafeAreaInsets,
   } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux'
+import { postBoardAppFlag } from '../../../../Redux/Slices/BoardAppFlagSlice'
 
 
 const styles = StyleSheet.create({
@@ -77,18 +69,14 @@ const styles = StyleSheet.create({
         right: 15,
         bottom: 15,
     },
-    checkbox: {
-        width: 18,
-        height: 18,
-        marginRight: 8,
-        borderRadius: 3,
-        borderColor: '#E0E0E0',
+    footer:{
+        alignItems: 'center'
     },
     buttonBox:{
         width: '90%',
         height: 56,
         borderRadius: 5,
-        backgroundColor: '#E0E0E0',
+        backgroundColor: '#FEA100',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -132,7 +120,6 @@ const Withdraw = ({navigation, route}) => {
 
     console.log('회원정보: ', route);
 
-
     const DATA = [
         {
           id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -140,11 +127,13 @@ const Withdraw = ({navigation, route}) => {
         },
     ];
 
+    const dispatch = useDispatch();
+
     const [isChecked, setChecked] = useState(Array.from({length: 3}, ()=>{ return false })); // check box
 
     const [SMSFlag, setSMSFlag] = useState({
         open: false,
-        flag: 0 // 이미 인증했는지 검증
+        flag: 1 // 이미 인증했는지 검증
     }); // 본인인증 확인유무
     console.log('SMSFlag: ', SMSFlag);
     const [SMSNumber, setSMSNumber] = useState(); // SMS 번호
@@ -152,16 +141,10 @@ const Withdraw = ({navigation, route}) => {
 
     console.log('smsnumber: ', SMSNumber);
 
-    const appFlag = useSelector(state => { return state.boardApp.data; });
+    const appFlag = useSelector(state => { return state.boardAppFlag.data; });
     console.log('appFlag: ', appFlag);
 
-    const [modal, setModal] = useState(false); // 핸드폰 인증 완료
-    const [modal2, setModal2] = useState(false); // 핸드폰 인증 실패
-    const [modal3, setModal3] = useState(false); // 핸드폰 인증 이미 완료
-    const [modal4, setModal4] = useState(false); // 취소
-    const [modal5, setModal5] = useState(false); // 취소 확인
-    const [modal6, setModal6] = useState(false); // 임시 저장
-    const [modal7, setModal7] = useState(false); // 폰 넘버 갯수 11자이하
+    const [modal, setModal] = useState(false);
     
     const [info, setInfo] = useState( // post info
         {
@@ -180,7 +163,13 @@ const Withdraw = ({navigation, route}) => {
     const [seconds, setSeconds] = useState(parseInt(0));
 
     useEffect(()=>{
+        const experienceId = async() => {
+            const async = await AsyncStorage.getItem('applicationFlag');
+            dispatch(postBoardAppFlag({experienceId: Number(async)}));
+            setInfo(appFlag.data);
+        }
        setInfo(prvState => ({...prvState, address: route == undefined ? '' : route}));
+       experienceId();
     }, [route])
 
     useEffect(() => {
@@ -237,7 +226,7 @@ const Withdraw = ({navigation, route}) => {
     }
     const button = () => {
         switch(true){
-            case SMSFlag.flag == 1 : return (<Text style={{fontWeight: '500'}} onPress={()=>(setSMSFlag(prevState => ({...prevState, flag: 0}), setInfo(prevState => ({...prevState, tel: ''}))))}>변경</Text>)
+            case SMSFlag.flag == 1 : return (<Text style={{fontWeight: '500'}} onPress={()=>(setSMSFlag(prevState => ({...prevState, open: false, flag: 0}), setInfo(prevState => ({...prevState, tel: ''}))))}>변경</Text>)
             case SMSFlag.open == true: return (<Text style={{fontWeight: '500'}}>재요청</Text>)
             case SMSFlag.open == false: return (<Text style={{fontWeight: '500'}}>인증요청</Text>)
         }
@@ -247,17 +236,24 @@ const Withdraw = ({navigation, route}) => {
         
         const token = await AsyncStorage.getItem('token');
         try{
-            const response = await axios({
-                method: 'post',
-                url: 'https://momsnote.net/api/user/update',
-                headers: { 
-                    'Authorization': `bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                data: info
-            });
-            console.log('회원정보 수정 response: ', response.data);
-            AsyncStorage.setItem('applicationFlag', '1');
+            // const response = await axios({
+            //     method: 'post',
+            //     url: 'https://momsnote.net/api/user/update',
+            //     headers: { 
+            //         'Authorization': `bearer ${token}`,
+            //         'Content-Type': 'application/json'
+            //     },
+            //     data: {
+            //         memberName: info.memberName,
+            //         tel: info.tel,
+            //         addressDetails: info.addressDetails,
+            //         experienceId: '',
+            //         address: '',
+            //         blog: '',
+            //         insta: '',
+            //         youtube: ''
+            //     }
+            // });
             navigation.goBack();
         }catch(error){
             console.log('체험단 신청 error: ', error);
@@ -282,7 +278,7 @@ const Withdraw = ({navigation, route}) => {
                     </View> : ''}
 
                     <Text style={{fontSize: 16, fontWeight: '500'}}>연락처</Text>
-                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info.tel} keyboardType='number-pad' editable={SMSFlag.flag == 0 ? true : false} maxLength={11}
+                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info.tel} keyboardType='number-pad' maxLength={11}
                          onChangeText={(e) => setInfo((prevState) => ({...prevState, tel: e}))}>
                     </TextInput>
                     <TouchableOpacity style={styles.certificateBox} onPress={()=>( info.tel.length < 11 ? setModal7(!modal7) : sms('재요청'), setSMSFlag(prevState => ({...prevState, flag: 0})))}>
@@ -330,37 +326,10 @@ const Withdraw = ({navigation, route}) => {
                     </View>
                     <TextInput style={styles.textBox} placeholder='상세주소 입력' value={info.addressDetails} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, addressDetails: e }))}></TextInput>
                 </View>
-                <View style={[styles.mainBox, {flexDirection: 'row', borderBottomWidth: 1, height: 40, borderColor: '#EEEEEE', marginBottom: 15}]}>
-                <Checkbox
-                    style={styles.checkbox}
-                    value={isChecked[0]}
-                    onValueChange={()=>change(0)}
-                    color={isChecked[0] ? '#FEB401' : undefined}/>
-                    <Text>전체동의</Text>
-                </View>
-                <View style={[styles.mainBox, {flexDirection: 'row',  marginBottom: 15}]}>
-                <Checkbox
-                    style={styles.checkbox}
-                    value={isChecked[1]}
-                    onValueChange={()=>change(1)}
-                    color={isChecked[1] ? '#FEB401' : undefined}/>
-                    <Text style={{color: '#616161'}}>초상권 활용에 동의합니다.</Text>
-                </View>
-                <View style={[styles.mainBox, {flexDirection: 'row'}]}>
-                    <Checkbox
-                        style={styles.checkbox}
-                        value={isChecked[2]}
-                        onValueChange={()=>change(2)}
-                        color={isChecked[2] ? '#FEB401' : undefined}/>
-                    <Text style={{color: '#616161'}}>켐페인 유의사항 및 제 3자 제공에 동의합니다.</Text>
-                    <View style={{position: 'absolute', right: 0, width: 20, height: '100%', justifyContent :'center'}}><Icon name='right' size={12} style={{color: '#616161'}}/></View>
-                </View>
-                <View style={[styles.mainBox, {alignItems: 'center'}]}>
-                    {info.memberName == '' || info.tel == '' || info.address == '' || info.addressDetails == '' ||
-        (info.blog == '' && info.youtube == '' && info.insta == '') || SMSFlag.flag == 0 || !isChecked[0] ?
-        <View style={styles.buttonBox}><Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text></View> : <TouchableOpacity style={[styles.buttonBox, {backgroundColor: '#FEA100'}]} onPress={submit}>
-                        <Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text>
-                    </TouchableOpacity>}
+                <View style={styles.footer}>
+                    <TouchableOpacity style={styles.buttonBox} onPress={()=>setModal(!modal)}>
+                        <Text style={{fontSize: 18, fontWeight: '600', color: 'white'}}>적용</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
@@ -372,21 +341,32 @@ const Withdraw = ({navigation, route}) => {
             <SafeAreaView style={{ backgroundColor: 'white' }}>
                     <StatusBar />
             </SafeAreaView>
-            <SafeAreaView style={styles.container}>
-
-            <Modal modal={modal} setModal={setModal}/>
-            <Modal2 modal2={modal2} setModal2={setModal2} />
-            <Modal3 modal3={modal3} setModal3={setModal3} />
-            <Modal4 navigation={navigation} modal4={modal4} setModal4={setModal4} />
-            <Modal5 modal5={modal5} setModal5={setModal5} />
-            <Modal6 navigation={navigation} modal6={modal6} setModal6={setModal6} info={info} />
-            <Modal7 modal7={modal7} setModal7={setModal7} />
+            { info == undefined ? '' : <SafeAreaView style={styles.container}>
             
-
             <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
             </FlatList>
-        </SafeAreaView>
+
+            <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
+            onRequestClose={() => {
+            setModal(!modal)}}>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                    <View style={styles.modalContainer2}>
+                        <View style={styles.modalBox}>
+                            <Text style={{fontSize: 16, paddingTop: 10}}>참가하신 체험단 신청이 수정되었습니다.</Text>
+                        </View>
+                        <View style={styles.modalBox}>
+                            <TouchableOpacity style={styles.modal} onPress={()=>{setModal(!modal), submit()}}>
+                                <Text style={{color: 'white', fontSize: 16}}>확인</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+
+        </SafeAreaView>}
 
 </SafeAreaProvider>
     

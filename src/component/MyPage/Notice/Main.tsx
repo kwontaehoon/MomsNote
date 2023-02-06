@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 
 // 문의내역
@@ -30,11 +29,9 @@ const styles = StyleSheet.create({
 const Inquiry3 = ({navigation}) => {
 
   const [info, setInfo] = useState([]);
-  console.log('공지사항 info: ', info);
 
   useEffect(()=>{
     const Inquiry = async() => {
-      const token = await AsyncStorage.getItem('token');
       const response = await axios({
         method: 'post',
         url: 'https://momsnote.net/api/board/notice',

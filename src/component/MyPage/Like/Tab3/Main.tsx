@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ActivityIndicator } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
-import axios from 'axios'
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
-import { postExperience } from '../../../../Redux/Slices/ExperienceSlice'
-import { setExperienceCount, setExperienceFilter } from '../../../../Redux/Slices/ExperienceSlice'
 import { postExperienceCount } from '../../../../Redux/Slices/ExperienceCountSlice'
 import { postMyLikeExp } from '../../../../Redux/Slices/MyLikeExpSlice'
 
@@ -79,13 +75,8 @@ const Talk3 = ({navigation}: any) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => {return state.myLikeExp.data});
-  console.log('체험단 info: ', info);
   const infoCount = useSelector(state => { return state.experienceCount.data});
-  console.log('체험단 infoCount: ', infoCount);
-  const experienceSet = useSelector(state => { return state.experience.refresh; });
-  console.log('experienceSet: ', experienceSet);
   const experienceCountSet = useSelector(state => { return state.experience.refresh; });
-  console.log('experienceCountSet: ', experienceCountSet);
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');

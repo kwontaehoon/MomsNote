@@ -34,7 +34,6 @@ const Talk1 = ({navigation}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.myLikeList.data });
-  console.log('like list info: ', info);
 
 useEffect(()=>{
   dispatch(postMyLikeList());

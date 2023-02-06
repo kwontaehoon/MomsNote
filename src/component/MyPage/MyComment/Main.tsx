@@ -52,12 +52,9 @@ const Main = () => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.myComment.data; });
-  console.log('내가 쓴 댓글 info: ', info);
   const myCommentSet = useSelector(state => { return state.myComment.refresh; });
   const myCommentCountSet = useSelector(state => { return state.myComment.refresh; });
   const infoCount = useSelector(state => { return state.myCommentCount.data; });
-  console.log('내가 쓴 댓글 info 갯수: ', infoCount);
-
   const [userInfo, setUserInfo] = useState();
 
   useEffect(()=>{
@@ -100,14 +97,14 @@ const dayCalculate = (date) => {
 
   
 
-  return userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
+  return info == '' || userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
   : (
     <View style={styles.container}>
 
       {/* <Modal modal={modal} setModal={modal} /> */}
 
       <View style={styles.main}>
-      {info == '' || info == undefined ?
+      {info == '0' ?
         <View style={{marginTop: 200, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 댓글이 없습니다.</Text></View>
         :
         <FlatList data={info} renderItem={renderItem}

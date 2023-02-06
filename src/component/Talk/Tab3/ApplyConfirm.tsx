@@ -112,7 +112,7 @@ const Withdraw = ({navigation,route}) => {
     ];
     const dispatch = useDispatch();
     const info = useSelector(state => { return state.boardAppFlag.data });
-    console.log('info: ', info);
+    console.log('신청정보 info: ', info);
 
     const [SMSFlag, setSMSFlag] = useState({
         open: false,
@@ -134,7 +134,7 @@ const Withdraw = ({navigation,route}) => {
                 data: { applicationId: info.data.applicationId }
             });
             console.log('체험단 신청 취소 response: ', response.data);
-            setModal(!modal);
+            navigation.goBack();
             setModal2(!modal2);
         }catch(error){
             console.log('체험단 신청 취소 error: ', error);
@@ -193,7 +193,7 @@ const Withdraw = ({navigation,route}) => {
             <SafeAreaView style={{ backgroundColor: 'white' }}>
                     <StatusBar />
             </SafeAreaView>
-            <SafeAreaView style={styles.container}>
+            {info == 400 ? '' : <SafeAreaView style={styles.container}>
             
             <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
@@ -210,7 +210,7 @@ const Withdraw = ({navigation,route}) => {
                     <Text style={{fontSize: 16, paddingTop: 5}}>취소할 경우 선정자에서 제외됩니다.</Text>
                 </View>
                 <View style={styles.modalBox}>
-                    <TouchableOpacity style={styles.modal} onPress={submit}>
+                    <TouchableOpacity style={styles.modal} onPress={()=>{setModal(!modal), setModal2(!modal2)}}>
                         <Text style={{color: 'white', fontSize: 16}}>네</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModal(!modal)}>
@@ -232,7 +232,7 @@ const Withdraw = ({navigation,route}) => {
                             <Text style={{fontSize: 16, paddingTop: 10}}>참가하신 체험단 신청이 취소되었습니다.</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal} onPress={()=>{setModal2(!modal2), navigation.goBack()}}>
+                            <TouchableOpacity style={styles.modal} onPress={()=>{setModal2(!modal2), submit()}}>
                                 <Text style={{color: 'white', fontSize: 16}}>확인</Text>
                             </TouchableOpacity>
                         </View>
@@ -241,7 +241,7 @@ const Withdraw = ({navigation,route}) => {
             </View>
         </Modal>
 
-        </SafeAreaView>
+        </SafeAreaView>}
 
 </SafeAreaProvider>
     

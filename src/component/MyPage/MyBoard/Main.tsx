@@ -62,7 +62,6 @@ const Talk1 = ({navigation, route}:any) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.myBoard.data; });
-  console.log('내가쓴 게시물: ', info);
 
   useEffect(()=>{
     dispatch(postMyBoard());

@@ -10,6 +10,7 @@ import { postExperience } from '../../../../Redux/Slices/ExperienceSlice'
 import { setExperienceCount, setExperienceFilter } from '../../../../Redux/Slices/ExperienceSlice'
 import { postExperienceCount } from '../../../../Redux/Slices/ExperienceCountSlice'
 import Modal from '../../../Modal/First'
+import { postMyExp } from '../../../../Redux/Slices/MyExpSlice'
 
 
 const styles = StyleSheet.create({
@@ -65,13 +66,8 @@ const styles = StyleSheet.create({
 const Talk3 = ({navigation}: any) => {
 
   const dispatch = useDispatch();
-  const info = useSelector(state => {return state.experience.data});
-  console.log('종료된 체험단 info: ', info);
-  const [info2, setInfo2] = useState();
-  const infoCount = useSelector(state => { return state.experienceCount.data});
-  const experienceSet = useSelector(state => { return state.experience.refresh; });
+  const info = useSelector(state => {return state.myExp.data});
 
-  const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState({
     open: false,
     content: '이미 모집이 종료된 게시물입니다.',
@@ -79,15 +75,9 @@ const Talk3 = ({navigation}: any) => {
   });
 
   useEffect(()=>{
-    setLoading(true);
-    dispatch(postExperience(experienceSet));
-    dispatch(postExperienceCount(infoCount));
-    setLoading(false);
+    dispatch(postMyExp());
   }, []);
 
-  useEffect(()=>{
-    setInfo2(info.filter(x => moment(x.applicationEndDate).diff(moment(), "days") <= 0));
-  }, []);
 
   const renderItem = ({ item }) =>
     item.appCount >= item.maxPeople || moment(item.applicationEndDate).diff(moment(), "days") <= 0 ?
@@ -122,16 +112,10 @@ const Talk3 = ({navigation}: any) => {
       <Modal modal={modal} setModal={setModal}/>
       
       <View style={styles.main}>
-        {info2 == '' ? <View style={{marginTop: 180, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>모집중인 체험단이 없습니다.</Text></View>
+        {info == '0' ? <View style={{marginTop: 180, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>모집중인 체험단이 없습니다.</Text></View>
         :
-        <FlatList data={info2} renderItem={renderItem} numColumns={2} showsVerticalScrollIndicator={false}
-          onEndReached={()=>
-          {
-            dispatch(setExperienceCount({page: infoCount > (experienceSet.page * 30) ? experienceSet.page + 1 :experienceSet.page, count: infoCount}))
-          }} onEndReachedThreshold={0}
-          keyExtractor={item => item.appCount}
-          ListFooterComponent={loading && <ActivityIndicator />}>
-          </FlatList>
+        <FlatList data={info} renderItem={renderItem} numColumns={2} showsVerticalScrollIndicator={false}>
+        </FlatList>
           }
       </View>
      </View>

@@ -181,7 +181,7 @@ const Withdraw = ({navigation, route}) => {
             tel: '',
             address: '',
             addressDetails: '',
-            experienceId: Number(28),
+            experienceId: Number(route.params.experienceId),
             blog: '',
             insta: '',
             youtube: '',
@@ -263,7 +263,7 @@ const Withdraw = ({navigation, route}) => {
     }
     const button = () => {
         switch(true){
-            case SMSFlag.flag == 1 : return (<Text style={{fontWeight: '500'}} onPress={()=>(setSMSFlag(prevState => ({...prevState, flag: 0}), setInfo(prevState => ({...prevState, tel: ''}))))}>변경</Text>)
+            case SMSFlag.flag == 1 : return (<Text style={{fontWeight: '500'}} onPress={()=>(setSMSFlag(prevState => ({...prevState, open: false, flag: 0}), setInfo(prevState => ({...prevState, tel: ''}))))}>변경</Text>)
             case SMSFlag.open == true: return (<Text style={{fontWeight: '500'}}>재요청</Text>)
             case SMSFlag.open == false: return (<Text style={{fontWeight: '500'}}>인증요청</Text>)
         }
@@ -283,7 +283,7 @@ const Withdraw = ({navigation, route}) => {
                 data: info
             });
             console.log('체험단 신청 response: ', response.data);
-            AsyncStorage.setItem('applicationFlag', '1');
+            AsyncStorage.setItem('applicationFlag', `${info.experienceId}`);
             setModal8(!modal8);
         }catch(error){
             console.log('체험단 신청 error: ', error);
@@ -315,7 +315,7 @@ const Withdraw = ({navigation, route}) => {
                     </View> : ''}
 
                     <Text style={{fontSize: 16, fontWeight: '500'}}>연락처</Text>
-                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info.tel} keyboardType='number-pad' editable={SMSFlag.flag == 0 ? true : false} maxLength={11}
+                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info.tel} keyboardType='number-pad' maxLength={11}
                          onChangeText={(e) => setInfo((prevState) => ({...prevState, tel: e}))}>
                     </TextInput>
                     <TouchableOpacity style={styles.certificateBox} onPress={()=>( info.tel.length < 11 ? setModal7(!modal7) : sms('재요청'), setSMSFlag(prevState => ({...prevState, flag: 0})))}>
