@@ -11,6 +11,7 @@ import ConfirmModal from './Modal/ConfirmModal'
 import DotModal from './Modal/DotModal'
 import PriceEdit from './Modal/PriceEdit'
 import FirstModal from '../../Modal/First'
+import CoarchMark from './Modal/CoarchMark'
 
 import Download from '../../../../public/assets/svg/Download.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
@@ -181,7 +182,6 @@ const Talk1Sub = ({navigation, route}) => {
     },
   ];
 
-  const insets = useSafeAreaInsets();
   const ref = useRef();
   const dispatch = useDispatch();
   const info = useSelector(state => state.material.data);
@@ -208,12 +208,11 @@ const Talk1Sub = ({navigation, route}) => {
     buttonCount: 1
   });
 
+  const [modal8, setModal8] = useState(true); // coarchmark
   const [sumResult, setSumResult] = useState({
     sum: 0,
     exp: 0
   }); // 총 예산
-
-  console.log('sumResult: ', sumResult);
 
   useEffect(()=>{
     dispatch(postMaterial(materialSet));
@@ -255,25 +254,7 @@ const save = async() => {
         let { status } = await MediaLibrary.requestPermissionsAsync();
         const asset = await MediaLibrary.createAssetAsync(test);
         const moms = await MediaLibrary.getAlbumAsync('맘스노트');
-
-        console.log('status: ', status);
-        console.log('asset: ', asset);
-        console.log('moms: ', moms);
              
-        // if(status === 'granted'){
-            // const kwon = await MediaLibrary.getAlbumAsync('DCIM');
-            // const moms = await MediaLibrary.getAlbumAsync('맘스노트');
-            // if(moms === null){
-            //     MediaLibrary.createAlbumAsync('맘스노트', asset);
-            // }
-            // MediaLibrary.addAssetsToAlbumAsync(moms, moms.id);
-            // MediaLibrary.migrateAlbumIfNeededAsync(moms.id);
-            // const album = await MediaLibrary.getAlbumAsync('맘스노트');
-            // // console.log('album: ', album);
-
-            // MediaLibrary.createAlbumAsync('맘스노트', asset);
-            // // const asset = await MediaLibrary.createAssetAsync(test);
-        // }
     }
     setTest(undefined);
 }
@@ -381,6 +362,7 @@ const capture = async() => {
       <DotModal modal5={modal5} setModal5={setModal5} />
       <PriceEdit modal6={modal6} setModal6={setModal6} setModal7={setModal7} />
       <FirstModal modal={modal7} setModal={setModal7} />
+      <CoarchMark modal={modal8} setModal={setModal8}/>
 
       <View style={styles.header}>
           

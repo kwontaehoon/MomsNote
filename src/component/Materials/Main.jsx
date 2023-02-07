@@ -17,7 +17,8 @@ import BrandNameFlag from './Modal/BrendNameFlag'
 import First from '../Modal/First'
 import Second from '../Modal/Second'
 import WebViewModal from './Modal/WebView'
-import { useIsFocused } from '@react-navigation/native'
+import CoarchMark from './Modal/CoarchMark'
+import CoarchMark2 from './Modal/CoarchMark2'
 import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
 import axios from 'axios'
@@ -91,14 +92,14 @@ const styles = StyleSheet.create({
   main3:{
     alignItems: 'center',
     paddingBottom: 15,
-    backgroundColor: '#F5F5F5'
+    backgroundColor: '#F5F5F5',
   },
   main3Box:{
     backgroundColor: 'white',
     width: '90%',
     borderRadius: 10,
     paddingLeft: 10,
-    paddingRight: 10
+    paddingRight: 10,
   },
   main3BoxHeader:{
     height: 44,
@@ -289,6 +290,8 @@ const Navigation = ({navigation, route}) => {
     open: false,
     link: ''
   }); // webView
+  const [modal5, setModal5] = useState(true); // coarchmark
+  const [modal6, setModal6] = useState(true); // coarchmark2 brand
   const animation = useRef(new Animated.Value(0)).current;
 
   useEffect(()=>{
@@ -537,6 +540,8 @@ const save = async() => {
         <First modal={modal2} setModal={setModal2}/>
         <Second modal={modal3} setModal={setModal3}/>
         <WebViewModal modal4={modal4} setModal4={setModal4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} />
+        <CoarchMark modal={modal5} setModal={setModal5}/>
+        {/* <CoarchMark2 modal={modal6} setModal={setModal6} /> */}
 
         <View style={styles.header}>
         <Text style={{fontSize: 17, fontWeight: '600'}}>출산준비물</Text>
@@ -553,7 +558,7 @@ const save = async() => {
             <TouchableOpacity activeOpacity={1} onPress={()=>setModalVisible7(!modalVisible7)}><More /></TouchableOpacity>
           </View>
           <Text style={{fontSize: 16, fontWeight: '600'}}>전체 ({purchaseCount.length}/{info.length})</Text>
-        </View>
+      </View>
         
         {info !== '' ? <FlatList data={DATA3} renderItem={renderItem}
               keyExtractor={index => String(index)} showsVerticalScrollIndicator={false}>

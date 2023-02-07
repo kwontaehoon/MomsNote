@@ -386,7 +386,7 @@ const Withdraw = ({navigation, route}) => {
                         value={isChecked[2]}
                         onValueChange={()=>change(2)}
                         color={isChecked[2] ? '#FEB401' : undefined}/>
-                    <Text style={{color: '#616161'}}>켐페인 유의사항 및 제 3자 제공에 동의합니다.</Text>
+                    <Text style={{color: '#616161'}}>캠페인 유의사항 및 제 3자 제공에 동의합니다.</Text>
                 </View>
                 <View style={[styles.mainBox, {alignItems: 'center'}]}>
                     {info.memberName == '' || info.tel == '' || info.address == '' || info.addressDetails == '' ||

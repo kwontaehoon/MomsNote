@@ -7,7 +7,7 @@ import Modal from './Modal/ListSelect'
 import moment from 'moment'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-import MainImage from '../../../public/assets/svg/main.svg'
+import CoarchMark from './Modal/CoarchMark'
 import Bell from '../../../public/assets/svg/Bell.svg'
 import MyPage from '../../../public/assets/svg/Mypage.svg'
 
@@ -35,12 +35,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 17,
       },
-      headerBar:{
+    headerBar:{
           position: 'absolute',
           right: 20,
           alignItems: 'center',
           flexDirection: 'row',
-      },
+    },
     main:{
         height: 500,
         padding: 20,
@@ -221,13 +221,16 @@ const Home = ({navigation}) => {
     const ref = useRef();
     const [date, setDate] = useState(new Date());
     const boardPopular = useSelector(state => { return state.boardPopular.data });
+    console.log('boardPopular: ', boardPopular);
     const materialPopular = useSelector(state => { return state.materialPopular.data });
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     const mainData = useSelector(state => { return state.user.data; });
+    console.log('mainData: ', mainData);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
+    const [modal2, setModal2] = useState(true); // 코치마크
 
     const [userInfo, setUserInfo] = useState();
 
@@ -477,13 +480,14 @@ const Home = ({navigation}) => {
             { userInfo == '' || userInfo == undefined || mainData == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}/>
                 : <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}>
             <View style={styles.header}>
-            <View style={styles.headerBar}>
-                <Bell style={{marginRight: 20}} onPress={()=>navigation.navigate('알림')}/>
-                <MyPage style={{marginRight: 5}} onPress={()=>navigation.navigate('마이페이지')}/>
+                <View style={styles.headerBar}>
+                    <Bell style={{marginRight: 20}} onPress={()=>navigation.navigate('알림')}/>
+                    <MyPage style={{marginRight: 5}} onPress={()=>navigation.navigate('마이페이지')}/>
+                </View>
             </View>
-        </View>
             
             <Modal modal={modal} setModal={setModal} />
+            <CoarchMark modal={modal2} setModal={setModal2}/>
 
             <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
                 keyExtractor={item => item.id}>
