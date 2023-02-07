@@ -295,20 +295,6 @@ const Navigation = ({modal, setModal}) => {
     setPurchaseCount(info.filter(x => x.id == 1));
   }, [info]);
 
-  const SVGSelect = (e) => {
-    switch(e){
-        case 0: return(<M1 />) 
-        case 1: return(<M2 />) 
-        case 2: return(<M3 />) 
-        case 3: return(<M4 />) 
-        case 4: return(<M5 />) 
-        case 5: return(<M6 />) 
-        case 6: return(<M7 />) 
-        case 7: return(<M8 />) 
-        case 8: return(<M9 />) 
-    }
-}
-
 const optionBox = (e) => {
     switch(e){
       case '필수': return ( <View style={[styles.filterSub]}></View> )
@@ -385,7 +371,10 @@ const optionBox = (e) => {
             <View style={styles.modalView}>
 
             <View style={styles.imageBox6}>
-                    <View style={[styles.Top, {alignItems: 'flex-start'}]}><Close fill='white' onPress={()=>setModal(!modal)}/></View>
+                    <View style={[styles.Top, {alignItems: 'flex-start'}]}><Close fill='white' onPress={()=>{
+                        setModal(!modal)}
+                        
+                        }/></View>
                     <View style={[styles.Bottom, {paddingTop: 10, flexDirection: 'row', justifyContent: 'flex-start'}]}>
                         <Text style={{color: '#FEA100', fontSize: 15, fontWeight: '700'}}>다시 보지 않기</Text>
                         <Checkbox

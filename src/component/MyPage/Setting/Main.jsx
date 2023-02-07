@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     modalBox:{
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 20,
+        padding: 15,
     },
     modal:{
         backgroundColor: '#FEA100',
@@ -106,15 +106,16 @@ const Main = ({navigation}) => {
     const [alarmStart, setAlarmStart] = useState('22:00');
     const [alarmEnd, setAlarmEnd] = useState('07:00');
 
-    const [token, setToken] = useState();
+    const [user, setUser] = useState();
+    console.log('설정 user: ', user);
 
     useEffect(()=>{
         const user = async() => {
-            const asyncStorage = await AsyncStorage.getItem('token');
-            setToken(asyncStorage);
+           const user = await AsyncStorage.getItem('user');
+            setUser(JSON.parse(user));
         }
         user();
-    })
+    }, [])
 
     const modal = (e) => {
         let arr = [...isEnabled];
@@ -190,6 +191,7 @@ const Main = ({navigation}) => {
     };
 
     const logout = async() => {
+        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
                 method: 'post',

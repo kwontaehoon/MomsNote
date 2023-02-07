@@ -7,8 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import jwtDecode from 'jwt-decode'
 import moment from 'moment'
 import Modal from './Modal/Calendar'
-
-
+import Modal2 from './Modal/Calendar2'
 import Calendar from '../../../public/assets/svg/Calendar.svg'
 import ArrowRight from '../../../public/assets/svg/Arrow-Right.svg'
 import Check from '../../../public/assets/svg/Check.svg'
@@ -134,9 +133,9 @@ const AddPage = ({navigation, route}) => {
     console.log('info: ', info);
 
     const [modal, setModal] = useState(false);
-    const [emailcon, setEmailCon] = useState(0);
-    console.log('emailcon: ', emailcon);
+    const [modal2, setModal2] = useState(false);
 
+    const [emailcon, setEmailCon] = useState(0);
     const submit = async() => {
 
         AsyncStorage.setItem('user', JSON.stringify(info));
@@ -189,12 +188,11 @@ const AddPage = ({navigation, route}) => {
         
         console.log('selectDate: ', moment(selectedDate).diff(moment(), 'day'));
 
-        
-
-        moment(selectedDate).diff(moment(), 'day') > 280 ? (setShow(false), setModal(!modal))
-        :
-        setShow(false);
-        setInfo((prevState) => ({ ...prevState, dueDate: `${Year}-${Month}-${Date}`}))
+        switch(true){
+            case moment(selectedDate).diff(moment(), 'day') > 280: setShow(false); setModal(!modal); break;
+            case moment(selectedDate).diff(moment(), 'day') < 0: setShow(false); setModal2(!modal2); break;
+            default: setShow(false); setInfo((prevState) => ({ ...prevState, dueDate: `${Year}-${Month}-${Date}`}));
+        }
       };
     
     const showMode = (currentMode) => {
@@ -241,14 +239,11 @@ const AddPage = ({navigation, route}) => {
         <View style={styles.container2}>
             <View style={styles.main}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>닉네임</Text>
-                <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.(특수문자 제외)</Text>
+                <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.</Text>
                     <TextInput placeholder='닉네임 입력' style={[styles.textBox, {borderColor: bottomColor[0] ? '#FEB401' : '#EEEEEE'}]} maxLength={8}
                     value={info.nickname}
                     onFocus={()=>change(0)}
-                    onChangeText={(e) => {
-                        let regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$÷×￦%&\'\"\\\(\=]/gi;
-                        regExp.test(e) ? (e = e.substring(0, e.length - 1), setInfo((prevState) => ({ ...prevState, nickname: e}))) : setInfo((prevState) => ({ ...prevState, nickname: e}));
-                    }}>
+                    onChangeText={(e) => { setInfo((prevState) => ({ ...prevState, nickname: e})); }}>
                     </TextInput>
             </View>
             <View style={styles.main2}>
@@ -277,14 +272,11 @@ const AddPage = ({navigation, route}) => {
             </View>
             <View style={styles.main4}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>태명</Text>
-                <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.(특수문자 제외)</Text>
+                <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.</Text>
                     <TextInput placeholder='태명 입력' style={[styles.textBox, {borderColor: bottomColor[3] ? '#FEB401' : '#EEEEEE'}]} maxLength={8}
                     value={info.babyName}
                     onFocus={()=>change(3)}
-                    onChangeText={(e) => {
-                        let regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$÷×￦%&\'\"\\\(\=]/gi;
-                        regExp.test(e) ? (e = e.substring(0, e.length - 1), setInfo((prevState) => ({ ...prevState, babyName: e}))) : setInfo((prevState) => ({ ...prevState, babyName: e}));
-                    }}>
+                    onChangeText={(e) => { setInfo((prevState) => ({ ...prevState, babyName: e})); }}>
                     </TextInput>
             </View>
             <View style={styles.main5}>
@@ -344,6 +336,7 @@ const AddPage = ({navigation, route}) => {
     <View style={styles.container}>
 
         <Modal modal={modal} setModal={setModal} show={show} setShow={setShow}/>
+        <Modal2 modal={modal2} setModal={setModal2} show={show} setShow={setShow} />
 
         {show && (
           <DateTimePicker

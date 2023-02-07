@@ -290,7 +290,7 @@ const Navigation = ({navigation, route}) => {
     open: false,
     link: ''
   }); // webView
-  const [modal5, setModal5] = useState(true); // coarchmark
+  const [modal5, setModal5] = useState(false); // coarchmark
   const [modal6, setModal6] = useState(true); // coarchmark2 brand
   const animation = useRef(new Animated.Value(0)).current;
 
@@ -298,13 +298,18 @@ const Navigation = ({navigation, route}) => {
     const materialPurchase = async() =>{
       const asyncStorage = await AsyncStorage.getItem('materialPurchase');
       setPurchaseCheckBox(asyncStorage);
+      const coarchMark = await AsyncStorage.getItem('coarchMarkMaterial');
+
+      // coarchMark == null ? setModal5(true) : '';
     }
     materialPurchase();
+
+    
   }, [modalVisible]);
 
   useEffect(()=>{
     dispatch(postMaterial(materialSet));
-  }, [modalVisible, modalVisible8, modalVisible9]);
+  }, [modalVisible, modalVisible8, modalVisible9, modalVisible6]);
 
   useEffect(()=>{
     let sum = 0;
@@ -465,7 +470,7 @@ const save = async() => {
               color={x.id == 0 ? undefined : '#FEB401'}
               onValueChange={()=>{
                 switch(true){
-                  case x.itemName == null: setModal2(prevState => ({...prevState, open: true, buttonCount: 1, content: '브랜드를 체크해주세요'})); break;
+                  // case x.itemName == null: setModal2(prevState => ({...prevState, open: true, buttonCount: 1, content: '브랜드를 체크해주세요'})); break;
                   case x.id == 0 && purchaseCheckBox == null : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: x.needsBrandId, needsId: x.needsId})); break;
                   case x.id == 0 : purchase(x.needsId, x.needsBrandId); break;
                   default : purchaseCencel(x.needsId);

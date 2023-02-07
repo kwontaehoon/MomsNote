@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from 'react-native'
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,12 +13,11 @@ const styles = StyleSheet.create({
         height: '100%',
     },
     header:{
-        height: '13%',
         flexDirection: 'row',
         paddingLeft: 10,
         paddingRight: 10,
         backgroundColor: 'white',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     headerBox:{
         flexDirection: 'row',
@@ -44,6 +43,16 @@ const styles = StyleSheet.create({
         paddingRight: 15,
         paddingBottom: 8,
     },
+    main:{
+
+    },
+    main2:{
+
+    },
+    main3:{
+
+    },
+    
     mainBox:{
         padding: 16,
         justifyContent: 'center',
@@ -51,6 +60,13 @@ const styles = StyleSheet.create({
     },
 })
 const Main = ({navigation}) => {
+
+    const DATA = [
+        {
+          id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+          title: '전체'
+        },
+      ];
 
     const dispatch = useDispatch();
     const user = useSelector(state => { return state.user.data });
@@ -108,9 +124,9 @@ const Main = ({navigation}) => {
         setRefresh(result.assets[0].uri);
   };
 
-  return userInfo == undefined ? <View></View> : (
-    <View style={styles.container}>
-        <View style={styles.header}>
+  const renderItem = ({ item }) => (
+    <>
+     <View style={styles.header}>
             <View style={styles.headerBox}>
                 <TouchableOpacity style={styles.profileBox} onPress={pickImage}>
                     {userInfo.profile == undefined ? <Image source={require('../../../public/assets/image/baby1.png')}/>
@@ -144,6 +160,14 @@ const Main = ({navigation}) => {
         </View>
         <View style={styles.main3}></View>
         <View style={{backgroundColor: '#F5F5F5', height: '8%'}}></View>
+    </>
+  );
+
+  return userInfo == undefined ? <View></View> : (
+    <View style={styles.container}>
+        <FlatList data={DATA} renderItem={renderItem}
+            keyExtractor={item => item.id}>
+        </FlatList>
     </View>
   )
 }

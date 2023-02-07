@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
 import axios from 'axios'
 
+import ArrowRight from '../../../../public/assets/svg/Arrow-Right.svg'
+
 const styles = StyleSheet.create({
     container:{
       height: '100%',
@@ -14,6 +16,19 @@ const styles = StyleSheet.create({
     },
     main:{
       padding: 20,
+    },
+    footer:{
+      height: 100,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    buttonBox:{
+      borderWidth: 1,
+      width: 200,
+      height: 50,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
 })
 const Terms1 = () => {
@@ -50,6 +65,12 @@ const Terms1 = () => {
         </View>
         <View style={styles.main}>
           <Text style={{fontSize: 16, lineHeight: 22}}>{info}</Text>
+        </View>
+        <View style={styles.footer}>
+          <View style={styles.buttonBox}>
+            <Text>이전 개인정보처리방침 보기</Text>
+            <ArrowRight fill='black' width={16} height={16}/>
+          </View>
         </View>
     </View>
     )

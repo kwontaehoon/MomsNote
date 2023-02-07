@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     bubble:{
+        maxWidth: 300,
         paddingTop: 8,
         paddingBottom: 8,
         paddingLeft: 15,
@@ -221,22 +222,21 @@ const Home = ({navigation}) => {
     const ref = useRef();
     const [date, setDate] = useState(new Date());
     const boardPopular = useSelector(state => { return state.boardPopular.data });
-    console.log('boardPopular: ', boardPopular);
     const materialPopular = useSelector(state => { return state.materialPopular.data });
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     const mainData = useSelector(state => { return state.user.data; });
-    console.log('mainData: ', mainData);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
-    const [modal2, setModal2] = useState(true); // 코치마크
+    const [modal2, setModal2] = useState(false); // 코치마크
 
     const [userInfo, setUserInfo] = useState();
 
     useEffect(()=>{
         const recommendList = async() => {
             const asyncStorage = await AsyncStorage.getItem('recommendList');
+            const coarchMark = await AsyncStorage.getItem('coarchMarkHome');
             const user = await AsyncStorage.getItem('user');
             const userId = await AsyncStorage.getItem('userId');
             console.log('user: ', JSON.parse(user));
@@ -246,6 +246,7 @@ const Home = ({navigation}) => {
             setUserInfo(JSON.parse(user));
 
             asyncStorage == null ? setModal(true) : '';
+            // coarchMark == null ? setModal2(true) : '';
         }
         recommendList();
 
@@ -278,7 +279,6 @@ const Home = ({navigation}) => {
     const bubbleRandom = () => {
         let number = bubble.indexOf(true);
         let arr = Array.from({length: mainData.message.length}, ()=>{return false});
-        console.log('arr: ', arr);
         if(number === 3){ number = -1 }
         arr[number+1] = !arr[number+1];
         setBubble(arr); 
@@ -329,32 +329,15 @@ const Home = ({navigation}) => {
                 </View>
                 <View style={styles.mainBox2}>
 
-                    {mainData.message[0] == null ? '' :  mainData.message.map(x => {
+                    {mainData.message[0] == null ? '' :  mainData.message.map((x, index) => {
                         console.log('x: ', x);
                         return(
-                            <View style={[styles.bubble, {top: 20, right: 20, display: bubble[0] ? 'flex' : 'none'}]}>
-                                <View style={[styles.triangle, {borderBottomColor: bubble[0] ? 'white' : 'transparent'}]}></View>
+                            <View style={[styles.bubble, {top: 50, right: 50, display: bubble[index] ? 'flex' : 'none'}]}>
+                                <View style={[styles.triangle, {borderBottomColor: bubble[index] ? 'white' : 'transparent'}]}></View>
                                 <Text>{x}</Text>
                             </View>
                         )
                     })}
-                    {/* <View style={[styles.bubble, {top: 20, right: 20, display: bubble[0] ? 'flex' : 'none'}]}>
-                        <View style={[styles.triangle, {borderBottomColor: bubble[0] ? 'white' : 'transparent'}]}></View>
-                        <Text>아무말이나 하고싶어요</Text>
-                    </View>
-                    <View style={[styles.bubble, {top: 10, right: 70, display: bubble[1] ? 'flex' : 'none'}]}>
-                        <View style={[styles.triangle, {borderBottomColor: bubble[1] ? 'white' : 'transparent'}]}></View>
-                        <Text>출산리스트 맘스토크 체험단</Text>
-                    </View>
-                    <View style={[styles.bubble, {top: 60, right: 60, display: bubble[2] ? 'flex' : 'none'}]}>
-                        <View style={[styles.triangle, {borderBottomColor: bubble[2] ? 'white' : 'transparent'}]}></View>
-                        <Text>First Item Second Item</Text>
-                    </View>
-                    <View style={[styles.bubble, {top: 40, right: 80, display: bubble[3] ? 'flex' : 'none'}]}>
-                        <View style={[styles.triangle, {borderBottomColor: bubble[3] ? 'white' : 'transparent'}]}></View>
-                        <Text>IDENITIDENITIDENITIDENIT</Text>
-                    </View> */}
-
                     <TouchableOpacity style={styles.profileBox} activeOpacity={1} onPress={bubbleRandom}>
                         <Image style={styles.profileBox} source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/d-day/${mainData.weekImage}`}} />
                     </TouchableOpacity>
@@ -486,7 +469,7 @@ const Home = ({navigation}) => {
                 </View>
             </View>
             
-            <Modal modal={modal} setModal={setModal} />
+            <Modal navigation={navigation} modal={modal} setModal={setModal} />
             <CoarchMark modal={modal2} setModal={setModal2}/>
 
             <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}

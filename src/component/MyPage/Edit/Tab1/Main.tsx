@@ -173,13 +173,11 @@ const Talk1 = ({navigation, application}: any) => {
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>닉네임</Text>
-                    <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.(특수문자 제외)</Text>
+                    <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.</Text>
                         <TextInput placeholder='닉네임 입력' style={[styles.textBox, {borderColor: bottomColor[0] ? '#FEB401' : '#EEEEEE'}]}
                         value={info.nickname} onFocus={()=>change(0)}
-                        onChangeText={(e) => {
-                            let regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$÷×￦%&\'\"\\\(\=]/gi;
-                            regExp.test(e) ? (e = e.substring(0, e.length - 1), setInfo((prevState) => ({ ...prevState, nickname: e}))) : setInfo((prevState) => ({ ...prevState, nickname: e}));
-                        }}></TextInput>
+                        onChangeText={(e) => { setInfo((prevState) => ({ ...prevState, nickname: e}));}}>
+                        </TextInput>
                 </View>
                 <View style={[styles.mainBox2, {height: 130}]}>
                     <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>이메일</Text>
@@ -198,13 +196,11 @@ const Talk1 = ({navigation, application}: any) => {
                 </View>
                 <View style={styles.mainBox4}>
                     <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>태명</Text>
-                    <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.(특수문자 제외)</Text>
+                    <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.</Text>
                     <TextInput placeholder='태명 입력' style={[styles.textBox, {borderColor: bottomColor[3] ? '#FEB401' : '#EEEEEE'}]}
                     value={info.babyName} onFocus={()=>change(3)}
-                    onChangeText={(e) => {
-                        let regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$÷×￦%&\'\"\\\(\=]/gi;
-                        regExp.test(e) ? (e = e.substring(0, e.length - 1), setInfo((prevState) => ({ ...prevState, babyName: e}))) : setInfo((prevState) => ({ ...prevState, babyName: e}));
-                    }}></TextInput>
+                    onChangeText={(e) => { setInfo((prevState) => ({ ...prevState, babyName: e}));}}>
+                    </TextInput>
                 </View>
                 <View style={styles.mainBox5}>
                     <View style={styles.exitBox}><Text style={{color: '#757575'}} onPress={()=>navigation.navigate('회원탈퇴')}>회원탈퇴</Text></View>

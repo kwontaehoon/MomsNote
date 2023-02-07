@@ -11,10 +11,8 @@ import OnBoarding3 from '../../../../public/assets/svg/onBoarding3.svg'
 const styles = StyleSheet.create({
     container:{
         backgroundColor: 'white',
-        flex: 1,
-        padding: 20,
+        height: '100%',
         justifyContent: 'center',
-
     },
     main:{
         height: '80%',
@@ -74,25 +72,11 @@ const Main = ({navigation}) => {
 
     const swiper = useRef(null);
     console.log('swiper: ', swiper.current);
-    
-
-    const List = () => {
-
-        return page == 2 ? (
-            <TouchableOpacity style={styles.footer} activeOpacity={1}>
-                <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>시작하기</Text>
-            </TouchableOpacity> 
-        ) : (
-            <TouchableOpacity style={styles.footer} onPress={() => {swiper.current.scrollBy(1); setPage(page + 1)}} activeOpacity={1}>
-                <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>다음</Text>
-            </TouchableOpacity> 
-        )
-    }
 
   return (
     <View style={styles.container}>
         <View style={styles.main}>
-            <Swiper showsButtons={false} loop={false} ref={swiper} onIndexChanged={(e)=>{ setTimeout(()=>{ setPage(e); }, 0) }}
+            <Swiper showsButtons={false} loop={false}
             loadMinimal={true}
             dot={<View style={styles.dot}/>}
             activeDot={<View style={styles.dotActive}/>}
@@ -130,7 +114,6 @@ const Main = ({navigation}) => {
 
             </Swiper>
         </View>
-        <List/>
     </View>
   )
 }

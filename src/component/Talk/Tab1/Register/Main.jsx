@@ -217,6 +217,7 @@ const Register = ({navigation, route}) => {
     const [filter, setFilter] = useState(Array.from({length: 5}, () => {return false})); // 카테고리
     const [userInfo, setUserInfo] = useState();
     const user = useSelector(state => { return state.user.data; });
+    console.log('게시글 작성 user: ', user)
     
     const [info, setInfo] = useState( // post info
         {
@@ -234,7 +235,6 @@ const Register = ({navigation, route}) => {
         dispatch(postUser());
         const load = async() => {
             const asyncStorage = await AsyncStorage.getItem('momsTalk');
-            console.log('asyncStorage: ', asyncStorage);
             const user = await AsyncStorage.getItem('user');
             switch(typeof(route.params)){
                 case 'string': setInfo(JSON.parse(asyncStorage)); break;
@@ -430,7 +430,7 @@ const Register = ({navigation, route}) => {
                     <View style={styles.infoBox}><Text style={{fontSize: 20, fontWeight : 'bold'}}>{userInfo.nickname}</Text></View>
                 </View>
                 <View style={styles.header2Box2}>
-                    <View><Text>임신 {moment(userInfo.dueDate).diff(moment(), "week")}주차</Text></View>
+                    <View><Text>임신 {user.week}주차</Text></View>
                 </View>
             </View>
             <View style={styles.header3}>

@@ -208,13 +208,14 @@ const Talk1Sub = ({navigation, route}) => {
     buttonCount: 1
   });
 
-  const [modal8, setModal8] = useState(true); // coarchmark
+  const [modal8, setModal8] = useState(false); // coarchmark
   const [sumResult, setSumResult] = useState({
     sum: 0,
     exp: 0
   }); // 총 예산
 
   useEffect(()=>{
+    console.log('fasdfsdafadsdfdsa');
     dispatch(postMaterial(materialSet));
   }, [modal6, modal5]);
 
@@ -365,7 +366,6 @@ const capture = async() => {
       <CoarchMark modal={modal8} setModal={setModal8}/>
 
       <View style={styles.header}>
-          
                     <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
                     <Text style={{fontSize: 18, fontWeight: '600', marginLeft: 10}}>총 예산</Text>
                   <View style={styles.headerBar}>

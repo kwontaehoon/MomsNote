@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 
 
 })
-const Main = ({modal, setModal}) => {
+const Main = ({navigation, modal, setModal}) => {
 
     const rec = async() => {
         const token = await AsyncStorage.getItem('token');
@@ -61,6 +61,7 @@ const Main = ({modal, setModal}) => {
             }
             AsyncStorage.setItem('recommendList', '1');
             setModal(!modal);
+            navigation.navigate('출산 준비물');
     }
 
     const self = async() => {
@@ -83,6 +84,7 @@ const Main = ({modal, setModal}) => {
             }
             AsyncStorage.setItem('recommendList', '1');
             setModal(!modal);
+            navigation.navigate('출산 준비물');
     }
 
   return (
