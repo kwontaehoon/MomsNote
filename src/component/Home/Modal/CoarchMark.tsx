@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
         height: 20,
         marginRight: 8,
         borderRadius: 3,
-        borderColor: '#E0E0E0',
         marginLeft: 5
     },
     image:{
@@ -120,7 +119,6 @@ const styles = StyleSheet.create({
     },
     Bottom:{
     },
-
     main:{
         height: 500,
         padding: 20,
@@ -198,7 +196,7 @@ const Main = ({modal, setModal}) => {
                 <View style={styles.modalView}>
 
                 <View style={styles.imageBox5}>
-                    <View style={[styles.Top, {alignItems: 'flex-start'}]}><Close fill='white'/></View>
+                    <View style={[styles.Top, {alignItems: 'flex-start'}]}><Close fill='white' onPress={()=>setModal(!modal)}/></View>
                         <View style={[styles.Bottom, {paddingTop: 10, flexDirection: 'row'}]}>
                         <Text style={{color: '#FEA100', fontSize: 15, fontWeight: '700'}}>다시 보지 않기</Text>
                         <Checkbox
@@ -244,12 +242,9 @@ const Main = ({modal, setModal}) => {
 
                     <View style={styles.main}>
                         <View style={styles.mainBox}></View>
-                        <View style={styles.mainBox2}>
-                    </View>
-
+                        <View style={styles.mainBox2}></View>
                     <View style={styles.mainBox3}>
                         <View style={styles.mainBox3Sub}>
-
                             <View style={styles.captureBox}>
                             <TouchableOpacity style={styles.captureBox}>
                                 <Icon2 name='download' size={22} style={{color: '#FE9000'}} />
@@ -276,17 +271,12 @@ const Main = ({modal, setModal}) => {
                     </View>
                 </View>
                 <View style={styles.main4}>
-                    <View style={styles.main4Box}>
-                    </View>
+                    <View style={styles.main4Box}></View>
                     <View style={styles.main4Box2}>
                     <View></View>
-                    
-                    </View>
                 </View>
-
-
-
-                    </View>
+                </View>
+                </View>
             </View>
         </Modal>
   )

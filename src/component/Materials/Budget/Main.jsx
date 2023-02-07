@@ -208,7 +208,7 @@ const Talk1Sub = ({navigation, route}) => {
     buttonCount: 1
   });
 
-  const [modal8, setModal8] = useState(false); // coarchmark
+  const [modal8, setModal8] = useState(true); // coarchmark
   const [sumResult, setSumResult] = useState({
     sum: 0,
     exp: 0
@@ -238,7 +238,7 @@ const Talk1Sub = ({navigation, route}) => {
 const SVGSelect = (e) => {
   switch(e){
       case 0: return(<M1 />) 
-      case 1: return(<M2 />) 
+      case 1: return(<M2 fill={'red'} />) 
       case 2: return(<M3 />) 
       case 3: return(<M4 />) 
       case 4: return(<M5 />) 

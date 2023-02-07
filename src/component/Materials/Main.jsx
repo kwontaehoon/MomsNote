@@ -19,6 +19,7 @@ import Second from '../Modal/Second'
 import WebViewModal from './Modal/WebView'
 import CoarchMark from './Modal/CoarchMark'
 import CoarchMark2 from './Modal/CoarchMark2'
+import CoarchMark3 from './Modal/CoarchMark3'
 import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
 import axios from 'axios'
@@ -291,7 +292,8 @@ const Navigation = ({navigation, route}) => {
     link: ''
   }); // webView
   const [modal5, setModal5] = useState(false); // coarchmark
-  const [modal6, setModal6] = useState(true); // coarchmark2 brand
+  const [modal6, setModal6] = useState(false); // coarchmark2 brand base
+  const [modal7, setModal7] = useState(false); // coarchmark3 brand coarch 
   const animation = useRef(new Animated.Value(0)).current;
 
   useEffect(()=>{
@@ -546,7 +548,8 @@ const save = async() => {
         <Second modal={modal3} setModal={setModal3}/>
         <WebViewModal modal4={modal4} setModal4={setModal4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} />
         <CoarchMark modal={modal5} setModal={setModal5}/>
-        {/* <CoarchMark2 modal={modal6} setModal={setModal6} /> */}
+        <CoarchMark2 modal={modal6} setModal={setModal6} />
+        <CoarchMark3 modal={modal7} setModal={setModal7} />
 
         <View style={styles.header}>
         <Text style={{fontSize: 17, fontWeight: '600'}}>출산준비물</Text>

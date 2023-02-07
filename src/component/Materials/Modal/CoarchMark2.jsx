@@ -108,7 +108,27 @@ const styles = StyleSheet.create({
 
 const Main = ({modal, setModal}) => {
 
+    const DATA = [
+        {
+            brandName: '마더스베이비',
+            productName: 'v웹 코튼 수유 브라',
+            price: 89900
+        },{
+            brandName: '세컨스킨',
+            productName: 'v웹 코튼 수유 브라',
+            price: 89900
+        },{
+            brandName: '뉴니끄',
+            productName: 'v웹 코튼 수유 브라',
+            price: 89900
+        },{
+            brandName: '마더피아',
+            productName: 'v웹 코튼 수유 브라',
+            price: 89900
+        }
+    ]
     const [info, setInfo] = useState(); // 브랜드 lists
+    console.log('브랜드 리스트: ', info);
     const [selectBrand, setSelectBrand] = useState({
         needsId: null,
         needsBrandId: 0,
@@ -117,6 +137,17 @@ const Main = ({modal, setModal}) => {
         needsDataId: null,
         itemBrand: '',
     });
+    console.log('select Brand: ', selectBrand);
+
+    const crown = (index) => {
+        console.log(index);
+        switch(index+1){
+            case 1: return <Crown/>
+            case 2: return <Crown2/>
+            case 3: return <Crown3/>
+            default: return (<Text style={{fontSize: 30, fontWeight: '600'}}>{index+1}</Text>);
+        }
+    }
 
     const renderItem = ({ item, index }) => (
         <View style={styles.mainBox}>
@@ -143,25 +174,25 @@ const Main = ({modal, setModal}) => {
     );
 
   return (
-    <View onRequestClose={() => {
+    <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
+        onRequestClose={() => {
         setModal(!modal)}}>
         <KeyboardAvoidingView behavior='height' style={styles.modalContainer}>
             <View style={styles.modalView}>
                 <View style={styles.modalContainer2}>
                     <View style={styles.header}>
-                        <TouchableOpacity style={styles.closeBox} 
-                            onPress={()=>(setSelectBrand(prevState => ({...prevState, itemBrand: '', itemName: ''})),setModalVisible2((prevState)=> ({...prevState, open: false})))}>
+                        <TouchableOpacity style={styles.closeBox}  onPress={()=>setModal(!modal)}>
                                 <Close fill={'black'}/>
                         </TouchableOpacity>
                         <Text style={{color: '#212121', fontSize: 18, fontWeight: '700'}}>브랜드 선택</Text>
                         <Text style={{color: '#212121'}}>수유브라 Best</Text>
                     </View>
                     <View style={styles.main}>
-                        {info == undefined || info.length == 0 ? <View><Text style={{fontSize: 15, color: '#757575'}}>등록된 품목이 없습니다.</Text></View>
-                        :
-                        <FlatList data={info} renderItem={renderItem}
+
+                        <FlatList data={DATA} renderItem={renderItem}
                             keyExtractor={item => String(item.needsBrandId)} showsVerticalScrollIndicator={false}>
-                        </FlatList>}
+                        </FlatList>
+
                     </View>
                     <View style={styles.footer}>
                         <View style={styles.footerBox}>
@@ -186,14 +217,16 @@ const Main = ({modal, setModal}) => {
                                 </TextInput>
                                 </View>
                             </View> 
-                        <TouchableOpacity style={styles.footerBox3}>
-                        <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>적용</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.footerBox3} onPress={()=>{
+                            selectBrand.itemName == '' || selectBrand.itemBrand == '' ? (setModalVisible2(prevState => ({...prevState, open: false})), setModal(!modal))
+                            : (submit(), setSelectBrand(prevState => ({...prevState, itemName: '', itemBrand: ''})), setModalVisible2(prevState => ({...prevState, open: false})), setModal2(prevState => ({...prevState, open: true, content: '리스트에 적용되었습니다.', buttonCount: 1})))
+                        }}><Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>적용</Text></TouchableOpacity>
                         <View style={styles.footerBox4}><Text>#해시태그</Text></View>
                     </View>
                 </View>
             </View>
         </KeyboardAvoidingView>
-    </View>
+    </Modal>
   )
 }
 
