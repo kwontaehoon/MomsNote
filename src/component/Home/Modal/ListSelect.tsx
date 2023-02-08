@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#FE7000',
         justifyContent: 'center',
-        borderRadius: 4,
+        borderRadius: 10,
         alignItems: 'center',
         backgroundColor: '#FE7000'
     },
@@ -60,7 +60,7 @@ const Main = ({navigation, modal, setModal}) => {
               console.log('실제맘 추천 리스트 error: ', error);
             }
             AsyncStorage.setItem('recommendList', '1');
-            setModal(!modal);
+            setModal(false);
             navigation.navigate('출산 준비물');
     }
 

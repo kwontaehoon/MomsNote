@@ -10,6 +10,7 @@ import Crown2 from '../../../../public/assets/svg/crown2.svg'
 import Crown3 from '../../../../public/assets/svg/crown3.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
 import Checkbox from 'expo-checkbox';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
     },
 })
 
-const Main = ({modal, setModal}) => {
+const Main = ({modal, setModal, modal6, setModal6}) => {
 
     const DATA = [
         {
@@ -178,15 +179,10 @@ const Main = ({modal, setModal}) => {
     });
     console.log('select Brand: ', selectBrand);
 
-    const crown = (index) => {
-        console.log(index);
-        switch(index+1){
-            case 1: return <Crown/>
-            case 2: return <Crown2/>
-            case 3: return <Crown3/>
-            default: return (<Text style={{fontSize: 30, fontWeight: '600'}}>{index+1}</Text>);
-        }
-    }
+
+    const close = async() => {
+        isChecked ? (AsyncStorage.setItem('coarchMarkMaterialModal', '1'), setModal(!modal), setModal6(!modal6)) : (setModal(!modal), setModal6(!modal6));
+      }
 
     const renderItem = ({ item, index }) => (
         <View style={styles.mainBox}>
@@ -219,7 +215,7 @@ const Main = ({modal, setModal}) => {
             <View style={styles.modalView}>
 
             <View style={styles.imageBox}>
-                    <View style={[styles.Top, {alignItems: 'flex-start'}]}><Close fill='white' onPress={()=>setModal(!modal)}/></View>
+                    <View style={[styles.Top, {alignItems: 'flex-start'}]}><Close fill='white' onPress={close}/></View>
                         <View style={[styles.Bottom, {paddingTop: 10, flexDirection: 'row'}]}>
                         <Text style={{color: '#FEA100', fontSize: 15, fontWeight: '700'}}>다시 보지 않기</Text>
                         <Checkbox

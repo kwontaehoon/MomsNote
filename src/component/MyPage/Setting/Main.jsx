@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Switch, 
 import axios from 'axios'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useSelector } from 'react-redux'
+import { postUser } from '../../../Redux/Slices/UserSlice'
+import { useDispatch } from 'react-redux'
 
 const styles = StyleSheet.create({
     container:{
@@ -92,7 +95,9 @@ const Main = ({navigation}) => {
     ];
 
 
+    const dispatch = useDispatch();
     const [isEnabled, setIsEnabled] = useState(Array.from({length: 3}, () => { return false })); // 스위치 토글
+    console.log('스위치: ', isEnabled);
     const [clockDisplay, setClockDisplay] = useState(false); // 시작 종료 시간 display
     const [modalVisible, setModalVisible] = useState(false); // 알람 끄기 modal
     const [modalVisible2, setModalVisible2] = useState(false); // 로그아웃 modal
@@ -106,16 +111,16 @@ const Main = ({navigation}) => {
     const [alarmStart, setAlarmStart] = useState('22:00');
     const [alarmEnd, setAlarmEnd] = useState('07:00');
 
-    const [user, setUser] = useState();
-    console.log('설정 user: ', user);
+    const user = useSelector(state => {return state.user.data});
+    console.log('user: ', user);
 
     useEffect(()=>{
-        const user = async() => {
-           const user = await AsyncStorage.getItem('user');
-            setUser(JSON.parse(user));
+        dispatch(postUser());
+        const user2 = async() => {
+            user.marketing ? setIsEnabled([true, false, false]) : ''
         }
-        user();
-    }, [])
+        user2();
+    }, [modalVisible]);
 
     const modal = (e) => {
         let arr = [...isEnabled];
@@ -141,13 +146,18 @@ const Main = ({navigation}) => {
         if(e === 0 && isEnabled[0] == true){
             setModal2(!modal2);
             return;
+        }else{
+            marketing(true);
         }
 
         if(e === 1 && isEnabled[1] === true){
             setModalVisible(!modalVisible);
             return;
+        }else{
+
         }
         if(e === 1 && isEnabled[1] === true){
+
             arr[1] = false;
             arr[2] = false;  
         }else{
@@ -189,6 +199,25 @@ const Main = ({navigation}) => {
             setClock('start');
         }else setClock('end');
     };
+
+    const marketing = async(e) => {
+        console.log(e);
+        const token = await AsyncStorage.getItem('token');
+        try{
+            const response = await axios({
+                method: 'post',
+                url: `https://momsnote.net/api/marketing/update`,
+                headers: { 
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                  },
+                data: {marketing: e}
+            });
+            console.log('response: ', response.data);
+            }catch(error){
+                console.log('marketing axios error: ', error);
+            }
+    }
 
     const logout = async() => {
         const token = await AsyncStorage.getItem('token');
@@ -339,7 +368,7 @@ const Main = ({navigation}) => {
                             <Text style={{fontSize: 16, lineHeight: 25, textAlign: 'center'}}>각종 이벤트 알림을 받으실 수 없습니다. 마케팅 수신동의를 해제하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal} onPress={()=>modal3(1)}><Text style={{color: 'white', fontSize: 16}}>해제</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.modal} onPress={()=>{modal3(1), marketing(false)}}><Text style={{color: 'white', fontSize: 16}}>해제</Text></TouchableOpacity>
                             <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModal2(!modal2)}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
                         </View>
                     </View>

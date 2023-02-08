@@ -11,6 +11,7 @@ import Forum from '../../../../public/assets/svg/forum.svg'
 import Campaign from '../../../../public/assets/svg/campaign.svg'
 import Baby from '../../../../public/assets/svg/Baby.svg'
 import Close from '../.././../../public/assets/svg/Close.svg'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Checkbox from 'expo-checkbox';
 
@@ -189,6 +190,10 @@ const Main = ({modal, setModal}) => {
 
     const [isChecked, setIsChecked] = useState(false);
 
+    const close = async() => {
+        isChecked ? (AsyncStorage.setItem('coarchMarkHome', '1'), setModal(false)) : setModal(false);
+      }
+
   return (
         <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
             onRequestClose={() => {setModal(!modal)}}>
@@ -196,7 +201,7 @@ const Main = ({modal, setModal}) => {
                 <View style={styles.modalView}>
 
                 <View style={styles.imageBox5}>
-                    <View style={[styles.Top, {alignItems: 'flex-start'}]}><Close fill='white' onPress={()=>setModal(!modal)}/></View>
+                    <View style={[styles.Top, {alignItems: 'flex-start'}]}><Close fill='white' onPress={close}/></View>
                         <View style={[styles.Bottom, {paddingTop: 10, flexDirection: 'row'}]}>
                         <Text style={{color: '#FEA100', fontSize: 15, fontWeight: '700'}}>다시 보지 않기</Text>
                         <Checkbox

@@ -236,24 +236,24 @@ const Withdraw = ({navigation, route}) => {
         
         const token = await AsyncStorage.getItem('token');
         try{
-            // const response = await axios({
-            //     method: 'post',
-            //     url: 'https://momsnote.net/api/user/update',
-            //     headers: { 
-            //         'Authorization': `bearer ${token}`,
-            //         'Content-Type': 'application/json'
-            //     },
-            //     data: {
-            //         memberName: info.memberName,
-            //         tel: info.tel,
-            //         addressDetails: info.addressDetails,
-            //         experienceId: '',
-            //         address: '',
-            //         blog: '',
-            //         insta: '',
-            //         youtube: ''
-            //     }
-            // });
+            const response = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/api/user/update',
+                headers: { 
+                    'Authorization': `bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    memberName: info.memberName,
+                    tel: info.tel,
+                    addressDetails: info.addressDetails,
+                    experienceId: '',
+                    address: '',
+                    blog: '',
+                    insta: '',
+                    youtube: ''
+                }
+            });
             navigation.goBack();
         }catch(error){
             console.log('체험단 신청 error: ', error);

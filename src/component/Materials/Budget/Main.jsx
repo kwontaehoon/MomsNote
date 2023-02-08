@@ -208,7 +208,7 @@ const Talk1Sub = ({navigation, route}) => {
     buttonCount: 1
   });
 
-  const [modal8, setModal8] = useState(true); // coarchmark
+  const [modal8, setModal8] = useState(false); // coarchmark
   const [sumResult, setSumResult] = useState({
     sum: 0,
     exp: 0

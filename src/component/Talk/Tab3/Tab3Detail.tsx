@@ -316,7 +316,7 @@ const Talk1Sub = ({navigation, route}) => {
             </Swiper>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
-                    <Text style={{color: '#9E9E9E', marginBottom: 3}}>신청 36명/모집 {info.maxPeople}명</Text>
+                    <Text style={{color: '#9E9E9E', marginBottom: 3}}>신청 {info.appCount}명/모집 {info.maxPeople}명</Text>
                     <Text style={{fontSize: 25}}>{info.title}</Text>
                 </View>
                 <View style={styles.mainBox2}>

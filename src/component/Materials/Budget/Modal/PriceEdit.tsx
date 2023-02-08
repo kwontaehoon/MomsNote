@@ -68,11 +68,11 @@ const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
         needsId: 0,
         itemPrice: 0,
     });
-    const [test, setTest] = useState(0);
+    console.log('info: ', info);
+
     const comma = (e) => {
         e = e.replaceAll(',', '');
         setInfo(prevState => ({ ...prevState, needsId: modal6.content.needsId, itemPrice: Number(e)}));
-        setTest(e.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
     }
 
     const edit = async() => {
@@ -114,7 +114,7 @@ const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
                             <View style={styles.mainBox}>
                                 <View style={styles.priceBox}><Text>원</Text></View>
                                 <TextInput style={{fontWeight: '600'}} textAlign='right' placeholder={`${(modal6.content.itemPrice).toLocaleString()}`} placeholderTextColor={'black'}
-                                    value={test} onChangeText={(e)=>comma(e)} maxLength={11}
+                                    value={info.itemPrice} onChangeText={(e)=>comma(e)} maxLength={11}
                                     keyboardType='decimal-pad'>
                                 </TextInput>
                             </View>

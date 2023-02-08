@@ -6,7 +6,8 @@ import Checkbox from 'expo-checkbox'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import Check from '.././../../../public/assets/svg/Check.svg'
+import Check from '../../../../public/assets/svg/Check.svg'
+import ArrowRight from '../../../../public/assets/svg/Arrow-Right.svg'
 
 import Modal from './Modal/AuthComplete'
 import Modal2 from './Modal/AuthFail'
@@ -21,6 +22,8 @@ import { useSelector } from 'react-redux'
 import {
     SafeAreaProvider
   } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux'
+import { postBoardAppFlag } from '../../../Redux/Slices/BoardAppFlagSlice'
 
 
 const styles = StyleSheet.create({
@@ -60,7 +63,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         justifyContent: 'center',
         borderBottomWidth: 1,
-        borderColor: '#F5F5F5'
+        borderColor: '#F5F5F5',
     },
     timerBox:{
         position: 'absolute',
@@ -160,7 +163,6 @@ const Withdraw = ({navigation, route}) => {
     console.log('SMSFlag: ', SMSFlag);
     const [SMSNumber, setSMSNumber] = useState(null); // SMS 번호
     const [SMSInputNumber, setSMSInputNumber] = useState(''); // 입력한 SMS 번호
-
     console.log('smsnumber: ', SMSNumber);
 
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
@@ -189,20 +191,24 @@ const Withdraw = ({navigation, route}) => {
     );
     console.log('info: ', info);
 
+    const dispatch = useDispatch();
     const [minutes, setMinutes] = useState(parseInt(3));
     const [seconds, setSeconds] = useState(parseInt(0));
 
     useEffect(()=>{
         const load = async() => {
+            const async = await AsyncStorage.getItem('applicationFlag');
+            console.log('async: ', async);
+            dispatch(postBoardAppFlag({experienceId: Number(async)}));
+            
             switch(true){
                 case route.params == '신청 정보 불러오기': {
                     const asyncStorage = await AsyncStorage.getItem('application');
-
-                    console.log('apply async: ', asyncStorage);
         
                     asyncStorage == null ? '' : setInfo(JSON.parse(asyncStorage));
                 } break;
-                case typeof(route.params) == 'string': setInfo(prvState => ({...prvState, address: route.params}));
+                case typeof(route.params) == 'string': setInfo(prvState => ({...prvState, address: route.params})); break;
+                case async !== null && boardAppFlag.status == 200 : setInfo(boardAppFlag.data); break;
                 default: console.log('default');
             }
         }
@@ -380,7 +386,8 @@ const Withdraw = ({navigation, route}) => {
                     color={isChecked[1] ? '#FEB401' : undefined}/>
                     <Text style={{color: '#616161'}}>초상권 활용에 동의합니다.</Text>
                 </View>
-                <View style={[styles.mainBox, {flexDirection: 'row'}]}>
+                <View style={[styles.mainBox, {flexDirection: 'row', alignItems: 'center'}]}>
+                    <TouchableOpacity style={{position: 'absolute', right: 15}} onPress={()=> navigation.navigate('체험단 유의사항')}><Icon name='right' size={13}/></TouchableOpacity>
                     <Checkbox
                         style={styles.checkbox}
                         value={isChecked[2]}
@@ -399,7 +406,7 @@ const Withdraw = ({navigation, route}) => {
         </View>
       );
 
-  return (
+  return boardAppFlag == '' ? '' : (
 
     <SafeAreaProvider>
             <SafeAreaView style={{ backgroundColor: 'white' }}>

@@ -14,8 +14,7 @@ const styles = StyleSheet.create({
     },
     header:{
         flexDirection: 'row',
-        paddingLeft: 10,
-        paddingRight: 10,
+        padding: 10,
         backgroundColor: 'white',
         alignItems: 'center',
     },
@@ -47,10 +46,8 @@ const styles = StyleSheet.create({
 
     },
     main2:{
-
     },
     main3:{
-
     },
     
     mainBox:{
@@ -70,9 +67,7 @@ const Main = ({navigation}) => {
 
     const dispatch = useDispatch();
     const user = useSelector(state => { return state.user.data });
-    console.log('user: ', user);
     const [userInfo, setUserInfo] = useState();
-    console.log('userInfo: ', userInfo);
 
     const [refresh, setRefresh] = useState(); // 새로고침
     const isFocused = useIsFocused();
@@ -142,7 +137,7 @@ const Main = ({navigation}) => {
                 </TouchableOpacity>
             </View>
         </View>
-        <View style={{backgroundColor: '#F5F5F5', height: '1%'}}></View>
+        <View style={{backgroundColor: '#F5F5F5', height: 10}}></View>
         <View style={styles.main}>
             <View style={styles.mainBox}><Text style={{fontWeight: 'bold'}}>내 활동 관리</Text></View>
             <View style={styles.mainBox}><Text style={{fontSize: 15}} onPress={()=>navigation.navigate('내가 쓴 게시물')}>내가 쓴 게시물</Text></View>
@@ -150,7 +145,7 @@ const Main = ({navigation}) => {
             <View style={styles.mainBox}><Text style={{fontSize: 15}} onPress={()=>navigation.navigate('추천 게시물')}>추천한 게시물</Text></View>
             <View style={styles.mainBox}><Text style={{fontSize: 15}} onPress={()=>navigation.navigate('신청한 체험단')}>신청한 체험단</Text></View>
         </View>
-        <View style={{backgroundColor: '#F5F5F5', height: '1%'}}></View>
+        <View style={{backgroundColor: '#F5F5F5', height: 10}}></View>
         <View style={styles.main2}>
             <View style={styles.mainBox}><Text style={{fontWeight: 'bold'}}>고객센터</Text></View>
             <View style={styles.mainBox}><Text style={{fontSize: 15}} onPress={()=>navigation.navigate('어플 이용 가이드')}>어플 이용 가이드</Text></View>

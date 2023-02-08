@@ -8,6 +8,7 @@ import moment from 'moment'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import CoarchMark from './Modal/CoarchMark'
+import CoarchMark2 from './Modal/CoarchMark2'
 import Bell from '../../../public/assets/svg/Bell.svg'
 import MyPage from '../../../public/assets/svg/Mypage.svg'
 
@@ -222,21 +223,29 @@ const Home = ({navigation}) => {
     const ref = useRef();
     const [date, setDate] = useState(new Date());
     const boardPopular = useSelector(state => { return state.boardPopular.data });
+    console.log('boardPopular: ', boardPopular);
     const materialPopular = useSelector(state => { return state.materialPopular.data });
+    console.log('materialPopular: ', materialPopular);
     const infoPopular = useSelector(state => { return state.infoPopular.data });
+    console.log('infoPopular: ', infoPopular);
     const mainData = useSelector(state => { return state.user.data; });
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
-    const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
+    const [modal, setModal] = useState(true); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
     const [modal2, setModal2] = useState(false); // 코치마크
+    const [modal3, setModal3] = useState(false); // 출산준비물 리스트 코치마크
+    console.log('modal3: ', modal3);
 
     const [userInfo, setUserInfo] = useState();
 
     useEffect(()=>{
         const recommendList = async() => {
             const asyncStorage = await AsyncStorage.getItem('recommendList');
+            console.log('asyncStorage: ', asyncStorage);
             const coarchMark = await AsyncStorage.getItem('coarchMarkHome');
+            const coarchMark2 = await AsyncStorage.getItem('coarchMarkHome2');
+            coarchMark == null ? setModal2(true) : setModal2(false);
             const user = await AsyncStorage.getItem('user');
             const userId = await AsyncStorage.getItem('userId');
             console.log('user: ', JSON.parse(user));
@@ -246,7 +255,8 @@ const Home = ({navigation}) => {
             setUserInfo(JSON.parse(user));
 
             asyncStorage == null ? setModal(true) : '';
-            // coarchMark == null ? setModal2(true) : '';
+            coarchMark2 == null ? setModal3(true) : '';
+            asyncStorage !== null && modal == false && modal3 == false ? setModal2(true) : ''
         }
         recommendList();
 
@@ -366,7 +376,7 @@ const Home = ({navigation}) => {
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>출산 리스트</Text></View>
                             <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡', '12345')}>+ 더보기</Text></View>
                         </View>
-                        {materialPopular == '' ? 
+                        {materialPopular == '0' ? 
                             <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
                                 <Text style={{color: '#757575'}}>등록된</Text>
                                 <Text style={{color: '#757575'}}>게시물이 없습니다.</Text>
@@ -408,19 +418,19 @@ const Home = ({navigation}) => {
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>1 </Text>
-                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}> {boardPopular == '' ? '' : boardPopular[0].title}</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}> {boardPopular == '' && boardPopular.length > 0 ? '' : boardPopular[0].title}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>2 </Text>
-                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[1]})}> {boardPopular == '' ? '' :boardPopular[1].title}</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[1]})}> {boardPopular == '' && boardPopular.length > 1 ? '' :boardPopular[1].title}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>3 </Text>
-                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[2]})}> {boardPopular == '' ? '' :boardPopular[2].title}</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[2]})}> {boardPopular == '' && boardPopular.length > 2 ? '' :boardPopular[2].title}</Text>
                                 </View>
                             </View>
                         </View> }
@@ -435,7 +445,7 @@ const Home = ({navigation}) => {
                     </View>
                 </View>
                 <View style={styles.main4Box2}>
-                {infoPopular == '' ? <View><Text style={{color: '#757575'}}>새로운 정보가 없습니다.</Text></View>
+                {infoPopular == '0' ? <View><Text style={{color: '#757575'}}>새로운 정보가 없습니다.</Text></View>
                 :
                 <FlatList data={infoPopular} renderItem={renderItem2} showsHorizontalScrollIndicator={false}
                         keyExtractor={item => String(item.boardId)} horizontal={true}>
@@ -460,7 +470,7 @@ const Home = ({navigation}) => {
                     <StatusBar />
             </SafeAreaView>
             <FocusAwareStatusBar />
-            { userInfo == '' || userInfo == undefined || mainData == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}/>
+            { userInfo == '' || userInfo == undefined || mainData == '' || boardPopular == undefined || infoPopular == undefined || materialPopular == undefined ?<ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}/>
                 : <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}>
             <View style={styles.header}>
                 <View style={styles.headerBar}>
@@ -471,6 +481,7 @@ const Home = ({navigation}) => {
             
             <Modal navigation={navigation} modal={modal} setModal={setModal} />
             <CoarchMark modal={modal2} setModal={setModal2}/>
+            <CoarchMark2 modal={modal3} setModal={setModal3}/>
 
             <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
                 keyExtractor={item => item.id}>

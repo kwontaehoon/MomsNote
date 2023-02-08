@@ -323,7 +323,6 @@ const Register = ({navigation, route}) => {
     }
 
     const submit = async() => {
-        const token = await AsyncStorage.getItem('token');
         let data = new FormData();
         data.append('category', '맘스 토크');
         data.append('subcategory', DATA2[filter.findIndex(x => x === true)].title);
@@ -343,7 +342,7 @@ const Register = ({navigation, route}) => {
             })
         }
         console.log('data: ', data);
-
+        const token = await AsyncStorage.getItem('token');
             try{
                 const response = await axios({
                     method: 'post',
@@ -465,7 +464,7 @@ const Register = ({navigation, route}) => {
                         </TouchableOpacity>
                         <View style={styles.albumRight}>
                         <FlatList data={info.imageFile} renderItem={renderItem3}
-                            keyExtractor={item => item.id} showsHorizontalScrollIndicator={false} horizontal={true}>
+                            keyExtractor={(item, index) => String(index)} showsHorizontalScrollIndicator={false} horizontal={true}>
                         </FlatList>
                         </View>
                     </View>

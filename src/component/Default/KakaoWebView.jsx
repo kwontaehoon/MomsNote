@@ -54,7 +54,7 @@ const Main = ({navigation}) => {
               const response4 = await axios({
                   method: 'get',
                   headers: { 
-                    'Authorization': `bearer ${response3.data.token}`, 
+                    'Authorization': `bearer ${response3.data.token}`,
                     'Content-Type': 'application/json'
                   },
                   url: 'https://momsnote.net/api/main/data',

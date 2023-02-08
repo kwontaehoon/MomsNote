@@ -17,6 +17,7 @@ import Withdraw from '../MyPage/Withdraw/Main'
 import Block from '../MyPage/Setting/Block'
 import Term1 from '../MyPage/Setting/Terms1'
 import Term2 from '../MyPage/Setting/Terms2'
+import Term3 from '../Talk/Tab3/Terms1'
 import InquiryDetail from '../MyPage/Inquiry/InquiryDetail'
 import Login from '../Default/Login'
 import Talk3Detail from '../Talk/Tab3/Tab3Detail'
@@ -332,6 +333,25 @@ const Navigation = () => {
                                 <View style={styles.headerBox}>
                                     <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
                                     <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>개인정보처리방침</Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                            <View></View>
+                        },
+                        headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                            height: 110
+                        },
+                    })}/>
+                <Stack.Screen name="체험단 유의사항" component={Term3} options={({ navigation, route }) => ({
+                        headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>체험단 유의사항</Text>
                                 </View>
                             </View>
                         ),

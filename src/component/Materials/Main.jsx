@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator, SafeAreaView, StatusBar, Platform, Animated } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator, SafeAreaView, StatusBar, Platform, Animated, BackHandler } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon3 from 'react-native-vector-icons/Feather'
 import Checkbox from 'expo-checkbox';
@@ -301,12 +301,9 @@ const Navigation = ({navigation, route}) => {
       const asyncStorage = await AsyncStorage.getItem('materialPurchase');
       setPurchaseCheckBox(asyncStorage);
       const coarchMark = await AsyncStorage.getItem('coarchMarkMaterial');
-
-      // coarchMark == null ? setModal5(true) : '';
+      coarchMark == null ? setModal5(true) : setModal5(false);
     }
     materialPurchase();
-
-    
   }, [modalVisible]);
 
   useEffect(()=>{
@@ -325,7 +322,6 @@ const Navigation = ({navigation, route}) => {
     setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
     setPurchaseCount(info.filter(x => x.id == 1));
   }, [info]);
-
 
   useEffect(()=>{
       save();
@@ -354,6 +350,8 @@ const Navigation = ({navigation, route}) => {
   }
 
   const purchaseCencel = async(needsId) => {
+    console.log('purchaseCencel');
+    console.log('needsId: ', needsId);
     const token = await AsyncStorage.getItem('token');
     try{
       const response = await axios({
@@ -458,6 +456,11 @@ const save = async() => {
     )
   }
 
+  const brandModal = async(x) => {
+    const coarch = await AsyncStorage.getItem('coarchMarkMaterialModal');
+    coarch == null ? (setModal6(true), setModal7(true)) : setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDataId: x.needsDataId}));
+  }
+
   const List2 = (title) => {  
     let arr = [];
     info.filter((x, index)=>{
@@ -488,8 +491,8 @@ const save = async() => {
           <View style={[styles.filterBox, {width: '28%'}]}>
             {x.itemName == null ?
           <View style={{width: 24, height: 24, borderRadius: 12, backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
-              <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDataId: x.needsDataId}))}/> 
-            </View>: <Text numberOfLines={1} ellipsizeMode='tail' onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDataId: x.needsDataId, needsBrandId: x.needsBrandId}))}>{x.itemBrand}</Text>}
+              <Icon3 name="plus" size={20} style={{color: 'white'}} onPress={()=>brandModal(x)}/> 
+            </View> : <Text numberOfLines={1} ellipsizeMode='tail' onPress={()=>setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDataId: x.needsDataId, needsBrandId: x.needsBrandId}))}>{x.itemBrand}</Text>}
           </View>
       </View>
       )}
@@ -549,7 +552,7 @@ const save = async() => {
         <WebViewModal modal4={modal4} setModal4={setModal4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} />
         <CoarchMark modal={modal5} setModal={setModal5}/>
         <CoarchMark2 modal={modal6} setModal={setModal6} />
-        <CoarchMark3 modal={modal7} setModal={setModal7} />
+        <CoarchMark3 modal6={modal6} setModal6={setModal6} modal={modal7} setModal={setModal7} />
 
         <View style={styles.header}>
         <Text style={{fontSize: 17, fontWeight: '600'}}>출산준비물</Text>

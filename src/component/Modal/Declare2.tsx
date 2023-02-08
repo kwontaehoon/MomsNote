@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, FlatList } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/FontAwesome'
-import DropDownPicker from 'react-native-dropdown-picker'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 
 const styles = StyleSheet.create({
@@ -129,17 +129,19 @@ const CheckBoxModal = ({modal4, setModal4, modal6, setModal6, commentsId}) => {
     const [info, setInfo] = useState({
         sort: 'comments',
         commentsId: commentsId[1],
+        userId: '',
         reason: '신고 사유',
         reasonDetails: '',
     });
 
     const submit = async() => {
+        const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
                   method: 'post',
                   url: 'https://momsnote.net/api/report/comments',
                   headers: { 
-                      'Authorization': 'bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTIzNDU2Nzg5MCIsImlkIjo0LCJpYXQiOjE2NzE2MDM5ODIsImV4cCI6MTY3NDE5NTk4Mn0.K1jXhYIK_ucAjyvP7Tv_ga9FTJcv_4odEjK8KBmmdo8'
+                      'Authorization': `bearer ${token}`
                     },
                     data: info
                 });

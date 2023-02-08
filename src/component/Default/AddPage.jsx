@@ -10,7 +10,6 @@ import Modal from './Modal/Calendar'
 import Modal2 from './Modal/Calendar2'
 import Calendar from '../../../public/assets/svg/Calendar.svg'
 import ArrowRight from '../../../public/assets/svg/Arrow-Right.svg'
-import Check from '../../../public/assets/svg/Check.svg'
 
 const styles = StyleSheet.create({
     container:{
@@ -226,15 +225,6 @@ const AddPage = ({navigation, route}) => {
             setChecked(arr);
         }
     }
-
-    const emailconfig = (e) => {
-        setInfo((prevState) => ({ ...prevState, email: e}))
-    }
-    const test = (e) => {
-
-        info.email.match(regExp) == null ? setEmailCon(1) : setEmailCon(2);
-    }
-
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
             <View style={styles.main}>
@@ -246,21 +236,6 @@ const AddPage = ({navigation, route}) => {
                     onChangeText={(e) => { setInfo((prevState) => ({ ...prevState, nickname: e})); }}>
                     </TextInput>
             </View>
-            <View style={styles.main2}>
-                <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>이메일</Text>
-                <View style={[styles.textBox, {borderColor: bottomColor[1] ? emailcon == 1 ? 'red' : '#FEB401' : '#EEEEEE'}]}>
-                    <View style={[styles.emailcon, {display: emailcon == 2 ? 'flex' : 'none'}]}>
-                        <Check fill={'white'}/>
-                    </View>
-                    <TextInput placeholder='이메일 입력' onEndEditing={test}
-                        onFocus={()=>(change(1), setEmailCon(0))} onChangeText={(e) => emailconfig(e)}>
-                    </TextInput>
-                </View>
-                <View style={{padding: 8, display: emailcon == 1 ? 'flex' : 'none'}}>
-                    <Text style={{color: 'red'}}>유효한 이메일 주소를 입력해주세요.</Text>
-                </View>
-            </View>
-
             <View style={styles.main3}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>출산 예정일</Text>
                 <View>
@@ -322,7 +297,7 @@ const AddPage = ({navigation, route}) => {
                 </View>
             </View>
             <View style={styles.footer}>
-                {(isChecked[1] && isChecked[2] && info.nickname !== '' && info.babyName !== '' && info.dueDate !== '' && info.email !== '' && emailcon)
+                {(isChecked[1] && isChecked[2] && info.nickname !== '' && info.babyName !== '' && info.dueDate !== '')
                 ?
                 <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#FEA100'}]} onPress={submit}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>완료</Text>

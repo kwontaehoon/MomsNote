@@ -126,11 +126,21 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4, boardId}) => {
 
     const [titleDisplay, setTitleDisplay] = useState(false); // 품목 리스트 display
     const [info, setInfo] = useState({
-        sort: '',
+        sort: 'board',
         boardId: boardId,
+        userId: null,
         reason: '신고 사유',
         reasonDetails: ''
     });
+    console.log('게시판 신고하기 info: ', info);
+
+    useEffect(()=>{
+        const user = async() => {
+            const user = await AsyncStorage.getItem('userId');
+            setInfo(prevState => ({...prevState, userId: JSON.parse(user)}));
+        }
+        user();
+    }, [])
 
     const submit = async() => {
         const token = await AsyncStorage.getItem('token');
@@ -189,7 +199,7 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4, boardId}) => {
                             </TextInput>
                         </View>
                         {info.reason !== '신고 사유' && info.reasonDetails.length !== 0 ?
-                            <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>{ submit(), setModal3(!modal3), setModal4(!modal4), setInfo((prevState) => ({ ...prevState, content: ''}))}}>
+                            <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>{ submit(), setModal3(!modal3), setModal4(!modal4)}}>
                                 <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>신고하기</Text>
                             </TouchableOpacity> : 
                             

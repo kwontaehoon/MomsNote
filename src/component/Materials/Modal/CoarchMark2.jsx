@@ -128,7 +128,6 @@ const Main = ({modal, setModal}) => {
         }
     ]
     const [info, setInfo] = useState(); // 브랜드 lists
-    console.log('브랜드 리스트: ', info);
     const [selectBrand, setSelectBrand] = useState({
         needsId: null,
         needsBrandId: 0,
@@ -137,7 +136,6 @@ const Main = ({modal, setModal}) => {
         needsDataId: null,
         itemBrand: '',
     });
-    console.log('select Brand: ', selectBrand);
 
     const crown = (index) => {
         console.log(index);
@@ -165,7 +163,7 @@ const Main = ({modal, setModal}) => {
                     <Text>원</Text>
                 </View>
                 
-                <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>{setModalVisible2(prevState => ({...prevState, open: false})), setModal4(prevState=>({...prevState, open: true, link: item.url}))}}>
+                <TouchableOpacity style={{flexDirection: 'row'}}>
                     <Text style={{fontWeight: '600', fontSize: 13, color: '#FEA100'}}>최저가 보기</Text>
                     <Arrow_Right fill='#FEA100' width={16} height={16}/>
                 </TouchableOpacity>

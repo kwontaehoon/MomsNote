@@ -360,7 +360,7 @@ const Talk1 = ({navigation, route}:any) => {
         </View>
       </View>
 
-      <View style={[styles.header3, {display: info == undefined || info == '' ? 'none' : 'flex'}]}>
+      <View style={[styles.header3, {display: info == undefined || info == '' || filter[0] == false ? 'none' : 'flex'}]}>
           <Swiper horizontal={false}
           autoplay={true}
           autoplayTimeout={4.5}

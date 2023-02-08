@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal, KeyboardAvoidingView } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal, KeyboardAvoidingView, BackHandler } from 'react-native'
 import axios from 'axios'
-import { WebView } from 'react-native-webview';
 
 import Arrow_Right from '../../../../public/assets/svg/Arrow-Right.svg'
 import Reset from '../../../../public/assets/svg/Reset.svg'
@@ -146,6 +145,21 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
         setSelectBrand(prevState => ({...prevState, needsId: modalVisible2.needsId, needsBrandId: modalVisible2.needsBrandId == null ? 0 : modalVisible2.needsBrandId, needsDataId: modalVisible2.needsDataId == null ? 0 : modalVisible2.needsDataId}));
     }, [modalVisible2, modal4]);
 
+    useEffect(() => {
+        BackHandler.addEventListener('hardwareBackPress', () => {
+
+            
+
+            console.log('zxcv');
+
+        }); //뒤로가기 버튼을 클릭하였을때,함수를 호출하는 이벤트 등록
+        return () => {
+          BackHandler.removeEventListener('hardwareBackPress'); //뒤로가기 함수를 해제하는 이벤트 등록
+        };
+        
+      }, []);
+
+   
     const crown = (index) => {
         console.log(index);
         switch(index+1){
