@@ -216,8 +216,9 @@ const dayCalculate2 = (date) => {
   const MomsTalk = () => {
     let arr = [];
     momsSearch.filter((x, index) => {
+      console.log('x: ', x);
       arr.push(
-        <TouchableOpacity style={styles.momstalk} key={index}>
+        <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: x})}>
         <View style={styles.dateBox}>
           <Text style={{fontSize: 12, color: '#9E9E9E'}}>{dayCalculate(x.boardDate)}</Text>
         </View>
@@ -243,7 +244,7 @@ const dayCalculate2 = (date) => {
     let arr = [];
     materialSearch.filter((x, index) => {
       arr.push(
-        <TouchableOpacity style={styles.momstalk} key={index}>
+        <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', x)}>
         <View style={styles.dateBox}>
           <Text style={{fontSize: 13, color: '#9E9E9E'}}>{dayCalculate(x.boardDate)}</Text>
         </View>
@@ -268,7 +269,6 @@ const dayCalculate2 = (date) => {
   const Comment = () => {
     let arr = [];
     commentSearch.filter((x, index) => {
-      console.log('x: ', x);
       arr.push(
        <TouchableOpacity style={styles.momstalk} key={index}>
           <TouchableOpacity style={styles.dotBox} onPress={()=>setModal(!modal)}><More /></TouchableOpacity>
@@ -289,7 +289,7 @@ const dayCalculate2 = (date) => {
     let arr = [];
     experienceSearch.filter((x, index) => {
       arr.push(
-       <TouchableOpacity style={styles.momstalk} key={index}>
+       <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('체험단 상세페이지', x)}>
           <View style={styles.dateBox}>{dayCalculate2(x.applicationEndDate)}</View>
           <View style={styles.profile2}>
             {x.savedName !== null ? '' : <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%'}} />}

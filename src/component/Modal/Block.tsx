@@ -109,7 +109,7 @@ const Main = ({modal2, setModal2, userId, ani}) => {
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
                         <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, textAlign: 'center', lineHeight: 25, paddingTop: 20}}>사용자를 차단하시면 게시물과 댓글을 볼 수 없습니다. 그래도 차단하시겠습니까?</Text>
+                            <Text style={{fontSize: 16, textAlign: 'center', lineHeight: 25, paddingTop: 15}}>사용자를 차단하시면 게시물과 댓글을 볼 수 없습니다. 그래도 차단하시겠습니까?</Text>
                         </View>
                         <View style={[styles.modalBox, {paddingTop: 0}]}>
                             <TouchableOpacity style={styles.modal} onPress={()=>{submit(), ani() ,setModal2(!modal2)}}><Text style={{color: 'white', fontSize: 16}}>차단하기</Text></TouchableOpacity>

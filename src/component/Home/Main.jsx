@@ -231,7 +231,7 @@ const Home = ({navigation}) => {
     const mainData = useSelector(state => { return state.user.data; });
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
-    const [modal, setModal] = useState(true); // 모달 원하는 출산준비물 리스트
+    const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
     const [modal2, setModal2] = useState(false); // 코치마크
     const [modal3, setModal3] = useState(false); // 출산준비물 리스트 코치마크
@@ -255,8 +255,7 @@ const Home = ({navigation}) => {
             setUserInfo(JSON.parse(user));
 
             asyncStorage == null ? setModal(true) : '';
-            coarchMark2 == null ? setModal3(true) : '';
-            asyncStorage !== null && modal == false && modal3 == false ? setModal2(true) : ''
+            coarchMark2 == null ? (setModal(true), setModal3(true)) : '';
         }
         recommendList();
 
@@ -374,7 +373,7 @@ const Home = ({navigation}) => {
                     <View style={styles.main3Box2}>
                         <View style={styles.titleBox}>
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>출산 리스트</Text></View>
-                            <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡', '12345')}>+ 더보기</Text></View>
+                            <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스톡', '출산 리스트')}>+ 더보기</Text></View>
                         </View>
                         {materialPopular == '0' ? 
                             <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
@@ -406,7 +405,7 @@ const Home = ({navigation}) => {
                     <View style={[styles.main3Box2, {borderLeftWidth: 1, borderColor: '#EEEEEE',}]}>
                         <View style={styles.titleBox}>
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>맘스 토크</Text></View>
-                            <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스 톡', '맘')}>+ 더보기</Text></View>
+                            <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스톡')}>+ 더보기</Text></View>
                         </View>
                         {boardPopular == '' ? 
                         <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
@@ -441,7 +440,7 @@ const Home = ({navigation}) => {
                 <View style={styles.main4Box}>
                     <View style={[styles.titleBox, {height: '100%'}]}>
                         <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>맘스 정보</Text></View>
-                        <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.reset({routes: [{name: "맘스정보"}]})}>+ 더보기</Text></View>
+                        <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스정보', '행사 정보')}>+ 더보기</Text></View>
                     </View>
                 </View>
                 <View style={styles.main4Box2}>
@@ -460,7 +459,7 @@ const Home = ({navigation}) => {
     const renderItem2 = ({ item, index }) => (
         <TouchableOpacity style={styles.albumBox} onPress={()=>eventNavi(item)} key={index}>
             <View style={styles.albumPhoto}></View>
-            <View style={styles.albumTitle}><Text>{item.title}</Text></View>
+            <View style={styles.albumTitle}><Text numberOfLines={1}>{item.title}</Text></View>
         </TouchableOpacity>
     );
     
@@ -481,7 +480,7 @@ const Home = ({navigation}) => {
             
             <Modal navigation={navigation} modal={modal} setModal={setModal} />
             <CoarchMark modal={modal2} setModal={setModal2}/>
-            <CoarchMark2 modal={modal3} setModal={setModal3}/>
+            <CoarchMark2 modal={modal3} setModal={setModal3} setModal2={setModal}/>
 
             <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
                 keyExtractor={item => item.id}>

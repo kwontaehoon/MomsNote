@@ -132,7 +132,7 @@ const Main = ({navigation, route}) => {
             }else if(response2.data.status == 'expire'){
                 setModal(!modal);
             }else{
-                navigation.navigate('추가 정보 입력', ['google', response.data.sub]);
+                navigation.navigate('추가 정보 입력', ['google', response.data.sub, response.data.email]);
             }
 
 

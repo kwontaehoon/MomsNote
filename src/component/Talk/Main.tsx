@@ -31,6 +31,8 @@ const Main = ({navigation, route}) => {
     const isFocused = useIsFocused();
 
     useEffect(()=>{
+        const arr = [false, true, false];
+        route.params == '출산 리스트' ? setFilter(arr) : '';
     }, [isFocused]);
     
     const [filter, setFilter] = useState([true, false, false]); // tab

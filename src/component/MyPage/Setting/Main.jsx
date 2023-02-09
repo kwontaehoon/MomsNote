@@ -103,7 +103,7 @@ const Main = ({navigation}) => {
     const [modalVisible2, setModalVisible2] = useState(false); // 로그아웃 modal
     const [modal2, setModal2] = useState(false); // 마케팅 수신동의
 
-    const [date, setDate] = useState(new Date(1598051730000));
+    const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('time');
     const [show, setShow] = useState(false);
     const [clock, setClock] = useState('start');
@@ -117,10 +117,22 @@ const Main = ({navigation}) => {
     useEffect(()=>{
         dispatch(postUser());
         const user2 = async() => {
-            user.marketing ? setIsEnabled([true, false, false]) : ''
+
+            const arr = Array.from({length: 3}, () => {return false});
+
+            const activeAlarm = await AsyncStorage.getItem('activeAlarm');
+            console.log('activeAlarm: ', activeAlarm);
+            const alarmSetting = await AsyncStorage.getItem('alarmSetting');
+            console.log('alarmSetting: ', alarmSetting);
+
+            user.marketing ? arr[0] = true : '';
+            activeAlarm == null ? '' : arr[1] = true;
+            alarmSetting == null ? '' : arr[2] = true;
+
+            setIsEnabled(arr);
         }
         user2();
-    }, [modalVisible]);
+    }, [modal2]);
 
     const modal = (e) => {
         let arr = [...isEnabled];
@@ -134,34 +146,32 @@ const Main = ({navigation}) => {
         }
     }
 
-    const modal3 = (e) => {
-        let arr= [...isEnabled];
-        arr[0] = false;
-        setIsEnabled(arr);
-        setModal2(!modal2);
-    }
-
-    const toggleSwitch = (e) => {
+    const toggleSwitch = async(e) => {
+        console.log('e: ', e);
         let arr = [...isEnabled];
-        if(e === 0 && isEnabled[0] == true){
+
+        if(e === 0 && isEnabled[0]){
             setModal2(!modal2);
             return;
-        }else{
+        }else if(e === 0 && isEnabled[0] == false){
+            arr[0] = true;
             marketing(true);
         }
 
-        if(e === 1 && isEnabled[1] === true){
+        if(e === 1 && isEnabled[1]){
             setModalVisible(!modalVisible);
-            return;
-        }else{
-
-        }
-        if(e === 1 && isEnabled[1] === true){
-
-            arr[1] = false;
-            arr[2] = false;  
-        }else{
+            await AsyncStorage.removeItem('activeAlarm');  
+        }else if(e === 1 && isEnabled[1] == false){
             arr[e] = !arr[e];
+            await AsyncStorage.setItem('activeAlarm', '1');
+        }
+
+        if(e === 2 && isEnabled[2]){
+            await AsyncStorage.removeItem('alarmSetting');
+            arr[2] = false;
+        }else if(e === 2 && isEnabled[2] == false){
+            await AsyncStorage.setItem('alarmSetting', '1');
+            arr[2] = true;
         }
         setIsEnabled(arr);
     }
@@ -201,7 +211,6 @@ const Main = ({navigation}) => {
     };
 
     const marketing = async(e) => {
-        console.log(e);
         const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
@@ -214,6 +223,11 @@ const Main = ({navigation}) => {
                 data: {marketing: e}
             });
             console.log('response: ', response.data);
+
+            let arr= [...isEnabled];
+            e ? arr[0] = true : arr[0] = (false,setModal2(!modal2))
+            setIsEnabled(arr);
+
             }catch(error){
                 console.log('marketing axios error: ', error);
             }
@@ -368,7 +382,7 @@ const Main = ({navigation}) => {
                             <Text style={{fontSize: 16, lineHeight: 25, textAlign: 'center'}}>각종 이벤트 알림을 받으실 수 없습니다. 마케팅 수신동의를 해제하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal} onPress={()=>{modal3(1), marketing(false)}}><Text style={{color: 'white', fontSize: 16}}>해제</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.modal} onPress={()=>marketing(false)}><Text style={{color: 'white', fontSize: 16}}>해제</Text></TouchableOpacity>
                             <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModal2(!modal2)}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
                         </View>
                     </View>

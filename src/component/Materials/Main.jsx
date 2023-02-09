@@ -236,10 +236,8 @@ const Navigation = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.material.data; });
-  console.log('출산준비물: ', info);
   const materialSet = useSelector(state => { return state.material.refresh; });
   const [purchaseCount, setPurchaseCount] = useState(null); // 전체 구매 갯수
-  console.log('purchaseCount: ', purchaseCount);
   const [sumResult, setSumResult] = useState({
     sum: 0,
     exp: 0
@@ -297,11 +295,17 @@ const Navigation = ({navigation, route}) => {
   const animation = useRef(new Animated.Value(0)).current;
 
   useEffect(()=>{
+    const coarch = async() => {
+      const coarchMark = await AsyncStorage.getItem('coarchMarkMaterial');
+      coarchMark == null ? setModal5(true) : setModal5(false);
+    }
+    coarch();
+  }, []);
+
+  useEffect(()=>{
     const materialPurchase = async() =>{
       const asyncStorage = await AsyncStorage.getItem('materialPurchase');
       setPurchaseCheckBox(asyncStorage);
-      const coarchMark = await AsyncStorage.getItem('coarchMarkMaterial');
-      coarchMark == null ? setModal5(true) : setModal5(false);
     }
     materialPurchase();
   }, [modalVisible]);
@@ -392,8 +396,6 @@ const save = async() => {
         const asset = await MediaLibrary.createAssetAsync(captureURL);
         // const moms = await MediaLibrary.getAlbumAsync('맘스노트');
 
-        console.log('status: ', status);
-        console.log('asset: ', asset);
         // console.log('moms: ', moms);
        
         
@@ -552,7 +554,7 @@ const save = async() => {
         <WebViewModal modal4={modal4} setModal4={setModal4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} />
         <CoarchMark modal={modal5} setModal={setModal5}/>
         <CoarchMark2 modal={modal6} setModal={setModal6} />
-        <CoarchMark3 modal6={modal6} setModal6={setModal6} modal={modal7} setModal={setModal7} />
+        <CoarchMark3 modal6={modal6} setModal6={setModal6} modal={modal7} setModal={setModal7} setModalVisible2={setModalVisible2}/>
 
         <View style={styles.header}>
         <Text style={{fontSize: 17, fontWeight: '600'}}>출산준비물</Text>

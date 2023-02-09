@@ -161,13 +161,41 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
 
    
     const crown = (index) => {
-        console.log(index);
         switch(index+1){
             case 1: return <Crown/>
             case 2: return <Crown2/>
             case 3: return <Crown3/>
             default: return (<Text style={{fontSize: 30, fontWeight: '600'}}>{index+1}</Text>);
         }
+    }
+
+    const selectSubmit = async(x) => {
+        console.log('x: ', x);
+        const token = await AsyncStorage.getItem('token');
+        try{
+            const response = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/api/needs/add/brand',
+                headers: { 
+                    'Authorization': `bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                  },
+                data: {
+                    needsId: selectBrand.needsId,
+                    needsBrandId: selectBrand.needsBrandId,
+                    itemBrand: x.brandName,
+                    itemName: x.productName,
+                    itemPrice: x.price,
+                    needsDataId: selectBrand.needsDataId
+                }
+            });
+            console.log('response: ', response.data);
+            }catch(error){
+                console.log('comment axios error:', error)
+            }
+            dispatch(postMaterial({order: 'need'}));
+            setModalVisible2(prevState => ({...prevState, open: false})),
+            setModal2(prevState => ({...prevState, open: true, content: '리스트에 적용되었습니다.', buttonCount: 1}));
     }
 
     const submit = async() => {
@@ -183,7 +211,6 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
                 data: selectBrand
             });
             console.log('response: ', response.data);
-            setInfo(response.data);
             }catch(error){
                 console.log('comment axios error:', error)
             }
@@ -197,7 +224,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
             <View style={[styles.mainBoxSub, {width: '24%'}]}>
                 {crown(index)}
             </View>
-            <TouchableOpacity style={[styles.mainBoxSub, {width: '40%', alignItems: 'flex-start'}]} onPress={()=>setSelectBrand((prevState) => ({...prevState, itemName: item.brandName, itemPrice: item.price, needsBrandId: modalVisible2.needsBrandId, itemBrand: item.productName }))}>
+            <TouchableOpacity style={[styles.mainBoxSub, {width: '40%', alignItems: 'flex-start'}]} onPress={()=>selectSubmit(item)}>
                 <Text style={{fontWeight: '500', marginBottom: 3}}>[{item.brandName}]</Text>
                 <Text style={{marginBottom: 3, color: '#757575'}} ellipsizeMode='tail' numberOfLines={1}>{item.productName}</Text>
                 <Text style={{color: '#9E9E9E'}}>구매 344건</Text>

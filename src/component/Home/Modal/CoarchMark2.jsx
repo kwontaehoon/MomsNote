@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Modal, Image } from 'react-native'
 
 import Close from '../.././../../public/assets/svg/Close.svg'
 import Checkbox from 'expo-checkbox';
 import Star from '../../../../public/assets/coachmark/star.png'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -91,12 +92,24 @@ const styles = StyleSheet.create({
 
 
 })
-const Main = ({navigation, modal, setModal}) => {
+const Main = ({navigation, modal, setModal, setModal2}) => {
 
     const [isChecked, setIsChecked] = useState(false);
+    const [list, setList] = useState();
+    console.log('list: ', list);
+
+    useEffect(()=>{
+        const list = async() =>{
+            const materialList = await AsyncStorage.getItem('recommendList');
+            setList(materialList);
+        }
+        list();
+    }, []);
 
     const close = async() => {
-        isChecked ? (AsyncStorage.setItem('coarchMarkHome2', '1'), setModal(false)) : setModal(false);
+        isChecked ? list == null ? (AsyncStorage.setItem('coarchMarkHome2', '1'), setModal(false)) : (AsyncStorage.setItem('coarchMarkHome2', '1'), setModal(false), setModal2(false))
+        :
+        list == null ? setModal(false) : (setModal(false), setModal2(false));
     }
 
   return (
@@ -168,7 +181,7 @@ const Main = ({navigation, modal, setModal}) => {
                </View>
                <View style={styles.modalBox}>
                     <Text style={{color: '#EF1E1E', fontSize: 13, lineHeight: 20}}>Tip! 
-                        <Text style={{color: '#757575', fontSize: 13}}> 초보 엄마라면 추천 리스트를 바탕으로 나에게 맞는 출산준비물 리스트를 작성해 보세요.</Text>
+                        <Text style={{color: '#757575', fontSize: 13,}}> 초보 엄마라면 추천 리스트를 바탕으로 나에게 맞는 출산준비물 리스트를 작성해 보세요.</Text>
                     </Text>
                </View>
             </View>

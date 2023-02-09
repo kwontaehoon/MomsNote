@@ -28,6 +28,8 @@ const Main = ({navigation}) => {
       try{
         const response = await axios.get(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${kakaoAcceess}`);
         console.log('response', response.data);
+        console.log(jwtDecode(response.data.id_token).email);
+        console.log(response.data.id_token);
         const response2 = await axios.get(`https://kapi.kakao.com/v1/user/access_token_info`, {
              headers: `Authorization: Bearer ${response.data.access_token}`
         })
@@ -71,7 +73,7 @@ const Main = ({navigation}) => {
       }else if(response3.data.status == 'expire'){
           setModal(!modal);
       }else{
-        navigation.navigate('추가 정보 입력', ['kakao', response2.data.id]);
+        navigation.navigate('추가 정보 입력', ['kakao', response2.data.id, jwtDecode(response.data.id_token).email]);
       }
 
     }catch(error){

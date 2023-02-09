@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     },
 })
 
-const Main = ({modal, setModal, modal6, setModal6}) => {
+const Main = ({modal, setModal, modal6, setModal6, setModalVisible2}) => {
 
     const DATA = [
         {
@@ -167,6 +167,7 @@ const Main = ({modal, setModal, modal6, setModal6}) => {
         }
     ]
     const [isChecked, setIsChecked] = useState(false);
+    console.log('isChecked: ', isChecked);
     const [info, setInfo] = useState(); // 브랜드 lists
     console.log('브랜드 리스트: ', info);
     const [selectBrand, setSelectBrand] = useState({
@@ -181,7 +182,7 @@ const Main = ({modal, setModal, modal6, setModal6}) => {
 
 
     const close = async() => {
-        isChecked ? (AsyncStorage.setItem('coarchMarkMaterialModal', '1'), setModal(!modal), setModal6(!modal6)) : (setModal(!modal), setModal6(!modal6));
+        isChecked ? (AsyncStorage.setItem('coarchMarkMaterialModal', '1'), setModal(!modal), setModal6(!modal6), setModalVisible2(true)) : (setModal(!modal), setModal6(!modal6), setModalVisible2(true));
       }
 
     const renderItem = ({ item, index }) => (
@@ -269,7 +270,7 @@ const Main = ({modal, setModal, modal6, setModal6}) => {
                     </View>
 
                         <FlatList data={DATA} renderItem={renderItem}
-                            keyExtractor={item => String(item.needsBrandId)} showsVerticalScrollIndicator={false}>
+                            keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}>
                         </FlatList>
 
                     </View>

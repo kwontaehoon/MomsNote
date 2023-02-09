@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
 import Tab1 from './Tab1/Main'
 import Tab2 from './Tab2/Main'
 import Tab3 from './Tab3/Main'
 import Tab4 from './Tab4/Main'
+import { useIsFocused } from '@react-navigation/native'
 
 const styles = StyleSheet.create({
   container:{
@@ -29,7 +29,13 @@ const styles = StyleSheet.create({
 })
 const Information = ({navigation, route}) => {
 
-  console.log('맘스정보 route: ', route);
+    console.log('맘스 정보 route: ', route.params);
+    const isFocused = useIsFocused();
+
+    useEffect(()=>{
+        const arr = [false, true, false, false];
+        route.params == '행사 정보' ? setFilter(arr) : '';
+    }, [isFocused]);
 
   const [filter, setFilter] = useState([true, false, false, false]);
 

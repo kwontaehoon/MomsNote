@@ -52,6 +52,7 @@ import MyBoard from '../MyPage/MyBoard/Main'
 import MyComment from '../MyPage/MyComment/Main'
 import MyExp from '../MyPage/MyExp/Main'
 import Guide from '../MyPage/Guide/Main'
+import Information from '../Information/Main'
 
 import Back from '../../../public/assets/svg/Back.svg'
 
@@ -102,6 +103,7 @@ const Navigation = () => {
 
                 <Stack.Screen name="로그인 페이지" component={Login} options={{headerShown: false}}/>
                 <Stack.Screen name="맘스톡" component={Talk} options={{title: '맘스톡'}}/>
+                <Stack.Screen name="맘스정보" component={Information} options={{title: '맘스 정보'}}/>
                 <Stack.Screen name="추가 정보 입력" component={AddPage} options={({ navigation, route }) => ({
                         headerLeft: () => (
                             <View style={styles.header}>

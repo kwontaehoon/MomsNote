@@ -122,7 +122,7 @@ const AddPage = ({navigation, route}) => {
     const [info, setInfo] = useState({
         username: `${route.params[0]}_${route.params[1]}`,
         nickname: '',
-        email: '',
+        email: route.params[2],
         dueDate: '',
         babyName: '',
         provider: `${route.params[0]}`,
@@ -229,7 +229,7 @@ const AddPage = ({navigation, route}) => {
         <View style={styles.container2}>
             <View style={styles.main}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>닉네임</Text>
-                <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.</Text>
+                    <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.</Text>
                     <TextInput placeholder='닉네임 입력' style={[styles.textBox, {borderColor: bottomColor[0] ? '#FEB401' : '#EEEEEE'}]} maxLength={8}
                     value={info.nickname}
                     onFocus={()=>change(0)}

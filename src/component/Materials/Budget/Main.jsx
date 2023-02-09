@@ -12,6 +12,7 @@ import DotModal from './Modal/DotModal'
 import PriceEdit from './Modal/PriceEdit'
 import FirstModal from '../../Modal/First'
 import CoarchMark from './Modal/CoarchMark'
+import CoarchMark2 from './Modal/CoarchMark2'
 
 import Download from '../../../../public/assets/svg/Download.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
@@ -32,6 +33,7 @@ import M6 from '../../../../public/assets/svg/6.svg'
 import M7 from '../../../../public/assets/svg/7.svg'
 import M8 from '../../../../public/assets/svg/8.svg'
 import M9 from '../../../../public/assets/svg/9.svg'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
   container:{
@@ -185,7 +187,6 @@ const Talk1Sub = ({navigation, route}) => {
   const ref = useRef();
   const dispatch = useDispatch();
   const info = useSelector(state => state.material.data);
-  console.log('총 예산 info: ', info);
   const materialSet = useSelector(state => state.material.refresh);
   const animation = useRef(new Animated.Value(0)).current;
   const [test, setTest] = useState(); // 캡쳐 uri
@@ -209,13 +210,22 @@ const Talk1Sub = ({navigation, route}) => {
   });
 
   const [modal8, setModal8] = useState(false); // coarchmark
+  const [modal9, setModal9] = useState(false); // coarchmark2
   const [sumResult, setSumResult] = useState({
     sum: 0,
     exp: 0
   }); // 총 예산
 
   useEffect(()=>{
-    console.log('fasdfsdafadsdfdsa');
+    const coarch = async() => {
+      const coarch = await AsyncStorage.getItem('coarchMarkBudget');
+      console.log('coarchMarkBudget: ', coarch);
+      coarch == null ? (setModal8(true), setModal9(true)) : ''
+    }
+    coarch();
+  }, [])
+
+  useEffect(()=>{
     dispatch(postMaterial(materialSet));
   }, [modal6, modal5]);
 
@@ -364,6 +374,7 @@ const capture = async() => {
       <PriceEdit modal6={modal6} setModal6={setModal6} setModal7={setModal7} />
       <FirstModal modal={modal7} setModal={setModal7} />
       <CoarchMark modal={modal8} setModal={setModal8}/>
+      <CoarchMark2 modal={modal9} setModal={setModal9} setModal2={setModal8} />
 
       <View style={styles.header}>
                     <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>

@@ -47,7 +47,7 @@ const CheckBoxModal = ({navigation, modalVisible4, setModalVisible4}) => {
             <View style={styles.modalContainer2}>
                 <View style={[styles.modalBox, {paddingTop: 25}]}><Text style={{fontSize: 16, textAlign: 'center', lineHeight: 25}}>출산 리스트 공유 게시판에 등록되었습니다.</Text></View>
                 <View style={styles.modalBox}>
-                    <TouchableOpacity style={styles.modal} onPress={()=>{setModalVisible4(!modalVisible4), navigation.navigate('맘스 톡')}}>
+                    <TouchableOpacity style={styles.modal} onPress={()=>{setModalVisible4(!modalVisible4), navigation.navigate('맘스톡', '출산 리스트')}}>
                         <Text style={{color: 'white', fontSize: 16}}>확인</Text>
                     </TouchableOpacity>
                 </View>

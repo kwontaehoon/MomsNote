@@ -32,6 +32,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Push from '../Test/Push'
 import DateTime22 from '../Test/DateTime2'
 
+
 import { postAlarm } from '../../Redux/Slices/AlarmSlice';
 
 const styles = StyleSheet.create({
@@ -107,7 +108,7 @@ function MainScreen() {
                <Stack.Navigator>
                     <Stack.Screen 
                         name="맘스톡"
-                        component={Talk}
+                        component={Push}
                         options={({ navigation, route }) => ({
                           headerLeft: () => (
                             <View style={styles.header}>
@@ -218,14 +219,14 @@ function MainScreen() {
           )}
       </Tab.Screen>
 
-      <Tab.Screen name="맘스정보" options={{tabBarIcon: ({focused, color}) => (focused ? <Campaign2 /> : <Campaign />), unmountOnBlur:true}}
+      <Tab.Screen name="맘스 정보" options={{tabBarIcon: ({focused, color}) => (focused ? <Campaign2 /> : <Campaign />), unmountOnBlur:true}}
       listeners={{tabPress: (e)=>{
         alarmFunc()  
       }}}>
         {()=>(
                <Stack.Navigator>
                     <Stack.Screen 
-                        name="맘스 정보"
+                        name="맘스정보"
                         component={Information}
                         options={({ navigation, route }) => ({
                           headerLeft: () => (

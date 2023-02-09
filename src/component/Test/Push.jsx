@@ -3,6 +3,7 @@ import { Text, View, Button, Platform } from 'react-native';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -14,6 +15,7 @@ Notifications.setNotificationHandler({
 
 // Can use this function below OR use Expo's Push Notification Tool from: https://expo.dev/notifications
 async function sendPushNotification(expoPushToken) {
+  const token = await AsyncStorage.getItem('token');
   const message = {
     to: expoPushToken,
     sound: 'default',
@@ -65,6 +67,12 @@ async function registerForPushNotificationsAsync() {
 }
 
 const push = async() => {
+  const token = await AsyncStorage.getItem('token');
+  const data = {
+    to: `ExponentPushToken[${token}]`,
+    sound: "default",
+    body: "Hello world!"
+  }
     try{
         const response = await axios({
             method: 'post',
@@ -72,15 +80,31 @@ const push = async() => {
             headers: { 
               'Content-Type': 'application/json'
             },
-            data : {
-                to: "ExponentPushToken[eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnb29nbGVfMTEwMjMzNjUxNDU4NzIyMTkzNDQzIiwiaWQiOjEwMiwibmljayI6Iu2DnO2biOq1rOq4gCIsImlhdCI6MTY3NTQwMzY1MCwiZXhwIjoxNjc3OTk1NjUwfQ.FAzN5DL97vr6uOHFNN8jLvYyVOt0q-ijSUjZxPkJ_9k]",
-                title:"hello",
-                body: "world"
-            }
+            data : [
+              {
+                "to": `ExponentPushToken[${token}]`,
+                "sound": "default",
+                "body": "Hello world!"
+              },
+              {
+                "to": `ExponentPushToken[${token}]`,
+                "badge": 1,
+                "body": "You've got mail"
+              },
+              {
+                "to": [
+                  `ExponentPushToken[${token}]`,
+                  `ExponentPushToken[${token}]`,
+                ],
+                "body": "Breaking news!"
+              }
+            ]
+              
+            
         });
         console.log('response: ', response.data);
         }catch(error){
-            console.log('출산준비물 리스트 error:', error);
+            console.log('error:', error);
         }
 }
 

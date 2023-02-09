@@ -315,7 +315,7 @@ const Talk1 = ({navigation, route}:any) => {
     </View>
   )
 
-  return info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return (
     <View style={[styles.container]}>
 
   <Modal animationType="fade" transparent={true} visible={modalVisible.open} statusBarTranslucent={true}
@@ -379,7 +379,7 @@ const Talk1 = ({navigation, route}:any) => {
       </View>
 
       <View style={[styles.main, {height: Platform.OS == 'ios' ? '76%' : '67%'}]}>
-        {info == 0 ?
+        {info == '0' ?
         <View style={{height: '70%', alignItems: 'center', justifyContent: 'center'}}>
           <Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text>
         </View>
