@@ -40,9 +40,6 @@ const styles = StyleSheet.create({
       right: 20,
       alignItems: 'center',
       flexDirection: 'row',
-      backgroundColor: 'white',
-      padding: 5,
-      borderRadius: 5
   },
   header2:{
     height: 55,
@@ -57,7 +54,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
     padding: 5,
-    borderRadius: 5
+    borderRadius: 10,
+    borderStyle: 'dashed',
+    borderColor: '#FEA100',
+    borderWidth: 2
   },
   main:{
     height: '79%',
@@ -198,9 +198,8 @@ imageBox2:{
     width: 100,
     height: 100,
     position: 'absolute',
-    right: 70,
-    top: -10,
-    flexDirection: 'row',
+    right: -20,
+    top: 60,
 },
 imageBox3:{
     width: '100%',
@@ -214,16 +213,17 @@ imageBox4:{
     height: 100,
     justifyContent: 'center',
     position: 'absolute',
-    left: -100,
-    top: 10,
+    left: -110,
+    top: -20,
+    flexDirection: 'row',
 },
 imageBox5:{
     width: 150,
     height: 150,
     justifyContent: 'center',
     position: 'absolute',
-    left: -10,
-    top: 10,
+    left: -30,
+    top: 20,
 },
 imageBox6:{
     width: 150,
@@ -320,7 +320,7 @@ const optionBox = (e) => {
           </View>
           <TouchableOpacity style={[styles.filterBox, {flexDirection: 'row', justifyContent: 'flex-start', width: '60%'}]}>
             {optionBox('필수')}
-            <View style={{backgroundColor: 'white', padding: 10, marginLeft: 15, borderRadius: 5}}>
+            <View style={{backgroundColor: 'white', padding: 10, marginLeft: 15, borderRadius: 10, borderStyle: 'dashed', borderColor: '#FEA100', borderWidth: 2}}>
 
             <View style={styles.imageBox5}>
                 <View style={[styles.Top, {alignItems: 'center'}]}><Image source={require('../../../../public/assets/coachmark/arrow8.png')} style={styles.image} resizeMode='contain'/></View>
@@ -330,19 +330,18 @@ const optionBox = (e) => {
                     </View>
                     
             </View>
-
                 <Text style={{fontSize: 13}}>수유 브라</Text>
             </View>
           </TouchableOpacity>
             <View style={[styles.filterBox, {width: '28%'}]}>
-                <View style={{backgroundColor: 'white', padding: 10, borderRadius: 5}}>
+                <View style={{backgroundColor: 'white', padding: 10, borderRadius: 10, borderStyle: 'dashed', borderColor: '#FEA100', borderWidth: 2}}>
 
                 <View style={styles.imageBox2}>
+                <View style={styles.Top}><Image source={require('../../../../public/assets/coachmark/arrow14.png')} style={styles.image} resizeMode='contain'/></View>
                     <View style={[styles.Bottom, {justifyContent: 'flex-start', paddingRight: 5}]}>
                         <Text style={{color: 'white', fontSize: 15, textAlign: 'center', fontWeight: '700'}}>저장, 검색</Text>
                         <Text style={{color: 'white', fontSize: 15, textAlign: 'center', fontWeight: '700'}}>기능 활용!</Text>
                     </View>
-                    <View style={styles.Top}><Image source={require('../../../../public/assets/coachmark/arrow5.png')} style={styles.image} resizeMode='contain'/></View>
                 </View>
 
                 <View style={{width: 24, height: 24, borderRadius: 12, backgroundColor: '#FEB401', alignItems: 'center', justifyContent: 'center'}}>
@@ -397,8 +396,10 @@ const optionBox = (e) => {
             <View style={styles.Top}><Image source={require('../../../../public/assets/coachmark/arrow4.png')} style={styles.image} resizeMode='contain'/></View>
         </View>
 
+            <View style={{flexDirection: 'row', backgroundColor: 'white', paddingLeft: 15, paddingTop: 5, paddingBottom: 5, borderRadius: 10, borderStyle: 'dashed', borderColor: '#FEA100', borderWidth: 2}}>
             <TouchableOpacity style={{marginRight: 20}}><Download/></TouchableOpacity>
             <TouchableOpacity style={{marginRight: 20}}><Search/></TouchableOpacity>
+            </View>
             <TouchableOpacity style={{marginRight: 20}}><Bell/></TouchableOpacity>
             <TouchableOpacity style={{marginRight: 5}}><MyPage/></TouchableOpacity>
         </View>
@@ -440,14 +441,14 @@ const optionBox = (e) => {
             <TouchableOpacity style={{padding: 10, flexDirection: 'row', alignItems: 'center'}}>
 
             <View style={styles.imageBox4}>
-                    <View style={styles.Top}><Image source={require('../../../../public/assets/coachmark/arrow.png')} style={styles.image} resizeMode='contain'/></View>
-                    <View style={styles.Bottom}>
+                    <View style={[styles.Bottom, {justifyContent: 'flex-start'}]}>
                         <Text style={{color: 'white', fontSize: 15, textAlign: 'center', fontWeight: '700'}}>나의 예산 관리가</Text>
                         <Text style={{color: 'white', fontSize: 15, textAlign: 'center', fontWeight: '700'}}>가능해요!</Text>
                     </View>
+                    <View style={[styles.Top, {justifyContent: 'center'}]}><Image source={require('../../../../public/assets/coachmark/arrow15.png')} style={styles.image} resizeMode='contain'/></View>
                 </View>
 
-            <View style={{backgroundColor: 'white', padding: 10, borderRadius: 5, flexDirection: 'row'}}>
+            <View style={{backgroundColor: 'white', padding: 10, borderRadius: 10, flexDirection: 'row', borderStyle: 'dashed', borderColor: '#FEA100', borderWidth: 2}}>
                 <Text style={{fontSize: 12}}>자세히 보기</Text>
             <ArrowRight fill={'black'} width={15} height={15}/>
             </View>

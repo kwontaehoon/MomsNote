@@ -137,11 +137,12 @@ headerBar:{
     paddingRight: 15,
   },
   filterBox2:{
-    width: '33.4%',
+    width: '34.4%',
     height: 48,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
+    borderWidth: 1,
   },
   footer:{
     height: '26.5%',
@@ -153,13 +154,23 @@ headerBar:{
   buttonBox:{
     width: '100%',
     height: 56,
-    backgroundColor: '#FEA100',
+    position: 'absolute',
+    bottom: 10,
+    borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'absolute',
-    bottom: 0,
-    borderRadius: 5
   },
+  button:{
+    backgroundColor: '#FEA100',
+    width: '90%',
+    height: 56,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderStyle: 'dashed',
+    borderColor: '#FEA100',
+    borderWidth: 2,
+    borderRadius: 10,
+  }
 })
 
 const Talk1Sub = ({modal, setModal, setModal2}) => {
@@ -333,13 +344,17 @@ const close = async() => {
                     </View>
                 </View>
 
-              <View style={[styles.filterBox2, {justifyContent: 'flex-start', backgroundColor: 'white', borderTopLeftRadius: 10, borderBottomLeftRadius: 10, paddingLeft: 10}]}>
-                <Text style={{fontWeight: '500'}}>산모패드</Text>
+              <View style={{backgroundColor: 'white', flexDirection: 'row', width: '67%', borderRadius: 10, borderStyle: 'dashed', borderWidth: 2, borderColor: '#FEA100', paddingLeft: 10}}>
+                <View style={{width: '50%', justifyContent: 'center', alignItems: 'flex-start'}}>
+                  <Text style={{fontWeight: '500'}}>산모패드</Text>
+                </View>
+                <View style={{width: '50%', justifyContent: 'center', alignItems: 'center'}}>
+                  <Text>마더스베이비</Text></View>
               </View>
-              <View style={[styles.filterBox2, {backgroundColor: 'white', borderBottomRightRadius: 10, borderTopRightRadius: 10}]}><Text>마더스베이비</Text></View>
 
             <TouchableOpacity style={[styles.filterBox2, {justifyContent: 'flex-end'}]}>
-              <View style={{backgroundColor: 'white', flexDirection: 'row', padding: 5, borderRadius: 5}}>
+              
+              <View style={{backgroundColor: 'white', flexDirection: 'row', padding: 10, borderRadius: 10, borderStyle: 'dashed', borderWidth: 2, borderColor: '#FEA100'}}>
 
                 <View style={styles.imageBox}>
                     <View style={styles.Bottom}>
@@ -390,8 +405,10 @@ const close = async() => {
                     <Text style={{color: 'white', fontSize: 15, textAlign: 'center'}}>공유 및 비교해요!</Text>
                 </View>
             </View>
-
-          <Text style={{color: 'white', fontWeight: '600', fontSize: 16}}>출산 리스트 게시판 공유</Text>
+          
+          <View style={styles.button}>
+            <Text style={{color: 'white', fontWeight: '600', fontSize: 18}}>출산 리스트 게시판 공유</Text>
+          </View>
         </TouchableOpacity>
       </View>
         </View>

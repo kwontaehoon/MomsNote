@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, SafeAreaView } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, SafeAreaView, StatusBar } from 'react-native'
 import Slick from 'react-native-slick'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import { WithLocalSvg } from "react-native-svg"
@@ -7,6 +7,7 @@ import Kakao from '../../../public/assets/svg/kakao.svg'
 import Apple from '../../../public/assets/svg/apple.svg'
 import GoogleIcon from '../../../public/assets/svg/google.svg'
 import Logo from '../../../public/assets/svg/Logo.svg'
+import Logo2 from '../../../public/assets/svg/Logo2.svg'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -14,6 +15,7 @@ import * as Linking from 'expo-linking';
 import axios from 'axios'
 import Modal from './Modal/Withdraw'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useIsFocused } from '@react-navigation/native'
 import {
     SafeAreaProvider,
     useSafeAreaInsets,
@@ -21,16 +23,19 @@ import {
 import { AppleAuthenticationCredentialState } from 'expo-apple-authentication'
 import jwtDecode from 'jwt-decode'
 import { useDispatch } from 'react-redux'
-import { useSelector } from 'react-redux'
-import { postUser } from '../../Redux/Slices/UserSlice'
 
 const styles = StyleSheet.create({
     container:{
-        backgroundColor: 'white',
-        padding: 20,
+        backgroundColor: '#41BDCC',
     },
     header:{
-        height: '70%',
+        height: '10%',
+        backgroundColor: '#FAA61A',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    main:{
+        height: '60%',
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -141,17 +146,28 @@ const Main = ({navigation, route}) => {
         }
     }
 
+    const FocusAwareStatusBar = () => {
+        const isFocused = useIsFocused();
+        return isFocused ? <StatusBar backgroundColor='#FAA61A' /> : null;
+    }
+
   return (
 
     <SafeAreaProvider>
-        <SafeAreaView style={{ backgroundColor: 'white' }}></SafeAreaView>
-
+        <SafeAreaView style={{ backgroundColor: '#FAA61A' }}>
+                    <StatusBar />
+            </SafeAreaView>
+            <FocusAwareStatusBar />
         <SafeAreaView style={[styles.container, {marginBottom: Platform.OS == 'ios' ? 30 : 0}]}>
 
             <Modal modal={modal} setModal={setModal}/>
 
             <View style={styles.header}>
-                <Logo width={230} height={112}/>
+                <View style={{position: 'absolute', bottom: '-25%'}}><Logo2 /></View>
+            </View>
+
+            <View style={styles.main}>
+                <Logo />
             </View>
             <View style={styles.footer}>
                 <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#FEE500'}]} onPress={()=>navigation.navigate('카카오 로그인')}>

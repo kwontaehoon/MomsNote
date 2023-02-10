@@ -347,7 +347,7 @@ const Withdraw = ({navigation, route}) => {
                 </View>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>SNS 계정</Text>
-                    <Text style={{color: '#757575', marginTop: 5}}>리뷰에 사용할 계정을 하나 이상 입력해주세요.</Text>
+                    <Text style={{color: '#757575', marginTop: 5}}>리뷰에 사용할 계정은 계정 아이디(네이버는 블로그 주소 아이디)을 입력해주세요.</Text>
                     <TextInput style={styles.textBox} placeholder='네이버 블로그' value={info.blog}
                         onChangeText={(e) => setInfo((prevState) => ({
                             ...prevState, blog: e
@@ -393,7 +393,7 @@ const Withdraw = ({navigation, route}) => {
                         value={isChecked[2]}
                         onValueChange={()=>change(2)}
                         color={isChecked[2] ? '#FEB401' : undefined}/>
-                    <Text style={{color: '#616161'}}>캠페인 유의사항 및 제 3자 제공에 동의합니다.</Text>
+                    <Text style={{color: '#EF1E1E', fontWeight: '600'}}>[필독] 캠페인 유의사항 및 제 3자 제공에 동의합니다.</Text>
                 </View>
                 <View style={[styles.mainBox, {alignItems: 'center'}]}>
                     {info.memberName == '' || info.tel == '' || info.address == '' || info.addressDetails == '' ||

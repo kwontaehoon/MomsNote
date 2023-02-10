@@ -38,22 +38,31 @@ const Terms1 = () => {
     },
   ];
 
+  const [info, setInfo] = useState();
+  console.log('info: ', info);
+
   useEffect(()=>{
     const terms = async() => {
+      try{
       const response = await axios({
         method: 'post',
         url: 'https://momsnote.net/policy',
+        headers: { 
+          'Content-Type': 'application/json'
+        },
         data : {
-          sort: "이용약관",
+          sort: "체험단 유의사항",
           page: 0
       }
     });
-    setInfo(response.data.data);
-    }
+    setInfo(response.data);
+  }catch(error){
+    console.log('error: ', error);
+  }
+  }
     terms();
   }, []);
 
-  const [info, setInfo] = useState();
 
   const renderItem = () => {
     return(
@@ -71,7 +80,7 @@ const Terms1 = () => {
     )
   }
 
-  return info == undefined || info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
       <FlatList data={DATA} renderItem={renderItem} keyExtractor={index => String(index)} showsVerticalScrollIndicator={false}></FlatList>
     </View>

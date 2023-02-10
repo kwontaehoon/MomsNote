@@ -9,6 +9,12 @@ import { setEventCount } from '../../../Redux/Slices/EventSlice'
 import { SafeAreaProvider } from 'react-native-safe-area-context' 
 import { Platform } from 'expo-modules-core'
 
+import Modal from './Modal/DatePick'
+
+import Arrow_left from '../../../../public/assets/svg/Arrow-Left.svg'
+import Arrow_right from '../../../../public/assets/svg/Arrow-Right.svg'
+import { ScrollView } from 'react-native-gesture-handler'
+
 const styles = StyleSheet.create({
   container:{
     backgroundColor: 'white',
@@ -115,6 +121,8 @@ const Talk1 = ({navigation}: any) => {
 
     const [loading, setLoading] = useState(false);
 
+    const [modal, setModal] = useState(false);
+
     useEffect(()=>{
       setLoading(true);
       dispatch(postEvent(eventSet));
@@ -177,8 +185,17 @@ const Talk1 = ({navigation}: any) => {
       {info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {flex: Platform.OS == 'ios' ?  0 : 1}]}/>
       :
       <SafeAreaView style={[styles.container, {flex: Platform.OS == 'ios' ?  0 : 1}]}>
+
+        <Modal modal={modal} setModal={setModal} />
+
         <View style={styles.header}>
-          <View style={styles.headerBox}><Text style={{fontSize: 18, fontWeight: '600'}}>{moment().format('YYYY')}년</Text></View>
+          <View style={styles.headerBox}>
+            <View style={{position: 'absolute', left: 0}}><Arrow_left fill='black'/></View>
+            
+              <Text style={{fontSize: 18, fontWeight: '600'}}>{moment().format('YYYY')}년</Text>
+
+            <View style={{position: 'absolute', right: 0}}><Arrow_right fill='black' /></View>
+          </View>
           <View style={styles.headerBox2}>
           <FlatList data={DATA2} renderItem={renderItem2}
               keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>

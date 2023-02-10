@@ -167,7 +167,7 @@ const Withdraw = ({navigation,route}) => {
 
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>SNS 계정</Text>
-                    <Text style={{color: '#757575', marginTop: 5}}>리뷰에 사용할 계정을 하나 이상 입력해주세요.</Text>
+                    <Text style={{color: '#757575', marginTop: 5}}>리뷰에 사용할 계정은 계정 아이디(네이버는 블로그 주소 아이디)을 입력해주세요.</Text>
                     <View style={styles.textBox}><Text>{info.data.blog}</Text></View>
                     <View style={styles.textBox}><Text>{info.data.insta}</Text></View>
                     <View style={styles.textBox}><Text>{info.data.youtube}</Text></View>

@@ -119,12 +119,11 @@ const Main = ({navigation}) => {
             <View style={styles.mainBox}>
                 <Text style={{fontWeight: 'bold', fontSize: 15, marginBottom: 10}}>[회원 탈퇴 시 유의사항]</Text>
                 <Text style={{marginBottom: 15, lineHeight: 20}}><Icon name='dot-single' size={15}/>
-                    탈퇴 후 회원님이 직접 등록하신 데이터는 모두 삭제 처리되며, 재 가입 시 확인이 불가합니다.
+                    탈퇴 후 7일 동안 동일 이메일로 재가입이 불가합니다.
                 </Text>
-                <Text style={{marginBottom: 15}}><Icon name='dot-single' size={15}/>탈퇴 후 동일 이메일로 재 가입이 불가합니다.</Text>
             </View>
             <View style={styles.mainBox}>
-                <Text style={{marginBottom: 3, lineHeight: 20}}>모든 항목에 동의하시면 아래에 체크 후 탈퇴 사유를 적어주세요. 더 좋은 서비스를 제공하기 위해 소중한 정보로 활용하겠습니다.</Text>
+                <Text style={{marginBottom: 3, lineHeight: 25}}>모든 항목에 동의하시면 아래에 체크 후 탈퇴 사유를 적어주세요. 더 좋은 서비스를 제공하기 위해 소중한 정보로 활용하겠습니다.</Text>
             </View>
             <View style={[styles.mainBox, {flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', height: 50}]}>
                 <View><Checkbox style={styles.checkBox}

@@ -156,7 +156,7 @@ headerBar:{
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    bottom: 0,
+    bottom: 10,
     borderRadius: 5
   },
 })

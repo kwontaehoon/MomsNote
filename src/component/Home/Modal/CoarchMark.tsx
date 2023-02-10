@@ -59,7 +59,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         backgroundColor: '#FEECB3',
-        borderRadius: 5,
+        borderRadius: 10,
+        borderStyle: 'dashed',
+        borderWidth: 2,
+        borderColor: '#FEA100'
     },
     imageBox:{
         width: 150,
@@ -87,7 +90,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         justifyContent: 'space-around',
         flexDirection: 'row',
-        borderRadius: 5,
+        borderRadius: 10,
+        borderStyle: 'dashed',
+        borderWidth: 2,
+        borderColor: '#FEA100'
     },
     imageBox4:{
         width: 150,
@@ -140,8 +146,15 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     mainBox3Sub:{
-        width: '30%',
+        width: 50,
+        height: 50,
+        borderWidth: 2,
         justifyContent: 'center',
+        alignItems: 'center',
+        borderStyle: 'dashed',
+        borderColor: '#FEA100',
+        borderRadius: 10,
+        backgroundColor: '#FEECB3',
     },
     captureBox:{
         width: 40,
@@ -149,7 +162,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#FEECB3',
+        backgroundColor: 'white',
     },
     DdayBox:{
         alignItems: 'flex-end',
@@ -250,7 +263,7 @@ const Main = ({modal, setModal}) => {
                         <View style={styles.mainBox2}></View>
                     <View style={styles.mainBox3}>
                         <View style={styles.mainBox3Sub}>
-                            <View style={styles.captureBox}>
+                            
                             <TouchableOpacity style={styles.captureBox}>
                                 <Icon2 name='download' size={22} style={{color: '#FE9000'}} />
                             </TouchableOpacity>
@@ -261,8 +274,6 @@ const Main = ({modal, setModal}) => {
                                     </View>
                                     <View style={styles.Top}><Image source={require('../../../../public/assets/coachmark/arrow2.png')} style={styles.image} resizeMode='contain'/></View>
                                 </View>
-
-                            </View>
                         </View>
                     </View> 
                 </View>

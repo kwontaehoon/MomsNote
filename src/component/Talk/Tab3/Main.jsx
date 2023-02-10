@@ -14,11 +14,11 @@ import Modal from '../../Modal/First'
 
 const styles = StyleSheet.create({
   container:{
-    flex: 1,
+    height: '85%',
     backgroundColor: 'white',
   },
   header2:{
-    height: 50,
+    height: '8%',
     flexDirection: 'row',
   },
   header2FilterBox:{
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   main:{
-    height: '91%',
+    height: '92%',
     padding: 10,
     position: 'relative',
     zIndex: -100,

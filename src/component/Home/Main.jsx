@@ -231,6 +231,7 @@ const Home = ({navigation}) => {
     const mainData = useSelector(state => { return state.user.data; });
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
+    console.log('bubble: ', bubble);
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
     const [modal2, setModal2] = useState(false); // 코치마크
@@ -242,7 +243,6 @@ const Home = ({navigation}) => {
     useEffect(()=>{
         const recommendList = async() => {
             const asyncStorage = await AsyncStorage.getItem('recommendList');
-            console.log('asyncStorage: ', asyncStorage);
             const coarchMark = await AsyncStorage.getItem('coarchMarkHome');
             const coarchMark2 = await AsyncStorage.getItem('coarchMarkHome2');
             coarchMark == null ? setModal2(true) : setModal2(false);
@@ -288,7 +288,7 @@ const Home = ({navigation}) => {
     const bubbleRandom = () => {
         let number = bubble.indexOf(true);
         let arr = Array.from({length: mainData.message.length}, ()=>{return false});
-        if(number === 3){ number = -1 }
+        if(number == arr.length-1){ number = -1 }
         arr[number+1] = !arr[number+1];
         setBubble(arr); 
     }
