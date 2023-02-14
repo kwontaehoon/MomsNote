@@ -51,8 +51,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 4,
-        borderColor: '#EEEEEE',
-        borderWidth: 1, 
     },
     iconBox:{
         position: 'absolute',

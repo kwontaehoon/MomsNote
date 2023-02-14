@@ -72,11 +72,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: 15,
-        paddingRight: 15
+        paddingRight: 15,
     },
     iconBox:{
         paddingLeft: 5,
-        padding: 10
+        padding: 10,
     },
     header2:{
         width: 300,

@@ -35,9 +35,9 @@ export const materialSlice = createSlice({
     name: 'materialSlice',
     initialState,
     reducers: {
-    //   setMarterialRefresh:(state, action)=>{
-    //     state.refresh.subcategory = action.payload.subcategory;
-    //   }
+      setMarterialRefresh:(state, action)=>{
+        state.refresh.order = action.payload.order;
+      }
     },
     extraReducers: (bulider) => {
       bulider.addCase(postMaterial.fulfilled, (state, action) => {

@@ -110,11 +110,13 @@ const AddPage = ({navigation, route}) => {
 
     console.log('route params: ', route.params);
 
-    const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-
     const [isChecked, setChecked] = useState(Array.from({length: 4}, ()=>{return false})); // check box
     console.log('isChecked: ', isChecked);
+    console.log(isChecked[3]);
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
+
+    const test = isChecked[3] ? 1 : 0;
+    console.log('test: ', test);
 
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -127,14 +129,13 @@ const AddPage = ({navigation, route}) => {
         babyName: '',
         provider: `${route.params[0]}`,
         providerId: typeof(route.params[1]) == 'number' ? `${route.params[1]}` : route.params[1],
-        marketingFlag: Number(`${isChecked[3] ? 1 : 0}`),
+        marketingFlag: test == 1 ? 0 : 1,
     })
     console.log('info: ', info);
 
     const [modal, setModal] = useState(false);
     const [modal2, setModal2] = useState(false);
 
-    const [emailcon, setEmailCon] = useState(0);
     const submit = async() => {
 
         AsyncStorage.setItem('user', JSON.stringify(info));

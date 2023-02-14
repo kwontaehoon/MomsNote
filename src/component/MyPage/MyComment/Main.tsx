@@ -52,6 +52,7 @@ const Main = () => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.myComment.data; });
+  console.log('내가 쓴 댓글 info: ', info);
   const myCommentSet = useSelector(state => { return state.myComment.refresh; });
   const myCommentCountSet = useSelector(state => { return state.myComment.refresh; });
   const infoCount = useSelector(state => { return state.myCommentCount.data; });

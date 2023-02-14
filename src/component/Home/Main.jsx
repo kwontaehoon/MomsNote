@@ -229,6 +229,7 @@ const Home = ({navigation}) => {
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     console.log('infoPopular: ', infoPopular);
     const mainData = useSelector(state => { return state.user.data; });
+    console.log('mainData: ', mainData);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
     console.log('bubble: ', bubble);
@@ -373,7 +374,7 @@ const Home = ({navigation}) => {
                     <View style={styles.main3Box2}>
                         <View style={styles.titleBox}>
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>출산 리스트</Text></View>
-                            <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스톡', '출산 리스트')}>+ 더보기</Text></View>
+                            <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13, padding: 5, paddingRight: 0}} onPress={()=>navigation.navigate('맘스톡', '출산 리스트')}>+ 더보기</Text></View>
                         </View>
                         {materialPopular == '0' ? 
                             <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
@@ -385,19 +386,19 @@ const Home = ({navigation}) => {
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>1 </Text>
-                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[0])}> {materialPopular == '' ? '' : materialPopular[0].title }</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[0])}> {materialPopular.legtnh > 0 ? materialPopular[0].title : ''}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>2 </Text>
-                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[1])}> {materialPopular == '' ? '' : materialPopular[1].title }</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[1])}> {materialPopular > 1 ? materialPopular[1].title : ''}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>3 </Text>
-                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[2])}> {materialPopular == '' ? '' : materialPopular[2].title }</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[2])}> {materialPopular.length > 2 ? materialPopular[2].title : ''}</Text>
                                 </View>
                             </View>
                         </View>}
@@ -405,9 +406,9 @@ const Home = ({navigation}) => {
                     <View style={[styles.main3Box2, {borderLeftWidth: 1, borderColor: '#EEEEEE',}]}>
                         <View style={styles.titleBox}>
                             <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>맘스 토크</Text></View>
-                            <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스톡')}>+ 더보기</Text></View>
+                            <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13, padding: 5}} onPress={()=>navigation.navigate('맘스톡')}>+ 더보기</Text></View>
                         </View>
-                        {boardPopular == '' ? 
+                        {boardPopular == '0' ? 
                         <View style={[styles.contentBox, {justifyContent: 'center', alignItems: 'center'}]}>
                             <Text style={{color: '#757575'}}>등록된</Text>
                             <Text style={{color: '#757575'}}>게시물이 없습니다.</Text>
@@ -417,19 +418,19 @@ const Home = ({navigation}) => {
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>1 </Text>
-                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}> {boardPopular == '' && boardPopular.length > 0 ? '' : boardPopular[0].title}</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}> {boardPopular.length > 0 ? boardPopular[0].title : ''}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>2 </Text>
-                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[1]})}> {boardPopular == '' && boardPopular.length > 1 ? '' :boardPopular[1].title}</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[1]})}> {boardPopular.length > 1 ? boardPopular[1].title : ''}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>3 </Text>
-                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[2]})}> {boardPopular == '' && boardPopular.length > 2 ? '' :boardPopular[2].title}</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[2]})}> {boardPopular.length > 2 ? boardPopular[2].title : ''}</Text>
                                 </View>
                             </View>
                         </View> }
@@ -440,7 +441,7 @@ const Home = ({navigation}) => {
                 <View style={styles.main4Box}>
                     <View style={[styles.titleBox, {height: '100%'}]}>
                         <View style={styles.title}><Text style={{fontSize: 18, fontWeight: 'bold'}}>맘스 정보</Text></View>
-                        <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13}} onPress={()=>navigation.navigate('맘스정보', '행사 정보')}>+ 더보기</Text></View>
+                        <View style={styles.add}><Text style={{color: '#9E9E9E', fontSize: 13, padding: 5}} onPress={()=>navigation.navigate('맘스정보', '행사 정보')}>+ 더보기</Text></View>
                     </View>
                 </View>
                 <View style={styles.main4Box2}>
@@ -469,7 +470,7 @@ const Home = ({navigation}) => {
                     <StatusBar />
             </SafeAreaView>
             <FocusAwareStatusBar />
-            { userInfo == '' || userInfo == undefined || mainData == '' || boardPopular == undefined || infoPopular == undefined || materialPopular == undefined ?<ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}/>
+            {userInfo == '' || userInfo == undefined || mainData == '' || boardPopular == undefined || infoPopular == undefined || materialPopular == undefined ?<ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}/>
                 : <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}>
             <View style={styles.header}>
                 <View style={styles.headerBar}>

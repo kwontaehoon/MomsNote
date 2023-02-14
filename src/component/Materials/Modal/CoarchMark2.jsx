@@ -127,7 +127,6 @@ const Main = ({modal, setModal}) => {
             price: 89900
         }
     ]
-    const [info, setInfo] = useState(); // 브랜드 lists
     const [selectBrand, setSelectBrand] = useState({
         needsId: null,
         needsBrandId: 0,
@@ -138,7 +137,6 @@ const Main = ({modal, setModal}) => {
     });
 
     const crown = (index) => {
-        console.log(index);
         switch(index+1){
             case 1: return <Crown/>
             case 2: return <Crown2/>
@@ -188,7 +186,7 @@ const Main = ({modal, setModal}) => {
                     <View style={styles.main}>
 
                         <FlatList data={DATA} renderItem={renderItem}
-                            keyExtractor={item => String(item.needsBrandId)} showsVerticalScrollIndicator={false}>
+                            keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}>
                         </FlatList>
 
                     </View>

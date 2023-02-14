@@ -332,7 +332,7 @@ const Register = ({navigation, route}) => {
 
         if(info.imageFile !== undefined){
             info.imageFile.filter(x => {
-                data.append('files', {uri: x, name: 'board.jpg', type: 'image/jpeg'});
+                data.append('files', {uri: x, name: 'board.jpg', type: 'image/png'});
             })
         }
 

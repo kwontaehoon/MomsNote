@@ -55,7 +55,7 @@ const Terms1 = () => {
           page: 0
       }
     });
-    setInfo(response.data);
+    setInfo(response.data.data);
   }catch(error){
     console.log('error: ', error);
   }
@@ -71,10 +71,7 @@ const Terms1 = () => {
           <Text style={{fontSize: 24, fontWeight: '700'}}>체험단 유의사항</Text>
         </View>
         <View style={styles.main}>
-          <Text style={{fontSize: 16, lineHeight: 22}}># 체험단 응모 시</Text>
-          <Text style={{fontSize: 16, lineHeight: 22}}>- 당첨 시 제품을 받게 될 배송지 정보는  신청정보 작성 단계에서 정확하게 입력해주세요.</Text>
-          <Text style={{}}> - 잘못된 정보로 인한 제품 오배송은 책임지지 않으며, 당첨이 취소될 수 있습니다.</Text>
-          <Text>- 응모시, 작성된 회원정보는 이벤트 진행업체 및 택배사에 제품 배송을 목적으로 공유될 수 있습니다.</Text>
+          <Text style={{fontSize: 16, lineHeight: 22}}>{info}</Text>
         </View>
     </View>
     )

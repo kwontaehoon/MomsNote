@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 20,
         top: 50,
+        zIndex: 999
     },
     imageBox2:{
         position: 'absolute',
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
         height: 20,
         marginRight: 8,
         borderRadius: 3,
-        marginLeft: 5
+        marginLeft: 5,
     },
     image:{
         width: 50,
@@ -127,7 +128,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 2,
         backgroundColor: 'white',
-        borderRadius: 5,
+        borderRadius: 10,
+        borderStyle: 'dashed',
+        borderWidth: 2,
+        borderColor: '#FEA100'
     },
     footerBox3:{
         alignItems: 'center',
@@ -139,7 +143,10 @@ const styles = StyleSheet.create({
         marginTop: 15,
         backgroundColor: 'white',
         padding: 5,
-        borderRadius: 5,
+        borderRadius: 10,
+        borderStyle: 'dashed',
+        borderWidth: 2,
+        borderColor: '#FEA100',
         flexDirection: 'row',
         justifyContent: 'space-around'
     },
@@ -149,18 +156,22 @@ const Main = ({modal, setModal, modal6, setModal6, setModalVisible2}) => {
 
     const DATA = [
         {
+            id: '1',
             brandName: '마더스베이비',
             productName: 'v웹 코튼 수유 브라',
             price: 89900
         },{
+            id: '2',
             brandName: '세컨스킨',
             productName: 'v웹 코튼 수유 브라',
             price: 89900
         },{
+            id: '3',
             brandName: '뉴니끄',
             productName: 'v웹 코튼 수유 브라',
             price: 89900
         },{
+            id: '4',
             brandName: '마더피아',
             productName: 'v웹 코튼 수유 브라',
             price: 89900
@@ -216,13 +227,13 @@ const Main = ({modal, setModal, modal6, setModal6, setModalVisible2}) => {
             <View style={styles.modalView}>
 
             <View style={styles.imageBox}>
-                    <View style={[styles.Top, {alignItems: 'flex-start'}]}><Close fill='white' onPress={close}/></View>
+                    <View style={[styles.Top, {alignItems: 'flex-start', padding: 5}]}><Close fill='white' onPress={close}/></View>
                         <View style={[styles.Bottom, {paddingTop: 10, flexDirection: 'row'}]}>
-                        <Text style={{color: '#FEA100', fontSize: 15, fontWeight: '700'}}>다시 보지 않기</Text>
+                        <Text style={{color: '#FEA100', fontSize: 15, fontWeight: '700'}} onPress={()=>console.log('d')}>다시 보지 않기</Text>
                         <Checkbox
                             style={styles.checkbox}
                             value={isChecked}
-                            onValueChange={()=>setIsChecked(!isChecked)}
+                            onValueChange={()=>{setIsChecked(!isChecked)}}
                             color={isChecked ? '#FEB401' : '#FEB401'}/>
                     </View>
                 </View>
@@ -253,7 +264,8 @@ const Main = ({modal, setModal, modal6, setModal6, setModalVisible2}) => {
                                 <Text></Text>
                             </View>
                             
-                            <TouchableOpacity style={{flexDirection: 'row', backgroundColor: 'white', padding: 5, borderRadius: 5}}>
+                            <View style={{flexDirection: 'row', backgroundColor: 'white', padding: 5, borderRadius: 10,
+                            borderStyle: 'dashed', borderWidth: 2, borderColor: '#FEA100'}}>
 
                             <View style={styles.imageBox2}>
                                 <View style={styles.Bottom}>
@@ -265,12 +277,12 @@ const Main = ({modal, setModal, modal6, setModal6, setModalVisible2}) => {
 
                                 <Text style={{fontWeight: '600', fontSize: 13, color: '#FEA100'}}>최저가 보기</Text>
                                 <Arrow_Right fill='#FEA100' width={16} height={16}/>
-                            </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
 
                         <FlatList data={DATA} renderItem={renderItem}
-                            keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}>
+                            keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
                         </FlatList>
 
                     </View>
@@ -291,7 +303,7 @@ const Main = ({modal, setModal, modal6, setModal6, setModalVisible2}) => {
                             </View>
 
                             <View style={styles.textInput}>
-                                <TextInput placeholder='브랜드명(필수)' value={selectBrand.itemBrand} numberOfLines={1}  style={{paddingLeft: 10}} maxLength={11}
+                                <TextInput placeholder='브랜드명(필수)' value={selectBrand.itemBrand} numberOfLines={1}  style={{paddingLeft: 10}} editable={false}
                                     onChangeText={(e) => setSelectBrand(prevState => ({ ...prevState, itemBrand: e}))}>   
                                 </TextInput>
                             </View>
@@ -299,7 +311,7 @@ const Main = ({modal, setModal, modal6, setModal6, setModalVisible2}) => {
                             <View style={{width: '6%'}}></View>
 
                             <View style={styles.textInput}>
-                                <TextInput placeholder='제품명(필수)' value={selectBrand.itemName} numberOfLines={1} style={{paddingLeft: 10}}
+                                <TextInput placeholder='제품명(필수)' value={selectBrand.itemName} numberOfLines={1} style={{paddingLeft: 10}} editable={false}
                                     onChangeText={(e) => setSelectBrand(prevState => ({...prevState, itemName: e}))}>
                                 </TextInput>
                                 </View>

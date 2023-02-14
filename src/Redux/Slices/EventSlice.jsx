@@ -22,8 +22,7 @@ const initialState = {
     refresh: {
         page: 1,
         count: 1,
-        start: '2022-12',
-        end: '2022-12'
+        date: '2022-12',
     }
 }
 
@@ -34,8 +33,7 @@ export const eventSlice = createSlice({
       setEventRefresh:(state, action)=>{
         console.log('refresh 카운트');
         console.log('refresh state: ', state);
-        state.refresh.start = action.payload.start;
-        state.refresh.end = action.payload.end;
+        state.refresh.date = action.payload.date;
       },
       setEventCount:(state, action)=>{
         console.log('카운트');

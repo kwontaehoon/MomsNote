@@ -174,7 +174,7 @@ const Talk1 = ({navigation, application}: any) => {
                 <View style={styles.mainBox}>
                     <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>닉네임</Text>
                     <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.</Text>
-                        <TextInput placeholder='닉네임 입력' style={[styles.textBox, {borderColor: bottomColor[0] ? '#FEB401' : '#EEEEEE'}]}
+                        <TextInput placeholder='닉네임 입력' style={[styles.textBox, {borderColor: bottomColor[0] ? '#FEB401' : '#EEEEEE'}]} maxLength={8}
                         value={info.nickname} onFocus={()=>change(0)}
                         onChangeText={(e) => { setInfo((prevState) => ({ ...prevState, nickname: e}));}}>
                         </TextInput>
@@ -197,7 +197,7 @@ const Talk1 = ({navigation, application}: any) => {
                 <View style={styles.mainBox4}>
                     <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>태명</Text>
                     <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.</Text>
-                    <TextInput placeholder='태명 입력' style={[styles.textBox, {borderColor: bottomColor[3] ? '#FEB401' : '#EEEEEE'}]}
+                    <TextInput placeholder='태명 입력' style={[styles.textBox, {borderColor: bottomColor[3] ? '#FEB401' : '#EEEEEE'}]} maxLength={8}
                     value={info.babyName} onFocus={()=>change(3)}
                     onChangeText={(e) => { setInfo((prevState) => ({ ...prevState, babyName: e}));}}>
                     </TextInput>
@@ -207,9 +207,15 @@ const Talk1 = ({navigation, application}: any) => {
                 </View>
             </View>
             <View style={styles.footer}>
+                {info.nickname == '' || info.babyName == '' ?
+                <View style={[styles.footerBox, {backgroundColor: '#E0E0E0'}]}>
+                    <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>적용</Text>
+                </View>
+                :
                 <TouchableOpacity style={styles.footerBox} onPress={submit}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>적용</Text>
                 </TouchableOpacity>
+                }
             </View>
         </View>
     );

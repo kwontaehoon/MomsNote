@@ -277,7 +277,7 @@ const Talk1Sub = ({navigation, route}) => {
 
         user();
         hits();
-    }, [isFocused]);
+    }, [isFocused, modal7]);
 
     useEffect(()=>{
         setInfo(boardInfo.filter(x => x.boardId == route.params.item.boardId));

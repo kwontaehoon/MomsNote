@@ -32,7 +32,7 @@ const Main = ({navigation}) => {
   const boardSet = useSelector(state => { return state.board.refresh; });
 
   const [info, setInfo] = useState();
-  console.log('알람 info: ', info);
+  console.log('알림 info: ', info);
 
   useEffect(()=>{
 
@@ -51,8 +51,8 @@ const Main = ({navigation}) => {
                 },
                 data: {page: 1}
               });
-              console.log('response: ', response);
-              setInfo(response.data.data);
+              console.log('response: ', response.data.data);
+              if(response.data == ''){ return setInfo('0') }else setInfo(response.data.data);
           }catch(error){
             console.log('알림 error: ', error);
           }
@@ -60,34 +60,38 @@ const Main = ({navigation}) => {
     alarm();
   }, []);
 
-  const navi = async(boardId, category, notificationId) => {
+  const navi = async(item) => {
+    console.log('item: ', item);
     
+    try{
+      const response = await axios({
+            method: 'post',
+            url: 'https://momsnote.net/api/user/notification/update',
+            data: {notificationId: item.notificationId}
+          });
+          console.log('response: ', response.data);
+          setInfo(response.data.data);
+      }catch(error){
+        console.log('알림 error: ', error);
+      }
 
-    const momsTalk = board.filter(x => x.boardId == boardId);
-    const materialList = materialShare.filter(x => x.boardId == boardId);
-    console.log('mosmTalk: ', momsTalk);
-    
+      if(item.category == '맘스 토크'){
+        const momsTalk = board.filter(x => x.boardId == item.boardId);
+        console.log('mosmTalk: ', momsTalk);
+        navigation.navigate('맘스토크 상세내용', {item: momsTalk[0]});
+      }else{
+        const materialList = materialShare.filter(x => x.boardId == item.boardId);
+        console.log('materialList: ', materialList);
+        // navigation.navigate('');
+      }
 
-    // try{
-    //   const response = await axios({
-    //         method: 'post',
-    //         url: 'http://localhost/api/user/notification/update',
-    //         data: {notificationId: notificationId}
-    //       });
-    //       console.log('response: ', response);
-    //       setInfo(response.data.data);
-    //   }catch(error){
-    //     console.log('알림 error: ', error);
-    //   }
-
-    // momsTalk == '' ?  navigation.navigate('출산리스트 공유 상세내용', materialList) : navigation.navigate('맘스토크 상세내용', {item: momsTalk});
   }
 
   const List = () => {
     let arr = [];
     info.filter((x, index) => {
       arr.push(
-        <TouchableOpacity style={styles.main} key={index} onPress={()=>navi(x.boardId, x.category, x.notificationId)}>
+        <TouchableOpacity style={styles.main} key={index} onPress={()=>info[index].readFlag ? '' : navi(x)}>
           <Text style={{fontSize: 15, fontWeight: '500', marginBottom: 5, color: info[index].readFlag ? '#9E9E9E' : ''}}>{info[index].nickname}님이 회원님의 게시글에 댓글을 남겼습니다.</Text>
           <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(info[index].notificationDate).format('YY.MM.DD')}.</Text>
         </TouchableOpacity>
@@ -105,7 +109,7 @@ const Main = ({navigation}) => {
   :
     <View style={styles.container}>
       
-    { info.length == 0 ?
+    { info == '0' ?
     <View style={{alignItems: 'center', justifyContent: 'center', height: '80%'}}>
     <Image source={require('../../../public/assets/image/rainbow.png')}/>
   <Text style={{fontSize: 16, color: '#757575', marginTop: 24}}>아직 받은 알림이 없습니다.</Text>

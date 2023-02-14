@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Animated, Platform, SafeAreaView, StatusBar } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Animated, Platform, SafeAreaView, StatusBar, BackHandler } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSelector } from 'react-redux'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
@@ -286,9 +286,9 @@ const capture = async() => {
   }
 
   const filtering = (e) => { // 품목 브랜드 가격 부분 none || flex
-    if(info.filter(x => x.category == e && x.itemName !== null) == ''){
+    if(info.filter(x => x.category == e && x.id == 1) == ''){
       return(
-        <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}><Text>검색 결과가 없습니다.</Text></View>
+        <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}><Text>선택된 품목이 없습니다.</Text></View>
       )
     }else return(
         <View style={styles.mainBox2}>
@@ -313,18 +313,17 @@ const capture = async() => {
     });
 }
 
-
   const List = ({title}) => {
     let arr = [];
 
     info.filter((x, index)=>{
-      if(x.category == title && x.itemName !== null && x.deleteStatus == 1){
+      if(x.category == title && x.deleteStatus == 1 && x.id == 1){
           arr.push(
         <TouchableOpacity style={styles.mainBox3} onLongPress={()=>setModal5(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1} key={index}>
             <View style={[styles.filterBox2, {justifyContent: 'flex-start'}]}><Text style={{fontWeight: '500'}}>{x.needsName}</Text></View>
             <View style={styles.filterBox2}><Text numberOfLines={2} style={{lineHeight: 20}}>{x.itemName == null ? '-' : x.itemName}</Text></View>
             <TouchableOpacity style={[styles.filterBox2, {justifyContent: 'flex-end'}]} onLongPress={()=>setModal6(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1}>
-              <Text style={{fontWeight: '600'}}>{(x.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
+              <Text style={{fontWeight: '600'}}>{x.itemPrice == null ? '0' : (x.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
               <Text> 원</Text>
             </TouchableOpacity>
         </TouchableOpacity>

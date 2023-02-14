@@ -266,88 +266,6 @@ const Talk1Sub = ({navigation, route}) => {
         setInfo3(info2.filter(x => x.boardId == info[0].boardId));
     }, [info2]);
 
-    useEffect(()=>{ // 게시물 추천 Flag
-        const likeInfo = async() => {
-            const token = await AsyncStorage.getItem('token');
-            try{
-                const response = await axios({
-                    method: 'post',
-                    url: 'https://momsnote.net/api/board/recommend/flag',
-                    headers: { 
-                        'Authorization': `Bearer ${token}`, 
-                        'Content-Type': 'application/json'
-                      },
-                    data: { boardId : info[0].boardId }
-                });
-                setBoardLike(response.data);
-            }catch(error){
-            }
-        }
-        likeInfo();
-    }, [boardLike]);
-
-    const commentRegister = async() => { // 댓글 업데이트 필요
-        const token = await AsyncStorage.getItem('token');
-        try{
-            const response = await axios({ 
-                  method: 'post',
-                  url: 'https://momsnote.net/api/comments/write',
-                  headers: { 
-                    'Authorization': `bearer ${token}`, 
-                    'Content-Type': 'application/json'
-                  },
-                  data: insert
-                });
-            }catch(error){
-            }
-        dispatch(postBoard(boardData));
-        dispatch(postComment(commentData));
-        onPressFunction();
-    }
-
-    const likeplus = async() => { // 게시판 좋아요
-        const token = await AsyncStorage.getItem('token');
-        try{
-            const response = await axios({
-                  method: 'post',
-                  url: 'https://momsnote.net/api/board/recommend',
-                  headers: { 
-                    'Authorization': `Bearer ${token}`, 
-                    'Content-Type': 'application/json'
-                  },
-                  data: {
-                    boardId: info[0].boardId,
-                    type: 'plus'
-                  }
-                });
-                dispatch(postBoard(boardData));
-            }catch(error){
-              console.log('error: ', error);
-            }
-            setBoardLike();
-    }
-
-    const likeminus = async() => {
-        const token = await AsyncStorage.getItem('token');
-        try{
-            const response = await axios({
-                  method: 'post',
-                  url: 'https://momsnote.net/api/board/recommend',
-                  headers: { 
-                    'Authorization': `Bearer ${token}`, 
-                    'Content-Type': 'application/json'
-                  },
-                  data: {
-                    boardId: info[0].boardId,
-                    type: 'minus'
-                  }
-                });
-                dispatch(postBoard(boardData));
-            }catch(error){
-            }
-            setBoardLike();
-    }
-
     const ImageBox = () => {
         const arr:any[] = [];
         const a = (info[0].savedName.split('|')).filter(x => {
@@ -411,10 +329,6 @@ const Talk1Sub = ({navigation, route}) => {
         });
     }
 
-    const onPressFunction = () => {
-        flatlistRef.current?.scrollToEnd();
-    };
-
     const socialShare = () => {
         Share.share({
             message: `[맘스노트] ${info3[0].title}`,
@@ -432,30 +346,12 @@ const Talk1Sub = ({navigation, route}) => {
                     <Text style={{lineHeight: 20}}>{item.contents}</Text>
                 </View>
                 {item.savedName === null ? <View></View> : ImageBox()}
-                <View style={styles.mainBox3}>
-                    <View style={styles.likeBox}>
-                        {boardLike == 0 | boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000' onPress={likeminus}/>}
-                        <Text style={{color: boardLike == 0 ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { boardLike }</Text>
-                        <Chat width={16} height={16}/>
-                        <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 {item.commentsCount}</Text>
-                    </View>
-                    <View style={styles.lookupBox}>
-                        <Text style={{fontSize: 13, color: '#9E9E9E'}}>조회수 {item.hits}</Text>
-                    </View>
-                </View>
-                <View style={styles.mainBox4}>
-                    {comment == '0' ?
-                    <View style={{alignItems: 'center', justifyContent: 'center', height: 200}}>
-                        <Text style={{color: '#757575', fontSize: 15}}>아직 댓글이 없습니다.</Text>
-                        <Text style={{color: '#757575', fontSize: 15}}>먼저 댓글을 남겨 소통을 시작해보세요!</Text>
-                    </View> : <Comment info={comment} setCommentsId={setCommentsId} setInsert={setInsert} modal={modal} setModal={setModal} commentData={commentData}/>}
-                </View>
             </View>
         </View>
       );
 
 
-  return  userInfo == undefined || info2 == '' || boardLike == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: pageHeight ? '94%' : '97%'}]}/> : (
+  return  userInfo == undefined || info2 == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: pageHeight ? '94%' : '97%'}]}/> : (
     <View style={[styles.container, {height: pageHeight ? '94%' : '97%'}]}>
 
         <Animated.View style={[styles.alarmBox, {opacity: animation}]}>
@@ -480,24 +376,6 @@ const Talk1Sub = ({navigation, route}) => {
         <FlatList ref={flatlistRef} data={info3} renderItem={renderItem}
             keyExtractor={item => String(item.boardId)}>
         </FlatList>
-        <View style={[styles.commentRes, {display: insert.level === 0 ? 'none' : 'flex'}]}>
-            <View style={styles.closeBox}><Close width={20} fill='#757575' onPress={()=>setInsert((prevState) => ({...prevState, level: 0}))}/></View>
-            <Text style={{fontSize: 15}}>{commentsId}</Text>
-            <Text style={{color: '#757575'}}> 님에게 답변 남기기</Text>
-        </View>
-        <View style={styles.footer}>
-            <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profile}` }} style={styles.profileBox}/>
-            <TouchableOpacity style={[styles.regisButton, {display: insert.contents === '' ? 'none' : 'flex'}]} onPress={()=>{Keyboard.dismiss(), commentRegister(), setInsert((prevState) => ({...prevState, contents: '', level: 0}))}}>
-                <Text style={{color: '#1E88E5', fontWeight: '600'}}>등록</Text>
-            </TouchableOpacity>
-            <TextInput style={styles.textInput} value={insert.contents} placeholder='댓글을 입력해주세요.' onChangeText={
-                (e)=> insert.level !== 0 ? setInsert((prevState) => ({...prevState, contents: e})) :
-                setInsert((prevState) => ({...prevState,
-                    boardId: info[0].boardId,
-                    contents: e,
-                    ref: comment.length+1,
-                    level: 0}))} placeholderTextColor={'#BDBDBD'}></TextInput>
-        </View>
     </View>
   )
 }

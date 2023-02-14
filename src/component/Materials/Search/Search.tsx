@@ -6,27 +6,29 @@ import Icon3 from 'react-native-vector-icons/Feather'
 import Checkbox from 'expo-checkbox';
 import BrendModal from '../Modal/BrendModal'
 import CheckboxModal from '../Modal/CheckBoxModal';
-import NoticeModal from '../Modal/NoticeModal';
 import GuideModal from '../Modal/GuideModal'
 import BrandNameFlag from '../Modal/BrendNameFlag'
 import FirstModal from '../../Modal/First'
 import SecondModal from '../../Modal/Second'
-import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux';
 import { postMaterial, setMaterialRefresh } from '../../../Redux/Slices/MaterialSlice';
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-
-import More from '../../../../public/assets/svg/More.svg'
-import Sort from '../../../../public/assets/svg/Sort.svg'
-import Download from '../../../../public/assets/svg/Download.svg'
 import Search from '../../../../public/assets/svg/Search.svg'
-import Bell from '../../../../public/assets/svg/Bell.svg'
-import MyPage from '../../../../public/assets/svg/Mypage.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Back from '../../../../public/assets/svg/Back.svg'
+
+import M1 from '../../../../public/assets/svg/1.svg'
+import M2 from '../../../../public/assets/svg/2.svg'
+import M3 from '../../../../public/assets/svg/3.svg'
+import M4 from '../../../../public/assets/svg/4.svg'
+import M5 from '../../../../public/assets/svg/5.svg'
+import M6 from '../../../../public/assets/svg/6.svg'
+import M7 from '../../../../public/assets/svg/7.svg'
+import M8 from '../../../../public/assets/svg/8.svg'
+import M9 from '../../../../public/assets/svg/9.svg'
 
 
 const styles = StyleSheet.create({
@@ -215,6 +217,20 @@ const Navigation = ({navigation, route}) => {
     bottomCount: 2,
   }) // second
 
+  const SVGSelect = (e) => {
+    switch(e){
+        case 0: return(<M1 />) 
+        case 1: return(<M2 />) 
+        case 2: return(<M3 />) 
+        case 3: return(<M4 />) 
+        case 4: return(<M5 />) 
+        case 5: return(<M6 />) 
+        case 6: return(<M7 />) 
+        case 7: return(<M8 />) 
+        case 8: return(<M9 />) 
+    }
+}
+
   useEffect(()=>{
     const materialPurchase = async() =>{
       const asyncStorage = await AsyncStorage.getItem('materialPurchase');
@@ -374,10 +390,10 @@ const purchaseCencel = async(needsId) => {
     </View>
   );
 
-  const renderItem3 = ({ item }) => (
+  const renderItem3 = ({ item, index }) => (
     <View style={styles.mainBox}>
         <View style={styles.mainBox2}>
-          <Image source={item.icon} width={20} height={20}/>
+        {SVGSelect(index)}
             <View style={[styles.titleBox, {marginLeft: 8}]}><Text style={{fontSize: 16, fontWeight: '500'}}>{item.title}</Text></View>
             <TouchableOpacity style={styles.arrowBox}
               onPress={()=>arrow(item.id)}>{list[item.id] ? <Icon name="angle-up" size={22}/> : <Icon name='angle-down' size={22}/>}
@@ -405,7 +421,7 @@ const purchaseCencel = async(needsId) => {
                 <BrandNameFlag modal={modal} setModal={setModal} modal2={modalVisible2} setModal2={setModalVisible2}/>
 
                 <View style={styles.header}>
-                <TouchableOpacity onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                <TouchableOpacity style={{padding: 5}} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
                 <View style={styles.textInput}>
                   <View style={styles.searchIconBox}><Search width={22}/></View>
                   <TextInput placeholder='검색하실 단어를 입력하세요.' onChangeText={(e)=>setSearch(e)}></TextInput>

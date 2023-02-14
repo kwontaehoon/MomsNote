@@ -209,7 +209,7 @@ const filtering = (e) => {
         </View>
       </View>
 
-      <View style={[styles.header3, {display: info == undefined || info == '' ? 'none' : 'flex'}]}>
+      <View style={[styles.header3, {display: info == undefined || info == '0' || info == '' ? 'none' : 'flex'}]}>
           <Swiper horizontal={false}
           autoplay={true}
           autoplayTimeout={4.5}

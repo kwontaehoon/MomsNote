@@ -10,7 +10,7 @@ export const postMaterialShare = createAsyncThunk("postMaterialShareSlice/async"
           url: 'https://momsnote.net/api/needs/share/board',
           data : data
       });
-      if(response.data == ''){ return 0; }else return response.data;
+      if(response.data == ''){ return '0'; }else return response.data;
       }catch(error){
           console.log('MaterialShare axios error: ', error);
           return undefined;

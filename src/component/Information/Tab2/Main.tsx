@@ -13,7 +13,6 @@ import Modal from './Modal/DatePick'
 
 import Arrow_left from '../../../../public/assets/svg/Arrow-Left.svg'
 import Arrow_right from '../../../../public/assets/svg/Arrow-Right.svg'
-import { ScrollView } from 'react-native-gesture-handler'
 
 const styles = StyleSheet.create({
   container:{
@@ -115,6 +114,7 @@ const Talk1 = ({navigation}: any) => {
     const eventSet = useSelector(state => { return state.event.refresh });
     const info = useSelector(state => { return state.event.data; });
     console.log('행사정보 info: ', info);
+    const [year, setYear] = useState(moment().format('YYYY'));
     const [week, setWeek] = useState([true, false, false, false, false, false,
     false, false, false, false, false, false]);
     const infoCount = useSelector(state => { return state.eventCount.data; });
@@ -131,21 +131,19 @@ const Talk1 = ({navigation}: any) => {
     }, [eventSet]);
 
     const change = (e) => { // 몇 주차 border, 글자두께 변경
-      console.log('e: ', e);
       let arr = Array.from({length: 12}, ()=>{ return false});
 
       arr[e] = !arr[e];
       setWeek(arr);
 
-        if(e-9 < 0){
-          e = '0' + (e+1);
-        } else e += 1;
+      if(e-9 < 0){
+        e = '0' + (e+1);
+      } else e += 1;
 
       dispatch(setEventRefresh({
         page: 1,
         count: 1,
-        start: `${new Date().getFullYear()}-${e}`,
-        end: `${new Date().getFullYear()}-${e}`
+        date: `${year}-${e}`,
       }));
       dispatch(postEventCount({
         start: `${new Date().getFullYear()}-${e}`,
@@ -156,6 +154,14 @@ const Talk1 = ({navigation}: any) => {
     const dateFilter = (item) => {
       const days = ['일', '월', '화', '수', '목', '금', '토'];
       return(<Text>{`${item.eventStartDate.split('-')[1]}.${item.eventStartDate.split('-')[2]}(${days[moment(item.eventStartDate).day()]})`} ~ {`${item.eventEndDate.split('-')[1]}.${item.eventEndDate.split('-')[2]}(${days[moment(item.eventEndDate).day()]})`}</Text>)
+    }
+
+    const yearCount = (e) => {
+
+      e == 'plus' ? 
+       year < Number(moment().format('YYYY')) + 3 ? (setYear(Number(year) + 1)) : ''
+       :
+       year >  Number(moment().format('YYYY')) - 3 ? (setYear(Number(year) - 1)) : ''
     }
 
   const renderItem = ({ item }) => (
@@ -190,11 +196,11 @@ const Talk1 = ({navigation}: any) => {
 
         <View style={styles.header}>
           <View style={styles.headerBox}>
-            <View style={{position: 'absolute', left: 0}}><Arrow_left fill='black'/></View>
+            <TouchableOpacity style={{position: 'absolute', left: 0}} onPress={()=>yearCount()}><Arrow_left fill='black'/></TouchableOpacity>
             
-              <Text style={{fontSize: 18, fontWeight: '600'}}>{moment().format('YYYY')}년</Text>
+              <Text style={{fontSize: 18, fontWeight: '600'}}>{year}년</Text>
 
-            <View style={{position: 'absolute', right: 0}}><Arrow_right fill='black' /></View>
+            <TouchableOpacity style={{position: 'absolute', right: 0}} onPress={()=>yearCount('plus')}><Arrow_right fill='black' /></TouchableOpacity>
           </View>
           <View style={styles.headerBox2}>
           <FlatList data={DATA2} renderItem={renderItem2}

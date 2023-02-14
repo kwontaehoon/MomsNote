@@ -214,7 +214,7 @@ const Main = ({modal, setModal}) => {
                 <View style={styles.modalView}>
 
                 <View style={styles.imageBox5}>
-                    <View style={[styles.Top, {alignItems: 'flex-start'}]}><Close fill='white' onPress={close}/></View>
+                    <View style={[styles.Top, {alignItems: 'flex-start', padding: 5}]}><Close fill='white' onPress={close} /></View>
                         <View style={[styles.Bottom, {paddingTop: 10, flexDirection: 'row'}]}>
                         <Text style={{color: '#FEA100', fontSize: 15, fontWeight: '700'}}>다시 보지 않기</Text>
                         <Checkbox

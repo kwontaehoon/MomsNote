@@ -46,7 +46,8 @@ const styles = StyleSheet.create({
         right: 20,
         alignItems: 'flex-end',
         justifyContent: 'center',
-        zIndex: 10
+        zIndex: 10,
+        padding: 5
     },
     main:{
         height: '50%',
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
         zIndex: 999,
         alignItems: 'center',
         flexDirection: 'row',
+        padding: 5
     },
     footerBox2:{
         flexDirection: 'row',
@@ -105,7 +107,8 @@ const styles = StyleSheet.create({
     },
 })
 
-const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, modal4, setModal4}) => {
+const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, modal4, setModal4, filter}) => {
+    console.log('modalvisible2: ', modalVisible2);
 
     const dispatch = useDispatch();
     const [info, setInfo] = useState(); // 브랜드 lists
@@ -144,21 +147,6 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
         commentInfo();
         setSelectBrand(prevState => ({...prevState, needsId: modalVisible2.needsId, needsBrandId: modalVisible2.needsBrandId == null ? 0 : modalVisible2.needsBrandId, needsDataId: modalVisible2.needsDataId == null ? 0 : modalVisible2.needsDataId}));
     }, [modalVisible2, modal4]);
-
-    useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', () => {
-
-            
-
-            console.log('zxcv');
-
-        }); //뒤로가기 버튼을 클릭하였을때,함수를 호출하는 이벤트 등록
-        return () => {
-          BackHandler.removeEventListener('hardwareBackPress'); //뒤로가기 함수를 해제하는 이벤트 등록
-        };
-        
-      }, []);
-
    
     const crown = (index) => {
         switch(index+1){
@@ -193,7 +181,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
             }catch(error){
                 console.log('comment axios error:', error)
             }
-            dispatch(postMaterial({order: 'need'}));
+            dispatch(postMaterial({order: filter}));
             setModalVisible2(prevState => ({...prevState, open: false})),
             setModal2(prevState => ({...prevState, open: true, content: '리스트에 적용되었습니다.', buttonCount: 1}));
     }
@@ -214,7 +202,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
             }catch(error){
                 console.log('comment axios error:', error)
             }
-            dispatch(postMaterial({order: 'need'}));
+            dispatch(postMaterial({order: filter}));
     }
 
 
@@ -246,13 +234,13 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
   return (
     <Modal animationType="fade" transparent={true} visible={modalVisible2.open} statusBarTranslucent={true}
         onRequestClose={() => {
-        setModalVisible2(!modalVisible2)}}>
+        setModalVisible2(prevState => ({...prevState, open: false}))}}>
         <KeyboardAvoidingView behavior='height' style={styles.modalContainer}>
             <View style={styles.modalView}>
                 <View style={styles.modalContainer2}>
                     <View style={styles.header}>
                         <TouchableOpacity style={styles.closeBox} 
-                            onPress={()=>(setSelectBrand(prevState => ({...prevState, itemBrand: '', itemName: ''})),setModalVisible2((prevState)=> ({...prevState, open: false})))}>
+                            onPress={()=>(setSelectBrand(prevState => ({...prevState, itemBrand: '', itemName: ''})),setModalVisible2(prevState=> ({...prevState, open: false})))}>
                                 <Close fill={'black'}/>
                         </TouchableOpacity>
                         <Text style={{color: '#212121', fontSize: 18, fontWeight: '700'}}>브랜드 선택</Text>
@@ -262,7 +250,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
                         {info == undefined || info.length == 0 ? <View><Text style={{fontSize: 15, color: '#757575'}}>등록된 품목이 없습니다.</Text></View>
                         :
                         <FlatList data={info} renderItem={renderItem}
-                            keyExtractor={item => String(item.needsBrandId)} showsVerticalScrollIndicator={false}>
+                            keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}>
                         </FlatList>}
                     </View>
                     <View style={styles.footer}>

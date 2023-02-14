@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     }
 })
 
-const CheckBoxModal = ({modalVisible10, setModalVisible10}) => {
+const CheckBoxModal = ({modalVisible10, setModalVisible10, setFilterInfo}) => {
 
     const dispatch = useDispatch();
     const [filter, setFilter] = useState(false); // 체크, 폰트 색상
@@ -50,9 +50,9 @@ const CheckBoxModal = ({modalVisible10, setModalVisible10}) => {
     const complete = (e) => {
         setFilter(!filter);
         e == 0 ?
-        dispatch(postMaterial({order: 'need'}))
+        (dispatch(postMaterial({order: 'need'})), setFilterInfo('needs'))
         :
-        dispatch(postMaterial({order: 'buy'}))
+        (dispatch(postMaterial({order: 'buy'})), setFilterInfo('buy'));
 
         setModalVisible10(!modalVisible10);
     }

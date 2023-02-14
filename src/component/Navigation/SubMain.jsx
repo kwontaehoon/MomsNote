@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { View, Button, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux'
+import { postUser } from '../../Redux/Slices/UserSlice';
 
 import Home from '../Home/Main'
 import Talk from '../Talk/Main'
@@ -73,22 +74,12 @@ function MainScreen() {
 
   const dispatch = useDispatch();
   const Alarm = useSelector(state => { return state.alarm.data; });
-  console.log('Alarm: ', Alarm);
 
-  const [userInfo, setUserInfo] = useState();
+  const mainData = useSelector(state => { return state.user.data; });
+  console.log('navigation mainData: ', mainData);
+
   const [AlarmFlag, setAlarmFlag] = useState(false);
-  console.log('AlarmFlag: ', AlarmFlag);
 
-  useEffect(()=>{
-    const userInfo = async()=> {
-    const asyncStorage = await AsyncStorage.getItem('user');
-    dispatch(postAlarm());
-
-    setUserInfo(moment(JSON.parse(asyncStorage).dueDate).diff(moment(), "days"));
-  
-    }
-    userInfo();
-  }, []);
 
   const alarmFunc = () => {
     dispatch(postAlarm());
@@ -143,7 +134,7 @@ function MainScreen() {
             )}
           </Tab.Screen>
 
-          <Tab.Screen name="Dday" options={{tabBarIcon: ({focused, color}) => (focused ? <Baby2 /> : <Baby />), tabBarLabel: `D-${userInfo}` , unmountOnBlur:true}}
+          <Tab.Screen name="Dday" options={{tabBarIcon: ({focused, color}) => (focused ? <Baby2 /> : <Baby />), tabBarLabel: `D-${mainData == '' ? '' : mainData.dday}` , unmountOnBlur:true}}
           listeners={{tabPress: (e)=>{
             alarmFunc()  
           }}}>
@@ -156,7 +147,7 @@ function MainScreen() {
                         headerLeft: () => (
                             <View style={styles.header}>
                                 <View style={styles.headerBox}>
-                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>{`D-${userInfo}`}</Text>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>{`D-${mainData == '' ? '' : mainData.dday}`}</Text>
                                 </View>
                             </View>
                         ),

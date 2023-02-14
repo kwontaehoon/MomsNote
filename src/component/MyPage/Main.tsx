@@ -100,7 +100,7 @@ const Main = ({navigation}) => {
     AsyncStorage.setItem('user', JSON.stringify(Object.assign(userInfo, {profile: result.assets[0].uri})))
 
     let data = new FormData();
-    data.append('file', {uri: result.assets[0].uri, name: 'profile.jpg', type: 'image/jpeg'});
+    data.append('file', {uri: result.assets[0].uri, name: 'profile.png', type: 'image/png'});
     const token = await AsyncStorage.getItem('token');
     try{
         const response = await axios({

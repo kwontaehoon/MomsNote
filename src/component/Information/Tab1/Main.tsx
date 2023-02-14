@@ -117,11 +117,9 @@ const Talk1 = ({navigation}) => {
 
   const renderItem = ({ item }) => (
     <View style={{justifyContent: 'center'}}>
-      <View style={[styles.headerFilterBox, {backgroundColor: filter[item.id] ? '#FEA100' : 'white'}]}>
-        <TouchableOpacity onPress={()=>change(item.id)}>
+      <TouchableOpacity style={[styles.headerFilterBox, {backgroundColor: filter[item.id] ? '#FEA100' : 'white'}]} onPress={()=>change(item.id)}>
           <Text style={{color: filter[item.id] ? 'white' : 'black', fontWeight: '400'}}>{item.title}</Text>
-        </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 

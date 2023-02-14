@@ -85,6 +85,7 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
         dispatch(postBoard(boardSet));
         dispatch(postMaterialShare(materialShareSet));
         setModal(!modal);
+        navigation.goBack();
     }
 
     const DotFilter = () => {

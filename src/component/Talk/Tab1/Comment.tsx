@@ -107,8 +107,12 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
 
     const List = () => {
         let arr = [];
+        let refFilter = [];
         info.filter((x, index) => {
-            if(x.step === 0){
+            refFilter.push(x.ref);
+            const count = refFilter.filter(y => y == x.ref).length;
+            if(x.step === 0 && (count == 1 && !x.deleteFlag)){
+                console.log('x: ', x);
                 arr.push(
                     
                     <View key={index}>
@@ -146,6 +150,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                         <List2 number={x.ref}/>
                     </View>
                 )
+                console.log('arr: ', arr);
             }
         })
         return arr;

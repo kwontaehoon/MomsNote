@@ -24,7 +24,7 @@ import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux';
-import { postMaterial } from '../../Redux/Slices/MaterialSlice'
+import { postMaterial, setMaterialRefresh } from '../../Redux/Slices/MaterialSlice'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import M1 from '../../../public/assets/svg/1.svg'
@@ -236,13 +236,15 @@ const Navigation = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.material.data; });
-  const materialSet = useSelector(state => { return state.material.refresh; });
   const [purchaseCount, setPurchaseCount] = useState(null); // 전체 구매 갯수
   const [sumResult, setSumResult] = useState({
     sum: 0,
     exp: 0
   }); // 총 예산
   const ref = useRef();
+
+  const [filter, setFilter] = useState('needs');
+  console.log('filter: ', filter);
 
   const [list, setList] = useState(Array.from({ length: 9 }, () => { return true}));
 
@@ -311,7 +313,7 @@ const Navigation = ({navigation, route}) => {
   }, [modalVisible]);
 
   useEffect(()=>{
-    dispatch(postMaterial(materialSet));
+    dispatch(postMaterial({order: filter}));
   }, [modalVisible, modalVisible8, modalVisible9, modalVisible6]);
 
   useEffect(()=>{
@@ -350,7 +352,7 @@ const Navigation = ({navigation, route}) => {
       }catch(error){
           console.log('출산준비물 구매 error:', error);
       }
-      dispatch(postMaterial(materialSet));
+      dispatch(postMaterial({order: filter}));
   }
 
   const purchaseCencel = async(needsId) => {
@@ -373,8 +375,9 @@ const Navigation = ({navigation, route}) => {
       }catch(error){
           console.log('출산준비물 리스트 error:', error);
       }
-      dispatch(postMaterial(materialSet));
+      dispatch(postMaterial({order: filter}));
   }
+  
   const SVGSelect = (e) => {
     switch(e){
         case 0: return(<M1 />) 
@@ -388,6 +391,25 @@ const Navigation = ({navigation, route}) => {
         case 8: return(<M9 />) 
     }
 }
+
+// useEffect(()=>{
+//   console.log('ㅎㅎㅎㅎㅎㅎㅎ');
+//   BackHandler.addEventListener('hrardwareBackPress', handlerPressBack)
+//   return () => {
+//     BackHandler.removeEventListener('hardwareBackPress', handlerPressBack)
+//   }
+// }, [modalVisible2, handlerPressBack]);
+
+// const handlerPressBack = () => {
+//   console.log('hadlerPressBack modalVisible2: ', modalVisible2);
+  
+//   if(modalVisible2.open){
+//     console.log('앙');
+//     setModalVisible2(prevState => ({...prevState, open: false}));
+//     return true;
+//   }
+//   return false;
+// }
 
 const save = async() => {
    
@@ -539,7 +561,7 @@ const save = async() => {
         <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '90.5%'}]}>
 
         <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
-        <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modal={modal} setModal={setModal} setModal2={setModal2} modal4={modal4} setModal4={setModal4}/>
+        <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modal={modal} setModal={setModal} setModal2={setModal2} modal4={modal4} setModal4={setModal4} filter={filter}/>
         <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
         <ResetModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
         <ResetModal2 modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
@@ -547,7 +569,7 @@ const save = async() => {
             modalVisible9={modalVisible9} setModalVisible9={setModalVisible9} modal={modal} setModal={setModal}/>
         <AddModal modalVisible8={modalVisible8} setModalVisible8={setModalVisible8} setModal={setModal2} info2={info}/>
         <DeleteModal modalVisible9={modalVisible9} setModalVisible9={setModalVisible9} modal={modal} setModal={setModal2} setModal2={setModal3}/>
-        <Filter modalVisible10={modalVisible10} setModalVisible10={setModalVisible10} />
+        <Filter modalVisible10={modalVisible10} setModalVisible10={setModalVisible10} setFilterInfo={setFilter}/>
         <BrandNameFlag modal={modal} setModal={setModal} modal2={modalVisible2} setModal2={setModalVisible2}/>
         <First modal={modal2} setModal={setModal2}/>
         <Second modal={modal3} setModal={setModal3}/>
