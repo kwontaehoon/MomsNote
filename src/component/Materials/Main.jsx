@@ -236,6 +236,7 @@ const Navigation = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.material.data; });
+  console.log('info: ', info);
   const [purchaseCount, setPurchaseCount] = useState(null); // 전체 구매 갯수
   const [sumResult, setSumResult] = useState({
     sum: 0,
@@ -244,7 +245,6 @@ const Navigation = ({navigation, route}) => {
   const ref = useRef();
 
   const [filter, setFilter] = useState('needs');
-  console.log('filter: ', filter);
 
   const [list, setList] = useState(Array.from({ length: 9 }, () => { return true}));
 
@@ -334,25 +334,26 @@ const Navigation = ({navigation, route}) => {
   }, [captureURL]);
 
   const purchase = async(needsId, needsBrandId) =>{
+    console.log('purchase');
+    console.log('needsBrandId: ', needsBrandId);
     const token = await AsyncStorage.getItem('token');
-    try{
-      const response = await axios({
-          method: 'post',
-          url: 'https://momsnote.net/api/needs/buy/needs',
-          headers: { 
-            'Authorization': `bearer ${token}`,  
-            'Content-Type': 'application/json'
-          },
-          data: {
-            needsBrandId: needsBrandId == null ? 0 : needsBrandId,
-            needsId: needsId
-          }
-      });
-      console.log('response: ', response.data);
-      }catch(error){
-          console.log('출산준비물 구매 error:', error);
-      }
-      dispatch(postMaterial({order: filter}));
+    // try{
+    //   const response = await axios({
+    //       method: 'post',
+    //       url: 'https://momsnote.net/api/needs/buy/needs',
+    //       headers: { 
+    //         'Authorization': `bearer ${token}`,  
+    //         'Content-Type': 'application/json'
+    //       },
+    //       data: {
+    //         needsBrandId: needsBrandId == null ? 0 : needsBrandId,
+    //         needsId: needsId
+    //       }
+    //   });
+    //   }catch(error){
+    //       console.log('출산준비물 구매 error:', error);
+    //   }
+    //   dispatch(postMaterial({order: filter}));
   }
 
   const purchaseCencel = async(needsId) => {
@@ -371,7 +372,6 @@ const Navigation = ({navigation, route}) => {
             needsId: needsId
           }
       });
-      console.log('response: ', response.data);
       }catch(error){
           console.log('출산준비물 리스트 error:', error);
       }
@@ -392,41 +392,15 @@ const Navigation = ({navigation, route}) => {
     }
 }
 
-// useEffect(()=>{
-//   console.log('ㅎㅎㅎㅎㅎㅎㅎ');
-//   BackHandler.addEventListener('hrardwareBackPress', handlerPressBack)
-//   return () => {
-//     BackHandler.removeEventListener('hardwareBackPress', handlerPressBack)
-//   }
-// }, [modalVisible2, handlerPressBack]);
-
-// const handlerPressBack = () => {
-//   console.log('hadlerPressBack modalVisible2: ', modalVisible2);
-  
-//   if(modalVisible2.open){
-//     console.log('앙');
-//     setModalVisible2(prevState => ({...prevState, open: false}));
-//     return true;
-//   }
-//   return false;
-// }
-
 const save = async() => {
    
     if(captureURL !== undefined){
         let { status } = await MediaLibrary.requestPermissionsAsync();
         const asset = await MediaLibrary.createAssetAsync(captureURL);
-        // const moms = await MediaLibrary.getAlbumAsync('맘스노트');
-
-        // console.log('moms: ', moms);
-       
         
         if(status === 'granted'){
         }
     }
-    setTimeout(() => {
-      setCaptureURL(undefined);
-    }, 2000);
   }
 
   const arrow = (e) => { // arrow 누르면 서브페이지 display
@@ -499,7 +473,6 @@ const save = async() => {
               color={x.id == 0 ? undefined : '#FEB401'}
               onValueChange={()=>{
                 switch(true){
-                  // case x.itemName == null: setModal2(prevState => ({...prevState, open: true, buttonCount: 1, content: '브랜드를 체크해주세요'})); break;
                   case x.id == 0 && purchaseCheckBox == null : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: x.needsBrandId, needsId: x.needsId})); break;
                   case x.id == 0 : purchase(x.needsId, x.needsBrandId); break;
                   default : purchaseCencel(x.needsId);
@@ -556,7 +529,7 @@ const save = async() => {
             <StatusBar />
         </SafeAreaView>
 
-		    { info == ''|| info == undefined || purchaseCount == undefined  ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '90.5%'}]}/>
+		    { info == '' || purchaseCount == undefined  ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '90.5%'}]}/>
         :
         <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '90.5%'}]}>
 

@@ -280,7 +280,9 @@ const Talk1Sub = ({navigation, route}) => {
     }, [isFocused, modal7]);
 
     useEffect(()=>{
-        setInfo(boardInfo.filter(x => x.boardId == route.params.item.boardId));
+        if(boardInfo !== '' && boardInfo !== '0'){
+            setInfo(boardInfo.filter(x => x.boardId == route.params.item.boardId));
+        }
     }, [boardInfo, isFocused]);
 
     useEffect(()=>{ // 게시물 추천 Flag
@@ -496,7 +498,7 @@ const Talk1Sub = ({navigation, route}) => {
       );
 
 
-  return info == '' || comment == '' || userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
+  return info == '' || comment == '' || userInfo == undefined || boardInfo == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
   : (
     <SafeAreaProvider>
         <SafeAreaView style={styles.container}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, SafeAreaView, Modal, Image, StatusBar, Platform } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, SafeAreaView, Modal, Image, StatusBar, Platform, BackHandler } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import { getStatusBarHeight } from "react-native-status-bar-height"
@@ -217,7 +217,8 @@ const Register = ({navigation, route}) => {
     const [filter, setFilter] = useState(Array.from({length: 5}, () => {return false})); // 카테고리
     const [userInfo, setUserInfo] = useState();
     const user = useSelector(state => { return state.user.data; });
-    console.log('게시글 작성 user: ', user)
+
+    const [test, setTest] = useState('1234');
     
     const [info, setInfo] = useState( // post info
         {
@@ -252,7 +253,24 @@ const Register = ({navigation, route}) => {
             setUserInfo(JSON.parse(user));
         }
         load();
-    }, [])
+    }, []);
+
+    useEffect(()=>{
+        BackHandler.addEventListener('hardwareBackPress', handlePressBack)
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', handlePressBack)
+        }
+    }, [handlePressBack, info]);
+
+    const handlePressBack = () => {
+        if(info.title == '' && info.contents == '' && info.files == '' && info.imageFile.length == 0 && info.video.length == 0){
+            return false;
+        }else{
+            console.log('b');
+            setModalVisible(!modalVisible);
+            return true;
+        }
+    }
     
     const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
         let arr = Array.from({length: 5}, () => {return false});
@@ -317,13 +335,14 @@ const Register = ({navigation, route}) => {
             case info.title === '': setModal2Content('제목을 입력해주세요.'); break;
             case info.contents === '': setModal2Content('게시글 내용을 입력해주세요.'); break;
             case typeof(route.params) == 'object': edit(), navigation.navigate('맘스 톡'); return;
-            default: submit(), navigation.goBack(); return;
+            default: submit(); return;
         }
         setModalVisible2(!modalVisible2);
     }
 
     const submit = async() => {
         let data = new FormData();
+        console.log('data: ', data);
         data.append('category', '맘스 토크');
         data.append('subcategory', DATA2[filter.findIndex(x => x === true)].title);
         data.append('title', info.title);
@@ -332,7 +351,7 @@ const Register = ({navigation, route}) => {
 
         if(info.imageFile !== undefined){
             info.imageFile.filter(x => {
-                data.append('files', {uri: x, name: 'board.jpg', type: 'image/png'});
+                data.append('files', {uri: x, name: 'board.png', type: 'image/png'});
             })
         }
 
@@ -347,16 +366,19 @@ const Register = ({navigation, route}) => {
                 const response = await axios({
                     method: 'post',
                     url: 'https://momsnote.net/api/board/write',
-                    headers: { 
+                    headers: {
+                    'Content-Type': 'multipart/form-data',
                     'Authorization': `bearer ${token}`
                     },
                     data: data
                 });
                 console.log('response: ', response.data);
+                dispatch(postBoard(boardSet));
+                navigation.goBack();
             }catch(error){
                 console.log('error: ', error);
+                alert(`게시글 작성 error: ${error}`);
             }
-        dispatch(postBoard(boardSet));
     }
 
     const edit = async() => {

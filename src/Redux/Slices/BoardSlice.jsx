@@ -9,7 +9,7 @@ export const postBoard = createAsyncThunk("postBoardSlice/async", async (data) =
           url: 'https://momsnote.net/api/board/list',
           data : data
       });
-      if(response.data == ''){ return 0; }else return response.data;
+      if(response.data == ''){ return '0'; }else return response.data;
       }catch(error){
           console.log('board axios error: ', error);
           return undefined;

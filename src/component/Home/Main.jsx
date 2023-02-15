@@ -223,22 +223,17 @@ const Home = ({navigation}) => {
     const ref = useRef();
     const [date, setDate] = useState(new Date());
     const boardPopular = useSelector(state => { return state.boardPopular.data });
-    console.log('boardPopular: ', boardPopular);
     const materialPopular = useSelector(state => { return state.materialPopular.data });
-    console.log('materialPopular: ', materialPopular);
+    console.log(materialPopular);
     const infoPopular = useSelector(state => { return state.infoPopular.data });
-    console.log('infoPopular: ', infoPopular);
+    console.log(infoPopular);
     const mainData = useSelector(state => { return state.user.data; });
-    console.log('mainData: ', mainData);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
-    console.log('bubble: ', bubble);
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
     const [modal2, setModal2] = useState(false); // 코치마크
     const [modal3, setModal3] = useState(false); // 출산준비물 리스트 코치마크
-    console.log('modal3: ', modal3);
-
     const [userInfo, setUserInfo] = useState();
 
     useEffect(()=>{
@@ -269,11 +264,6 @@ const Home = ({navigation}) => {
 
     const save = async() => {
        
-        if(test !== undefined){
-            let { status } = await MediaLibrary.requestPermissionsAsync();
-            const asset = await MediaLibrary.createAssetAsync(test);
-            const moms = await MediaLibrary.getAlbumAsync('맘스노트');
-        }
         setTest(undefined);
     }
 
@@ -330,7 +320,7 @@ const Home = ({navigation}) => {
         return isFocused ? <StatusBar backgroundColor='#FEECB3' /> : null;
     }
 
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item, index }) => (
         <View style={styles.container2}>
             <ViewShot style={styles.main} ref={ref} options={{ fileName: "MomsNote", format: "png", quality: 1 }}>
                 <View style={styles.mainBox}>
@@ -340,7 +330,6 @@ const Home = ({navigation}) => {
                 <View style={styles.mainBox2}>
 
                     {mainData.message[0] == null ? '' :  mainData.message.map((x, index) => {
-                        console.log('x: ', x);
                         return(
                             <View style={[styles.bubble, {top: 50, right: 50, display: bubble[index] ? 'flex' : 'none'}]}>
                                 <View style={[styles.triangle, {borderBottomColor: bubble[index] ? 'white' : 'transparent'}]}></View>
@@ -386,19 +375,19 @@ const Home = ({navigation}) => {
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>1 </Text>
-                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[0])}> {materialPopular.legtnh > 0 ? materialPopular[0].title : ''}</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[0])}> {materialPopular.legtnh >= 1 ? materialPopular[0].nickname : ''}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>2 </Text>
-                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[1])}> {materialPopular > 1 ? materialPopular[1].title : ''}</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[1])}> {materialPopular.length >= 2 ? materialPopular[1].title : ''}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>3 </Text>
-                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[2])}> {materialPopular.length > 2 ? materialPopular[2].title : ''}</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[2])}> {materialPopular.length >= 3 ? materialPopular[2].title : ''}</Text>
                                 </View>
                             </View>
                         </View>}
@@ -448,7 +437,7 @@ const Home = ({navigation}) => {
                 {infoPopular == '0' ? <View><Text style={{color: '#757575'}}>새로운 정보가 없습니다.</Text></View>
                 :
                 <FlatList data={infoPopular} renderItem={renderItem2} showsHorizontalScrollIndicator={false}
-                        keyExtractor={item => String(item.boardId)} horizontal={true}>
+                        keyExtractor={index => String(index)} horizontal={true}>
                 </FlatList>}
                 </View>
             </View>
@@ -458,9 +447,11 @@ const Home = ({navigation}) => {
     );
     
     const renderItem2 = ({ item, index }) => (
-        <TouchableOpacity style={styles.albumBox} onPress={()=>eventNavi(item)} key={index}>
-            <View style={styles.albumPhoto}></View>
-            <View style={styles.albumTitle}><Text numberOfLines={1}>{item.title}</Text></View>
+        <TouchableOpacity style={styles.albumBox} onPress={()=>eventNavi(item)}>
+            <Image style={styles.albumPhoto} source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName}`}}/>
+            <View style={styles.albumTitle}>
+                <Text numberOfLines={1}>{item.title}</Text>
+            </View>
         </TouchableOpacity>
     );
     
@@ -470,8 +461,10 @@ const Home = ({navigation}) => {
                     <StatusBar />
             </SafeAreaView>
             <FocusAwareStatusBar />
-            {userInfo == '' || userInfo == undefined || mainData == '' || boardPopular == undefined || infoPopular == undefined || materialPopular == undefined ?<ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}/>
-                : <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}>
+            {userInfo == '' || userInfo == undefined || mainData == '' ?
+            <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}/>
+
+            : <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}>
             <View style={styles.header}>
                 <View style={styles.headerBar}>
                     <Bell style={{marginRight: 20}} onPress={()=>navigation.navigate('알림')}/>
@@ -484,7 +477,7 @@ const Home = ({navigation}) => {
             <CoarchMark2 modal={modal3} setModal={setModal3} setModal2={setModal}/>
 
             <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
-                keyExtractor={item => item.id}>
+                keyExtractor={index => String(index)}>
             </FlatList>
             <Animated.View style={[styles.saveModalBox, {opacity: animation}]}>
                 <View style={styles.saveModal}>

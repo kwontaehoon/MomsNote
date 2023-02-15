@@ -28,7 +28,6 @@ import Home3 from '../../../public/assets/svg/home2.svg'
 import Forum2 from '../../../public/assets/svg/forum2.svg'
 import Campaign2 from '../../../public/assets/svg/campaign2.svg'
 import Baby2 from '../../../public/assets/svg/Baby2.svg'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Push from '../Test/Push'
 import DateTime22 from '../Test/DateTime2'
@@ -76,7 +75,6 @@ function MainScreen() {
   const Alarm = useSelector(state => { return state.alarm.data; });
 
   const mainData = useSelector(state => { return state.user.data; });
-  console.log('navigation mainData: ', mainData);
 
   const [AlarmFlag, setAlarmFlag] = useState(false);
 
@@ -87,7 +85,7 @@ function MainScreen() {
   }
 
   return (
-    <Tab.Navigator initialRouteName='홈' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
+    <Tab.Navigator initialRouteName='출산 준비물' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
       : {tabBarStyle: { height: 55, position: 'absolute', paddingBottom: 5, elevation: 0 }, headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
 
 

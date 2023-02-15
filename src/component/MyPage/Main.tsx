@@ -7,6 +7,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { postUser } from '../../Redux/Slices/UserSlice';
+import mime from "mime";
 
 const styles = StyleSheet.create({
     container:{
@@ -67,6 +68,7 @@ const Main = ({navigation}) => {
 
     const dispatch = useDispatch();
     const user = useSelector(state => { return state.user.data });
+    console.log('user: ', user);
     const [userInfo, setUserInfo] = useState();
 
     const [refresh, setRefresh] = useState(); // 새로고침
@@ -91,32 +93,28 @@ const Main = ({navigation}) => {
         quality: 1,
       });
 
-
-    if (!result.canceled) {
-        AsyncStorage.setItem('user', JSON.stringify(Object.assign(userInfo, {profile: result.assets[0].uri})));
-    }
-    console.log(result.assets[0].uri);
-
-    AsyncStorage.setItem('user', JSON.stringify(Object.assign(userInfo, {profile: result.assets[0].uri})))
+    const newImageUri =  "file:///" + (result.assets[0].uri).split("file:/").join("");
 
     let data = new FormData();
-    data.append('file', {uri: result.assets[0].uri, name: 'profile.png', type: 'image/png'});
+    data.append('file', {uri: newImageUri, name: newImageUri.split("/").pop(), type: mime.getType(newImageUri)});
     const token = await AsyncStorage.getItem('token');
     try{
         const response = await axios({
               method: 'post',
               url: 'https://momsnote.net/api/profile/upload',
-              headers: { 
+              headers: {
+                'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${token}`, 
               },
               data: data
             });
             console.log('response: ', response.data);
+            alert('프로필변경 성공');
+            setRefresh(result.assets[0].uri);
         }catch(error){
           console.log('프로필변경 error: ', error);
+          alert(`프로필변경 error: ${error}`);
         }
-
-        setRefresh(result.assets[0].uri);
   };
 
   const renderItem = ({ item }) => (
