@@ -199,24 +199,19 @@ const Talk1Sub = ({navigation, route}) => {
         setPageHeight(false);
     });
 
-    console.log('route: ', route);
-
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
     const boardInfo = useSelector(state => { return state.board.data});
-    console.log('board 상세페이지 boardInfo: ', boardInfo);
     const [info, setInfo] = useState(useSelector(state => { return state.board.data} ));
-    console.log('board 상세페이지 info: ', info);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
-    console.log('comment: ', comment.length);
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
     const [insert, setInsert] = useState(
         {
             boardId: route.params.item.boardId,
             contents: '',
-            ref: 1,
+            ref: comment.length,
             level: 0,
             tag: null,
         }
@@ -244,10 +239,8 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal7, setModal7] = useState(false); // comment 정말 삭제?
 
     const user = useSelector(state => { return state.user.data; });
-    console.log('user: ', user);
 
     const [userInfo, setUserInfo] = useState();
-    console.log('talk1 userInfo: ', userInfo);
 
     const animation = useRef(new Animated.Value(0)).current;
     const flatlistRef = useRef(null);
@@ -544,7 +537,7 @@ const Talk1Sub = ({navigation, route}) => {
                     setInsert((prevState) => ({...prevState,
                         boardId: info[0].boardId,
                         contents: e,
-                        ref: comment.length+1,
+                        ref: comment == 0 ? 1 : comment.length+1,
                         level: 0}))} placeholderTextColor={'#BDBDBD'}></TextInput>
             </View>
             </KeyboardAvoidingView>

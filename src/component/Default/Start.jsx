@@ -97,19 +97,11 @@ const Main = ({navigation}) => {
         )
     }
 
-    const routing = (e) => {
-        console.log(e);
-        
-    }
-
   return (
     <View style={styles.container}>
         <View style={styles.header}><Text style={{color: '#757575', fontSize: 16}} onPress={start}>건너뛰기</Text></View>
         <View style={styles.main}>
-            <Swiper showsButtons={false} loop={false} ref={swiper} onMomentumScrollEnd={(event, state)=>{
-                console.log(state.index)
-                setPage(state.index)
-            }}
+            <Swiper showsButtons={false} loop={false} ref={swiper} onIndexChanged={page => setPage(page)}
             loadMinimal={true}
             dot={<View style={styles.dot}/>}
             activeDot={<View style={styles.dotActive}/>}

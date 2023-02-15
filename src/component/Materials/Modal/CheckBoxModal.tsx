@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
       },
 })
 
-const CheckBoxModal = ({modalVisible, setModalVisible}) => {
+const CheckBoxModal = ({modalVisible, setModalVisible, filter}) => {
 
   console.log('modalVisible: ', modalVisible);
 
@@ -82,7 +82,7 @@ const CheckBoxModal = ({modalVisible, setModalVisible}) => {
         }catch(error){
             console.log('출산준비물 구매 error:', error);
         }
-        dispatch(postMaterial({ order: 'buy'}));
+        dispatch(postMaterial({ order: filter}));
         setModalVisible(prevState => ({...prevState, open: false}));
     }
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Image } from 'react-native'
-import axios from 'axios'
 import moment from 'moment'
 
 import More from '../../../../public/assets/svg/More.svg'
@@ -45,6 +44,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 15,
     top: 20,
+    zIndex: 999,
+    padding: 5
   },
 })
 
@@ -53,20 +54,17 @@ const Main = () => {
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.myComment.data; });
   console.log('내가 쓴 댓글 info: ', info);
+  const [info2, setInfo2] = useState();
+  console.log('info2: ', info2);
   const myCommentSet = useSelector(state => { return state.myComment.refresh; });
   const myCommentCountSet = useSelector(state => { return state.myComment.refresh; });
-  const infoCount = useSelector(state => { return state.myCommentCount.data; });
-  const [userInfo, setUserInfo] = useState();
+  const user = useSelector(state => {return state.user.data});
+  const [modal, setModal] = useState(false); // dot modal
 
   useEffect(()=>{
     dispatch(postMyComment(myCommentSet));
     dispatch(postMyCommentCount(myCommentCountSet));
 
-    const user = async() => {
-      const user = await AsyncStorage.getItem('user');
-      setUserInfo(JSON.parse(user));
-  }
-  user();
   }, []);
 
 const dayCalculate = (date) => {
@@ -77,13 +75,18 @@ const dayCalculate = (date) => {
   }
 }
 
-
+const dotClick = (e) => {
+  console.log('e: ', e);
+  setInfo2(e);
+  info2 == undefined ? '' : setModal(!modal);
+}
+  
   const renderItem = ({ item }) => (
   <TouchableOpacity style={styles.momstalk}>
 
-    <More style={styles.dotBox}/>
+    <TouchableOpacity style={styles.dotBox} onPress={()=>dotClick(item)}><More/></TouchableOpacity>
 
-    <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${userInfo.profile}` }} style={styles.profile}/>
+    <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${user.profile}` }} style={styles.profile}/>
 
     <View>
       <View style={{flexDirection: 'row', marginBottom: 3, alignItems: 'center'}}>
@@ -98,11 +101,11 @@ const dayCalculate = (date) => {
 
   
 
-  return info == '' || userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
+  return info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
   : (
     <View style={styles.container}>
 
-      {/* <Modal modal={modal} setModal={modal} /> */}
+      <Modal modal={modal} setModal={modal} commentsId={[info2.commentsId]} info={[info2]} />
 
       <View style={styles.main}>
       {info == '0' ?

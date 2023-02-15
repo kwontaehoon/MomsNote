@@ -229,10 +229,8 @@ const Register = ({navigation, route}) => {
             video: [],
         }
     );
-    console.log('글쓰기 info: ', info);
 
     useEffect(()=>{
-
         dispatch(postUser());
         const load = async() => {
             const asyncStorage = await AsyncStorage.getItem('momsTalk');
@@ -291,8 +289,6 @@ const Register = ({navigation, route}) => {
           aspect: [4, 3],
           quality: 1,
         });
-        console.log('result: ', result.assets[0].uri);
-            
   
       if (!result.canceled) {
         arr = [...info.imageFile];
@@ -317,8 +313,6 @@ const Register = ({navigation, route}) => {
           aspect: [4, 3],
           quality: 1,
         });
-        console.log('result: ', result.assets[0].uri);
-        
   
       if (!result.canceled) {
         arr = [result.assets[0].uri];
@@ -342,7 +336,6 @@ const Register = ({navigation, route}) => {
 
     const submit = async() => {
         let data = new FormData();
-        console.log('data: ', data);
         data.append('category', '맘스 토크');
         data.append('subcategory', DATA2[filter.findIndex(x => x === true)].title);
         data.append('title', info.title);
@@ -360,7 +353,6 @@ const Register = ({navigation, route}) => {
                 data.append('files', {uri: x, name: 'board.mp4', type: 'video/mp4'});
             })
         }
-        console.log('data: ', data);
         const token = await AsyncStorage.getItem('token');
             try{
                 const response = await axios({
@@ -391,7 +383,6 @@ const Register = ({navigation, route}) => {
         route.params[0] !== undefined ? data.append('boardId', route.params[0].boardId) : ''
         // data.append('files', {uri: info.video, name: 'board.mp4', type: 'video/mp4'});
 
-        console.log('게시글 수정');
         try{
             const response = await axios({
                 method: 'post',
@@ -409,7 +400,6 @@ const Register = ({navigation, route}) => {
     }
 
     const close = (id, name) => {
-        console.log('id: ', id);
         let arr = [];
         if(name === 'video'){
             setInfo((prevState) => ({
@@ -418,7 +408,6 @@ const Register = ({navigation, route}) => {
             }))
         }else{
             const arr2 = info.imageFile.filter((x, index) => {return index !== id});
-            console.log('arr2: ', arr2);
             setInfo((prevState) => ({
                 ...prevState,
                 imageFile: arr2

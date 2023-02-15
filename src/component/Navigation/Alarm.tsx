@@ -6,6 +6,7 @@ import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
 import { postMaterialShare } from '../../Redux/Slices/MaterialShareSlice'
 import { postBoard } from '../../Redux/Slices/BoardSlice'
+import { useIsFocused } from '@react-navigation/native'
 
 const styles = StyleSheet.create({
   container:{
@@ -25,14 +26,13 @@ const Main = ({navigation}) => {
 
   const dispatch = useDispatch();
   const materialShare = useSelector(state => { return state.materialShare.data});
-  console.log('알림 materialShare: ', materialShare);
   const materialShareSet = useSelector(state => { return state.materialShare.refresh });
   const board = useSelector(state => { return state.board.data });
-  console.log('알림 board: ', board);
   const boardSet = useSelector(state => { return state.board.refresh; });
 
   const [info, setInfo] = useState();
-  console.log('알림 info: ', info);
+  
+  const isFocused = useIsFocused();
 
   useEffect(()=>{
 
@@ -58,10 +58,9 @@ const Main = ({navigation}) => {
           }
     }
     alarm();
-  }, []);
+  }, [isFocused]);
 
   const navi = async(item) => {
-    console.log('item: ', item);
     
     try{
       const response = await axios({
@@ -77,11 +76,9 @@ const Main = ({navigation}) => {
 
       if(item.category == '맘스 토크'){
         const momsTalk = board.filter(x => x.boardId == item.boardId);
-        console.log('mosmTalk: ', momsTalk);
         navigation.navigate('맘스토크 상세내용', {item: momsTalk[0]});
       }else{
         const materialList = materialShare.filter(x => x.boardId == item.boardId);
-        console.log('materialList: ', materialList);
         // navigation.navigate('');
       }
 

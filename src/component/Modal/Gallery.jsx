@@ -80,15 +80,14 @@ const Gallery = ({navigation, route}) => {
 
   const video = React.useRef(null);
 
-  console.log('이미지 길이: ', route.params);
   const saveName = route.params;
-  console.log('saveName: ', saveName);
 
   return(
     <SafeAreaProvider>
           <SafeAreaView style={{ backgroundColor: 'black' }}>
             <StatusBar />
         </SafeAreaView>
+        <FocusAwareStatusBar />
             <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '100%', flex: Platform.OS === 'ios' ? 1 : null}]}>
 
         <View style={styles.header}>

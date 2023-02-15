@@ -142,7 +142,6 @@ headerBar:{
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    borderWidth: 1,
   },
   footer:{
     height: '26.5%',

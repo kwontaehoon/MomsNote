@@ -533,7 +533,7 @@ const save = async() => {
         :
         <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '90.5%'}]}>
 
-        <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+        <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible} filter={filter}/>
         <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modal={modal} setModal={setModal} setModal2={setModal2} modal4={modal4} setModal4={setModal4} filter={filter}/>
         <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
         <ResetModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
