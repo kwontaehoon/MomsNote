@@ -224,9 +224,7 @@ const Home = ({navigation}) => {
     const [date, setDate] = useState(new Date());
     const boardPopular = useSelector(state => { return state.boardPopular.data });
     const materialPopular = useSelector(state => { return state.materialPopular.data });
-    console.log(materialPopular);
     const infoPopular = useSelector(state => { return state.infoPopular.data });
-    console.log(infoPopular);
     const mainData = useSelector(state => { return state.user.data; });
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
@@ -375,19 +373,19 @@ const Home = ({navigation}) => {
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>1 </Text>
-                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[0])}> {materialPopular.legtnh >= 1 ? materialPopular[0].nickname : ''}</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[0])}> {materialPopular.length > 0 ? materialPopular[0].title : ''}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>2 </Text>
-                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[1])}> {materialPopular.length >= 2 ? materialPopular[1].title : ''}</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[1])}> {materialPopular.length > 1 ? materialPopular[1].title : ''}</Text>
                                 </View>
                             </View>
                             <View style={styles.content}>
                                 <View style={{flexDirection: 'row'}}>
                                     <Text style={{fontWeight: '700'}}>3 </Text>
-                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[2])}> {materialPopular.length >= 3 ? materialPopular[2].title : ''}</Text>
+                                    <Text numberOfLines={1} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', materialPopular[2])}> {materialPopular.length > 2 ? materialPopular[2].title : ''}</Text>
                                 </View>
                             </View>
                         </View>}

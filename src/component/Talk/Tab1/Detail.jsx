@@ -210,7 +210,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
-    console.log('comment: ', comment);
+    console.log('comment: ', comment.length);
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
     const [insert, setInsert] = useState(
         {
@@ -221,6 +221,7 @@ const Talk1Sub = ({navigation, route}) => {
             tag: null,
         }
     ); // 댓글 입력
+    console.log('insert: ', insert);
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요 Flag
     const [boardData, setBoardData] = useState({
         order: 'new',

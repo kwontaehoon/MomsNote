@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Modal } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Modal, BackHandler } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import axios from 'axios'
@@ -116,6 +116,22 @@ const Register = ({navigation, route}) => {
             default: submit(), navigation.goBack(); return;
         }
         setModalVisible2(!modalVisible2);
+    }
+
+    useEffect(()=>{
+        BackHandler.addEventListener('hardwareBackPress', handlePressBack)
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', handlePressBack)
+        }
+    }, [handlePressBack, data]);
+
+    const handlePressBack = () => {
+        if(data.title == '' && data.contents == ''){
+            return false;
+        }else{
+            setModalVisible(!modalVisible);
+            return true;
+        }
     }
 
     const submit = async() => {

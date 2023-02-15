@@ -160,13 +160,10 @@ const Withdraw = ({navigation, route}) => {
         open: false,
         flag: 0 // 이미 인증했는지 검증
     }); // 본인인증 확인유무
-    console.log('SMSFlag: ', SMSFlag);
     const [SMSNumber, setSMSNumber] = useState(null); // SMS 번호
     const [SMSInputNumber, setSMSInputNumber] = useState(''); // 입력한 SMS 번호
-    console.log('smsnumber: ', SMSNumber);
 
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
-    console.log('boardAppFlag: ', boardAppFlag);
 
     const [modal, setModal] = useState(false); // 핸드폰 인증 완료
     const [modal2, setModal2] = useState(false); // 핸드폰 인증 실패

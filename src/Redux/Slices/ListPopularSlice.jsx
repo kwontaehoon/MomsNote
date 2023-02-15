@@ -3,7 +3,6 @@ import axios from 'axios'
 
 export const postListPopular = createAsyncThunk("postListPopularSlice/async", async () => {
   console.log('postListPopular 업데이트됨');
-  console.log('data: ', data);
     try{
       const response = await axios({
           method: 'post',

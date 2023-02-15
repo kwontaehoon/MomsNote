@@ -16,6 +16,7 @@ export const postMaterial = createAsyncThunk("postBoardSlice/async", async (data
           },
           data : data
       });
+      console.log('response: ', response.data);
       return response.data;
       }catch(error){
           console.log('Mymaterial redux axios error: ', error);

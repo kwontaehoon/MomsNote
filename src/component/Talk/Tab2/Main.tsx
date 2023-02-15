@@ -129,11 +129,9 @@ const Talk1 = ({navigation}) => {
   const isFocused = useIsFocused();
   const materialShareSet = useSelector(state => { return state.materialShare.refresh });
   const info = useSelector(state => { return state.materialShare.data});
-  console.log('info: ', info);
   const infoCount = useSelector(state => { return state.materialShareCount.data});
 
   const ListPopular = useSelector(state => { return state.ListPopular.data });
-  console.log('ListPopular: ', ListPopular);
 
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState({

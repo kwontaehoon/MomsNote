@@ -109,11 +109,9 @@ const Main = ({navigation}) => {
               data: data
             });
             console.log('response: ', response.data);
-            alert('프로필변경 성공');
             setRefresh(result.assets[0].uri);
         }catch(error){
           console.log('프로필변경 error: ', error);
-          alert(`프로필변경 error: ${error}`);
         }
   };
 

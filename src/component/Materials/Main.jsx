@@ -337,23 +337,23 @@ const Navigation = ({navigation, route}) => {
     console.log('purchase');
     console.log('needsBrandId: ', needsBrandId);
     const token = await AsyncStorage.getItem('token');
-    // try{
-    //   const response = await axios({
-    //       method: 'post',
-    //       url: 'https://momsnote.net/api/needs/buy/needs',
-    //       headers: { 
-    //         'Authorization': `bearer ${token}`,  
-    //         'Content-Type': 'application/json'
-    //       },
-    //       data: {
-    //         needsBrandId: needsBrandId == null ? 0 : needsBrandId,
-    //         needsId: needsId
-    //       }
-    //   });
-    //   }catch(error){
-    //       console.log('출산준비물 구매 error:', error);
-    //   }
-    //   dispatch(postMaterial({order: filter}));
+    try{
+      const response = await axios({
+          method: 'post',
+          url: 'https://momsnote.net/api/needs/buy/needs',
+          headers: { 
+            'Authorization': `bearer ${token}`,  
+            'Content-Type': 'application/json'
+          },
+          data: {
+            needsBrandId: needsBrandId == null ? 0 : needsBrandId,
+            needsId: needsId
+          }
+      });
+      }catch(error){
+          console.log('출산준비물 구매 error:', error);
+      }
+      dispatch(postMaterial({order: filter}));
   }
 
   const purchaseCencel = async(needsId) => {

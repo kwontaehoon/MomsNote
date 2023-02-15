@@ -82,7 +82,6 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
     const List = () => {
         let arr = [];
         info.filter((x, index) => {
-            console.log('x: ', x.commentsDate);
             if(x.step === 0){
                 arr.push(
                     
