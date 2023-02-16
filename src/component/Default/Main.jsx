@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import Start from '../Default/Start'
 import Login from '../Default/Login'
 import Home from '../Navigation/SubMain'
@@ -13,8 +12,6 @@ const Main = ({navigation}) => {
 
     useEffect(()=>{
         const login = async() => {
-            // AsyncStorage.removeItem('userId');
-            // AsyncStorage.setItem('login', '2');
             // AsyncStorage.removeItem('login');
             // AsyncStorage.clear()
             const asyncStorage = await AsyncStorage.getItem('login');

@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useState, useRef, useCallback } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import Swiper from 'react-native-swiper'
-import { getStatusBarHeight } from "react-native-status-bar-height"
 
 import OnBoarding1 from '../../../../public/assets/svg/onBoarding1.svg'
 import OnBoarding2 from '../../../../public/assets/svg/onBoarding2.svg'
@@ -12,17 +11,17 @@ const styles = StyleSheet.create({
     container:{
         backgroundColor: 'white',
         height: '100%',
-        justifyContent: 'center',
     },
     main:{
         height: '80%',
+        paddingTop: 30
     },
     main2:{
         height: '100%',
     },
     headerBox:{
         height: '15%',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     main2Box:{
         height: '75%',
@@ -66,12 +65,6 @@ const styles = StyleSheet.create({
     },
 })
 const Main = ({navigation}) => {
-
-    const [page, setPage] = useState(0); // 해당 페이지
-    console.log('page: ', page);
-
-    const swiper = useRef(null);
-    console.log('swiper: ', swiper.current);
 
   return (
     <View style={styles.container}>

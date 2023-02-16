@@ -26,6 +26,7 @@ import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux';
 import { postMaterial, setMaterialRefresh } from '../../Redux/Slices/MaterialSlice'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { postAlarm } from '../../Redux/Slices/AlarmSlice';
 
 import M1 from '../../../public/assets/svg/1.svg'
 import M2 from '../../../public/assets/svg/2.svg'
@@ -54,6 +55,16 @@ const styles = StyleSheet.create({
     height: 55,
     justifyContent: 'center',
     padding: 17,
+  },
+  redDot:{
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    backgroundColor: 'red',
+    width: 7,
+    height: 7,
+    borderRadius: 40,
+    zIndex: 999,
   },
   headerBar:{
       position: 'absolute',
@@ -180,47 +191,38 @@ const Navigation = ({navigation, route}) => {
     {
       id: 0,
       title: '산모용품',
-      icon: require('../../../public/assets/image/1.png'),
     },
     {
       id: 1,
       title: '수유용품',
-      icon: require('../../../public/assets/image/2.png'),
     },
     {
       id: 2,
       title: '위생용품',
-      icon: require('../../../public/assets/image/3.png'),
     },
     {
       id: 3,
       title: '목욕용품',
-      icon: require('../../../public/assets/image/4.png'),
     },
     {
       id: 4,
       title: '침구류',
-      icon: require('../../../public/assets/image/5.png'),
     },
     {
       id: 5,
       title: '아기의류',
-      icon: require('../../../public/assets/image/6.png'),
     },
     {
       id: 6,
       title: '외출용품',
-      icon: require('../../../public/assets/image/7.png'),
     },
     {
       id: 7,
       title: '가전용품',
-      icon: require('../../../public/assets/image/8.png'),
     },
     {
       id: 8,
       title: '놀이용품',
-      icon: require('../../../public/assets/image/9.png'),
     },
   ];
 
@@ -236,7 +238,8 @@ const Navigation = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.material.data; });
-  console.log('info: ', info);
+  const Alarm = useSelector(state => { return state.alarm.data; });
+  const [AlarmFlag, setAlarmFlag] = useState(false);
   const [purchaseCount, setPurchaseCount] = useState(null); // 전체 구매 갯수
   const [sumResult, setSumResult] = useState({
     sum: 0,
@@ -297,6 +300,14 @@ const Navigation = ({navigation, route}) => {
   const animation = useRef(new Animated.Value(0)).current;
 
   useEffect(()=>{
+      dispatch(postAlarm({page: 1}));
+  }, []);
+
+  useEffect(()=>{
+    Alarm.filter(x => x.readFlag == true) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+  }, [Alarm])
+
+  useEffect(()=>{
     const coarch = async() => {
       const coarchMark = await AsyncStorage.getItem('coarchMarkMaterial');
       coarchMark == null ? setModal5(true) : setModal5(false);
@@ -334,8 +345,6 @@ const Navigation = ({navigation, route}) => {
   }, [captureURL]);
 
   const purchase = async(needsId, needsBrandId) =>{
-    console.log('purchase');
-    console.log('needsBrandId: ', needsBrandId);
     const token = await AsyncStorage.getItem('token');
     try{
       const response = await axios({
@@ -357,8 +366,6 @@ const Navigation = ({navigation, route}) => {
   }
 
   const purchaseCencel = async(needsId) => {
-    console.log('purchaseCencel');
-    console.log('needsId: ', needsId);
     const token = await AsyncStorage.getItem('token');
     try{
       const response = await axios({
@@ -556,7 +563,10 @@ const save = async() => {
         <View style={styles.headerBar}>
             <TouchableOpacity style={{marginRight: 20}} onPress={capture}><Download/></TouchableOpacity>
             <TouchableOpacity style={{marginRight: 20}} onPress={()=>navigation.navigate('출산 준비물 검색')}><Search/></TouchableOpacity>
-            <TouchableOpacity style={{marginRight: 20}} onPress={()=>navigation.navigate('알림')}><Bell/></TouchableOpacity>
+            <TouchableOpacity style={{marginRight: 20}} onPress={()=>navigation.navigate('알림')}>
+              <View style={[styles.redDot, {display: AlarmFlag ? 'flex' : 'none'}]} />
+              <Bell/>
+            </TouchableOpacity>
             <TouchableOpacity style={{marginRight: 5}} onPress={()=>navigation.navigate('마이페이지')}><MyPage/></TouchableOpacity>
         </View>
       </View>

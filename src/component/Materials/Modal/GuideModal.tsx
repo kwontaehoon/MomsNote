@@ -87,8 +87,6 @@ const styles = StyleSheet.create({
 
 const Main = ({modalVisible4, setModalVisible4, modalVisible2, setModalVisible2}) => {
 
-    console.log('modalvisible4: ', modalVisible4);
-
     const optionBox = (e) => {
         switch(e){
           case '필수': return ( <View style={[styles.filterSub, {backgroundColor: '#E57373'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>필수</Text></View> )

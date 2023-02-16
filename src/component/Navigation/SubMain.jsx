@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     redDot:{
       position: 'absolute',
       top: 10,
-      right: 12,
+      right: 10,
       backgroundColor: 'red',
       width: 7,
       height: 7,
@@ -77,20 +77,21 @@ function MainScreen() {
 
   const [AlarmFlag, setAlarmFlag] = useState(false);
 
+  useEffect(()=>{
+    dispatch(postAlarm({page: 1}));
+  }, []);
 
-  const alarmFunc = () => {
-    dispatch(postAlarm());
+  useEffect(()=>{
     Alarm.filter(x => x.readFlag == true) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
-  }
+  }, [Alarm])
 
   return (
-    <Tab.Navigator initialRouteName='맘스 톡' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
+    <Tab.Navigator initialRouteName='맘스 정보' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
       : {tabBarStyle: { height: 55, position: 'absolute', paddingBottom: 5, elevation: 0 }, headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
 
 
       <Tab.Screen name="맘스 톡" options={{tabBarIcon: ({focused, color}) => (focused ? <Forum2 /> : <Forum/>), unmountOnBlur:true}}
       listeners={{tabPress: (e)=>{
-        alarmFunc()  
       }}}>
           {()=>(
                <Stack.Navigator>
@@ -133,7 +134,6 @@ function MainScreen() {
 
           <Tab.Screen name="Dday" options={{tabBarIcon: ({focused, color}) => (focused ? <Baby2 /> : <Baby />), tabBarLabel: `D-${mainData == '' ? '' : mainData.dday}` , unmountOnBlur:true}}
           listeners={{tabPress: (e)=>{
-            alarmFunc()  
           }}}>
         {()=>(
                <Stack.Navigator>
@@ -208,8 +208,7 @@ function MainScreen() {
       </Tab.Screen>
 
       <Tab.Screen name="맘스 정보" options={{tabBarIcon: ({focused, color}) => (focused ? <Campaign2 /> : <Campaign />), unmountOnBlur:true}}
-      listeners={{tabPress: (e)=>{
-        alarmFunc()  
+      listeners={{tabPress: (e)=>{ 
       }}}>
         {()=>(
                <Stack.Navigator>

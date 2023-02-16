@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
     },
     mainBox2:{
         padding: 20,
-        borderWidth: 2,
     },
     mainBox2ImageBox:{
         height: 400,

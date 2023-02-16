@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import React, { useState, useRef, useCallback } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import React, { useState, useRef } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Swiper from 'react-native-swiper'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 
@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         marginTop: getStatusBarHeight(),
         flex: 1,
-        padding: 20,
     },
     main:{
         height: '80%',
@@ -25,6 +24,7 @@ const styles = StyleSheet.create({
         height: '10%',
         justifyContent: 'center',
         alignItems: 'flex-end',
+        paddingRight: 20
     },
     headerBox:{
         height: '15%',
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     main2Box:{
         height: '75%',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     image:{
         width: '100%',
@@ -64,20 +64,23 @@ const styles = StyleSheet.create({
         height: 100,
     },
     footer:{
-      height: 56,
-      backgroundColor: '#FEA100',
-      borderRadius: 10,
       alignItems: 'center',
       justifyContent: 'center',
     },
+    button:{
+        width: '90%',
+        height: 56,
+        backgroundColor: '#FEA100',
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
 })
 const Main = ({navigation}) => {
 
     const [page, setPage] = useState(0); // 해당 페이지
-    console.log('page: ', page);
 
     const swiper = useRef(null);
-    console.log('swiper: ', swiper.current);
 
     const start = async() => {
         await AsyncStorage.setItem('login', '1');
@@ -87,13 +90,17 @@ const Main = ({navigation}) => {
     const List = () => {
 
         return page == 2 ? (
-            <TouchableOpacity style={styles.footer} activeOpacity={1} onPress={start}>
-                <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>시작하기</Text>
-            </TouchableOpacity> 
+            <View style={styles.footer}>
+                <TouchableOpacity style={styles.button} activeOpacity={1} onPress={start}>
+                    <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>시작하기</Text>
+                </TouchableOpacity>
+            </View> 
         ) : (
-            <TouchableOpacity style={styles.footer} onPress={() => {swiper.current.scrollBy(1); setPage(page + 1)}} activeOpacity={1}>
-                <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>다음</Text>
-            </TouchableOpacity> 
+            <View style={styles.footer}>
+                <TouchableOpacity style={styles.button} onPress={() => {swiper.current.scrollBy(1); setPage(page + 1)}} activeOpacity={1}>
+                    <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>다음</Text>
+                </TouchableOpacity>
+            </View> 
         )
     }
 
@@ -101,8 +108,7 @@ const Main = ({navigation}) => {
     <View style={styles.container}>
         <View style={styles.header}><Text style={{color: '#757575', fontSize: 16}} onPress={start}>건너뛰기</Text></View>
         <View style={styles.main}>
-            <Swiper showsButtons={false} loop={false} ref={swiper} onIndexChanged={page => setPage(page)}
-            loadMinimal={true}
+            <Swiper showsButtons={false} loop={false} ref={swiper} onIndexChanged={page => setTimeout(()=>{setPage(page)}, 200)}
             dot={<View style={styles.dot}/>}
             activeDot={<View style={styles.dotActive}/>}
             nextButton={<View style={styles.nextButton}></View>}
