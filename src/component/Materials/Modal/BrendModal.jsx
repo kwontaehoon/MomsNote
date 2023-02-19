@@ -108,11 +108,9 @@ const styles = StyleSheet.create({
 })
 
 const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, modal4, setModal4, filter}) => {
-    console.log('modalvisible2: ', modalVisible2);
 
     const dispatch = useDispatch();
     const [info, setInfo] = useState(); // 브랜드 lists
-    console.log('브랜드 리스트: ', info);
     const [selectBrand, setSelectBrand] = useState({
         needsId: null,
         needsBrandId: 0,
@@ -121,7 +119,6 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
         needsDataId: null,
         itemBrand: '',
     });
-    console.log('select Brand: ', selectBrand);
 
     useEffect(()=>{
         const commentInfo = async() => {
@@ -158,7 +155,6 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
     }
 
     const selectSubmit = async(x) => {
-        console.log('x: ', x);
         const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
@@ -177,7 +173,6 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
                     needsDataId: selectBrand.needsDataId
                 }
             });
-            console.log('response: ', response.data);
             }catch(error){
                 console.log('comment axios error:', error)
             }
@@ -198,7 +193,6 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
                   },
                 data: selectBrand
             });
-            console.log('response: ', response.data);
             }catch(error){
                 console.log('comment axios error:', error)
             }

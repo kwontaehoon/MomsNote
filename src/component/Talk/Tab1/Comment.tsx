@@ -42,9 +42,6 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
 
 
     const commentLike = useSelector(state => { return state.commentFlag.data; });
-    console.log('commentLike: ', commentLike);
-    console.log('comment info: ', info);
-
     const dispatch = useDispatch();
 
     const commentplus = async(id) => { // 댓글 추천
@@ -72,7 +69,6 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
     }
 
     const commentminus = async(id) => { // 댓글 추천 취소
-        console.log('commentminus');
         const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
@@ -112,7 +108,6 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
             refFilter.push(x.ref);
             const count = refFilter.filter(y => y == x.ref).length;
             if(x.step === 0 && (count == 1 && !x.deleteFlag)){
-                console.log('x: ', x);
                 arr.push(
                     
                     <View key={index}>
@@ -150,7 +145,6 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                         <List2 number={x.ref}/>
                     </View>
                 )
-                console.log('arr: ', arr);
             }
         })
         return arr;

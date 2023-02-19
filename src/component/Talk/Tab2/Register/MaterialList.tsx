@@ -126,6 +126,7 @@ const Talk1Sub = ({route}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => state.material.data);
+  console.log('나의 출산리스트: ', info);
   const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
   const [sumResult, setSumResult] = useState({
     sum: 0,
@@ -139,12 +140,13 @@ const Talk1Sub = ({route}) => {
   useEffect(()=>{
     let sum = 0;
     let exp = 0;
-    info == undefined ? '' :
-    info.filter(x=>{
-      if(x.id == 0 && x.needsBrandId !== null){
-        exp += x.itemPrice
-      } else sum += x.itemPrice;
-    });
+    if(info !== '' && info !== '0'){
+      info.filter(x=>{
+        if(x.id == 0 && x.needsBrandId !== null){
+          exp += x.itemPrice
+        } else sum += x.itemPrice;
+      });
+    }
     setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
   }, [info]);
 
@@ -155,7 +157,7 @@ const Talk1Sub = ({route}) => {
   }
 
   const filtering = (e) => { // 품목 브랜드 가격 부분 none || flex
-    if(info.filter(x => x.category == e && x.itemName !== null) == ''){
+    if(info.filter(x => x.category == e && x.id == 1) == ''){
       return(
         <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}><Text>검색 결과가 없습니다.</Text></View>
       )
@@ -186,7 +188,7 @@ const Talk1Sub = ({route}) => {
   const List = ({title}) => {
     let arr = [];
     info.filter((x, index)=>{
-      if(x.category == title && x.itemName !== null){
+      if(x.category == title && x.deleteStatus == 1 && x.id == 1){
               arr.push(
         <View style={styles.mainBox3} key={index}>
             <View style={[styles.filterBox2, {justifyContent: 'flex-start'}]}><Text style={{fontWeight: '500'}}>{x.needsName}</Text></View>
@@ -220,7 +222,7 @@ const Talk1Sub = ({route}) => {
       </View>
     );
 
-  return info == undefined || info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return info == '' || info == '0' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
       <View style={styles.main}>
         <View></View>

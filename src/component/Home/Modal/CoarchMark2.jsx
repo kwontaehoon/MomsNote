@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Modal, Image } from 'react-na
 
 import Close from '../.././../../public/assets/svg/Close.svg'
 import Checkbox from 'expo-checkbox';
-import Star from '../../../../public/assets/coachmark/star.png'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
@@ -97,7 +96,6 @@ const Main = ({navigation, modal, setModal, setModal2}) => {
 
     const [isChecked, setIsChecked] = useState(false);
     const [list, setList] = useState();
-    console.log('list: ', list);
 
     useEffect(()=>{
         const list = async() =>{

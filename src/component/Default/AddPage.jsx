@@ -108,15 +108,10 @@ const AddPage = ({navigation, route}) => {
         },
     ];
 
-    console.log('route params: ', route.params);
-
     const [isChecked, setChecked] = useState(Array.from({length: 4}, ()=>{return false})); // check box
-    console.log('isChecked: ', isChecked);
-    console.log(isChecked[3]);
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
 
     const test = isChecked[3] ? 1 : 0;
-    console.log('test: ', test);
 
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -126,12 +121,13 @@ const AddPage = ({navigation, route}) => {
         nickname: '',
         email: route.params[2],
         dueDate: '',
+
+
         babyName: '',
         provider: `${route.params[0]}`,
         providerId: typeof(route.params[1]) == 'number' ? `${route.params[1]}` : route.params[1],
         marketingFlag: test == 1 ? 0 : 1,
     })
-    console.log('info: ', info);
 
     const [modal, setModal] = useState(false);
     const [modal2, setModal2] = useState(false);
@@ -149,9 +145,7 @@ const AddPage = ({navigation, route}) => {
                 },
                 data: info
             });
-            console.log('회원가입 response: ', response.data);
             const decoded = jwtDecode(response.data.token);
-            console.log('decoded: ', decoded);
             AsyncStorage.setItem('userId', String(decoded.id));
             AsyncStorage.setItem('token', response.data.token);
 
@@ -165,7 +159,6 @@ const AddPage = ({navigation, route}) => {
                     url: 'https://momsnote.net/api/main/data',
                 });
 
-                console.log(response2.data.data);
                 AsyncStorage.setItem('user', JSON.stringify(response2.data.data));
                 navigation.reset({routes: [{name: "main"}]})
 
@@ -185,8 +178,6 @@ const AddPage = ({navigation, route}) => {
         Month < 10 ? Month = `0${String(Month)}` : '';
         let Date = selectedDate.getDate();
         Date < 10 ? Date = `0${String(Date)}` : '';
-        
-        console.log('selectDate: ', moment(selectedDate).diff(moment(), 'day'));
 
         switch(true){
             case moment(selectedDate).diff(moment(), 'day') > 280: setShow(false); setModal(!modal); break;

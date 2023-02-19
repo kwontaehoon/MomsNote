@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
 })
 const Information = ({navigation, route}) => {
 
-    console.log('맘스 정보 route: ', route.params);
     const isFocused = useIsFocused();
 
     useEffect(()=>{

@@ -53,15 +53,12 @@ const styles = StyleSheet.create({
       },
 })
 
-const CheckBoxModal = ({modalVisible, setModalVisible}) => {
-
-  console.log('modalVisible: ', modalVisible);
+const CheckBoxModal = ({modalVisible, setModalVisible, filter}) => {
 
     const dispatch = useDispatch();
     const [isChecked, setChecked] = useState(false); // check box 선택시 체크 팝업에서의 check box
 
     const purchase = async() =>{
-      console.log('purchase');
       const token = await AsyncStorage.getItem('token');
 
       isChecked ? AsyncStorage.setItem('materialPurchase', '1') : AsyncStorage.removeItem('materialPurchase');
@@ -78,11 +75,10 @@ const CheckBoxModal = ({modalVisible, setModalVisible}) => {
               needsId: modalVisible.needsId
             }
         });
-        console.log('response: ', response.data);
         }catch(error){
             console.log('출산준비물 구매 error:', error);
         }
-        dispatch(postMaterial({ order: 'buy'}));
+        dispatch(postMaterial({ order: filter}));
         setModalVisible(prevState => ({...prevState, open: false}));
     }
 

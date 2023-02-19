@@ -68,7 +68,6 @@ const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
         needsId: 0,
         itemPrice: 0,
     });
-    console.log('info: ', info);
 
     const comma = (e) => {
         e = e.replaceAll(',', '');
@@ -87,7 +86,6 @@ const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
                 url: 'https://momsnote.net/api/needs/update/price',
                 data : info
         });
-        console.log('response: ', response.data);
          }catch(error){
              console.log('가격 수정 axios error: ', error);
         }
@@ -113,7 +111,7 @@ const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
 
                             <View style={styles.mainBox}>
                                 <View style={styles.priceBox}><Text>원</Text></View>
-                                <TextInput style={{fontWeight: '600'}} textAlign='right' placeholder={`${(modal6.content.itemPrice).toLocaleString()}`} placeholderTextColor={'black'}
+                                <TextInput style={{fontWeight: '600'}} textAlign='right' placeholder={info.itemPrice == null ? '0' : `${(modal6.content.itemPrice)}`} placeholderTextColor={'black'}
                                     value={info.itemPrice} onChangeText={(e)=>comma(e)} maxLength={11}
                                     keyboardType='decimal-pad'>
                                 </TextInput>

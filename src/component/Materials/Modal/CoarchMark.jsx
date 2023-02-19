@@ -257,10 +257,8 @@ const Navigation = ({modal, setModal}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.material.data; });
-  console.log('출산준비물: ', info);
   const materialSet = useSelector(state => { return state.material.refresh; });
   const [purchaseCount, setPurchaseCount] = useState(null); // 전체 구매 갯수
-  console.log('purchaseCount: ', purchaseCount);
   const [sumResult, setSumResult] = useState({
     sum: 0,
     exp: 0

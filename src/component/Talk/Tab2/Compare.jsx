@@ -192,7 +192,6 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = useSelector(state => { return state.shareList.data; });
-    console.log('출산리스트 상대방: ', info);
     const material = useSelector(state => { return state.material.data; });
     const [list, setList] = useState(Array.from({length: 9}, () => {return true})); // list display
     const animation = useRef(new Animated.Value(0)).current;
@@ -202,9 +201,6 @@ const Talk1Sub = ({navigation, route}) => {
       sum: 0,
       exp: 0
     });
-
-    console.log(sumResult.sum);
-    console.log(sumResult.exp);
 
     const [modal, setModal] = useState({ // 브랜드 선택 모달
       open: false,
@@ -233,21 +229,23 @@ const Talk1Sub = ({navigation, route}) => {
     let sum = 0;
     let exp = 0;
 
-    material.filter(x=>{
-      if(x.id == 0 && x.needsBrandId !== null && x.itemPrice !== null){
-        exp += x.itemPrice
-      } else {
-        sum += x.itemPrice;
-      }
-    });
+    if(material !== '' && material !== '0'){
+      material.filter(x=>{
+        if(x.id == 0 && x.needsBrandId !== null && x.itemPrice !== null){
+          exp += x.itemPrice
+        } else {
+          sum += x.itemPrice;
+        }
+      });
+    }
     setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
   }, [material]);
 
 
   const filtering = (e, title) => { // 품목 브랜드 가격 부분 none || flex
-    if(title.filter(x => x.category == e && x.itemBrand !== null) == ''){
+    if(title.filter(x => x.category == e && x.id == 1) == ''){
       return(
-        <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}><Text>검색 결과가 없습니다.</Text></View>
+        <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}><Text>선택된 품목이 없습니다.</Text></View>
       )
     }else return(
         <View style={styles.listMain2}>
@@ -325,13 +323,13 @@ const Talk1Sub = ({navigation, route}) => {
     const List4 = (e) => {
       let arr = [];
       material.filter((x, index)=>{
-        if(x.category == e.title && x.itemBrand !== null && x.deleteStatus == 1){
+        if(x.category == e.title && x.deleteStatus == 1 && x.id == 1){
         arr.push(
           <View style={styles.listMain2} key={index}>
               <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
               <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
               <TouchableOpacity style={styles.filterBox2} onLongPress={()=>(setModal4(prevState => ({...prevState, open: true, content: x})))} delayLongPress={1500} activeOpacity={1}>
-                <Text style={{fontWeight: '500'}}>{x.itemPrice == null ? '-' : (x.itemPrice).toLocaleString()}</Text>
+                <Text style={{fontWeight: '500'}}>{x.itemPrice == null ? '0' : x.itemPrice.toLocaleString()}</Text>
                 <Text> 원</Text>
               </TouchableOpacity>
           </View>
@@ -385,7 +383,7 @@ const Talk1Sub = ({navigation, route}) => {
         <StatusBar />
     </SafeAreaView>
 
-    <SafeAreaView style={styles.container}>
+    {material == '' || material == '0' ? '' : <SafeAreaView style={styles.container}>
       <TouchableOpacity style={[styles.myList, {display: myList ? 'none' : 'flex'}]} onPress={()=>{opacity_ani(), setMyList(!myList)}}>
         <View style={styles.myListBox}>
           <Text style={{color: 'white', fontWeight: '500', fontSize: 16, marginRight: 5}}>나의 출산준비물</Text>
@@ -427,7 +425,7 @@ const Talk1Sub = ({navigation, route}) => {
         <Modal2 modal2={modal2} setModal2={setModal2}/>
         <Modal3 modal={modal3} setModal={setModal3}/>
         <Modal4 modal6={modal4} setModal6={setModal4} setModal7={setModal3} />
-    </SafeAreaView>
+    </SafeAreaView>}
     </SafeAreaProvider>
   )
 }

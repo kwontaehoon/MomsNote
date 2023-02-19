@@ -99,7 +99,7 @@ const Main = ({modalVisible4, setModalVisible4, modalVisible2, setModalVisible2}
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
             <View style={styles.header2}>
-                <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.needsImage}`}} style={{width: 150, height: 150}} resizeMode='cover' />
+                <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/needs/${item.needsImage}`}} style={{width: 150, height: 150}} resizeMode='cover' />
             </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>

@@ -260,7 +260,7 @@ const Navigation = ({navigation, route}) => {
         }
     }
     boardSearch();
-}, [search, modalVisible2, refresh]);
+}, [search, modalVisible, modalVisible2, refresh]);
 
 const purchase = async(needsId, needsBrandId) =>{
   const token = await AsyncStorage.getItem('token');
@@ -277,11 +277,10 @@ const purchase = async(needsId, needsBrandId) =>{
           needsId: needsId
         }
     });
-    console.log('response: ', response.data);
     }catch(error){
         console.log('출산준비물 구매 error:', error);
     }
-    dispatch(postMaterial(materialSet));
+    dispatch(postMaterial({order: 'need'}));
     setRefresh(`구매${needsBrandId}`);
 }
 
@@ -355,7 +354,6 @@ const purchaseCencel = async(needsId) => {
               color={x.id == 0 ? undefined : '#FEB401'}
               onValueChange={()=>{
                 switch(true){
-                  case x.itemName == null: setModal2(prevState => ({...prevState, open: true, buttonCount: 1, content: '브랜드를 체크해주세요'})); break;
                   case x.id == 0 && purchaseCheckBox == null : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: x.needsBrandId, needsId: x.needsId})); break;
                   case x.id == 0 : purchase(x.needsId, x.needsBrandId); break;
                   default : purchaseCencel(x.needsId);

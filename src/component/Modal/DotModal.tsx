@@ -56,6 +56,8 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
 
     console.log('DotModal info: ', info[0].boardId);
+    console.log('commentsId: ', commentsId);
+    console.log('info: ', info);
     
      useEffect(()=>{
         const getUserId = async() => {
@@ -82,10 +84,10 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
             }catch(error){
               console.log('error: ', error);
             }
-        dispatch(postBoard(boardSet));
-        dispatch(postMaterialShare(materialShareSet));
-        setModal(!modal);
-        navigation.goBack();
+            navigation.goBack();
+            dispatch(postBoard(boardSet));
+            dispatch(postMaterialShare(materialShareSet));
+            setModal(!modal);
     }
 
     const DotFilter = () => {

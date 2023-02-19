@@ -327,7 +327,6 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal7, setModal7] = useState(false); // comment 삭제모달
 
     const [userInfo, setUserInfo] = useState();
-    console.log('userinfo: ', userInfo);
 
     const animation = useRef(new Animated.Value(0)).current;
     const flatlistRef = useRef(null);
@@ -366,7 +365,9 @@ const Talk1Sub = ({navigation, route}) => {
     }, [isFocused]);
 
     useEffect(()=>{
-        setInfo3(materialShare.filter(x => x.boardId == info[0].boardId));
+        if(materialShare !== '' && materialShare !== '0'){
+            setInfo3(materialShare.filter(x => x.boardId == info[0].boardId));
+        }
     }, [materialShare]);
 
     useEffect(()=>{

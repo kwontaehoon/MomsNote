@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Image, Modal, Platform } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image, Modal, Platform } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 
 import Bell from '../../../../public/assets/svg/Bell.svg'

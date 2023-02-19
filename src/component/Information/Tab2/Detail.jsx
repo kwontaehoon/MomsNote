@@ -194,33 +194,12 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = [route.params];
-    console.log('행사정보 route: ', info);
     const info2 = useSelector(state => { return state.event.data; });
-    console.log('행사정보 info2: ', info2);
     const [info3, setInfo3] = useState();
-    console.log('행사정보 info3: ', info3);
-
     const eventSet = useSelector(state => { return state.event.refresh });
-    console.log('eventSet: ', eventSet);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
-    const comment = useSelector(state => { return state.comment.data; });
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
-    const [insert, setInsert] = useState(
-        {
-            boardId: info[0].boardId,
-            contents: '',
-            ref: 1,
-            level: 0
-        }
-    ); // 댓글 입력
-    const [boardLike, setBoardLike] = useState(); // 게시판 좋아요
-    const [boardData, setBoardData] = useState({
-        order: 'new',
-        count: 5,
-        page: 1,
-        subcategory: '전체'
-    })
 
     const [commentData, setCommentData] = useState({
         boardId: info[0].boardId,

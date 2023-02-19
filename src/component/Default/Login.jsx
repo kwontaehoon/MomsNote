@@ -63,17 +63,6 @@ const styles = StyleSheet.create({
 })
 const Main = ({navigation, route}) => {
 
-    const dispatch = useDispatch();
-
-    const [googleToken, setGoogleToken] = useState([]);
-    console.log('googleToken: ', googleToken);
-    
-    const [kakaoToken, setKakaoToken] = useState([]);
-    console.log('kakaoToken: ', kakaoToken);
-
-    const [AppleToken, setAppleToken] = useState([]);
-    console.log('AppleToken: ', AppleToken);
-
     const [modal, setModal] = useState(false);
 
     WebBrowser.maybeCompleteAuthSession();
@@ -95,8 +84,6 @@ const Main = ({navigation, route}) => {
     const GoogleGetId = async(googleAccessToken) => {
         try{
             const response = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${googleAccessToken}`);
-            console.log('response: ', response.data);
-            setGoogleToken(response.data.sub);
             const response2 = await axios({
                 method: 'post',
                 url: 'https://momsnote.net/login',
@@ -107,9 +94,7 @@ const Main = ({navigation, route}) => {
                     username: `google_${response.data.sub}`
                 }
             });
-            console.log('response2: ', response2.data);
             const decode = jwtDecode(response2.data.token);
-            console.log('decode: ', decode);
             AsyncStorage.setItem('token', response2.data.token);
             AsyncStorage.setItem('userId', String(decode.id));
                         
@@ -123,7 +108,6 @@ const Main = ({navigation, route}) => {
                         },
                         url: 'https://momsnote.net/api/main/data',
                     });
-                    console.log(response3.data.data);
                     AsyncStorage.setItem('user', JSON.stringify(response3.data.data));
                     }catch(error){
                         console.log('user axios error: ', error);
@@ -186,9 +170,7 @@ const Main = ({navigation, route}) => {
                             ],
                         });
                         // signed in
-                        console.log(credential.identityToken);
                         const decode = jwtDecode(credential.identityToken);
-                        console.log('decoded: ', decode.sub);
                         AsyncStorage.setItem('userId', jwtDecode(String(decode.id)));
 
                         const response = await axios({
@@ -201,7 +183,6 @@ const Main = ({navigation, route}) => {
                                 username: `apple_${jwtDecode(credential.identityToken).sub}`
                             }
                         });
-                        console.log('response: ', response.data);
                         AsyncStorage.setItem('token', response.data.token);
                         
                         if(response.data.status == 'success'){
@@ -214,7 +195,6 @@ const Main = ({navigation, route}) => {
                                     },
                                     url: 'https://momsnote.net/api/main/data',
                                 });
-                                console.log(response2.data);
                                 AsyncStorage.setItem('user', JSON.stringify(response2.data));
                                 }catch(error){
                                     console.log('user axios error: ', error);

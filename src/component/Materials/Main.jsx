@@ -26,6 +26,7 @@ import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux';
 import { postMaterial, setMaterialRefresh } from '../../Redux/Slices/MaterialSlice'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { postAlarm } from '../../Redux/Slices/AlarmSlice';
 
 import M1 from '../../../public/assets/svg/1.svg'
 import M2 from '../../../public/assets/svg/2.svg'
@@ -54,6 +55,16 @@ const styles = StyleSheet.create({
     height: 55,
     justifyContent: 'center',
     padding: 17,
+  },
+  redDot:{
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    backgroundColor: 'red',
+    width: 7,
+    height: 7,
+    borderRadius: 40,
+    zIndex: 999,
   },
   headerBar:{
       position: 'absolute',
@@ -180,47 +191,38 @@ const Navigation = ({navigation, route}) => {
     {
       id: 0,
       title: '산모용품',
-      icon: require('../../../public/assets/image/1.png'),
     },
     {
       id: 1,
       title: '수유용품',
-      icon: require('../../../public/assets/image/2.png'),
     },
     {
       id: 2,
       title: '위생용품',
-      icon: require('../../../public/assets/image/3.png'),
     },
     {
       id: 3,
       title: '목욕용품',
-      icon: require('../../../public/assets/image/4.png'),
     },
     {
       id: 4,
       title: '침구류',
-      icon: require('../../../public/assets/image/5.png'),
     },
     {
       id: 5,
       title: '아기의류',
-      icon: require('../../../public/assets/image/6.png'),
     },
     {
       id: 6,
       title: '외출용품',
-      icon: require('../../../public/assets/image/7.png'),
     },
     {
       id: 7,
       title: '가전용품',
-      icon: require('../../../public/assets/image/8.png'),
     },
     {
       id: 8,
       title: '놀이용품',
-      icon: require('../../../public/assets/image/9.png'),
     },
   ];
 
@@ -236,6 +238,8 @@ const Navigation = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.material.data; });
+  const Alarm = useSelector(state => { return state.alarm.data; });
+  const [AlarmFlag, setAlarmFlag] = useState(false);
   const [purchaseCount, setPurchaseCount] = useState(null); // 전체 구매 갯수
   const [sumResult, setSumResult] = useState({
     sum: 0,
@@ -244,7 +248,6 @@ const Navigation = ({navigation, route}) => {
   const ref = useRef();
 
   const [filter, setFilter] = useState('needs');
-  console.log('filter: ', filter);
 
   const [list, setList] = useState(Array.from({ length: 9 }, () => { return true}));
 
@@ -295,6 +298,14 @@ const Navigation = ({navigation, route}) => {
   const [modal6, setModal6] = useState(false); // coarchmark2 brand base
   const [modal7, setModal7] = useState(false); // coarchmark3 brand coarch 
   const animation = useRef(new Animated.Value(0)).current;
+
+  useEffect(()=>{
+      dispatch(postAlarm({page: 1}));
+  }, []);
+
+  useEffect(()=>{
+    Alarm.filter(x => x.readFlag == true) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+  }, [Alarm])
 
   useEffect(()=>{
     const coarch = async() => {
@@ -348,7 +359,6 @@ const Navigation = ({navigation, route}) => {
             needsId: needsId
           }
       });
-      console.log('response: ', response.data);
       }catch(error){
           console.log('출산준비물 구매 error:', error);
       }
@@ -356,8 +366,6 @@ const Navigation = ({navigation, route}) => {
   }
 
   const purchaseCencel = async(needsId) => {
-    console.log('purchaseCencel');
-    console.log('needsId: ', needsId);
     const token = await AsyncStorage.getItem('token');
     try{
       const response = await axios({
@@ -371,7 +379,6 @@ const Navigation = ({navigation, route}) => {
             needsId: needsId
           }
       });
-      console.log('response: ', response.data);
       }catch(error){
           console.log('출산준비물 리스트 error:', error);
       }
@@ -392,41 +399,15 @@ const Navigation = ({navigation, route}) => {
     }
 }
 
-// useEffect(()=>{
-//   console.log('ㅎㅎㅎㅎㅎㅎㅎ');
-//   BackHandler.addEventListener('hrardwareBackPress', handlerPressBack)
-//   return () => {
-//     BackHandler.removeEventListener('hardwareBackPress', handlerPressBack)
-//   }
-// }, [modalVisible2, handlerPressBack]);
-
-// const handlerPressBack = () => {
-//   console.log('hadlerPressBack modalVisible2: ', modalVisible2);
-  
-//   if(modalVisible2.open){
-//     console.log('앙');
-//     setModalVisible2(prevState => ({...prevState, open: false}));
-//     return true;
-//   }
-//   return false;
-// }
-
 const save = async() => {
    
     if(captureURL !== undefined){
         let { status } = await MediaLibrary.requestPermissionsAsync();
         const asset = await MediaLibrary.createAssetAsync(captureURL);
-        // const moms = await MediaLibrary.getAlbumAsync('맘스노트');
-
-        // console.log('moms: ', moms);
-       
         
         if(status === 'granted'){
         }
     }
-    setTimeout(() => {
-      setCaptureURL(undefined);
-    }, 2000);
   }
 
   const arrow = (e) => { // arrow 누르면 서브페이지 display
@@ -499,7 +480,6 @@ const save = async() => {
               color={x.id == 0 ? undefined : '#FEB401'}
               onValueChange={()=>{
                 switch(true){
-                  // case x.itemName == null: setModal2(prevState => ({...prevState, open: true, buttonCount: 1, content: '브랜드를 체크해주세요'})); break;
                   case x.id == 0 && purchaseCheckBox == null : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: x.needsBrandId, needsId: x.needsId})); break;
                   case x.id == 0 : purchase(x.needsId, x.needsBrandId); break;
                   default : purchaseCencel(x.needsId);
@@ -556,11 +536,11 @@ const save = async() => {
             <StatusBar />
         </SafeAreaView>
 
-		    { info == ''|| info == undefined || purchaseCount == undefined  ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '90.5%'}]}/>
+		    { info == '' || purchaseCount == undefined  ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '90.5%'}]}/>
         :
         <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '90.5%'}]}>
 
-        <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+        <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible} filter={filter}/>
         <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modal={modal} setModal={setModal} setModal2={setModal2} modal4={modal4} setModal4={setModal4} filter={filter}/>
         <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
         <ResetModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
@@ -583,7 +563,10 @@ const save = async() => {
         <View style={styles.headerBar}>
             <TouchableOpacity style={{marginRight: 20}} onPress={capture}><Download/></TouchableOpacity>
             <TouchableOpacity style={{marginRight: 20}} onPress={()=>navigation.navigate('출산 준비물 검색')}><Search/></TouchableOpacity>
-            <TouchableOpacity style={{marginRight: 20}} onPress={()=>navigation.navigate('알림')}><Bell/></TouchableOpacity>
+            <TouchableOpacity style={{marginRight: 20}} onPress={()=>navigation.navigate('알림')}>
+              <View style={[styles.redDot, {display: AlarmFlag ? 'flex' : 'none'}]} />
+              <Bell/>
+            </TouchableOpacity>
             <TouchableOpacity style={{marginRight: 5}} onPress={()=>navigation.navigate('마이페이지')}><MyPage/></TouchableOpacity>
         </View>
       </View>

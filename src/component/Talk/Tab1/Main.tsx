@@ -199,13 +199,10 @@ const Talk1 = ({navigation, route}:any) => {
   
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.board.data; });
-  console.log('board info: ', info);
   const boardSet = useSelector(state => { return state.board.refresh; });
   const boardCountSet = useSelector(state => { return state.boardCount.refresh; });
   const infoCount = useSelector(state => { return state.boardCount.data; });
   const boardPopular = useSelector(state => { return state.boardPopular.data });
-  console.log('인기글: ', boardPopular);
-
   const [loading, setLoading] = useState(false);
 
   const [modalVisible, setModalVisible] = useState({
@@ -358,20 +355,20 @@ const Talk1 = ({navigation, route}:any) => {
         </View>
       </View>
 
-      <View style={[styles.header3, {display: info == undefined || info == '' || filter[0] == false ? 'none' : 'flex'}]}>
+      <View style={[styles.header3, {display: info == '0' || info == '' || filter[0] == false ? 'none' : 'flex'}]}>
           <Swiper horizontal={false}
           autoplay={true}
           autoplayTimeout={4.5}
           showsPagination={false}
           >
           {boardPopular.length < 1 ? '' : <TouchableOpacity style={styles.slide} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}>
-            <Text style={{color: 'orange', fontWeight: 'bold'}} numberOfLines={1} ellipsizeMode={'tail'}>[인기글] {boardPopular == '' || boardPopular.length == 1 ? '' : boardPopular[0].title}</Text>
+            <Text style={{color: 'orange', fontWeight: 'bold'}} numberOfLines={1} ellipsizeMode={'tail'}>[인기글] {boardPopular[0].title}</Text>
           </TouchableOpacity>}
-          {boardPopular.length <= 2 ? '' : <TouchableOpacity style={styles.slide} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[1]})}>
-            <Text style={{color: 'orange', fontWeight: 'bold'}} numberOfLines={1} ellipsizeMode={'tail'}>[인기글] {boardPopular == '' || boardPopular.length == 2 ? '' : boardPopular[1].title}</Text>
+          {boardPopular.length < 2 ? '' : <TouchableOpacity style={styles.slide} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[1]})}>
+            <Text style={{color: 'orange', fontWeight: 'bold'}} numberOfLines={1} ellipsizeMode={'tail'}>[인기글] {boardPopular[1].title}</Text>
           </TouchableOpacity>}
-          {boardPopular.length < 2 ? '' : <TouchableOpacity style={styles.slide} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[2]})}>
-            <Text style={{color: 'orange', fontWeight: 'bold'}} numberOfLines={1} ellipsizeMode={'tail'}>[인기글] {boardPopular == '' || boardPopular.length < 3 ?  '' : boardPopular[2].title}</Text>
+          {boardPopular.length < 3 ? '' : <TouchableOpacity style={styles.slide} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[2]})}>
+            <Text style={{color: 'orange', fontWeight: 'bold'}} numberOfLines={1} ellipsizeMode={'tail'}>[인기글] {boardPopular == '' ?  '' : boardPopular[2].title}</Text>
           </TouchableOpacity>}
         </Swiper>
       </View>

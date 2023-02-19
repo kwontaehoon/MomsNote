@@ -151,7 +151,6 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8, setModal, info2}) => {
                       },
                       data: info
                     });
-                    console.log('response: ', response.data);
                     setModalVisible8(!modalVisible8);
                     setModal(prevState => ({...prevState, open: true, content: '품목이 추가되었습니다.', buttonCount: 1}));
                 }catch(error){

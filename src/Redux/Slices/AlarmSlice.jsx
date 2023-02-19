@@ -15,7 +15,7 @@ export const postAlarm = createAsyncThunk("postAlarmSlice/async", async () => {
           url: 'https://momsnote.net/api/user/notification',
           data : {page: 1}
       });
-      return response.data.data;
+      if(response.data == ''){ return setInfo('0') }else return response.data.data;
       }catch(error){
           console.log('alarm axios error: ', error);
           return undefined;
