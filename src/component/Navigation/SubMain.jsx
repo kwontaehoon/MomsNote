@@ -82,7 +82,9 @@ function MainScreen() {
   }, []);
 
   useEffect(()=>{
-    Alarm.filter(x => x.readFlag == true) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+    if(Alarm !== undefined && Alarm !== '0'){
+      Alarm.filter(x => x.readFlag == true) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+    }
   }, [Alarm])
 
   return (
@@ -132,7 +134,7 @@ function MainScreen() {
             )}
           </Tab.Screen>
 
-          <Tab.Screen name="Dday" options={{tabBarIcon: ({focused, color}) => (focused ? <Baby2 /> : <Baby />), tabBarLabel: `D-${mainData == '' ? '' : mainData.dday}` , unmountOnBlur:true}}
+          <Tab.Screen name="Dday" options={{tabBarIcon: ({focused, color}) => (focused ? <Baby2 /> : <Baby />), tabBarLabel: `D-${mainData == '' || mainData == undefined ? '' : mainData.dday}` , unmountOnBlur:true}}
           listeners={{tabPress: (e)=>{
           }}}>
         {()=>(
@@ -144,7 +146,7 @@ function MainScreen() {
                         headerLeft: () => (
                             <View style={styles.header}>
                                 <View style={styles.headerBox}>
-                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>{`D-${mainData == '' ? '' : mainData.dday}`}</Text>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>{`D-${mainData == '' || mainData == undefined ? '' : mainData.dday}`}</Text>
                                 </View>
                             </View>
                         ),

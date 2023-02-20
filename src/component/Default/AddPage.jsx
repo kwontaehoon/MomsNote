@@ -149,6 +149,7 @@ const AddPage = ({navigation, route}) => {
             AsyncStorage.setItem('userId', String(decoded.id));
             AsyncStorage.setItem('token', response.data.token);
 
+            console.log('response: ', response);
             try{
                 const response2 = await axios({
                     method: 'get',
@@ -158,9 +159,10 @@ const AddPage = ({navigation, route}) => {
                     },
                     url: 'https://momsnote.net/api/main/data',
                 });
+                console.log('response2: ', response2);
 
                 AsyncStorage.setItem('user', JSON.stringify(response2.data.data));
-                navigation.reset({routes: [{name: "main"}]})
+                navigation.reset({routes: [{name: "main"}]});
 
                 }catch(error){
                     console.log('user axios error: ', error);

@@ -225,6 +225,7 @@ const Home = ({navigation}) => {
     const materialPopular = useSelector(state => { return state.materialPopular.data });
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     const mainData = useSelector(state => { return state.user.data; });
+    console.log('mainData: ', mainData);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
@@ -355,7 +356,8 @@ const Home = ({navigation}) => {
                     <View style={[styles.mainBox3Sub, {width: '70%'}]}>
                         <View style={styles.DdayBox}>
                             <Text style={{color: '#FE9000', fontSize: 24, fontWeight: '700', marginBottom: 3}}>
-                                D-{mainData.dday} ({mainData.week}주차 {mainData.day}일)</Text>
+                                D-{mainData.dday} ({mainData.week}주차 {mainData.day}일)
+                            </Text>
                             <Text style={{color: '#424242', fontSize: 15}}>
                                 예정일 : {moment(userInfo.dueDate).format("YYYY")}년 {moment(userInfo.dueDate).format("MM")}월 {moment(userInfo.dueDate).format("DD")}일</Text>
                         </View>
@@ -438,11 +440,11 @@ const Home = ({navigation}) => {
                     </View>
                 </View>
                 <View style={styles.main4Box2}>
-                {/* {infoPopular == '0' ? <View><Text style={{color: '#757575'}}>새로운 정보가 없습니다.</Text></View>
+                {infoPopular == '0' ? <View><Text style={{color: '#757575'}}>새로운 정보가 없습니다.</Text></View>
                 :
                 <FlatList data={infoPopular} renderItem={renderItem2} showsHorizontalScrollIndicator={false}
-                        keyExtractor={index => String(index)} horizontal={true}>
-                </FlatList>} */}
+                        keyExtractor={(item, index) => String(index)} horizontal={true}>
+                </FlatList>}
                 </View>
             </View>
             
@@ -465,7 +467,7 @@ const Home = ({navigation}) => {
                     <StatusBar />
             </SafeAreaView>
             <FocusAwareStatusBar />
-            {userInfo == '' || userInfo == undefined || mainData == '' || mainData == undefined ?
+            {userInfo == '' || userInfo == undefined || mainData == '' || mainData == undefined || mainData == null ?
             <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}/>
 
             : <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}>
