@@ -79,7 +79,7 @@ const Main = ({navigation}) => {
         navigation.navigate('맘스토크 상세내용', {item: momsTalk[0]});
       }else{
         const materialList = materialShare.filter(x => x.boardId == item.boardId);
-        // navigation.navigate('');
+        navigation.navigate('출산리스트 공유 상세내용', materialList[0]);
       }
 
   }

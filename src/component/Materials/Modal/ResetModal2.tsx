@@ -153,7 +153,7 @@ const Main = ({modalVisible6, setModalVisible6}) => {
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
                         <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, textAlign: 'center', lineHeight: 25, paddingTop: 10}}>추천상품으로 리스트를 변경하면 기존 작성내용은 초기화됩니다. 변경하시겠습니까?</Text>
+                            <Text style={{fontSize: 16, textAlign: 'center', lineHeight: 25, paddingTop: 10}}>기존 작성내용은 초기화됩니다. 변경하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
                             <TouchableOpacity style={styles.modal} onPress={confirm}>

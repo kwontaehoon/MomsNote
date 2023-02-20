@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
     },
     mainBox:{
         height: 100,
-        justifyContent: 'center',
     },
     mainBox2:{
         height: 300,
@@ -277,8 +276,15 @@ const Home = ({navigation}) => {
     const bubbleRandom = () => {
         let number = bubble.indexOf(true);
         let arr = Array.from({length: mainData.message.length}, ()=>{return false});
-        if(number == arr.length-1){ number = -1 }
-        arr[number+1] = !arr[number+1];
+        let random = Math.floor(Math.random()*4);
+        
+        while(true){
+            random = Math.floor(Math.random()*4);
+            if(random !== number){break;}
+        }
+
+        if(random == number){ arr[number + 1] }
+        arr[random] = true;
         setBubble(arr); 
     }
     
@@ -329,7 +335,7 @@ const Home = ({navigation}) => {
 
                     {mainData.message[0] == null ? '' :  mainData.message.map((x, index) => {
                         return(
-                            <View style={[styles.bubble, {top: 50, right: 50, display: bubble[index] ? 'flex' : 'none'}]}>
+                            <View style={[styles.bubble, {top: 50, right: 50, display: bubble[index] ? 'flex' : 'none'}]} key={index}>
                                 <View style={[styles.triangle, {borderBottomColor: bubble[index] ? 'white' : 'transparent'}]}></View>
                                 <Text>{x}</Text>
                             </View>
@@ -432,11 +438,11 @@ const Home = ({navigation}) => {
                     </View>
                 </View>
                 <View style={styles.main4Box2}>
-                {infoPopular == '0' ? <View><Text style={{color: '#757575'}}>새로운 정보가 없습니다.</Text></View>
+                {/* {infoPopular == '0' ? <View><Text style={{color: '#757575'}}>새로운 정보가 없습니다.</Text></View>
                 :
                 <FlatList data={infoPopular} renderItem={renderItem2} showsHorizontalScrollIndicator={false}
                         keyExtractor={index => String(index)} horizontal={true}>
-                </FlatList>}
+                </FlatList>} */}
                 </View>
             </View>
             
@@ -459,7 +465,7 @@ const Home = ({navigation}) => {
                     <StatusBar />
             </SafeAreaView>
             <FocusAwareStatusBar />
-            {userInfo == '' || userInfo == undefined || mainData == '' ?
+            {userInfo == '' || userInfo == undefined || mainData == '' || mainData == undefined ?
             <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}/>
 
             : <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}>
@@ -475,7 +481,7 @@ const Home = ({navigation}) => {
             <CoarchMark2 modal={modal3} setModal={setModal3} setModal2={setModal}/>
 
             <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
-                keyExtractor={index => String(index)}>
+                keyExtractor={(item, index) => item.id}>
             </FlatList>
             <Animated.View style={[styles.saveModalBox, {opacity: animation}]}>
                 <View style={styles.saveModal}>
