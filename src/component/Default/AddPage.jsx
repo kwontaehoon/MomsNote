@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Platform } from 'react-native'
 import Checkbox from 'expo-checkbox'
 import DateTimePicker from '@react-native-community/datetimepicker'
@@ -20,23 +20,19 @@ const styles = StyleSheet.create({
         padding: 15
     },
     main:{
-        height: 150,
+        height: 170,
     },
     textBox:{
         borderBottomWidth: 2,
         borderColor: '#EEEEEE',
         padding: 10,
         justifyContent: 'center',
-
     },
     emailcon:{
         position: 'absolute',
         right: 15,
         borderRadius: 999,
         backgroundColor: '#FEB401'
-    },
-    main2:{
-        marginBottom: 30
     },
     main3:{
         height: 120,
@@ -110,8 +106,11 @@ const AddPage = ({navigation, route}) => {
 
     const [isChecked, setChecked] = useState(Array.from({length: 4}, ()=>{return false})); // check box
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
-
-    const test = isChecked[3] ? 1 : 0;
+    const [marketingFlag, setMarketingFlag] = useState({
+        marketingFlag: 0
+    });
+    const [nickNameCheck, setNickNameCheck] = useState(null); // 닉네임 중복 체크
+    console.log('nickNameCheck: ', nickNameCheck);
 
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -121,13 +120,10 @@ const AddPage = ({navigation, route}) => {
         nickname: '',
         email: route.params[2],
         dueDate: '',
-
-
         babyName: '',
         provider: `${route.params[0]}`,
         providerId: typeof(route.params[1]) == 'number' ? `${route.params[1]}` : route.params[1],
-        marketingFlag: test == 1 ? 0 : 1,
-    })
+    });
 
     const [modal, setModal] = useState(false);
     const [modal2, setModal2] = useState(false);
@@ -143,7 +139,7 @@ const AddPage = ({navigation, route}) => {
                 headers: { 
                     'Content-Type': 'application/json'
                 },
-                data: info
+                data: {...info, ...marketingFlag}
             });
             const decoded = jwtDecode(response.data.token);
             AsyncStorage.setItem('userId', String(decoded.id));
@@ -218,17 +214,43 @@ const AddPage = ({navigation, route}) => {
             arr = Array.from({length: 4}, ()=>{return true});
             setChecked(arr);
         }
+
+        e == 3 && isChecked[3] ? setMarketingFlag(prevState => ({...prevState, marketingFlag: 0})) : setMarketingFlag(prevState => ({...prevState, marketingFlag: 1}));
     }
+    const check = async() => {
+        try{
+            const response = await axios({
+                method: 'post',
+                headers: { 
+                    'Content-Type': 'application/json'
+                  },
+                url: 'https://momsnote.net/api/nickname/check',
+                data: {nickname: info.nickname}
+            });
+            console.log('response: ', response);
+            setNickNameCheck(response.data);
+            }catch(error){
+                console.log('check error: ', error);
+                return undefined;
+            }
+        }
+
     const renderItem = ({ item }) => (
         <View style={styles.container2}>
             <View style={styles.main}>
+                <View style={{position: 'absolute', bottom: 0, height: 50, display: nickNameCheck == 1 ? 'flex' : 'none'}}>
+                    <Text style={{paddingLeft: 5, color: 'red'}}>중복된 닉네임 입니다.</Text>
+                </View>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>닉네임</Text>
                     <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.</Text>
-                    <TextInput placeholder='닉네임 입력' style={[styles.textBox, {borderColor: bottomColor[0] ? '#FEB401' : '#EEEEEE'}]} maxLength={8}
-                    value={info.nickname}
-                    onFocus={()=>change(0)}
-                    onChangeText={(e) => { setInfo((prevState) => ({ ...prevState, nickname: e})); }}>
-                    </TextInput>
+                    <View>
+                        <TextInput placeholder='닉네임 입력' style={[styles.textBox, {borderColor: nickNameCheck == 1 ? 'red' : '#FEB401'}]} maxLength={8}
+                            value={info.nickname}
+                            onFocus={()=>change(0)}
+                            onChangeText={(e) => { setInfo((prevState) => ({ ...prevState, nickname: e})); }}
+                            onBlur={()=>check()}>
+                        </TextInput>
+                    </View>
             </View>
             <View style={styles.main3}>
                 <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>출산 예정일</Text>
@@ -291,7 +313,7 @@ const AddPage = ({navigation, route}) => {
                 </View>
             </View>
             <View style={styles.footer}>
-                {(isChecked[1] && isChecked[2] && info.nickname !== '' && info.babyName !== '' && info.dueDate !== '')
+            {(isChecked[1] && isChecked[2] && info.nickname !== '' && info.babyName !== '' && info.dueDate !== '' && nickNameCheck == 0)
                 ?
                 <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#FEA100'}]} onPress={submit}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>완료</Text>
