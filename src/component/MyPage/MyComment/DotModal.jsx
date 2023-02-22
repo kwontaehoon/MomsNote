@@ -64,17 +64,19 @@ const CheckBoxModal = ({modal, setModal, commentId}) => {
     }
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
+    <Modal animationType="fade" transparent={true} visible={modal.open} statusBarTranslucent={true}
             onRequestClose={() => {
-            setModal(!modal)}}>
+            setModal(prevState=>({...prevState, open: false}))}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
                     <View style={[styles.main, {height: 62}]}>
-                    <TouchableOpacity style={[styles.mainBox, {borderColor: '#424242'}]} onPress={()=>{setModal(!modal), setModal7(!modal7)}}><Text style={{color: '#F23737', fontSize: 20}}>삭제하기</Text></TouchableOpacity>
+                    <TouchableOpacity style={[styles.mainBox, {borderColor: '#424242'}]} onPress={()=>setModal(!modal)}>
+                        <Text style={{color: '#F23737', fontSize: 20}}>삭제하기</Text>
+                    </TouchableOpacity>
                 </View>
                         <View style={{height: 10}}></View>
-                        <TouchableOpacity style={styles.footer} onPress={()=>setModal(!modal)} activeOpacity={0.7}>
+                        <TouchableOpacity style={styles.footer} onPress={()=>setModal(prevState=>({...prevState, open: false}))} activeOpacity={0.7}>
                             <Text style={{color: '#1E88E5', fontWeight: '600', fontSize: 20}}>취소</Text>
                         </TouchableOpacity>
                     </View>

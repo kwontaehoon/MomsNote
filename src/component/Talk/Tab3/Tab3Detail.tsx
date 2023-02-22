@@ -205,6 +205,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     const info = route.params;
     console.log('체험단 상세: ', info);
+    console.log(moment(info.registrationEndDate).diff(moment(), "days"));
     const exp = useSelector(state => { return state.experience.data; });
     console.log('exp: ', exp);
     const [info2, setInfo2] = useState(exp);
@@ -483,7 +484,12 @@ const Talk1Sub = ({navigation, route}) => {
        </TouchableOpacity>
    </View>
    : <View style={styles.footer}>
-   {boardLikeFlag == 0 ? 
+   {moment(info.registrationEndDate).diff(moment(), "days") < 0 ?
+    <View style={[styles.footerBox, {width: '20%'}]}>
+        <Like width={20} fill='#BDBDBD'/>  
+        <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {info2[0].recommend}</Text>
+    </View>
+   : boardLikeFlag == 0 ? 
    <TouchableOpacity style={[styles.footerBox, {width: '20%'}]} onPress={recommend}>
        <Like width={20} fill='#BDBDBD'/>  
        <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {info2[0].recommend}</Text>
@@ -501,14 +507,14 @@ const Talk1Sub = ({navigation, route}) => {
         <Text style={{fontSize: 20, fontWeight: '500'}}>신청 정보 확인</Text>
     </TouchableOpacity>
     :
-   <TouchableOpacity style={styles.footerBox2} onPress={()=>
-       {
-           async == null ? setModalVisible(!modalVisible) : setModal4(!modal4);
-           
-       }
-   }>
+    moment(info.registrationEndDate).diff(moment(), "days") < 0 ?
+    <View style={[styles.footerBox2, {backgroundColor: '#EEEEEE'}]}>
+        <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
+    </View> :
+    <TouchableOpacity style={styles.footerBox2} onPress={()=>
+       { async == null ? setModalVisible(!modalVisible) : setModal4(!modal4); }}>
        <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
-   </TouchableOpacity>
+    </TouchableOpacity>
    }
 </View>}
 

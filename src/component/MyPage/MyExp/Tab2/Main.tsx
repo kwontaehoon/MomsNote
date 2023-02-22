@@ -80,7 +80,7 @@ const Talk3 = ({navigation}: any) => {
 
 
   const renderItem = ({ item }) =>
-    item.appCount >= item.maxPeople || moment(item.applicationEndDate).diff(moment(), "days") <= 0 ?
+    moment(item.registrationEndDate).diff(moment(), "days") >= 0 ? '' :
     (
       <TouchableOpacity style={[styles.mainBox, {opacity: 0.5}]} onPress={()=>setModal(prevState=> ({...prevState, open: true}))}>
         <View style={styles.imageBox}>
@@ -92,18 +92,7 @@ const Talk3 = ({navigation}: any) => {
           <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>신청 {item.appCount}명/모집 {item.maxPeople}명</Text></View>
         </View>
       </TouchableOpacity>
-    ):(
-    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('체험단 상세페이지', item)}>
-      <View style={styles.imageBox}>
-        {item.savedName == null ? '' : <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} />}
-      </View>
-      <View style={styles.contentBox}>
-        <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>{moment(item.applicationEndDate).diff(moment(), "days")}일 남음</Text></View>
-        <View style={styles.content}><Text style={{fontWeight: '500'}}>{item.title}</Text></View>
-        <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>신청 {item.appCount}명/모집 {item.maxPeople}명</Text></View>
-      </View>
-    </TouchableOpacity>
-  ); 
+    )
 
   return info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
   : (

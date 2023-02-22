@@ -287,12 +287,14 @@ const Talk1Sub = ({navigation, route}) => {
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
     const info = [route.params];
+    console.log('info: ', info);
     const info2 = useSelector(state => { return state.shareList.data }); // 게시글 리스트
     const materialShare = useSelector(state => { return state.materialShare.data });
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
     const [info3, setInfo3] = useState(materialShare);
 
     const user = useSelector(state => { return state.user.data; });
+    console.log('user: ', user);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
@@ -326,8 +328,6 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal6, setModal6] = useState(false); // comment 신고 하기
     const [modal7, setModal7] = useState(false); // comment 삭제모달
 
-    const [userInfo, setUserInfo] = useState();
-
     const animation = useRef(new Animated.Value(0)).current;
     const flatlistRef = useRef(null);
 
@@ -343,12 +343,6 @@ const Talk1Sub = ({navigation, route}) => {
         dispatch(postMaterialShare(materialShareSet));
         dispatch(postUser());
 
-        const user = async() => {
-            const user = await AsyncStorage.getItem('user');
-            console.log('user: ', user );
-            setUserInfo(JSON.parse(user));
-        }
-
         const hits = async() => {
             const hits = await AsyncStorage.getItem('hits');
 
@@ -360,7 +354,6 @@ const Talk1Sub = ({navigation, route}) => {
             dispatch(postMaterialShare(materialShareSet));
         }, 100);
 
-        user();
         hits();
     }, [isFocused]);
 
@@ -623,11 +616,12 @@ const Talk1Sub = ({navigation, route}) => {
                         <Text style={{color: '#616161'}}>ㄴ 구매예정 금액</Text>
                     </View>
                 </View>
-                <View style={styles.compare}>
-                    <TouchableOpacity style={styles.compareButton} onPress={()=>navigation.navigate('출산리스트 비교', route.params)}>
-                        <Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>내 출산리스트와 비교하기</Text>
-                    </TouchableOpacity>
-                </View>
+                {info[0].nickname == user.nickname ? '' :
+                    <View style={styles.compare}>
+                        <TouchableOpacity style={styles.compareButton} onPress={()=>navigation.navigate('출산리스트 비교', route.params)}>
+                            <Text style={{fontSize: 16, fontWeight: '600', color: 'white'}}>내 출산리스트와 비교하기</Text>
+                        </TouchableOpacity>
+                    </View>}
 
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
@@ -652,7 +646,7 @@ const Talk1Sub = ({navigation, route}) => {
       );
 
 
-  return userInfo == undefined || materialShare == '' || info3 == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
+  return materialShare == '' || info3 == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
   : (
     <SafeAreaProvider>
         <SafeAreaView style={{ backgroundColor: 'white' }}>

@@ -365,8 +365,7 @@ const Withdraw = ({navigation, route}) => {
                 </View>
             </View>
         </Modal>
-
-        </SafeAreaView>}
+    </SafeAreaView>}
 
 </SafeAreaProvider>
     

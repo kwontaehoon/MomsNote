@@ -9,8 +9,6 @@ import { useSelector } from 'react-redux'
 import { postExperience } from '../../../Redux/Slices/ExperienceSlice'
 import { setExperienceCount, setExperienceFilter } from '../../../Redux/Slices/ExperienceSlice'
 import { postExperienceCount } from '../../../Redux/Slices/ExperienceCountSlice'
-import Modal from '../../Modal/First'
-
 
 const styles = StyleSheet.create({
   container:{
@@ -92,12 +90,6 @@ const Talk3 = ({navigation}: any) => {
         {label: '인기 순', value: '2'},
   ]);
 
-  const [modal, setModal] = useState({
-    open: false,
-    content: '이미 모집이 종료된 게시물입니다.',
-    buttonCount : 1
-  });
-
   useEffect(()=>{
     setLoading(true);
     dispatch(postExperience(experienceSet));
@@ -112,7 +104,7 @@ const Talk3 = ({navigation}: any) => {
   const renderItem = ({ item }) =>
     item.appCount >= item.maxPeople || moment(item.registrationEndDate).diff(moment(), "days") < 0 ?
     (
-      <TouchableOpacity style={[styles.mainBox, {opacity: 0.5}]} onPress={()=>setModal(prevState=> ({...prevState, open: true}))}>
+      <TouchableOpacity style={[styles.mainBox, {opacity: 0.5}]} onPress={()=>navigation.navigate('체험단 상세페이지', item)}>
         <View style={styles.imageBox}>
           { item.savedName !== null ?<Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} /> : ''}
         </View>
@@ -141,9 +133,6 @@ const Talk3 = ({navigation}: any) => {
   return info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
       : (
     <View style={styles.container}>
-
-      <Modal modal={modal} setModal={setModal}/>
-
       <View style={styles.header2}>
         <View style={[styles.header2FilterBox, {paddingBottom: 5}]}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>

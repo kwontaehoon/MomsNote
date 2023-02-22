@@ -28,19 +28,6 @@ const Withdraw = ({navigation, route}) => {
    
     console.log('route: ', route);
     const [filter, setFilter] = useState([true, false]); // filter tab
-    const [application , setApplication] = useState(); // 체험단 신청정보 있는지 유무
-
-    useEffect(()=>{
-
-        const applicationInfo = async() => {
-            const application = await AsyncStorage.getItem('applicationFlag');
-            console.log('application: ', application);
-            setApplication(application);
-        }
-        applicationInfo();
-
-    }, []);
-
     
     const filter_func = (e) => { // filter tab 변경
         let arr = [false, false];
@@ -49,23 +36,21 @@ const Withdraw = ({navigation, route}) => {
     }
     const List = ():any => {
         switch(true){
-            case filter[0] === true: return <Tab1 navigation={navigation} application={application}/>
+            case filter[0] === true: return <Tab1 navigation={navigation} />
             case filter[1] === true: return <Tab2 navigation={navigation} route={route.params}/>
         }
     }
 
   return (
     <View style={styles.container}>
-        {
-        application !== null ? <View style={styles.header}>
+        <View style={styles.header}>
             <TouchableOpacity style={[styles.headerBox, {width: '50%', borderBottomColor: filter[0] ? 'orange' : '#BDBDBD'}]} onPress={()=>filter_func(0)}>
                 <Text style={{fontWeight: 'bold', fontSize: 18, color: filter[0] ? 'orange' : '#BDBDBD'}}>계정 정보</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.headerBox, {width: '50%', borderBottomColor: filter[1] ? 'orange' : '#BDBDBD'}]} onPress={()=>filter_func(1)}>
                 <Text style={{fontWeight: 'bold', fontSize: 18, color: filter[1] ? 'orange' : '#BDBDBD'}}>회원 정보</Text>
             </TouchableOpacity>
-        </View> : ''
-        }
+        </View>
         <List navigation={navigation}/>
     </View>
   )

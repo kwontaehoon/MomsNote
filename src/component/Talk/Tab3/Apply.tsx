@@ -364,7 +364,7 @@ const Withdraw = ({navigation, route}) => {
                 </View>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>SNS 계정</Text>
-                    <Text style={{color: '#757575', marginTop: 5}}>리뷰에 사용할 계정은 계정 아이디(네이버는 블로그 주소 아이디)을 입력해주세요.</Text>
+                    <Text style={{color: 'red', marginTop: 5, fontWeight: '500'}}>리뷰에 사용할 계정은 계정 아이디(네이버는 블로그 주소 아이디)을 입력해주세요.</Text>
                     <TextInput style={styles.textBox} placeholder='네이버 블로그' value={info.blog}
                         onChangeText={(e) => setInfo((prevState) => ({
                             ...prevState, blog: e

@@ -65,9 +65,7 @@ const styles = StyleSheet.create({
 })
 
 
-const Talk1 = ({navigation, application}: any) => {
-
-    console.log('application : ', application);
+const Talk1 = ({navigation}: any) => {
 
     const DATA = [
         {
@@ -221,7 +219,7 @@ const Talk1 = ({navigation, application}: any) => {
     );
 
   return (
-    <View style={[styles.container, {height: application == null ? '100%' : '90.5%'}]}>
+    <View style={[styles.container, {height: '90.5%'}]}>
         {show && (
           <DateTimePicker
             testID="dateTimePicker"
