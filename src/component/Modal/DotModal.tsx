@@ -49,15 +49,10 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, setModal3, modal6, setModal6, modal7, setModal7, commentsId, info}) => {
 
-
     const dispatch = useDispatch();
     const [userId, setUserId] = useState();
     const boardSet = useSelector(state => { return state.board.refresh; });
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
-
-    console.log('DotModal info: ', info[0].boardId);
-    console.log('commentsId: ', commentsId);
-    console.log('info: ', info);
     
      useEffect(()=>{
         const getUserId = async() => {

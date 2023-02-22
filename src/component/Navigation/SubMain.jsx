@@ -4,7 +4,6 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { View, Button, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux'
-import { postUser } from '../../Redux/Slices/UserSlice';
 
 import Home from '../Home/Main'
 import Talk from '../Talk/Main'
@@ -88,7 +87,7 @@ function MainScreen() {
   }, [Alarm])
 
   return (
-    <Tab.Navigator initialRouteName='홈' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
+    <Tab.Navigator initialRouteName='Dday' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
       : {tabBarStyle: { height: 55, position: 'absolute', paddingBottom: 5, elevation: 0 }, headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
 
 

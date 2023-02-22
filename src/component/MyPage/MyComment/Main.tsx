@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { postMyComment } from '../../../Redux/Slices/MyCommentSlice'
 import { postMyCommentCount } from '../../../Redux/Slices/MyCommentCountSlice'
 
-import Modal from '../../Modal/DotModal'
+import Modal from './DotModal'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
@@ -59,7 +59,10 @@ const Main = () => {
   const myCommentSet = useSelector(state => { return state.myComment.refresh; });
   const myCommentCountSet = useSelector(state => { return state.myComment.refresh; });
   const user = useSelector(state => {return state.user.data});
-  const [modal, setModal] = useState(false); // dot modal
+  const [modal, setModal] = useState({
+    open: false,
+    content: ''
+  }); // dot modal
 
   useEffect(()=>{
     dispatch(postMyComment(myCommentSet));
@@ -77,8 +80,7 @@ const dayCalculate = (date) => {
 
 const dotClick = (e) => {
   console.log('e: ', e);
-  setInfo2(e);
-  info2 == undefined ? '' : setModal(!modal);
+  setModal(prevState => ({...prevState, open: true, content: e}));
 }
   
   const renderItem = ({ item }) => (
@@ -99,13 +101,11 @@ const dotClick = (e) => {
   </TouchableOpacity>
   );
 
-  
-
   return info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
   : (
     <View style={styles.container}>
 
-      <Modal modal={modal} setModal={modal} commentsId={[info2.commentsId]} info={[info2]} />
+      <Modal modal={modal} setModal={setModal} />
 
       <View style={styles.main}>
       {info == '0' ?
