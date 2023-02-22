@@ -17,6 +17,7 @@ import Modal5 from './Modal/CencelConfirm'
 import Modal6 from './Modal/Save'
 import Modal7 from './Modal/PhoneNumber'
 import Modal8 from './Modal/Complete'
+import Modal9 from './Modal/TelCheck'
 
 import { useSelector } from 'react-redux'
 import {
@@ -53,9 +54,6 @@ const styles = StyleSheet.create({
     },
     mainBox:{
         marginBottom: 30,
-    },
-    mainBox2:{
-
     },
     textBox:{
         marginTop: 10,
@@ -163,6 +161,8 @@ const Withdraw = ({navigation, route}) => {
     const [SMSNumber, setSMSNumber] = useState(null); // SMS 번호
     const [SMSInputNumber, setSMSInputNumber] = useState(''); // 입력한 SMS 번호
 
+    const [telCheck, setTelCheck] = useState(null);
+
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
 
     const [modal, setModal] = useState(false); // 핸드폰 인증 완료
@@ -173,6 +173,7 @@ const Withdraw = ({navigation, route}) => {
     const [modal6, setModal6] = useState(false); // 임시 저장
     const [modal7, setModal7] = useState(false); // 폰 넘버 갯수 11자이하
     const [modal8, setModal8] = useState(false); // 체험단 신청 완료
+    const [modal9, setModal9] = useState(false); // 핸드폰 번호 중복
     
     const [info, setInfo] = useState( // post info
         {
@@ -272,6 +273,23 @@ const Withdraw = ({navigation, route}) => {
         }
     }
 
+    const check = async() => {
+        try{
+            const response = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/api/tel/check',
+                headers: { 
+                    'Content-Type': 'application/json'
+                },
+                data: {tel: info.tel}
+            });
+            console.log('response: ', response.data);
+            setTelCheck(response.data);
+        }catch(error){
+            console.log('핸드폰 중복체크 error: ', error);
+        }
+    }
+
     const submit = async() => {
         
         const token = await AsyncStorage.getItem('token');
@@ -313,15 +331,17 @@ const Withdraw = ({navigation, route}) => {
                 </View>
                 <View style={[styles.mainBox, {marginBottom: SMSFlag.open ? 10 : 30}]}>
 
-                    { SMSFlag.flag == 1 && SMSFlag.open == false ?<View style={[styles.timerBox, {right: 70}]}>
+                    { SMSFlag.flag == 1 && SMSFlag.open == false ?
+                    <View style={[styles.timerBox, {right: 70}]}>
                          <Check fill='#4CAF50'/>
                     </View> : ''}
 
                     <Text style={{fontSize: 16, fontWeight: '500'}}>연락처</Text>
                     <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info.tel} keyboardType='number-pad' maxLength={11}
-                         onChangeText={(e) => setInfo((prevState) => ({...prevState, tel: e}))}>
+                         onChangeText={(e) => setInfo((prevState) => ({...prevState, tel: e}))}
+                         onBlur={()=>check()}>
                     </TextInput>
-                    <TouchableOpacity style={styles.certificateBox} onPress={()=>( info.tel.length < 11 ? setModal7(!modal7) : sms('재요청'), setSMSFlag(prevState => ({...prevState, flag: 0})))}>
+                    <TouchableOpacity style={styles.certificateBox} onPress={()=>( info.tel.length < 11 ? setModal7(!modal7) : telCheck == 1 ? setModal9(!modal9) : sms('재요청'), setSMSFlag(prevState => ({...prevState, flag: 0})))}>
                         {button()}
                     </TouchableOpacity>
                 </View>
@@ -394,10 +414,12 @@ const Withdraw = ({navigation, route}) => {
                 </View>
                 <View style={[styles.mainBox, {alignItems: 'center'}]}>
                     {info.memberName == '' || info.tel == '' || info.address == '' || info.addressDetails == '' ||
-        (info.blog == '' && info.youtube == '' && info.insta == '') || SMSFlag.flag == 0 || !isChecked[0] ?
-        <View style={styles.buttonBox}><Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text></View> : <TouchableOpacity style={[styles.buttonBox, {backgroundColor: '#FEA100'}]} onPress={submit}>
+                    (info.blog == '' && info.youtube == '' && info.insta == '') || SMSFlag.flag == 0 || !isChecked[0]
+                    ?
+                    <View style={styles.buttonBox}><Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text></View>
+                    : <TouchableOpacity style={[styles.buttonBox, {backgroundColor: '#FEA100'}]} onPress={submit}>
                         <Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text>
-                    </TouchableOpacity>}
+                     </TouchableOpacity>}
                 </View>
             </View>
         </View>
@@ -419,6 +441,7 @@ const Withdraw = ({navigation, route}) => {
             <Modal6 navigation={navigation} modal6={modal6} setModal6={setModal6} info={info} />
             <Modal7 modal7={modal7} setModal7={setModal7} />
             <Modal8 navigation={navigation} modal={modal8} setModal={setModal8} />
+            <Modal9 modal={modal9} setModal={setModal9} />
             
 
             <FlatList data={DATA} renderItem={renderItem}

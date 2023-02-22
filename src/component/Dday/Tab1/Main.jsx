@@ -66,7 +66,10 @@ const Talk1 = ({navigation, week}) => {
   return info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> :
     <View style={styles.container}>
 
-      {info == 0 ? <View style={{marginTop: 180, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
+      {info == 0 ? 
+      <View style={{marginTop: 180, alignItems: 'center'}}>
+        <Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text>
+      </View>
       :
          <FlatList data={info} renderItem={renderItem}
             keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}>

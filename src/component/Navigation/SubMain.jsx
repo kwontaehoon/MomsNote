@@ -4,7 +4,6 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { View, Button, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux'
-import { postUser } from '../../Redux/Slices/UserSlice';
 
 import Home from '../Home/Main'
 import Talk from '../Talk/Main'
@@ -82,11 +81,13 @@ function MainScreen() {
   }, []);
 
   useEffect(()=>{
-    Alarm.filter(x => x.readFlag == true) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+    if(Alarm !== undefined && Alarm !== '0'){
+      Alarm.filter(x => x.readFlag == true) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+    }
   }, [Alarm])
 
   return (
-    <Tab.Navigator initialRouteName='맘스 정보' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
+    <Tab.Navigator initialRouteName='Dday' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
       : {tabBarStyle: { height: 55, position: 'absolute', paddingBottom: 5, elevation: 0 }, headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
 
 
@@ -132,7 +133,7 @@ function MainScreen() {
             )}
           </Tab.Screen>
 
-          <Tab.Screen name="Dday" options={{tabBarIcon: ({focused, color}) => (focused ? <Baby2 /> : <Baby />), tabBarLabel: `D-${mainData == '' ? '' : mainData.dday}` , unmountOnBlur:true}}
+          <Tab.Screen name="Dday" options={{tabBarIcon: ({focused, color}) => (focused ? <Baby2 /> : <Baby />), tabBarLabel: `D-${mainData == '' || mainData == undefined ? '' : mainData.dday}` , unmountOnBlur:true}}
           listeners={{tabPress: (e)=>{
           }}}>
         {()=>(
@@ -144,7 +145,7 @@ function MainScreen() {
                         headerLeft: () => (
                             <View style={styles.header}>
                                 <View style={styles.headerBox}>
-                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>{`D-${mainData == '' ? '' : mainData.dday}`}</Text>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>{`D-${mainData == '' || mainData == undefined ? '' : mainData.dday}`}</Text>
                                 </View>
                             </View>
                         ),

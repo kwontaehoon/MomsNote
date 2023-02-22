@@ -124,6 +124,12 @@ const Talk1 = ({navigation}: any) => {
     const [modal, setModal] = useState(false);
 
     useEffect(()=>{
+      const arr = Array.from({length: 12}, () => { return false });
+      arr[moment().format('M')-1] = true;
+      setWeek(arr);
+    }, []);
+
+    useEffect(()=>{
       setLoading(true);
       dispatch(postEvent(eventSet));
       dispatch(postEventCount(eventSet));

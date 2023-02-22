@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
     },
     mainBox:{
         height: 100,
-        justifyContent: 'center',
     },
     mainBox2:{
         height: 300,
@@ -226,6 +225,7 @@ const Home = ({navigation}) => {
     const materialPopular = useSelector(state => { return state.materialPopular.data });
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     const mainData = useSelector(state => { return state.user.data; });
+    console.log('mainData: ', mainData);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
@@ -277,8 +277,15 @@ const Home = ({navigation}) => {
     const bubbleRandom = () => {
         let number = bubble.indexOf(true);
         let arr = Array.from({length: mainData.message.length}, ()=>{return false});
-        if(number == arr.length-1){ number = -1 }
-        arr[number+1] = !arr[number+1];
+        let random = Math.floor(Math.random()*4);
+        
+        while(true){
+            random = Math.floor(Math.random()*4);
+            if(random !== number){break;}
+        }
+
+        if(random == number){ arr[number + 1] }
+        arr[random] = true;
         setBubble(arr); 
     }
     
@@ -329,7 +336,7 @@ const Home = ({navigation}) => {
 
                     {mainData.message[0] == null ? '' :  mainData.message.map((x, index) => {
                         return(
-                            <View style={[styles.bubble, {top: 50, right: 50, display: bubble[index] ? 'flex' : 'none'}]}>
+                            <View style={[styles.bubble, {top: 50, right: 50, display: bubble[index] ? 'flex' : 'none'}]} key={index}>
                                 <View style={[styles.triangle, {borderBottomColor: bubble[index] ? 'white' : 'transparent'}]}></View>
                                 <Text>{x}</Text>
                             </View>
@@ -349,7 +356,8 @@ const Home = ({navigation}) => {
                     <View style={[styles.mainBox3Sub, {width: '70%'}]}>
                         <View style={styles.DdayBox}>
                             <Text style={{color: '#FE9000', fontSize: 24, fontWeight: '700', marginBottom: 3}}>
-                                D-{mainData.dday} ({mainData.week}주차 {mainData.day}일)</Text>
+                                D-{mainData.dday} ({mainData.week}주차 {mainData.day}일)
+                            </Text>
                             <Text style={{color: '#424242', fontSize: 15}}>
                                 예정일 : {moment(userInfo.dueDate).format("YYYY")}년 {moment(userInfo.dueDate).format("MM")}월 {moment(userInfo.dueDate).format("DD")}일</Text>
                         </View>
@@ -435,7 +443,7 @@ const Home = ({navigation}) => {
                 {infoPopular == '0' ? <View><Text style={{color: '#757575'}}>새로운 정보가 없습니다.</Text></View>
                 :
                 <FlatList data={infoPopular} renderItem={renderItem2} showsHorizontalScrollIndicator={false}
-                        keyExtractor={index => String(index)} horizontal={true}>
+                        keyExtractor={(item, index) => String(index)} horizontal={true}>
                 </FlatList>}
                 </View>
             </View>
@@ -459,7 +467,7 @@ const Home = ({navigation}) => {
                     <StatusBar />
             </SafeAreaView>
             <FocusAwareStatusBar />
-            {userInfo == '' || userInfo == undefined || mainData == '' ?
+            {userInfo == '' || userInfo == undefined || mainData == '' || mainData == undefined || mainData == null ?
             <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}/>
 
             : <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}>
@@ -475,7 +483,7 @@ const Home = ({navigation}) => {
             <CoarchMark2 modal={modal3} setModal={setModal3} setModal2={setModal}/>
 
             <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
-                keyExtractor={index => String(index)}>
+                keyExtractor={(item, index) => item.id}>
             </FlatList>
             <Animated.View style={[styles.saveModalBox, {opacity: animation}]}>
                 <View style={styles.saveModal}>
