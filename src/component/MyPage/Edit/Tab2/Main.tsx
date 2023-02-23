@@ -267,7 +267,7 @@ const Withdraw = ({navigation, route}) => {
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>이름</Text>
-                    <TextInput style={styles.textBox} placeholder='이름 입력' value={info.memberName} maxLength={8}
+                    <TextInput style={styles.textBox} placeholder='이름 입력' value={info?.memberName} maxLength={8}
                         onChangeText={(e) => setInfo((prevState) => ({
                             ...prevState, memberName: e
                         }))}></TextInput>
@@ -279,7 +279,7 @@ const Withdraw = ({navigation, route}) => {
                     </View> : ''}
 
                     <Text style={{fontSize: 16, fontWeight: '500'}}>연락처</Text>
-                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info.tel} keyboardType='number-pad' maxLength={11}
+                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info?.tel} keyboardType='number-pad' maxLength={11}
                          onChangeText={(e) => setInfo((prevState) => ({...prevState, tel: e}))}>
                     </TextInput>
                     <TouchableOpacity style={styles.certificateBox} onPress={()=>( info.tel.length < 11 ? setModal7(!modal7) : sms('재요청'), setSMSFlag(prevState => ({...prevState, flag: 0})))}>
@@ -305,14 +305,14 @@ const Withdraw = ({navigation, route}) => {
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>SNS 계정</Text>
                     <Text style={{color: '#757575', marginTop: 5}}>리뷰에 사용할 계정은 계정 아이디(네이버는 블로그 주소 아이디)을 입력해주세요.</Text>
-                    <TextInput style={styles.textBox} placeholder='네이버 블로그' value={info.blog}
+                    <TextInput style={styles.textBox} placeholder='네이버 블로그' value={info?.blog}
                         onChangeText={(e) => setInfo((prevState) => ({
                             ...prevState, blog: e
                         }))}></TextInput>
-                    <TextInput style={styles.textBox} placeholder='인스타그램' value={info.insta}
+                    <TextInput style={styles.textBox} placeholder='인스타그램' value={info?.insta}
                         onChangeText={(e) => setInfo((prevState) => ({ ...prevState, insta: e }))}>
                     </TextInput>
-                    <TextInput style={styles.textBox} placeholder='유튜브' value={info.youtube}
+                    <TextInput style={styles.textBox} placeholder='유튜브' value={info?.youtube}
                         onChangeText={(e) => setInfo((prevState) => ({ ...prevState, youtube: e }))}>
                     </TextInput>
                 </View>
@@ -320,12 +320,12 @@ const Withdraw = ({navigation, route}) => {
                     <Text style={{fontSize: 16, fontWeight: '500'}}>배송지</Text>
                     <View>
                         <TouchableOpacity style={styles.textBox} activeOpacity={1} onPress={()=>navigation.navigate('주소 찾기2')}>
-                            {info.address == '' ? <Text>주소 검색하기</Text>
-                            : <Text>{info.address}</Text>}
+                            {info?.address == '' ? <Text>주소 검색하기</Text>
+                            : <Text>{info?.address}</Text>}
                         </TouchableOpacity>
                         <View style={styles.postBox}><Icon name='right' size={15}/></View>
                     </View>
-                    <TextInput style={styles.textBox} placeholder='상세주소 입력' value={info.addressDetails} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, addressDetails: e }))}></TextInput>
+                    <TextInput style={styles.textBox} placeholder='상세주소 입력' value={info?.addressDetails} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, addressDetails: e }))}></TextInput>
                 </View>
                 <View style={styles.footer}>
                     <TouchableOpacity style={styles.buttonBox} onPress={()=>setModal(!modal)}>
@@ -342,7 +342,7 @@ const Withdraw = ({navigation, route}) => {
             <SafeAreaView style={{ backgroundColor: 'white' }}>
                     <StatusBar />
             </SafeAreaView>
-            { info == undefined ? '' : <SafeAreaView style={styles.container}>
+          <SafeAreaView style={styles.container}>
             
             <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
@@ -366,7 +366,7 @@ const Withdraw = ({navigation, route}) => {
                 </View>
             </View>
         </Modal>
-    </SafeAreaView>}
+    </SafeAreaView>
 
 </SafeAreaProvider>
     

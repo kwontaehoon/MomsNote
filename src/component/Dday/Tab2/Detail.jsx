@@ -491,9 +491,8 @@ const Talk1Sub = ({navigation, route}) => {
                 <View style={styles.mainBox2}>
                     <Text style={{lineHeight: 20}}>{item.contents}</Text>
                 </View>
+                    {item.savedName === null ? <View></View> : ImageBox()}
                 </ViewShot>
-                
-                {item.savedName === null ? <View></View> : ImageBox()}
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
                         {boardLike == 0 | boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000' onPress={likeminus}/>}

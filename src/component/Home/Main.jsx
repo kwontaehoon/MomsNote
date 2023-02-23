@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, SafeAreaView, StatusBar, Animated, Platform, Image } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, SafeAreaView, StatusBar, Animated, Platform, Image, BackHandler } from 'react-native'
 import Icon2 from 'react-native-vector-icons/Feather'
 import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
@@ -234,6 +234,8 @@ const Home = ({navigation}) => {
     const [modal3, setModal3] = useState(false); // 출산준비물 리스트 코치마크
     const [userInfo, setUserInfo] = useState();
 
+    const test2 = 0;
+
     useEffect(()=>{
         const recommendList = async() => {
             const asyncStorage = await AsyncStorage.getItem('recommendList');
@@ -263,6 +265,20 @@ const Home = ({navigation}) => {
     const save = async() => {
        
         setTest(undefined);
+    }
+
+    useEffect(()=>{
+        BackHandler.addEventListener('hardwareBackPress', handlePressBack)
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', handlePressBack)
+        }
+    }, [handlePressBack]);
+
+    const handlePressBack = () => {
+        if(modal2){
+            alert('hi');
+            return false;
+        }else return true;
     }
 
     const capture = async() => {

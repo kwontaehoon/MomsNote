@@ -87,7 +87,7 @@ function MainScreen() {
   // }, [Alarm])
 
   return (
-    <Tab.Navigator initialRouteName='출산 준비물' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
+    <Tab.Navigator initialRouteName='맘스 정보' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
       : {tabBarStyle: { height: 55, position: 'absolute', paddingBottom: 5, elevation: 0 }, headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
 
 
@@ -174,7 +174,9 @@ function MainScreen() {
         )}
       </Tab.Screen>
 
-      <Tab.Screen name="홈" options={{tabBarIcon: ({focused, color}) => (focused ? <Home3 /> : <Home2 />) , unmountOnBlur:true}}>
+      <Tab.Screen name="홈" options={{tabBarIcon: ({focused, color}) => (focused ? <Home3 /> : <Home2 />) , unmountOnBlur:true, tabPress: e => {
+        navigation.popToTo();
+      }}}>
         {()=>(
                <Stack.Navigator>
                     <Stack.Screen 
@@ -184,8 +186,7 @@ function MainScreen() {
                             title: '', headerShown: false,
                             headerStyle:{backgroundColor: '#FEECB3'},
                             
-                          })}
-                        />
+                          })}/>
                </Stack.Navigator>
                
           )}

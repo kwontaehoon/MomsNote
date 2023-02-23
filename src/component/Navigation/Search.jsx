@@ -19,7 +19,7 @@ import More from '../../../public/assets/svg/More.svg'
 
 const styles = StyleSheet.create({
   container:{
-    height: '86%',
+    height: '87%',
     marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
   },
   header:{
@@ -108,11 +108,13 @@ const Main = ({navigation}) => {
   const [materialSearch, setMaterialSearch] = useState();
   const [commentSearch, setCommentSearch] = useState();
   const [experienceSearch, setExperienceSearch] = useState();
+  const [guideSearch, setGuideSearch] = useState();
+  console.log('guideSearch: ', guideSearch);
 
   const [modal, setModal] = useState(false);
   const [modal2, setModal2] = useState(false);
 
-  useEffect(()=>{
+ useEffect(()=>{
     const boardSearch = async() => {
         try{
             const response = await axios({
@@ -121,7 +123,7 @@ const Main = ({navigation}) => {
                 headers: { 
                   'Content-Type': 'application/json'
                 },
-                data: { keyword: search}
+                data: { keyword: search }
             });
             console.log('boardSearch: ', response.data);
             setMomsSearch(response.data);
@@ -142,7 +144,7 @@ useEffect(()=>{
               headers: { 
                 'Content-Type': 'application/json'
               },
-              data: { keyword: search}
+              data: { keyword: search }
           });
           console.log('materialSearch: ', response.data);
           setMaterialSearch(response.data);
@@ -163,7 +165,7 @@ useEffect(()=>{
               headers: { 
                 'Content-Type': 'application/json'
               },
-              data: { keyword: search}
+              data: { keyword: search }
           });
           console.log('commentSearch', response.data);
           setCommentSearch(response.data);
@@ -184,7 +186,7 @@ useEffect(()=>{
               headers: { 
                 'Content-Type': 'application/json'
               },
-              data: { keyword: search}
+              data: { keyword: search }
           });
           console.log('experienceSearch: ', response.data);
           setExperienceSearch(response.data);
@@ -194,6 +196,27 @@ useEffect(()=>{
       }
   }
   commentSearch();
+}, [search]);
+
+useEffect(()=>{
+  const guideSearch = async() => {
+      try{
+          const response = await axios({
+              method: 'post',
+              url: 'https://momsnote.net/api/search/guide/list',
+              headers: { 
+                'Content-Type': 'application/json'
+              },
+              data: { keyword: search }
+          });
+          console.log('guideSearch: ', response.data);
+          setGuideSearch(response.data);
+      }catch(error){
+          console.log('guideSearch axios error', error);
+          setGuideSearch(undefined);
+      }
+  }
+  guideSearch();
 }, [search]);
 
 
@@ -292,11 +315,28 @@ const dayCalculate2 = (date) => {
        <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('체험단 상세페이지', x)}>
           <View style={styles.dateBox}>{dayCalculate2(x.applicationEndDate)}</View>
           <View style={styles.profile2}>
-            {x.savedName !== null ? '' : <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%'}} />}
+            {x.savedName == null ? '' : <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%'}} />}
           </View>
         <View>
             <Text style={{fontSize: 15, marginBottom: 3}}>{x.title}</Text>
             <Text style={{fontSize: 13}}>모집인원 {x.appCount} / {x.maxPeople}</Text>
+        </View>
+      </TouchableOpacity>
+      )
+    })
+    return arr;
+  }
+
+  const Guide = () => {
+    let arr = [];
+    guideSearch.filter((x, index) => {
+      arr.push(
+       <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('맘스가이드 상세내용', x)}>
+          <View style={styles.profile2}>
+            {x.savedName == null ? '' : <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%'}} />}
+          </View>
+        <View>
+            <Text style={{fontSize: 15, marginBottom: 3}}>{x.title}</Text>
         </View>
       </TouchableOpacity>
       )
@@ -338,6 +378,14 @@ const dayCalculate2 = (date) => {
           {experienceSearch.length !== 0 ? <Experience /> :
           <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
         </View>
+        <View style={styles.titleBox}>
+          <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('체험단 서치', experienceSearch)}><Arrow fill='black' height={20}/></TouchableOpacity>
+          <Text style={{fontWeight: '600'}}>맘스가이드 {guideSearch !== undefined ? guideSearch.length : 0}건</Text>
+        </View>
+        <View style={styles.mainBox}>
+          {guideSearch.length !== 0 ? <Guide /> :
+          <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
+        </View>
     </View>
   );
 
@@ -353,7 +401,7 @@ const dayCalculate2 = (date) => {
       <Modal modal={modal} setModal={setModal} modal2={modal2} setModal2={setModal2} />
       <Modal2 modal7={modal2} setModal7={setModal2} />
 
-            <View style={styles.header}>
+      <View style={styles.header}>
         <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
         <View style={styles.textInput}>
           <View style={styles.searchIconBox}><Search width={22}/></View>

@@ -248,7 +248,7 @@ const Navigation = ({navigation, route}) => {
   }); // 총 예산
   const ref = useRef();
 
-  const [filter, setFilter] = useState('needs');
+  const [filter, setFilter] = useState('need');
   console.log('출산준비물 filter: ', filter);
 
   const [list, setList] = useState(Array.from({ length: 9 }, () => { return true}));
@@ -364,7 +364,7 @@ const Navigation = ({navigation, route}) => {
       }catch(error){
           console.log('출산준비물 구매 error:', error);
       }
-      dispatch(postMaterial({order: 'need'}));
+      dispatch(postMaterial({order: filter}));
   }
 
   const purchaseCencel = async(needsId) => {
@@ -464,8 +464,9 @@ const save = async() => {
   }
 
   const brandModal = async(x) => {
+    console.log('x: ', x);
     const coarch = await AsyncStorage.getItem('coarchMarkMaterialModal');
-    coarch == null ? (setModal6(true), setModal7(true)) : setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDataId: x.needsDataId}));
+    coarch == null ? (setModal6(true), setModal7(true)) : setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDataId: x.needsDataId, needsName: x.needsName}));
   }
 
   const List2 = (title) => {  

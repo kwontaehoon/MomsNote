@@ -61,10 +61,10 @@ const styles = StyleSheet.create({
         marginLeft: 7,
     },
     main:{
-        padding: 10
+        padding: 10,
     },
     mainBox:{
-        padding: 20
+        padding: 20,
     },
     mainBox2:{
         padding: 20,
@@ -409,7 +409,7 @@ const Talk1Sub = ({navigation, route}) => {
           });
       }
 
-    const ImageBox = () => {
+      const ImageBox = () => {
         const arr:any[] = [];
         const a = (info[0].savedName.split('|')).filter(x => {
             if(x.charAt(x.length-1) === '4'){ arr.push(x); }else return x;
@@ -417,8 +417,48 @@ const Talk1Sub = ({navigation, route}) => {
         
         const infoFiltering = [...arr, ...a];
         console.log('infoFiltering: ', infoFiltering);
-       
+        switch(true){
+    
+            case info[0].savedName.split('|').length == 1: return(
+                <TouchableOpacity style={styles.mainBox2ImageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)} activeOpacity={1}>
+                    <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${infoFiltering[0]}`}} style={styles.image}/>
+                </TouchableOpacity>
+            )
+            case info[0].savedName.split('|').length < 4: return(
+                <View style={styles.mainBox2ImageBox2}>
+                    {infoFiltering.map(x=>{
+                        if(x.charAt(x.length-1) === '4'){
+                            return (
+                                <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)} activeOpacity={1}>
+                                    <View style={styles.videoImage}><Icon name='play' size={17} style={{color: 'white'}}/></View>
+                                    <Video source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image2} resizeMode='cover'/>
+                                </TouchableOpacity>
+                            )
+                        }else return (
+                            <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)} activeOpacity={1}>
+                                    <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image2}/>
+                            </TouchableOpacity>
+                        )
+                    })}
+                </View>
+            )
+            default: return(
+                <View style={styles.mainBox2ImageBox2}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리')} activeOpacity={1}>
+                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image2}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)} activeOpacity={1}>
+                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[1]}`}} style={styles.image2}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)} activeOpacity={1}>
+                        <Image source={{uri: `https://reactnative.dev/img/tiny_logo.png`}} style={styles.image2}/>
+                        <View style={{position: 'absolute', top: '40%', left: '40%'}}><Text style={{color: 'white', fontSize: 20, fontWeight: '600'}}>+{info[0].savedName.split('|').length-3}</Text></View>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
     }
+
 
     const onPressFunction = () => {
         flatlistRef.current?.scrollToEnd();
@@ -445,7 +485,6 @@ const Talk1Sub = ({navigation, route}) => {
       console.log('source: ', source);
     const renderItem = ({ item }) => ( 
         
-        <View>
             <View style={styles.main}>
 
                 <ViewShot ref={ref} options={{ fileName: "MomsNote", format: "png", quality: 1 }} style={{backgroundColor: 'white'}}>
@@ -454,12 +493,13 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
                 <View style={styles.mainBox2}>
                     <Text style={{lineHeight: 20}}>
-                        <RenderHtml contentWidth={width} tagsStyles={tagsStyles} source={{html: `<div><p>가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하</p></div>`}} />
+                        {/* <RenderHtml contentWidth={width} tagsStyles={tagsStyles} source={{html: `${info3[0].contents}`}} /> */}
                     </Text>
                 </View>
-                </ViewShot>
+                
                 
                 {item.savedName === null ? <View></View> : ImageBox()}
+                </ViewShot>
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
                         {boardLike == 0 || boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000' onPress={likeminus}/>}
@@ -479,7 +519,6 @@ const Talk1Sub = ({navigation, route}) => {
                     </View> : <Comment info={comment} setCommentsId={setCommentsId} setInsert={setInsert} modal={modal} setModal={setModal} commentData={commentData}/>}
                 </View>
             </View>
-        </View>
       );
 
 

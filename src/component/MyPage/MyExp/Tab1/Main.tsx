@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ActivityIndicator } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import DropDownPicker from 'react-native-dropdown-picker'
-import axios from 'axios'
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
-import { postExperience } from '../../../../Redux/Slices/ExperienceSlice'
-import { setExperienceCount, setExperienceFilter } from '../../../../Redux/Slices/ExperienceSlice'
-import { postExperienceCount } from '../../../../Redux/Slices/ExperienceCountSlice'
 import Modal from '../../../Modal/First'
 import { postMyExp } from '../../../../Redux/Slices/MyExpSlice'
 
@@ -68,6 +62,7 @@ const Talk3 = ({navigation}: any) => {
   const dispatch = useDispatch();
   const info = useSelector(state => {return state.myExp.data});
   console.log('신청한 체험단 info: ', info);
+  console.log(info.savedName);
 
   const [modal, setModal] = useState({
     open: false,
@@ -83,7 +78,7 @@ const Talk3 = ({navigation}: any) => {
     moment(item.registrationEndDate).diff(moment(), "days") < 0 ? '' :
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('체험단 상세페이지', item)}>
       <View style={styles.imageBox}>
-        {item.savedName == null ? '' : <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item[0].savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} />}
+        {item.savedName== null ? '' : <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} />}
       </View>
       <View style={styles.contentBox}>
         <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>{moment(item.registrationEndDate).diff(moment(), "days")}일 남음</Text></View>

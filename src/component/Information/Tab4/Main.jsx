@@ -4,55 +4,13 @@ import axios from 'axios'
 
 import Q from '../../../../public/assets/svg/Q.svg'
 import A from '../../../../public/assets/svg/A.svg'
+import { useSelector, useDispatch } from 'react-redux'
+import { postQna } from '../../../Redux/Slices/QnaSlice'
 
 const styles = StyleSheet.create({
     container:{
         height: '91%',
         backgroundColor: 'white',
-    },
-    container2:{
-
-    },
-    header:{
-        height: '15%',
-    },
-    headerBox:{
-        justifyContent: 'center',
-    },
-    headerFilterBox:{
-        height: 40,
-        borderWidth: 1,
-        borderColor: '#EEEEEE',
-        margin: 5,
-        borderRadius: 20,
-        paddingTop: 8,
-        paddingLeft: 16,
-        paddingRight: 16,
-        paddingBottom: 8,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white',
-    },
-    main:{
-        height: '85%',
-    },
-    mainBox:{
-
-    },
-    titleBox:{
-        justifyContent: 'center',
-        backgroundColor: '#FAFAFA',
-        paddingTop: 10,
-        paddingBottom: 10,
-        paddingLeft: 15
-    },
-    contentBox:{
-        flexDirection: 'row',
-        paddingTop: 25,
-        paddingBottom: 25,
-        borderBottomWidth: 1,
-        padding: 15,
-        borderColor: '#F5F5F5',
     },
   })
 
@@ -66,131 +24,34 @@ const Talk1 = ({navigation}) => {
         },
     ];
 
-  const DATA2 = [
-    {
-        id: '0',
-        title: '전체'
-    },
-    {
-        id: '1',
-        title: '임신상담'
-    },
-    {
-        id: '2',
-        title: '출산상담'
-    },
-  ];
-
-    const [filter, setFilter] = useState([true, false, false]); // 서브 카테고리
-
-    const [info, setInfo] = useState([]);
-    const [info2, setInfo2] = useState([]);
-
-    const [infoDisplay, setInfoDisplay] = useState([]);
-    const [info2Display, setInfo2Display] = useState([]);
+    const dispatch = useDispatch();
+    const qna = useSelector(state => { return state.qna.data; });
+    console.log('qna: ', qna);
+    const [info, setInfo] = useState();
+    console.log('info: ', info);
+    const [filter, setFilter] = useState(); // 서브 카테고리
+    console.log('filter: ', filter);
 
     useEffect(()=>{
-        const Pregnant = async() => {
-          const response = await axios({
-            method: 'post',
-            url: 'https://momsnote.net/api/qna/list',
-            data : {
-              category: "임신상담",
-          }
-        });
-        setInfo(response.data);
-        setInfoDisplay(Array.from({length: response.data.length}, () => {return false}));
-        }
-        Pregnant();
-      }, []);
-
-    useEffect(()=>{
-        const Pregnant2 = async() => {
-          const response = await axios({
-            method: 'post',
-            url: 'https://momsnote.net/api/qna/list',
-            data : {
-              category: "출산상담",
-          }
-        });
-        setInfo2(response.data);
-        setInfo2Display(Array.from({length: response.data.length}, () => {return false}));
-        }
-        Pregnant2();
+        dispatch(postQna({category: '전체'}));
     }, []);
 
-    const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
-        let arr = Array.from({length: 3}, () => {return false});
-        arr[e] = !arr[e];
-        setFilter(arr);
-    }
-
-    const answer = (category, index) => {
-        let arr = [];
-        if(category === '임신상담'){
-            arr = [...infoDisplay];
-            arr[index] = !arr[index];
-            setInfoDisplay(arr);
-        }else{
-            arr = [...info2Display];
-            arr[index] = !arr[index];
-            setInfo2Display(arr);
-        }
-    }
-
-    const List = () => { // 임신상담 필터링
-        const pregnantComfirm = [];
-        info.filter((x, index) => {
-            if(x.category === '임신상담'){
-                pregnantComfirm.push(
-                    <>
-                    <TouchableOpacity style={styles.contentBox} onPress={()=>answer(x.category, index)}>
-                        <View style={{marginRight: 10}}>{infoDisplay[index] ? <Q fill={'#424242'}/> : <Q fill={'#BDBDBD'} />}</View>
-                        <Text>{x.qnaQ}</Text>
-                    </TouchableOpacity>
-                    <View style={[styles.contentBox, {backgroundColor: '#F5F5F5', display: infoDisplay[index] ? 'flex' : 'none'}]}>
-                        <View style={{marginRight: 10}}><A /></View>
-                        <Text style={{width: '92%', lineHeight: 20}}>{x.qnaA}</Text>
-                    </View>
-                    </>
-                )
+    useEffect(()=>{
+        const newArray = qna.reduce(function(acc, current) {
+            if (acc.findIndex(({ category }) => category === current.category) === -1) {
+              acc.push(current);
             }
-        })
-        return pregnantComfirm;
-    }
+            return acc;
+          }, []);
+          setInfo(newArray);
+          const arr = Array.from({length: info?.length}, () => { return false; });
+          arr[0] = true;
+          setFilter(arr);
+    }, [qna]);
 
-    const List2 = () => { // 출산상담 필터링
-        const pregnantComfirm = [];
-        info2.filter((x, index) => {
-            if(x.category === '출산상담'){
-                pregnantComfirm.push(
-                    <>
-                    <TouchableOpacity style={styles.contentBox} onPress={()=>answer(x.category, index)}>
-                        <View style={{marginRight: 10}}>{info2Display[index] ? <Q fill={'#424242'} /> : <Q fill={'#BDBDBD'} />}</View>
-                        <Text>{x.qnaQ}</Text>
-                    </TouchableOpacity>
-                    <View style={[styles.contentBox, {backgroundColor: '#F5F5F5', display: info2Display[index] ? 'flex' : 'none'}]}>
-                        <View style={{marginRight: 10}}><A /></View>
-                        <Text style={{width: '92%', lineHeight: 20}}>{x.qnaA}</Text>
-                    </View>
-                    </>
-                )
-            }
-        })
-        return pregnantComfirm;
-    }
 
     const renderItem = ({ item }) => (
-        <View style={styles.mainBox}>
-            <View style={{display: filter[2] ? 'none' : 'flex'}}>
-                <View style={styles.titleBox}><Text style={{fontSize: 16,  fontWeight: '700'}}>임신상담({info.length})</Text></View>
-                <List />
-            </View>
-            <View style={{display: filter[1] ? 'none' : 'flex'}}>
-                <View style={styles.titleBox}><Text style={{fontSize: 16,  fontWeight: '700'}}>출산상담({info2.length})</Text></View>
-                <List2 />
-            </View>
-        </View>
+        <View></View>
     );
 
     const renderItem2 = ({ item }) => (
@@ -201,10 +62,10 @@ const Talk1 = ({navigation}) => {
         </View>
     );
 
-    return info !== undefined && info2 !== undefined ? (
+    return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <FlatList data={DATA2} renderItem={renderItem2}
+                <FlatList data={info} renderItem={renderItem2}
                     keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
                 </FlatList>
             </View>
@@ -214,7 +75,7 @@ const Talk1 = ({navigation}) => {
                 </FlatList>
             </View>
         </View>
-    ) : <View></View>
-    }
+    )
+ }
 
 export default Talk1

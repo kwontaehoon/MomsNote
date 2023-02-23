@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Image } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { postGuideCount } from '../../../Redux/Slices/GuideCountSlice'
 import { postGuide, setGuideRefresh, setGuideCount } from '../../../Redux/Slices/GuideSlice'
@@ -53,16 +53,23 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   mainBox:{
-    borderBottomWidth: 1,
-    borderColor: '#EEEEEE',
-    height: 70,
-    paddingTop: 15,
-    paddingLeft: 10,
-    paddingBottom: 15,
-    paddingRight: 10,
+    height: 80,
     flexDirection: 'row',
+    backgroundColor: 'white',
+    marginBottom: 20,
+    shadowColor: "#000",
+    elevation: 3,
+  },
+  mainBox2:{
+    width: 80,
+    marginRight: 10,
+    justifyContent: 'center',
     alignItems: 'center',
   },
+  mainBox3:{
+    width: '77%',
+    justifyContent: 'center',
+  }
 })
 
 
@@ -89,6 +96,7 @@ const Talk1 = ({navigation}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.guide.data });
+  console.log('맘스가이드 info: ', info);
   const guideSet = useSelector(state => { return state.guide.refresh });
   const infoCount = useSelector(state => { return state.guideCount.data });
   const guideCountSet = useSelector(state => { return state.guideCount.refresh });
@@ -124,7 +132,8 @@ const Talk1 = ({navigation}) => {
 
   const renderItem2 = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스가이드 상세내용', item)} activeOpacity={1}>
-        <Text style={{fontSize: 15}} numberOfLines={1} >{item.title} </Text>
+       {item.savedName == null ? '' : <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={styles.mainBox2} resizeMode='cover' />}
+        <View style={styles.mainBox3}><Text style={{fontSize: 15}} numberOfLines={1} >{item.title} </Text></View>
     </TouchableOpacity>
   ); 
 
