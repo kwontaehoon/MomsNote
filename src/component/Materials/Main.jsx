@@ -238,6 +238,7 @@ const Navigation = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.material.data; });
+  console.log('출산준비물 info: ', info);
   const Alarm = useSelector(state => { return state.alarm.data; });
   const [AlarmFlag, setAlarmFlag] = useState(false);
   const [purchaseCount, setPurchaseCount] = useState(null); // 전체 구매 갯수
@@ -248,6 +249,7 @@ const Navigation = ({navigation, route}) => {
   const ref = useRef();
 
   const [filter, setFilter] = useState('needs');
+  console.log('출산준비물 filter: ', filter);
 
   const [list, setList] = useState(Array.from({ length: 9 }, () => { return true}));
 
@@ -362,7 +364,7 @@ const Navigation = ({navigation, route}) => {
       }catch(error){
           console.log('출산준비물 구매 error:', error);
       }
-      dispatch(postMaterial({order: filter}));
+      dispatch(postMaterial({order: 'need'}));
   }
 
   const purchaseCencel = async(needsId) => {
@@ -379,10 +381,10 @@ const Navigation = ({navigation, route}) => {
             needsId: needsId
           }
       });
+      dispatch(postMaterial({order: filter}));
       }catch(error){
           console.log('출산준비물 리스트 error:', error);
       }
-      dispatch(postMaterial({order: filter}));
   }
   
   const SVGSelect = (e) => {

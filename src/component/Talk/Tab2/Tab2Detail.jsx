@@ -289,9 +289,12 @@ const Talk1Sub = ({navigation, route}) => {
     const info = [route.params];
     console.log('info: ', info);
     const info2 = useSelector(state => { return state.shareList.data }); // 게시글 리스트
+    console.log('출산리스트 공유 info2: ', info2);
     const materialShare = useSelector(state => { return state.materialShare.data });
+    console.log('materialShare: ', materialShare);
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
-    const [info3, setInfo3] = useState(materialShare);
+    const [info3, setInfo3] = useState(useSelector(state => { return state.materialShare.data }));
+    console.log('info3: ', info3);
 
     const user = useSelector(state => { return state.user.data; });
     console.log('user: ', user);
@@ -314,7 +317,7 @@ const Talk1Sub = ({navigation, route}) => {
         count: 1,
         page: 1,
         subcategory: '전체'
-    });
+    }); 
     const [commentData, setCommentData] = useState({
         boardId: info[0].boardId,
         count: 1,
@@ -361,7 +364,7 @@ const Talk1Sub = ({navigation, route}) => {
         if(materialShare !== '' && materialShare !== '0'){
             setInfo3(materialShare.filter(x => x.boardId == info[0].boardId));
         }
-    }, [materialShare]);
+    }, [materialShare, isFocused]);
 
     useEffect(()=>{
         let sum = 0;
@@ -411,7 +414,7 @@ const Talk1Sub = ({navigation, route}) => {
             }catch(error){
               console.log('출산 리스트 댓글 작성 error: ', error);
             }
-        dispatch(postBoard(boardData));
+        dispatch(postMaterialShare(materialShareSet));
         dispatch(postComment(commentData));
         onPressFunction();
     }
@@ -670,7 +673,7 @@ const Talk1Sub = ({navigation, route}) => {
                 <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
                     <View style={styles.headerBar}>
                         <TouchableOpacity onPress={socialShare}><Share2 style={{marginRight: 12}}/></TouchableOpacity>
-                        <More onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}/>
+                        <More onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined, '출산리스트'])}}/>
                     </View>
             </View>
 
@@ -694,7 +697,7 @@ const Talk1Sub = ({navigation, route}) => {
                     setInsert((prevState) => ({...prevState,
                         boardId: info[0].boardId,
                         contents: e,
-                        ref: comment.length+1,
+                        ref: comment == 0 ? 1 : comment.length+1,
                         level: 0}))} placeholderTextColor={'#BDBDBD'}></TextInput>
             </View>
             </KeyboardAvoidingView>

@@ -336,7 +336,7 @@ const Home = ({navigation}) => {
 
                     {mainData.message[0] == null ? '' :  mainData.message.map((x, index) => {
                         return(
-                            <View style={[styles.bubble, {top: 50, right: 50, display: bubble[index] ? 'flex' : 'none'}]} key={index}>
+                            <View style={[styles.bubble, {top: 50, right: 50, display: mainData.message[0] == null ? 'none' : bubble[index] ? 'flex' : 'none'}]} key={index}>
                                 <View style={[styles.triangle, {borderBottomColor: bubble[index] ? 'white' : 'transparent'}]}></View>
                                 <Text>{x}</Text>
                             </View>

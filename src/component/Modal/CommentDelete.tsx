@@ -46,8 +46,6 @@ const CheckBoxModal = ({modal7, setModal7, info, commentsId}) => {
 
     const dispatch = useDispatch();
 
-    console.log('modal7 info: ', info);
-
     const CommentDelete = async() => {
         const token = await AsyncStorage.getItem('token');
         try{

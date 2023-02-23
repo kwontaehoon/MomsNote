@@ -100,11 +100,25 @@ const Register = ({navigation, route}) => {
             contents: '',
         }
     );
+    console.log('data: ', data);
 
     useEffect(()=>{
         const load = async() => {
             const asyncStorage = await AsyncStorage.getItem('materialList');
-            route.params == undefined ? AsyncStorage.removeItem('materialTalk') : setData(JSON.parse(asyncStorage));
+            console.log('출산리스트 asyncStorage: ', asyncStorage);
+            switch(typeof(route.params)){
+                case 'string': setData(JSON.parse(asyncStorage)); break;
+                case 'object': {
+                        setData(prevState => ({...prevState, title: route.params[0].title, contents: route.params[0].contents,
+                            imageFile: [],
+                            video: []
+                            // imageFile: route.params[0].savedName.split('|').filter(x => x.charAt(x.length-1) == 'g'),
+                            // video: route.params[0].savedName.split('|').filter(x => x.charAt(x.length-1) == 4)
+                            })
+                        )
+                    }; break;
+                default: AsyncStorage.removeItem('materialList');
+        }
         }
         load();
     }, [])

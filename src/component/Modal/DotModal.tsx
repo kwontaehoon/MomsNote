@@ -53,6 +53,8 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
     const [userId, setUserId] = useState();
     const boardSet = useSelector(state => { return state.board.refresh; });
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
+
+    console.log('수정하기 info: ', info);
     
      useEffect(()=>{
         const getUserId = async() => {
@@ -90,18 +92,26 @@ const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, 
         switch(true){
             case commentsId[0] !== undefined && String(commentsId[0]) === userId: return(
                 <View style={[styles.main, {height: 62}]}>
-                    <TouchableOpacity style={[styles.mainBox, {borderColor: '#424242'}]} onPress={()=>{setModal(!modal), setModal7(!modal7)}}><Text style={{color: '#F23737', fontSize: 20}}>삭제하기</Text></TouchableOpacity>
+                    <TouchableOpacity style={[styles.mainBox, {borderColor: '#424242'}]} onPress={()=>{setModal(!modal), setModal7(!modal7)}}>
+                        <Text style={{color: '#F23737', fontSize: 20}}>삭제하기</Text>
+                    </TouchableOpacity>
                 </View>
             );
             case commentsId[0] !== undefined && commentsId[0] !== userId: return(
                 <View style={[styles.main, {height: 62}]}>
-                    <TouchableOpacity style={[styles.mainBox, {borderColor: '#424242'}]} onPress={()=>{setModal(!modal), setModal6(!modal6)}}><Text style={{color: '#F23737', fontSize: 20}}>신고하기</Text></TouchableOpacity>
+                    <TouchableOpacity style={[styles.mainBox, {borderColor: '#424242'}]} onPress={()=>{setModal(!modal), setModal6(!modal6)}}>
+                        <Text style={{color: '#F23737', fontSize: 20}}>신고하기</Text>
+                    </TouchableOpacity>
                 </View>
             );
             case info[0].userId == userId: return(
                 <View style={styles.main}>
-                    <TouchableOpacity style={styles.mainBox} onPress={()=>{setModal(!modal), navigation.navigate('글쓰기', info)}}><Text style={{color: '#1E88E5', fontSize: 20}}>게시물 수정</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.mainBox} onPress={()=>{setModal(!modal), BoardDelete(), navigation.reset({routes: [{name: "맘스 톡"}]})}}><Text style={{color: '#F23737', fontSize: 20}}>삭제하기</Text></TouchableOpacity>
+                    <TouchableOpacity style={styles.mainBox} onPress={()=>{setModal(!modal), commentsId[2] == '맘스토크' ?  navigation.navigate('글쓰기', info) : navigation.navigate('출산리스트 공유 등록', info)}}>
+                        <Text style={{color: '#1E88E5', fontSize: 20}}>게시물 수정</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.mainBox} onPress={()=>{setModal(!modal), BoardDelete(), navigation.reset({routes: [{name: "맘스 톡"}]})}}>
+                        <Text style={{color: '#F23737', fontSize: 20}}>삭제하기</Text>
+                    </TouchableOpacity>
                 </View>
             )
             

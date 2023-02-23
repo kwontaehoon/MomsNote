@@ -129,6 +129,7 @@ const Talk1 = ({navigation}) => {
   const isFocused = useIsFocused();
   const materialShareSet = useSelector(state => { return state.materialShare.refresh });
   const info = useSelector(state => { return state.materialShare.data});
+  console.log('출산리스트 공유 메인 info: ', info);
   const infoCount = useSelector(state => { return state.materialShareCount.data});
 
   const ListPopular = useSelector(state => { return state.ListPopular.data });
@@ -185,7 +186,7 @@ const filtering = (e) => {
               <Like fill='#9E9E9E' width={13} height={17}/>
               <Text style={{color: '#9E9E9E', fontSize: 13}}> {item.recommend}  </Text>
               <Chat fill='#9E9E9E' width={13} height={17}/>
-              <Text style={{color: '#9E9E9E', fontSize: 13}}> {item.recommend} </Text>
+              <Text style={{color: '#9E9E9E', fontSize: 13}}> {item.commentsCount} </Text>
         </View>
     </TouchableOpacity>
   ); 

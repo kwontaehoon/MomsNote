@@ -70,7 +70,7 @@ function MainScreen() {
   const Stack = createStackNavigator();
 
   const dispatch = useDispatch();
-  const Alarm = useSelector(state => { return state.alarm.data; });
+  // const Alarm = useSelector(state => { return state.alarm.data; });
 
   const mainData = useSelector(state => { return state.user.data; });
 
@@ -80,14 +80,14 @@ function MainScreen() {
     dispatch(postAlarm({page: 1}));
   }, []);
 
-  useEffect(()=>{
-    if(Alarm !== undefined && Alarm !== '0'){
-      Alarm.filter(x => x.readFlag == true) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
-    }
-  }, [Alarm])
+  // useEffect(()=>{
+  //   if(Alarm !== undefined && Alarm !== '0'){
+  //     Alarm.filter(x => x.readFlag == true) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+  //   }
+  // }, [Alarm])
 
   return (
-    <Tab.Navigator initialRouteName='Dday' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
+    <Tab.Navigator initialRouteName='출산 준비물' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
       : {tabBarStyle: { height: 55, position: 'absolute', paddingBottom: 5, elevation: 0 }, headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
 
 

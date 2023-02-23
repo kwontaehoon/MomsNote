@@ -94,7 +94,7 @@ const Main = ({navigation}) => {
         const token = await AsyncStorage.getItem('token');
         const response = await axios({
             method: 'post',
-            url: 'https://momsnote.net/api/inquiry/list',
+            url: 'https://momsnote.net/api/user/expire',
             headers: { 
             'Authorization': `bearer ${token}`, 
             'Content-Type': 'application/json'

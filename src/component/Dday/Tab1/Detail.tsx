@@ -114,8 +114,8 @@ const styles = StyleSheet.create({
         height: 50,
         flexDirection: 'row',
         borderColor: '#F5F5F5',
-        borderWidth: 1,
-        paddingLeft: 20,
+        borderBottomWidth: 1,
+        paddingLeft: 15,
         alignItems: 'center'
     },
     likeBox:{
@@ -197,12 +197,13 @@ const Talk1Sub = ({navigation, route}) => {
         setPageHeight(false);
     });
 
+    const isFocused = useIsFocused();
     const dispatch = useDispatch();
     const info = [route.params.item];
     console.log('오늘의 편지 info: ', info);
     const info2 = useSelector(state => { return state.ddayToday.data });
     console.log('오늘의 편지 info2:' , info2);
-    const [info3, setInfo3] = useState(info2);
+    const [info3, setInfo3] = useState(useSelector(state => { return state.ddayToday.data }));
     console.log('오늘의 편지 info3: ', info3);
 
     const ref = useRef();
@@ -278,7 +279,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     useEffect(()=>{
         setInfo3(info2.filter(x => x.boardId == info[0].boardId));
-    }, [info2]);
+    }, [info2, isFocused]);
     
 
     useEffect(()=>{ // 게시물 추천 Flag
@@ -319,7 +320,7 @@ const Talk1Sub = ({navigation, route}) => {
             }catch(error){
               console.log('댓글 작성 error: ', error);
             }
-        dispatch(postBoard(boardData));
+        dispatch(postDdayToday({subcategory: `${info[0].weeks}주`}));
         dispatch(postComment(commentData));
         onPressFunction();
     }
@@ -525,7 +526,7 @@ const Talk1Sub = ({navigation, route}) => {
                     setInsert((prevState) => ({...prevState,
                         boardId: info[0].boardId,
                         contents: e,
-                        ref: comment.length+1,
+                        ref: comment == 0 ? 1 : comment.length+1,
                         level: 0}))} placeholderTextColor={'#BDBDBD'}></TextInput>
             </KeyboardAvoidingView>
             </SafeAreaView>

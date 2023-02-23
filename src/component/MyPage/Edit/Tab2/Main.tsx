@@ -165,6 +165,7 @@ const Withdraw = ({navigation, route}) => {
     useEffect(()=>{
         const experienceId = async() => {
             const async = await AsyncStorage.getItem('applicationFlag');
+            console.log('async: ', async);
             dispatch(postBoardAppFlag({experienceId: Number(async)}));
             setInfo(appFlag.data);
         }

@@ -314,7 +314,7 @@ const Talk1Sub = ({navigation, route}) => {
             }catch(error){
               console.log('댓글 작성 error: ', error);
             }
-        dispatch(postBoard(boardData));
+        dispatch(postDdayTerm({subcategory: `${info[0].weeks}주`}));
         dispatch(postComment(commentData));
         onPressFunction();
     }
@@ -560,7 +560,7 @@ const Talk1Sub = ({navigation, route}) => {
                     setInsert((prevState) => ({...prevState,
                         boardId: info[0].boardId,
                         contents: e,
-                        ref: comment.length+1,
+                        ref: comment == 0 ? 1 : comment.length+1,
                         level: 0}))} placeholderTextColor={'#BDBDBD'}></TextInput>
             </KeyboardAvoidingView>
             </SafeAreaView>

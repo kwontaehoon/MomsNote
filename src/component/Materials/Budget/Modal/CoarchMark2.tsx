@@ -52,14 +52,15 @@ const styles = StyleSheet.create({
     },
     imageBox:{
         position: 'absolute',
-        left: -100,
-        top: -80,
+        right: 10,
+        top: 50,
     },
     imageBox2:{
         position: 'absolute',
         left: 50,
-        top: 50,
+        top: 60,
         flexDirection: 'row',
+        height: 100
     },
     imageBox3:{
         position: 'absolute',
@@ -356,11 +357,14 @@ const close = async() => {
               <View style={{backgroundColor: 'white', flexDirection: 'row', padding: 10, borderRadius: 10, borderStyle: 'dashed', borderWidth: 2, borderColor: '#FEA100'}}>
 
                 <View style={styles.imageBox}>
+                <View style={styles.Top}><Image source={require('../../../../../public/assets/coachmark/arrow12.png')} style={styles.image} resizeMode='contain'/></View>
                     <View style={styles.Bottom}>
-                        <Text style={{color: 'white', fontSize: 15, textAlign: 'center'}}>꾸~욱 클릭하면</Text>
-                        <Text style={{color: 'white', fontSize: 15, textAlign: 'center'}}>금액 수정이 가능해요!</Text>
+                        <Text style={{color: 'white', fontSize: 15, textAlign: 'center'}}>꾸~욱 클릭하면 다른 맘의</Text>
+                        <Text style={{color: 'white', fontSize: 15, textAlign: 'center'}}>품목을 내 리스트에</Text>
+                        <Text style={{color: 'white', fontSize: 15, textAlign: 'center'}}>담을 수 있어요!</Text>
+                        <Text style={{color: 'white', fontSize: 15, textAlign: 'center'}}>브랜드나 금액 수정도</Text>
+                        <Text style={{color: 'white', fontSize: 15, textAlign: 'center'}}>가능하답니다!</Text>
                     </View>
-                    <View style={styles.Top}><Image source={require('../../../../../public/assets/coachmark/arrow7.png')} style={styles.image} resizeMode='contain'/></View>
                 </View>
 
                 <Text style={{fontWeight: '600'}}>39,900</Text>

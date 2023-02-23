@@ -201,8 +201,9 @@ const Talk1Sub = ({navigation, route}) => {
 
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
-    const boardInfo = useSelector(state => { return state.board.data});
-    const [info, setInfo] = useState(useSelector(state => { return state.board.data} ));
+    const boardInfo = useSelector(state => { return state.board.data });
+    const [info, setInfo] = useState(useSelector(state => { return state.board.data } ));
+    console.log('info: ', info);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
@@ -513,7 +514,7 @@ const Talk1Sub = ({navigation, route}) => {
                     <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
                     <View style={styles.headerBar}>
                         <TouchableOpacity onPress={socialShare}><Share2 style={{marginRight: 12}}/></TouchableOpacity>
-                        <TouchableOpacity onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined])}}><More /></TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{setModal(!modal), setCommentsId([undefined, undefined, '맘스토크'])}}><More /></TouchableOpacity>
                     </View>
             </View>
 
