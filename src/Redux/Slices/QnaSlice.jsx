@@ -2,13 +2,14 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const postQna = createAsyncThunk("postQnaSlice/async", async () => {
+export const postQna = createAsyncThunk("postQnaSlice/async", async (data) => {
   console.log('postQna 업데이트됨');
+  console.log('postQna data: ', data);
     try{
       const response = await axios({
           method: 'post',
           url: 'https://momsnote.net/api/qna/list',
-          data : { category: '전체' }
+          data : data
       });
       if(response.data == ''){ return setInfo('0') }else return response.data;
       }catch(error){
@@ -20,12 +21,19 @@ export const postQna = createAsyncThunk("postQnaSlice/async", async () => {
 const initialState = {
     loading: false,
     data: [],
+    refresh: {
+      category: '전체'
+    }
 }
 
 export const qnaSlice = createSlice({
     name: 'qnaSlice',
     initialState,
     reducers: {
+      setQnaRefresh:(state, action)=>{
+        console.log('action: ', action.refresh.category);
+        state.refresh.category = action.payload.category;
+      }
     },
     extraReducers: (bulider) => {
       bulider.addCase(postQna.fulfilled, (state, action) => {

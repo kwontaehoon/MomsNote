@@ -7,6 +7,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import Back from '../../../../public/assets/svg/Back.svg'
 import Share2 from '../../../../public/assets/svg/Share.svg'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import RenderHtml from 'react-native-render-html';
 
 const styles = StyleSheet.create({
     container:{
@@ -174,7 +175,7 @@ const Talk1Sub = ({navigation, route}) => {
                     <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 3, lineHeight: 25}}>{item.title}</Text>
                 </View>
                 <View style={styles.mainBox2}>
-                    <Text style={{lineHeight: 20}}>{item.contents}</Text>
+                    <RenderHtml source={{html: `${item.contents}`}} />
                 </View>
                 {item.savedName === null ? '' : ImageBox()}
             </View>

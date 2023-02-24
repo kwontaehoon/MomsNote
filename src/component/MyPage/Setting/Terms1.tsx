@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native'
 import axios from 'axios'
 
 import ArrowRight from '../../../../public/assets/svg/Arrow-Right.svg'
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
 })
-const Terms1 = () => {
+const Terms1 = ({navigation}) => {
 
   const DATA = [
     {
@@ -47,7 +47,7 @@ const Terms1 = () => {
         url: 'https://momsnote.net/policy',
         data : {
           sort: "이용약관",
-          page: 0
+          page: 1
       }
     });
     setInfo(response.data.data);
@@ -67,10 +67,10 @@ const Terms1 = () => {
           <Text style={{fontSize: 16, lineHeight: 22}}>{info}</Text>
         </View>
         <View style={styles.footer}>
-          <View style={styles.buttonBox}>
+          <TouchableOpacity style={styles.buttonBox} onPress={()=>navigation.navigate('이전 이용약관')}>
             <Text>이전 이용약관 보기</Text>
             <ArrowRight fill='black' width={16} height={16}/>
-          </View>
+          </TouchableOpacity>
         </View>
     </View>
     )

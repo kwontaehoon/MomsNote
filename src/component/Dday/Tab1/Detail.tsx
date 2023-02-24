@@ -200,18 +200,14 @@ const Talk1Sub = ({navigation, route}) => {
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
     const info = [route.params.item];
-    console.log('오늘의 편지 info: ', info);
     const info2 = useSelector(state => { return state.ddayToday.data });
-    console.log('오늘의 편지 info2:' , info2);
     const [info3, setInfo3] = useState(useSelector(state => { return state.ddayToday.data }));
-    console.log('오늘의 편지 info3: ', info3);
 
     const ref = useRef();
     const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
-    console.log('comment: ', comment);
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
     const [insert, setInsert] = useState(
         {
@@ -416,7 +412,6 @@ const Talk1Sub = ({navigation, route}) => {
         });
         
         const infoFiltering = [...arr, ...a];
-        console.log('infoFiltering: ', infoFiltering);
         switch(true){
     
             case info[0].savedName.split('|').length == 1: return(
@@ -469,20 +464,6 @@ const Talk1Sub = ({navigation, route}) => {
             message: `[맘스노트] ${info3[0].title}`,
         })
     }
-    const tagsStyles = {
-        div: {
-          width: '100%',
-          height: '100%',
-          whiteSpace: 'pre'
-        }
-      };
-    const { width } = {width: 200, height: 200};
-    console.log('fdasfdasfdas', useWindowDimensions());
-    const source = {
-        html: `
-        <div><p>가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하</p></div>`
-      };
-      console.log('source: ', source);
     const renderItem = ({ item }) => ( 
         
             <View style={styles.main}>
@@ -492,9 +473,7 @@ const Talk1Sub = ({navigation, route}) => {
                     <Text style={{fontSize: 20, fontWeight: '400', lineHeight: 20}}>{item.title}</Text>
                 </View>
                 <View style={styles.mainBox2}>
-                    <Text style={{lineHeight: 20}}>
-                        {/* <RenderHtml contentWidth={width} tagsStyles={tagsStyles} source={{html: `${info3[0].contents}`}} /> */}
-                    </Text>
+                    <RenderHtml source={{html: `${info3[0].contents}`}} />
                 </View>
                 
                 

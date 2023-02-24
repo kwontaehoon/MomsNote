@@ -36,7 +36,7 @@ const Information = ({navigation, route}) => {
         route.params == '행사 정보' ? setFilter(arr) : '';
     }, [isFocused]);
 
-  const [filter, setFilter] = useState([true, false, false, false]);
+  const [filter, setFilter] = useState([false, false, false, true]);
 
   const filter_func = (e) => {
     let arr = Array.from({length: 4}, () => {return false})

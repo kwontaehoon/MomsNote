@@ -10,23 +10,16 @@ import Modal7 from '../../Modal/CommentDelete'
 import moment from 'moment'
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
-import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
 import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
 import { postHits } from '../../../Redux/Slices/HitsSlice'
 
-import Comment from './Comment'
-import axios from 'axios'
-
 import Icon from 'react-native-vector-icons/FontAwesome'
-import Chat from '../../../../public/assets/svg/Chat.svg'
-import Like from '../../../../public/assets/svg/Like.svg'
-import Like2 from '../../../../public/assets/svg/Heart-1.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
 import Share2 from '../../../../public/assets/svg/Share.svg'
-import Close from '../../../../public/assets/svg/Close.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { postEvent } from '../../../Redux/Slices/EventSlice'
+import RenderHtml from 'react-native-render-html';
 
 const styles = StyleSheet.create({
     container:{
@@ -322,7 +315,7 @@ const Talk1Sub = ({navigation, route}) => {
                     <Text>일정: {moment(item.eventStartDate).format('YY.MM.DD')} ~ {moment(item.eventEndDate).format('YY.MM.DD')}</Text>
                 </View>
                 <View style={styles.mainBox2}>
-                    <Text style={{lineHeight: 20}}>{item.contents}</Text>
+                    <RenderHtml source={{html: `${item.contents}`}} />
                 </View>
                 {item.savedName === null ? <View></View> : ImageBox()}
             </View>

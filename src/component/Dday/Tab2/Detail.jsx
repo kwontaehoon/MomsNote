@@ -36,6 +36,7 @@ import Download from '../../../../public/assets/svg/Download.svg'
 import { postHits } from '../../../Redux/Slices/HitsSlice'
 import { postDdayToday } from '../../../Redux/Slices/DdayTodaySlice'
 import { postDdayTerm } from '../../../Redux/Slices/DdayTermSlice'
+import RenderHtml from 'react-native-render-html';
 
 const styles = StyleSheet.create({
     container:{
@@ -196,17 +197,13 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = [route.params.item];
-    console.log('오늘의 편지 info: ', info);
     const info2 = useSelector(state => { return state.ddayTerm.data }); 
-    console.log('오늘의 편지 info2:' , info2);
     const [info3, setInfo3] = useState(info2);
-    console.log('오늘의 편지 info3: ', info3);
     const ref = useRef();
     const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
-    console.log('comment: ', comment);
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
     const [insert, setInsert] = useState(
         {
@@ -489,7 +486,7 @@ const Talk1Sub = ({navigation, route}) => {
                     <Text style={{fontSize: 20, fontWeight: '400', lineHeight: 20}}>{item.title}</Text>
                 </View>
                 <View style={styles.mainBox2}>
-                    <Text style={{lineHeight: 20}}>{item.contents}</Text>
+                    <RenderHtml source={{html: `${info[0].contents}`}} />
                 </View>
                     {item.savedName === null ? <View></View> : ImageBox()}
                 </ViewShot>

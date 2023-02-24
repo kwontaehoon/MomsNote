@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Modal, BackHandler } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 
@@ -88,7 +88,7 @@ const Main = ({navigation, modal, setModal}) => {
     }
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
+    <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true} hardwareAccelerated
         onRequestClose={() => {
     setModal(!modal)}}>
     <View style={styles.modalContainer}>

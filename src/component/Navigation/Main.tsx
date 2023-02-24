@@ -16,6 +16,8 @@ import Edit from '../MyPage/Edit/Main'
 import Withdraw from '../MyPage/Withdraw/Main'
 import Block from '../MyPage/Setting/Block'
 import Term1 from '../MyPage/Setting/Terms1'
+import preTerm1 from '../MyPage/Setting/PreTerms1'
+import preTerm2 from '../MyPage/Setting/PreTerms2'
 import Term2 from '../MyPage/Setting/Terms2'
 import Term3 from '../Talk/Tab3/Terms1'
 import InquiryDetail from '../MyPage/Inquiry/InquiryDetail'
@@ -329,12 +331,51 @@ const Navigation = () => {
                             height: 110
                         },
                     })}/>
+                <Stack.Screen name="이전 이용약관" component={preTerm1} options={({ navigation, route }) => ({
+                        headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>이전 이용약관</Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                            <View></View>
+                        },
+                        headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                            height: 110
+                        },
+                    })}/>
                 <Stack.Screen name="개인정보처리방침" component={Term2} options={({ navigation, route }) => ({
                         headerLeft: () => (
                             <View style={styles.header}>
                                 <View style={styles.headerBox}>
                                     <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
                                     <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>개인정보처리방침</Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                            <View></View>
+                        },
+                        headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                            height: 110
+                        },
+                    })}/>
+
+                <Stack.Screen name="이전 개인정보처리방침" component={preTerm2} options={({ navigation, route }) => ({
+                        headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>이전 개인정보처리방침</Text>
                                 </View>
                             </View>
                         ),

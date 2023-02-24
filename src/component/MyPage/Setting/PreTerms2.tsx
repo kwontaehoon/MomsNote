@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
 import axios from 'axios'
 
 import ArrowRight from '../../../../public/assets/svg/Arrow-Right.svg'
@@ -24,14 +24,14 @@ const styles = StyleSheet.create({
     },
     buttonBox:{
       borderWidth: 1,
-      width: 200,
+      width: 170,
       height: 50,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
     },
 })
-const Terms1 = ({navigation}) => {
+const Terms1 = () => {
 
   const DATA = [
     {
@@ -46,8 +46,8 @@ const Terms1 = ({navigation}) => {
         method: 'post',
         url: 'https://momsnote.net/policy',
         data : {
-          sort: "개인정보처리방침",
-          page: 1
+          sort: "이용약관",
+          page: 0
       }
     });
     setInfo(response.data.data);
@@ -58,19 +58,13 @@ const Terms1 = ({navigation}) => {
   const [info, setInfo] = useState();
 
   const renderItem = () => {
-    return (
+    return(
       <View>
         <View style={styles.header}>
-          <Text style={{fontSize: 24, fontWeight: '700'}}>맘스노트 개인정보처리방침</Text>
+          <Text style={{fontSize: 24, fontWeight: '700'}}>맘스노트 이전 개인정보처리방침</Text>
         </View>
         <View style={styles.main}>
           <Text style={{fontSize: 16, lineHeight: 22}}>{info}</Text>
-        </View>
-        <View style={styles.footer}>
-          <TouchableOpacity style={styles.buttonBox} onPress={()=>navigation.navigate('이전 개인정보처리방침')}>
-            <Text>이전 개인정보처리방침 보기</Text>
-            <ArrowRight fill='black' width={16} height={16}/>
-          </TouchableOpacity>
         </View>
     </View>
     )

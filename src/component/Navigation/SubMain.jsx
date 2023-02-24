@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack'
-import { View, Button, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native';
+import { View, Button, Text, StyleSheet, Platform, BackHandler } from 'react-native';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -87,7 +87,7 @@ function MainScreen() {
   // }, [Alarm])
 
   return (
-    <Tab.Navigator initialRouteName='맘스 정보' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
+    <Tab.Navigator initialRouteName='홈' backBehavior='initialRoute' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
       : {tabBarStyle: { height: 55, position: 'absolute', paddingBottom: 5, elevation: 0 }, headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
 
 

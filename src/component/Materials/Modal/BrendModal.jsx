@@ -12,6 +12,8 @@ import Close from '../../../../public/assets/svg/Close.svg'
 import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
 import { useDispatch } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useSelector } from 'react-redux'
+import { postHashTag } from '../../../Redux/Slices/HashTagSlice'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -104,6 +106,7 @@ const styles = StyleSheet.create({
     footerBox4:{
         height: '10%',
         marginTop: 15,
+        flexDirection: 'row',
     },
 })
 
@@ -122,7 +125,10 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
         itemBrand: '',
     });
 
+    const hashTag = useSelector(state => { return state.hashTag.data; });
+
     useEffect(()=>{
+        dispatch(postHashTag({needsId: modalVisible2.needsId}));
         const commentInfo = async() => {
             const token = await AsyncStorage.getItem('token');
             try{
@@ -276,7 +282,17 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
                             selectBrand.itemName == '' || selectBrand.itemBrand == '' ? (setModalVisible2(prevState => ({...prevState, open: false})), setModal(!modal))
                             : (submit(), setSelectBrand(prevState => ({...prevState, itemName: '', itemBrand: ''})), setModalVisible2(prevState => ({...prevState, open: false})), setModal2(prevState => ({...prevState, open: true, content: '리스트에 적용되었습니다.', buttonCount: 1})))
                         }}><Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>적용</Text></TouchableOpacity>
-                        <View style={styles.footerBox4}><Text>#해시태그</Text></View>
+
+                        {hashTag == '0' ? <View style={styles.footerBox4}><Text>#해시태그</Text></View>
+                        : <View style={styles.footerBox4}>
+                            {
+                                hashTag.map((x, index)=>{
+                                    return(
+                                        <Text style={{paddingLeft: 5}} key={index} onPress={()=>setSelectBrand(prevState=>({...prevState, itemBrand: x.hashtag.split('').filter(x => x !== '#').join('')}))}>{x.hashtag}</Text>
+                                    )
+                                })
+                            }
+                        </View>}
                     </View>
                 </View>
             </View>

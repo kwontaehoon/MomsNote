@@ -228,13 +228,12 @@ const Home = ({navigation}) => {
     console.log('mainData: ', mainData);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
-    const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
+    const [modal, setModal] = useState(true); // 모달 원하는 출산준비물 리스트
+    console.log('home modal: ', modal);
     const animation = useRef(new Animated.Value(0)).current;
     const [modal2, setModal2] = useState(false); // 코치마크
     const [modal3, setModal3] = useState(false); // 출산준비물 리스트 코치마크
     const [userInfo, setUserInfo] = useState();
-
-    const test2 = 0;
 
     useEffect(()=>{
         const recommendList = async() => {
@@ -265,20 +264,6 @@ const Home = ({navigation}) => {
     const save = async() => {
        
         setTest(undefined);
-    }
-
-    useEffect(()=>{
-        BackHandler.addEventListener('hardwareBackPress', handlePressBack)
-        return () => {
-            BackHandler.removeEventListener('hardwareBackPress', handlePressBack)
-        }
-    }, [handlePressBack]);
-
-    const handlePressBack = () => {
-        if(modal2){
-            alert('hi');
-            return false;
-        }else return true;
     }
 
     const capture = async() => {
@@ -334,6 +319,28 @@ const Home = ({navigation}) => {
         }));
 
         navigation.navigate('행사정보 상세페이지', item)
+    }
+
+    useEffect(()=>{
+        console.log('qwer');
+        
+            BackHandler.removeEventListener('hardwareBackPress', () => {
+                if(modal){
+                    console.log('앙');
+                }
+            })
+        
+        BackHandler.addEventListener('hardwareBackPress', handlePressBack)
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', handlePressBack)
+        }
+    }, [handlePressBack, modal]);
+    
+    const handlePressBack = () => {
+        alert('hiiiiiiiiiiiii');
+    
+        console.log('asdf');
+        return true;
     }
 
     const FocusAwareStatusBar = () => {

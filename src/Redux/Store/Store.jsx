@@ -42,6 +42,7 @@ import ListPopularReducer from '../Slices/ListPopularSlice'
 import AlarmReducer from '../Slices/AlarmSlice'
 import UserReducer from '../Slices/UserSlice'
 import QnaReducer from '../Slices/QnaSlice'
+import HashTagReducer from '../Slices/HashTagSlice'
 
 
 
@@ -89,6 +90,7 @@ export const store = configureStore({
     ListPopular: ListPopularReducer,
     alarm: AlarmReducer,
     user: UserReducer,
-    qna: QnaReducer
+    qna: QnaReducer,
+    hashTag: HashTagReducer
   },
 })
