@@ -43,6 +43,8 @@ import AlarmReducer from '../Slices/AlarmSlice'
 import UserReducer from '../Slices/UserSlice'
 import QnaReducer from '../Slices/QnaSlice'
 import HashTagReducer from '../Slices/HashTagSlice'
+import NeedsCountingReducer from '../Slices/NeedsCountingSlice'
+import NeedsCountingSelfReducer from '../Slices/NeedsCountingSelfSlice'
 
 
 
@@ -91,6 +93,8 @@ export const store = configureStore({
     alarm: AlarmReducer,
     user: UserReducer,
     qna: QnaReducer,
-    hashTag: HashTagReducer
+    hashTag: HashTagReducer,
+    needsCounting: NeedsCountingReducer,
+    needsCountingSelf: NeedsCountingSelfReducer
   },
 })

@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Modal, BackHandler } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { postNeedsCounting } from '../../../Redux/Slices/NeedsCountingSlice'
+import { postNeedsCountingSelf } from '../../../Redux/Slices/NeedsCountingSelfSlice'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -36,10 +40,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#FE7000'
     },
-
-
+    counting:{
+        position: 'absolute',
+        right: 15,
+    }
 })
 const Main = ({navigation, modal, setModal}) => {
+
+    const dispatch = useDispatch();
+    const reccount = useSelector(state => { return state.needsCounting.data; });
+    const selfcount = useSelector(state => { return state.needsCountingSelf.data; });
+
+    useEffect(()=>{
+        dispatch(postNeedsCounting({type: '추천'}));
+        dispatch(postNeedsCountingSelf({type: '직접'}))
+    }, []);
 
     const rec = async() => {
         const token = await AsyncStorage.getItem('token');
@@ -55,7 +70,6 @@ const Main = ({navigation, modal, setModal}) => {
                     order: 'need'
                   }
                 });
-                console.log('실제맘 추천 리스트 response: ', response.data);
             }catch(error){
               console.log('실제맘 추천 리스트 error: ', error);
             }
@@ -78,7 +92,6 @@ const Main = ({navigation, modal, setModal}) => {
                     order: 'need'
                 }
                 });
-                console.log('직접 작성 response: ', response.data);
             }catch(error){
             console.log('직접 작성 error: ', error);
             }
@@ -98,12 +111,14 @@ const Main = ({navigation, modal, setModal}) => {
                     <Text style={{fontSize: 15, textAlign: 'center', lineHeight: 20}}>출산 준비물 리스트를 생성합니다. 실제 맘들이 추천한 리스트로 보시겠어요?</Text>
                </View>
                <TouchableOpacity style={styles.modalBox2} onPress={rec}>
+                    <View style={styles.counting}><Text>{reccount.data}</Text></View>
                     <Text style={{fontSize: 15, fontWeight: '500', color: 'white'}}>네, 추천 리스트로 보여주세요.</Text>
                </TouchableOpacity>
                <View style={styles.modalBox}>
                     <Text style={{fontSize: 15, lineHeight: 20}}>많은 임산부들이 추천한 품목을 필수, 권장, 선택 항목으로 나눠서 알기 쉽게 보여줘요!</Text>
                </View>
                <TouchableOpacity style={styles.modalBox2} onPress={self}>
+                    <View style={styles.counting}><Text>{selfcount.data}</Text></View>
                     <Text style={{fontSize: 15, fontWeight: '500', color: 'white'}}>아니요, 직접 작성할게요.</Text>
                </TouchableOpacity>
                <View style={styles.modalBox}>

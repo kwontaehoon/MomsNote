@@ -225,11 +225,9 @@ const Home = ({navigation}) => {
     const materialPopular = useSelector(state => { return state.materialPopular.data });
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     const mainData = useSelector(state => { return state.user.data; });
-    console.log('mainData: ', mainData);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
-    const [modal, setModal] = useState(true); // 모달 원하는 출산준비물 리스트
-    console.log('home modal: ', modal);
+    const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
     const [modal2, setModal2] = useState(false); // 코치마크
     const [modal3, setModal3] = useState(false); // 출산준비물 리스트 코치마크
@@ -276,12 +274,13 @@ const Home = ({navigation}) => {
     }
 
     const bubbleRandom = () => {
+
         let number = bubble.indexOf(true);
         let arr = Array.from({length: mainData.message.length}, ()=>{return false});
-        let random = Math.floor(Math.random()*4);
+        let random = Math.floor(Math.random()*mainData.message.length);
         
         while(true){
-            random = Math.floor(Math.random()*4);
+            random = Math.floor(Math.random()*mainData.message.length);
             if(random !== number){break;}
         }
 
@@ -326,7 +325,6 @@ const Home = ({navigation}) => {
         
             BackHandler.removeEventListener('hardwareBackPress', () => {
                 if(modal){
-                    console.log('앙');
                 }
             })
         
@@ -337,9 +335,7 @@ const Home = ({navigation}) => {
     }, [handlePressBack, modal]);
     
     const handlePressBack = () => {
-        alert('hiiiiiiiiiiiii');
     
-        console.log('asdf');
         return true;
     }
 
@@ -476,7 +472,7 @@ const Home = ({navigation}) => {
     );
     
     const renderItem2 = ({ item, index }) => (
-        <TouchableOpacity style={styles.albumBox} onPress={()=>eventNavi(item)}>
+        <TouchableOpacity style={styles.albumBox} onPress={()=>eventNavi(item)} activeOpacity={1}>
             <Image style={styles.albumPhoto} source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName}`}}/>
             <View style={styles.albumTitle}>
                 <Text numberOfLines={1}>{item.title}</Text>
