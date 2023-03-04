@@ -48,8 +48,8 @@ const styles = StyleSheet.create({
     },
     redDot:{
       position: 'absolute',
-      top: 10,
-      right: 10,
+      top: 7,
+      right: 7,
       backgroundColor: 'red',
       width: 7,
       height: 7,
@@ -70,8 +70,7 @@ function MainScreen() {
   const Stack = createStackNavigator();
 
   const dispatch = useDispatch();
-  // const Alarm = useSelector(state => { return state.alarm.data; });
-
+  const Alarm = useSelector(state => { return state.alarm.data; });
   const mainData = useSelector(state => { return state.user.data; });
 
   const [AlarmFlag, setAlarmFlag] = useState(false);
@@ -80,11 +79,9 @@ function MainScreen() {
     dispatch(postAlarm({page: 1}));
   }, []);
 
-  // useEffect(()=>{
-  //   if(Alarm !== undefined && Alarm !== '0'){
-  //     Alarm.filter(x => x.readFlag == true) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
-  //   }
-  // }, [Alarm])
+  useEffect(()=>{
+    Alarm.filter(x => x.readFlag == false) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+  }, [Alarm])
 
   return (
     <Tab.Navigator initialRouteName='홈' backBehavior='initialRoute' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}

@@ -112,8 +112,9 @@ const Talk1 = ({navigation}: any) => {
   
     const dispatch = useDispatch();
     const eventSet = useSelector(state => { return state.event.refresh });
+    console.log('eventSet: ', eventSet);
     const info = useSelector(state => { return state.event.data; });
-    console.log('행사정보 info: ', info);
+    console.log('info: ', info);
     const [year, setYear] = useState(moment().format('YYYY'));
     const [week, setWeek] = useState([true, false, false, false, false, false,
     false, false, false, false, false, false]);
@@ -163,11 +164,23 @@ const Talk1 = ({navigation}: any) => {
     }
 
     const yearCount = (e) => {
+      let y = Number(year);
 
       e == 'plus' ? 
-       year < Number(moment().format('YYYY')) + 3 ? (setYear(Number(year) + 1)) : ''
+       year < Number(moment().format('YYYY')) + 3 ? (y+=1, setYear(Number(year) + 1)) : ''
        :
-       year >  Number(moment().format('YYYY')) - 3 ? (setYear(Number(year) - 1)) : ''
+       year >  Number(moment().format('YYYY')) - 3 ? (y-=1, setYear(Number(year) - 1)) : ''
+       let m = week.findIndex(x => x == true);
+       
+       if(m-9 < 0){
+        m = '0' + (m+1);
+      } else m += 1;
+
+       dispatch(setEventRefresh({
+        page: 1,
+        count: 1,
+        date: `${y}-${m}`
+       }));
     }
 
   const renderItem = ({ item }) => (

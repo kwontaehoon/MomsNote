@@ -1,9 +1,11 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
+import moment from 'moment';
 
 export const postEvent = createAsyncThunk("postEventSlice/async", async (data) => {
   console.log('postEvent 업데이트됨');
   console.log('data: ', data);
+  
     try{
       const response = await axios({
           method: 'post',
@@ -16,13 +18,16 @@ export const postEvent = createAsyncThunk("postEventSlice/async", async (data) =
       }
 });
 
+let arr = moment().format('M')-1;
+if(arr-9 < 0){ arr = '0' + (arr+1); } else arr += 1;
+
 const initialState = {
     loading: false,
     data: [],
     refresh: {
         page: 1,
         count: 1,
-        date: '2022-12',
+        date: `${new Date().getFullYear()}-${arr}`,
     }
 }
 

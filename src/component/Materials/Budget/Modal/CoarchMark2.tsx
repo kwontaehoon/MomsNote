@@ -360,10 +360,8 @@ const close = async() => {
                 <View style={styles.Top}><Image source={require('../../../../../public/assets/coachmark/arrow12.png')} style={styles.image} resizeMode='contain'/></View>
                     <View style={styles.Bottom}>
                         <Text style={{color: 'white', fontSize: 15, textAlign: 'center'}}>꾸~욱 클릭하면 다른 맘의</Text>
-                        <Text style={{color: 'white', fontSize: 15, textAlign: 'center'}}>품목을 내 리스트에</Text>
+                        <Text style={{color: 'white', fontSize: 15, textAlign: 'center'}}>브랜드 품목을 내 리스트에</Text>
                         <Text style={{color: 'white', fontSize: 15, textAlign: 'center'}}>담을 수 있어요!</Text>
-                        <Text style={{color: 'white', fontSize: 15, textAlign: 'center'}}>브랜드나 금액 수정도</Text>
-                        <Text style={{color: 'white', fontSize: 15, textAlign: 'center'}}>가능하답니다!</Text>
                     </View>
                 </View>
 

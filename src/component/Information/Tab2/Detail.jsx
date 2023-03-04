@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, Keyboard, Share, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, Keyboard, Share, ActivityIndicator, Dimensions } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Modal from '../../Modal/DotModal'
 import Modal2 from '../../Modal/Block'
@@ -7,7 +7,6 @@ import Modal3 from '../..//Modal/Declare'
 import Modal4 from '../..//Modal/DelareConfirm'
 import Modal6 from '../../Modal/Declare2'
 import Modal7 from '../../Modal/CommentDelete'
-import moment from 'moment'
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
@@ -19,7 +18,7 @@ import Back from '../../../../public/assets/svg/Back.svg'
 import Share2 from '../../../../public/assets/svg/Share.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { postEvent } from '../../../Redux/Slices/EventSlice'
-import RenderHtml from 'react-native-render-html';
+import RenderHtml from 'react-native-render-html'
 
 const styles = StyleSheet.create({
     container:{
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
         marginLeft: 7,
     },
     main:{
-
+        height: Dimensions.get('window').height - 60,
     },
     mainBox:{
         padding: 20,
@@ -308,18 +307,12 @@ const Talk1Sub = ({navigation, route}) => {
     }
 
     const renderItem = ({ item }) => (
-        <View>
             <View style={styles.main}>
-                <View style={styles.mainBox}>
-                    <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 4}}>{item.title}</Text>
-                    <Text>일정: {moment(item.eventStartDate).format('YY.MM.DD')} ~ {moment(item.eventEndDate).format('YY.MM.DD')}</Text>
-                </View>
                 <View style={styles.mainBox2}>
                     <RenderHtml source={{html: `${item.contents}`}} />
                 </View>
                 {item.savedName === null ? <View></View> : ImageBox()}
             </View>
-        </View>
       );
 
 

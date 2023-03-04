@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
         marginLeft: 7,
     },
     main:{
+
     },
     mainBox:{
         padding: 20,
@@ -101,6 +102,7 @@ const styles = StyleSheet.create({
 const Talk1Sub = ({navigation, route}) => {
 
     const info = [route.params];
+    console.log('info: ', info);
 
     const ImageBox = () => {
         const arr = [];

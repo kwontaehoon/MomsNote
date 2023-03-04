@@ -58,8 +58,8 @@ const styles = StyleSheet.create({
   },
   redDot:{
     position: 'absolute',
-    top: 0,
-    right: 0,
+    top: 17,
+    right: 17,
     backgroundColor: 'red',
     width: 7,
     height: 7,
@@ -306,7 +306,7 @@ const Navigation = ({navigation, route}) => {
   }, []);
 
   useEffect(()=>{
-    Alarm.filter(x => x.readFlag == true) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+    Alarm.filter(x => x.readFlag == false) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
   }, [Alarm])
 
   useEffect(()=>{
@@ -564,9 +564,9 @@ const save = async() => {
         <View style={styles.header}>
         <Text style={{fontSize: 17, fontWeight: '600'}}>출산준비물</Text>
         <View style={styles.headerBar}>
-            <TouchableOpacity style={{marginRight: 20}} onPress={capture}><Download/></TouchableOpacity>
-            <TouchableOpacity style={{marginRight: 20}} onPress={()=>navigation.navigate('출산 준비물 검색')}><Search/></TouchableOpacity>
-            <TouchableOpacity style={{marginRight: 20}} onPress={()=>navigation.navigate('알림')}>
+            <TouchableOpacity style={{padding: 20}} onPress={capture}><Download/></TouchableOpacity>
+            <TouchableOpacity onPress={()=>navigation.navigate('출산 준비물 검색')}><Search/></TouchableOpacity>
+            <TouchableOpacity style={{padding: 20}} onPress={()=>navigation.navigate('알림')}>
               <View style={[styles.redDot, {display: AlarmFlag ? 'flex' : 'none'}]} />
               <Bell/>
             </TouchableOpacity>

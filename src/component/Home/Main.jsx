@@ -22,6 +22,7 @@ import { postInfoPopularSlice } from '../../Redux/Slices/InfoPopularSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { postUser } from '../../Redux/Slices/UserSlice'
 import { postEvent, setEventRefresh } from '../../Redux/Slices/EventSlice'
+import { postAlarm } from '../../Redux/Slices/AlarmSlice'
 
 
 const styles = StyleSheet.create({
@@ -42,6 +43,16 @@ const styles = StyleSheet.create({
           alignItems: 'center',
           flexDirection: 'row',
     },
+    redDot:{
+        position: 'absolute',
+        top: 17,
+        right: 17,
+        backgroundColor: 'red',
+        width: 7,
+        height: 7,
+        borderRadius: 40,
+        zIndex: 999,
+      },
     main:{
         height: 500,
         padding: 20,
@@ -225,6 +236,8 @@ const Home = ({navigation}) => {
     const materialPopular = useSelector(state => { return state.materialPopular.data });
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     const mainData = useSelector(state => { return state.user.data; });
+    const Alarm = useSelector(state => { return state.alarm.data; });
+    console.log('Alarm: ', Alarm);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
@@ -232,6 +245,9 @@ const Home = ({navigation}) => {
     const [modal2, setModal2] = useState(false); // 코치마크
     const [modal3, setModal3] = useState(false); // 출산준비물 리스트 코치마크
     const [userInfo, setUserInfo] = useState();
+
+    const [AlarmFlag, setAlarmFlag] = useState(false);
+    console.log('AlarmFlag: ', AlarmFlag);
 
     useEffect(()=>{
         const recommendList = async() => {
@@ -253,7 +269,12 @@ const Home = ({navigation}) => {
         recommendList();
 
         dispatch(postUser());
+        dispatch(postAlarm({page: 1}));
     }, []);
+
+    useEffect(()=>{
+        Alarm.filter(x => x.readFlag == false) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+  }, [Alarm])
 
     useEffect(()=>{
         save();
@@ -318,25 +339,6 @@ const Home = ({navigation}) => {
         }));
 
         navigation.navigate('행사정보 상세페이지', item)
-    }
-
-    useEffect(()=>{
-        console.log('qwer');
-        
-            BackHandler.removeEventListener('hardwareBackPress', () => {
-                if(modal){
-                }
-            })
-        
-        BackHandler.addEventListener('hardwareBackPress', handlePressBack)
-        return () => {
-            BackHandler.removeEventListener('hardwareBackPress', handlePressBack)
-        }
-    }, [handlePressBack, modal]);
-    
-    const handlePressBack = () => {
-    
-        return true;
     }
 
     const FocusAwareStatusBar = () => {
@@ -492,7 +494,10 @@ const Home = ({navigation}) => {
             : <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null}]}>
             <View style={styles.header}>
                 <View style={styles.headerBar}>
-                    <Bell style={{marginRight: 20}} onPress={()=>navigation.navigate('알림')}/>
+                    <TouchableOpacity style={{padding: 20}} onPress={()=>navigation.navigate('알림')}>
+                        <View style={[styles.redDot, {display: AlarmFlag ? 'flex' : 'none'}]} />
+                        <Bell />
+                    </TouchableOpacity>
                     <MyPage style={{marginRight: 5}} onPress={()=>navigation.navigate('마이페이지')}/>
                 </View>
             </View>
