@@ -30,6 +30,7 @@ import Baby2 from '../../../public/assets/svg/Baby2.svg'
 
 import Push from '../Test/Push'
 import DateTime22 from '../Test/DateTime2'
+import Wheel from '../Test/Wheel'
 
 import { postAlarm } from '../../Redux/Slices/AlarmSlice';
 
