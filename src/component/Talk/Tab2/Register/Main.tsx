@@ -132,22 +132,6 @@ const Register = ({navigation, route}) => {
         setModalVisible2(!modalVisible2);
     }
 
-    useEffect(()=>{
-        BackHandler.addEventListener('hardwareBackPress', handlePressBack)
-        return () => {
-            BackHandler.removeEventListener('hardwareBackPress', handlePressBack)
-        }
-    }, [handlePressBack, data]);
-
-    const handlePressBack = () => {
-        if(data.title == '' && data.contents == ''){
-            return false;
-        }else{
-            setModalVisible(!modalVisible);
-            return true;
-        }
-    }
-
     const submit = async() => {
         const token = await AsyncStorage.getItem('token');
         try{

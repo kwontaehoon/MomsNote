@@ -252,23 +252,6 @@ const Register = ({navigation, route}) => {
         }
         load();
     }, []);
-
-    useEffect(()=>{
-        BackHandler.addEventListener('hardwareBackPress', handlePressBack)
-        return () => {
-            BackHandler.removeEventListener('hardwareBackPress', handlePressBack)
-        }
-    }, [handlePressBack, info]);
-
-    const handlePressBack = () => {
-        if(info.title == '' && info.contents == '' && info.files == '' && info.imageFile.length == 0 && info.video.length == 0){
-            return false;
-        }else{
-            console.log('b');
-            setModalVisible(!modalVisible);
-            return true;
-        }
-    }
     
     const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
         let arr = Array.from({length: 5}, () => {return false});

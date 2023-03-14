@@ -38,7 +38,7 @@ export const eventSlice = createSlice({
       setEventRefresh:(state, action)=>{
         console.log('refresh 카운트');
         console.log('refresh state: ', state);
-        state.refresh.date = action.payload.date;
+        state.refresh.date = action.payload.start;
       },
       setEventCount:(state, action)=>{
         console.log('카운트');

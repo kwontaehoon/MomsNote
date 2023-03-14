@@ -29,16 +29,6 @@ const Main = ({modal4, setModal4, modalVisible2, setModalVisible2}) => {
 
     const runFirst = `window.ReactNativeWebView.postMessage("this is message from web")`;
 
-    useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', () => {
-
-        }); //뒤로가기 버튼을 클릭하였을때,함수를 호출하는 이벤트 등록
-        return () => {
-          BackHandler.removeEventListener('hardwareBackPress'); //뒤로가기 함수를 해제하는 이벤트 등록
-        };
-        
-      }, []);
-
   return (
     <Modal animationType="fade" transparent={true} visible={modal4.open} statusBarTranslucent={true}
         onRequestClose={() => {

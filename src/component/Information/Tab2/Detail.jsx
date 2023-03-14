@@ -189,6 +189,7 @@ const Talk1Sub = ({navigation, route}) => {
     const info2 = useSelector(state => { return state.event.data; });
     const [info3, setInfo3] = useState();
     const eventSet = useSelector(state => { return state.event.refresh });
+    console.log('eventSet: ', eventSet);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
@@ -225,16 +226,16 @@ const Talk1Sub = ({navigation, route}) => {
             (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`)) : ''
         }
         
-        setTimeout(() => {
-            dispatch(postEvent(eventSet));
-        }, 100);
+        dispatch(postEvent(eventSet));
         
         user();
         hits();
     }, []);
 
     useEffect(()=>{
-        setInfo3(info2.filter(x => x.boardId == info[0].boardId));
+        console.log('info2: ', info2);
+        console.log('info: ', info);
+        setInfo3(info2?.filter(x => x.boardId == info[0]?.boardId));
     }, [info2]);
 
     const ImageBox = () => {
