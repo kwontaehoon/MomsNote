@@ -3,7 +3,6 @@ import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const postMyLikeBoard = createAsyncThunk("postMyLikeBoardSlice/async", async () => {
-  console.log('postMyLikeBoard 업데이트됨');
   const token = await AsyncStorage.getItem('token');
     try{
       const response = await axios({

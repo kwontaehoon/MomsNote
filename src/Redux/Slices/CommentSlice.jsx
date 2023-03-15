@@ -2,8 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const postComment = createAsyncThunk("postCommentSlice/async", async (data) => {
-  console.log('postComment 업데이트됨');
-  console.log('data: ', data);
     try{
       const response = await axios({
           method: 'post',
@@ -13,7 +11,6 @@ export const postComment = createAsyncThunk("postCommentSlice/async", async (dat
           },
           data : data
       });
-      console.log('comment redux: ', response.data);
       if(response.data == ''){ return '0'; }else return response.data;
       }catch(error){
           console.log('comment axios error: ', error);

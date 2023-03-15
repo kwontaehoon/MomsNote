@@ -4,8 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const postMaterial = createAsyncThunk("postBoardSlice/async", async (data) => {
   const token = await AsyncStorage.getItem('token');
-  console.log('data: ', data);
-  console.log('postMaterial 업데이트됨');
     try{
       const response = await axios({
           method: 'post',

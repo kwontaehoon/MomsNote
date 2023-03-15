@@ -3,8 +3,6 @@ import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const postQna = createAsyncThunk("postQnaSlice/async", async (data) => {
-  console.log('postQna 업데이트됨');
-  console.log('postQna data: ', data);
     try{
       const response = await axios({
           method: 'post',
@@ -31,7 +29,6 @@ export const qnaSlice = createSlice({
     initialState,
     reducers: {
       setQnaRefresh:(state, action)=>{
-        console.log('action: ', action.refresh.category);
         state.refresh.category = action.payload.category;
       }
     },

@@ -2,8 +2,6 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const postGuide = createAsyncThunk("postGuideSlice/async", async (data) => {
-  console.log('postGuide 업데이트됨');
-  console.log('data: ', data);
     try{
       const response = await axios({
           method: 'post',
@@ -34,13 +32,9 @@ export const guideSlice = createSlice({
     initialState,
     reducers: {
       setGuideRefresh:(state, action)=>{
-        console.log('카테고리');
         state.refresh.subcategory = action.payload.subcategory;
       },
       setGuideCount:(state, action)=>{
-        console.log('카운트');
-        console.log('state: ', state);
-        console.log('action: ', action);
         state.refresh.page = action.payload.page;
         state.refresh.count = action.payload.count;
       }

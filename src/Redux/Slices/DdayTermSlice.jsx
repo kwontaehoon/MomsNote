@@ -2,8 +2,6 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const postDdayTerm = createAsyncThunk("postDdayTermSlice/async", async (data) => {
-  console.log('postDdayToday 업데이트됨');
-  console.log('data: ', data);
     try{
       const response = await axios({
           method: 'post',
@@ -29,8 +27,6 @@ export const ddayTermSlice = createSlice({
     initialState,
     reducers: {
       setDdayTermRefresh:(state, action)=>{
-        console.log('refresh 카운트');
-        console.log('refresh state: ', state);
         state.refresh.subcategory = action.payload.subcategory;
       },
     },

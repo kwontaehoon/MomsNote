@@ -4,7 +4,6 @@ import axios from 'axios'
 export const getList = createAsyncThunk("counterSlice/async", async () => {
   try{
     const response = await axios.get("https://momsnote.net/exp/details")
-    console.log('response: ', response);
     return response.data;
   }catch(error){
     console.log('error: ', error);

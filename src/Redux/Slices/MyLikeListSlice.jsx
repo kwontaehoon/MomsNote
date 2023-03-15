@@ -3,7 +3,6 @@ import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const postMyLikeList = createAsyncThunk("postMyLikeListSlice/async", async () => {
-  console.log('postMyLikeList 업데이트됨');
   const token = await AsyncStorage.getItem('token');
     try{
       const response = await axios({
@@ -38,20 +37,13 @@ export const myLikeListSlice = createSlice({
     initialState,
     reducers: {
       setMyLikeListRefresh:(state, action)=>{
-        console.log('카테고리');
         state.refresh.subcategory = action.payload.subcategory;
       },
       setMyLikeListCount:(state, action)=>{
-        console.log('카운트');
-        console.log('state: ', state);
-        console.log('action: ', action);
         state.refresh.page = action.payload.page;
         state.refresh.count = action.payload.count;
       },
       setMyLikeListFilter:(state, action)=>{
-        console.log('필터링');
-        console.log('state: ', state);
-        console.log('action: ', action);
         state.refresh.order = action.payload.filter;
       }
     },

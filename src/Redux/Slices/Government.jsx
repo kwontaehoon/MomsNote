@@ -2,8 +2,6 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const postGovernment = createAsyncThunk("postGovernmentSlice/async", async (data) => {
-  console.log('postGovernment 업데이트됨');
-  console.log('data: ', data);
     try{
       const response = await axios({
           method: 'post',
@@ -30,9 +28,6 @@ export const governmentSlice = createSlice({
     initialState,
     reducers: {
       setGovernmentCount:(state, action)=>{
-        console.log('카운트');
-        console.log('state: ', state);
-        console.log('action: ', action);
         state.refresh.page = action.payload.page;
         state.refresh.count = action.payload.count;
       }

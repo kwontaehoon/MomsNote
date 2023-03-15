@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const postMyCommentCount = createAsyncThunk("postMyCommentCountSlice/async", async () => {
-  console.log('postMyCommentCount 업데이트됨');
     try{
       const response = await axios({
           method: 'get',

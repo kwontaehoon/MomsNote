@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const postPeriodCount = createAsyncThunk("postPeriodCountSlice/async", async () => {
-  console.log('postPeriodCount 업데이트됨');
     try{
       const response = await axios({
           method: 'get',

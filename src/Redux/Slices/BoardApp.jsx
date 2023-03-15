@@ -3,8 +3,6 @@ import axios from 'axios'
 
 // 신청유무
 export const postBoardApp = createAsyncThunk("postBoardAppSlice/async", async (data) => {
-  console.log('postBoardApp 업데이트됨');
-  console.log('data: ', data);
   const token = await AsyncStorage.getItem('token');
     try{
       const response = await axios({

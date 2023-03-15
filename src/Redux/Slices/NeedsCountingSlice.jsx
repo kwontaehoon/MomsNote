@@ -3,9 +3,6 @@ import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const postNeedsCounting = createAsyncThunk("postNeedsCountingSlice/async", async (data) => {
-  console.log('postNeedsCounting 업데이트됨');
-  console.log('data: ', data);
-  const token = await AsyncStorage.getItem('token');
     try{
       const response = await axios({
           method: 'post',

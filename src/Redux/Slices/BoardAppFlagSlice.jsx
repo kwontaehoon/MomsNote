@@ -3,8 +3,6 @@ import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const postBoardAppFlag = createAsyncThunk("postBoardSlice/async", async (data) => {
-  console.log('postBoardAppFlag 업데이트됨');
-  console.log('data: ', data);
   const token = await AsyncStorage.getItem('token');
     try{
       const response = await axios({
@@ -16,7 +14,6 @@ export const postBoardAppFlag = createAsyncThunk("postBoardSlice/async", async (
           },
           data : data
       });
-      console.log('response: ', response.data);
       return response.data;
       }catch(error){
           console.log('BoardAppFlag axios error: ', error);

@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const postBoard = createAsyncThunk("postBoardSlice/async", async (data) => {
-  console.log('postBoard 업데이트됨');
     try{
       const response = await axios({
           method: 'post',

@@ -3,8 +3,6 @@ import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const postMyComment = createAsyncThunk("postMyCommentSlice/async", async (data) => {
-  console.log('postMyComment 업데이트됨');
-  console.log('data: ', data);
   const token = await AsyncStorage.getItem('token');
     try{
       const response = await axios({
@@ -37,9 +35,6 @@ export const myCommentSlice = createSlice({
     initialState,
     reducers: {
       setMyCommentCount:(state, action)=>{
-        console.log('카운트');
-        console.log('state: ', state);
-        console.log('action: ', action);
         state.refresh.page = action.payload.page;
         state.refresh.count = action.payload.count;
       },

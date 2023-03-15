@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const postShareList2 = createAsyncThunk("postShareList2/async", async (data) => {
-  console.log('postShareList2 업데이트됨');
     try{
       const response = await axios({
           method: 'post',

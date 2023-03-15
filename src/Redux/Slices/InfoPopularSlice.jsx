@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const postInfoPopularSlice = createAsyncThunk("postInfoPopularSlice/async", async () => {
-  console.log('postInfoPopularSlice 업데이트됨');
     try{
       const response = await axios({
           method: 'post',

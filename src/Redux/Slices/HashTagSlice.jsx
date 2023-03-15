@@ -2,8 +2,6 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const postHashTag = createAsyncThunk("postHashTagSlice/async", async (data) => {
-  console.log('postHashTag 업데이트됨');
-  console.log('data: ', data);
     try{
       const response = await axios({
           method: 'post',
@@ -32,7 +30,6 @@ export const hashTagSlice = createSlice({
     initialState,
     reducers: {
       setHashTagRefresh:(state, action)=>{
-        console.log('카테고리');
         state.refresh.subcategory = action.payload.subcategory;
       },
     },
