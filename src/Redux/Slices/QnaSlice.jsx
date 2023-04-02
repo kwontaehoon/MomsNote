@@ -29,6 +29,7 @@ export const qnaSlice = createSlice({
     initialState,
     reducers: {
       setQnaRefresh:(state, action)=>{
+        console.log('action: ', action);
         state.refresh.category = action.payload.category;
       }
     },
@@ -41,5 +42,6 @@ export const qnaSlice = createSlice({
   })
 
 export const data = (state) => state.qnaSlice.data;
+export const { setQnaRefresh } = qnaSlice.actions;
 
 export default qnaSlice.reducer

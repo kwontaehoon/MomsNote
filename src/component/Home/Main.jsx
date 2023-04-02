@@ -272,9 +272,9 @@ const Home = ({navigation}) => {
         dispatch(postAlarm({page: 1}));
     }, []);
 
-    useEffect(()=>{
-        Alarm.filter(x => x.readFlag == false) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
-  }, [Alarm])
+//     useEffect(()=>{
+//         Alarm.filter(x => x.readFlag == false) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+//   }, [Alarm]);
 
     useEffect(()=>{
         save();

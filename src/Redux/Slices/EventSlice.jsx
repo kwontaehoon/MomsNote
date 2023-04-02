@@ -3,6 +3,7 @@ import axios from 'axios'
 import moment from 'moment';
 
 export const postEvent = createAsyncThunk("postEventSlice/async", async (data) => {
+  console.log('data: ', data);
     try{
       const response = await axios({
           method: 'post',
@@ -33,7 +34,10 @@ export const eventSlice = createSlice({
     initialState,
     reducers: {
       setEventRefresh:(state, action)=>{
-        state.refresh.date = action.payload.start;
+        console.log('state: ', state);
+        console.log('action: ', action);
+        state.refresh.date = action.payload.date;
+        state.refresh.count = action.payload.count;
       },
       setEventCount:(state, action)=>{
         state.refresh.page = action.payload.page;

@@ -92,9 +92,7 @@ const Talk1 = ({navigation}) => {
     }, [qna]);
 
     const change = (category, e) => { // 카테고리 배경색상, 글자 색상 변경 onpress
-        console.log('change category: ', category);
         let arr = Array.from({length: info.length}, () => { return false });
-        console.log('arr: ', arr);
         arr[e] = !arr[e];
         setFilter(arr);
         dispatch(setQnaRefresh({category: category}));
@@ -111,14 +109,14 @@ const Talk1 = ({navigation}) => {
             return (
                 <View key={index}>
                     <View style={styles.mainBox}>
-                        <Text style={{fontSize: 16, fontWeight: '700'}}>{x.category}()</Text>
+                        <Text style={{fontSize: 16, fontWeight: '700'}}>{x.category}({qna?.length})</Text>
                     </View>
                     {
                         qna?.map((x, index)=>{
                             return (
                                 <View key={index}>
                                     <TouchableOpacity style={styles.mainBox2} onPress={()=>change2(index)}>
-                                        <Q fill='#BDBDBD'/>
+                                        {qnaFilter[index] ? <Q fill='black'/> : <Q fill='#BDBDBD' />}
                                         <Text style={{paddingLeft: 10}} numberOfLines={1}>{x.qnaQ}</Text>
                                     </TouchableOpacity>
                                     <View style={[styles.mainBox2, {padding: 15, display: qnaFilter[index] ? 'flex' : 'none'}]}>

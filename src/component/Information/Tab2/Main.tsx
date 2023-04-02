@@ -112,9 +112,7 @@ const Talk1 = ({navigation}: any) => {
   
     const dispatch = useDispatch();
     const eventSet = useSelector(state => { return state.event.refresh });
-    console.log('eventSet: ', eventSet);
     const info = useSelector(state => { return state.event.data; });
-    console.log('info: ', info);
     const [year, setYear] = useState(moment().format('YYYY'));
     const [week, setWeek] = useState([true, false, false, false, false, false,
     false, false, false, false, false, false]);
@@ -215,7 +213,7 @@ const Talk1 = ({navigation}: any) => {
 
         <View style={styles.header}>
           <View style={styles.headerBox}>
-            <TouchableOpacity style={{position: 'absolute', left: 0}} onPress={()=>yearCount()}><Arrow_left fill='black'/></TouchableOpacity>
+            <TouchableOpacity style={{position: 'absolute', left: 0}} onPress={()=>yearCount('minus')}><Arrow_left fill='black'/></TouchableOpacity>
             
               <Text style={{fontSize: 18, fontWeight: '600'}}>{year}년</Text>
 

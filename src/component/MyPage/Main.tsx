@@ -67,22 +67,21 @@ const Main = ({navigation}) => {
       ];
 
     const dispatch = useDispatch();
-    const user = useSelector(state => { return state.user.data });
-    console.log('user: ', user);
+    // const user = useSelector(state => { return state.user.data });
     const [userInfo, setUserInfo] = useState();
 
     const [refresh, setRefresh] = useState(); // 새로고침
     const isFocused = useIsFocused();
 
-    useEffect(()=>{
-        dispatch(postUser());
+    // useEffect(()=>{
+    //     dispatch(postUser());
         
-        const user = async() => {
-            const user = await AsyncStorage.getItem('user');
-            setUserInfo(JSON.parse(user));
-        }
-        user();
-    }, [refresh, isFocused]);
+    //     const user = async() => {
+    //         const user = await AsyncStorage.getItem('user');
+    //         setUserInfo(JSON.parse(user));
+    //     }
+    //     user();
+    // }, [refresh, isFocused]);
 
     const pickImage = async () => {
       // No permissions request is necessary for launching the image library
@@ -120,11 +119,11 @@ const Main = ({navigation}) => {
      <View style={styles.header}>
             <View style={styles.headerBox}>
                 <TouchableOpacity style={styles.profileBox} onPress={pickImage}>
-                    {userInfo.profile == undefined ? <Image source={require('../../../public/assets/image/baby1.png')}/>
-                    :  <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${user.profile}` }} style={{ width: 72, height: 72, borderRadius: 36}}/>}
+                    {/* {userInfo.profile == undefined ? <Image source={require('../../../public/assets/image/baby1.png')}/>
+                    :  <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${user.profile}` }} style={{ width: 72, height: 72, borderRadius: 36}}/>} */}
                 </TouchableOpacity>
                 <View style={styles.infoBox}>
-                    <Text style={{fontSize: 20, fontWeight : 'bold'}}>{userInfo.nickname}</Text>
+                    {/* <Text style={{fontSize: 20, fontWeight : 'bold'}}>{userInfo.nickname}</Text> */}
                 </View>
             </View>
             <View style={styles.headerBox2}>

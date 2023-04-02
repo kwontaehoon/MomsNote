@@ -47,7 +47,7 @@ const Terms1 = ({navigation}) => {
         url: 'https://momsnote.net/policy',
         data : {
           sort: "개인정보처리방침",
-          page: 1
+          page: 0
       }
     });
     setInfo(response.data.data);

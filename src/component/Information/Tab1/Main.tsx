@@ -56,8 +56,6 @@ const styles = StyleSheet.create({
     height: 80,
     flexDirection: 'row',
     backgroundColor: 'white',
-    marginBottom: 20,
-    shadowColor: "#000",
     elevation: 3,
   },
   mainBox2:{
@@ -96,7 +94,6 @@ const Talk1 = ({navigation}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.guide.data });
-  console.log('맘스가이드 info: ', info);
   const guideSet = useSelector(state => { return state.guide.refresh });
   const infoCount = useSelector(state => { return state.guideCount.data });
   const guideCountSet = useSelector(state => { return state.guideCount.refresh });
@@ -132,7 +129,6 @@ const Talk1 = ({navigation}) => {
 
   const renderItem2 = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스가이드 상세내용', item)} activeOpacity={1}>
-       {item.savedName == null ? '' : <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={styles.mainBox2} resizeMode='cover' />}
         <View style={styles.mainBox3}><Text style={{fontSize: 15}} numberOfLines={1} >{item.title} </Text></View>
     </TouchableOpacity>
   ); 
