@@ -17,7 +17,9 @@ export const postEvent = createAsyncThunk("postEventSlice/async", async (data) =
 });
 
 let arr = moment().format('M')-1;
+console.log('arr: ', arr);
 if(arr-9 < 0){ arr = '0' + (arr+1); } else arr += 1;
+console.log('arr후: ', arr);
 
 const initialState = {
     loading: false,

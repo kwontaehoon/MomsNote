@@ -238,7 +238,6 @@ const Navigation = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.material.data; });
-  console.log('출산준비물 info: ', info);
   const Alarm = useSelector(state => { return state.alarm.data; });
   const [AlarmFlag, setAlarmFlag] = useState(false);
   const [purchaseCount, setPurchaseCount] = useState(null); // 전체 구매 갯수
@@ -249,7 +248,6 @@ const Navigation = ({navigation, route}) => {
   const ref = useRef();
 
   const [filter, setFilter] = useState('need');
-  console.log('출산준비물 filter: ', filter);
 
   const [list, setList] = useState(Array.from({ length: 9 }, () => { return true}));
 
@@ -595,7 +593,7 @@ const save = async() => {
           <View style={styles.footerBox}>
             <View style={styles.budgetBox}>
               <Text>총 예산: </Text>
-              <Text style={{fontWeight: '500'}}>{(sumResult.sum).toLocaleString()} 원</Text>
+              <Text style={{fontWeight: '500'}}>{(sumResult.sum).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</Text>
             </View>
             <View style={styles.budgetBox2}>
               <TouchableOpacity style={{padding: 10, flexDirection: 'row', alignItems: 'center'}} onPress={()=>navigation.navigate('총 예산', info)}>

@@ -73,7 +73,6 @@ const CheckBoxModal = ({modalVisible3, setModalVisible3, modalVisible4, setModal
         title: '',
         contents: '',
     })
-    console.log('info: ', info);
 
     const animation = useRef(new Animated.Value(0)).current;
 

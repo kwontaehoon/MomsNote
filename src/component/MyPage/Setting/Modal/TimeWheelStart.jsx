@@ -92,7 +92,7 @@ const TimeWheel = ({ modal, setModal }) => {
                                 height={300}
                                 initialSelectedIndex={2}
                                 items={SelectHours.map((name) => ({ label: name, value: '' }))}
-                                onChange={({ item }) => { setModal(prevState => ({...prevState, hours: item.label})), AsyncStorage.setItem('alarmStartHours', item.label)}}
+                                onChange={({ item }) => { setModal(prevState => ({...prevState, hours: item.label})), AsyncStorage.setItem('alarmStartHours', item.label.split('').filter(x => x !== ' ').join(''))}}
                                 renderItem={(props) => (
                                     <Text
                                         style={[
@@ -110,7 +110,7 @@ const TimeWheel = ({ modal, setModal }) => {
                                 height={300}
                                 initialSelectedIndex={3}
                                 items={SelectMinutes.map((name) => ({ label: name, value: '' }))}
-                                onChange={({ item }) => {setModal(prevState => ({...prevState, minutes: item.label})), AsyncStorage.setItem('alarmStartMinutes', item.label)}}
+                                onChange={({ item }) => {setModal(prevState => ({...prevState, minutes: item.label})), AsyncStorage.setItem('alarmStartMinutes', item.label.split('').filter(x => x !== ' ').join(''))}}
                                 renderItem={(props) => (
                                     <Text
                                         style={[

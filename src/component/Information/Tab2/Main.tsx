@@ -51,8 +51,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dateBox:{
-    position: 'absolute',
-    right: 15,
+    flex: 1,
+    display: 'flex',
+    alignItems: 'flex-end',
+    marginLeft: 10
   },
 })
 
@@ -184,10 +186,9 @@ const Talk1 = ({navigation}: any) => {
   const renderItem = ({ item }) => (
     <>
       {<TouchableOpacity style={styles.main2} onPress={()=>navigation.navigate('행사정보 상세페이지', item)}>
+          <Text style={{fontWeight: '500'}} numberOfLines={1} ellipsizeMode='tail'>{item.title}</Text>
           <View style={styles.dateBox}>{dateFilter(item)}</View>
-          <Text style={{fontWeight: '500'}}>{item.title}</Text>
       </TouchableOpacity>}
-
     </>
   );
 

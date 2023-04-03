@@ -81,7 +81,6 @@ const Main = ({navigation}:any) => {
     }
 
     const change = (e) => { // 몇 주차 border, 글자두께 변경
-      console.log('e: ', e);
       let arr = Array.from({length: 40}, ()=>{ return false });
       arr[e] = !arr[e];
       setWeek(arr);

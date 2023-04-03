@@ -225,7 +225,7 @@ const Main = ({modal, setModal, modal6, setModal6, setModalVisible2}) => {
             <View style={styles.imageBox}>
                     <View style={[styles.Top, {alignItems: 'flex-start', padding: 5}]}><Close fill='white' onPress={close}/></View>
                         <View style={[styles.Bottom, {paddingTop: 10, flexDirection: 'row'}]}>
-                        <Text style={{color: '#FEA100', fontSize: 15, fontWeight: '700'}} onPress={()=>console.log('d')}>다시 보지 않기</Text>
+                        <Text style={{color: '#FEA100', fontSize: 15, fontWeight: '700'}}>다시 보지 않기</Text>
                         <Checkbox
                             style={styles.checkbox}
                             value={isChecked}

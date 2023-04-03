@@ -606,11 +606,11 @@ const Talk1Sub = ({navigation, route}) => {
                         <Text style={{fontSize: 18, fontWeight: '600'}}>총 예산</Text>
                     </View>
                     <View style={[styles.myList2FooterBox, {paddingLeft: 20, height: 25}]}>
-                        <View style={styles.budget}><Text>{(sumResult.sum).toLocaleString()} 원</Text></View>
+                        <View style={styles.budget}><Text>{(sumResult.sum).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</Text></View>
                         <Text style={{color: '#616161'}}>ㄴ 구매금액</Text>
                     </View>
                     <View style={[styles.myList2FooterBox, {paddingLeft: 20, height: 25}]}>
-                        <View style={styles.budget}><Text>{(sumResult.exp).toLocaleString()} 원</Text></View>
+                        <View style={styles.budget}><Text>{(sumResult.exp).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</Text></View>
                         <Text style={{color: '#616161'}}>ㄴ 구매예정 금액</Text>
                     </View>
                 </View>

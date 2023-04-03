@@ -112,8 +112,6 @@ const styles = StyleSheet.create({
 
 const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, modal4, setModal4, filter}) => {
 
-    console.log('modalVisible2: ', modalVisible2);
-
     const dispatch = useDispatch();
     const [info, setInfo] = useState(); // 브랜드 lists
     const [selectBrand, setSelectBrand] = useState({

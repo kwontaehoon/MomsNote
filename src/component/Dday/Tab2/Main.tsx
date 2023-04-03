@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
 const Talk1 = ({navigation, week}: any) => {
 
   const [info, setInfo] = useState([]);
-  console.log('이시기에는: ', info);
   const [refresh, setRefresh] = useState(false); // 추천, 댓글 등록, 댓글 삭제 누르면 정보를 다시받아야해서 새로고침 state
 
     useEffect(()=>{

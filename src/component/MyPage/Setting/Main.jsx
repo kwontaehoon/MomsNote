@@ -110,8 +110,8 @@ const Main = ({navigation}) => {
     const [modal3, setModal3] = useState({
         open: '',
         clock: '',
-        hours: '00',
-        minutes: '00'
+        hours: '00 ',
+        minutes: ' 00'
     }); // 알람 시작시간
     const [modal4, setModal4] = useState({
         open: '',
@@ -145,6 +145,7 @@ const Main = ({navigation}) => {
             const alarmStartHours = await  AsyncStorage.getItem('alarmStartHours');
             const alarmStartMinutes = await  AsyncStorage.getItem('alarmStartMinutes');
             const alarmEndHours = await  AsyncStorage.getItem('alarmEndHours');
+            console.log('aa: ', alarmEndHours.split(''));
             const alarmEndMinutes = await  AsyncStorage.getItem('alarmEndMinutes');
 
             user.marketing ? arr[0] = true : '';
@@ -152,8 +153,12 @@ const Main = ({navigation}) => {
             alarmSetting == null ? '' : arr[2] = true;
 
             setIsEnabled(arr);
-            setModal3(prevState => ({...prevState, hours: alarmStartHours, minutes: alarmStartMinutes}));
-            setModal4(prevState => ({...prevState, hours: alarmEndHours, minutes: alarmEndMinutes}));
+            if(alarmStartHours !== null && alarmStartMinutes !== null){
+                setModal3(prevState => ({...prevState, hours: alarmStartHours, minutes: alarmStartMinutes}));
+            }
+            if(alarmEndHours !== null && alarmEndMinutes !== null){
+                setModal4(prevState => ({...prevState, hours: alarmEndHours, minutes: alarmEndMinutes}));
+            }
             setLoading(true);
         }
         user2();
@@ -319,7 +324,7 @@ const Main = ({navigation}) => {
                     <View style={styles.mainBoxSub}><Text style={styles.text}>시작시간</Text></View>
                     <View style={[styles.mainBoxSub, {alignItems: 'flex-end'}]}>
                         <TouchableOpacity style={styles.clockBox} onPress={()=>setModal3(!modal3)}>
-                            <Text style={styles.text}>{modal3.clock == 'PM' ?  Number(modal3.hours?.split('').filter(x=> x !== '시').join(''))+12 : modal3.hours?.split('').filter(x=> x !== '시').join('')}: {modal3.minutes?.split('').filter(x=> x !== '분').join('')}</Text>
+                            <Text style={styles.text}>{modal3.clock == 'PM' ?  Number(modal3.hours?.split('').filter(x=> x !== '시').join(''))+12 : modal3.hours?.split('').filter(x=> x !== '시').join('')} : {modal3.minutes?.split('').filter(x=> x !== '분').join('')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -327,7 +332,7 @@ const Main = ({navigation}) => {
                     <View style={styles.mainBoxSub}><Text style={styles.text}>종료 시간</Text></View>
                     <View style={[styles.mainBoxSub, {alignItems: 'flex-end'}]}>
                         <TouchableOpacity style={styles.clockBox} onPress={()=>setModal4(!modal4)}>
-                            <Text style={styles.text}>{modal4.clock == 'PM' ? Number(modal4.hours?.split('').filter(x=> x !== '시').join(''))+12 : modal4.hours?.split('').filter(x=> x !== '시').join('')}: {modal4.minutes?.split('').filter(x=> x !== '분').join('')}</Text>
+                            <Text style={styles.text}>{modal4.clock == 'PM' ? Number(modal4.hours?.split('').filter(x=> x !== '시').join(''))+12 : modal4.hours?.split('').filter(x=> x !== '시').join('')} : {modal4.minutes?.split('').filter(x=> x !== '분').join('')}</Text>
                             </TouchableOpacity>
                     </View>
                 </View>

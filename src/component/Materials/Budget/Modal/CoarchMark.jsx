@@ -186,7 +186,6 @@ const Talk1Sub = ({modal, setModal}) => {
   ]
 
   const info = useSelector(state => state.material.data);
-  console.log('총 예산 info: ', info);
   const [isChecked, setIsChecked] = useState(false);
   const dispatch = useDispatch();
   const materialSet = useSelector(state => state.material.refresh);

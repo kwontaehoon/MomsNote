@@ -219,7 +219,6 @@ const Talk1Sub = ({navigation, route}) => {
   useEffect(()=>{
     const coarch = async() => {
       const coarch = await AsyncStorage.getItem('coarchMarkBudget');
-      console.log('coarchMarkBudget: ', coarch);
       coarch == null ? (setModal8(true), setModal9(true)) : ''
     }
     coarch();

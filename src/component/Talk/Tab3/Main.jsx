@@ -78,7 +78,6 @@ const Talk3 = ({navigation}: any) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => {return state.experience.data});
-  console.log('체험단: ', info);
   const infoCount = useSelector(state => { return state.experienceCount.data});
   const experienceSet = useSelector(state => { return state.experience.refresh; });
 

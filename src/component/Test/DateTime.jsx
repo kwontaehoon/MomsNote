@@ -48,7 +48,7 @@ const Test = () => {
     <View>
       <Button onPress={onPressDate} title="Show date picker!" />
       <Button onPress={onPressTime} title="Show time picker!" />
-      <Text>selected: {date.toLocaleString()}</Text>
+      <Text>selected: {date.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
       <View style={{width: '100%', height: 300, borderWidth: 1}}>
       {show && (
          <DateTimePicker

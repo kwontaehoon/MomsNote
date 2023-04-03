@@ -187,6 +187,7 @@ const Talk1Sub = ({navigation, route}) => {
     const dispatch = useDispatch();
     const info = [route.params];
     const info2 = useSelector(state => { return state.event.data; });
+    console.log('info2: ', info2);
     const [info3, setInfo3] = useState();
     const eventSet = useSelector(state => { return state.event.refresh });
     console.log('eventSet: ', eventSet);
@@ -233,8 +234,6 @@ const Talk1Sub = ({navigation, route}) => {
     }, []);
 
     useEffect(()=>{
-        console.log('info2: ', info2);
-        console.log('info: ', info);
         setInfo3(info2?.filter(x => x.boardId == info[0]?.boardId));
     }, [info2]);
 

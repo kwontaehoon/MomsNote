@@ -288,7 +288,7 @@ const Talk1Sub = ({navigation, route}) => {
                       <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
                       <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
                       <View style={styles.filterBox2}>
-                        <Text style={{fontWeight: '500'}}>{(x.itemPrice).toLocaleString()}</Text>
+                        <Text style={{fontWeight: '500'}}>{(x.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
                         <Text> 원</Text>
                       </View>
                   </TouchableOpacity>
@@ -329,7 +329,7 @@ const Talk1Sub = ({navigation, route}) => {
               <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
               <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
               <TouchableOpacity style={styles.filterBox2} onLongPress={()=>(setModal4(prevState => ({...prevState, open: true, content: x})))} delayLongPress={1500} activeOpacity={1}>
-                <Text style={{fontWeight: '500'}}>{x.itemPrice == null ? '0' : x.itemPrice.toLocaleString()}</Text>
+                <Text style={{fontWeight: '500'}}>{x.itemPrice == null ? '0' : x.itemPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
                 <Text> 원</Text>
               </TouchableOpacity>
           </View>
@@ -401,15 +401,15 @@ const Talk1Sub = ({navigation, route}) => {
         </FlatList>
         <View style={styles.myList2Footer}>
           <View style={styles.myList2FooterBox}>
-            <View style={styles.budget}><Text style={{fontSize: 18, fontWeight: '600'}}>{`${(sumResult.sum + sumResult.exp).toLocaleString()} 원`}</Text></View>
+            <View style={styles.budget}><Text style={{fontSize: 18, fontWeight: '600'}}>{`${(sumResult.sum + sumResult.exp).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원`}</Text></View>
             <Text style={{fontSize: 18, fontWeight: '600'}}>총 예산</Text>
           </View>
           <View style={[styles.myList2FooterBox, {paddingLeft: 20, height: 25}]}>
-            <View style={styles.budget}><Text>{`${(sumResult.sum).toLocaleString()} 원`}</Text></View>
+            <View style={styles.budget}><Text>{`${(sumResult.sum).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원`}</Text></View>
             <Text style={{color: '#616161'}}>ㄴ 구매금액</Text>
           </View>
           <View style={[styles.myList2FooterBox, {paddingLeft: 20, height: 25}]}>
-            <View style={styles.budget}><Text>{`${(sumResult.exp).toLocaleString()} 원`}</Text></View>
+            <View style={styles.budget}><Text>{`${(sumResult.exp).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원`}</Text></View>
             <Text style={{color: '#616161'}}>ㄴ 구매예정 금액</Text>
           </View>
           <View style={styles.myList2FooterButton}><Text style={{color: 'white', fontWeight: '600', fontSize: 16}}>수정</Text></View>

@@ -194,7 +194,7 @@ const Talk1Sub = ({route}) => {
             <View style={[styles.filterBox2, {justifyContent: 'flex-start'}]}><Text style={{fontWeight: '500'}}>{x.needsName}</Text></View>
             <View style={styles.filterBox2}><Text style={{textAlign: 'center', lineHeight: 20}}>{x.itemName == null ? '-' : x.itemName}</Text></View>
             <View style={[styles.filterBox2, {justifyContent: 'flex-end'}]}>
-              <Text style={{fontWeight: '600'}}>{x.itemPrice == null ? 0 : (x.itemPrice).toLocaleString()}</Text>
+              <Text style={{fontWeight: '600'}}>{x.itemPrice == null ? 0 : (x.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
               <Text> 원</Text>
             </View>
         </View>

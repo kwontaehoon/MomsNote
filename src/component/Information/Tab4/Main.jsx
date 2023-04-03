@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Dimensions, StatusBar } from 'react-native'
 import axios from 'axios'
 
 import Q from '../../../../public/assets/svg/Q.svg'
@@ -9,7 +9,7 @@ import { postQna, setQnaRefresh } from '../../../Redux/Slices/QnaSlice'
 
 const styles = StyleSheet.create({
     container:{
-        height: '87%',
+        height: Dimensions.get('window').height -175,
         backgroundColor: 'white',
     },
     header:{
@@ -68,17 +68,17 @@ const Talk1 = ({navigation}) => {
     console.log('info: ', info);
     const [info2, setInfo2] = useState();
     console.log('info2: ', info2);
-    const [filter, setFilter] = useState(Array.from({length: info?.length}, () => { return false })); // 서브 카테고리
-    console.log('filter: ', filter);
-
-    const [qnaFilter, setQnaFilter] = useState(Array.from({length: qna?.length}, () => { return false }));
-    console.log('qnaFilter: ', qnaFilter);
-
-    const [test, setTest] = useState(false);
+    const [test, setTest] = useState();
+    const [plus, setPlus] = useState();
+    console.log('plus: ', plus);
+    const [filter, setFilter] = useState(); // 서브 카테고리
+    const [qnaFilter, setQnaFilter] = useState(Array.from({length: qna.length}, () => { return false }));
 
     useEffect(()=>{
         dispatch(postQna(qnaSet));
-    }, [qnaFilter]);
+    }, [test]);
+
+
 
     useEffect(()=>{
         const newArray = qna?.reduce(function(acc, current) {
@@ -89,25 +89,26 @@ const Talk1 = ({navigation}) => {
           }, []);
           setInfo2(newArray);
           setInfo([{category: '전체'}, ...newArray]);
-          const arr = Array.from({length: info?.length}, () => { return false; });
-          arr[0] = true;
-          setFilter(arr);
+          if(qna == ''){
+            const arr = Array.from({length: info?.length}, () => { return false; });
+            arr[0] = true;
+            setFilter(arr);
+          }
     }, [qna]);
 
     const change = (category, e) => { // 카테고리 배경색상, 글자 색상 변경 onpress
-        console.log('change');
         let arr = Array.from({length: info.length}, () => { return false });
         arr[e] = !arr[e];
+        console.log('arr: ', arr);
         setFilter(arr);
+        setTest(e);
         dispatch(setQnaRefresh({category: category, page: 2}));
     }
 
     const change2 = (e) => {
-        console.log('change2');
         let arr = qnaFilter;
         arr[e] = !arr[e];
-        console.log('arr: ', arr);
-        setTest(arr);
+        setQnaFilter([...arr]);
     }
 
     const onEnd = () => {

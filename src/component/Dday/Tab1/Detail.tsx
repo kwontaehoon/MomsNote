@@ -217,9 +217,7 @@ const Talk1Sub = ({navigation, route}) => {
             level: 0
         }
     ); // 댓글 입력
-    console.log('insert: ', insert);
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요
-    console.log('boardLike: ', boardLike);
     const [boardData, setBoardData] = useState({
         order: 'new',
         count: 5,
@@ -241,7 +239,6 @@ const Talk1Sub = ({navigation, route}) => {
     const [modal7, setModal7] = useState(false);
 
     const [userInfo, setUserInfo] = useState();
-    console.log('오늘 이시기에는 userInfo: ', userInfo);
     const animation = useRef(new Animated.Value(0)).current;
     const flatlistRef = useRef(null);
 
@@ -279,7 +276,6 @@ const Talk1Sub = ({navigation, route}) => {
     
 
     useEffect(()=>{ // 게시물 추천 Flag
-        console.log('게시물 추천 여부 업데이트');
         const likeInfo = async() => {
             try{
                 const token = await AsyncStorage.getItem('token');
@@ -323,7 +319,6 @@ const Talk1Sub = ({navigation, route}) => {
 
 
     const likeplus = async() => { // 게시판 좋아요
-        console.log('likeplus');
         const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
@@ -347,7 +342,6 @@ const Talk1Sub = ({navigation, route}) => {
     }
 
     const likeminus = async() => { // 게시판 좋아요
-        console.log('likeplus');
         const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({

@@ -264,7 +264,6 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
             } return x;
         })
         setMaterial(test);
-        console.log(data.delete.includes(e));
         data.delete.includes(e) ? arr = data.delete.filter(x => x !== e) : arr = [...data.deleteCencel, e];
         setData(prevState => ({...prevState, deleteCencel: arr}));
     }

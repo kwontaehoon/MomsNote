@@ -87,7 +87,7 @@ const CheckBoxModal = ({modal6, setModal6, setModal3}) => {
                         </View>
                         <View style={styles.main}>
                             <View style={{marginBottom: 10}}><Text>{modal6.content.needsName}</Text></View>
-                            <TextInput style={styles.mainBox} textAlign='right' placeholder={`${(modal6.content.itemPrice).toLocaleString()} 원`} placeholderTextColor={'black'}
+                            <TextInput style={styles.mainBox} textAlign='right' placeholder={`${(modal6.content.itemPrice)toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원`} placeholderTextColor={'black'}
                                 onChangeText={(e) => setInfo((prevState) => ({ ...prevState, needsName: e}))}></TextInput>
                         </View>
                         

@@ -46,12 +46,9 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({modal5, setModal5}) => {
 
-    console.log('dot delete modal5: ', modal5);
-
     const dispatch = useDispatch();
 
     const delete2 = async() => {
-        console.log('delete');
         const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({

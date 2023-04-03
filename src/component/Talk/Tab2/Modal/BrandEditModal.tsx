@@ -199,7 +199,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
             </View>
             <View style={[styles.mainBoxSub, {width: '36%', alignItems: 'flex-end'}]}>
                 <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 3}}>
-                    <Text style={{fontSize: 16, fontWeight: '600', marginRight: 5}}>{(item.price).toLocaleString()}</Text>
+                    <Text style={{fontSize: 16, fontWeight: '600', marginRight: 5}}>{(item.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
                     <Text>원</Text>
                 </View>
                 

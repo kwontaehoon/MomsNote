@@ -237,7 +237,6 @@ const Home = ({navigation}) => {
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     const mainData = useSelector(state => { return state.user.data; });
     const Alarm = useSelector(state => { return state.alarm.data; });
-    console.log('Alarm: ', Alarm);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
@@ -247,7 +246,6 @@ const Home = ({navigation}) => {
     const [userInfo, setUserInfo] = useState();
 
     const [AlarmFlag, setAlarmFlag] = useState(false);
-    console.log('AlarmFlag: ', AlarmFlag);
 
     useEffect(()=>{
         const recommendList = async() => {
@@ -272,9 +270,9 @@ const Home = ({navigation}) => {
         dispatch(postAlarm({page: 1}));
     }, []);
 
-//     useEffect(()=>{
-//         Alarm.filter(x => x.readFlag == false) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
-//   }, [Alarm]);
+    useEffect(()=>{
+        Alarm.filter(x => x.readFlag == false) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+  }, [Alarm]);
 
     useEffect(()=>{
         save();
@@ -334,10 +332,10 @@ const Home = ({navigation}) => {
         dispatch(setEventRefresh({
             page: 1,
             count: 1,
-            start: `${new Date().getFullYear()}-${e}`,
-            end: `${new Date().getFullYear()}-${e}`
+            date: `${new Date().getFullYear()}-${e}`,
         }));
 
+        console.log('item: ', item);
         navigation.navigate('행사정보 상세페이지', item)
     }
 

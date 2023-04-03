@@ -65,8 +65,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mainBox3:{
-    width: '77%',
     justifyContent: 'center',
+    paddingLeft: 5,
+    paddingRight: 5
   }
 })
 

@@ -106,12 +106,10 @@ const AddPage = ({navigation, route}) => {
 
     const [isChecked, setChecked] = useState(Array.from({length: 4}, ()=>{return false})); // check box
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
-    console.log('bottom color: ', bottomColor);
     const [marketingFlag, setMarketingFlag] = useState({
         marketingFlag: 0
     });
     const [nickNameCheck, setNickNameCheck] = useState(null); // 닉네임 중복 체크
-    console.log('nickNameCheck: ', nickNameCheck);
 
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -146,7 +144,6 @@ const AddPage = ({navigation, route}) => {
             AsyncStorage.setItem('userId', String(decoded.id));
             AsyncStorage.setItem('token', response.data.token);
 
-            console.log('response: ', response);
             try{
                 const response2 = await axios({
                     method: 'get',
@@ -156,7 +153,6 @@ const AddPage = ({navigation, route}) => {
                     },
                     url: 'https://momsnote.net/api/main/data',
                 });
-                console.log('response2: ', response2);
 
                 AsyncStorage.setItem('user', JSON.stringify(response2.data.data));
                 navigation.reset({routes: [{name: "main"}]});
@@ -228,7 +224,6 @@ const AddPage = ({navigation, route}) => {
                 url: 'https://momsnote.net/api/nickname/check',
                 data: {nickname: info.nickname}
             });
-            console.log('response: ', response);
             setNickNameCheck(response.data);
             }catch(error){
                 console.log('check error: ', error);

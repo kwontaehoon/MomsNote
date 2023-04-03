@@ -76,7 +76,6 @@ const Main = ({navigation, route}) => {
     React.useEffect(() => {
         if (response?.type === 'success') {
             const { authentication } = response;
-            console.log('Google: ', authentication);
             GoogleGetId(authentication.accessToken);
         }
     }, [response]);
@@ -94,7 +93,6 @@ const Main = ({navigation, route}) => {
                     username: `google_${response.data.sub}`
                 }
             });
-            console.log('response2: ', response2);
             const decode = jwtDecode(response2.data.token);
             AsyncStorage.setItem('token', response2.data.token);
             AsyncStorage.setItem('userId', String(decode.id));

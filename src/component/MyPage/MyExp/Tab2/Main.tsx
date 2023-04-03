@@ -1,17 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ActivityIndicator } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import DropDownPicker from 'react-native-dropdown-picker'
-import axios from 'axios'
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { postExperience } from '../../../../Redux/Slices/ExperienceSlice'
-import { setExperienceCount, setExperienceFilter } from '../../../../Redux/Slices/ExperienceSlice'
-import { postExperienceCount } from '../../../../Redux/Slices/ExperienceCountSlice'
-import Modal from '../../../Modal/First'
-import { postMyExp } from '../../../../Redux/Slices/MyExpSlice'
-
 
 const styles = StyleSheet.create({
   container:{
@@ -66,23 +58,18 @@ const styles = StyleSheet.create({
 const Talk3 = ({navigation}: any) => {
 
   const dispatch = useDispatch();
-  const info = useSelector(state => {return state.myExp.data});
-
-  const [modal, setModal] = useState({
-    open: false,
-    content: '이미 모집이 종료된 게시물입니다.',
-    buttonCount : 1
-  });
+  const info = useSelector(state => {return state.experience.data});
+  const experienceSet = useSelector(state => { return state.experience.refresh; });
 
   useEffect(()=>{
-    dispatch(postMyExp());
+    dispatch(postExperience(experienceSet));
   }, []);
 
 
   const renderItem = ({ item }) =>
-    moment(item.registrationEndDate).diff(moment(), "days") >= 0 ? '' :
+  item.appCount >= item.maxPeople || moment(item.registrationEndDate).diff(moment(), "days") >= 0 ? '' :
     (
-      <TouchableOpacity style={[styles.mainBox, {opacity: 0.5}]} onPress={()=>setModal(prevState=> ({...prevState, open: true}))}>
+      <TouchableOpacity style={[styles.mainBox, {opacity: 0.5}]} onPress={()=>navigation.navigate('체험단 상세페이지', item)}>
         <View style={styles.imageBox}>
           {item.savedName == null ? '' : <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} />}
         </View>
@@ -97,11 +84,9 @@ const Talk3 = ({navigation}: any) => {
   return info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
   : (
     <View style={styles.container}>
-
-      <Modal modal={modal} setModal={setModal}/>
       
       <View style={styles.main}>
-        {info == '0' ? <View style={{marginTop: 180, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>모집중인 체험단이 없습니다.</Text></View>
+        {info == '0' ? <View style={{marginTop: 180, alignItems: 'center'}}><Text style={{color: '#757575', fontSize: 16}}>종료된 체험단이 없습니다.</Text></View>
         :
         <FlatList data={info} renderItem={renderItem} numColumns={2} showsVerticalScrollIndicator={false}>
         </FlatList>

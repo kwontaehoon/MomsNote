@@ -176,11 +176,8 @@ const Navigation = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const [search, setSearch] = useState('');
-  console.log('search: ', search);
   const [materialSearch, setMaterialSearch] = useState();
-  console.log('materialSearch: ', materialSearch);
   const materialSet = useSelector(state => { return state.material.refresh; });
-  console.log('material set: ', materialSet);
   const [refresh, setRefresh] = useState();
 
   const ref = useRef();
@@ -203,7 +200,6 @@ const Navigation = ({navigation, route}) => {
     open: false,
     content: '',
   }); // 구매가이드 모달
-  console.log('modalvisible4: ', modalVisible4)
 
   const [modal, setModal] = useState(false); // 브랜드 제품명 필수값 유무
   const [modal2, setModal2] = useState({

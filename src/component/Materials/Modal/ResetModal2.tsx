@@ -79,7 +79,6 @@ const Main = ({modalVisible6, setModalVisible6}) => {
     const confirm = async() => {
         const token = await AsyncStorage.getItem('token');
         if(modalVisible6.content == 0){
-            console.log('실제맘 추천 리스트');
             try{
                 const response = await axios({ 
                   method: 'post',
@@ -110,8 +109,6 @@ const Main = ({modalVisible6, setModalVisible6}) => {
               console.log('실제맘 추천 리스트 error: ', error);
             }
         }else{
-            console.log('직접작성');
-
             try{
                 const response = await axios({ 
                   method: 'post',
