@@ -287,17 +287,12 @@ const Talk1Sub = ({navigation, route}) => {
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
     const info = [route.params];
-    console.log('info: ', info);
     const info2 = useSelector(state => { return state.shareList.data }); // 게시글 리스트
-    console.log('출산리스트 공유 info2: ', info2);
     const materialShare = useSelector(state => { return state.materialShare.data });
-    console.log('materialShare: ', materialShare);
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
     const [info3, setInfo3] = useState(useSelector(state => { return state.materialShare.data }));
-    console.log('info3: ', info3);
 
     const user = useSelector(state => { return state.user.data; });
-    console.log('user: ', user);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
@@ -565,7 +560,7 @@ const Talk1Sub = ({navigation, route}) => {
                         <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
                         <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
                         <View style={styles.filterBox2}>
-                            <Text style={{fontWeight: '600'}}>{(x.itemPrice).toLocaleString()}</Text>
+                            <Text style={{fontWeight: '600'}}>{(x.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
                             <Text> 원</Text>
                         </View>
                     </View>
@@ -607,7 +602,7 @@ const Talk1Sub = ({navigation, route}) => {
 
                 <View style={styles.sum}>
                     <View style={styles.myList2FooterBox}>
-                        <View style={styles.budget}><Text style={{fontSize: 18, fontWeight: '600'}}>{(sumResult.sum + sumResult.exp).toLocaleString()} 원</Text></View>
+                        <View style={styles.budget}><Text style={{fontSize: 18, fontWeight: '600'}}>{(sumResult.sum + sumResult.exp).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</Text></View>
                         <Text style={{fontSize: 18, fontWeight: '600'}}>총 예산</Text>
                     </View>
                     <View style={[styles.myList2FooterBox, {paddingLeft: 20, height: 25}]}>
