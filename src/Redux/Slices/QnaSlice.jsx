@@ -3,12 +3,14 @@ import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const postQna = createAsyncThunk("postQnaSlice/async", async (data) => {
+  console.log('ㅡ,ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ')
     try{
       const response = await axios({
           method: 'post',
           url: 'https://momsnote.net/api/qna/list',
           data : data
       });
+      console.log('response: ', response);
       if(response.data == ''){ return setInfo('0') }else return response.data;
       }catch(error){
           console.log('qna axios error: ', error);
@@ -20,9 +22,11 @@ const initialState = {
     loading: false,
     data: [],
     refresh: {
-      category: '전체'
+      category: '전체',
+      page: 1,
     }
 }
+console.log('initialState: ', initialState);
 
 export const qnaSlice = createSlice({
     name: 'qnaSlice',
@@ -31,6 +35,7 @@ export const qnaSlice = createSlice({
       setQnaRefresh:(state, action)=>{
         console.log('action: ', action);
         state.refresh.category = action.payload.category;
+        state.refresh.page = action.payload.page;
       }
     },
     extraReducers: (bulider) => {

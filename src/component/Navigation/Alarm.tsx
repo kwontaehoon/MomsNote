@@ -31,6 +31,7 @@ const Main = ({navigation}) => {
   const boardSet = useSelector(state => { return state.board.refresh; });
 
   const [info, setInfo] = useState();
+  console.log('info: ', info);
   
   const isFocused = useIsFocused();
 
@@ -106,7 +107,7 @@ const Main = ({navigation}) => {
   :
     <View style={styles.container}>
       
-    { info == '0' ?
+    { info == '' ?
     <View style={{alignItems: 'center', justifyContent: 'center', height: '80%'}}>
     <Image source={require('../../../public/assets/image/rainbow.png')}/>
   <Text style={{fontSize: 16, color: '#757575', marginTop: 24}}>아직 받은 알림이 없습니다.</Text>

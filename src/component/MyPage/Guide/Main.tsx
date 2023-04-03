@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         height: '100%',
     },
     main:{
-        height: '80%',
+        height: '90%',
         paddingTop: 30
     },
     main2:{

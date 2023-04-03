@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack'
 import { View, Button, Text, StyleSheet, Platform, BackHandler } from 'react-native';
-import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux'
 
 import Home from '../Home/Main'
@@ -28,11 +27,8 @@ import Forum2 from '../../../public/assets/svg/forum2.svg'
 import Campaign2 from '../../../public/assets/svg/campaign2.svg'
 import Baby2 from '../../../public/assets/svg/Baby2.svg'
 
-import Push from '../Test/Push'
-import DateTime22 from '../Test/DateTime2'
-import Wheel from '../Test/Wheel'
-
 import { postAlarm } from '../../Redux/Slices/AlarmSlice';
+import { postUser } from '../../Redux/Slices/UserSlice';
 
 const styles = StyleSheet.create({
     header:{
@@ -78,14 +74,15 @@ function MainScreen() {
 
   useEffect(()=>{
     dispatch(postAlarm({page: 1}));
+    dispatch(postUser());
   }, []);
 
-  // useEffect(()=>{
-  //   Alarm.filter(x => x.readFlag == false) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
-  // }, [Alarm])
+  useEffect(()=>{
+    Alarm.filter(x => x.readFlag == false) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+  }, [Alarm])
 
   return (
-    <Tab.Navigator initialRouteName='맘스 정보' backBehavior='initialRoute' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
+    <Tab.Navigator initialRouteName='홈' backBehavior='initialRoute' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
       : {tabBarStyle: { height: 55, position: 'absolute', paddingBottom: 5, elevation: 0 }, headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
 
 
@@ -229,7 +226,7 @@ function MainScreen() {
                           headerRight: () => (
                             <View style={styles.header}>
                                 <View style={[styles.headerBox, {justifyContent: 'flex-end'}]}>
-                                    <View style={styles.iconBox}><Search onPress={()=>navigation.navigate('검색')}/></View>
+                                    <View style={styles.iconBox}><Search onPress={()=>navigation.navigate('맘스정보 검색')}/></View>
                                     <View style={styles.iconBox}>
                                       <View style={[styles.redDot, {display: AlarmFlag ? 'flex' : 'none'}]} />
                                       <Bell onPress={()=>navigation.navigate('알림')}/>

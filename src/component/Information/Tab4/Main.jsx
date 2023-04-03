@@ -9,7 +9,7 @@ import { postQna, setQnaRefresh } from '../../../Redux/Slices/QnaSlice'
 
 const styles = StyleSheet.create({
     container:{
-        height: '91%',
+        height: '87%',
         backgroundColor: 'white',
     },
     header:{
@@ -59,6 +59,7 @@ const Talk1 = ({navigation}) => {
     ];
 
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
     const qna = useSelector(state => { return state.qna.data; });
     console.log('qna: ', qna);
     const qnaSet = useSelector(state => { return state.qna.refresh; });
@@ -73,9 +74,11 @@ const Talk1 = ({navigation}) => {
     const [qnaFilter, setQnaFilter] = useState(Array.from({length: qna?.length}, () => { return false }));
     console.log('qnaFilter: ', qnaFilter);
 
+    const [test, setTest] = useState(false);
+
     useEffect(()=>{
         dispatch(postQna(qnaSet));
-    }, [filter]);
+    }, [qnaFilter]);
 
     useEffect(()=>{
         const newArray = qna?.reduce(function(acc, current) {
@@ -92,16 +95,24 @@ const Talk1 = ({navigation}) => {
     }, [qna]);
 
     const change = (category, e) => { // 카테고리 배경색상, 글자 색상 변경 onpress
+        console.log('change');
         let arr = Array.from({length: info.length}, () => { return false });
         arr[e] = !arr[e];
         setFilter(arr);
-        dispatch(setQnaRefresh({category: category}));
+        dispatch(setQnaRefresh({category: category, page: 2}));
     }
 
     const change2 = (e) => {
+        console.log('change2');
         let arr = qnaFilter;
         arr[e] = !arr[e];
-        setFilter(arr);
+        console.log('arr: ', arr);
+        setTest(arr);
+    }
+
+    const onEnd = () => {
+        console.log(1234);
+        dispatch(setQnaRefresh({category: '전체', page: 2}));
     }
 
     const renderItem = ({ item }) => (
@@ -149,6 +160,8 @@ const Talk1 = ({navigation}) => {
             </View>
             <View style={styles.main}>
                 <FlatList data={DATA} renderItem={renderItem}
+                onEndReached={onEnd}
+                showsVerticalScrollIndicator={false} ListFooterComponent={loading && <ActivityIndicator size={'large'} color='#E0E0E0'/>}
                     keyExtractor={item => String(item.qnaId)}>
                 </FlatList>
             </View>

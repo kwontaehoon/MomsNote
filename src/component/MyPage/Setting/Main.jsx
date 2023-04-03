@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Switch, Modal, Platform } from 'react-native'
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Switch, Modal, Platform } from 'react-native'
 import axios from 'axios'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSelector } from 'react-redux'
 import { postUser } from '../../../Redux/Slices/UserSlice'
 import { useDispatch } from 'react-redux'
+import TimeWheelStart from './Modal/TimeWheelStart'
+import TimewheelEnd from './Modal/TimeWheelEnd'
 
 const styles = StyleSheet.create({
     container:{
         height: '100%',
         backgroundColor: 'white',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     container2:{
 
@@ -85,6 +90,7 @@ const styles = StyleSheet.create({
         marginBottom: 7,
     },
 })
+
 const Main = ({navigation}) => {
 
     const DATA = [
@@ -97,11 +103,24 @@ const Main = ({navigation}) => {
 
     const dispatch = useDispatch();
     const [isEnabled, setIsEnabled] = useState(Array.from({length: 3}, () => { return false })); // 스위치 토글
-    console.log('스위치: ', isEnabled);
     const [clockDisplay, setClockDisplay] = useState(false); // 시작 종료 시간 display
     const [modalVisible, setModalVisible] = useState(false); // 알람 끄기 modal
     const [modalVisible2, setModalVisible2] = useState(false); // 로그아웃 modal
     const [modal2, setModal2] = useState(false); // 마케팅 수신동의
+    const [modal3, setModal3] = useState({
+        open: '',
+        clock: '',
+        hours: '00',
+        minutes: '00'
+    }); // 알람 시작시간
+    const [modal4, setModal4] = useState({
+        open: '',
+        clock: '',
+        hours: '00',
+        minutes: '00'
+    }); // 알람 끝나는 시간
+
+    const [loading, setLoading] = useState(false);
 
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('time');
@@ -112,24 +131,30 @@ const Main = ({navigation}) => {
     const [alarmEnd, setAlarmEnd] = useState('07:00');
 
     const user = useSelector(state => {return state.user.data});
-    console.log('user: ', user);
 
     useEffect(()=>{
         dispatch(postUser());
         const user2 = async() => {
+            setLoading(false);
 
             const arr = Array.from({length: 3}, () => {return false});
 
             const activeAlarm = await AsyncStorage.getItem('activeAlarm');
-            console.log('activeAlarm: ', activeAlarm);
             const alarmSetting = await AsyncStorage.getItem('alarmSetting');
-            console.log('alarmSetting: ', alarmSetting);
+
+            const alarmStartHours = await  AsyncStorage.getItem('alarmStartHours');
+            const alarmStartMinutes = await  AsyncStorage.getItem('alarmStartMinutes');
+            const alarmEndHours = await  AsyncStorage.getItem('alarmEndHours');
+            const alarmEndMinutes = await  AsyncStorage.getItem('alarmEndMinutes');
 
             user.marketing ? arr[0] = true : '';
             activeAlarm == null ? '' : arr[1] = true;
             alarmSetting == null ? '' : arr[2] = true;
 
             setIsEnabled(arr);
+            setModal3(prevState => ({...prevState, hours: alarmStartHours, minutes: alarmStartMinutes}));
+            setModal4(prevState => ({...prevState, hours: alarmEndHours, minutes: alarmEndMinutes}));
+            setLoading(true);
         }
         user2();
     }, [modal2]);
@@ -147,7 +172,6 @@ const Main = ({navigation}) => {
     }
 
     const toggleSwitch = async(e) => {
-        console.log('e: ', e);
         let arr = [...isEnabled];
 
         if(e === 0 && isEnabled[0]){
@@ -294,13 +318,17 @@ const Main = ({navigation}) => {
                 <View style={[styles.mainBox, {display: isEnabled[2] ? 'flex' : 'none'}]}>
                     <View style={styles.mainBoxSub}><Text style={styles.text}>시작시간</Text></View>
                     <View style={[styles.mainBoxSub, {alignItems: 'flex-end'}]}>
-                        <TouchableOpacity style={styles.clockBox} onPress={()=>showTimepicker(0)}><Text style={styles.text}>{alarmStart}</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.clockBox} onPress={()=>setModal3(!modal3)}>
+                            <Text style={styles.text}>{modal3.clock == 'PM' ?  Number(modal3.hours?.split('').filter(x=> x !== '시').join(''))+12 : modal3.hours?.split('').filter(x=> x !== '시').join('')}: {modal3.minutes?.split('').filter(x=> x !== '분').join('')}</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={[styles.mainBox, {display: isEnabled[2] ? 'flex' : 'none'}]}>
                     <View style={styles.mainBoxSub}><Text style={styles.text}>종료 시간</Text></View>
                     <View style={[styles.mainBoxSub, {alignItems: 'flex-end'}]}>
-                        <TouchableOpacity style={styles.clockBox} onPress={()=>showTimepicker(1)}><Text style={styles.text}>{alarmEnd}</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.clockBox} onPress={()=>setModal4(!modal4)}>
+                            <Text style={styles.text}>{modal4.clock == 'PM' ? Number(modal4.hours?.split('').filter(x=> x !== '시').join(''))+12 : modal4.hours?.split('').filter(x=> x !== '시').join('')}: {modal4.minutes?.split('').filter(x=> x !== '분').join('')}</Text>
+                            </TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -326,7 +354,7 @@ const Main = ({navigation}) => {
                 </TouchableOpacity>
                 <View style={styles.mainBox}>
                     <View style={styles.mainBoxSub}><Text style={styles.text}>버전정보</Text></View>
-                    <View style={[styles.mainBoxSub, {alignItems: 'flex-end'}]}><Text style={{fontSize: 13, color: '#9E9E9E'}}>현재 1.0.1 / 최신 1.0.2</Text></View>
+                    <View style={[styles.mainBoxSub, {alignItems: 'flex-end'}]}><Text style={{fontSize: 13, color: '#9E9E9E'}}>현재 1.0.2 / 최신 1.0.2</Text></View>
                 </View>
                 <View style={styles.mainBox}>
                     <View style={styles.mainBoxSub}><Text style={styles.text} onPress={()=>setModalVisible2(!modalVisible2)}>로그아웃</Text></View>
@@ -335,8 +363,15 @@ const Main = ({navigation}) => {
         </View>
       );
 
-  return (
+  return !loading ? 
+    <View style={styles.container}><ActivityIndicator size={'large'} color={'#E0E0E0'}/></View>
+     : (
     <View style={styles.container}>
+
+        <TimeWheelStart modal={modal3} setModal={setModal3}/>
+        <TimewheelEnd modal={modal4} setModal={setModal4} />
+        
+
         <Modal animationType="fade" transparent={true} visible={modalVisible} statusBarTranslucent={true}
             onRequestClose={() => {
             setModalVisible(!modalVisible)}}>
@@ -390,7 +425,7 @@ const Main = ({navigation}) => {
             </View>
         </Modal>
 
-        {show && (
+        {/* {show && (
           <DateTimePicker
             testID="dateTimePicker"
             value={date}
@@ -399,10 +434,8 @@ const Main = ({navigation}) => {
             onChange={onChange}
             style={Platform.OS == 'ios' ? {position: 'absolute',bottom: 20, borderWidth: 1, width: '100%'} : {width: 100, height: 100, backgroundColor: 'blue'}}
             display={Platform.OS == 'ios' ? 'spinner' : ''}
-            
-            
           />
-        )}
+        )} */}
         
         <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>

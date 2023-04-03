@@ -298,7 +298,7 @@ const Navigation = ({navigation, route}) => {
   }); // webView
   const [modal5, setModal5] = useState(false); // coarchmark
   const [modal6, setModal6] = useState(false); // coarchmark2 brand base
-  const [modal7, setModal7] = useState(false); // coarchmark3 brand coarch 
+  const [modal7, setModal7] = useState(false); // coarchmark3 brand coarch
   const animation = useRef(new Animated.Value(0)).current;
 
   useEffect(()=>{
@@ -464,7 +464,6 @@ const save = async() => {
   }
 
   const brandModal = async(x) => {
-    console.log('x: ', x);
     const coarch = await AsyncStorage.getItem('coarchMarkMaterialModal');
     coarch == null ? (setModal6(true), setModal7(true)) : setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDataId: x.needsDataId, needsName: x.needsName}));
   }
@@ -539,7 +538,7 @@ const save = async() => {
             <StatusBar />
         </SafeAreaView>
 
-		    { info == '' || purchaseCount == undefined  ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '90.5%'}]}/>
+		    { info == '' || purchaseCount == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '90.5%'}]}/>
         :
         <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '90.5%'}]}>
 

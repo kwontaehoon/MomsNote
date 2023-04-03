@@ -29,6 +29,7 @@ import Post from '../Talk/Tab3/Post'
 import Post2 from '../MyPage/Edit/Tab2/Post'
 import Setting from '../MyPage/Setting/Main'
 import Search from '../Navigation/Search'
+import InformationSearch from '../Navigation/Search/Information'
 import Talk2Detail from '../Talk/Tab2/Tab2Detail'
 import Talk2Register from '../Talk/Tab2/Register/Main'
 import MaterialList from '../Talk/Tab2/Register/MaterialList'
@@ -413,6 +414,8 @@ const Navigation = () => {
                 <Stack.Screen name="정부지원혜택 상세내용" component={Government} options={{title: '', headerShown: false}}/>
 
                 <Stack.Screen name="검색" component={Search} options={{title: '', headerShown: false}}/>
+                <Stack.Screen name="맘스정보 검색" component={InformationSearch} options={{title: '', headerShown: false}} />
+
                 <Stack.Screen name="출산 준비물 검색" component={MaterialSearch} options={{title: '', headerShown: false}}/>
                 <Stack.Screen name="알림" component={Alarm} options={({ navigation, route }) => ({
                         headerLeft: () => (

@@ -383,7 +383,7 @@ const Talk1 = ({navigation, route}:any) => {
           dispatch(setBoardCount({page: infoCount > (boardSet.page * 30) ? boardSet.page + 1 : boardSet.page, count: infoCount}));
         }} onEndReachedThreshold={0}
           keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}
-          ListFooterComponent={loading && <ActivityIndicator />}>
+          ListFooterComponent={loading && <ActivityIndicator size={'large'} color='#E0E0E0'/>}>
         </FlatList>
         }
       </View>
