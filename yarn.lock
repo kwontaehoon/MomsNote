@@ -3587,9 +3587,9 @@
     "qs" "6.9.1"
 
 "expo-av@~13.0.2":
-  "integrity" "sha512-u+y9wUBodp08UjRZYckNWzr9zEQHK6eScRBkhdTd9Rq48SEZ7eN6xXn79hubvk0P5nj7lFS+hdKjmx9T5XHGww=="
-  "resolved" "https://registry.npmjs.org/expo-av/-/expo-av-13.0.2.tgz"
-  "version" "13.0.2"
+  "integrity" "sha512-9SpXOjY2MUK+jCIL68EUro/aHBlbZ3B4cY1nRr2aTPfv/dLD3bXRZNTTtSwOgsHbuKO6XwjHgCoYbd9T0GcE4A=="
+  "resolved" "https://registry.npmjs.org/expo-av/-/expo-av-13.0.3.tgz"
+  "version" "13.0.3"
 
 "expo-checkbox@~2.2.2":
   "integrity" "sha512-0DXbeJdVAPfqiy+RBkGXHYU2dLxdpyaWAaV3+N+/xWEC2ilqrqCiSqsPcbFQer1f9qaqjNeDUi51qPuF5AgTIw=="
@@ -3658,7 +3658,7 @@
   "resolved" "https://registry.npmjs.org/expo-keep-awake/-/expo-keep-awake-11.0.1.tgz"
   "version" "11.0.1"
 
-"expo-linear-gradient@^11.0.3":
+"expo-linear-gradient@^11.0.3", "expo-linear-gradient@^11.4.0":
   "integrity" "sha512-qtIfsLs7NOpfxYrFSJL5uLtNHIkBHQFuQ3f7++XpoJTSm4eQVFxjjkCGWiLIrkpVjKzmgp3DLuIVsadsGX21lA=="
   "resolved" "https://registry.npmjs.org/expo-linear-gradient/-/expo-linear-gradient-11.4.0.tgz"
   "version" "11.4.0"

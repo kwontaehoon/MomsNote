@@ -1,16 +1,13 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const postQna = createAsyncThunk("postQnaSlice/async", async (data) => {
-  console.log('ㅡ,ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ')
     try{
       const response = await axios({
           method: 'post',
           url: 'https://momsnote.net/api/qna/list',
           data : data
       });
-      console.log('response: ', response);
       if(response.data == ''){ return setInfo('0') }else return response.data;
       }catch(error){
           console.log('qna axios error: ', error);
@@ -33,7 +30,6 @@ export const qnaSlice = createSlice({
     initialState,
     reducers: {
       setQnaRefresh:(state, action)=>{
-        console.log('action: ', action);
         state.refresh.category = action.payload.category;
         state.refresh.page = action.payload.page;
       }

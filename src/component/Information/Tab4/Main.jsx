@@ -61,22 +61,17 @@ const Talk1 = ({navigation}) => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     const qna = useSelector(state => { return state.qna.data; });
-    console.log('qna: ', qna);
     const qnaSet = useSelector(state => { return state.qna.refresh; });
-    console.log('qnaSet: ', qnaSet);
     const [info, setInfo] = useState();
-    console.log('info: ', info);
     const [info2, setInfo2] = useState();
-    console.log('info2: ', info2);
     const [test, setTest] = useState();
     const [plus, setPlus] = useState();
-    console.log('plus: ', plus);
     const [filter, setFilter] = useState(); // 서브 카테고리
     const [qnaFilter, setQnaFilter] = useState(Array.from({length: qna.length}, () => { return false }));
 
     useEffect(()=>{
         dispatch(postQna(qnaSet));
-    }, [test]);
+    }, [test, loading]);
 
 
 
@@ -89,20 +84,20 @@ const Talk1 = ({navigation}) => {
           }, []);
           setInfo2(newArray);
           setInfo([{category: '전체'}, ...newArray]);
-          if(qna == ''){
+
             const arr = Array.from({length: info?.length}, () => { return false; });
             arr[0] = true;
             setFilter(arr);
-          }
+          
+        setPlus(qna);
     }, [qna]);
 
     const change = (category, e) => { // 카테고리 배경색상, 글자 색상 변경 onpress
         let arr = Array.from({length: info.length}, () => { return false });
         arr[e] = !arr[e];
-        console.log('arr: ', arr);
         setFilter(arr);
         setTest(e);
-        dispatch(setQnaRefresh({category: category, page: 2}));
+        dispatch(setQnaRefresh({category: category, page: 1}));
     }
 
     const change2 = (e) => {
@@ -111,9 +106,26 @@ const Talk1 = ({navigation}) => {
         setQnaFilter([...arr]);
     }
 
-    const onEnd = () => {
-        console.log(1234);
-        dispatch(setQnaRefresh({category: '전체', page: 2}));
+    const onEnd = async() => {
+        setLoading(true);
+
+        try{
+            const response = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/api/qna/list',
+                data : {
+                    category: info[filter?.findIndex(x => x == true)].category,
+                    page: 2
+                }
+            });
+            console.log('response: ', response.data);
+            const addInfo = [...plus, ...response.data];
+            setPlus(addInfo);
+
+            }catch(error){
+                console.log('qna axios error: ', error);
+                return undefined;
+            }
     }
 
     const renderItem = ({ item }) => (
@@ -121,10 +133,10 @@ const Talk1 = ({navigation}) => {
             return (
                 <View key={index}>
                     <View style={styles.mainBox}>
-                        <Text style={{fontSize: 16, fontWeight: '700'}}>{x.category}({qna?.length})</Text>
+                        <Text style={{fontSize: 16, fontWeight: '700'}}>{x.category}({plus?.length})</Text>
                     </View>
                     {
-                        qna?.map((x, index)=>{
+                        plus?.map((x, index)=>{
                             return (
                                 <View key={index}>
                                     <TouchableOpacity style={styles.mainBox2} onPress={()=>change2(index)}>
@@ -146,12 +158,12 @@ const Talk1 = ({navigation}) => {
     const renderItem2 = ({ item, index }) => (
         <View style={{justifyContent: 'center'}}>
             <TouchableOpacity style={[styles.headerFilterBox, {backgroundColor: filter[index] ? '#FEA100' : 'white'}]} onPress={()=>change(item.category, index)}>
-                <Text style={{color: filter[index] ? 'white' : 'black', fontWeight: '400', fontSize: 14}}>{item.category}</Text>
+                <Text style={{color: filter[index] ? 'white' : 'black', fontWeight: '400', fontSize: 14}}>{item?.category}</Text>
             </TouchableOpacity>
         </View>
     );
 
-    return qna == '' ?  <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
+    return plus == undefined || qna == '' ?  <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
     : (
         <View style={styles.container}>
             <View style={styles.header}>
