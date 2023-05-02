@@ -136,7 +136,7 @@ const Main = ({navigation, route}) => {
 
     <SafeAreaProvider>
         <SafeAreaView style={{ backgroundColor: '#FAA61A' }}>
-                    <StatusBar />
+                <StatusBar />
             </SafeAreaView>
             <FocusAwareStatusBar />
         <SafeAreaView style={[styles.container, {marginBottom: Platform.OS == 'ios' ? 30 : 0}]}>
