@@ -80,6 +80,9 @@ const styles = StyleSheet.create({
     arrowBox:{
         position: 'absolute',
         right: 10,
+        borderRadius: 20
+
+        
     },
     footer:{
         height: 60,
@@ -128,6 +131,8 @@ const AddPage = ({navigation, route}) => {
     const [modal2, setModal2] = useState(false);
 
     const submit = async() => {
+        const result = {...info, ...marketingFlag};
+        console.log('result: ', result);
 
         AsyncStorage.setItem('user', JSON.stringify(info));
 
@@ -138,7 +143,7 @@ const AddPage = ({navigation, route}) => {
                 headers: { 
                     'Content-Type': 'application/json'
                 },
-                data: {...info, ...marketingFlag}
+                data: result
             });
             const decoded = jwtDecode(response.data.token);
             AsyncStorage.setItem('userId', String(decoded.id));
@@ -214,7 +219,7 @@ const AddPage = ({navigation, route}) => {
 
         e == 3 && isChecked[3] ? setMarketingFlag(prevState => ({...prevState, marketingFlag: 0})) : setMarketingFlag(prevState => ({...prevState, marketingFlag: 1}));
     }
-    const check = async() => {
+    const check = async(e) => {
         try{
             const response = await axios({
                 method: 'post',
@@ -222,7 +227,7 @@ const AddPage = ({navigation, route}) => {
                     'Content-Type': 'application/json'
                   },
                 url: 'https://momsnote.net/api/nickname/check',
-                data: {nickname: info.nickname}
+                data: {nickname: e}
             });
             setNickNameCheck(response.data);
             }catch(error){
@@ -241,9 +246,12 @@ const AddPage = ({navigation, route}) => {
                     <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.</Text>
                     <View>
                         <TextInput placeholder='닉네임 입력' style={[styles.textBox, {borderColor: nickNameCheck == 1 ? 'red' : bottomColor[0] ? '#FEB401' : '#EEEEEE'}]} maxLength={8}
-                            value={info.nickname}
                             onFocus={()=>change(0)}
-                            onChangeText={(e) => { setInfo((prevState) => ({ ...prevState, nickname: e})); }}
+                            value={info.nickname}
+                            onChangeText={(e)=>{
+                                check(e);
+                                setInfo(prevState => ({...prevState, nickname: e.replace(' ', '')}));
+                            }}
                             onBlur={()=>check()}>
                         </TextInput>
                     </View>

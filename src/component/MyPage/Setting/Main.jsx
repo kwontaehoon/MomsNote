@@ -113,6 +113,7 @@ const Main = ({navigation}) => {
         hours: '00 ',
         minutes: ' 00'
     }); // 알람 시작시간
+    console.log('modal3: ', modal3);
     const [modal4, setModal4] = useState({
         open: '',
         clock: '',
@@ -145,7 +146,6 @@ const Main = ({navigation}) => {
             const alarmStartHours = await  AsyncStorage.getItem('alarmStartHours');
             const alarmStartMinutes = await  AsyncStorage.getItem('alarmStartMinutes');
             const alarmEndHours = await  AsyncStorage.getItem('alarmEndHours');
-            console.log('aa: ', alarmEndHours.split(''));
             const alarmEndMinutes = await  AsyncStorage.getItem('alarmEndMinutes');
 
             user.marketing ? arr[0] = true : '';

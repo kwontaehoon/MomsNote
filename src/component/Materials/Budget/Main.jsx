@@ -99,7 +99,7 @@ headerBar:{
     flexDirection: 'row',
   },
   footer:{
-    height: '26.5%',
+    height: '26%',
   },
   footerBox:{
     padding: 15,
@@ -388,6 +388,7 @@ const capture = async() => {
               keyExtractor={item => item.id}>
         </FlatList>
       </View>
+
       <View style={styles.footer}>
         <View style={styles.footerBox}>
           <View style={styles.arrowBox}>

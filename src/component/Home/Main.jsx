@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     main:{
         height: 500,
         padding: 20,
+        paddingTop: 0,
         backgroundColor: '#FEECB3',
     },
     mainBox:{
@@ -67,14 +68,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     bubble:{
-        maxWidth: 300,
+        maxWidth: 250,
         paddingTop: 8,
         paddingBottom: 8,
         paddingLeft: 15,
         paddingRight: 15,
         position: 'absolute',
         zIndex: 999,
-        // borderRadius: 30,
+        borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'white',
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         zIndex: 900,
         bottom: -15,
-        right: 0,
+        right: 50,
         transform: [{ rotate: "180deg" }],
     },
     profileBox:{
@@ -236,7 +237,9 @@ const Home = ({navigation}) => {
     const materialPopular = useSelector(state => { return state.materialPopular.data });
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     const mainData = useSelector(state => { return state.user.data; });
+    console.log('mainData: ', mainData);
     const Alarm = useSelector(state => { return state.alarm.data; });
+    console.log('Alarm: ', Alarm);
     const [test, setTest] = useState(); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
@@ -279,7 +282,6 @@ const Home = ({navigation}) => {
     }, [test]);
 
     const save = async() => {
-       
         setTest(undefined);
     }
 
@@ -355,7 +357,7 @@ const Home = ({navigation}) => {
 
                     {mainData.message[0] == null ? '' :  mainData.message.map((x, index) => {
                         return(
-                            <View style={[styles.bubble, {top: 50, right: 50, display: mainData.message[0] == null ? 'none' : bubble[index] ? 'flex' : 'none'}]} key={index}>
+                            <View style={[styles.bubble, {top: -150, right: 0, display: mainData.message[0] == null ? 'none' : bubble[index] ? 'flex' : 'none'}]} key={index}>
                                 <View style={[styles.triangle, {borderBottomColor: bubble[index] ? 'white' : 'transparent'}]}></View>
                                 <Text>{x}</Text>
                             </View>

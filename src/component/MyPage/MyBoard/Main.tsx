@@ -15,26 +15,26 @@ import Chat from '../../../../public/assets/svg/Chat.svg'
 import { postMyBoard } from '../../../Redux/Slices/MyBoardSlice'
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     flex: 1,
     backgroundColor: 'white',
     paddingLeft: 10,
     paddingRight: 10,
   },
-  mainBox:{
+  mainBox: {
     borderBottomWidth: 1,
     borderColor: '#EEEEEE',
     height: 100,
     alignItems: 'center',
     flexDirection: 'row',
   },
-  mainBoxSub:{
-    justifyContent: 'center',
-    alignItems: 'center',
+  mainBoxSub: {
     paddingLeft: 10,
     paddingRight: 10,
+    justifyContent: 'center',
+    width: '100%'
   },
-  videoImage:{
+  videoImage: {
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
@@ -44,13 +44,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'white',
     zIndex: 999
-},
-  dateBox:{
-    position: 'absolute',
-    right: 10,
-    top: 50,
   },
-  mainBoxSub2:{
+  dateBox: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'flex-end',
+  },
+  mainBoxSub2: {
     flexDirection: 'row',
     paddingTop: 4,
     alignItems: 'center',
@@ -58,75 +58,68 @@ const styles = StyleSheet.create({
 })
 
 
-const Talk1 = ({navigation, route}:any) => {
+const Talk1 = ({ navigation, route }: any) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.myBoard.data; });
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(postMyBoard());
   }, []);
 
-  const dayCalculate = (date:number) => {
-    switch(true){
-      case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
-      case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
-      default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'day')}일 전</Text>
-    }
-  }
-
-  const ImageBox = ({item}:any) => {
-    const arr:string[] = [];
-    const a = (item.split('|')).filter((x:string) => { if(x.charAt(x.length-1) === '4'){ arr.push(x); }else return x;});
+  const ImageBox = ({ item }: any) => {
+    const arr: string[] = [];
+    const a = (item.split('|')).filter((x: string) => { if (x.charAt(x.length - 1) === '4') { arr.push(x); } else return x; });
     const infoFiltering = [...arr, ...a];
 
-    if(infoFiltering[0].charAt(infoFiltering[0].length-1) == '4'){
-      return(
+    if (infoFiltering[0].charAt(infoFiltering[0].length - 1) == '4') {
+      return (
         <View style={styles.mainBoxSub}>
-          <View style={styles.videoImage}><Icon name='play' size={17} style={{color: 'white'}}/></View>
-          <Video source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${infoFiltering[0]}`}} style={{width: 68, height: 68}} resizeMode='cover'/>
+          <View style={styles.videoImage}><Icon name='play' size={17} style={{ color: 'white' }} /></View>
+          <Video source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${infoFiltering[0]}` }} style={{ width: 68, height: 68 }} resizeMode='cover' />
         </View>
       )
-    }else{
-      return(
-      <View style={styles.mainBoxSub}>
-          <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.split('|')[0]}`}} style={{width: 68, height: 68}}/>
-      </View>
+    } else {
+      return (
+        <View style={styles.mainBoxSub}>
+          <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.split('|')[0]}` }} style={{ width: 68, height: 68 }} />
+        </View>
       )
     }
   }
 
-  const renderItem2 = ({ item }:any) => (
-    <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', {item})} activeOpacity={1}>
-        { item.savedName == null ? '' : <ImageBox item={item.savedName}/>  }
-        <View style={[styles.mainBoxSub, {paddingTop: 5, width: '65%', alignItems: 'flex-start'}]}>
-          <Text style={{fontSize: 15, paddingTop: 2}} numberOfLines={1}>{item.title} </Text>
-          <View style={styles.mainBoxSub2}>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}>{item.nickname} </Text>
-            <Like width={12} height={17} fill='#9E9E9E'/>
-            <Text style={{color: '#9E9E9E'}}> {item.recommend}  </Text>
-            <Chat width={12} height={18} fill='#9E9E9E'/>
-            <Text style={{fontSize: 13, color: '#9E9E9E'}}> {item.commentsCount}</Text>
+  const renderItem2 = ({ item }: any) => (
+    <TouchableOpacity style={styles.mainBox} onPress={() => navigation.navigate('맘스토크 상세내용', { item })} activeOpacity={1}>
+      {item.savedName == null ? '' : <ImageBox item={item.savedName} />}
+      <View style={styles.mainBoxSub}>
+        <Text style={{ fontSize: 15, paddingTop: 2 }} numberOfLines={1}>{item.title} </Text>
+
+        <View style={styles.mainBoxSub2}>
+          <Text style={{ fontSize: 13, color: '#9E9E9E' }}>{item.nickname} </Text>
+          <Like width={12} height={17} fill='#9E9E9E' />
+          <Text style={{ color: '#9E9E9E' }}> {item.recommend}  </Text>
+          <Chat width={12} height={18} fill='#9E9E9E' />
+          <Text style={{ fontSize: 13, color: '#9E9E9E' }}> {item.commentsCount}</Text>
+          <View style={styles.dateBox}>
+            <Text style={{ color: '#9E9E9E' }}>{moment(item.boardDate).format('YY.MM.DD')}</Text>
           </View>
         </View>
-        <View style={[styles.dateBox, {justifyContent: 'center', alignItems: 'flex-end'}]}>
-         {dayCalculate(item.boardDate)}
-        </View>
+      </View>
     </TouchableOpacity>
-  ); 
+  );
 
-  return info == ''  ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
-  : (
-    <View style={styles.container}>
+  return info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container} />
+    : (
+      <View style={styles.container}>
         {info == '0' ?
-        <View style={{marginTop: 200, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
-        :
-        <FlatList data={info} renderItem={renderItem2}
-          keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
-        </FlatList>
+          <View style={{ marginTop: 200, alignItems: 'center' }}><Text style={{ fontSize: 16, color: '#757575' }}>등록된 게시물이 없습니다.</Text></View>
+          :
+          <FlatList data={info} renderItem={renderItem2}
+            keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}>
+          </FlatList>
         }
-     </View>
-  )
+      </View>
+    )
 }
 
 export default Talk1

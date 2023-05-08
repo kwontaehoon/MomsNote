@@ -27,6 +27,7 @@ import { useDispatch } from 'react-redux'
 import { postBoardAppFlag } from '../../../Redux/Slices/BoardAppFlagSlice'
 
 
+
 const styles = StyleSheet.create({
     container:{
         flex: 1,
@@ -142,9 +143,6 @@ const styles = StyleSheet.create({
 })
 const Withdraw = ({navigation, route}) => {
 
-    console.log('apply route: ', route.params);
-    console.log(typeof(route.params));
-
     const DATA = [
         {
           id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -153,6 +151,10 @@ const Withdraw = ({navigation, route}) => {
     ];
 
     const [isChecked, setChecked] = useState(Array.from({length: 3}, ()=>{ return false })); // check box
+
+    const regExp = /[!?@#$%^&*():;+-=~{}<>\_\[\]\|\\\"\'\,\.\/\`\₩]/g; // 특수문자 정규식
+    const regNumber = /^[0-9]+$/; // 숫자 정규식
+
 
     const [SMSFlag, setSMSFlag] = useState({
         open: false,
@@ -325,9 +327,11 @@ const Withdraw = ({navigation, route}) => {
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>이름</Text>
                     <TextInput style={styles.textBox} placeholder='이름 입력' value={info.memberName} maxLength={8}
-                        onChangeText={(e) => setInfo((prevState) => ({
-                            ...prevState, memberName: e
-                        }))}></TextInput>
+                        onChangeText={(e) => {
+                            if(e !== '÷' && e.match(regExp) == null && e.match(regNumber) == null){
+                                setInfo((prevState) => ({...prevState, memberName: e.replace(' ', '') }));
+                            }
+                        }}></TextInput>
                 </View>
                 <View style={[styles.mainBox, {marginBottom: SMSFlag.open ? 10 : 30}]}>
 
@@ -383,7 +387,7 @@ const Withdraw = ({navigation, route}) => {
                             {info.address == '' ? <Text>주소 검색하기</Text>
                             : <Text>{info.address}</Text>}
                         </TouchableOpacity>
-                        <View style={styles.postBox}><Icon name='right' size={15}/></View>
+                        <View style={styles.postBox}><ArrowRight fill={'black'}/></View>
                     </View>
                     <TextInput style={styles.textBox} placeholder='상세주소 입력' value={info.addressDetails} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, addressDetails: e }))}></TextInput>
                 </View>
@@ -404,7 +408,7 @@ const Withdraw = ({navigation, route}) => {
                     <Text style={{color: '#616161'}}>초상권 활용에 동의합니다.</Text>
                 </View>
                 <View style={[styles.mainBox, {flexDirection: 'row', alignItems: 'center'}]}>
-                    <TouchableOpacity style={{position: 'absolute', right: 15}} onPress={()=> navigation.navigate('체험단 유의사항')}><Icon name='right' size={13}/></TouchableOpacity>
+                    <TouchableOpacity style={{position: 'absolute', right: 15}} onPress={()=> navigation.navigate('체험단 유의사항')}><ArrowRight fill={'#BDBDBD'}/></TouchableOpacity>
                     <Checkbox
                         style={styles.checkbox}
                         value={isChecked[2]}
@@ -416,9 +420,9 @@ const Withdraw = ({navigation, route}) => {
                     {info.memberName == '' || info.tel == '' || info.address == '' || info.addressDetails == '' ||
                     (info.blog == '' && info.youtube == '' && info.insta == '') || SMSFlag.flag == 0 || !isChecked[0]
                     ?
-                    <View style={styles.buttonBox}><Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text></View>
+                    <View style={styles.buttonBox}><Text style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>체험단 신청</Text></View>
                     : <TouchableOpacity style={[styles.buttonBox, {backgroundColor: '#FEA100'}]} onPress={submit}>
-                        <Text style={{fontSize: 18, color: 'white'}}>체험단 신청</Text>
+                        <Text style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>체험단 신청</Text>
                      </TouchableOpacity>}
                 </View>
             </View>

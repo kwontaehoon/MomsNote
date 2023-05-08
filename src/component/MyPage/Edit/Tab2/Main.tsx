@@ -163,15 +163,23 @@ const Withdraw = ({navigation, route}) => {
     const [seconds, setSeconds] = useState(parseInt(0));
 
     useEffect(()=>{
+        const appflag = async() => {
+            const async = await AsyncStorage.getItem('applicationFlag');
+            dispatch(postBoardAppFlag({experienceId: Number(async)}));
+        }
+        appflag();
+    }, []);
+
+    useEffect(()=>{
         const experienceId = async() => {
             const async = await AsyncStorage.getItem('applicationFlag');
             console.log('async: ', async);
-            dispatch(postBoardAppFlag({experienceId: Number(async)}));
+            
             setInfo(appFlag.data);
         }
-       setInfo(prvState => ({...prvState, address: route == undefined ? '' : route}));
+    //    setInfo(prvState => ({...prvState, address: route == undefined ? '' : route}));
        experienceId();
-    }, [route])
+    }, [route, appFlag])
 
     useEffect(() => {
         const countdown = setInterval(() => {
@@ -267,7 +275,7 @@ const Withdraw = ({navigation, route}) => {
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>이름</Text>
-                    <TextInput style={styles.textBox} placeholder='이름 입력' value={info?.memberName} maxLength={8}
+                    <TextInput style={styles.textBox} placeholder={'이름 입력'} value={info?.memberName} maxLength={8}
                         onChangeText={(e) => setInfo((prevState) => ({
                             ...prevState, memberName: e
                         }))}></TextInput>

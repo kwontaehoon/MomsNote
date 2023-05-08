@@ -470,7 +470,7 @@ const Talk1Sub = ({navigation, route}) => {
         if(info2.filter(x => x.category == e) == ''){
           return(
             <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{fontSize: 16, color: '#9E9E9E'}}>검색 결과가 없습니다.</Text>
+                <Text style={{fontSize: 16, color: '#9E9E9E'}}>선택된 품목이 없습니다.</Text>
             </View>
           )
         }else return(

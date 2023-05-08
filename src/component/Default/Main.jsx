@@ -13,7 +13,7 @@ const Main = ({navigation}) => {
     useEffect(()=>{
         const login = async() => {
             // AsyncStorage.removeItem('login');
-            // AsyncStorage.clear()
+            // AsyncStorage.clear();
             const asyncStorage = await AsyncStorage.getItem('login');
             setInfo(asyncStorage);
         }
