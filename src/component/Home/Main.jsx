@@ -236,6 +236,7 @@ const Home = ({navigation}) => {
     const boardPopular = useSelector(state => { return state.boardPopular.data });
     const materialPopular = useSelector(state => { return state.materialPopular.data });
     const infoPopular = useSelector(state => { return state.infoPopular.data });
+    console.log('infoPopular: ', infoPopular);
     const mainData = useSelector(state => { return state.user.data; });
     console.log('mainData: ', mainData);
     const Alarm = useSelector(state => { return state.alarm.data; });
@@ -273,9 +274,9 @@ const Home = ({navigation}) => {
         dispatch(postAlarm({page: 1}));
     }, []);
 
-    useEffect(()=>{
-        Alarm.filter(x => x.readFlag == false) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
-  }, [Alarm]);
+//     useEffect(()=>{
+//         Alarm.filter(x => x.readFlag == false) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+//   }, [Alarm]);
 
     useEffect(()=>{
         save();
