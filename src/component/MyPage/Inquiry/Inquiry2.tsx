@@ -50,7 +50,7 @@ const Inquiry3 = ({navigation}) => {
     Inquiry();
   }, []);
 
-  const renderItem = ({ item }) => item.status == '완료' ? '' : (
+  const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.main} onPress={()=>navigation.navigate('문의 상세', item)} activeOpacity={1}>
       <View style={styles.statusBox}><Text style={{color: '#757575'}}>{item.status}</Text></View>
         <Text style={{fontSize: 15, fontWeight: '600', marginBottom: 3, color: '#424242'}} numberOfLines={1}>{item.title}</Text>

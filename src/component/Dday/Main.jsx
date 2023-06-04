@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, SafeAreaView, StatusBar } from 'react-native'
 import Talk1 from './Tab1/Main'
 import Talk2 from './Tab2/Main'
@@ -46,15 +46,27 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
 })
-const Main = ({navigation}:any) => {
+const Main = ({navigation}) => {
 
     const DATA3 = Array.from({length: 40}, () => {return false}).map((x, index)=>{ return {id: `${index+1}`} });
-  
+    console.log('data4: ', DATA3);
+    const flatListRef = useRef();
     const dispatch = useDispatch();
     const user = useSelector(state => { return state.user.data; });
 
     const [filter, setFilter] = useState([true, false]); // filter tab 오늘의편지 or 이 시기에는?
     const [week, setWeek] = useState(Array.from({length: 40}, () => { return false }));
+    console.log('week: ', week.findIndex(x => x == true)+1);
+
+    const [test, setTest] = useState(0);
+
+    const ITEM_HEIGHT = 4;
+
+const getItemLayout = (data, index) => ({
+	length: ITEM_HEIGHT,
+	offset: ITEM_HEIGHT * index,
+	index,
+});
 
     useEffect(()=>{
       dispatch(postUser());
@@ -68,7 +80,7 @@ const Main = ({navigation}:any) => {
       }
     }, [user]);
 
-    const List = ():any => {
+    const List = () => {
         switch(true){
             case filter[0] === true: return <Talk1 navigation={navigation} week={week}/>
             case filter[1] === true: return <Talk2 navigation={navigation} week={week}/>
@@ -91,7 +103,13 @@ const Main = ({navigation}:any) => {
         <Text style={{fontSize: 16, padding: 3, fontWeight: week[item.id-1] ? 'bold' : '400',
         color: week[item.id-1] ? 'black' : '#9E9E9E', borderBottomWidth: week[item.id-1] ? 2 : 0 }}>{item.id}주</Text>
       </TouchableOpacity>
-    ); 
+    );
+
+    useEffect( () => {
+      if(flatListRef.current){
+          flatListRef.current.scrollToIndex({animated: true, index: test});
+      }
+  },[test]);
 
   return (
     <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '93%', flex: Platform.OS === 'ios' ? 1 : null}]}>
@@ -108,6 +126,9 @@ const Main = ({navigation}:any) => {
           <View style={styles.header2Box}><Text style={{fontSize: 16, fontWeight: 'bold'}}>임신주차</Text></View>
           <View style={styles.header2Box2}> 
             <FlatList data={DATA3} renderItem={renderItem}
+              ref={flatListRef}
+              initialScrollIndex={10}
+              getItemLayout={getItemLayout}
               keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
             </FlatList>
           </View>

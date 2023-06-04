@@ -4,6 +4,7 @@
     "slug": "Project1Type",
     "version": "1.0.1",
     "orientation": "portrait",
+    "scheme": "com.momsnote2",
     "icon": "./public/assets/image/1024icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -19,7 +20,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.momsnote"
+      "bundleIdentifier": "com.momsnote2"
     },
     "android": {
       "adaptiveIcon": {

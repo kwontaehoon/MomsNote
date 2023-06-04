@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
 import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
 import { postHits } from '../../../Redux/Slices/HitsSlice'
+import moment from 'moment'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Back from '../../../../public/assets/svg/Back.svg'
@@ -67,6 +68,9 @@ const styles = StyleSheet.create({
         height: 150,
         flexDirection: 'row',
         padding: 10,
+    },
+    mainBox2TitleBox:{
+       marginBottom: 20
     },
     image:{
         width: '95%',
@@ -186,8 +190,9 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = [route.params];
+    console.log('행사정보 info: ', info);
     const info2 = useSelector(state => { return state.event.data; });
-    console.log('info2: ', info2);
+    console.log('행사정보 info2: ', info2);
     const [info3, setInfo3] = useState();
     const eventSet = useSelector(state => { return state.event.refresh });
     console.log('eventSet: ', eventSet);
@@ -306,9 +311,20 @@ const Talk1Sub = ({navigation, route}) => {
         })
     }
 
+    const dateFilter = (item) => {
+        const days = ['일', '월', '화', '수', '목', '금', '토'];
+        return(<Text>{`${item.eventStartDate.split('-')[1]}.${item.eventStartDate.split('-')[2]}(${days[moment(item.eventStartDate).day()]})`} ~ {`${item.eventEndDate.split('-')[1]}.${item.eventEndDate.split('-')[2]}(${days[moment(item.eventEndDate).day()]})`}</Text>)
+      }
+
     const renderItem = ({ item }) => (
             <View style={styles.main}>
                 <View style={styles.mainBox2}>
+                    <View style={styles.mainBox2TitleBox}>
+                        <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 3, lineHeight: 25}}>{item.title}</Text>
+                        <View>
+                            <Text>{dateFilter(item)}</Text>
+                        </View>
+                    </View>
                     <RenderHtml source={{html: `${item.contents}`}} />
                 </View>
                 {item.savedName === null ? <View></View> : ImageBox()}

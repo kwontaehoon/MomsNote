@@ -110,8 +110,8 @@ const Main = ({navigation}) => {
     const [modal3, setModal3] = useState({
         open: '',
         clock: '',
-        hours: '00 ',
-        minutes: ' 00'
+        hours: '00',
+        minutes: '00'
     }); // 알람 시작시간
     console.log('modal3: ', modal3);
     const [modal4, setModal4] = useState({

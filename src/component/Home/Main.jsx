@@ -238,7 +238,6 @@ const Home = ({navigation}) => {
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     console.log('infoPopular: ', infoPopular);
     const mainData = useSelector(state => { return state.user.data; });
-    console.log('mainData: ', mainData);
     const Alarm = useSelector(state => { return state.alarm.data; });
     console.log('Alarm: ', Alarm);
     const [test, setTest] = useState(); // 캡쳐 uri
@@ -356,7 +355,7 @@ const Home = ({navigation}) => {
                 </View>
                 <View style={styles.mainBox2}>
 
-                    {mainData.message[0] == null ? '' :  mainData.message.map((x, index) => {
+                    {mainData?.message?.length == 0 ? '' :  mainData.message.map((x, index) => {
                         return(
                             <View style={[styles.bubble, {top: -150, right: 0, display: mainData.message[0] == null ? 'none' : bubble[index] ? 'flex' : 'none'}]} key={index}>
                                 <View style={[styles.triangle, {borderBottomColor: bubble[index] ? 'white' : 'transparent'}]}></View>

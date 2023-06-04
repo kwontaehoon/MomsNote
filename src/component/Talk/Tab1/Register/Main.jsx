@@ -271,6 +271,7 @@ const Register = ({navigation, route}) => {
           allowsEditing: true,
           aspect: [4, 3],
           quality: 1,
+          allowsEditing: false
         });
   
       if (!result.canceled) {

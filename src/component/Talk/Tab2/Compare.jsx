@@ -192,6 +192,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = useSelector(state => { return state.shareList.data; });
+    console.log('infoooooo: ', info);
     const material = useSelector(state => { return state.material.data; });
     const [list, setList] = useState(Array.from({length: 9}, () => {return true})); // list display
     const animation = useRef(new Animated.Value(0)).current;
@@ -243,7 +244,8 @@ const Talk1Sub = ({navigation, route}) => {
 
 
   const filtering = (e, title) => { // 품목 브랜드 가격 부분 none || flex
-    if(title.filter(x => x.category == e && x.id == 1) == ''){
+    console.log('title: ', title.filter(x => x.category == e && x.itemBrand == null));
+    if(title.filter(x => x.category == e && x.itemBrand == null).length == 0){
       return(
         <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}><Text>선택된 품목이 없습니다.</Text></View>
       )
@@ -282,7 +284,7 @@ const Talk1Sub = ({navigation, route}) => {
       let arr = [];
       info.filter((x, index)=>{
         
-          if(x.category == e.title && x.itemName !== null){
+          if(x.category == e.title){
               arr.push(
                    <TouchableOpacity style={styles.listMain2} onLongPress={()=>setModal(prevState => ({...prevState, open: true, needsId: x.needsId, needsBrandId: x.needsBrandId}))} delayLongPress={1500} activeOpacity={1} key={index}>
                       <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>

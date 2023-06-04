@@ -238,6 +238,7 @@ const Navigation = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.material.data; });
+  console.log('material info: ', info);
   const Alarm = useSelector(state => { return state.alarm.data; });
   const [AlarmFlag, setAlarmFlag] = useState(false);
   const [purchaseCount, setPurchaseCount] = useState(null); // 전체 구매 갯수
@@ -331,13 +332,13 @@ const Navigation = ({navigation, route}) => {
     let sum = 0;
     let exp = 0;
     info == undefined ? '' :
-    info.filter(x=>{
+    info?.filter(x=>{
       if(x.id == 0 && x.needsBrandId !== null){
         exp += x.itemPrice
       } else sum += x.itemPrice;
     });
     setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
-    setPurchaseCount(info.filter(x => x.id == 1));
+    setPurchaseCount(info?.filter(x => x.id == 1));
   }, [info]);
 
   useEffect(()=>{
@@ -468,7 +469,7 @@ const save = async() => {
 
   const List2 = (title) => {  
     let arr = [];
-    info.filter((x, index)=>{
+    info?.filter((x, index)=>{
       if(title.title == x.category && x.deleteStatus == 1){
         
        arr.push(

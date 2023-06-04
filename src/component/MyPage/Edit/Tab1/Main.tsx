@@ -205,7 +205,7 @@ const Talk1 = ({navigation}: any) => {
                 </View>
             </View>
             <View style={styles.footer}>
-                {info.nickname == '' || info.babyName == '' ?
+                {info.nickname.trim() == '' || info.babyName.trim() == '' ?
                 <View style={[styles.footerBox, {backgroundColor: '#E0E0E0'}]}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>적용</Text>
                 </View>

@@ -46,9 +46,10 @@ const CheckBoxModal = ({modalVisible10, setModalVisible10, setFilterInfo}) => {
 
     const dispatch = useDispatch();
     const [filter, setFilter] = useState(false); // 체크, 폰트 색상
+    console.log('filter: ', filter);
 
     const complete = (e) => {
-        setFilter(!filter);
+        e == 0 ? setFilter(false) : setFilter(true);
         e == 0 ?
         (dispatch(postMaterial({order: 'need'})), setFilterInfo('needs'))
         :
