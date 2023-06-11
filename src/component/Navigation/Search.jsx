@@ -348,42 +348,42 @@ const dayCalculate2 = (date) => {
     <View>
         <View style={styles.titleBox}>
           <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('맘스 톡 서치', momsSearch)}><Arrow fill='black' height={20}/></TouchableOpacity>
-          <Text style={{fontWeight: '600'}}>맘스 톡 {momsSearch !== undefined ?  momsSearch.length : 0}건</Text>
+          <Text style={{fontWeight: '600'}}>맘스 톡 {momsSearch !== undefined ?  momsSearch?.length : 0}건</Text>
         </View>
         <View style={styles.mainBox}>
-          {momsSearch.length !== 0 ? <MomsTalk /> :
+          {momsSearch?.length !== 0 ? <MomsTalk /> :
            <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
         </View>
         <View style={styles.titleBox}>
           <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('출산준비물 공유 서치', materialSearch)}><Arrow fill='black' height={20}/></TouchableOpacity>
-          <Text style={{fontWeight: '600'}}>출산준비물 공유 {materialSearch !== undefined ? materialSearch.length : 0}건</Text>
+          <Text style={{fontWeight: '600'}}>출산준비물 공유 {materialSearch !== undefined ? materialSearch?.length : 0}건</Text>
         </View>
         <View style={styles.mainBox}>
-          {materialSearch.length !== 0 ? <MaterialShare /> :
+          {materialSearch?.length !== 0 ? <MaterialShare /> :
            <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
         </View>
         <View style={styles.titleBox}>
           <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('댓글 서치', commentSearch)}><Arrow fill='black' height={20}/></TouchableOpacity>
-          <Text style={{fontWeight: '600'}}>댓글 {commentSearch !== undefined ? commentSearch.length : 0}건</Text>
+          <Text style={{fontWeight: '600'}}>댓글 {commentSearch !== undefined ? commentSearch?.length : 0}건</Text>
         </View>
         <View style={styles.mainBox}>
-          {commentSearch.length !== 0 ? <Comment /> :
+          {commentSearch?.length !== 0 ? <Comment /> :
            <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
         </View>
         <View style={styles.titleBox}>
           <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('체험단 서치', experienceSearch)}><Arrow fill='black' height={20}/></TouchableOpacity>
-          <Text style={{fontWeight: '600'}}>체험단 {experienceSearch !== undefined ? experienceSearch.length : 0}건</Text>
+          <Text style={{fontWeight: '600'}}>체험단 {experienceSearch !== undefined ? experienceSearch?.length : 0}건</Text>
         </View>
         <View style={styles.mainBox}>
-          {experienceSearch.length !== 0 ? <Experience /> :
+          {experienceSearch?.length !== 0 ? <Experience /> :
           <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
         </View>
         <View style={styles.titleBox}>
           <TouchableOpacity style={styles.arrowBox} onPress={()=>navigation.navigate('체험단 서치', experienceSearch)}><Arrow fill='black' height={20}/></TouchableOpacity>
-          <Text style={{fontWeight: '600'}}>맘스가이드 {guideSearch !== undefined ? guideSearch.length : 0}건</Text>
+          <Text style={{fontWeight: '600'}}>맘스가이드 {guideSearch !== undefined ? guideSearch?.length : 0}건</Text>
         </View>
         <View style={styles.mainBox}>
-          {guideSearch.length !== 0 ? <Guide /> :
+          {guideSearch?.length !== 0 ? <Guide /> :
           <View style={styles.notBox}><Text style={{fontSize: 16, color: '#9E9E9E'}}>검색결과가 없습니다.</Text></View>}
         </View>
     </View>
