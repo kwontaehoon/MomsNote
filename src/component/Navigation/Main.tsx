@@ -45,7 +45,6 @@ import Compare from '../Talk/Tab2/Compare'
 import Gallery from '../Modal/Gallery'
 import Government from '../Information/Tab3/Detail'
 import GuideDetail from '../Information/Tab1/Detail'
-import ReduxTest2 from '../Test/ReduxTest2'
 import MomsSearchDetail from '../Navigation/SearchTab/MomsTalk'
 import MaterialDetail from '../Navigation/SearchTab/Material'
 import CommentDetail from '../Navigation/SearchTab/Comment'
@@ -469,7 +468,6 @@ const Navigation = () => {
                                     },
                                 })}/>
                 <Stack.Screen name="갤러리" component={Gallery} options={{title: '', headerShown: false}}/>
-                <Stack.Screen name="리덕스 테스트2" component={ReduxTest2} />
 
                 <Stack.Screen name="맘스 톡 서치" component={MomsSearchDetail} options={{title: '맘스 톡 전체'}}/>
                 <Stack.Screen name="출산준비물 공유 서치" component={MaterialDetail} options={{title: '출산리스트 공유 전체'}}/>
