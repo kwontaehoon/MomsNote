@@ -238,7 +238,7 @@ const dayCalculate2 = (date) => {
 
   const MomsTalk = () => {
     let arr = [];
-    momsSearch.filter((x, index) => {
+    momsSearch?.filter((x, index) => {
       console.log('x: ', x);
       arr.push(
         <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: x})}>
@@ -265,7 +265,7 @@ const dayCalculate2 = (date) => {
 
   const MaterialShare = () => {
     let arr = [];
-    materialSearch.filter((x, index) => {
+    materialSearch?.filter((x, index) => {
       arr.push(
         <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', x)}>
         <View style={styles.dateBox}>
@@ -291,7 +291,7 @@ const dayCalculate2 = (date) => {
 
   const Comment = () => {
     let arr = [];
-    commentSearch.filter((x, index) => {
+    commentSearch?.filter((x, index) => {
       arr.push(
        <TouchableOpacity style={styles.momstalk} key={index}>
           <TouchableOpacity style={styles.dotBox} onPress={()=>setModal(!modal)}><More /></TouchableOpacity>
@@ -310,7 +310,7 @@ const dayCalculate2 = (date) => {
   }
   const Experience = () => {
     let arr = [];
-    experienceSearch.filter((x, index) => {
+    experienceSearch?.filter((x, index) => {
       arr.push(
        <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('체험단 상세페이지', x)}>
           <View style={styles.dateBox}>{dayCalculate2(x.applicationEndDate)}</View>
@@ -329,7 +329,7 @@ const dayCalculate2 = (date) => {
 
   const Guide = () => {
     let arr = [];
-    guideSearch.filter((x, index) => {
+    guideSearch?.filter((x, index) => {
       arr.push(
        <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('맘스가이드 상세내용', x)}>
           <View style={styles.profile2}>

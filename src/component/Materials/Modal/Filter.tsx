@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import { useDispatch } from 'react-redux'
 import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -47,13 +48,15 @@ const CheckBoxModal = ({modalVisible10, setModalVisible10, setFilterInfo}) => {
     const dispatch = useDispatch();
     const [filter, setFilter] = useState(false); // 체크, 폰트 색상
     console.log('filter: ', filter);
+    
 
-    const complete = (e) => {
+    const complete = async(e) => {
+        const test = await AsyncStorage.getItem('materialSort');
         e == 0 ? setFilter(false) : setFilter(true);
         e == 0 ?
-        (dispatch(postMaterial({order: 'need'})), setFilterInfo('needs'))
+        (dispatch(postMaterial({order: 'need'})), setFilterInfo('needs'),  AsyncStorage.removeItem('materialSort'), console.log('testttt: ', test))
         :
-        (dispatch(postMaterial({order: 'buy'})), setFilterInfo('buy'));
+        (dispatch(postMaterial({order: 'buy'})), setFilterInfo('buy'), console.log('test: ', test), AsyncStorage.setItem('materialSort', 'purchase'))
 
         setModalVisible10(!modalVisible10);
     }
