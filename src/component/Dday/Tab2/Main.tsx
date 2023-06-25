@@ -36,6 +36,8 @@ const Talk1 = ({navigation, week}: any) => {
   const [info, setInfo] = useState([]);
   const [refresh, setRefresh] = useState(false); // 추천, 댓글 등록, 댓글 삭제 누르면 정보를 다시받아야해서 새로고침 state
 
+  const [refreshing, setRefreshing] = useState(false); 
+
     useEffect(()=>{
       const Government = async() => {
         const response = await axios({
@@ -45,15 +47,24 @@ const Talk1 = ({navigation, week}: any) => {
             subcategory: `${week.findIndex(x => x === true)+1}주`
         }
       });
+      console.log('response @@: ', response);
       if(response.data == ''){ setInfo('0'); }else setInfo(response.data);
       }
       Government();
-    }, []);
+    }, [refreshing]);
 
     const ImageBox = (info) => {
       return (
         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info.split('|')[0]}`}} style={styles.mainBox} resizeMode='cover' />
       )
+  };
+
+  const onRefreshing = async() => {
+    console.log('@@@@ refreshing');
+    if(!refreshing){
+      await setRefreshing(true);
+      setRefreshing(false);
+    }
   }
     
     const renderItem = ({ item }) => (
@@ -69,6 +80,7 @@ const Talk1 = ({navigation, week}: any) => {
       {info == 0 ? <View style={{marginTop: 180, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
       :
          <FlatList data={info} renderItem={renderItem}
+            onRefresh={onRefreshing} refreshing={refreshing}
             keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}>
         </FlatList>
       }

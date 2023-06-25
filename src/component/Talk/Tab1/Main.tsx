@@ -217,6 +217,8 @@ const Talk1 = ({navigation, route}:any) => {
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
 
+  const [refreshing, setRefreshing] = useState(false);
+
   useEffect(()=>{
     setLoading(true);
     dispatch(postBoard(boardSet));
@@ -274,6 +276,16 @@ const Talk1 = ({navigation, route}:any) => {
 
   const filtering = (e) => {
     e.label == '인기 순' ? dispatch(setBoardFilter({filter: 'best'})) : dispatch(setBoardFilter({filter: 'new'}))
+  }
+
+  const onRefreshing = () => {
+    if(!refreshing){
+      setRefreshing(true);
+      dispatch(postBoard(boardSet));
+      dispatch(postBoardCount(boardCountSet));
+      dispatch(postBoardPopular());
+      setRefreshing(false);
+  }
   }
 
 
@@ -379,7 +391,7 @@ const Talk1 = ({navigation, route}:any) => {
           <Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text>
         </View>
         :
-        <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{
+        <FlatList data={info} renderItem={renderItem2} onRefresh={onRefreshing} refreshing={refreshing} onEndReached={()=>{
           dispatch(setBoardCount({page: infoCount > (boardSet.page * 30) ? boardSet.page + 1 : boardSet.page, count: infoCount}));
         }} onEndReachedThreshold={0}
           keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}
@@ -397,7 +409,7 @@ const Talk1 = ({navigation, route}:any) => {
       <TouchableOpacity style={[styles.footer, {marginBottom: Platform.OS == 'android' ? 20 + getStatusBarHeight() : 0}]} onPress={()=>
         modalVisible.asyncStorage == null ? navigation.navigate('글쓰기') : setModalVisible(prevState => ({...prevState, open: true}))
         }>
-            <Pencil fill={'red'}/>
+            <Pencil />
       </TouchableOpacity>
 
 

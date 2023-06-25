@@ -238,7 +238,6 @@ const Navigation = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.material.data; });
-  console.log('material info: ', info);
   const Alarm = useSelector(state => { return state.alarm.data; });
   const [AlarmFlag, setAlarmFlag] = useState(false);
   const [purchaseCount, setPurchaseCount] = useState(null); // 전체 구매 갯수
@@ -254,6 +253,9 @@ const Navigation = ({navigation, route}) => {
 
   const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
   const [purchaseCheckBox, setPurchaseCheckBox] = useState(); // 체크박스 선택시 모달 안나옴
+
+  const [refreshing, setRefreshing] = useState(false); // '당기면 새로고침'
+  console.log('@@@@ refreshing: ', refreshing); 
   
   const [modalVisible, setModalVisible] = useState({
     open: false,
@@ -449,6 +451,15 @@ const save = async() => {
     }
   }
 
+  const onRefreshing = () => {
+    console.log('@@@@ refreshing');
+    if(!refreshing){
+      setRefreshing(true);
+      dispatch(postMaterial({order: filter}));
+      setRefreshing(false);
+    }
+  }
+
   const List = (e) => {
     return (
       <View style={styles.main3Box} key={e.title}>
@@ -579,7 +590,7 @@ const save = async() => {
           <Text style={{fontSize: 16, fontWeight: '600'}}>전체 ({purchaseCount.length}/{info.length})</Text>
       </View>
         
-        {info !== '' ? <FlatList data={DATA3} renderItem={renderItem}
+        {info !== '' ? <FlatList data={DATA3} renderItem={renderItem} onRefresh={onRefreshing} refreshing={refreshing}
               keyExtractor={index => String(index)} showsVerticalScrollIndicator={false}>
         </FlatList> : <View style={styles.main}></View>}
 

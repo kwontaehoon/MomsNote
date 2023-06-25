@@ -183,7 +183,7 @@ const Navigation = ({navigation, route}) => {
   const ref = useRef();
   const [list, setList] = useState(Array.from({ length: 9 }, () => { return true}));
   const [purchaseCheckBox, setPurchaseCheckBox] = useState(); // 체크박스 선택시 모달 안나옴
-  
+  const [refreshing, setRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState({
     open: false,
     needsBrandId: null,
@@ -236,6 +236,7 @@ const Navigation = ({navigation, route}) => {
   }, []);
 
   useEffect(()=>{
+    console.log('@@@@@@@@@@@@@');
     const boardSearch = async() => {
       const token = await AsyncStorage.getItem('token');
         try{
@@ -256,7 +257,7 @@ const Navigation = ({navigation, route}) => {
         }
     }
     boardSearch();
-}, [search, modalVisible, modalVisible2, refresh]);
+}, [search, modalVisible, modalVisible2, refresh, refreshing]);
 
 const purchase = async(needsId, needsBrandId) =>{
   const token = await AsyncStorage.getItem('token');
@@ -315,6 +316,14 @@ const purchaseCencel = async(needsId) => {
       case '권장': return ( <View style={[styles.filterSub, {backgroundColor: '#84C2F3'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>권장</Text></View> )
       case '선택': return ( <View style={[styles.filterSub, {borderWidth: 1}]}><Text style={{fontSize: 12, fontWeight: 'bold'}}>선택</Text></View> )
       case '추가': return ( <View style={[styles.filterSub, {backgroundColor: '#F5A256'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>추가</Text></View> )
+    }
+  }
+
+  const onRefreshing = async() => {
+    console.log('@@@@ refreshing');
+    if(!refreshing){
+      await setRefreshing(true);
+      setRefreshing(false);
     }
   }
 
@@ -423,7 +432,9 @@ const purchaseCencel = async(needsId) => {
               </View>
 
                 {materialSearch == undefined ? <View></View> : <FlatList data={DATA3} renderItem={renderItem}
-                      keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
+                      keyExtractor={item => item.id} showsVerticalScrollIndicator={false}
+                      onRefresh={onRefreshing} refreshing={refreshing}
+                      >
                 </FlatList>}
         </SafeAreaView>
 </SafeAreaProvider>

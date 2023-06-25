@@ -56,10 +56,21 @@ const Talk1 = ({navigation}) => {
 
   const [loading, setLoading] = useState(false);
 
+  const [refreshing, setRefreshing] = useState(false);
+
   useEffect(()=>{
+    console.log('###')
     dispatch(postGovernment(governmentSet));
     dispatch(postGovernmentCount());
-  }, []);
+  }, [refreshing]);
+
+  const onRefreshing = async() => {
+    console.log('@@@@ refreshing');
+    if(!refreshing){
+      await setRefreshing(true);
+      setRefreshing(false);
+    }
+  }
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('정부지원혜택 상세내용', item)}>
@@ -81,6 +92,7 @@ const Talk1 = ({navigation}) => {
         <FlatList data={info} renderItem={renderItem} onEndReached={()=>{
           dispatch(setGovernmentCount({page: infoCount > (governmentSet.page * 30) ? governmentSet.page + 1 : governmentSet.page, count: infoCount}));
         }} onEndReachedThreshold={0}
+          onRefresh={onRefreshing} refreshing={refreshing}
           keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
           ListFooterComponent={loading && <ActivityIndicator />}>
         </FlatList>

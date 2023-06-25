@@ -11,6 +11,7 @@ export const postGuide = createAsyncThunk("postGuideSlice/async", async (data) =
           url: 'https://momsnote.net/api/guideboard/list',
           data : data
       });
+      console.log('맘스가이드 response ', response);
       if(response.data == ''){ return '0'; }else return response.data;
       }catch(error){
           console.log('guide axios error: ', error);

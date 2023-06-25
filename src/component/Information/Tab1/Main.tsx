@@ -95,7 +95,6 @@ const Talk1 = ({navigation}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.guide.data });
-  console.log('infoooo: ', info);
   const guideSet = useSelector(state => { return state.guide.refresh });
   const infoCount = useSelector(state => { return state.guideCount.data });
   const guideCountSet = useSelector(state => { return state.guideCount.refresh });
@@ -103,6 +102,8 @@ const Talk1 = ({navigation}) => {
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
 
   const [loading, setLoading] = useState(false);
+
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(()=>{
     setLoading(true);
@@ -119,6 +120,16 @@ const Talk1 = ({navigation}) => {
     setFilter(arr);
     dispatch(setGuideRefresh({subcategory: DATA[e].title}));
     dispatch(setGuideCountRefresh({subcategory: DATA[e].title}));
+  }
+
+  const onRefreshing = () => {
+    console.log('@@@@ refreshing');
+    if(!refreshing){
+      setRefreshing(true);
+      dispatch(postGuide(guideSet));
+      dispatch(postGuideCount(guideCountSet));
+      setRefreshing(false);
+    }
   }
 
   const renderItem = ({ item }) => (
@@ -156,7 +167,8 @@ const Talk1 = ({navigation}) => {
         :
         <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{
           dispatch(setGuideCount({page: infoCount > (guideSet.page * 30) ? guideSet.page + 1 : guideSet.page, count: infoCount}));
-        }} onEndReachedThreshold={0}
+          }} onEndReachedThreshold={0}
+          onRefresh={onRefreshing} refreshing={refreshing}
           keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
           ListFooterComponent={loading && <ActivityIndicator />}>
         </FlatList>}

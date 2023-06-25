@@ -124,6 +124,8 @@ const Talk1 = ({navigation}: any) => {
 
     const [modal, setModal] = useState(false);
 
+    const [refreshing, setRefreshing] = useState(false);
+
     useEffect(()=>{
       const arr = Array.from({length: 12}, () => { return false });
       arr[moment().format('M')-1] = true;
@@ -135,7 +137,7 @@ const Talk1 = ({navigation}: any) => {
       dispatch(postEvent(eventSet));
       dispatch(postEventCount(eventSet));
       setLoading(false);
-    }, [eventSet]);
+    }, [eventSet, refreshing]);
 
     const change = (e) => { // 몇 주차 border, 글자두께 변경
       let arr = Array.from({length: 12}, ()=>{ return false});
@@ -181,6 +183,13 @@ const Talk1 = ({navigation}: any) => {
         count: 1,
         date: `${y}-${m}`
        }));
+    }
+
+    const onRefreshing = async() => {
+      if(!refreshing){
+        await setRefreshing(true);
+        setRefreshing(false);
+      }
     }
 
   const renderItem = ({ item }) => (
@@ -232,6 +241,7 @@ const Talk1 = ({navigation}: any) => {
         <FlatList data={info} renderItem={renderItem} onEndReached={()=>{
           dispatch(setEventCount({page: infoCount > (eventSet.page * 30) ? eventSet.page + 1 : eventSet.page, count: infoCount}));
         }} onEndReachedThreshold={0}
+          onRefresh={onRefreshing} refreshing={refreshing}
           keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
           ListFooterComponent={loading && <ActivityIndicator />}>
         </FlatList> 

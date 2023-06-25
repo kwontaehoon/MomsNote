@@ -35,6 +35,9 @@ const Talk1 = ({navigation, week}) => {
 
   const [info, setInfo] = useState([]);
 
+  const [refreshing, setRefreshing] = useState(false);
+  console.log('refreshing: ', refreshing);
+
     useEffect(()=>{
       const Government = async() => {
         const response = await axios({
@@ -44,15 +47,24 @@ const Talk1 = ({navigation, week}) => {
             subcategory: `${week.findIndex(x => x === true)+1}주`
         }
       });
+      console.log('response @@@@@@: ', response);
       if(response.data == ''){ setInfo('0'); }else setInfo(response.data);
       }
       Government();
-    }, []);
+    }, [refreshing]);
 
     const ImageBox = (info) => {
       return (
         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info.split('|')[0]}`}} style={styles.mainBox} resizeMode='cover' />
       )
+  };
+
+  const onRefreshing = async() => {
+    console.log('@@@@ refreshing');
+    if(!refreshing){
+      await setRefreshing(true);
+      setRefreshing(false);
+    }
   }
     
     const renderItem = ({ item, index }) => (
@@ -71,6 +83,7 @@ const Talk1 = ({navigation, week}) => {
       </View>
       :
          <FlatList data={info} renderItem={renderItem}
+            onRefresh={onRefreshing} refreshing={refreshing}
             keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}>
         </FlatList>
       }

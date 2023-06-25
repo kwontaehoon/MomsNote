@@ -75,6 +75,9 @@ const Talk1 = ({ navigation }) => {
     const [qnaFilter, setQnaFilter] = useState(Array.from({ length: qna?.length }, () => { return false }));
 
     console.log('Dimensions: ', Dimensions.get('window').height);
+
+    const [refreshing, setRefreshing] = useState(false);
+
     useEffect(() => {
         dispatch(postQna(qnaSet));
     }, [loading, qnaSet]);
@@ -135,6 +138,14 @@ const Talk1 = ({ navigation }) => {
         }
     }
 
+    const onRefreshing = async() => {
+        console.log('@@@@ refreshing');
+        if(!refreshing){
+          setRefreshing(true);
+          await setRefreshing(false);
+        }
+      }
+
     const renderItem = ({ item }) => (
         info2?.map((x, index) => {
             return (
@@ -183,6 +194,7 @@ const Talk1 = ({ navigation }) => {
                     <View style={{marginTop: 150, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                         <Text style={{ color: '#757575' }}>등록된 게시물이 없습니다.</Text>
                     </View> : <FlatList data={DATA} renderItem={renderItem}
+                        onRefresh={onRefreshing} refreshing={refreshing}
                         onEndReached={!!info2 ? '' : onEnd}
                         showsVerticalScrollIndicator={false} ListFooterComponent={loading && <ActivityIndicator size={'large'} color='#E0E0E0' />}
                         keyExtractor={item => String(item.qnaId)}>

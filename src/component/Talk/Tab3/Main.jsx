@@ -89,6 +89,8 @@ const Talk3 = ({navigation}: any) => {
         {label: '인기 순', value: '2'},
   ]);
 
+  const [refreshing, setRefreshing] = useState(false);
+
   useEffect(()=>{
     setLoading(true);
     dispatch(postExperience(experienceSet));
@@ -98,7 +100,16 @@ const Talk3 = ({navigation}: any) => {
 
   const filtering = (e) => {
     e.label == '인기 순' ? dispatch(setExperienceFilter({filter: 'best'})) : dispatch(setExperienceFilter({filter: 'new'}))
-  }
+  };
+
+  const onRefreshing = () => {
+    if(!refreshing){
+      setRefreshing(true);
+      dispatch(postExperience(experienceSet));
+      dispatch(postExperienceCount(infoCount));
+      setRefreshing(false);
+    }
+  };
 
   const renderItem = ({ item }) =>
     item.appCount >= item.maxPeople || moment(item.registrationEndDate).diff(moment(), "days") < 0 ?
@@ -150,6 +161,7 @@ const Talk3 = ({navigation}: any) => {
         { info == 0 ? <View style={{height: '70%', alignItems: 'center', justifyContent: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>모집중인 체험단이 없습니다.</Text></View>
         :
         <FlatList data={info} renderItem={renderItem} numColumns={2} showsVerticalScrollIndicator={false}
+          onRefresh={onRefreshing} refreshing={refreshing}
           onEndReached={()=>
           {
             dispatch(setExperienceCount({page: infoCount > (experienceSet.page * 30) ? experienceSet.page + 1 :experienceSet.page, count: infoCount}))

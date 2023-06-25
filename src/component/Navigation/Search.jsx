@@ -109,7 +109,8 @@ const Main = ({navigation}) => {
   const [commentSearch, setCommentSearch] = useState();
   const [experienceSearch, setExperienceSearch] = useState();
   const [guideSearch, setGuideSearch] = useState();
-  console.log('guideSearch: ', guideSearch);
+
+  const [refreshing, setRefreshing] = useState(false);
 
   const [modal, setModal] = useState(false);
   const [modal2, setModal2] = useState(false);
@@ -125,7 +126,6 @@ const Main = ({navigation}) => {
                 },
                 data: { keyword: search }
             });
-            console.log('boardSearch: ', response.data);
             setMomsSearch(response.data);
         }catch(error){
             console.log('boardSearch axios error', error);
@@ -146,7 +146,6 @@ useEffect(()=>{
               },
               data: { keyword: search }
           });
-          console.log('materialSearch: ', response.data);
           setMaterialSearch(response.data);
       }catch(error){
           console.log('materialSerach axios error', error);
@@ -167,7 +166,6 @@ useEffect(()=>{
               },
               data: { keyword: search }
           });
-          console.log('commentSearch', response.data);
           setCommentSearch(response.data);
       }catch(error){
           console.log('commentSearch axios error', error);
@@ -236,10 +234,16 @@ const dayCalculate2 = (date) => {
   }
 }
 
+const onRefreshing = async() => {
+  if(!refreshing){
+    await setRefreshing(true);
+    setRefreshing(false);
+  }
+}
+
   const MomsTalk = () => {
     let arr = [];
-    momsSearch.filter((x, index) => {
-      console.log('x: ', x);
+    momsSearch?.filter((x, index) => {
       arr.push(
         <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: x})}>
         <View style={styles.dateBox}>
@@ -265,7 +269,7 @@ const dayCalculate2 = (date) => {
 
   const MaterialShare = () => {
     let arr = [];
-    materialSearch.filter((x, index) => {
+    materialSearch?.filter((x, index) => {
       arr.push(
         <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', x)}>
         <View style={styles.dateBox}>
@@ -291,7 +295,7 @@ const dayCalculate2 = (date) => {
 
   const Comment = () => {
     let arr = [];
-    commentSearch.filter((x, index) => {
+    commentSearch?.filter((x, index) => {
       arr.push(
        <TouchableOpacity style={styles.momstalk} key={index}>
           <TouchableOpacity style={styles.dotBox} onPress={()=>setModal(!modal)}><More /></TouchableOpacity>
@@ -310,7 +314,7 @@ const dayCalculate2 = (date) => {
   }
   const Experience = () => {
     let arr = [];
-    experienceSearch.filter((x, index) => {
+    experienceSearch?.filter((x, index) => {
       arr.push(
        <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('체험단 상세페이지', x)}>
           <View style={styles.dateBox}>{dayCalculate2(x.applicationEndDate)}</View>
@@ -329,7 +333,7 @@ const dayCalculate2 = (date) => {
 
   const Guide = () => {
     let arr = [];
-    guideSearch.filter((x, index) => {
+    guideSearch?.filter((x, index) => {
       arr.push(
        <TouchableOpacity style={styles.momstalk} key={index} onPress={()=>navigation.navigate('맘스가이드 상세내용', x)}>
           <View style={styles.profile2}>
@@ -412,7 +416,8 @@ const dayCalculate2 = (date) => {
       <View style={styles.main}>
         { experienceSearch !== undefined && momsSearch !== undefined && materialSearch !== undefined && commentSearch !== undefined?
         <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
-            keyExtractor={item => item.title} >
+            onRefresh={onRefreshing} refreshing={refreshing}
+            keyExtractor={item => item.title}>
         </FlatList>
         :  ''
         }

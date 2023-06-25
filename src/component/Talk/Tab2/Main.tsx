@@ -146,6 +146,8 @@ const Talk1 = ({navigation}) => {
     {label: '인기 순', value: '2'},
 ]);
 
+  const [refreshing, setRefreshing] = useState(false);
+
 useEffect(()=>{
   setLoading(true);
   dispatch(postMaterialShare(materialShareSet));
@@ -173,6 +175,17 @@ const dayCalculate = (date) => {
 
 const filtering = (e) => {
   e.label == '인기 순' ? dispatch(setMaterialShareFilter({filter: 'best'})) : dispatch(setMaterialShareFilter({filter: 'new'}))
+}
+
+const onRefreshing = () => {
+  console.log('@@@@ refreshing');
+  if(!refreshing){
+    setRefreshing(true);
+    dispatch(postMaterialShare(materialShareSet));
+    dispatch(postMaterialShareCount());
+    dispatch(postListPopular());
+    setRefreshing(false);
+  }
 }
 
   const renderItem = ({ item }) => (
@@ -232,7 +245,7 @@ const filtering = (e) => {
         :
         <FlatList data={info} renderItem={renderItem} onEndReached={()=>{
           dispatch(setMaterialShareCount({page: infoCount > (materialShareSet.page * 30) ? materialShareSet.page + 1 : materialShareSet.page, count: infoCount}))
-        }} onEndReachedThreshold={0}
+        }} onEndReachedThreshold={0} onRefresh={onRefreshing} refreshing={refreshing}
           keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
           ListFooterComponent={loading && <ActivityIndicator />}>
         </FlatList>}
