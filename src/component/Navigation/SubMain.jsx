@@ -82,7 +82,7 @@ function MainScreen() {
   // }, [Alarm])
 
   return (
-    <Tab.Navigator initialRouteName='맘스 톡' backBehavior='initialRoute' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
+    <Tab.Navigator initialRouteName='홈' backBehavior='initialRoute' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
       : {tabBarStyle: { height: 55, position: 'absolute', paddingBottom: 5, elevation: 0 }, headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
 
 

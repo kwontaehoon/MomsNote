@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator, SafeAreaView, StatusBar, Platform, Animated, BackHandler } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -28,6 +28,7 @@ import { postMaterial, setMaterialRefresh } from '../../Redux/Slices/MaterialSli
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { postAlarm } from '../../Redux/Slices/AlarmSlice';
 
+
 import M1 from '../../../public/assets/svg/1.svg'
 import M2 from '../../../public/assets/svg/2.svg'
 import M3 from '../../../public/assets/svg/3.svg'
@@ -45,6 +46,7 @@ import Bell from '../../../public/assets/svg/Bell.svg'
 import MyPage from '../../../public/assets/svg/Mypage.svg'
 import ArrowRight from '../../../public/assets/svg/Arrow-Right.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container:{
@@ -327,8 +329,20 @@ const Navigation = ({navigation, route}) => {
   }, [modalVisible]);
 
   useEffect(()=>{
-    dispatch(postMaterial({order: filter}));
-  }, [modalVisible, modalVisible8, modalVisible9, modalVisible6]);
+      const unsubscribe = navigation.addListener('focus', async() => {
+        // do something
+        const materialSort = await AsyncStorage.getItem('materialSort');
+        dispatch(postMaterial({order: materialSort == null ? 'need' : 'buy'}));
+      });
+  }, [modalVisible, modalVisible8, modalVisible9, modalVisible6, navigation]);
+
+  useLayoutEffect(()=>{
+    const unsubscribe = navigation.addListener('focus', () => {
+      // do something
+      console.log(123);
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(()=>{
     let sum = 0;
