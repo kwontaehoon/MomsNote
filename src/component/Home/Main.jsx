@@ -240,7 +240,7 @@ const Home = ({navigation}) => {
     const mainData = useSelector(state => { return state.user.data; });
     const Alarm = useSelector(state => { return state.alarm.data; });
     console.log('Alarm: ', Alarm);
-    const [test, setTest] = useState(); // 캡쳐 uri
+    const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
@@ -279,18 +279,25 @@ const Home = ({navigation}) => {
 
     useEffect(()=>{
         save();
-    }, [test]);
+    }, [captureURL]);
 
     const save = async() => {
-        setTest(undefined);
+
+        if(captureURL !== undefined){
+            let { status } = await MediaLibrary.requestPermissionsAsync();
+            const asset = await MediaLibrary.createAssetAsync(captureURL);
+            
+            if(status === 'granted'){
+            }
+        }
     }
 
     const capture = async() => {
         opacity_ani();
-        setTest('1');
+        setCaptureURL('1');
 
         ref.current.capture().then(uri => {
-            setTest(uri);
+            setCaptureURL(uri);
           });
     }
 
@@ -370,7 +377,7 @@ const Home = ({navigation}) => {
                 </View>
                 <View style={styles.mainBox3}>
                     <View style={styles.mainBox3Sub}>
-                        <TouchableOpacity style={[styles.captureBox, {display: test === undefined ? 'flex' : 'none'}]} onPress={capture}>
+                        <TouchableOpacity style={[styles.captureBox, {display: captureURL === undefined ? 'flex' : 'none'}]} onPress={capture}>
                             <Icon2 name='download' size={22} style={{color: '#FE9000'}} />
                         </TouchableOpacity>
                     </View>
@@ -511,7 +518,7 @@ const Home = ({navigation}) => {
             </FlatList>
             <Animated.View style={[styles.saveModalBox, {opacity: animation}]}>
                 <View style={styles.saveModal}>
-                    <Text style={{color: 'white'}}>출산 리스트가 내 앨범에 저장되었습니다.</Text>
+                    <Text style={{color: 'white'}}>메인페이지가 내 앨범에 저장되었습니다.</Text>
                 </View>
             </Animated.View>
 
