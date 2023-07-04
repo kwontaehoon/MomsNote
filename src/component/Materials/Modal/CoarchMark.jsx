@@ -284,13 +284,13 @@ const Navigation = ({modal, setModal}) => {
     let sum = 0;
     let exp = 0;
     info == undefined ? '' :
-    info.filter(x=>{
+    info?.filter(x=>{
       if(x.id == 0 && x.needsBrandId !== null){
         exp += x.itemPrice
       } else sum += x.itemPrice;
     });
     setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
-    setPurchaseCount(info.filter(x => x.id == 1));
+    setPurchaseCount(info?.filter(x => x.id == 1));
   }, [info]);
 
   const close = async() => {

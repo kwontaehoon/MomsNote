@@ -232,7 +232,7 @@ const Talk1Sub = ({navigation, route}) => {
     let sum = 0;
     let exp = 0;
 
-    info.filter(x=>{
+    info?.filter(x=>{
       if(x.id == 0 && x.needsBrandId !== null){
         exp += x.itemPrice
       } else sum += x.itemPrice;
@@ -285,7 +285,7 @@ const capture = async() => {
   }
 
   const filtering = (e) => { // 품목 브랜드 가격 부분 none || flex
-    if(info.filter(x => x.category == e && x.id == 1) == ''){
+    if(info?.filter(x => x.category == e && x.id == 1) == ''){
       return(
         <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}><Text>선택된 품목이 없습니다.</Text></View>
       )
@@ -315,7 +315,7 @@ const capture = async() => {
   const List = ({title}) => {
     let arr = [];
 
-    info.filter((x, index)=>{
+    info?.filter((x, index)=>{
       if(x.category == title && x.deleteStatus == 1 && x.id == 1){
           arr.push(
         <TouchableOpacity style={styles.mainBox3} onLongPress={()=>setModal5(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1} key={index}>

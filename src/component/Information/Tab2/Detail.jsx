@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     mainBox2TitleBox:{
-       marginBottom: 20
+       marginBottom: 20,
     },
     image:{
         width: '95%',

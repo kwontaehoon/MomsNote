@@ -31,7 +31,6 @@ const Main = ({navigation}) => {
   const boardSet = useSelector(state => { return state.board.refresh; });
 
   const [info, setInfo] = useState();
-  console.log('info: ', info);
   
   const isFocused = useIsFocused();
 
@@ -69,7 +68,6 @@ const Main = ({navigation}) => {
             url: 'https://momsnote.net/api/user/notification/update',
             data: {notificationId: item.notificationId}
           });
-          console.log('response: ', response.data);
           setInfo(response.data.data);
       }catch(error){
         console.log('알림 error: ', error);
@@ -87,7 +85,7 @@ const Main = ({navigation}) => {
 
   const List = () => {
     let arr = [];
-    info.filter((x, index) => {
+    info?.filter((x, index) => {
       arr.push(
         <TouchableOpacity style={styles.main} key={index} onPress={()=>info[index].readFlag ? '' : navi(x)}>
           <Text style={{fontSize: 15, fontWeight: '500', marginBottom: 5, color: info[index].readFlag ? '#9E9E9E' : ''}}>{info[index].nickname}님이 회원님의 게시글에 댓글을 남겼습니다.</Text>

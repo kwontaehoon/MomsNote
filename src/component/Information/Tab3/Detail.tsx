@@ -48,7 +48,9 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     mainBox2:{
-        padding: 20,
+        paddingRight: 20,
+        paddingLeft: 20,
+        paddingBottom: 20,
     },
     mainBox2ImageBox:{
         height: 400,

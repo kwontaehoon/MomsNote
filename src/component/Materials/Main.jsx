@@ -240,6 +240,7 @@ const Navigation = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.material.data; });
+  console.log('출산준비물 info: ', info);
   const Alarm = useSelector(state => { return state.alarm.data; });
   const [AlarmFlag, setAlarmFlag] = useState(false);
   const [purchaseCount, setPurchaseCount] = useState(null); // 전체 구매 갯수
@@ -257,7 +258,6 @@ const Navigation = ({navigation, route}) => {
   const [purchaseCheckBox, setPurchaseCheckBox] = useState(); // 체크박스 선택시 모달 안나옴
 
   const [refreshing, setRefreshing] = useState(false); // '당기면 새로고침'
-  console.log('@@@@ refreshing: ', refreshing); 
   
   const [modalVisible, setModalVisible] = useState({
     open: false,
@@ -309,7 +309,7 @@ const Navigation = ({navigation, route}) => {
   }, []);
 
   useEffect(()=>{
-    Alarm.filter(x => x.readFlag == false) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+    Alarm?.filter(x => x.readFlag == false) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
   }, [Alarm])
 
   useEffect(()=>{
@@ -339,22 +339,26 @@ const Navigation = ({navigation, route}) => {
   useLayoutEffect(()=>{
     const unsubscribe = navigation.addListener('focus', () => {
       // do something
-      console.log(123);
     });
     return unsubscribe;
   }, [navigation]);
 
   useEffect(()=>{
-    let sum = 0;
-    let exp = 0;
-    info == undefined ? '' :
-    info?.filter(x=>{
-      if(x.id == 0 && x.needsBrandId !== null){
-        exp += x.itemPrice
-      } else sum += x.itemPrice;
-    });
-    setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
-    setPurchaseCount(info?.filter(x => x.id == 1));
+    if(info == 0){
+      return
+    }else{
+      let sum = 0;
+      let exp = 0;
+  
+      console.log('@@ 문제있는 info: ', info);
+        info?.filter(x=>{
+          if(x.id == 0 && x.needsBrandId !== null){
+            exp += x.itemPrice
+          } else sum += x.itemPrice;
+        });
+      setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
+      setPurchaseCount(info?.filter(x => x.id == 1));
+    }
   }, [info]);
 
   useEffect(()=>{
@@ -466,7 +470,6 @@ const save = async() => {
   }
 
   const onRefreshing = () => {
-    console.log('@@@@ refreshing');
     if(!refreshing){
       setRefreshing(true);
       dispatch(postMaterial({order: filter}));

@@ -175,17 +175,9 @@ const Talk1Sub = ({modal, setModal}) => {
     },
   ];
 
-  const DATA2 = [
-    {needsName: '산모패드', itemName: '마더스베이비', itemPrice: 39900},
-    {needsName: '양말', itemName: '마더스베이비', itemPrice: 39900},
-    {needsName: '유두 보호 크림', itemName: '마더스베이비', itemPrice: 39900},
-    {needsName: '손목 보호대', itemName: '마더스베이비', itemPrice: 39900},
-    {needsName: '수유 브라', itemName: '마더스베이비', itemPrice: 39900},
-    {needsName: '수유 나시', itemName: '마더스베이비', itemPrice: 39900},
-    {needsName: '임부용 팬티', itemName: '마더스베이비', itemPrice: 39900},
-  ]
 
   const info = useSelector(state => state.material.data);
+  console.log('coarch mark info: ', info);
   const [isChecked, setIsChecked] = useState(false);
   const dispatch = useDispatch();
   const materialSet = useSelector(state => state.material.refresh);
@@ -218,7 +210,7 @@ const SVGSelect = (e) => {
 }
 
 const filtering = (e) => { // 품목 브랜드 가격 부분 none || flex
-    if(info.filter(x => x.category == e && x.itemName !== null) == ''){
+    if(info?.filter(x => x.category == e && x.itemName !== null) == ''){
       return(
         <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}><Text>검색 결과가 없습니다.</Text></View>
       )
@@ -235,7 +227,7 @@ const filtering = (e) => { // 품목 브랜드 가격 부분 none || flex
   const List = ({title}) => {
     let arr = [];
 
-    info.filter((x, index)=>{
+    info?.filter((x, index)=>{
       if(x.category == title){
           arr.push(
         <TouchableOpacity style={styles.mainBox3} onLongPress={()=>setModal5(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1} key={index}>

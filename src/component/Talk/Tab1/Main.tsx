@@ -20,7 +20,7 @@ import { postBoardPopular } from '../../../Redux/Slices/BoardPopularSlice'
 
 const styles = StyleSheet.create({
   container:{
-    height: '91.5%',
+    height: '90.5%',
     backgroundColor: 'white',
   },
   header:{
@@ -199,6 +199,7 @@ const Talk1 = ({navigation, route}:any) => {
   
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.board.data; });
+  console.log('맘스톡 info: ', info);
   const boardSet = useSelector(state => { return state.board.refresh; });
   const boardCountSet = useSelector(state => { return state.boardCount.refresh; });
   const infoCount = useSelector(state => { return state.boardCount.data; });
