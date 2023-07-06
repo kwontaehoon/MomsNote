@@ -186,7 +186,17 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         justifyContent: 'center',
         backgroundColor: 'black',
-    }
+    },
+    table: {
+        borderTopWidth:1,
+        borderLeftWidth:1,
+      },
+      tr: {
+        borderBottomWidth: 1,
+      },
+      td: {
+        borderRightWidth: 1,
+      },
 })
 const Talk1Sub = ({navigation, route}) => {
     
@@ -467,7 +477,7 @@ const Talk1Sub = ({navigation, route}) => {
                     <Text style={{fontSize: 20, fontWeight: '400', lineHeight: 20}}>{item.title}</Text>
                 </View>
                 <View style={styles.mainBox2}>
-                    <RenderHtml source={{html: `${info3[0].contents}`}} />
+                    <RenderHtml source={{html: `${info3[0].contents}`}} tagsStyles={styles} />
                 </View>
                 
                 

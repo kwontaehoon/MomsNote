@@ -177,7 +177,17 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         justifyContent: 'center',
         backgroundColor: 'black',
-    }
+    },
+    table: {
+        borderTopWidth:1,
+        borderLeftWidth:1,
+      },
+    tr: {
+        borderBottomWidth: 1,
+      },
+    td: {
+        borderRightWidth: 1,
+    },
 })
 const Talk1Sub = ({navigation, route}) => {
     
@@ -318,7 +328,7 @@ const Talk1Sub = ({navigation, route}) => {
                             <Text>{dateFilter(item)}</Text>
                         </View>
                     </View>
-                    <RenderHtml source={{html: `${item.contents}`}} />
+                    <RenderHtml source={{html: `${item.contents}`}} tagsStyles={styles} />
                 </View>
                 {item.savedName === null ? <View></View> : ImageBox()}
             </View>

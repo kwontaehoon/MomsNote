@@ -123,7 +123,6 @@ const Talk1 = ({navigation}) => {
   }
 
   const onRefreshing = () => {
-    console.log('@@@@ refreshing');
     if(!refreshing){
       setRefreshing(true);
       dispatch(postGuide(guideSet));

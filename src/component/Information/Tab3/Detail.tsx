@@ -96,6 +96,16 @@ const styles = StyleSheet.create({
         borderColor: '#F5F5F5',
         borderBottomWidth: 1,
     },
+    table: {
+        borderTopWidth:1,
+        borderLeftWidth:1,
+      },
+      tr: {
+        borderBottomWidth: 1,
+      },
+      td: {
+        borderRightWidth: 1,
+      },
 })
 const Talk1Sub = ({navigation, route}) => {
 
@@ -176,7 +186,7 @@ const Talk1Sub = ({navigation, route}) => {
                     <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 3, lineHeight: 25}}>{item.title}</Text>
                 </View>
                 <View style={styles.mainBox2}>
-                    <RenderHtml source={{html: `${item.contents}`}} />
+                    <RenderHtml source={{html: `${item.contents}`}} tagsStyles={styles} />
                 </View>
                 {item.savedName === null ? '' : ImageBox()}
             </View>
