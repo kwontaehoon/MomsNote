@@ -495,66 +495,66 @@ const Main = ({ navigation }) => {
 
   const renderItem = ({ item }) => (
     <View>
-      <View style={styles.titleBox}>
-        <TouchableOpacity style={styles.arrowBox} onPress={() => navigation.navigate('맘스 톡 서치', momsSearch)}><Arrow fill='black' height={20} /></TouchableOpacity>
+      <TouchableOpacity style={styles.titleBox} onPress={() => navigation.navigate('맘스 톡 서치', momsSearch)}>
+        <View style={styles.arrowBox}><Arrow fill='black' height={20} /></View>
         <Text style={{ fontWeight: '600' }}>맘스 톡 {momsSearch !== undefined ? momsSearch?.length : 0}건</Text>
-      </View>
+      </TouchableOpacity>
       <View style={styles.mainBox}>
         {momsSearch?.length !== 0 ? <MomsTalk /> :
           <View style={styles.notBox}><Text style={{ fontSize: 16, color: '#9E9E9E' }}>검색결과가 없습니다.</Text></View>}
       </View>
-      <View style={styles.titleBox}>
-        <TouchableOpacity style={styles.arrowBox} onPress={() => navigation.navigate('출산준비물 공유 서치', materialSearch)}><Arrow fill='black' height={20} /></TouchableOpacity>
+      <TouchableOpacity style={styles.titleBox} onPress={() => navigation.navigate('출산준비물 공유 서치', materialSearch)}>
+        <View style={styles.arrowBox}><Arrow fill='black' height={20} /></View>
         <Text style={{ fontWeight: '600' }}>출산준비물 공유 {materialSearch !== undefined ? materialSearch?.length : 0}건</Text>
-      </View>
+      </TouchableOpacity>
       <View style={styles.mainBox}>
         {materialSearch?.length !== 0 ? <MaterialShare /> :
           <View style={styles.notBox}><Text style={{ fontSize: 16, color: '#9E9E9E' }}>검색결과가 없습니다.</Text></View>}
       </View>
-      <View style={styles.titleBox}>
-        <TouchableOpacity style={styles.arrowBox} onPress={() => navigation.navigate('댓글 서치', commentSearch)}><Arrow fill='black' height={20} /></TouchableOpacity>
+      <TouchableOpacity style={styles.titleBox} onPress={() => navigation.navigate('댓글 서치', commentSearch)}>
+        <View style={styles.arrowBox}><Arrow fill='black' height={20} /></View>
         <Text style={{ fontWeight: '600' }}>댓글 {commentSearch !== undefined ? commentSearch?.length : 0}건</Text>
-      </View>
+      </TouchableOpacity>
       <View style={styles.mainBox}>
         {commentSearch?.length !== 0 ? <Comment /> :
           <View style={styles.notBox}><Text style={{ fontSize: 16, color: '#9E9E9E' }}>검색결과가 없습니다.</Text></View>}
       </View>
-      <View style={styles.titleBox}>
-        <TouchableOpacity style={styles.arrowBox} onPress={() => navigation.navigate('체험단 서치', experienceSearch)}><Arrow fill='black' height={20} /></TouchableOpacity>
+      <TouchableOpacity style={styles.titleBox} onPress={() => navigation.navigate('체험단 서치', experienceSearch)}>
+        <View style={styles.arrowBox}><Arrow fill='black' height={20} /></View>
         <Text style={{ fontWeight: '600' }}>체험단 {experienceSearch !== undefined ? experienceSearch?.length : 0}건</Text>
-      </View>
+      </TouchableOpacity>
       <View style={styles.mainBox}>
         {experienceSearch?.length !== 0 ? <Experience /> :
           <View style={styles.notBox}><Text style={{ fontSize: 16, color: '#9E9E9E' }}>검색결과가 없습니다.</Text></View>}
       </View>
-      <View style={styles.titleBox}>
-        <TouchableOpacity style={styles.arrowBox} onPress={() => navigation.navigate('맘스가이드 서치', guideSearch)}><Arrow fill='black' height={20} /></TouchableOpacity>
+      <TouchableOpacity style={styles.titleBox} onPress={() => navigation.navigate('맘스가이드 서치', guideSearch)}>
+        <View style={styles.arrowBox}><Arrow fill='black' height={20} /></View>
         <Text style={{ fontWeight: '600' }}>맘스가이드 {guideSearch !== undefined ? guideSearch?.length : 0}건</Text>
-      </View>
+      </TouchableOpacity>
       <View style={styles.mainBox}>
         {guideSearch?.length !== 0 ? <Guide /> :
           <View style={styles.notBox}><Text style={{ fontSize: 16, color: '#9E9E9E' }}>검색결과가 없습니다.</Text></View>}
       </View>
-      <View style={styles.titleBox}>
-        <TouchableOpacity style={styles.arrowBox} onPress={() => navigation.navigate('행사정보 서치', eventSearch)}><Arrow fill='black' height={20} /></TouchableOpacity>
+      <TouchableOpacity style={styles.titleBox} onPress={() => navigation.navigate('행사정보 서치', eventSearch)}>
+        <View style={styles.arrowBox}><Arrow fill='black' height={20} /></View>
         <Text style={{ fontWeight: '600' }}>행사정보 {eventSearch !== undefined ? eventSearch?.length : 0}건</Text>
-      </View>
+      </TouchableOpacity>
       <View style={styles.mainBox}>
         {eventSearch?.length !== 0 ? <Event /> :
           <View style={styles.notBox}><Text style={{ fontSize: 16, color: '#9E9E9E' }}>검색결과가 없습니다.</Text></View>}
       </View>
-      <View style={styles.titleBox}>
-        <TouchableOpacity style={styles.arrowBox} onPress={() => navigation.navigate('정부지원혜택 서치', governmentSearch)}><Arrow fill='black' height={20} /></TouchableOpacity>
+      <TouchableOpacity style={styles.titleBox} onPress={() => navigation.navigate('정부지원혜택 서치', governmentSearch)}>
+        <View style={styles.arrowBox}><Arrow fill='black' height={20} /></View>
         <Text style={{ fontWeight: '600' }}>정부지원헤택 {governmentSearch !== undefined ? governmentSearch?.length : 0}건</Text>
-      </View>
+      </TouchableOpacity>
       <View style={styles.mainBox}>
         {governmentSearch?.length !== 0 ? <Government /> :
           <View style={styles.notBox}><Text style={{ fontSize: 16, color: '#9E9E9E' }}>검색결과가 없습니다.</Text></View>}
       </View>
-      <View style={styles.titleBox}>
-        <TouchableOpacity style={styles.arrowBox} onPress={() => navigation.navigate('Q&A 서치', qnaSearch)}><Arrow fill='black' height={20} /></TouchableOpacity>
+      <TouchableOpacity style={styles.titleBox} onPress={() => navigation.navigate('Q&A 서치', qnaSearch)}>
+        <View style={styles.arrowBox} ><Arrow fill='black' height={20} /></View>
         <Text style={{ fontWeight: '600' }}>Q&A {qnaSearch !== undefined ? qnaSearch?.length : 0}건</Text>
-      </View>
+      </TouchableOpacity>
       <View style={styles.mainBox}>
         {qnaSearch?.length !== 0 ? <Qna /> :
           <View style={styles.notBox}><Text style={{ fontSize: 16, color: '#9E9E9E' }}>검색결과가 없습니다.</Text></View>}

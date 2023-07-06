@@ -90,7 +90,6 @@ const dateFilter = (item) => {
 
   return info.length == 0 ?
     <View style={styles.rainboxBox}>
-        <Text>행사 정보</Text>
       <Image source={require('../../../../public/assets/image/rainbow2.png')} />
     </View>
     :(
