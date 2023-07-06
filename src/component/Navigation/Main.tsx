@@ -49,6 +49,10 @@ import MomsSearchDetail from '../Navigation/SearchTab/MomsTalk'
 import MaterialDetail from '../Navigation/SearchTab/Material'
 import CommentDetail from '../Navigation/SearchTab/Comment'
 import ExperienceDetail from '../Navigation/SearchTab/Expreience'
+import GuideSearchDetail from '../Navigation/SearchTab/Guide'
+import EventDetail from '../Navigation/SearchTab/Event'
+import GovernmentDetail from '../Navigation/SearchTab/Government'
+import QnaDetail from '../Navigation/SearchTab/Qna'
 import MaterialSearch from '../Materials/Search/Search'
 import MyBoard from '../MyPage/MyBoard/Main'
 import MyComment from '../MyPage/MyComment/Main'
@@ -411,7 +415,6 @@ const Navigation = () => {
                 <Stack.Screen name="맘스토크 상세내용" component={Talk1Tab1Detail} options={{headerShown: false}} />
                 <Stack.Screen name="맘스가이드 상세내용" component={GuideDetail} options={{title: '', headerShown: false}}/>
                 <Stack.Screen name="정부지원혜택 상세내용" component={Government} options={{title: '', headerShown: false}}/>
-
                 <Stack.Screen name="검색" component={Search} options={{title: '', headerShown: false}}/>
                 <Stack.Screen name="맘스정보 검색" component={InformationSearch} options={{title: '', headerShown: false}} />
 
@@ -473,6 +476,16 @@ const Navigation = () => {
                 <Stack.Screen name="출산준비물 공유 서치" component={MaterialDetail} options={{title: '출산리스트 공유 전체'}}/>
                 <Stack.Screen name="댓글 서치" component={CommentDetail} options={{title: '댓글 전체'}}/>
                 <Stack.Screen name="체험단 서치" component={ExperienceDetail} options={{title: '체험단 전체'}}/>
+
+                <Stack.Screen name="맘스가이드 서치" component={GuideSearchDetail} options={{title: '맘스가이드 전체'}}/>
+
+                <Stack.Screen name="행사정보 서치" component={EventDetail} options={{title: '행사정보 전체'}}/>
+
+                <Stack.Screen name="정부지원혜택 서치" component={GovernmentDetail} options={{title: '정부지원헤택 전체'}}/>
+
+                <Stack.Screen name="Q&A 서치" component={QnaDetail} options={{title: 'Q&A 전체'}}/>
+
+
                 <Stack.Screen name="어플 이용 가이드" component={Guide} options={({ navigation, route }) => ({
                             headerLeft: () => (
                                 <View style={styles.header}>

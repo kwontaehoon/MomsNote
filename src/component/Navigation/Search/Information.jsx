@@ -263,8 +263,7 @@ useEffect(()=>{
         { experienceSearch !== undefined && momsSearch !== undefined && materialSearch !== undefined && commentSearch !== undefined?
         <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
             keyExtractor={item => item.title} >
-        </FlatList>
-        :  ''
+        </FlatList> :  ''
         }
       </View>
 

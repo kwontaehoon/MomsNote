@@ -24,14 +24,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   main:{
-    
+    paddingLeft: 15,
+    paddingRight: 15,
   },
   momstalk:{
     height: 80,
     borderTopWidth: 1,
     alignItems: 'center',
     flexDirection: 'row',
-    borderColor: '#F5F5F5'
+    borderColor: '#F5F5F5',
   },
   mainBox:{
     paddingLeft: 15,
@@ -49,6 +50,12 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 20,
   },
+  dateBox2:{
+    flex: 1,
+    display: 'flex',
+    alignItems: 'flex-end',
+    marginLeft: 10
+  },
 })
 
 const Main = ({navigation, route}) => {
@@ -60,52 +67,33 @@ const Main = ({navigation, route}) => {
     }
   ];
 
-const [experienceSearch, setExperienceSearch] = useState(route.params);
+const [info, setInfo] = useState(route.params);
 
-const dayCalculate = (date) => {
-  switch(true){
-    case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
-    case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
-    default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'day')}일 전</Text>
+const dateFilter = (item) => {
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    return(<Text>{`${item.eventStartDate.split('-')[1]}.${item.eventStartDate.split('-')[2]}(${days[moment(item.eventStartDate).day()]})`} ~ {`${item.eventEndDate.split('-')[1]}.${item.eventEndDate.split('-')[2]}(${days[moment(item.eventEndDate).day()]})`}</Text>)
   }
-}
 
-  const Experience = () => {
+  const renderItem = () => {
     let arr = [];
-    experienceSearch.filter((x, index) => {
+    info.filter((x, index) => {
       arr.push(
-       <View style={styles.momstalk} key={index}>
-          <View style={styles.dotBox}><More /></View>
-          <View style={styles.profile}></View>
-        <View>
-        <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 3}}>
-          <Text style={{fontWeight: '600'}}>{x.nickname}</Text>
-          <Text style={{marginLeft: 5}}>{dayCalculate(x.commentsDate)}</Text>
-        </View>
-        <Text>{x.title}</Text>
-        </View>
-      </View>
-      )
+        <TouchableOpacity style={styles.momstalk} key={index} onPress={() => navigation.navigate('행사정보 상세페이지', x)}>
+          <Text style={{ fontWeight: '500' }} numberOfLines={1} ellipsizeMode='tail'>{x.title}</Text>
+          <View style={styles.dateBox2}>{dateFilter(x)}</View>
+        </TouchableOpacity>
+        )
     })
     return arr;
   }
 
 
-  const renderItem = ({ item }) => (
-    <View>
-        <View style={styles.mainBox}>
-          <Experience /> 
-        </View>
-    </View>
-  );
-
-  
-
-  return experienceSearch.length == 0 ?
+  return info.length == 0 ?
     <View style={styles.rainboxBox}>
+        <Text>행사 정보</Text>
       <Image source={require('../../../../public/assets/image/rainbow2.png')} />
     </View>
-    : (
+    :(
     <View style={styles.container}>
       <View style={styles.main}>
         <FlatList data={DATA} renderItem={renderItem}

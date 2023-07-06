@@ -190,12 +190,9 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = [route.params];
-    console.log('행사정보 info: ', info);
     const info2 = useSelector(state => { return state.event.data; });
-    console.log('행사정보 info2: ', info2);
     const [info3, setInfo3] = useState();
     const eventSet = useSelector(state => { return state.event.refresh });
-    console.log('eventSet: ', eventSet);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
@@ -237,10 +234,6 @@ const Talk1Sub = ({navigation, route}) => {
         user();
         hits();
     }, []);
-
-    useEffect(()=>{
-        setInfo3(info2?.filter(x => x.boardId == info[0]?.boardId));
-    }, [info2]);
 
     const ImageBox = () => {
         const arr:any[] = [];
@@ -354,9 +347,10 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
         </View>
 
-        <FlatList ref={flatlistRef} data={info3} renderItem={renderItem}
+        <FlatList ref={flatlistRef} data={info} renderItem={renderItem}
             keyExtractor={item => String(item.boardId)}>
         </FlatList>
+  
     </View>
   )
 }
