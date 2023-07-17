@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
         height: 100,
         position: 'absolute',
         left: '20%',
-        top: -150,
+        top: -130,
     },
     imageBox3:{
         height: 100,

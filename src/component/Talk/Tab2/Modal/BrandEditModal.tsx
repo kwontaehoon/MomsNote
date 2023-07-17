@@ -118,7 +118,6 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
 
     const dispatch = useDispatch();
     const [info, setInfo] = useState(); // 브랜드 lists
-    console.log('브랜드 리스트: ', info);
     const [selectBrand, setSelectBrand] = useState({
         needsId: null,
         needsBrandId: 0,
@@ -127,8 +126,6 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
         needsDataId: null,
         itemBrand: '',
     });
-    console.log('modalvisible2: ', modalVisible2);
-    console.log('selectBrand: ', selectBrand);
 
     useEffect(()=>{
         const commentInfo = async() => {

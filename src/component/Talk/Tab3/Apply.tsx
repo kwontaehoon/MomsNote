@@ -417,7 +417,7 @@ const Withdraw = ({navigation, route}) => {
                     <Text style={{color: '#EF1E1E', fontWeight: '600'}}>[필독] 캠페인 유의사항 및 제 3자 제공에 동의합니다.</Text>
                 </View>
                 <View style={[styles.mainBox, {alignItems: 'center'}]}>
-                    {info.memberName == '' || info.tel == '' || info.address == '' || info.addressDetails == '' ||
+                    {info.memberName.trim() == '' || info.tel.trim() == '' || info.address.trim() == '' || info.addressDetails.trim() == '' ||
                     (info.blog == '' && info.youtube == '' && info.insta == '') || SMSFlag.flag == 0 || !isChecked[0]
                     ?
                     <View style={styles.buttonBox}><Text style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>체험단 신청</Text></View>

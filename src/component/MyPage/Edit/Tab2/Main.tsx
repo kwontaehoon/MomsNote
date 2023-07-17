@@ -220,19 +220,6 @@ const Withdraw = ({navigation, route}) => {
         
     }
 
-    const change = (e) => { // 텍스트 밑줄 색상 변경
-        let arr = [...isChecked];
-
-        switch(true){
-            case e === 0 && arr[e] === false: arr = Array.from({length: 3}, ()=>{return true}); setChecked(arr); break;
-            case e === 0 && arr[e] === true: arr = Array.from({length: 3}, ()=>{return false}); setChecked(arr); break;
-            case e !== 0: arr[0] = false; arr[e] = !arr[e]; setChecked(arr); break;
-        }
-        if(arr[1] === true && arr[2] === true){
-            arr = Array.from({length: 3}, ()=>{return true});
-            setChecked(arr);
-        }
-    }
     const button = () => {
         switch(true){
             case SMSFlag.flag == 1 : return (<Text style={{fontWeight: '500'}} onPress={()=>(setSMSFlag(prevState => ({...prevState, open: false, flag: 0}), setInfo(prevState => ({...prevState, tel: ''}))))}>변경</Text>)

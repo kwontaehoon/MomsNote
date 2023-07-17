@@ -64,6 +64,14 @@ const styles = StyleSheet.create({
 const Main = ({navigation, route}) => {
 
     const [modal, setModal] = useState(false);
+    console.log('123');
+
+    useEffect(()=>{
+        console.log('route: ', route);
+        if(route?.params == 'expire'){
+            setModal(true);
+        }
+    }, []);
 
     WebBrowser.maybeCompleteAuthSession();
     const [request, response, promptAsync] = Google.useAuthRequest({
@@ -116,7 +124,7 @@ const Main = ({navigation, route}) => {
                 navigation.reset({routes: [{name: "main"}]});
                 AsyncStorage.setItem('login', '2');
             }else if(response2.data.status == 'expire'){
-                setModal(!modal);
+                setModal(true);
             }else{
                 navigation.navigate('추가 정보 입력', ['google', response.data.sub, response.data.email]);
             }

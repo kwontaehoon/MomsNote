@@ -141,7 +141,7 @@ const Talk1Sub = ({route}) => {
     let sum = 0;
     let exp = 0;
     if(info !== '' && info !== '0'){
-      info.filter(x=>{
+      info?.filter(x=>{
         if(x.id == 0 && x.needsBrandId !== null){
           exp += x.itemPrice
         } else sum += x.itemPrice;
@@ -157,7 +157,7 @@ const Talk1Sub = ({route}) => {
   }
 
   const filtering = (e) => { // 품목 브랜드 가격 부분 none || flex
-    if(info.filter(x => x.category == e && x.id == 1) == ''){
+    if(info?.filter(x => x.category == e && x.id == 1) == ''){
       return(
         <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}><Text>검색 결과가 없습니다.</Text></View>
       )
@@ -187,7 +187,7 @@ const Talk1Sub = ({route}) => {
 
   const List = ({title}) => {
     let arr = [];
-    info.filter((x, index)=>{
+    info?.filter((x, index)=>{
       if(x.category == title && x.deleteStatus == 1 && x.id == 1){
               arr.push(
         <View style={styles.mainBox3} key={index}>

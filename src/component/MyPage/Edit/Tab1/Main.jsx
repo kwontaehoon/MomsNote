@@ -138,7 +138,7 @@ const Talk1 = ({navigation}: any) => {
         let Month = selectedDate.getMonth()+1;
         Month < 10 ? Month = `0${String(Month)}` : '';
         let Date = selectedDate.getDate();
-        Date < 10 ? Month = `0${String(Date)}` : '';
+        Date < 10 ? Date = `0${String(Date)}` : '';
 
         setShow(false);
         setInfo((prevState) => ({ ...prevState, dueDate: `${Year}-${Month}-${Date}`}));

@@ -139,7 +139,6 @@ const Talk1 = ({ navigation }) => {
     }
 
     const onRefreshing = async() => {
-        console.log('@@@@ refreshing');
         if(!refreshing){
           setRefreshing(true);
           await setRefreshing(false);

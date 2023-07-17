@@ -350,7 +350,6 @@ const Navigation = ({navigation, route}) => {
       let sum = 0;
       let exp = 0;
   
-      console.log('@@ 문제있는 info: ', info);
         info?.filter(x=>{
           if(x.id == 0 && x.needsBrandId !== null){
             exp += x.itemPrice
@@ -509,7 +508,7 @@ const save = async() => {
               color={x.id == 0 ? undefined : '#FEB401'}
               onValueChange={()=>{
                 switch(true){
-                  case x.id == 0 && purchaseCheckBox == null : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: x.needsBrandId, needsId: x.needsId})); break;
+                  case x.id == 0 && purchaseCheckBox == null : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: !x.needsBrandId ? x.needsId : x.needsBrandId, needsId: x.needsId})); break;
                   case x.id == 0 : purchase(x.needsId, x.needsBrandId); break;
                   default : purchaseCencel(x.needsId);
                 }
@@ -570,7 +569,7 @@ const save = async() => {
         <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '90.5%'}]}>
 
         <CheckboxModal modalVisible={modalVisible} setModalVisible={setModalVisible} filter={filter}/>
-        <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modal={modal} setModal={setModal} setModal2={setModal2} modal4={modal4} setModal4={setModal4} filter={filter}/>
+        {modalVisible2.open && <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modal={modal} setModal={setModal} setModal2={setModal2} modal4={modal4} setModal4={setModal4} filter={filter}/>}
         <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
         <ResetModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
         <ResetModal2 modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>

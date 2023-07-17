@@ -337,8 +337,8 @@ const optionBox = (e) => {
                 <View style={styles.imageBox2}>
                 <View style={styles.Top}><Image source={require('../../../../public/assets/coachmark/arrow14.png')} style={styles.image} resizeMode='contain'/></View>
                     <View style={[styles.Bottom, {justifyContent: 'flex-start', paddingRight: 5}]}>
-                        <Text style={{color: 'white', fontSize: 15, textAlign: 'center', fontWeight: '700'}}>저장, 검색</Text>
-                        <Text style={{color: 'white', fontSize: 15, textAlign: 'center', fontWeight: '700'}}>기능 활용!</Text>
+                        <Text style={{color: 'white', fontSize: 15, textAlign: 'center', fontWeight: '700'}}>구매한 브랜드를</Text>
+                        <Text style={{color: 'white', fontSize: 15, textAlign: 'center', fontWeight: '700'}}>선택해보세요!</Text>
                     </View>
                 </View>
 

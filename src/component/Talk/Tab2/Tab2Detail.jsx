@@ -42,6 +42,7 @@ import { postShareList } from '../../../Redux/Slices/ShareListSlice'
 import { postHits } from '../../../Redux/Slices/HitsSlice'
 import { postMaterialShare } from '../../../Redux/Slices/MaterialShareSlice'
 import { postUser } from '../../../Redux/Slices/UserSlice'
+import CoarchMark from './Modal/CoarchMark'
 
 const styles = StyleSheet.create({
     container:{
@@ -288,9 +289,11 @@ const Talk1Sub = ({navigation, route}) => {
     const isFocused = useIsFocused();
     const info = [route.params];
     const info2 = useSelector(state => { return state.shareList.data }); // 게시글 리스트
+    console.log('@@ info2: ', info2);
     const materialShare = useSelector(state => { return state.materialShare.data });
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
     const [info3, setInfo3] = useState(useSelector(state => { return state.materialShare.data }));
+    console.log('@@ info3: ', info3);
 
     const user = useSelector(state => { return state.user.data; });
 

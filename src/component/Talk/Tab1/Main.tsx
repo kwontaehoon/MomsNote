@@ -16,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { postBoardCount, setBoardCountRefresh } from '../../../Redux/Slices/BoardCountSlice'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import { postBoardPopular } from '../../../Redux/Slices/BoardPopularSlice'
-
+import axios from 'axios'
 
 const styles = StyleSheet.create({
   container:{
@@ -217,7 +217,11 @@ const Talk1 = ({navigation, route}:any) => {
   ]);
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
-
+  const [plus, setPlus] = useState({
+    newInfo: [],
+    page: 1,
+    category: '전체'
+  });
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(()=>{
@@ -225,9 +229,14 @@ const Talk1 = ({navigation, route}:any) => {
     dispatch(postBoard(boardSet));
     dispatch(postBoardCount(boardCountSet));
     dispatch(postBoardPopular());
-
     setLoading(false);
   }, [filter, value]);
+
+  useEffect(()=>{
+    if(info?.length !== 0){
+      setPlus({...plus, newInfo: info});
+    }
+  }, [info]);
 
   useEffect(()=>{
     const momsTalk = async() => {
@@ -242,6 +251,7 @@ const Talk1 = ({navigation, route}:any) => {
     let arr = Array.from({length: 6}, () => {return false});
     arr[e] = !arr[e];
     setFilter(arr);
+    setPlus({...plus, page: 1, category: DATA[e].title});
     dispatch(setBoardRefresh({subcategory: DATA[e].title}));
     dispatch(setBoardCountRefresh({subcategory: DATA[e].title}));
   }
@@ -279,6 +289,33 @@ const Talk1 = ({navigation, route}:any) => {
     e.label == '인기 순' ? dispatch(setBoardFilter({filter: 'best'})) : dispatch(setBoardFilter({filter: 'new'}))
   }
 
+  const onEnd = async () => {
+    console.log('## page: ', plus.page);
+    try {
+        const response = await axios({
+            method: 'post',
+            url: 'https://momsnote.net/api/board/list',
+            data: {
+                order: 'new',
+                count: 1,
+                page: plus.page +1,
+                subcategory: plus.category
+            }
+        });
+        if(response?.data?.length == 0){
+          return;
+        }else{
+          console.log('## response: ', response);
+          const addInfo = [...plus?.newInfo, ...response.data];
+          console.log('## addInfo: ', addInfo);
+          setPlus({...plus, newInfo: addInfo, page: plus.page+1});
+        }
+    } catch (error) {
+        console.log('qna axios error: ', error);
+        return undefined;
+    }
+}
+
   const onRefreshing = () => {
     if(!refreshing){
       setRefreshing(true);
@@ -286,7 +323,7 @@ const Talk1 = ({navigation, route}:any) => {
       dispatch(postBoardCount(boardCountSet));
       dispatch(postBoardPopular());
       setRefreshing(false);
-  }
+    }
   }
 
 
@@ -392,11 +429,9 @@ const Talk1 = ({navigation, route}:any) => {
           <Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text>
         </View>
         :
-        <FlatList data={info} renderItem={renderItem2} onRefresh={onRefreshing} refreshing={refreshing} onEndReached={()=>{
-          dispatch(setBoardCount({page: infoCount > (boardSet.page * 30) ? boardSet.page + 1 : boardSet.page, count: infoCount}));
-        }} onEndReachedThreshold={0}
-          keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}
-          ListFooterComponent={loading && <ActivityIndicator size={'large'} color='#E0E0E0'/>}>
+        <FlatList data={plus?.newInfo} renderItem={renderItem2} onRefresh={onRefreshing} refreshing={refreshing} onEndReached={()=> onEnd()}
+          onEndReachedThreshold={0}
+          keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}>
         </FlatList>
         }
       </View>

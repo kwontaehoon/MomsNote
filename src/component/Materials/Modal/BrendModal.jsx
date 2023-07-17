@@ -113,7 +113,8 @@ const styles = StyleSheet.create({
 const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, modal4, setModal4, filter}) => {
 
     const dispatch = useDispatch();
-    const [info, setInfo] = useState(); // 브랜드 lists
+    const [info, setInfo] = useState(); // 브랜드 list
+    console.log('브랜드 list: ', info);
     const [selectBrand, setSelectBrand] = useState({
         needsId: null,
         needsBrandId: 0,
@@ -126,6 +127,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
     const hashTag = useSelector(state => { return state.hashTag.data; });
 
     useEffect(()=>{
+        if(modalVisible2){
         dispatch(postHashTag({needsId: modalVisible2.needsId}));
         const commentInfo = async() => {
             const token = await AsyncStorage.getItem('token');
@@ -149,6 +151,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
         } 
         commentInfo();
         setSelectBrand(prevState => ({...prevState, needsId: modalVisible2.needsId, needsBrandId: modalVisible2.needsBrandId == null ? 0 : modalVisible2.needsBrandId, needsDataId: modalVisible2.needsDataId == null ? 0 : modalVisible2.needsDataId}));
+    }
     }, [modalVisible2, modal4]);
    
     const crown = (index) => {
@@ -203,6 +206,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
                 console.log('comment axios error:', error)
             }
             dispatch(postMaterial({order: filter}));
+            setInfo([]);
     }
 
 
@@ -234,7 +238,9 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
   return (
     <Modal animationType="fade" transparent={true} visible={modalVisible2.open} statusBarTranslucent={true}
         onRequestClose={() => {
-        setModalVisible2(prevState => ({...prevState, open: false}))}}>
+        setModalVisible2(prevState => ({...prevState, open: false}));
+        setInfo([]);
+        }}>
         <KeyboardAvoidingView behavior='height' style={styles.modalContainer}>
             <View style={styles.modalView}>
                 <View style={styles.modalContainer2}>

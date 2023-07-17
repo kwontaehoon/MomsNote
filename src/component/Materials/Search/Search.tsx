@@ -236,7 +236,6 @@ const Navigation = ({navigation, route}) => {
   }, []);
 
   useEffect(()=>{
-    console.log('@@@@@@@@@@@@@');
     const boardSearch = async() => {
       const token = await AsyncStorage.getItem('token');
         try{

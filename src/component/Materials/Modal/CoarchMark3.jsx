@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         height: 100,
         position: 'absolute',
         left: '25%',
-        bottom: 0,
+        bottom: -20,
         flexDirection: 'row',
     },
     checkbox: {
@@ -292,8 +292,8 @@ const Main = ({modal, setModal, modal6, setModal6, setModalVisible2}) => {
                             <View style={styles.imageBox3}>
                                 <View style={styles.Top}><Image source={require('../../../../public/assets/coachmark/arrow10.png')} style={{width: 30, height: 30}} resizeMode='contain'/></View>
                                 <View style={styles.Bottom}>
-                                    <Text style={{color: 'white', fontSize: 15, textAlign: 'center', fontWeight: '700'}}>브랜드별 최저가</Text>
-                                    <Text style={{color: 'white', fontSize: 15, textAlign: 'center', fontWeight: '700'}}>확인이 가능해요!</Text>
+                                    <Text style={{color: 'white', fontSize: 15, textAlign: 'center', fontWeight: '700'}}>찾는 브랜드가 없다면</Text>
+                                    <Text style={{color: 'white', fontSize: 15, textAlign: 'center', fontWeight: '700'}}>직접 입력하세요!</Text>
                                 </View>
                                 <View style={styles.Top}><Image source={require('../../../../public/assets/coachmark/arrow11.png')} style={{width: 30, height: 30}} resizeMode='contain'/></View>
                             </View>
@@ -325,8 +325,8 @@ const Main = ({modal, setModal, modal6, setModal6, setModalVisible2}) => {
                 </View>
                     <View style={styles.imageBox4}>
                         <View style={[styles.Bottom, {paddingTop: 20}]}>
-                            <Text style={{color: 'white', fontSize: 15, textAlign: 'center', fontWeight: '700'}}>브랜드별 최저가</Text>
-                            <Text style={{color: 'white', fontSize: 15, textAlign: 'center', fontWeight: '700'}}>확인이 가능해요!</Text>
+                            <Text style={{color: 'white', fontSize: 15, textAlign: 'center', fontWeight: '700'}}>브랜드 클릭 시</Text>
+                            <Text style={{color: 'white', fontSize: 15, textAlign: 'center', fontWeight: '700'}}>자동입력이 돼요!</Text>
                         </View>
                         <View style={[styles.Top, {justifyContent: 'flex-start'}]}><Image source={require('../../../../public/assets/coachmark/arrow12.png')} style={{width: 30, height: 30}} resizeMode='contain'/></View>
                     </View>

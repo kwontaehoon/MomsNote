@@ -112,7 +112,8 @@ const AddPage = ({navigation, route}) => {
     const [marketingFlag, setMarketingFlag] = useState({
         marketingFlag: 0
     });
-    const [nickNameCheck, setNickNameCheck] = useState(null); // 닉네임 중복 체크
+    const [nickNameCheck, setNickNameCheck] = useState(0); // 닉네임 중복 체크
+    console.log('nickNameCheck: ', nickNameCheck);
 
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -132,7 +133,6 @@ const AddPage = ({navigation, route}) => {
 
     const submit = async() => {
         const result = {...info, ...marketingFlag};
-        console.log('result: ', result);
 
         AsyncStorage.setItem('user', JSON.stringify(info));
 
@@ -317,7 +317,7 @@ const AddPage = ({navigation, route}) => {
                 </View>
             </View>
             <View style={styles.footer}>
-            {(isChecked[1] && isChecked[2] && info.nickname !== '' && info.babyName !== '' && info.dueDate !== '' && nickNameCheck == 0)
+            {(isChecked[1] && isChecked[2] && info.nickname.trim() !== '' && info.babyName.trim() !== '' && info.dueDate !== '' && nickNameCheck == 0)
                 ?
                 <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#FEA100'}]} onPress={submit}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>완료</Text>

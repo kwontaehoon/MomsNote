@@ -120,10 +120,10 @@ const Main = ({navigation}) => {
         hours: '00',
         minutes: '00'
     }); // 알람 끝나는 시간
+    console.log('modal4: ', modal4);
 
     const [loading, setLoading] = useState(false);
 
-    const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('time');
     const [show, setShow] = useState(false);
     const [clock, setClock] = useState('start');
@@ -228,15 +228,6 @@ const Main = ({navigation}) => {
         setShow(true);
       }
       setMode(currentMode);
-    };
-  
-    const showTimepicker = (e) => {
-        showMode('time');
-        setShow(true);
-
-        if(e === 0){
-            setClock('start');
-        }else setClock('end');
     };
 
     const marketing = async(e) => {

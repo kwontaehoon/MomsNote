@@ -21,8 +21,6 @@ const Main = ({navigation}) => {
 
     const runFirst = `window.ReactNativeWebView.postMessage("this is message from web")`;
 
-    const [modal, setModal] = useState(false);
-
     const kakaoTokenId = async(kakaoAcceess) => {
 
       try{
@@ -55,7 +53,7 @@ const Main = ({navigation}) => {
                     'Authorization': `bearer ${response3.data.token}`,
                     'Content-Type': 'application/json'
                   },
-                  url: 'https://momsnote.net/api/main/data',
+                  url: 'https://momsnote.net/api/main/data',  
               });
               console.log('response4: ', response4)
               AsyncStorage.setItem('user', JSON.stringify(response4.data.data));
@@ -67,7 +65,7 @@ const Main = ({navigation}) => {
           navigation.reset({routes: [{name: "main"}]});
           AsyncStorage.setItem('login', '2');
       }else if(response3.data.status == 'expire'){
-          setModal(!modal);
+          navigation.navigate('로그인 페이지', 'expire');
       }else{
         navigation.navigate('추가 정보 입력', ['kakao', response2.data.id, jwtDecode(response.data.id_token).email]);
       }

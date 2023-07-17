@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
 })
 
 const CheckBoxModal = ({modalVisible, setModalVisible, filter}) => {
+  console.log('modalVisible: ', modalVisible);
 
     const dispatch = useDispatch();
     const [isChecked, setChecked] = useState(false); // check box 선택시 체크 팝업에서의 check box
@@ -71,7 +72,7 @@ const CheckBoxModal = ({modalVisible, setModalVisible, filter}) => {
               'Content-Type': 'application/json'
             },
             data: {
-              needsBrandId: modalVisible.needsBrandId == null ? 0 : modalVisible.needsBrandId,
+              needsBrandId: modalVisible.needsBrandId,
               needsId: modalVisible.needsId
             }
         });

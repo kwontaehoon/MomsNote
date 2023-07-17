@@ -74,7 +74,7 @@ const TimeWheel = ({ modal, setModal }) => {
                                 height={300}
                                 initialSelectedIndex={1}
                                 items={SelectClock.map((name) => ({ label: name, value: '' }))}
-                                onChange={({ item }) => {setModal(prevState => ({...prevState, hours: item.label})), AsyncStorage.setItem('alarmEndClock', item.label)}}
+                                onChange={({ item }) => {setModal(prevState => ({...prevState, clock: item.label})), AsyncStorage.setItem('alarmEndClock', item.label)}}
                                 renderItem={(props) => (
                                     <Text
                                         style={[

@@ -158,7 +158,7 @@ const Withdraw = ({navigation,route}) => {
 
                     <Text style={{fontSize: 16, fontWeight: '500'}}>연락처</Text>
                     <View style={styles.textBox}>
-                        <Text>{info.data.memberName}</Text>
+                        <Text>{info.data.tel}</Text>
                     </View>
                     <TouchableOpacity style={styles.certificateBox}>
                         <Check fill={'green'}/>

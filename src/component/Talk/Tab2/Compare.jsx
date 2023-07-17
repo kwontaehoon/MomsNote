@@ -9,11 +9,13 @@ import Modal from './Modal/BrandEditModal'
 import Modal2 from './Modal/Confirm'
 import Modal3 from '../../Modal/First'
 import Modal4 from '../../Materials/Budget/Modal/PriceEdit'
+import CoarchMark from './Modal/CoarchMark'
 
 import ArrowTop from '../../../../public/assets/svg/Arrow-Top.svg'
 import ArrowBottom from '../../../../public/assets/svg/Arrow-Bottom.svg'
 import { postShareList } from '../../../Redux/Slices/ShareListSlice'
-import { SafeAreaProvider } from 'react-native-safe-area-context' 
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const styles = StyleSheet.create({
@@ -192,7 +194,6 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = useSelector(state => { return state.shareList.data; });
-    console.log('infoooooo: ', info);
     const material = useSelector(state => { return state.material.data; });
     const [list, setList] = useState(Array.from({length: 9}, () => {return true})); // list display
     const animation = useRef(new Animated.Value(0)).current;
@@ -220,6 +221,7 @@ const Talk1Sub = ({navigation, route}) => {
       open: false,
       content: null
     })
+    const [coarchMarkModal, setCoarchMarkModal] = useState(false); // 코치마크
 
   useEffect(()=>{
     dispatch(postMaterial({ order: 'need'}));
@@ -242,10 +244,18 @@ const Talk1Sub = ({navigation, route}) => {
     setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
   }, [material]);
 
+  useEffect(()=>{
+    const coarch = async() => {
+      const coarchMark = await AsyncStorage.getItem('coarchMarkMaterialList');
+      console.log('coarchMark: ', coarchMark);
+      coarchMark == null ? setCoarchMarkModal(true) : setCoarchMarkModal(false);
+    }
+    coarch();
+  }, []);
+
 
   const filtering = (e, title) => { // 품목 브랜드 가격 부분 none || flex
-    console.log('title: ', title.filter(x => x.category == e && x.itemBrand == null));
-    if(title.filter(x => x.category == e && x.itemBrand == null).length == 0){
+    if(title.filter(x => x.category == e).length == 0){
       return(
         <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}><Text>선택된 품목이 없습니다.</Text></View>
       )
@@ -427,6 +437,8 @@ const Talk1Sub = ({navigation, route}) => {
         <Modal2 modal2={modal2} setModal2={setModal2}/>
         <Modal3 modal={modal3} setModal={setModal3}/>
         <Modal4 modal6={modal4} setModal6={setModal4} setModal7={setModal3} />
+        <CoarchMark modal={coarchMarkModal} setModal={setCoarchMarkModal}/>
+
     </SafeAreaView>}
     </SafeAreaProvider>
   )

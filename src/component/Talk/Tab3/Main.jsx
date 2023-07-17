@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 import { postExperience } from '../../../Redux/Slices/ExperienceSlice'
 import { setExperienceCount, setExperienceFilter } from '../../../Redux/Slices/ExperienceSlice'
 import { postExperienceCount } from '../../../Redux/Slices/ExperienceCountSlice'
+import axios from 'axios'
 
 const styles = StyleSheet.create({
   container:{
@@ -74,13 +75,17 @@ const styles = StyleSheet.create({
 })
 
 
-const Talk3 = ({navigation}: any) => {
+const Talk3 = ({navigation}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => {return state.experience.data});
+  
   const infoCount = useSelector(state => { return state.experienceCount.data});
   const experienceSet = useSelector(state => { return state.experience.refresh; });
 
+  console.log('## info : ', info, infoCount, experienceSet);
+
+  const [plus, setPlus] = useState();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('1');
@@ -102,6 +107,30 @@ const Talk3 = ({navigation}: any) => {
     e.label == '인기 순' ? dispatch(setExperienceFilter({filter: 'best'})) : dispatch(setExperienceFilter({filter: 'new'}))
   };
 
+  const onEnd = async () => {
+    setLoading(true);
+
+    try {
+        const response = await axios({
+            method: 'post',
+            url: 'https://momsnote.net/exp',
+            data: {
+                order: 'new',
+                count: 1,
+                page: 2
+            }
+        });
+        console.log('## response: ', response);
+        const addInfo = [...plus, ...response.data];
+        console.log('## addInfo: ', addInfo);
+        setPlus(addInfo);
+
+    } catch (error) {
+        console.log('qna axios error: ', error);
+        return undefined;
+    }
+}
+
   const onRefreshing = () => {
     if(!refreshing){
       setRefreshing(true);
@@ -110,6 +139,7 @@ const Talk3 = ({navigation}: any) => {
       setRefreshing(false);
     }
   };
+  
 
   const renderItem = ({ item }) =>
     item.appCount >= item.maxPeople || moment(item.registrationEndDate).diff(moment(), "days") < 0 ?
@@ -146,7 +176,7 @@ const Talk3 = ({navigation}: any) => {
       <View style={styles.header2}>
         <View style={[styles.header2FilterBox, {paddingBottom: 5}]}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{fontSize: 16, fontWeight: '600'}}>{infoCount}</Text>
+            <Text style={{fontSize: 16, fontWeight: '600'}}>{info?.length}</Text>
             <Text style={{fontSize: 16}}> 건</Text>
           </View>
         </View>
@@ -163,11 +193,10 @@ const Talk3 = ({navigation}: any) => {
         <FlatList data={info} renderItem={renderItem} numColumns={2} showsVerticalScrollIndicator={false}
           onRefresh={onRefreshing} refreshing={refreshing}
           onEndReached={()=>
-          {
-            dispatch(setExperienceCount({page: infoCount > (experienceSet.page * 30) ? experienceSet.page + 1 :experienceSet.page, count: infoCount}))
+          { onEnd();
+            // dispatch(setExperienceCount({page: infoCount > (experienceSet.page * 30) ? experienceSet.page + 1 :experienceSet.page, count: infoCount}))
           }} onEndReachedThreshold={0}
-          keyExtractor={(item, index) => String(index)}
-          ListFooterComponent={loading && <ActivityIndicator />}>
+          keyExtractor={(item, index) => String(index)}>
           </FlatList>
 }
       </View>
