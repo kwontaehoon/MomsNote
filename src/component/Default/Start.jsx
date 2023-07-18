@@ -24,11 +24,12 @@ const styles = StyleSheet.create({
         height: '10%',
         justifyContent: 'center',
         alignItems: 'flex-end',
-        paddingRight: 20
+        paddingRight: 20,
     },
     headerBox:{
         height: '15%',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     main2Box:{
         height: '75%',
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
     },
     main2ImageBox: {
         maxWidth: 200,
-        height: '100%'
+        height: '90%',
     },
     image:{
         width: '100%',
@@ -93,7 +94,7 @@ const Main = ({navigation}) => {
 
     const List = () => {
 
-        return page == 2 ? (
+        return page == 3 ? (
             <View style={styles.footer}>
                 <TouchableOpacity style={styles.button} activeOpacity={1} onPress={start}>
                     <Text style={{fontSize: 18, fontWeight: '400', color: 'white'}}>시작하기</Text>

@@ -53,9 +53,7 @@ const Main = () => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.myComment.data; });
-  console.log('내가 쓴 댓글 info: ', info);
   const [info2, setInfo2] = useState();
-  console.log('info2: ', info2);
   const myCommentSet = useSelector(state => { return state.myComment.refresh; });
   const myCommentCountSet = useSelector(state => { return state.myComment.refresh; });
   const user = useSelector(state => {return state.user.data});
@@ -70,16 +68,7 @@ const Main = () => {
 
   }, []);
 
-const dayCalculate = (date) => {
-  switch(true){
-    case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
-    case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
-    default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'day')}일 전</Text>
-  }
-}
-
 const dotClick = (e) => {
-  console.log('e: ', e);
   setModal(prevState => ({...prevState, open: true, content: e}));
 }
   
@@ -93,7 +82,7 @@ const dotClick = (e) => {
     <View>
       <View style={{flexDirection: 'row', marginBottom: 3, alignItems: 'center'}}>
         <Text style={{fontWeight: '600'}}>{item.nickname}</Text>
-        <Text style={{marginLeft: 5}}>{dayCalculate(item.commentsDate)}</Text>
+        <Text style={{marginLeft: 5, color: '#9E9E9E'}}>{moment(item.commentsDate).format('YYYY.MM.DD')}</Text>
       </View>
       <Text numberOfLines={1}>{item.contents}</Text>
     </View>

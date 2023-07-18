@@ -49,14 +49,12 @@ const styles = StyleSheet.create({
 const Main = ({navigation}) => {
 
     const DATA3 = Array.from({length: 40}, () => {return false}).map((x, index)=>{ return {id: `${index+1}`} });
-    console.log('data4: ', DATA3);
     const flatListRef = useRef();
     const dispatch = useDispatch();
     const user = useSelector(state => { return state.user.data; });
 
     const [filter, setFilter] = useState([true, false]); // filter tab 오늘의편지 or 이 시기에는?
     const [week, setWeek] = useState(Array.from({length: 40}, () => { return false }));
-    console.log('week: ', week.findIndex(x => x == true)+1);
 
     const [test, setTest] = useState(0);
 

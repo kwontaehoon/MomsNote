@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useState, useRef, useCallback } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native'
 import Swiper from 'react-native-swiper'
 
 import OnBoarding1 from '../../../../public/assets/svg/onBoarding1.svg'
@@ -27,6 +27,10 @@ const styles = StyleSheet.create({
         height: '75%',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    main2ImageBox: {
+        maxWidth: 200,
+        height: '100%',
     },
     image:{
         width: '100%',
@@ -81,7 +85,17 @@ const Main = ({navigation}) => {
                         <Text style={{fontSize: 20, fontWeight: 'bold'}}>필요한 준비물 미리 준비해요</Text>
                     </View>
                     <View style={styles.main2Box}>
-                        <OnBoarding1 style={styles.image}/>
+                        <Image source={require('../../../../public/assets/image/onboarding1.png')} style={styles.main2ImageBox}/>   
+                    </View>
+                </View>
+
+                <View testID="Page2" style={styles.main2}>
+                    <View style={styles.headerBox}>
+                        <Text style={{fontSize: 20}}>첫 임신, 궁금한게 많으시죠?</Text>
+                        <Text style={{fontSize: 20, fontWeight: 'bold'}}>맘스노트가 해결해드립니다</Text>
+                    </View>
+                    <View style={styles.main2Box}>
+                        <Image source={require('../../../../public/assets/image/onboarding2.png')} style={styles.main2ImageBox}/>   
                     </View>
                 </View>
         
@@ -91,7 +105,7 @@ const Main = ({navigation}) => {
                         <Text style={{fontSize: 20, fontWeight: 'bold'}}>추천상품을 확인해 보세요</Text>
                     </View>
                     <View style={styles.main2Box}>
-                        <OnBoarding2 style={styles.image}/>
+                        <Image source={require('../../../../public/assets/image/onboarding3.png')} style={styles.main2ImageBox}/>   
                     </View>
                 </View>
 
@@ -101,7 +115,7 @@ const Main = ({navigation}) => {
                         <Text style={{fontSize: 20, fontWeight: 'bold'}}>출산리스트를 비교해 보세요</Text>
                     </View>
                     <View style={styles.main2Box}>
-                        <OnBoarding3 style={styles.image}/>
+                        <Image source={require('../../../../public/assets/image/onboarding4.png')} style={styles.main2ImageBox}/>   
                     </View>
                 </View>
 
