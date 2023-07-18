@@ -329,19 +329,13 @@ const Navigation = ({navigation, route}) => {
   }, [modalVisible]);
 
   useEffect(()=>{
-      const unsubscribe = navigation.addListener('focus', async() => {
-        // do something
+      const unsubscribe = async() =>{
         const materialSort = await AsyncStorage.getItem('materialSort');
-        dispatch(postMaterial({order: materialSort == null ? 'need' : 'buy'}));
-      });
-  }, [modalVisible, modalVisible8, modalVisible9, modalVisible6, navigation]);
-
-  useLayoutEffect(()=>{
-    const unsubscribe = navigation.addListener('focus', () => {
-      // do something
-    });
-    return unsubscribe;
-  }, [navigation]);
+        console.log('@@@@ materialSort: ', materialSort);
+        dispatch(postMaterial({order: !materialSort ? 'needs' : 'buy'}));
+      }
+      unsubscribe();
+  }, [modalVisible10]);
 
   useEffect(()=>{
     if(info == 0){

@@ -199,6 +199,7 @@ const Talk1Sub = ({navigation, route}) => {
     });
 
     const dispatch = useDispatch();
+
     const info = [route.params];
     const info2 = useSelector(state => { return state.event.data; });
     const [info3, setInfo3] = useState();
@@ -206,6 +207,8 @@ const Talk1Sub = ({navigation, route}) => {
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
+
+    console.log('행사정보 details data: ', info, info2, info3);
 
     const [commentData, setCommentData] = useState({
         boardId: info[0].boardId,
@@ -246,20 +249,20 @@ const Talk1Sub = ({navigation, route}) => {
     }, []);
 
     const ImageBox = () => {
-        const arr:any[] = [];
-        const a = (info[0].savedName.split('|')).filter(x => {
+        const arr = [];
+        const a = (info[0]?.savedName?.split('|')).filter(x => {
             if(x.charAt(x.length-1) === '4'){ arr.push(x); }else return x;
         });
         
         const infoFiltering = [...arr, ...a];
         switch(true){
     
-            case info[0].savedName.split('|').length == 1: return(
+            case info[0]?.savedName?.split('|').length == 1: return(
                 <TouchableOpacity style={styles.mainBox2ImageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)}>
                     <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${infoFiltering[0]}`}} style={styles.image}/>
                 </TouchableOpacity>
             )
-            case info[0].savedName.split('|').length < 4: return(
+            case info[0]?.savedName?.split('|').length < 4: return(
                 <View style={styles.mainBox2ImageBox2}>
                     {infoFiltering.map(x=>{
                         if(x.charAt(x.length-1) === '4'){
@@ -280,14 +283,14 @@ const Talk1Sub = ({navigation, route}) => {
             default: return(
                 <View style={styles.mainBox2ImageBox2}>
                     <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리')}>
-                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image2}/>
+                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0]?.savedName?.split('|')[0]}`}} style={styles.image2}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
-                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[1]}`}} style={styles.image2}/>
+                        <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0]?.savedName?.split('|')[1]}`}} style={styles.image2}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
                         <Image source={{uri: `https://reactnative.dev/img/tiny_logo.png`}} style={styles.image2}/>
-                        <View style={{position: 'absolute', top: '40%', left: '40%'}}><Text style={{color: 'white', fontSize: 20, fontWeight: '600'}}>+{info[0].savedName.split('|').length-3}</Text></View>
+                        <View style={{position: 'absolute', top: '40%', left: '40%'}}><Text style={{color: 'white', fontSize: 20, fontWeight: '600'}}>+{info[0]?.savedName?.split('|').length-3}</Text></View>
                     </TouchableOpacity>
                 </View>
             )
@@ -316,7 +319,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dateFilter = (item) => {
         const days = ['일', '월', '화', '수', '목', '금', '토'];
-        return(<Text>{`${item.eventStartDate.split('-')[1]}.${item.eventStartDate.split('-')[2]}(${days[moment(item.eventStartDate).day()]})`} ~ {`${item.eventEndDate.split('-')[1]}.${item.eventEndDate.split('-')[2]}(${days[moment(item.eventEndDate).day()]})`}</Text>)
+        return(<Text>{`${item?.eventStartDate?.split('-')[1]}.${item?.eventStartDate?.split('-')[2]}(${days[moment(item.eventStartDate).day()]})`} ~ {`${item?.eventEndDate?.split('-')[1]}.${item?.eventEndDate?.split('-')[2]}(${days[moment(item.eventEndDate).day()]})`}</Text>)
       }
 
     const renderItem = ({ item }) => (
@@ -325,7 +328,7 @@ const Talk1Sub = ({navigation, route}) => {
                     <View style={styles.mainBox2TitleBox}>
                         <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 3, lineHeight: 25}}>{item.title}</Text>
                         <View>
-                            <Text>{dateFilter(item)}</Text>
+                            {item.eventStartDate && <Text>{dateFilter(item)}</Text>}
                         </View>
                     </View>
                     <RenderHtml source={{html: `${item.contents}`}} tagsStyles={styles} />
