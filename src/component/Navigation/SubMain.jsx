@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack'
 import { View, Button, Text, StyleSheet, Platform, BackHandler } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
+import { useFocusEffect } from '@react-navigation/native';
 
 import Home from '../Home/Main'
 import Talk from '../Talk/Main'
@@ -29,6 +30,7 @@ import Baby2 from '../../../public/assets/svg/Baby2.svg'
 
 import { postAlarm } from '../../Redux/Slices/AlarmSlice';
 import { postUser } from '../../Redux/Slices/UserSlice';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
     header:{
@@ -66,6 +68,8 @@ function MainScreen() {
   const Tab = createBottomTabNavigator();
   const Stack = createStackNavigator();
 
+  const navigate = useNavigation();
+
   const dispatch = useDispatch();
   const Alarm = useSelector(state => { return state.alarm.data; });
   const mainData = useSelector(state => { return state.user.data; });
@@ -77,9 +81,14 @@ function MainScreen() {
     dispatch(postUser());
   }, []);
 
+  useEffect(()=>{
+    Alarm?.filter(x => x.readFlag == false) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+  }, [Alarm]);
+
   // useEffect(()=>{
-  //   Alarm.filter(x => x.readFlag == false) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
-  // }, [Alarm])
+  //   dispatch(postAlarm({page: 1}));
+  // });
+
 
   return (
     <Tab.Navigator initialRouteName='홈' backBehavior='initialRoute' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}

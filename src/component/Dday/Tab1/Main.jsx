@@ -36,7 +36,6 @@ const Talk1 = ({navigation, week}) => {
   const [info, setInfo] = useState([]);
 
   const [refreshing, setRefreshing] = useState(false);
-  console.log('refreshing: ', refreshing);
 
     useEffect(()=>{
       const Government = async() => {
@@ -47,7 +46,6 @@ const Talk1 = ({navigation, week}) => {
             subcategory: `${week.findIndex(x => x === true)+1}주`
         }
       });
-      console.log('response @@@@@@: ', response);
       if(response.data == ''){ setInfo('0'); }else setInfo(response.data);
       }
       Government();
