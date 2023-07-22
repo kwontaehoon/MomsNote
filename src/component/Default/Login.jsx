@@ -84,6 +84,7 @@ const Main = ({navigation, route}) => {
     React.useEffect(() => {
         if (response?.type === 'success') {
             const { authentication } = response;
+            console.log('authentication: ', authentication)
             GoogleGetId(authentication.accessToken);
         }
     }, [response]);
@@ -124,7 +125,7 @@ const Main = ({navigation, route}) => {
                 navigation.reset({routes: [{name: "main"}]});
                 AsyncStorage.setItem('login', '2');
             }else if(response2.data.status == 'expire'){
-                setModal(true);
+                setModal(!modal);
             }else{
                 navigation.navigate('추가 정보 입력', ['google', response.data.sub, response.data.email]);
             }

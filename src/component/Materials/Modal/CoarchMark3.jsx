@@ -238,7 +238,7 @@ const Main = ({modal, setModal, modal6, setModal6, setModalVisible2}) => {
 
                     <View style={styles.header}>
                         <TouchableOpacity style={styles.closeBox}  onPress={()=>setModal(!modal)}>
-                                <Close fill={'black'}/>
+                                
                         </TouchableOpacity>
                         <Text></Text>
                         <Text></Text>

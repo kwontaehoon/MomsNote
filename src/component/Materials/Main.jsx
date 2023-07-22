@@ -332,7 +332,7 @@ const Navigation = ({navigation, route}) => {
       const unsubscribe = async() =>{
         const materialSort = await AsyncStorage.getItem('materialSort');
         console.log('@@@@ materialSort: ', materialSort);
-        dispatch(postMaterial({order: !materialSort ? 'needs' : 'buy'}));
+        dispatch(postMaterial({order: !materialSort ? 'need' : 'buy'}));
       }
       unsubscribe();
   }, [modalVisible10]);
@@ -485,7 +485,7 @@ const save = async() => {
 
   const brandModal = async(x) => {
     const coarch = await AsyncStorage.getItem('coarchMarkMaterialModal');
-    coarch == null ? (setModal6(true), setModal7(true)) : setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDataId: x.needsDataId, needsName: x.needsName}));
+    coarch == null ? (setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDataId: x.needsDataId, needsName: x.needsName})), setModal7(true)) : setModalVisible2(prevState=>({...prevState, open: true, needsId: x.needsId, needsDataId: x.needsDataId, needsName: x.needsName}));
   }
 
   const List2 = (title) => {  

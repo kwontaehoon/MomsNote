@@ -13,6 +13,7 @@ import Modal from './Modal/DatePick'
 
 import Arrow_left from '../../../../public/assets/svg/Arrow-Left.svg'
 import Arrow_right from '../../../../public/assets/svg/Arrow-Right.svg'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
   container:{
@@ -118,6 +119,7 @@ const Talk1 = ({navigation}: any) => {
     const [year, setYear] = useState(moment().format('YYYY'));
     const [week, setWeek] = useState([true, false, false, false, false, false,
     false, false, false, false, false, false]);
+    console.log('week: ', week);
     const infoCount = useSelector(state => { return state.eventCount.data; });
 
     const [loading, setLoading] = useState(false);
@@ -126,9 +128,14 @@ const Talk1 = ({navigation}: any) => {
 
     const [refreshing, setRefreshing] = useState(false);
 
-    useEffect(()=>{
+    useEffect(async()=>{
+      const month = await AsyncStorage.getItem('eventMonth');
+      console.log('month: ', month);
       const arr = Array.from({length: 12}, () => { return false });
-      arr[moment().format('M')-1] = true;
+      if(!month){
+        arr[moment().format('M')-1] = true;
+      } else arr[Number(month)-1] = true;
+      
       setWeek(arr);
     }, []);
 
@@ -140,10 +147,12 @@ const Talk1 = ({navigation}: any) => {
     }, [eventSet, refreshing]);
 
     const change = (e) => { // 몇 주차 border, 글자두께 변경
+      console.log('month: ', e);
       let arr = Array.from({length: 12}, ()=>{ return false});
 
       arr[e] = !arr[e];
       setWeek(arr);
+      AsyncStorage.setItem('eventMonth', String(e+1));
 
       if(e-9 < 0){
         e = '0' + (e+1);
@@ -232,7 +241,7 @@ const Talk1 = ({navigation}: any) => {
           <View style={styles.headerBox2}>
           <FlatList data={DATA2} renderItem={renderItem2}
               keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
-            </FlatList>
+          </FlatList>
           </View>
         </View>
         <View style={styles.main}>

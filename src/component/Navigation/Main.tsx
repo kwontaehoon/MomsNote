@@ -190,7 +190,7 @@ const Navigation = () => {
                             height: 110
                         },
                     })}/>
-                <Stack.Screen name="공지사항2" component={NoticeDetail} options={{title: '공지사항'}} />
+                <Stack.Screen name="공지사항 상세" component={NoticeDetail} options={{title: '공지사항'}} />
                 <Stack.Screen name="추천 게시물" component={Like} 
                 options={({ navigation, route }) => ({
                     headerLeft: () => (

@@ -561,7 +561,7 @@ const Talk1Sub = ({navigation, route}) => {
                 arr.push(
                      <View style={styles.listMain2} key={index}>
                         <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
-                        <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
+                        <View style={styles.filterBox2}><Text>{x.itemBrand}</Text></View>
                         <View style={styles.filterBox2}>
                             <Text style={{fontWeight: '600'}}>{(x.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
                             <Text> 원</Text>

@@ -53,7 +53,7 @@ const CheckBoxModal = ({modalVisible10, setModalVisible10, setFilterInfo}) => {
     const complete = async(e) => {
         e == 0 ? setFilter(false) : setFilter(true);
         e == 0 ?
-        (dispatch(postMaterial({order: 'need'})), setFilterInfo('needs'), AsyncStorage.removeItem('materialSort'))
+        (dispatch(postMaterial({order: 'need'})), setFilterInfo('need'), AsyncStorage.removeItem('materialSort'))
         :
         (dispatch(postMaterial({order: 'buy'})), setFilterInfo('buy'), AsyncStorage.setItem('materialSort', 'buy'))
 

@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
-import Icon from 'react-native-vector-icons/FontAwesome'
+import RenderHtml from 'react-native-render-html'
+import moment from 'moment'
 
 const styles = StyleSheet.create({
     container:{
@@ -23,16 +24,14 @@ const styles = StyleSheet.create({
 })
 const InquiryDetail = ({route}) => {
 
-    console.log('route: ', route.params);
-
     const renderItem = ({ item }) => (
         <View>
         <View style={styles.header}>
             <Text style={{fontSize: 15, fontWeight: '600', marginBottom: 3, color: '#424242'}}>{item.title}</Text>
-            <Text style={{color: '#9E9E9E'}}>{item.inquiryDate}</Text>
+            <Text style={{color: '#9E9E9E'}}>{moment(item.inquiryDate).format('YYYY/MM/DD')}</Text>
         </View>
             <View style={styles.main}>
-                <Text>{item.contents}</Text>
+                <RenderHtml source={{html: `${item.contents}`}} tagsStyles={styles} />
             </View>
         </View>
       );

@@ -313,7 +313,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     const socialShare = () => {
         Share.share({
-            message: `[맘스노트] ${info3[0].title}`,
+            message: `[맘스노트] ${info[0].title}`,
         })
     }
 
@@ -326,7 +326,7 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.main}>
                 <View style={styles.mainBox2}>
                     <View style={styles.mainBox2TitleBox}>
-                        <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 3, lineHeight: 25}}>{item.title}</Text>
+                        <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 10, lineHeight: 25}}>{item.title}</Text>
                         <View>
                             {item.eventStartDate && <Text>{dateFilter(item)}</Text>}
                         </View>

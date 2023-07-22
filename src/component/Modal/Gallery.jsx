@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
 })
 
 const Gallery = ({navigation, route}) => {
+  conosle.log('@@ route: ', route);
 
   const FocusAwareStatusBar = () => {
     const isFocused = useIsFocused();

@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
 const Inquiry3 = ({navigation}) => {
 
   const [info, setInfo] = useState([]);
+  console.log('공지사항 info: ', info);
 
   useEffect(()=>{
     const Inquiry = async() => {
@@ -49,7 +50,7 @@ const Inquiry3 = ({navigation}) => {
   }, []);
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.main} onPress={()=>navigation.navigate('문의 상세', item)} activeOpacity={1}>
+    <TouchableOpacity style={styles.main} onPress={()=>navigation.navigate('공지사항 상세', item)} activeOpacity={1}>
       <View style={styles.statusBox}><Text style={{color: '#757575'}}>{item.status}</Text></View>
         <Text style={{fontSize: 15, fontWeight: '600', marginBottom: 3, color: '#424242'}} numberOfLines={1}>{item.title}</Text>
         <Text style={{color: '#9E9E9E'}}>{`${item.boardDate.split('-')[0]}/${item.boardDate.split('-')[1]}/${item.boardDate.split('-')[2].substring(0, 2)}`}</Text>

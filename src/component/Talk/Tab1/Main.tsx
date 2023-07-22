@@ -290,7 +290,6 @@ const Talk1 = ({navigation, route}:any) => {
   }
 
   const onEnd = async () => {
-    console.log('## page: ', plus.page);
     try {
         const response = await axios({
             method: 'post',

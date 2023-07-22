@@ -31,6 +31,7 @@ import Baby2 from '../../../public/assets/svg/Baby2.svg'
 import { postAlarm } from '../../Redux/Slices/AlarmSlice';
 import { postUser } from '../../Redux/Slices/UserSlice';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
     header:{
@@ -85,10 +86,9 @@ function MainScreen() {
     Alarm?.filter(x => x.readFlag == false) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
   }, [Alarm]);
 
-  // useEffect(()=>{
-  //   dispatch(postAlarm({page: 1}));
-  // });
-
+  useEffect(()=>{
+    console.log(123456);
+  }, [navigate]);
 
   return (
     <Tab.Navigator initialRouteName='홈' backBehavior='initialRoute' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
@@ -199,7 +199,7 @@ function MainScreen() {
 
       
 
-      <Tab.Screen name="출산 준비물" options={{tabBarIcon: ({focused, color}) => (focused ? <Note2 /> : <Note />), unmountOnBlur:true}}>
+      <Tab.Screen name="출산 준비물" options={{tabBarIcon: ({focused, color}) => (focused ? <Note2 /> : <Note />), unmountOnBlur: true}}>
       {()=>(
                <Stack.Navigator>
                     <Stack.Screen 
@@ -213,8 +213,9 @@ function MainScreen() {
           )}
       </Tab.Screen>
 
-      <Tab.Screen name="맘스 정보" options={{tabBarIcon: ({focused, color}) => (focused ? <Campaign2 /> : <Campaign />), unmountOnBlur:true}}
-      listeners={{tabPress: (e)=>{ 
+      <Tab.Screen name="맘스 정보" options={{tabBarIcon: ({focused, color}) => (focused ? <Campaign2 /> : <Campaign />), unmountOnBlur: true}}
+      listeners={{tabPress: async(e)=>{ 
+        AsyncStorage.removeItem('eventMonth');
       }}}>
         {()=>(
                <Stack.Navigator>
