@@ -129,7 +129,6 @@ const Talk1 = ({navigation}) => {
   const isFocused = useIsFocused();
   const materialShareSet = useSelector(state => { return state.materialShare.refresh });
   const info = useSelector(state => { return state.materialShare.data});
-  console.log('출산리스트 공유 메인 info: ', info);
   const infoCount = useSelector(state => { return state.materialShareCount.data});
 
   const ListPopular = useSelector(state => { return state.ListPopular.data });
@@ -149,6 +148,7 @@ const Talk1 = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
 
 useEffect(()=>{
+  filteringSet();
   setLoading(true);
   dispatch(postMaterialShare(materialShareSet));
   dispatch(postMaterialShareCount());
@@ -173,12 +173,27 @@ const dayCalculate = (date) => {
   }
 }
 
-const filtering = (e) => {
-  e.label == '인기 순' ? dispatch(setMaterialShareFilter({filter: 'best'})) : dispatch(setMaterialShareFilter({filter: 'new'}))
+const filteringSet = async() => {
+  dispatch(postMaterialShare(!await AsyncStorage.getItem('materialList_filter') ? materialShareSet : await AsyncStorage.getItem('materialList_filter') == '인기 순' ?
+( setValue('2'), {
+  order: 'best',
+  count: 1,
+  page: 1,
+}) : ( setValue('1'), {
+  order: 'new',
+  count: 1,
+  page: 1,
+})
+  ));
+}
+
+const filtering = async(e) => {
+  AsyncStorage.setItem('materialList_filter', e.label);
+  const filter = await AsyncStorage.getItem('materialList_filter');
+  filter == '인기 순' ? dispatch(setMaterialShareFilter({filter: 'new'})) : dispatch(setMaterialShareFilter({filter: 'best'}))
 }
 
 const onRefreshing = () => {
-  console.log('@@@@ refreshing');
   if(!refreshing){
     setRefreshing(true);
     dispatch(postMaterialShare(materialShareSet));

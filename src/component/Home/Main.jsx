@@ -239,7 +239,6 @@ const Home = ({ navigation }) => {
     const materialPopular = useSelector(state => { return state.materialPopular.data });
     const infoPopular = useSelector(state => { return state.infoPopular.data });
     const mainData = useSelector(state => { return state.user.data; });
-    console.log('@@ mainData: ', mainData);
     const Alarm = useSelector(state => { return state.alarm.data; });
     const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
@@ -248,11 +247,8 @@ const Home = ({ navigation }) => {
     const [modal2, setModal2] = useState(false); // 코치마크
     const [modal3, setModal3] = useState(false); // 출산준비물 리스트 코치마크
     const [userInfo, setUserInfo] = useState();
-
     const [AlarmFlag, setAlarmFlag] = useState(false);
-
     const [bubbleContent, setBubbleContent] = useState();
-    console.log('@@ bubbleContent: ', bubbleContent);
 
     useEffect(() => {
         const recommendList = async () => {

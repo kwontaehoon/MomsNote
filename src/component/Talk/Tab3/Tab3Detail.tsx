@@ -5,6 +5,7 @@ import ContentsURL from './Modal/ContentsURL'
 import axios from 'axios'
 import moment from 'moment'
 import Swiper from 'react-native-swiper'
+import CompleteModal from './Modal/Complete'
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Heart from '../../../../public/assets/svg/Heart-1.svg'
@@ -31,6 +32,7 @@ import { postHits } from '../../../Redux/Slices/HitsSlice'
 
 import Modal2 from '../../Modal/First'
 import { postExperience } from '../../../Redux/Slices/ExperienceSlice'
+import { postMyExp } from '../../../Redux/Slices/MyExpSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -222,14 +224,18 @@ const Talk1Sub = ({navigation, route}) => {
     const isFocused = useIsFocused();
 
     const [async, setAsync] = useState(); // 임시저장 및 체험단 정보 저장 유무
+    console.log('async: ', async == true);
+    const [asyncFlag, setAsyncFlag] = useState(); // 신청을 한번이라도했는지 유무
+    console.log('asyncFlag: ', asyncFlag);
     const [userInfo, setUserInfo] = useState(); // user 정보 asyncStorage
     const boardLikeFlag = useSelector(state => { return state.boardLikeFlag.data });
-    console.log('체험단 boardLikeFlag: ', boardLikeFlag);
     const boardLike = useSelector(state => { return state.boardLikeFlag.data });
     const boardLikeFlagSet = useSelector(state => { return state.boardLikeFlag.refresh });
     const boardLikeSet = useSelector(state => { return state.boardLike.refresh });
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
     console.log('체험단 상세정보 boardAppFlag: ', boardAppFlag);
+    const myExp = useSelector(state => { return state.myExp.data});
+    console.log('myExp: ', myExp);
     const winList = useSelector(state => { return state.winList.data });
     
     const [filter, setFilter] = useState(false);
@@ -242,6 +248,7 @@ const Talk1Sub = ({navigation, route}) => {
         content: '발표일자 이후 확인이 가능합니다.',
         buttonCount: 1
     })
+    const [completeModal ,setCompleteModal] = useState(false); // 신청 완료 모달
 
     useEffect(()=>{
         dispatch(postBoardLikeFlag({ boardId: info.boardId}));
@@ -252,6 +259,7 @@ const Talk1Sub = ({navigation, route}) => {
         }));
         dispatch(postBoardAppFlag({ experienceId: info.experienceId }));
         dispatch(postWinList({ experienceId: info.experienceId }));
+        dispatch(postMyExp());
 
     }, [isFocused]);
 
@@ -263,14 +271,15 @@ const Talk1Sub = ({navigation, route}) => {
         const load = async() => {
             const asyncStorage = await AsyncStorage.getItem('application');
             const asyncStorage2 = await AsyncStorage.getItem('user');
+            const asyncStorage3 = await AsyncStorage.getItem('applicationFlag');
             setUserInfo(JSON.parse(asyncStorage2));
-            setAsync(asyncStorage);            
+            setAsync(asyncStorage);        
+            setAsyncFlag(asyncStorage3);
         }
         load();
     }, [isFocused]);
 
     const recommend = async() => {
-        console.log('plus');
         dispatch(postBoardLike({ boardId: route.params.boardId, type: 'plus'}));
         setTimeout(()=>{
             dispatch(postExperience({
@@ -284,7 +293,6 @@ const Talk1Sub = ({navigation, route}) => {
     }
 
     const recommendminus = async() => {
-        console.log('minus');
         dispatch(postBoardLike({ boardId: route.params.boardId, type: 'minus'})); 
         setTimeout(()=>{
             dispatch(postExperience({
@@ -300,6 +308,26 @@ const Talk1Sub = ({navigation, route}) => {
         Share.share({
             message: `[맘스노트] ${info2[0].title}`,
         })
+    }
+
+    const submit = async() => {
+        
+        const token = await AsyncStorage.getItem('token');
+        console.log('token: ', token);
+        try{
+            const response = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/api/application/regi',
+                headers: { 
+                    'Authorization': `bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                data: info
+            });
+            AsyncStorage.setItem('applicationFlag', `${info.experienceId}`);
+        }catch(error){
+            console.log('체험단 신청 error: ', error);
+        }
     }
 
     const renderItem = ({ item }:any) => (
@@ -402,6 +430,9 @@ const Talk1Sub = ({navigation, route}) => {
                     <StatusBar />
             </SafeAreaView>
             <SafeAreaView style={styles.container}>
+
+            <CompleteModal navigation={navigation} modal={completeModal} setModal={setCompleteModal}/>
+
             <View style={styles.header}>
    <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
    <View style={styles.headerBar}>
@@ -512,7 +543,7 @@ const Talk1Sub = ({navigation, route}) => {
         <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
     </View> :
     <TouchableOpacity style={styles.footerBox2} onPress={()=>
-       { async == null ? setModalVisible(!modalVisible) : setModal4(!modal4); }}>
+       {myExp == 0  ? setModalVisible(!modalVisible) : !async ? (setCompleteModal(!completeModal), submit()) : setModal4(!modal4); }}>
        <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
     </TouchableOpacity>
    }

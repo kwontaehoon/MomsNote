@@ -225,8 +225,8 @@ const Talk1 = ({navigation, route}:any) => {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(()=>{
+    filteringSet();
     setLoading(true);
-    dispatch(postBoard(boardSet));
     dispatch(postBoardCount(boardCountSet));
     dispatch(postBoardPopular());
     setLoading(false);
@@ -247,6 +247,22 @@ const Talk1 = ({navigation, route}:any) => {
     momsTalk();
   }, []);
 
+    const filteringSet = async() => {
+      dispatch(postBoard(!await AsyncStorage.getItem('momsTalk_filter') ? boardSet : await AsyncStorage.getItem('momsTalk_filter') == '인기 순' ?
+    ( setValue('2'), {
+      order: 'best',
+      count: 1,
+      page: 1,
+      subcategory: '전체'
+    }) : ( setValue('1'), {
+      order: 'new',
+      count: 1,
+      page: 1,
+      subcategory: '전체'
+    })
+      ));
+  }
+  
   const change = (e) => { // 카테고리 배경색상, 글자 색상 변경 onpress
     let arr = Array.from({length: 6}, () => {return false});
     arr[e] = !arr[e];
@@ -285,8 +301,10 @@ const Talk1 = ({navigation, route}:any) => {
     }
   }
 
-  const filtering = (e) => {
-    e.label == '인기 순' ? dispatch(setBoardFilter({filter: 'best'})) : dispatch(setBoardFilter({filter: 'new'}))
+  const filtering = async(e) => {
+    AsyncStorage.setItem('momsTalk_filter', e.label);
+    const filter = await AsyncStorage.getItem('momsTalk_filter');
+    filter == '인기 순' ? dispatch(setBoardFilter({filter: 'new'})) : dispatch(setBoardFilter({filter: 'best'}));
   }
 
   const onEnd = async () => {

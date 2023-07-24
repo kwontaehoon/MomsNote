@@ -15,6 +15,8 @@ export const postBoard = createAsyncThunk("postBoardSlice/async", async (data) =
       }
 });
 
+
+
 const initialState = {
     loading: false,
     data: [],

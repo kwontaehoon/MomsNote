@@ -68,11 +68,6 @@ const CheckBoxModal = ({modal6, setModal6, setModal3}) => {
     });
 
     const [test, setTest] = useState(0);
-    const comma = (e) => {
-        e = e.replaceAll(',', '');
-        setInfo(prevState => ({ ...prevState, needsId: modal6.content.needsId, itemPrice: Number(e)}));
-        setTest(e.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
-    }
 
   return modal6.content == null ? <View></View> : (
     <Modal animationType="fade" transparent={true} visible={modal6.open}
@@ -87,11 +82,11 @@ const CheckBoxModal = ({modal6, setModal6, setModal3}) => {
                         </View>
                         <View style={styles.main}>
                             <View style={{marginBottom: 10}}><Text>{modal6.content.needsName}</Text></View>
-                            <TextInput style={styles.mainBox} textAlign='right' placeholder={`${(modal6.content.itemPrice)toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원`} placeholderTextColor={'black'}
+                            <TextInput style={styles.mainBox} textAlign='right' placeholder={`${(modal6.content.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원`} placeholderTextColor={'black'}
                                 onChangeText={(e) => setInfo((prevState) => ({ ...prevState, needsName: e}))}></TextInput>
                         </View>
                         
-                            <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]} onPress={()=>{console.log('zz')}}>
+                            <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]}>
                                 <Text style={{color: 'white', fontSize: 16, fontWeight: '600'}}>적용</Text>
                             </TouchableOpacity> 
                     </View>

@@ -208,6 +208,7 @@ const Talk1Sub = ({navigation, route}) => {
       open: false,
       needsId: null,
       needsBrandId: null,
+      needsName: ''
     });
     const [modal2, setModal2] = useState(false); // 수정 내용 적용하시겠습니까 모달
 

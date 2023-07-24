@@ -198,7 +198,6 @@ const Withdraw = ({navigation, route}) => {
     useEffect(()=>{
         const load = async() => {
             const async = await AsyncStorage.getItem('applicationFlag');
-            console.log('async: ', async);
             dispatch(postBoardAppFlag({experienceId: Number(async)}));
             
             switch(true){

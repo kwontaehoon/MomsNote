@@ -76,7 +76,7 @@ const Main = ({navigation, route}) => {
     WebBrowser.maybeCompleteAuthSession();
     const [request, response, promptAsync] = Google.useAuthRequest({
         expoClientId: '673560692803-8gner3okerjtf8444afhnqptdjfeh6vl.apps.googleusercontent.com',
-        // expo: 'https://auth.expo.io/@gju04195/Project1Type',
+        expo: 'https://auth.expo.io/@gju04195/Project1Type',
         iosClientId: '673560692803-h11u319oi5pni5p6ng84ddvkm3gt6p21.apps.googleusercontent.com',
         androidClientId: '673560692803-b20hb831hqiqh9u1ndvr7dntsr7hdl3h.apps.googleusercontent.com',
       });

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ActivityIndicator } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 
 import moment from 'moment'
@@ -10,6 +9,7 @@ import { postExperience } from '../../../Redux/Slices/ExperienceSlice'
 import { setExperienceCount, setExperienceFilter } from '../../../Redux/Slices/ExperienceSlice'
 import { postExperienceCount } from '../../../Redux/Slices/ExperienceCountSlice'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
   container:{
@@ -97,14 +97,32 @@ const Talk3 = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(()=>{
+    filteringSet();
     setLoading(true);
     dispatch(postExperience(experienceSet));
     dispatch(postExperienceCount(infoCount));
     setLoading(false);
   }, [value]);
 
-  const filtering = (e) => {
-    e.label == '인기 순' ? dispatch(setExperienceFilter({filter: 'best'})) : dispatch(setExperienceFilter({filter: 'new'}))
+  const filteringSet = async() => {
+    dispatch(postExperience(!await AsyncStorage.getItem('event_filter') ? materialShareSet : await AsyncStorage.getItem('event_filter') == '인기 순' ?
+  ( setValue('2'), {
+    order: 'best',
+    count: 1,
+    page: 1,
+  }) : ( setValue('1'), {
+    order: 'new',
+    count: 1,
+    page: 1,
+  })
+    ));
+  }
+
+  const filtering = async(e) => {
+    AsyncStorage.setItem('event_filter', e.label);
+    const filter = await AsyncStorage.getItem('event_filter');
+    console.log('filter: ', filter);
+    filter == '인기 순' ? dispatch(setExperienceFilter({filter: 'new'})) : dispatch(setExperienceFilter({filter: 'best'}))
   };
 
   const onEnd = async () => {
@@ -149,7 +167,7 @@ const Talk3 = ({navigation}) => {
           { item.savedName !== null ?<Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} /> : ''}
         </View>
         <View style={styles.contentBox}>
-          <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#757575', fontSize: 13, fontWeight: '600'}}>모집 종료</Text></View>
+          <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#757575', fontSize: 13, fontWeight: '600'}}>종료</Text></View>
           <View style={styles.content}><Text style={{fontWeight: '500'}}>{item.title}</Text></View>
           <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>신청 {item.appCount}명/모집 {item.maxPeople}명</Text></View>
         </View>
@@ -160,10 +178,7 @@ const Talk3 = ({navigation}) => {
         { item.savedName !== null ?<Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} /> : ''}
       </View>
       <View style={styles.contentBox}>
-        <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>{moment(item.registrationEndDate
-          
-          
-          ).diff(moment(), "days")+1}일 남음</Text></View>
+        <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>등록{moment(item.registrationEndDate).diff(moment(), "days")+1}일 남음</Text></View>
         <View style={styles.content}><Text style={{fontWeight: '500'}} numberOfLines={1} ellipsizeMode='tail'>{item.title}</Text></View>
         <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>신청 {item.appCount}명/모집 {item.maxPeople}명</Text></View>
       </View>
