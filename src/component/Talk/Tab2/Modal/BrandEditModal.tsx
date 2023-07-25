@@ -116,6 +116,8 @@ const styles = StyleSheet.create({
 
 const Main = ({modalVisible2, setModalVisible2, setModal}) => {
 
+    console.log('modalvisible2: ', modalVisible2);
+
     const dispatch = useDispatch();
     const [info, setInfo] = useState(); // 브랜드 lists
     const [selectBrand, setSelectBrand] = useState({
@@ -218,7 +220,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.closeBox} onPress={()=>setModalVisible2((prevState)=> ({...prevState, open: false}))}><Icon name='close' size={24}/></TouchableOpacity>
                     <Text style={{color: '#212121', fontSize: 18, fontWeight: '700'}}>브랜드 선택</Text>
-                    <Text style={{color: '#212121'}}>수유브라 Best</Text>
+                    <Text style={{color: '#212121'}}>{modalVisible2.needsName} Best</Text>
                 </View>
                 <View style={styles.main}>
                     {info == undefined || info.length == 0 ? <View><Text style={{fontSize: 15, color: '#757575'}}>등록된 품목이 없습니다.</Text></View>

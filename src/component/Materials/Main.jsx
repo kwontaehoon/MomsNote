@@ -331,11 +331,10 @@ const Navigation = ({navigation, route}) => {
   useEffect(()=>{
       const unsubscribe = async() =>{
         const materialSort = await AsyncStorage.getItem('materialSort');
-        console.log('@@@@ materialSort: ', materialSort);
         dispatch(postMaterial({order: !materialSort ? 'need' : 'buy'}));
       }
       unsubscribe();
-  }, [modalVisible10]);
+  }, [modalVisible8, modalVisible10]);
 
   useEffect(()=>{
     if(info == 0){

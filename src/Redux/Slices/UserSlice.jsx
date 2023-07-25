@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const postUser = createAsyncThunk("postUserSlice/async", async (data) => {
   const token = await AsyncStorage.getItem('token');
+  console.log('token: ', token);
     try{
       const response = await axios({
           method: 'get',

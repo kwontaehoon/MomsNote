@@ -143,8 +143,11 @@ const Main = ({navigation}) => {
             const activeAlarm = await AsyncStorage.getItem('activeAlarm');
             const alarmSetting = await AsyncStorage.getItem('alarmSetting');
 
+            const alarmStartClock = await AsyncStorage.getItem('alarmStartClock');
             const alarmStartHours = await  AsyncStorage.getItem('alarmStartHours');
             const alarmStartMinutes = await  AsyncStorage.getItem('alarmStartMinutes');
+
+            const alarmEndClock = await AsyncStorage.getItem('alarmEndClock');
             const alarmEndHours = await  AsyncStorage.getItem('alarmEndHours');
             const alarmEndMinutes = await  AsyncStorage.getItem('alarmEndMinutes');
 
@@ -154,10 +157,10 @@ const Main = ({navigation}) => {
 
             setIsEnabled(arr);
             if(alarmStartHours !== null && alarmStartMinutes !== null){
-                setModal3(prevState => ({...prevState, hours: alarmStartHours, minutes: alarmStartMinutes}));
+                setModal3(prevState => ({...prevState, clock: alarmStartClock, hours: alarmStartHours, minutes: alarmStartMinutes}));
             }
             if(alarmEndHours !== null && alarmEndMinutes !== null){
-                setModal4(prevState => ({...prevState, hours: alarmEndHours, minutes: alarmEndMinutes}));
+                setModal4(prevState => ({...prevState, clock: alarmEndClock, hours: alarmEndHours, minutes: alarmEndMinutes}));
             }
             setLoading(true);
         }

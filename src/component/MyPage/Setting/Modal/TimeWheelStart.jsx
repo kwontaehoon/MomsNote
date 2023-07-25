@@ -93,8 +93,6 @@ const TimeWheel = ({ modal, setModal }) => {
                                 initialSelectedIndex={2}
                                 items={SelectHours.map((name) => ({ label: name, value: '' }))}
                                 onChange={({ item }) => {
-                                    console.log('item', item.label.split('').filter(x => x !== ' ')[0] + item.label.split('').filter(x => x !== ' ')[1]);
-                                    console.log('item.label: ', item.label.split('').filter(x => x !== ' '), modal.clock); 
                                     setModal(prevState => ({...prevState, hours: item.label})), AsyncStorage.setItem('alarmStartHours', item.label.split('').filter(x => x !== ' ').join(''))}}
                                 renderItem={(props) => (
                                     <Text
