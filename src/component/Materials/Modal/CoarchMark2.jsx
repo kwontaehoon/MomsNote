@@ -181,7 +181,7 @@ const Main = ({modal, setModal}) => {
                                 <Close fill={'black'}/>
                         </TouchableOpacity>
                         <Text style={{color: '#212121', fontSize: 18, fontWeight: '700'}}>브랜드 선택</Text>
-                        <Text style={{color: '#212121'}}>수유브라 Best</Text>
+                        <Text style={{color: '#212121'}}>{modal.needsName} Best</Text>
                     </View>
                     <View style={styles.main}>
 

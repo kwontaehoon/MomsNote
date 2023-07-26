@@ -15,6 +15,8 @@ const Main = ({navigation}) => {
             // AsyncStorage.removeItem('login');
             // AsyncStorage.clear();
             const asyncStorage = await AsyncStorage.getItem('login');
+            AsyncStorage.setItem('momsInfo', '전체');
+            AsyncStorage.setItem('momsTalkTab', '전체');
             setInfo(asyncStorage);
         }
         login();

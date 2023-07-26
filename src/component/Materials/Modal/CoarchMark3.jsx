@@ -189,7 +189,8 @@ const Main = ({modal, setModal, modal6, setModal6, setModalVisible2}) => {
     });
 
     const close = async() => {
-        isChecked ? (AsyncStorage.setItem('coarchMarkMaterialModal', '1'), setModal(!modal), setModal6(!modal6), setModalVisible2(true)) : (setModal(!modal), setModal6(!modal6), setModalVisible2(true));
+        isChecked ? (AsyncStorage.setItem('coarchMarkMaterialModal', '1')) : '';
+        setModal(false); setModal6(false);
       }
 
     const renderItem = ({ item, index }) => (

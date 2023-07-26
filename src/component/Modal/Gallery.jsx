@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, Image, StatusBar, Button, TouchableOpacity, SafeAreaView, Platform } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Swiper from 'react-native-swiper'
@@ -72,7 +72,11 @@ const styles = StyleSheet.create({
 })
 
 const Gallery = ({navigation, route}) => {
-  conosle.log('@@ route: ', route);
+  console.log('route: ', route.params[0][route.params[1]]);
+  console.log('route2: ', route.params[0].filter(x => x == route.params[0][route.params[1]]));
+
+  const [newArr, setNewArr] = useState();
+  console.log('newArr: ', newArr);
 
   const FocusAwareStatusBar = () => {
     const isFocused = useIsFocused();
@@ -81,9 +85,15 @@ const Gallery = ({navigation, route}) => {
 
   const video = React.useRef(null);
 
-  const saveName = route.params;
+  const saveName = route.params[0];
 
-  return(
+  useEffect(()=>{
+    const arr = route.params[0].filter(x => x !== route.params[0][route.params[1]]);
+    arr.unshift(route.params[0][route.params[1]]);
+    setNewArr(arr);
+  }, []);
+
+  return newArr && (
     <SafeAreaProvider>
           <SafeAreaView style={{ backgroundColor: 'black' }}>
             <StatusBar />
@@ -97,7 +107,7 @@ const Gallery = ({navigation, route}) => {
         <View style={styles.main}>
 
       <Swiper style={styles.wrapper} showsButtons={false} dot={<View style={styles.dot}/>} activeDot={<View style={styles.dotActive}/>}>
-        {saveName.map((x) => {
+        {newArr?.map((x) => {
           if(x.charAt(x.length-1) !== '4'){
             console.log('a');
           return(

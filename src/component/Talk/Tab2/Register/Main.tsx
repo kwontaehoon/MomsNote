@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Modal, BackHandler } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Modal, ActivityIndicator } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import axios from 'axios'
@@ -101,6 +101,7 @@ const Register = ({navigation, route}) => {
         }
     );
     console.log('data: ', data);
+    const [loading, setLoading] = useState();
 
     useEffect(()=>{
         const load = async() => {
@@ -124,11 +125,13 @@ const Register = ({navigation, route}) => {
     }, [])
     
     const complete = () => {
+        setLoading(true);
         switch(true){
             case data.title === '': setModal2Content('제목을 입력해주세요.'); break;
             case data.contents === '': setModal2Content('게시글 내용을 입력해주세요.'); break;
             default: submit(), navigation.goBack(); return;
         }
+        setLoading(false);
         setModalVisible2(!modalVisible2);
     }
 
@@ -196,7 +199,7 @@ const Register = ({navigation, route}) => {
     );
 
 
-   return(
+   return loading ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
         <View style={styles.container}>
             <Modal animationType="fade" transparent={true} visible={modalVisible} statusBarTranslucent={true}
                 onRequestClose={() => {

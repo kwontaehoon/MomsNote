@@ -385,7 +385,7 @@ const Talk1Sub = ({navigation, route}) => {
         switch(true){
     
             case info[0].savedName.split('|').length == 1: return(
-                <TouchableOpacity style={styles.mainBox2ImageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)} activeOpacity={1}>
+                <TouchableOpacity style={styles.mainBox2ImageBox} onPress={()=>navigation.navigate('갤러리', [infoFiltering, 0])} activeOpacity={1}>
                     {
                     infoFiltering[0].charAt(infoFiltering[0].length-1) !== '4' ?
                     <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${infoFiltering[0]}`}} style={styles.image}/>
@@ -396,16 +396,16 @@ const Talk1Sub = ({navigation, route}) => {
             )
             case info[0].savedName.split('|').length < 4: return(
                 <View style={styles.mainBox2ImageBox2}>
-                    {infoFiltering.map(x=>{
+                    {infoFiltering.map((x, index)=>{
                         if(x.charAt(x.length-1) === '4'){
                             return (
-                                <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)} activeOpacity={1}>
+                                <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', [infoFiltering, 0])} activeOpacity={1}>
                                     <View style={styles.videoImage}><Icon name='play' size={17} style={{color: 'white'}}/></View>
                                     <Video source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image2} resizeMode='cover'/>
                                 </TouchableOpacity>
                             )
                         }else return (
-                            <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)} activeOpacity={1}>
+                            <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', [infoFiltering, 1])} activeOpacity={1}>
                                     <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image2}/>
                             </TouchableOpacity>
                         )
@@ -414,13 +414,13 @@ const Talk1Sub = ({navigation, route}) => {
             )
             default: return(
                 <View style={styles.mainBox2ImageBox2}>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)} activeOpacity={1}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', [infoFiltering, 0])} activeOpacity={1}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[0]}`}} style={styles.image2}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)} activeOpacity={1}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', [infoFiltering, 1])} activeOpacity={1}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[1]}`}} style={styles.image2}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)} activeOpacity={1}>
+                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', [infoFiltering, 2])} activeOpacity={1}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0].savedName.split('|')[2]}`}} style={styles.image2}/>
                         <View style={{position: 'absolute', top: '40%', left: '40%'}}><Text style={{color: 'white', fontSize: 20, fontWeight: '600'}}>+{info[0].savedName.split('|').length-3}</Text></View>
                     </TouchableOpacity>
@@ -453,7 +453,7 @@ const Talk1Sub = ({navigation, route}) => {
         })
     }
 
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item, index }) => (
         <View>
             <View style={styles.header2}>
                     <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${item.profileImage}`}} style={styles.profileBox}/>
@@ -469,7 +469,7 @@ const Talk1Sub = ({navigation, route}) => {
                 <View style={styles.mainBox2}>
                     <Text style={{lineHeight: 20}}>{item.contents}</Text>
                 </View>
-                {item.savedName === null ? <View></View> : ImageBox()}
+                {item.savedName === null ? <View></View> : ImageBox(index)}
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
                         {boardLike == 0 | boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000' onPress={likeminus}/>}

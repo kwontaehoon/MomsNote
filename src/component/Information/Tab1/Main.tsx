@@ -5,6 +5,7 @@ import { postGuideCount } from '../../../Redux/Slices/GuideCountSlice'
 import { postGuide, setGuideRefresh, setGuideCount } from '../../../Redux/Slices/GuideSlice'
 import { setGuideCountRefresh } from '../../../Redux/Slices/GuideCountSlice'
 import { Platform } from 'expo-modules-core'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
   container:{
@@ -95,29 +96,36 @@ const Talk1 = ({navigation}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.guide.data });
+  console.log('맘스가이드 info: ', info);
   const guideSet = useSelector(state => { return state.guide.refresh });
   const infoCount = useSelector(state => { return state.guideCount.data });
   const guideCountSet = useSelector(state => { return state.guideCount.refresh });
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
-
   const [loading, setLoading] = useState(false);
-
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(()=>{
     setLoading(true);
-    dispatch(postGuide(guideSet));
+    const async = async() => {
+      dispatch(postGuide({
+        count: 5,
+        page: 1,
+        subcategory: await AsyncStorage.getItem('momsInfo')
+      }));
+    }
+    
     dispatch(postGuideCount(guideCountSet));
     setLoading(false);
+    async();
   }, [guideSet]);
 
-  
 
-  const change = (e) => { // 카테고리 배경색상, 글자 색상 변경
+  const change = async(e) => { // 카테고리 배경색상, 글자 색상 변경
     let arr = Array.from({length: 6}, () => {return false});
     arr[e] = !arr[e];
     setFilter(arr);
+    AsyncStorage.setItem('momsInfoTab', DATA[e].title);
     dispatch(setGuideRefresh({subcategory: DATA[e].title}));
     dispatch(setGuideCountRefresh({subcategory: DATA[e].title}));
   }
@@ -166,7 +174,7 @@ const Talk1 = ({navigation}) => {
         :
         <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{
           dispatch(setGuideCount({page: infoCount > (guideSet.page * 30) ? guideSet.page + 1 : guideSet.page, count: infoCount}));
-          }} onEndReachedThreshold={0}
+          }} onEndReachedThreshold={1}
           onRefresh={onRefreshing} refreshing={refreshing}
           keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
           ListFooterComponent={loading && <ActivityIndicator />}>

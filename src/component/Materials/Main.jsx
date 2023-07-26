@@ -270,6 +270,7 @@ const Navigation = ({navigation, route}) => {
     needsBrandId: null,
     needsDataId: null
   }); // 브랜드 추가 모달
+  console.log('@@@@ modalVisible2', modalVisible2);
   const [modalVisible4, setModalVisible4] = useState({
     open: false,
     content: '',

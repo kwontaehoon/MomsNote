@@ -225,14 +225,20 @@ const Talk1 = ({navigation, route}:any) => {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(()=>{
+    const tab = async() => {
+      console.log('@@@@@@@@: ', await AsyncStorage.getItem('momsTalkTab'));
+      dispatch(postBoardCount({subcategory: await AsyncStorage.getItem('momsTalkTab')}));
+    }
     filteringSet();
     setLoading(true);
-    dispatch(postBoardCount(boardCountSet));
+    
     dispatch(postBoardPopular());
     setLoading(false);
+    tab();
   }, [filter, value]);
 
   useEffect(()=>{
+
     if(info?.length !== 0){
       setPlus({...plus, newInfo: info});
     }
@@ -241,6 +247,11 @@ const Talk1 = ({navigation, route}:any) => {
   useEffect(()=>{
     const momsTalk = async() => {
       const asyncStorage = await AsyncStorage.getItem('momsTalk');
+      const filter = await AsyncStorage.getItem('momsTalkTab');
+
+      if(filter){
+        setFilter(DATA.map(x => x.title == filter))
+      }
       
       setModalVisible(prevState => ({...prevState, asyncStorage: asyncStorage}));
     }
@@ -248,17 +259,23 @@ const Talk1 = ({navigation, route}:any) => {
   }, []);
 
     const filteringSet = async() => {
-      dispatch(postBoard(!await AsyncStorage.getItem('momsTalk_filter') ? boardSet : await AsyncStorage.getItem('momsTalk_filter') == '인기 순' ?
+      const tab = await AsyncStorage.getItem('momsTalkTab');
+      dispatch(postBoard(!await AsyncStorage.getItem('momsTalk_filter') ? {
+        order: 'new',
+        count: 1,
+        page: 1,
+        subcategory: tab
+      } : await AsyncStorage.getItem('momsTalk_filter') == '인기 순' ?
     ( setValue('2'), {
       order: 'best',
       count: 1,
       page: 1,
-      subcategory: '전체'
+      subcategory: tab
     }) : ( setValue('1'), {
       order: 'new',
       count: 1,
       page: 1,
-      subcategory: '전체'
+      subcategory: tab
     })
       ));
   }
@@ -267,6 +284,7 @@ const Talk1 = ({navigation, route}:any) => {
     let arr = Array.from({length: 6}, () => {return false});
     arr[e] = !arr[e];
     setFilter(arr);
+    AsyncStorage.setItem('momsTalkTab', DATA[e].title);
     setPlus({...plus, page: 1, category: DATA[e].title});
     dispatch(setBoardRefresh({subcategory: DATA[e].title}));
     dispatch(setBoardCountRefresh({subcategory: DATA[e].title}));
@@ -428,13 +446,13 @@ const Talk1 = ({navigation, route}:any) => {
           autoplayTimeout={4.5}
           showsPagination={false}
           >
-          {boardPopular.length < 1 ? '' : <TouchableOpacity style={styles.slide} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}>
+          {boardPopular?.length < 1 ? '' : <TouchableOpacity style={styles.slide} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[0]})}>
             <Text style={{color: 'orange', fontWeight: 'bold'}} numberOfLines={1} ellipsizeMode={'tail'}>[인기글] {boardPopular[0].title}</Text>
           </TouchableOpacity>}
-          {boardPopular.length < 2 ? '' : <TouchableOpacity style={styles.slide} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[1]})}>
+          {boardPopular?.length < 2 ? '' : <TouchableOpacity style={styles.slide} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[1]})}>
             <Text style={{color: 'orange', fontWeight: 'bold'}} numberOfLines={1} ellipsizeMode={'tail'}>[인기글] {boardPopular[1].title}</Text>
           </TouchableOpacity>}
-          {boardPopular.length < 3 ? '' : <TouchableOpacity style={styles.slide} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[2]})}>
+          {boardPopular?.length < 3 ? '' : <TouchableOpacity style={styles.slide} onPress={()=>navigation.navigate('맘스토크 상세내용', {item: boardPopular[2]})}>
             <Text style={{color: 'orange', fontWeight: 'bold'}} numberOfLines={1} ellipsizeMode={'tail'}>[인기글] {boardPopular == '' ?  '' : boardPopular[2].title}</Text>
           </TouchableOpacity>}
         </Swiper>
@@ -447,7 +465,7 @@ const Talk1 = ({navigation, route}:any) => {
         </View>
         :
         <FlatList data={plus?.newInfo} renderItem={renderItem2} onRefresh={onRefreshing} refreshing={refreshing} onEndReached={()=> onEnd()}
-          onEndReachedThreshold={0}
+          onEndReachedThreshold={1}
           keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}>
         </FlatList>
         }

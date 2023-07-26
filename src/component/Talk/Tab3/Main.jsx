@@ -105,7 +105,7 @@ const Talk3 = ({navigation}) => {
   }, [value]);
 
   const filteringSet = async() => {
-    dispatch(postExperience(!await AsyncStorage.getItem('event_filter') ? materialShareSet : await AsyncStorage.getItem('event_filter') == '인기 순' ?
+    dispatch(postExperience(!await AsyncStorage.getItem('event_filter') ? experienceSet : await AsyncStorage.getItem('event_filter') == '인기 순' ?
   ( setValue('2'), {
     order: 'best',
     count: 1,

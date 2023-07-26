@@ -367,7 +367,7 @@ const optionBox = (e) => {
 
   return (
         <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
-            onRequestClose={() => {setModal(!modal)}}>
+            onRequestClose={() => setModal(false)}>
             <View style={styles.modalContainer}>
             <View style={styles.modalView}>
 

@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { postUser } from '../../../../Redux/Slices/UserSlice'
+import * as FileSystem from 'expo-file-system'
 
 const styles = StyleSheet.create({
     container: {
@@ -304,6 +305,8 @@ const Register = ({ navigation, route }) => {
     };
 
     const pickVideo = async () => {
+
+        
         if (info.video.length === 1) {
             setModal2Content('동영상은 최대 1개만 업로드 가능합니다.');
             setModalVisible2(!modalVisible2); return;
@@ -319,10 +322,18 @@ const Register = ({ navigation, route }) => {
 
         if (!result.canceled) {
             arr = [result.assets[0].uri];
-            setInfo((prevState) => ({
-                ...prevState,
-                video: arr
-            }))
+            const size = await FileSystem.getInfoAsync(result.uri);
+            console.log('size: ', size.size /1024/1024);
+            if(size.size /1024/1024 > 100){
+                setModal2Content('100MB 미만의 동영상을 등록해 주세요.');
+                setModalVisible2(!modalVisible2);
+                return;
+            }else{
+                setInfo((prevState) => ({
+                    ...prevState,
+                    video: arr
+                }));
+            }
         }
     };
 

@@ -12,7 +12,7 @@ import CoarchMark2 from './Modal/CoarchMark2'
 import Bell from '../../../public/assets/svg/Bell.svg'
 import MyPage from '../../../public/assets/svg/Mypage.svg'
 
-import { useIsFocused } from '@react-navigation/native'
+import { useFocusEffect, useIsFocused } from '@react-navigation/native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 
 import { useSelector, useDispatch } from 'react-redux'
@@ -269,13 +269,24 @@ const Home = ({ navigation }) => {
     }, []);
 
 
-    //     useEffect(()=>{
-    //         Alarm.filter(x => x.readFlag == false) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
-    //   }, [Alarm]);
+    useEffect(()=>{
+        Alarm?.filter(x => !x?.readFlag ) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+      }, [Alarm]);
 
     useEffect(() => {
         save();
     }, [captureURL]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+          // Do something when the screen is focused
+          dispatch(postAlarm({page: 1}));
+    
+          return () => {
+            // Do something when the screen is unfocused
+            // Useful for cleanup functions
+          };
+    }, []));
 
     const save = async () => {
 

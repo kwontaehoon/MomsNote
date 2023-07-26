@@ -289,11 +289,10 @@ const Talk1Sub = ({navigation, route}) => {
     const isFocused = useIsFocused();
     const info = [route.params];
     const info2 = useSelector(state => { return state.shareList.data }); // 게시글 리스트
-    console.log('@@ info2: ', info2);
+    console.log('@@ info: ', info2);
     const materialShare = useSelector(state => { return state.materialShare.data });
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
     const [info3, setInfo3] = useState(useSelector(state => { return state.materialShare.data }));
-    console.log('@@ info3: ', info3);
 
     const user = useSelector(state => { return state.user.data; });
 
@@ -309,6 +308,7 @@ const Talk1Sub = ({navigation, route}) => {
         }
     ); // 댓글 입력
     const [list, setList] = useState(Array.from({length: 9}, () => {return true})); // list display
+    console.log('list: ', list);
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요
     const [boardData, setBoardData] = useState({
         order: 'new',
@@ -363,6 +363,15 @@ const Talk1Sub = ({navigation, route}) => {
             setInfo3(materialShare.filter(x => x.boardId == info[0].boardId));
         }
     }, [materialShare, isFocused]);
+
+    useEffect(()=>{
+        const arr = DATA2.map(x=>{
+            if((info2.filter(y => x.title == y.category).length !== 0)){
+                return true;
+            }else return false;
+        });
+        setList(arr);
+    }, []);
 
     useEffect(()=>{
         let sum = 0;
@@ -557,6 +566,7 @@ const Talk1Sub = ({navigation, route}) => {
     const List2 = (e) => {
         let arr = [];
         info2.filter((x, index)=>{
+            console.log('xxxx: ', x);
             if(x.category == e.title){
                 arr.push(
                      <View style={styles.listMain2} key={index}>

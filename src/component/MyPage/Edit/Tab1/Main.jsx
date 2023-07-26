@@ -61,7 +61,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: '#FEA100',
         borderRadius: 4,
-    }
+    },
+    notFind:{
+        fontSize: 12,
+        color: 'red',
+        marginTop: 20
+        }
 })
 
 
@@ -173,8 +178,8 @@ const Talk1 = ({navigation}: any) => {
                     <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>닉네임</Text>
                     <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.</Text>
                         <TextInput placeholder='닉네임 입력' style={[styles.textBox, {borderColor: bottomColor[0] ? '#FEB401' : '#EEEEEE'}]} maxLength={8}
-                        value={info.nickname} onFocus={()=>change(0)}
-                        onChangeText={(e) => { setInfo((prevState) => ({ ...prevState, nickname: e}));}}>
+                            value={info.nickname} onFocus={()=>change(0)}
+                            onChangeText={(e) => { setInfo((prevState) => ({ ...prevState, nickname: e}));}}>
                         </TextInput>
                 </View>
                 <View style={[styles.mainBox2, {height: 130}]}>
@@ -203,6 +208,7 @@ const Talk1 = ({navigation}: any) => {
                 <View style={styles.mainBox5}>
                     <View style={styles.exitBox}><Text style={{color: '#757575'}} onPress={()=>navigation.navigate('회원탈퇴')}>회원탈퇴</Text></View>
                 </View>
+                {info.nickname.includes(' ') || info.babyName.includes(' ') ? <Text style={styles.notFind}>공란 없이 입력 해 주세요.</Text> :  ''}
             </View>
             <View style={styles.footer}>
                 {info.nickname.trim() == '' || info.babyName.trim() == '' || info.nickname.includes(' ') || info.babyName.includes(' ') ?

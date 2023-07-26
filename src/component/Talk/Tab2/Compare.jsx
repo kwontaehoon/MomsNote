@@ -249,7 +249,6 @@ const Talk1Sub = ({navigation, route}) => {
   useEffect(()=>{
     const coarch = async() => {
       const coarchMark = await AsyncStorage.getItem('coarchMarkMaterialList');
-      console.log('coarchMark: ', coarchMark);
       coarchMark == null ? setCoarchMarkModal(true) : setCoarchMarkModal(false);
     }
     coarch();
@@ -295,10 +294,12 @@ const Talk1Sub = ({navigation, route}) => {
     const List2 = (e) => {
       let arr = [];
       info.filter((x, index)=>{
-        
+          console.log('xxx: ', x);
           if(x.category == e.title){
               arr.push(
-                   <TouchableOpacity style={styles.listMain2} onLongPress={()=>setModal(prevState => ({...prevState, open: true, needsId: x.needsId, needsBrandId: x.needsBrandId, needsName: x.needsName}))} delayLongPress={1500} activeOpacity={1} key={index}>
+                   <TouchableOpacity style={styles.listMain2} onLongPress={()=>{
+                    setModal(prevState => ({...prevState, open: true, needsId: x.needsId, needsBrandId: x.needsBrandId, needsName: x.needsName}));
+                    }} delayLongPress={1500} activeOpacity={1} key={index}>
                       <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
                       <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
                       <View style={styles.filterBox2}>

@@ -33,6 +33,7 @@ export const guideSlice = createSlice({
     initialState,
     reducers: {
       setGuideRefresh:(state, action)=>{
+        console.log('action: ', action.payload.subcategory);
         state.refresh.subcategory = action.payload.subcategory;
       },
       setGuideCount:(state, action)=>{

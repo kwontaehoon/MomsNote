@@ -67,7 +67,6 @@ const CheckBoxModal = ({modal6, setModal6, setModal3}) => {
         needsName: ''
     });
 
-    const [test, setTest] = useState(0);
 
   return modal6.content == null ? <View></View> : (
     <Modal animationType="fade" transparent={true} visible={modal6.open}
@@ -83,7 +82,7 @@ const CheckBoxModal = ({modal6, setModal6, setModal3}) => {
                         <View style={styles.main}>
                             <View style={{marginBottom: 10}}><Text>{modal6.content.needsName}</Text></View>
                             <TextInput style={styles.mainBox} textAlign='right' placeholder={`${(modal6.content.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원`} placeholderTextColor={'black'}
-                                onChangeText={(e) => setInfo((prevState) => ({ ...prevState, needsName: e}))}></TextInput>
+                                onChangeText={(e) => setInfo({...info, needsName: e})}></TextInput>
                         </View>
                         
                             <TouchableOpacity style={[styles.footer, {backgroundColor: '#FEA100'}]}>

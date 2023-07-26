@@ -33,6 +33,7 @@ import { postHits } from '../../../Redux/Slices/HitsSlice'
 import Modal2 from '../../Modal/First'
 import { postExperience } from '../../../Redux/Slices/ExperienceSlice'
 import { postMyExp } from '../../../Redux/Slices/MyExpSlice'
+import RenderHtml from 'react-native-render-html'
 
 const styles = StyleSheet.create({
     container:{
@@ -207,11 +208,8 @@ const Talk1Sub = ({navigation, route}) => {
 
     const info = route.params;
     console.log('체험단 상세: ', info);
-    console.log(moment(info.registrationEndDate).diff(moment(), "days"));
     const exp = useSelector(state => { return state.experience.data; });
-    console.log('exp: ', exp);
     const [info2, setInfo2] = useState(exp);
-    console.log('체험단 info2: ', info2);
 
     const DATA = [
         {
@@ -388,7 +386,7 @@ const Talk1Sub = ({navigation, route}) => {
         switch(filter){
             case false : return (
                 <View style={styles.main3Box2}>
-                    <Text>체험정보 입니다.</Text>
+                     <RenderHtml source={{html: `${info.contents}`}} tagsStyles={styles} />
                 </View>
             )
             case true && winList.length !== 0 : return (
