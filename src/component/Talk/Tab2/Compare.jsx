@@ -246,6 +246,17 @@ const Talk1Sub = ({navigation, route}) => {
   }, [material]);
 
   useEffect(()=>{
+    const arr = DATA2.map(x=>{
+        if((info.filter(y => x.title == y.category).length !== 0)){
+            return true;
+        }else return false;
+    }); 
+    console.log('arr: ', arr);
+    setList(arr);
+}, [info]);
+
+
+  useEffect(()=>{
     const coarch = async() => {
       const coarchMark = await AsyncStorage.getItem('coarchMarkMaterialList');
       coarchMark == null ? setCoarchMarkModal(true) : setCoarchMarkModal(false);

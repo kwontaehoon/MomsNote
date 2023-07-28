@@ -204,7 +204,6 @@ const Talk1 = ({navigation, route}:any) => {
   const infoCount = useSelector(state => { return state.boardCount.data; });
   const boardPopular = useSelector(state => { return state.boardPopular.data });
   const [loading, setLoading] = useState(false);
-  console.log('loading: ', loading);
 
   const [modalVisible, setModalVisible] = useState({
     open: false,
@@ -217,6 +216,7 @@ const Talk1 = ({navigation, route}:any) => {
   ]);
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
+  console.log('filter: ', filter);
   const [plus, setPlus] = useState({
     newInfo: [],
     page: 1,
@@ -250,7 +250,8 @@ const Talk1 = ({navigation, route}:any) => {
       const filter = await AsyncStorage.getItem('momsTalkTab');
 
       if(filter){
-        setFilter(DATA.map(x => x.title == filter))
+        const arr = DATA.map(x => x.title == filter);
+        setFilter(arr);
       }
       
       setModalVisible(prevState => ({...prevState, asyncStorage: asyncStorage}));
@@ -282,11 +283,11 @@ const Talk1 = ({navigation, route}:any) => {
       setLoading(false);
   }
   
-  const change = (e) => { // 카테고리 배경색상, 글자 색상 변경 onpress
+  const change = async(e) => { // 카테고리 배경색상, 글자 색상 변경 onpress
+    await AsyncStorage.setItem('momsTalkTab', DATA[e].title);
     let arr = Array.from({length: 6}, () => {return false});
     arr[e] = !arr[e];
     setFilter(arr);
-    AsyncStorage.setItem('momsTalkTab', DATA[e].title);
     setPlus({...plus, page: 1, category: DATA[e].title});
     dispatch(setBoardRefresh({subcategory: DATA[e].title}));
     dispatch(setBoardCountRefresh({subcategory: DATA[e].title}));
@@ -502,9 +503,6 @@ const Talk1 = ({navigation, route}:any) => {
         }>
             <Pencil />
       </TouchableOpacity>
-
-
-     
      </View>
   )
 }

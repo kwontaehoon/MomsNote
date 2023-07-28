@@ -50,7 +50,7 @@ const dayCalculate = (date) => {
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', item)}>
         <View style={styles.clockBox}>
-          <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(item.boardDate).format('YY-MM-DD')}</Text>
+          <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(item.boardDate).format('YYYY-MM-DD')}</Text>
         </View>
         <Text>{item.title}</Text>
         <View style={styles.infoBox}>

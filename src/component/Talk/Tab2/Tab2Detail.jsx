@@ -368,9 +368,10 @@ const Talk1Sub = ({navigation, route}) => {
             if((info2.filter(y => x.title == y.category).length !== 0)){
                 return true;
             }else return false;
-        });
+        }); 
+        console.log('arr: ', arr);
         setList(arr);
-    }, []);
+    }, [info2]);
 
     useEffect(()=>{
         let sum = 0;
@@ -565,7 +566,6 @@ const Talk1Sub = ({navigation, route}) => {
     const List2 = (e) => {
         let arr = [];
         info2.filter((x, index)=>{
-            console.log('xxxx: ', x);
             if(x.category == e.title){
                 arr.push(
                      <View style={styles.listMain2} key={index}>

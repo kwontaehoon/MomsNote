@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         paddingLeft: 20,
         borderTopWidth: 1,
-        borderColor: '#F5F5F5',
     },
     profileBox:{
         width: 40,
@@ -43,6 +42,7 @@ const styles = StyleSheet.create({
     infoBox:{
         height: 42,
         marginLeft: 7,
+        borderWidth: 1
     },
     main:{
 
@@ -99,16 +99,22 @@ const styles = StyleSheet.create({
         borderColor: '#F5F5F5',
         borderBottomWidth: 1,
     },
-    table: {
-        borderTopWidth:1,
-        borderLeftWidth:1,
-      },
-      tr: {
-        borderBottomWidth: 1,
-      },
-      td: {
-        borderRightWidth: 1,
-      },
+    // tbody:{
+    //     borderWidth: 2,
+        
+    // },
+    // table:{
+    //     borderWidth: 1,
+    //     borderColor: 'red'
+    // },
+    td:{
+        borderWidth: 1,
+        flex: 1
+    },
+    p:{
+
+        flex: 1
+    }
   })
 
 const Talk1Sub = ({navigation, route}) => {

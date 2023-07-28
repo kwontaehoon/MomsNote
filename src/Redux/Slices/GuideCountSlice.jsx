@@ -11,6 +11,7 @@ export const postGuideCount = createAsyncThunk("postGuideCountSlice/async", asyn
           url: 'https://momsnote.net/api/guideboard/count',
           data : data
       });
+      console.log('@@@ response DATA: ', response.data);
       return response.data;
       }catch(error){
           console.log('guideCount axios error: ', error);
@@ -30,6 +31,8 @@ export const guideCountSlice = createSlice({
     initialState,
     reducers: {
       setGuideCountRefresh:(state, action)=>{
+        console.log('state: ', state.refresh);
+        console.log('action: ', action.payload.subcategory);
         state.refresh.subcategory = action.payload.subcategory;
       },
     },

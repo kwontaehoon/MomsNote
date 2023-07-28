@@ -6,6 +6,7 @@ import { postGuide, setGuideRefresh, setGuideCount } from '../../../Redux/Slices
 import { setGuideCountRefresh } from '../../../Redux/Slices/GuideCountSlice'
 import { Platform } from 'expo-modules-core'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
 
 const styles = StyleSheet.create({
   container:{
@@ -98,11 +99,31 @@ const Talk1 = ({navigation}) => {
   const info = useSelector(state => { return state.guide.data });
   const guideSet = useSelector(state => { return state.guide.refresh });
   const infoCount = useSelector(state => { return state.guideCount.data });
+  console.log('infoCount: ', infoCount);
   const guideCountSet = useSelector(state => { return state.guideCount.refresh });
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+
+  const [plus, setPlus] = useState({
+    newInfo: [],
+    page: 1,
+    subcategory: '전체'
+  });
+  console.log('plus: ', plus.newInfo);
+
+  useEffect(()=>{
+    const momsTalk = async() => {
+      const filter = await AsyncStorage.getItem('momsInfoTab');
+
+      if(filter){
+        const arr = DATA.map(x => x.title == filter);
+        setFilter(arr);
+      }
+    }
+    momsTalk();
+  }, []);
 
   useEffect(()=>{
     setLoading(true);
@@ -110,21 +131,55 @@ const Talk1 = ({navigation}) => {
       dispatch(postGuide({
         count: 5,
         page: 1,
-        subcategory: await AsyncStorage.getItem('momsInfo')
+        subcategory: await AsyncStorage.getItem('momsInfoTab')
       }));
     }
     
     dispatch(postGuideCount(guideCountSet));
     setLoading(false);
     async();
-  }, [guideSet]);
+  }, [guideSet, guideCountSet]);
+
+  useEffect(()=>{
+
+    if(info?.length !== 0){
+      setPlus({...plus, newInfo: info});
+    }
+  }, [info]);
+
+  const onEnd = async () => {
+    try {
+        const response = await axios({
+            method: 'post',
+            url: 'https://momsnote.net/api/guideboard/list',
+            data: {
+                order: 'new',
+                count: 1,
+                page: plus.page +1,
+                subcategory: await AsyncStorage.getItem('momsInfoTab')
+            }
+        });
+        if(response?.data?.length == 0){
+          return;
+        }else{
+          console.log('## response: ', response);
+          const addInfo = [...plus?.newInfo, ...response.data];
+          console.log('## addInfo: ', addInfo);
+          setPlus({...plus, newInfo: addInfo, page: plus.page+1});
+        }
+    } catch (error) {
+        console.log('qna axios error: ', error);
+        return undefined;
+    }
+}
 
 
   const change = async(e) => { // 카테고리 배경색상, 글자 색상 변경
+    await AsyncStorage.setItem('momsInfoTab', DATA[e].title);
     let arr = Array.from({length: 6}, () => {return false});
     arr[e] = !arr[e];
     setFilter(arr);
-    AsyncStorage.setItem('momsInfoTab', DATA[e].title);
+    setPlus({...plus, page: 1, subcategory: DATA[e].title});
     dispatch(setGuideRefresh({subcategory: DATA[e].title}));
     dispatch(setGuideCountRefresh({subcategory: DATA[e].title}));
   }
@@ -133,7 +188,6 @@ const Talk1 = ({navigation}) => {
     if(!refreshing){
       setRefreshing(true);
       dispatch(postGuide(guideSet));
-      dispatch(postGuideCount(guideCountSet));
       setRefreshing(false);
     }
   }
@@ -171,9 +225,7 @@ const Talk1 = ({navigation}) => {
       <View style={styles.main}>
         {info == '0' ? <View style={{marginTop: 150, alignItems: 'center'}}><Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text></View>
         :
-        <FlatList data={info} renderItem={renderItem2} onEndReached={()=>{
-          dispatch(setGuideCount({page: infoCount > (guideSet.page * 30) ? guideSet.page + 1 : guideSet.page, count: infoCount}));
-          }} onEndReachedThreshold={1}
+        <FlatList data={plus.newInfo} renderItem={renderItem2} onEndReached={()=> onEnd()}
           onRefresh={onRefreshing} refreshing={refreshing}
           keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
           ListFooterComponent={loading && <ActivityIndicator />}>

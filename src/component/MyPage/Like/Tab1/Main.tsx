@@ -98,7 +98,7 @@ const Talk1 = ({navigation, route}:any) => {
           </View>
         </View>
         <View style={[styles.dateBox, {justifyContent: 'center', alignItems: 'flex-end'}]}>
-         <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(item.boardDate).format('YY-MM-DD')}</Text>
+         <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(item.boardDate).format('YYYY-MM-DD')}</Text>
         </View>
     </TouchableOpacity>
   ); 
