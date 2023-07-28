@@ -64,10 +64,8 @@ const styles = StyleSheet.create({
 const Main = ({navigation, route}) => {
 
     const [modal, setModal] = useState(false);
-    console.log('123');
 
     useEffect(()=>{
-        console.log('route: ', route);
         if(route?.params == 'expire'){
             setModal(true);
         }
@@ -84,7 +82,6 @@ const Main = ({navigation, route}) => {
     React.useEffect(() => {
         if (response?.type === 'success') {
             const { authentication } = response;
-            console.log('authentication: ', authentication)
             GoogleGetId(authentication.accessToken);
         }
     }, [response]);

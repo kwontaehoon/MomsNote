@@ -63,14 +63,6 @@ const Talk1 = ({navigation, route}:any) => {
     dispatch(postMyLikeBoard());
   }, []);
 
-  const dayCalculate = (date:number) => {
-    switch(true){
-      case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
-      case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
-      default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'day')}일 전</Text>
-    }
-  }
-
   const ImageBox = ({item}:any) => {
     const arr:string[] = [];
     const a = (item.split('|')).filter((x:string) => { if(x.charAt(x.length-1) === '4'){ arr.push(x); }else return x;});
@@ -106,7 +98,7 @@ const Talk1 = ({navigation, route}:any) => {
           </View>
         </View>
         <View style={[styles.dateBox, {justifyContent: 'center', alignItems: 'flex-end'}]}>
-         {dayCalculate(item.boardDate)}
+         <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(item.boardDate).format('YY-MM-DD')}</Text>
         </View>
     </TouchableOpacity>
   ); 

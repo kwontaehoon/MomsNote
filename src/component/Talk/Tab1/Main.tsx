@@ -199,12 +199,12 @@ const Talk1 = ({navigation, route}:any) => {
   
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.board.data; });
-  console.log('맘스톡 info: ', info);
   const boardSet = useSelector(state => { return state.board.refresh; });
   const boardCountSet = useSelector(state => { return state.boardCount.refresh; });
   const infoCount = useSelector(state => { return state.boardCount.data; });
   const boardPopular = useSelector(state => { return state.boardPopular.data });
   const [loading, setLoading] = useState(false);
+  console.log('loading: ', loading);
 
   const [modalVisible, setModalVisible] = useState({
     open: false,
@@ -225,15 +225,15 @@ const Talk1 = ({navigation, route}:any) => {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(()=>{
+    setLoading(true);
     const tab = async() => {
-      console.log('@@@@@@@@: ', await AsyncStorage.getItem('momsTalkTab'));
       dispatch(postBoardCount({subcategory: await AsyncStorage.getItem('momsTalkTab')}));
     }
     filteringSet();
     setLoading(true);
     
     dispatch(postBoardPopular());
-    setLoading(false);
+    
     tab();
   }, [filter, value]);
 
@@ -259,6 +259,7 @@ const Talk1 = ({navigation, route}:any) => {
   }, []);
 
     const filteringSet = async() => {
+      
       const tab = await AsyncStorage.getItem('momsTalkTab');
       dispatch(postBoard(!await AsyncStorage.getItem('momsTalk_filter') ? {
         order: 'new',
@@ -278,6 +279,7 @@ const Talk1 = ({navigation, route}:any) => {
       subcategory: tab
     })
       ));
+      setLoading(false);
   }
   
   const change = (e) => { // 카테고리 배경색상, 글자 색상 변경 onpress
@@ -351,10 +353,28 @@ const Talk1 = ({navigation, route}:any) => {
     }
 }
 
-  const onRefreshing = () => {
+  const onRefreshing = async() => {
     if(!refreshing){
       setRefreshing(true);
-      dispatch(postBoard(boardSet));
+      const tab = await AsyncStorage.getItem('momsTalkTab');
+      dispatch(postBoard(!await AsyncStorage.getItem('momsTalk_filter') ? {
+        order: 'new',
+        count: 1,
+        page: 1,
+        subcategory: tab
+      } : await AsyncStorage.getItem('momsTalk_filter') == '인기 순' ?
+    ( setValue('2'), {
+      order: 'best',
+      count: 1,
+      page: 1,
+      subcategory: tab
+    }) : ( setValue('1'), {
+      order: 'new',
+      count: 1,
+      page: 1,
+      subcategory: tab
+    })
+      ));
       dispatch(postBoardCount(boardCountSet));
       dispatch(postBoardPopular());
       setRefreshing(false);
@@ -395,7 +415,7 @@ const Talk1 = ({navigation, route}:any) => {
     </View>
   )
 
-  return (
+  return loading ? <ActivityIndicator style={styles.container} size={'large'} color='#E0E0E0' /> : (
     <View style={styles.container}>
 
   <Modal animationType="fade" transparent={true} visible={modalVisible.open} statusBarTranslucent={true}

@@ -47,7 +47,6 @@ const Talk1 = ({navigation, week}: any) => {
             subcategory: `${week.findIndex(x => x === true)+1}주`
         }
       });
-      console.log('response @@: ', response);
       if(response.data == ''){ setInfo('0'); }else setInfo(response.data);
       }
       Government();
@@ -60,7 +59,6 @@ const Talk1 = ({navigation, week}: any) => {
   };
 
   const onRefreshing = async() => {
-    console.log('@@@@ refreshing');
     if(!refreshing){
       await setRefreshing(true);
       setRefreshing(false);

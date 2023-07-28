@@ -170,6 +170,8 @@ const Navigation = () => {
                             height: 110
                         },
                     })}/>
+
+                    
                 <Stack.Screen name="공지사항" component={Notice} 
                     options={({ navigation, route }) => ({
                         headerLeft: () => (
@@ -191,13 +193,13 @@ const Navigation = () => {
                         },
                     })}/>
                 <Stack.Screen name="공지사항 상세" component={NoticeDetail} options={{title: '공지사항'}} />
-                <Stack.Screen name="추천 게시물" component={Like} 
+                <Stack.Screen name="추천한 게시물" component={Like} 
                 options={({ navigation, route }) => ({
                     headerLeft: () => (
                         <View style={styles.header}>
                             <View style={styles.headerBox}>
                                 <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
-                                <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>추천 게시물</Text>
+                                <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>추천한 게시물</Text>
                             </View>
                         </View>
                     ),

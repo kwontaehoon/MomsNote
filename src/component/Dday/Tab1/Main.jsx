@@ -58,7 +58,6 @@ const Talk1 = ({navigation, week}) => {
   };
 
   const onRefreshing = async() => {
-    console.log('@@@@ refreshing');
     if(!refreshing){
       await setRefreshing(true);
       setRefreshing(false);

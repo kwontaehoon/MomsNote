@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         marginLeft: 7,
     },
     main:{
-        height: Dimensions.get('window').height - 60,
+
     },
     mainBox:{
         padding: 20,
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     mainBox2ImageBox:{
-        height: 400,
+        height: 600,
         padding: 10,
         justifyContent: 'center',
         alignItems: 'center',
@@ -73,8 +73,8 @@ const styles = StyleSheet.create({
        marginBottom: 20,
     },
     image:{
-        width: '95%',
-        height: '95%',
+        width: '100%',
+        height: '100%',
         borderRadius: 4,
     },
     image2:{
@@ -208,8 +208,6 @@ const Talk1Sub = ({navigation, route}) => {
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
 
-    console.log('행사정보 details data: ', info, info2, info3);
-
     const [commentData, setCommentData] = useState({
         boardId: info[0].boardId,
         count: 1,
@@ -258,40 +256,40 @@ const Talk1Sub = ({navigation, route}) => {
         switch(true){
     
             case info[0]?.savedName?.split('|').length == 1: return(
-                <TouchableOpacity style={styles.mainBox2ImageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)}>
+                <View style={styles.mainBox2ImageBox}>
                     <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${infoFiltering[0]}`}} style={styles.image}/>
-                </TouchableOpacity>
+                </View>
             )
             case info[0]?.savedName?.split('|').length < 4: return(
                 <View style={styles.mainBox2ImageBox2}>
                     {infoFiltering.map(x=>{
                         if(x.charAt(x.length-1) === '4'){
                             return (
-                                <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)}>
+                                <View style={styles.imageBox}>
                                     <View style={styles.videoImage}><Icon name='play' size={17} style={{color: 'white'}}/></View>
                                     <Video source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image2} resizeMode='cover'/>
-                                </TouchableOpacity>
+                                </View>
                             )
                         }else return (
-                            <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', infoFiltering)}>
+                            <View style={styles.imageBox}>
                                     <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image2}/>
-                            </TouchableOpacity>
+                            </View>
                         )
                     })}
                 </View>
             )
             default: return(
                 <View style={styles.mainBox2ImageBox2}>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리')}>
+                    <View style={styles.imageBox}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0]?.savedName?.split('|')[0]}`}} style={styles.image2}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
+                    </View>
+                    <View style={styles.imageBox}>
                         <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${info[0]?.savedName?.split('|')[1]}`}} style={styles.image2}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', info[0].savedName)}>
+                    </View>
+                    <View style={styles.imageBox}>
                         <Image source={{uri: `https://reactnative.dev/img/tiny_logo.png`}} style={styles.image2}/>
                         <View style={{position: 'absolute', top: '40%', left: '40%'}}><Text style={{color: 'white', fontSize: 20, fontWeight: '600'}}>+{info[0]?.savedName?.split('|').length-3}</Text></View>
-                    </TouchableOpacity>
+                    </View>
                 </View>
             )
         }
@@ -326,7 +324,7 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.main}>
                 <View style={styles.mainBox2}>
                     <View style={styles.mainBox2TitleBox}>
-                        <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 10, lineHeight: 25}}>{item.title}</Text>
+                        <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 25, lineHeight: 25}}>{item.title}</Text>
                         <View>
                             {item.eventStartDate && <Text>{dateFilter(item)}</Text>}
                         </View>

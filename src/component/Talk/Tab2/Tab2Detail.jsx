@@ -289,7 +289,6 @@ const Talk1Sub = ({navigation, route}) => {
     const isFocused = useIsFocused();
     const info = [route.params];
     const info2 = useSelector(state => { return state.shareList.data }); // 게시글 리스트
-    console.log('@@ info: ', info2);
     const materialShare = useSelector(state => { return state.materialShare.data });
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
     const [info3, setInfo3] = useState(useSelector(state => { return state.materialShare.data }));

@@ -149,10 +149,20 @@ const Talk3 = ({navigation}) => {
     }
 }
 
-  const onRefreshing = () => {
+  const onRefreshing = async() => {
     if(!refreshing){
       setRefreshing(true);
-      dispatch(postExperience(experienceSet));
+      dispatch(postExperience(!await AsyncStorage.getItem('event_filter') ? experienceSet : await AsyncStorage.getItem('event_filter') == '인기 순' ?
+      ( setValue('2'), {
+        order: 'best',
+        count: 1,
+        page: 1,
+      }) : ( setValue('1'), {
+        order: 'new',
+        count: 1,
+        page: 1,
+      })
+        ));
       dispatch(postExperienceCount(infoCount));
       setRefreshing(false);
     }

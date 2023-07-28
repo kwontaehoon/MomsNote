@@ -177,7 +177,6 @@ const Talk1Sub = ({modal, setModal}) => {
 
 
   const info = useSelector(state => state.material.data);
-  console.log('coarch mark info: ', info);
   const [isChecked, setIsChecked] = useState(false);
   const dispatch = useDispatch();
   const materialSet = useSelector(state => state.material.refresh);

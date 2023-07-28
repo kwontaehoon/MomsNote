@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
 const Talk1Sub = ({navigation, route}) => {
 
     const info = [route.params];
-    console.log('info: ', info);
 
     const ImageBox = () => {
         const arr = [];

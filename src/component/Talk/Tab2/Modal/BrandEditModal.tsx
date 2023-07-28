@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal, KeyboardAvoidingView } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal, KeyboardAvoidingView, Alert, BackHandler } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/AntDesign'
 import axios from 'axios'
@@ -116,8 +116,6 @@ const styles = StyleSheet.create({
 
 const Main = ({modalVisible2, setModalVisible2, setModal}) => {
 
-    console.log('modalvisible2: ', modalVisible2);
-
     const dispatch = useDispatch();
     const [info, setInfo] = useState(); // 브랜드 lists
     const [selectBrand, setSelectBrand] = useState({
@@ -153,7 +151,6 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
         commentInfo();
         setSelectBrand(prevState => ({...prevState, needsId: modalVisible2.needsId, needsBrandId: modalVisible2.needsBrandId == null ? 0 : modalVisible2.needsBrandId, needsDataId: modalVisible2.needsId == null ? 0 : modalVisible2.needsId}));
     }, [modalVisible2]);
-
 
     const crown = (index) => {
         console.log(index);
@@ -213,7 +210,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
   return (
     <Modal animationType="fade" transparent={true} visible={modalVisible2.open} statusBarTranslucent={true}
         onRequestClose={() => {
-        setModalVisible2(!modalVisible2)}}>
+        setModalVisible2({...modalVisible2, open: false})}}>
     <KeyboardAvoidingView behavior='height' style={styles.modalContainer}>
         <View style={styles.modalView}>
             <View style={styles.modalContainer2}>

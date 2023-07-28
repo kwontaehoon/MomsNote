@@ -240,7 +240,6 @@ const Navigation = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.material.data; });
-  console.log('출산준비물 info: ', info);
   const Alarm = useSelector(state => { return state.alarm.data; });
   const [AlarmFlag, setAlarmFlag] = useState(false);
   const [purchaseCount, setPurchaseCount] = useState(null); // 전체 구매 갯수
@@ -270,7 +269,6 @@ const Navigation = ({navigation, route}) => {
     needsBrandId: null,
     needsDataId: null
   }); // 브랜드 추가 모달
-  console.log('@@@@ modalVisible2', modalVisible2);
   const [modalVisible4, setModalVisible4] = useState({
     open: false,
     content: '',

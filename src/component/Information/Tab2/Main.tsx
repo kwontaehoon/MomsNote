@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   main2:{
     borderWidth: 1,
-    height: 60,
+    minHeight: 60,
     flexDirection: 'row',
     padding: 15,
     borderColor: '#F5F5F5',
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     alignItems: 'flex-end',
-    marginLeft: 10
+    marginLeft: 10,
   },
 })
 
@@ -119,7 +119,6 @@ const Talk1 = ({navigation}: any) => {
     const [year, setYear] = useState(moment().format('YYYY'));
     const [week, setWeek] = useState([true, false, false, false, false, false,
     false, false, false, false, false, false]);
-    console.log('week: ', week);
     const infoCount = useSelector(state => { return state.eventCount.data; });
 
     const [loading, setLoading] = useState(false);
@@ -130,7 +129,6 @@ const Talk1 = ({navigation}: any) => {
 
     useEffect(async()=>{
       const month = await AsyncStorage.getItem('eventMonth');
-      console.log('month: ', month);
       const arr = Array.from({length: 12}, () => { return false });
       if(!month){
         arr[moment().format('M')-1] = true;
@@ -147,7 +145,6 @@ const Talk1 = ({navigation}: any) => {
     }, [eventSet, refreshing]);
 
     const change = (e) => { // 몇 주차 border, 글자두께 변경
-      console.log('month: ', e);
       let arr = Array.from({length: 12}, ()=>{ return false});
 
       arr[e] = !arr[e];

@@ -194,7 +194,6 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = useSelector(state => { return state.shareList.data; });
-    console.log('info : ', info);
     const material = useSelector(state => { return state.material.data; });
     const [list, setList] = useState(Array.from({length: 9}, () => {return true})); // list display
     const animation = useRef(new Animated.Value(0)).current;
@@ -294,7 +293,6 @@ const Talk1Sub = ({navigation, route}) => {
     const List2 = (e) => {
       let arr = [];
       info.filter((x, index)=>{
-          console.log('xxx: ', x);
           if(x.category == e.title){
               arr.push(
                    <TouchableOpacity style={styles.listMain2} onLongPress={()=>{

@@ -59,13 +59,11 @@ const Talk1 = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(()=>{
-    console.log('###')
     dispatch(postGovernment(governmentSet));
     dispatch(postGovernmentCount());
   }, [refreshing]);
 
   const onRefreshing = async() => {
-    console.log('@@@@ refreshing');
     if(!refreshing){
       await setRefreshing(true);
       setRefreshing(false);

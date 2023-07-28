@@ -136,7 +136,7 @@ const Main = ({navigation}) => {
             <View style={styles.mainBox}><Text style={{fontWeight: 'bold'}}>내 활동 관리</Text></View>
             <View style={styles.mainBox}><Text style={{fontSize: 15}} onPress={()=>navigation.navigate('내가 쓴 게시물')}>내가 쓴 게시물</Text></View>
             <View style={styles.mainBox}><Text style={{fontSize: 15}} onPress={()=>navigation.navigate('내가 쓴 댓글')}>내가 쓴 댓글</Text></View>
-            <View style={styles.mainBox}><Text style={{fontSize: 15}} onPress={()=>navigation.navigate('추천 게시물')}>추천한 게시물</Text></View>
+            <View style={styles.mainBox}><Text style={{fontSize: 15}} onPress={()=>navigation.navigate('추천한 게시물')}>추천한 게시물</Text></View>
             <View style={styles.mainBox}><Text style={{fontSize: 15}} onPress={()=>navigation.navigate('신청한 체험단')}>신청한 체험단</Text></View>
         </View>
         <View style={{backgroundColor: '#F5F5F5', height: 10}}></View>

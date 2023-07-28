@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
         right: 10,
         borderRadius: 20
 
-        
     },
     footer:{
         height: 60,
@@ -217,7 +216,7 @@ const AddPage = ({navigation, route}) => {
             setChecked(arr);
         }
 
-        e == 3 && isChecked[3] ? setMarketingFlag(prevState => ({...prevState, marketingFlag: 0})) : setMarketingFlag(prevState => ({...prevState, marketingFlag: 1}));
+        e == 3 && !isChecked[3] ? setMarketingFlag(prevState => ({...prevState, marketingFlag: 0})) : setMarketingFlag(prevState => ({...prevState, marketingFlag: 1}));
     }
     const check = async(e) => {
         try{

@@ -98,12 +98,15 @@ function MainScreen() {
     }, []));
 
   return (
-    <Tab.Navigator initialRouteName='맘스 톡' backBehavior='initialRoute' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
+    <Tab.Navigator initialRouteName='홈' backBehavior='initialRoute' screenOptions={Platform.OS == 'ios' ? { headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}
       : {tabBarStyle: { height: 55, position: 'absolute', paddingBottom: 5, elevation: 0 }, headerShown: false, tabBarActiveTintColor: '#fb8c00', tabBarLabelStyle: {fontSize: 11}}}>
 
 
       <Tab.Screen name="맘스 톡" options={{tabBarIcon: ({focused, color}) => (focused ? <Forum2 /> : <Forum/>), unmountOnBlur:true}}
       listeners={{tabPress: (e)=>{
+        AsyncStorage.setItem('momsTalk_filter', '최신 순');
+        AsyncStorage.setItem('materialList_filter', '최신 순');
+        AsyncStorage.setItem('event_filter', '최신 순');
       }}}>
           {()=>(
                <Stack.Navigator>
