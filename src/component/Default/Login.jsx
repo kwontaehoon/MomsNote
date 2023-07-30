@@ -82,11 +82,13 @@ const Main = ({navigation, route}) => {
     React.useEffect(() => {
         if (response?.type === 'success') {
             const { authentication } = response;
+            console.log('authentication: ', authentication);
             GoogleGetId(authentication.accessToken);
         }
     }, [response]);
 
     const GoogleGetId = async(googleAccessToken) => {
+        console.log('googleAccessToken: ', googleAccessToken);
         try{
             const response = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${googleAccessToken}`);
             const response2 = await axios({
@@ -99,6 +101,7 @@ const Main = ({navigation, route}) => {
                     username: `google_${response.data.sub}`
                 }
             });
+            console.log('response2: ', response2);
             const decode = jwtDecode(response2.data.token);
             AsyncStorage.setItem('token', response2.data.token);
             AsyncStorage.setItem('userId', String(decode.id));

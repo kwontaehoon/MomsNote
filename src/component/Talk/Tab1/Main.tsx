@@ -216,7 +216,7 @@ const Talk1 = ({navigation, route}:any) => {
   ]);
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
-  console.log('filter: ', filter);
+
   const [plus, setPlus] = useState({
     newInfo: [],
     page: 1,
@@ -485,7 +485,8 @@ const Talk1 = ({navigation, route}:any) => {
           <Text style={{fontSize: 16, color: '#757575'}}>등록된 게시물이 없습니다.</Text>
         </View>
         :
-        <FlatList data={plus?.newInfo} renderItem={renderItem2} onRefresh={onRefreshing} refreshing={refreshing} onEndReached={()=> onEnd()}
+        <FlatList data={plus?.newInfo} renderItem={renderItem2} onRefresh={onRefreshing} refreshing={refreshing}
+          onEndReached={()=> onEnd()}
           onEndReachedThreshold={1}
           keyExtractor={(item, index) => String(index)} showsVerticalScrollIndicator={false}>
         </FlatList>

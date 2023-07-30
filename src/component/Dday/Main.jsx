@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, SafeAreaView, StatusBar } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, SafeAreaView, StatusBar, Button } from 'react-native'
 import Talk1 from './Tab1/Main'
 import Talk2 from './Tab2/Main'
 
@@ -56,15 +56,7 @@ const Main = ({navigation}) => {
     const [filter, setFilter] = useState([true, false]); // filter tab 오늘의편지 or 이 시기에는?
     const [week, setWeek] = useState(Array.from({length: 40}, () => { return false }));
 
-    const [test, setTest] = useState(0);
-
-    const ITEM_HEIGHT = 4;
-
-const getItemLayout = (data, index) => ({
-	length: ITEM_HEIGHT,
-	offset: ITEM_HEIGHT * index,
-	index,
-});
+    const [selectNumber, setSelectNumber] = useState(0);
 
     useEffect(()=>{
       dispatch(postUser());
@@ -105,9 +97,9 @@ const getItemLayout = (data, index) => ({
 
     useEffect( () => {
       if(flatListRef.current){
-          flatListRef.current.scrollToIndex({animated: true, index: test});
+          flatListRef.current.scrollToIndex({animated: true,index:selectNumber});
       }
-  },[test]);
+  },[selectNumber])
 
   return (
     <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? null : '93%', flex: Platform.OS === 'ios' ? 1 : null}]}>
@@ -125,9 +117,8 @@ const getItemLayout = (data, index) => ({
           <View style={styles.header2Box2}> 
             <FlatList data={DATA3} renderItem={renderItem}
               ref={flatListRef}
-              initialScrollIndex={10}
-              getItemLayout={getItemLayout}
-              keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
+              initialScrollIndex={user?.week-1}
+              keyExtractor={item => Number(item.id)} horizontal={true} showsHorizontalScrollIndicator={false}>
             </FlatList>
           </View>
         </View>

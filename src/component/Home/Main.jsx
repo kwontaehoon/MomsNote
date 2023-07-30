@@ -236,8 +236,11 @@ const Home = ({ navigation }) => {
     const ref = useRef();
     const [date, setDate] = useState(new Date());
     const boardPopular = useSelector(state => { return state.boardPopular.data });
+    console.log('boardPopular: ', boardPopular);
     const materialPopular = useSelector(state => { return state.materialPopular.data });
+    console.log('materialPoppular: ', materialPopular);
     const infoPopular = useSelector(state => { return state.infoPopular.data });
+    console.log('infoPopular: ', infoPopular);
     const mainData = useSelector(state => { return state.user.data; });
     const Alarm = useSelector(state => { return state.alarm.data; });
     const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
@@ -301,7 +304,7 @@ const Home = ({ navigation }) => {
 
     useEffect(()=>{
         if (mainData?.length !== 0) {
-            setBubbleContent(mainData?.message[0]?.split('|')[0]);
+            setBubbleContent(mainData?.contents[0]?.split('|')[0]);
         }
     }, [mainData]);
 
@@ -326,11 +329,11 @@ const Home = ({ navigation }) => {
 
     const bubbleRandom = () => {
 
-        let arr = Array.from({ length: mainData?.message[0].split('|')?.length }, () => { return false });
-        let random = Math.floor(Math.random() * mainData.message[0].split('|')?.length);
+        let arr = Array.from({ length: mainData?.contents.length }, () => { return false });
+        let random = Math.floor(Math.random() * mainData.contents?.length);
 
         arr[random] = true;
-        setBubbleContent(mainData?.message[0]?.split('|')[arr.findIndex(x => x)]);
+        setBubbleContent(mainData?.contents[arr.findIndex(x => x)]);
     }
 
     const opacity_ani = () => {
@@ -477,7 +480,7 @@ const Home = ({ navigation }) => {
                     </View>
                 </View>
                 <View style={styles.main4Box2}>
-                    {infoPopular == '0' ? <View><Text style={{ color: '#757575' }}>새로운 정보가 없습니다.</Text></View>
+                    {!infoPopular ? <View><Text style={{ color: '#757575' }}>새로운 정보가 없습니다.</Text></View>
                         :
                         <FlatList data={infoPopular} renderItem={renderItem2} showsHorizontalScrollIndicator={false}
                             keyExtractor={(item, index) => String(index)} horizontal={true}>

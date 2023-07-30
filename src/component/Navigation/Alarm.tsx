@@ -76,9 +76,11 @@ const Main = ({navigation}) => {
       if(item.category == '맘스 토크'){
         const momsTalk = board.filter(x => x.boardId == item.boardId);
         navigation.navigate('맘스토크 상세내용', {item: momsTalk[0]});
-      }else{
+      }else if(item.category == '출산리스트 공유'){
         const materialList = materialShare.filter(x => x.boardId == item.boardId);
         navigation.navigate('출산리스트 공유 상세내용', materialList[0]);
+      }else if(item.type == '문의'){
+        navigation.navigate('문의 상세', item);
       }
 
   }
@@ -86,12 +88,23 @@ const Main = ({navigation}) => {
   const List = () => {
     let arr = [];
     info?.filter((x, index) => {
-      arr.push(
-        <TouchableOpacity style={styles.main} key={index} onPress={()=>info[index].readFlag ? '' : navi(x)}>
-          <Text style={{fontSize: 15, fontWeight: '500', marginBottom: 5, color: info[index].readFlag ? '#9E9E9E' : ''}}>{info[index].nickname}님이 회원님의 게시글에 댓글을 남겼습니다.</Text>
-          <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(info[index].notificationDate).format('YY.MM.DD')}.</Text>
-        </TouchableOpacity>
-      )
+      if(x.type == '댓글'){
+        arr.push(
+          <TouchableOpacity style={styles.main} key={index} onPress={()=>info[index].readFlag ? '' : navi(x)}>
+            <Text style={{fontSize: 15, fontWeight: '500', marginBottom: 5, color: info[index].readFlag ? '#9E9E9E' : ''}}>{info[index].nickname}님이 회원님의 게시글에 댓글을 남겼습니다.</Text>
+            <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(info[index].notificationDate).format('YY.MM.DD')}.</Text>
+          </TouchableOpacity>
+        )
+      }else if(x.type == '문의'){
+        arr.push(
+          <TouchableOpacity style={styles.main} key={index} onPress={()=>info[index].readFlag ? '' : navi(x)}>
+            <Text style={{fontSize: 15, fontWeight: '500', marginBottom: 5, color: info[index].readFlag ? '#9E9E9E' : ''}}>회원님의 문의에 답변이 달렸습니다.</Text>
+            <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(info[index].notificationDate).format('YY.MM.DD')}.</Text>
+          </TouchableOpacity>
+        )
+      }
+      
+      
     })
     return arr;
   }
@@ -101,7 +114,7 @@ const Main = ({navigation}) => {
       <List />
   );
 
-  return info == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
+  return !info ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>
   :
     <View style={styles.container}>
       

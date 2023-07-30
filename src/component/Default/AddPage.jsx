@@ -111,6 +111,7 @@ const AddPage = ({navigation, route}) => {
     const [marketingFlag, setMarketingFlag] = useState({
         marketingFlag: 0
     });
+    console.log('marketingFlag: ', marketingFlag);
     const [nickNameCheck, setNickNameCheck] = useState(0); // 닉네임 중복 체크
     console.log('nickNameCheck: ', nickNameCheck);
 
@@ -216,7 +217,7 @@ const AddPage = ({navigation, route}) => {
             setChecked(arr);
         }
 
-        e == 3 && !isChecked[3] ? setMarketingFlag(prevState => ({...prevState, marketingFlag: 0})) : setMarketingFlag(prevState => ({...prevState, marketingFlag: 1}));
+        isChecked[3] ? setMarketingFlag(prevState => ({...prevState, marketingFlag: 0})) : setMarketingFlag(prevState => ({...prevState, marketingFlag: 1}));
     }
     const check = async(e) => {
         try{

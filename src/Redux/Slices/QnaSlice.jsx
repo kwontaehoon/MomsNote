@@ -2,14 +2,13 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const postQna = createAsyncThunk("postQnaSlice/async", async (data) => {
-  console.log('response data: ', data);
     try{
       const response = await axios({
           method: 'post',
           url: 'https://momsnote.net/api/qna/list',
           data : data
       });
-      if(response.data == ''){ return setInfo('0') }else return response.data;
+      if(response.data == ''){ return '0' }else return response.data;
       
       }catch(error){
           console.log('qna axios error: ', error);

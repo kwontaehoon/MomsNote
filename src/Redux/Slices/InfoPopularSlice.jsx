@@ -4,16 +4,17 @@ import axios from 'axios'
 export const postInfoPopularSlice = createAsyncThunk("postInfoPopularSlice/async", async () => {
     try{
       const response = await axios({
-          method: 'post',
+          method: 'get',
           url: 'https://momsnote.net/api/eventboard/best',
           headers: { 
             'Content-Type': 'application/json'
           },
           data : {}
       });
+      // console.log('infoPopularSlice data: ', response.data);
       if(response.data == ''){ return '0' }else return response.data;
       }catch(error){
-          console.log('InfoPopularSlice redux axios error: ', error);
+          // console.log('InfoPopularSlice redux axios error: ', error.response);
           return undefined;
       }
 });

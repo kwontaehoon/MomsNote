@@ -125,16 +125,14 @@ const Main = ({modalVisible6, setModalVisible6}) => {
 
             try{
                 const response = await axios({ 
-                      method: 'post',
-                      url: 'https://momsnote.net/api/needs/list/self',
+                      method: 'get',
+                      url: 'https://momsnote.net/api/needs/brand/delete',
                       headers: { 
                         'Authorization': `Bearer ${token}`, 
                         'Content-Type': 'application/json'
                       },
-                      data: {
-                        order: 'need'
-                      }
                     });
+                    console.log('직접작성: ', response.data);
                 }catch(error){
                   console.log('직접 작성 error: ', error);
                 }
