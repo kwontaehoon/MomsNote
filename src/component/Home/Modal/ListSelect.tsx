@@ -57,47 +57,12 @@ const Main = ({navigation, modal, setModal}) => {
     }, []);
 
     const rec = async() => {
-        const token = await AsyncStorage.getItem('token');
-            try{
-                const response = await axios({ 
-                  method: 'post',
-                  url: 'https://momsnote.net/api/needs/list/rec',
-                  headers: { 
-                    'Authorization': `Bearer ${token}`, 
-                    'Content-Type': 'application/json'
-                  },
-                  data: {
-                    order: 'need'
-                  }
-                });
-            }catch(error){
-              console.log('실제맘 추천 리스트 error: ', error);
-            }
-            AsyncStorage.setItem('recommendList', '1');
-            setModal(false);
-            navigation.navigate('출산 준비물');
+        navigation.navigate('출산 준비물');
     }
 
     const self = async() => {
-        const token = await AsyncStorage.getItem('token');
-            try{
-                const response = await axios({ 
-                method: 'post',
-                url: 'https://momsnote.net/api/needs/list/self',
-                headers: { 
-                    'Authorization': `Bearer ${token}`, 
-                    'Content-Type': 'application/json'
-                },
-                data: {
-                    order: 'need'
-                }
-                });
-            }catch(error){
-            console.log('직접 작성 error: ', error);
-            }
-            AsyncStorage.setItem('recommendList', '1');
-            setModal(!modal);
-            navigation.navigate('출산 준비물');
+        AsyncStorage.setItem('materialFlag', 'self');
+        navigation.navigate('출산 준비물');
     }
 
   return (

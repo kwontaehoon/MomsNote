@@ -151,6 +151,7 @@ const Withdraw = ({navigation, route}) => {
             youtube: '',
         }
     );
+    console.log('info: ', info);
 
     const [minutes, setMinutes] = useState(parseInt(3));
     const [seconds, setSeconds] = useState(parseInt(0));

@@ -3,6 +3,7 @@ import counterReducer from '../Slices/CounterSlice'
 import boardReducer from '../Slices/BoardSlice'
 import commentReducer from '../Slices/CommentSlice'
 import materialReducer from '../Slices/MaterialSlice'
+import materialSelfReducer from '../Slices/MaterialSelfSlice'
 import commentFlagReducer from '../Slices/CommentFlag'
 import commentRecommendReducer from '../Slices/CommentRecommendSlice'
 import shareListReducer from '../Slices/ShareListSlice'
@@ -54,6 +55,7 @@ export const store = configureStore({
     board: boardReducer,
     comment: commentReducer,
     material: materialReducer,
+    materialSelf: materialSelfReducer,
     commentFlag: commentFlagReducer,
     commentRecommend: commentRecommendReducer,
     shareList: shareListReducer,

@@ -340,7 +340,7 @@ const Talk1Sub = ({navigation, route}) => {
     const List2 = (e) => {
       let arr = [];
       info.filter((x, index)=>{
-          if(x.category == e.title){
+          if(x.category == e.title && x.buyStatus == 1){
               arr.push(
                    <TouchableOpacity style={styles.listMain2} onLongPress={()=>{
                     if(!x.itemBrand){

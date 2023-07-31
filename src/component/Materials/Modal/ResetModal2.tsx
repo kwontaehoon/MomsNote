@@ -74,11 +74,13 @@ const styles = StyleSheet.create({
         marginBottom: 7,
     },
 })
-const Main = ({modalVisible6, setModalVisible6}) => {
+const Main = ({modalVisible6, setModalVisible6, setMaterialFlag}) => {
 
     const confirm = async() => {
         const token = await AsyncStorage.getItem('token');
         if(modalVisible6.content == 0){
+           await AsyncStorage.removeItem('materialFlag');
+           setMaterialFlag(null);
             try{
                 const response = await axios({ 
                   method: 'post',
@@ -109,6 +111,8 @@ const Main = ({modalVisible6, setModalVisible6}) => {
               console.log('실제맘 추천 리스트 error: ', error);
             }
         }else{
+            await AsyncStorage.setItem('materialFlag', 'self');
+            setMaterialFlag('self');
             try{
                 const response = await axios({ 
                   method: 'post',
@@ -132,6 +136,7 @@ const Main = ({modalVisible6, setModalVisible6}) => {
                         'Content-Type': 'application/json'
                       },
                     });
+                    console.log('response: ', response);
                 }catch(error){
                   console.log('직접 작성 error: ', error);
                 }

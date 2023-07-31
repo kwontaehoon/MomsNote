@@ -47,6 +47,7 @@ import MyPage from '../../../public/assets/svg/Mypage.svg'
 import ArrowRight from '../../../public/assets/svg/Arrow-Right.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { postMaterialSelf } from '../../Redux/Slices/MaterialSelfSlice';
 
 const styles = StyleSheet.create({
   container:{
@@ -240,6 +241,10 @@ const Navigation = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.material.data; });
+  const self = useSelector(state => { return state.materialSelf.data });
+  const [materialFlag, setMaterialFlag] = useState(null);
+  console.log('materialFlag: ', materialFlag);
+
   const Alarm = useSelector(state => { return state.alarm.data; });
   const [AlarmFlag, setAlarmFlag] = useState(false);
   const [purchaseCount, setPurchaseCount] = useState(null); // 전체 구매 갯수
@@ -314,6 +319,8 @@ const Navigation = ({navigation, route}) => {
   useEffect(()=>{
     const coarch = async() => {
       const coarchMark = await AsyncStorage.getItem('coarchMarkMaterial');
+      const materialFlag = await AsyncStorage.getItem('materialFlag');
+      setMaterialFlag(materialFlag);
       coarchMark == null ? setModal5(true) : setModal5(false);
     }
     coarch();
@@ -331,9 +338,10 @@ const Navigation = ({navigation, route}) => {
       const unsubscribe = async() =>{
         const materialSort = await AsyncStorage.getItem('materialSort');
         dispatch(postMaterial({order: !materialSort ? 'need' : 'buy'}));
+        dispatch(postMaterialSelf({order: !materialSort ? 'need' : 'buy'}));
       }
       unsubscribe();
-  }, [modalVisible8, modalVisible10]);
+  }, [modalVisible8, modalVisible10, materialFlag]);
 
   useEffect(()=>{
     if(info == 0){
@@ -488,7 +496,7 @@ const save = async() => {
 
   const List2 = (title) => {  
     let arr = [];
-    info?.filter((x, index)=>{
+    (materialFlag ? self : info)?.filter((x, index)=>{
       if(title.title == x.category && x.deleteStatus == 1){
         
        arr.push(
@@ -564,7 +572,7 @@ const save = async() => {
         {modalVisible2.open && <BrendModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modal={modal} setModal={setModal} setModal2={setModal2} modal4={modal4} setModal4={setModal4} filter={filter}/>}
         <GuideModal modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
         <ResetModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
-        <ResetModal2 modalVisible6={modalVisible6} setModalVisible6={setModalVisible6}/>
+        <ResetModal2 modalVisible6={modalVisible6} setModalVisible6={setModalVisible6} setMaterialFlag={setMaterialFlag}/>
         <DotModal modalVisible5={modalVisible5} setModalVisible5={setModalVisible5} modalVisible7={modalVisible7} setModalVisible7={setModalVisible7} modalVisible8={modalVisible8} setModalVisible8={setModalVisible8}
             modalVisible9={modalVisible9} setModalVisible9={setModalVisible9} modal={modal} setModal={setModal}/>
         <AddModal modalVisible8={modalVisible8} setModalVisible8={setModalVisible8} setModal={setModal2} info2={info}/>
@@ -598,7 +606,8 @@ const save = async() => {
           <Text style={{fontSize: 16, fontWeight: '600'}}>전체 ({purchaseCount.length}/{info.length})</Text>
       </View>
         
-        {info !== '' ? <FlatList data={DATA3} renderItem={renderItem} onRefresh={onRefreshing} refreshing={refreshing}
+        {info !== '' ?
+        <FlatList data={DATA3} renderItem={renderItem} onRefresh={onRefreshing} refreshing={refreshing}
               keyExtractor={index => String(index)} showsVerticalScrollIndicator={false}>
         </FlatList> : <View style={styles.main}></View>}
 
