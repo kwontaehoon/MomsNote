@@ -248,7 +248,6 @@ const Navigation = ({navigation, route}) => {
                 },
                 data: { keyword: search}
             });
-            console.log('boardSearch: ', response.data);
             setMaterialSearch(response.data);
         }catch(error){
             console.log('materialSearch axios error', error);
@@ -294,7 +293,6 @@ const purchaseCencel = async(needsId) => {
           needsId: needsId
         }
     });
-    console.log('response: ', response.data);
     }catch(error){
         console.log('출산준비물 리스트 error:', error);
     }
@@ -319,7 +317,6 @@ const purchaseCencel = async(needsId) => {
   }
 
   const onRefreshing = async() => {
-    console.log('@@@@ refreshing');
     if(!refreshing){
       await setRefreshing(true);
       setRefreshing(false);

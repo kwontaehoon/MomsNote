@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image, Modal, Platform } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 
@@ -199,15 +199,25 @@ const styles = StyleSheet.create({
     },
     
 })
-const Main = ({modal, setModal}) => {
+const Main = ({modal, setModal, modalFlag}) => {
 
     const [isChecked, setIsChecked] = useState(false);
+    const [recommendListCoachMark, setRecommendListCoachMark] = useState(false);
+    console.log('recommentListCoarchMark: ', recommendListCoachMark, modalFlag);
+
+    useEffect(()=>{
+        const asyncFlag = async() => {
+            const async = await AsyncStorage.getItem('recommendList');
+            !async ? setRecommendListCoachMark(false) : setRecommendListCoachMark(true)
+        }
+        asyncFlag();
+    }, []);
 
     const close = async() => {
         isChecked ? (AsyncStorage.setItem('coarchMarkHome', '1'), setModal(false)) : setModal(false);
       }
 
-  return (
+  return !modalFlag || !recommendListCoachMark ? '' :  (
         <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
             onRequestClose={() => {setModal(!modal)}}>
             <View style={styles.modalContainer}>

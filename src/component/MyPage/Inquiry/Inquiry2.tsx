@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
 const Inquiry3 = ({navigation}) => {
 
   const [info, setInfo] = useState([]);
-  console.log('문의내역: ', info);
 
   useEffect(()=>{
     const Inquiry = async() => {

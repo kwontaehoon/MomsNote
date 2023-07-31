@@ -118,8 +118,6 @@ const styles = StyleSheet.create({
 })
 const Withdraw = ({navigation, route}) => {
 
-    console.log('회원정보: ', route);
-
     const DATA = [
         {
           id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -135,14 +133,10 @@ const Withdraw = ({navigation, route}) => {
         open: false,
         flag: 1 // 이미 인증했는지 검증
     }); // 본인인증 확인유무
-    console.log('SMSFlag: ', SMSFlag);
     const [SMSNumber, setSMSNumber] = useState(); // SMS 번호
     const [SMSInputNumber, setSMSInputNumber] = useState(''); // 입력한 SMS 번호
 
-    console.log('smsnumber: ', SMSNumber);
-
     const appFlag = useSelector(state => { return state.boardAppFlag.data; });
-    console.log('appFlag: ', appFlag);
 
     const [modal, setModal] = useState(false);
     
@@ -157,7 +151,6 @@ const Withdraw = ({navigation, route}) => {
             youtube: '',
         }
     );
-    console.log('info: ', info);
 
     const [minutes, setMinutes] = useState(parseInt(3));
     const [seconds, setSeconds] = useState(parseInt(0));
@@ -173,8 +166,6 @@ const Withdraw = ({navigation, route}) => {
     useEffect(()=>{
         const experienceId = async() => {
             const async = await AsyncStorage.getItem('applicationFlag');
-            console.log('async: ', async);
-            
             setInfo(appFlag.data);
         }
     //    setInfo(prvState => ({...prvState, address: route == undefined ? '' : route}));
@@ -208,7 +199,6 @@ const Withdraw = ({navigation, route}) => {
                   method: 'post',
                   url: `https://momsnote.net/api/send/code?phone=${info.tel}`,
                 });
-                console.log('response: ', response.data);
                 setSMSNumber(response.data.data);
             }catch(error){
               console.log('error: ', error);

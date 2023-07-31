@@ -303,7 +303,6 @@ const Talk1Sub = ({navigation, route}) => {
                 });
                 setBoardLike(response.data);
             }catch(error){
-                console.log('like axios error');
             }
         }
         likeInfo();
@@ -321,9 +320,7 @@ const Talk1Sub = ({navigation, route}) => {
                   },
                   data: insert
                 });
-                console.log('response: ', response.data);
             }catch(error){
-              console.log('댓글 작성 error: ', error);
             }
         dispatch(postDdayToday({subcategory: `${info[0].weeks}주`}));
         dispatch(postComment(commentData));
@@ -346,11 +343,9 @@ const Talk1Sub = ({navigation, route}) => {
                     type: 'plus'
                   }
                 });
-                console.log('response: ', response.data);
                 dispatch(postDdayToday({subcategory: `${info[0].weeks}주`}));
                 setBoardLike();
             }catch(error){
-              console.log('error: ', error);
             }
     }
 
@@ -369,11 +364,9 @@ const Talk1Sub = ({navigation, route}) => {
                     type: 'minus'
                   }
                 });
-                console.log('response: ', response.data);
                 dispatch(postDdayToday({subcategory: `${info[0].weeks}주`}));
                 setBoardLike();
             }catch(error){
-              console.log('error: ', error);
             } 
     }
     const save = async() => {

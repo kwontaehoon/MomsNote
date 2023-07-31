@@ -88,7 +88,6 @@ const Talk1 = ({navigation}: any) => {
         provider: '',
         providerId: '',
     });
-    console.log('내 정보 수정 info: ', info);
 
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
 
@@ -100,7 +99,6 @@ const Talk1 = ({navigation}: any) => {
         const userInfo = async() => {
             const user = await AsyncStorage.getItem('user');
             const a = JSON.parse(user);
-            console.log('a: ', a);
             setInfo(JSON.parse(user));
         }
         userInfo();
@@ -123,7 +121,6 @@ const Talk1 = ({navigation}: any) => {
                     babyName: `${info.babyName}`
                   }
                 });
-                console.log('response: ', response.data);
                 info.provider == 'google' ?
                 AsyncStorage.setItem('google_user', JSON.stringify(info))
                 :

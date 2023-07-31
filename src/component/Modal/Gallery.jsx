@@ -72,11 +72,8 @@ const styles = StyleSheet.create({
 })
 
 const Gallery = ({navigation, route}) => {
-  console.log('route: ', route.params[0][route.params[1]]);
-  console.log('route2: ', route.params[0].filter(x => x == route.params[0][route.params[1]]));
 
   const [newArr, setNewArr] = useState();
-  console.log('newArr: ', newArr);
 
   const FocusAwareStatusBar = () => {
     const isFocused = useIsFocused();

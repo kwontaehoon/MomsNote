@@ -60,7 +60,6 @@ const CheckBoxModal = ({modal5, setModal5}) => {
                 },
                 data: { id: modal5.content.needsId }
                 });
-                console.log('response: ', response.data);
             }catch(error){
               console.log('error: ', error);
         }

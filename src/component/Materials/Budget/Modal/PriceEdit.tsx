@@ -68,10 +68,12 @@ const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
         needsId: 0,
         itemPrice: 0,
     });
+    console.log('info: ', info);
 
     const comma = (e) => {
-        e = e.replaceAll(',', '');
-        setInfo(prevState => ({ ...prevState, needsId: modal6.content.needsId, itemPrice: Number(e)}));
+    
+        console.log('e: ', e);
+        setInfo({...info, needsId: modal6?.content?.needsId, itemPrice: Number(e.replaceAll(',', ''))});
     }
 
     const edit = async() => {
@@ -89,8 +91,8 @@ const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
          }catch(error){
              console.log('가격 수정 axios error: ', error);
         }
-        setModal6(prevState=>({...prevState, open: false}));
-        setModal7(prevState=>({...prevState, open: true}));
+        setModal6({...modal6, open: false});
+        // setModal7({...modal7, open: true});
     }
 
   return modal6.content == null ? <View></View> : (

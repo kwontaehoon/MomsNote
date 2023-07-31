@@ -228,7 +228,7 @@ const Main = ({modalVisible2, setModalVisible2, setModal}) => {
                 </View>
                 <View style={styles.footer}>
                     <View style={styles.footerBox}>
-                        <TouchableOpacity style={styles.resetBox} onPress={()=>{console.log('zz'); setSelectBrand((preState)=> ({...preState, itemName: '', itemBrand: ''}))}}>
+                        <TouchableOpacity style={styles.resetBox} onPress={()=>{setSelectBrand((preState)=> ({...preState, itemName: '', itemBrand: ''}))}}>
                             <Text style={{marginRight: 5, color: '#757575'}}>초기화</Text>
                             <Reset width={18} fill='#757575'/>
                         </TouchableOpacity>

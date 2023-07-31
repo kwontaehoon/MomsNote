@@ -95,7 +95,6 @@ const Main = ({modal2, setModal2, userId, ani}) => {
                     blockUserId: userId
                 }
                 });
-                console.log('response: ', response.data);
             }catch(error){
               console.log('error: ', error);
             }

@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
 const Inquiry3 = ({navigation}) => {
 
   const [info, setInfo] = useState([]);
-  console.log('공지사항 info: ', info);
 
   useEffect(()=>{
     const Inquiry = async() => {

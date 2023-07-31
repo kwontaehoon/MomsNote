@@ -132,7 +132,6 @@ const Main = ({modalVisible6, setModalVisible6}) => {
                         'Content-Type': 'application/json'
                       },
                     });
-                    console.log('직접작성: ', response.data);
                 }catch(error){
                   console.log('직접 작성 error: ', error);
                 }

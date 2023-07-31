@@ -299,7 +299,6 @@ const Talk1Sub = ({navigation, route}) => {
                 });
                 setBoardLike(response.data);
             }catch(error){
-                console.log('like axios error');
             }
         }
         likeInfo();
@@ -317,9 +316,7 @@ const Talk1Sub = ({navigation, route}) => {
                   },
                   data: insert
                 });
-                console.log('response: ', response.data);
             }catch(error){
-              console.log('댓글 작성 error: ', error);
             }
         dispatch(postDdayTerm({subcategory: `${info[0].weeks}주`}));
         dispatch(postComment(commentData));
@@ -342,11 +339,9 @@ const Talk1Sub = ({navigation, route}) => {
                     type: 'plus'
                   }
                 });
-                console.log('response: ', response.data);
                 dispatch(postDdayTerm({subcategory: `${info[0].weeks}주`}));
                 setBoardLike();
             }catch(error){
-              console.log('error: ', error);
             }
     }
 
@@ -365,11 +360,9 @@ const Talk1Sub = ({navigation, route}) => {
                     type: 'minus'
                   }
                 });
-                console.log('response: ', response.data);
                 dispatch(postDdayTerm({subcategory: `${info[0].weeks}주`}));
                 setBoardLike();
             }catch(error){
-              console.log('error: ', error);
             }
     }
 
@@ -379,7 +372,6 @@ const Talk1Sub = ({navigation, route}) => {
             let { status } = await MediaLibrary.requestPermissionsAsync();
             const asset = await MediaLibrary.createAssetAsync(captureURL);
             // const moms = await MediaLibrary.getAlbumAsync('맘스노트');
-            // console.log('moms: ', moms);
            
             
             if(status === 'granted'){
@@ -391,7 +383,6 @@ const Talk1Sub = ({navigation, route}) => {
                 // MediaLibrary.addAssetsToAlbumAsync(moms, moms.id);
                 // MediaLibrary.migrateAlbumIfNeededAsync(moms.id);
                 // const album = await MediaLibrary.getAlbumAsync('맘스노트');
-                // // console.log('album: ', album);
     
                 // MediaLibrary.createAlbumAsync('맘스노트', asset);
                 // // const asset = await MediaLibrary.createAssetAsync(captureURL);

@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
 const Block = () => {
 
     const [info, setInfo] = useState([]);
-    console.log('block info: ', info);
 
     const [filter, setFilter] = useState(Array.from({length: info.length}, () => false));
 
@@ -84,7 +83,6 @@ const Block = () => {
                 },
                 data: { blockUserId: id }
                 });
-                console.log('response: ', response.data);
             }catch(error){
               console.log('error: ', error);
             }

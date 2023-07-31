@@ -79,7 +79,6 @@ const Inquiry2 = ({filter, setFilter}) => {
             },
             data: info
           });
-          console.log('response: ', response.data);
           if(response.data.status === 'success'){
             setFilter(!filter);
           }

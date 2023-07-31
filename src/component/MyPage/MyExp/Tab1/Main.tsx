@@ -61,8 +61,6 @@ const Talk3 = ({navigation}: any) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => {return state.myExp.data});
-  console.log('신청한 체험단 info: ', info);
-  console.log(info.savedName);
 
   const [modal, setModal] = useState({
     open: false,

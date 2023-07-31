@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
 })
 const Withdraw = ({navigation, route}) => {
    
-    console.log('route: ', route);
     const [filter, setFilter] = useState([true, false]); // filter tab
     
     const filter_func = (e) => { // filter tab 변경

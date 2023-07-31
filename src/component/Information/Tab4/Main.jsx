@@ -60,21 +60,17 @@ const Talk1 = ({ navigation }) => {
 
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
-    console.log('loading: ', loading);
     const qna = useSelector(state => { return state.qna.data; });
-    console.log('qnaaaaa: ', qna);
     const qnaSet = useSelector(state => { return state.qna.refresh; });
-    console.log('qna set: ', qnaSet);
 
     const [categories, setCategories] = useState([]);
-    console.log('categories: ', categories);
 
     const [plus, setPlus] = useState({
         newInfo: [],
         page: 1,
         category: '전체'
     });
-    console.log('plus: ', plus);
+    console.log('plus: ', plus.newInfo, categories[filter?.findIndex(x => x)]);
     const [filter, setFilter] = useState(); // 서브 카테고리
     console.log('filter: ', filter);
     const [qnaFilter, setQnaFilter] = useState(Array.from({ length: qna?.length }, () => { return false }));
@@ -93,6 +89,7 @@ const Talk1 = ({ navigation }) => {
     }, [qna]);
 
     useEffect(() => {
+        console.log('@@@@@@@@@@@@@@@@@: ', categories[filter?.findIndex(x => x)]);
         const category = async () => {
             try {
                 const response = await axios({
@@ -100,7 +97,6 @@ const Talk1 = ({ navigation }) => {
                     url: 'https://momsnote.net/api/qna/category',
 
                 });
-                console.log('response: ', response.data);
                 setCategories(response.data);
 
             } catch (error) {
@@ -116,7 +112,6 @@ const Talk1 = ({ navigation }) => {
     }, []);
 
     const change = (category, e) => { // 카테고리 배경색상, 글자 색상 변경 onpress
-        console.log('category: ', category);
         let arr = Array.from({ length: categories?.length }, () => { return false });
         arr[e] = !arr[e];
         setFilter(arr);
@@ -135,11 +130,12 @@ const Talk1 = ({ navigation }) => {
                 method: 'post',
                 url: 'https://momsnote.net/api/qna/list',
                 data: {
-                    category: categories[filter?.findIndex(x => x)],
+                    category: categories[filter?.findIndex(x => x)].name,
                     page: plus.page +1
                 }
             });
             const addInfo = [...plus?.newInfo, ...response?.data];
+            console.log('addInfo: ', addInfo);
             setPlus({...plus, newInfo: addInfo, page: plus.page+1});
 
         } catch (error) {

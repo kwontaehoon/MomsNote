@@ -25,11 +25,9 @@ const Main = ({navigation}) => {
 
       try{
         const response = await axios.get(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${kakaoAcceess}`);
-        console.log('response: ', response);
         const response2 = await axios.get(`https://kapi.kakao.com/v1/user/access_token_info`, {
              headers: `Authorization: Bearer ${response.data.access_token}`
         });
-        console.log('response2: ', response2);
         const response3 = await axios({
           method: 'post',
           url: 'https://momsnote.net/login',
@@ -40,7 +38,6 @@ const Main = ({navigation}) => {
             username: `kakao_${response2.data.id}`
           }
         });
-        console.log('response3: ', response3);
         const decode = jwtDecode(response3.data.token);
         AsyncStorage.setItem('token', response3.data.token);
         AsyncStorage.setItem('userId', String(decode.id));
@@ -55,7 +52,6 @@ const Main = ({navigation}) => {
                   },
                   url: 'https://momsnote.net/api/main/data',  
               });
-              console.log('response4: ', response4)
               AsyncStorage.setItem('user', JSON.stringify(response4.data.data));
               }catch(error){
                   console.log('user axios error: ', error);

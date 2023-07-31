@@ -99,7 +99,6 @@ const Talk1 = ({navigation}) => {
   const info = useSelector(state => { return state.guide.data });
   const guideSet = useSelector(state => { return state.guide.refresh });
   const infoCount = useSelector(state => { return state.guideCount.data });
-  console.log('infoCount: ', infoCount);
   const guideCountSet = useSelector(state => { return state.guideCount.refresh });
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
@@ -111,7 +110,6 @@ const Talk1 = ({navigation}) => {
     page: 1,
     subcategory: '전체'
   });
-  console.log('plus: ', plus.newInfo);
 
   useEffect(()=>{
     const momsTalk = async() => {
@@ -162,9 +160,7 @@ const Talk1 = ({navigation}) => {
         if(response?.data?.length == 0){
           return;
         }else{
-          console.log('## response: ', response);
           const addInfo = [...plus?.newInfo, ...response.data];
-          console.log('## addInfo: ', addInfo);
           setPlus({...plus, newInfo: addInfo, page: plus.page+1});
         }
     } catch (error) {

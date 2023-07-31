@@ -51,7 +51,6 @@ const Main = ({navigation}) => {
                 },
                 data: {page: 1}
               });
-              console.log('response: ', response.data.data);
               if(response.data == ''){ return setInfo('0') }else setInfo(response.data.data);
           }catch(error){
             console.log('알림 error: ', error);

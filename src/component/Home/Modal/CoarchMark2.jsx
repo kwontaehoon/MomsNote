@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
 
 
 })
-const Main = ({navigation, modal, setModal, setModal2}) => {
+const Main = ({navigation, modal, setModal, setModal2, modalFlag}) => {
 
     const [isChecked, setIsChecked] = useState(false);
     const [list, setList] = useState();
@@ -111,7 +111,7 @@ const Main = ({navigation, modal, setModal, setModal2}) => {
         list == null ? setModal(false) : (setModal(false), setModal2(false));
     }
 
-  return (
+  return list ? '' : (
     <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
         onRequestClose={() => {
     setModal(!modal)}}>

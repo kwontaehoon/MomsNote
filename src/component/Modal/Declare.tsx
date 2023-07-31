@@ -132,7 +132,6 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4, boardId}) => {
         reason: '신고 사유',
         reasonDetails: ''
     });
-    console.log('게시판 신고하기 info: ', info);
 
     useEffect(()=>{
         const user = async() => {
@@ -153,7 +152,6 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4, boardId}) => {
                     },
                     data: info
                 });
-                console.log('response: ', response.data);
             }catch(error){
               console.log('error: ', error);
             }

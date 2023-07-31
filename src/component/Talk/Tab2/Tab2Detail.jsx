@@ -307,7 +307,6 @@ const Talk1Sub = ({navigation, route}) => {
         }
     ); // 댓글 입력
     const [list, setList] = useState(Array.from({length: 9}, () => {return true})); // list display
-    console.log('list: ', list);
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요
     const [boardData, setBoardData] = useState({
         order: 'new',
@@ -369,7 +368,6 @@ const Talk1Sub = ({navigation, route}) => {
                 return true;
             }else return false;
         }); 
-        console.log('arr: ', arr);
         setList(arr);
     }, [info2]);
 

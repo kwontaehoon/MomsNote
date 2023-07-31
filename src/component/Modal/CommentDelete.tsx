@@ -58,7 +58,6 @@ const CheckBoxModal = ({modal7, setModal7, info, commentsId}) => {
                   },
                   data: { commentsId: commentsId[1] }
                 });
-                console.log('댓글 삭제 response: ', response.data);
             }catch(error){
               console.log('error: ', error);
             }

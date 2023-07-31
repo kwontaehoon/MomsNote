@@ -3,7 +3,6 @@ import axios from 'axios'
 import moment from 'moment';
 
 export const postEvent = createAsyncThunk("postEventSlice/async", async (data) => {
-  console.log('data: ', data);
     try{
       const response = await axios({
           method: 'post',
@@ -17,9 +16,7 @@ export const postEvent = createAsyncThunk("postEventSlice/async", async (data) =
 });
 
 let arr = moment().format('M')-1;
-console.log('arr: ', arr);
 if(arr-9 < 0){ arr = '0' + (arr+1); } else arr += 1;
-console.log('arr후: ', arr);
 
 const initialState = {
     loading: false,
@@ -36,8 +33,6 @@ export const eventSlice = createSlice({
     initialState,
     reducers: {
       setEventRefresh:(state, action)=>{
-        console.log('state: ', state);
-        console.log('action: ', action);
         state.refresh.date = action.payload.date;
         state.refresh.count = action.payload.count;
       },

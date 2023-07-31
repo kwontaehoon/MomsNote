@@ -104,7 +104,6 @@ const CheckBoxModal = ({modalVisible3, setModalVisible3, modalVisible4, setModal
                     url: 'https://momsnote.net/api/needs/share/save',
                     data : info
             });
-            console.log('response: ', response.data);
             setModalVisible3(!modalVisible3);
             setModalVisible4(!modalVisible4);
             }catch(error){

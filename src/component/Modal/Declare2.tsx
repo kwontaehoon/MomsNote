@@ -100,8 +100,6 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({modal4, setModal4, modal6, setModal6, commentsId}) => {
 
-    // console.log('댓글 신고: ', commentsId);
-
     const DATA = [
         {
             id: '0',
@@ -145,7 +143,6 @@ const CheckBoxModal = ({modal4, setModal4, modal6, setModal6, commentsId}) => {
                     },
                     data: info
                 });
-                console.log('response: ', response.data);
             }catch(error){
               console.log('error: ', error);
             }

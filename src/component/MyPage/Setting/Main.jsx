@@ -113,14 +113,12 @@ const Main = ({navigation}) => {
         hours: '00',
         minutes: '00'
     }); // 알람 시작시간
-    console.log('modal3: ', modal3);
     const [modal4, setModal4] = useState({
         open: '',
         clock: '',
         hours: '00',
         minutes: '00'
     }); // 알람 끝나는 시간
-    console.log('modal4: ', modal4);
 
     const [loading, setLoading] = useState(false);
 
@@ -245,7 +243,6 @@ const Main = ({navigation}) => {
                   },
                 data: {marketing: e}
             });
-            console.log('response: ', response.data);
 
             let arr= [...isEnabled];
             e ? arr[0] = true : arr[0] = (false,setModal2(!modal2))
@@ -267,7 +264,6 @@ const Main = ({navigation}) => {
                     'Content-Type': 'application/x-www-form-urlencoded'
                   },
             });
-            console.log('response: ', response.data);
             }catch(error){
                 console.log('kakao logout axios error: ', error);
             }

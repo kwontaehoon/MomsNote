@@ -82,7 +82,7 @@ const dotClick = (e) => {
     <View>
       <View style={{flexDirection: 'row', marginBottom: 3, alignItems: 'center'}}>
         <Text style={{fontWeight: '600'}}>{item.nickname}</Text>
-        <Text style={{marginLeft: 5, color: '#9E9E9E'}}>{moment(item.commentsDate).format('YYYY.MM.DD')}</Text>
+        <Text style={{marginLeft: 5, color: '#9E9E9E'}}>{moment(item.commentsDate).format('YY.MM.DD')}</Text>
       </View>
       <Text numberOfLines={1}>{item.contents}</Text>
     </View>

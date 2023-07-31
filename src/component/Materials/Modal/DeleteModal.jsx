@@ -205,7 +205,6 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
                 },
                 data: { id: data.delete.join() }
                 });
-                console.log('response: ', response.data);
             }catch(error){
               console.log('error: ', error);
             }
@@ -219,7 +218,6 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
                    },
                 data: { id: data.deleteCencel.join() }
                 });
-                console.log('response: ', response.data);
             }catch(error){
                 console.log('error: ', error);
             }    
@@ -231,7 +229,7 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
             case '필수': return ( <View style={[styles.filterSub, {backgroundColor: '#E57373'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>필수</Text></View> )
             case '권장': return ( <View style={[styles.filterSub, {backgroundColor: '#84C2F3'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>권장</Text></View> )
             case '선택': return ( <View style={[styles.filterSub, {borderWidth: 1}]}><Text style={{fontSize: 12, fontWeight: 'bold'}}>선택</Text></View> )
-            case '추가': return ( <View style={[styles.filterSub, {backgroundColor: '#F5A256'}]}><Text style={{fontSize: 12, fontWeight: 'bold', color: 'white'}}>추가</Text></View> )
+            case '추가': return ( <View style={styles.filterSub}><Text style={{fontSize: 12, fontWeight: 'bold', color: '#E57373'}}>추가</Text></View> )
           }
     }
 

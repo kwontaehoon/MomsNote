@@ -324,7 +324,7 @@ const Talk1Sub = ({navigation, route}) => {
             <View style={styles.main}>
                 <View style={styles.mainBox2}>
                     <View style={styles.mainBox2TitleBox}>
-                        <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 25, lineHeight: 25}}>{item.title}</Text>
+                        <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 30, lineHeight: 25}}>{item.title}</Text>
                         <View>
                             {item.eventStartDate && <Text>{dateFilter(item)}</Text>}
                         </View>

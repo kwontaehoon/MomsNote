@@ -57,7 +57,6 @@ const Talk1 = ({navigation, route}:any) => {
 
   const dispatch = useDispatch();
   const info = useSelector((state:unknown) => { return state.myLikeBoard.data; });
-  console.log('like board info: ', info);
 
   useEffect(()=>{
     dispatch(postMyLikeBoard());
@@ -98,7 +97,7 @@ const Talk1 = ({navigation, route}:any) => {
           </View>
         </View>
         <View style={[styles.dateBox, {justifyContent: 'center', alignItems: 'flex-end'}]}>
-         <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(item.boardDate).format('YYYY-MM-DD')}</Text>
+         <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(item.boardDate).format('YY.MM.DD')}</Text>
         </View>
     </TouchableOpacity>
   ); 

@@ -236,11 +236,8 @@ const Home = ({ navigation }) => {
     const ref = useRef();
     const [date, setDate] = useState(new Date());
     const boardPopular = useSelector(state => { return state.boardPopular.data });
-    console.log('boardPopular: ', boardPopular);
     const materialPopular = useSelector(state => { return state.materialPopular.data });
-    console.log('materialPoppular: ', materialPopular);
     const infoPopular = useSelector(state => { return state.infoPopular.data });
-    console.log('infoPopular: ', infoPopular);
     const mainData = useSelector(state => { return state.user.data; });
     const Alarm = useSelector(state => { return state.alarm.data; });
     const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
@@ -522,8 +519,8 @@ const Home = ({ navigation }) => {
                     </View>
 
                     <Modal navigation={navigation} modal={modal} setModal={setModal} />
-                    <CoarchMark modal={modal2} setModal={setModal2} />
-                    <CoarchMark2 modal={modal3} setModal={setModal3} setModal2={setModal} />
+                    <CoarchMark modal={modal2} setModal={setModal2} modalFlag={modal3} />
+                    <CoarchMark2 modal={modal3} setModal={setModal3} setModal2={setModal} modalFlag={modal2} />
 
                     <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => item.id}>

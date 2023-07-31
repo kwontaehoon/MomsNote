@@ -16,6 +16,7 @@ import ArrowBottom from '../../../../public/assets/svg/Arrow-Bottom.svg'
 import { postShareList } from '../../../Redux/Slices/ShareListSlice'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
 
 
 const styles = StyleSheet.create({
@@ -203,6 +204,14 @@ const Talk1Sub = ({navigation, route}) => {
       sum: 0,
       exp: 0
     });
+    const [selectBrand, setSelectBrand] = useState({
+      needsId: null,
+      needsBrandId: 0,
+      itemName: '',
+      itemPrice: 0,
+      needsDataId: null,
+      itemBrand: '',
+    });
 
     const [modal, setModal] = useState({ // 브랜드 선택 모달
       open: false,
@@ -251,7 +260,6 @@ const Talk1Sub = ({navigation, route}) => {
             return true;
         }else return false;
     }); 
-    console.log('arr: ', arr);
     setList(arr);
 }, [info]);
 
@@ -263,6 +271,34 @@ const Talk1Sub = ({navigation, route}) => {
     }
     coarch();
   }, []);
+
+  const submit = async(e) => {
+    console.log('e: ', e);
+    const token = await AsyncStorage.getItem('token');
+    try{
+        const response = await axios({
+            method: 'post',
+            url: 'https://momsnote.net/api/needs/add/brand',
+            headers: { 
+                'Authorization': `bearer ${token}`, 
+                'Content-Type': 'application/json'
+              },
+            data: {
+              needsId: e.needsId,
+              needsBrandId: e.needsBrandId,
+              itemName: e.itemName,
+              itemPrice: 0,
+              needsDataId: e.needsId,
+              itemBrand: e.itemBrand,
+            }
+        });
+        console.log('responseeeee: ', response.data);
+        }catch(error){
+            console.log('comment axios error:', error)
+        }
+        dispatch(postMaterial({order: 'need'}));
+      setModal3(prevState => ({...prevState, open: true, content: '출산리스트가 수정되었습니다.', buttonCount: 1}));
+}
 
 
   const filtering = (e, title) => { // 품목 브랜드 가격 부분 none || flex
@@ -307,10 +343,16 @@ const Talk1Sub = ({navigation, route}) => {
           if(x.category == e.title){
               arr.push(
                    <TouchableOpacity style={styles.listMain2} onLongPress={()=>{
-                    setModal(prevState => ({...prevState, open: true, needsId: x.needsId, needsBrandId: x.needsBrandId, needsName: x.needsName}));
+                    if(!x.itemBrand){
+                      setModal(prevState => ({...prevState, open: true, needsId: x.needsId, needsBrandId: x.needsBrandId, needsName: x.needsName}));
+                    }else{
+                      setSelectBrand({...selectBrand, needsId: e.needsId, needsBrandId: e.needsBrandId, needsDataId: e.needsId, itemName: e.itemName, itemBrand: e.itemBrand});
+                      submit(x);
+                    }
+                   
                     }} delayLongPress={1500} activeOpacity={1} key={index}>
                       <View style={styles.filterBox2}><Text>{x.needsName}</Text></View>
-                      <View style={styles.filterBox2}><Text>{x.itemName}</Text></View>
+                      <View style={styles.filterBox2}><Text>{x.itemBrand}</Text></View>
                       <View style={styles.filterBox2}>
                         <Text style={{fontWeight: '500'}}>{(x.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
                         <Text> 원</Text>

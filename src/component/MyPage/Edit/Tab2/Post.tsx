@@ -12,8 +12,6 @@ const styles = StyleSheet.create({
 })
 const Post = ({navigation, route}) => {
 
-    console.log('daum 주소: ', route.params);
-
     const getAddressData = data => {
         let defaultAddress = ''; // 기본주소
         if (data.buildingName === 'N') {

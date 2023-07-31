@@ -111,9 +111,7 @@ const AddPage = ({navigation, route}) => {
     const [marketingFlag, setMarketingFlag] = useState({
         marketingFlag: 0
     });
-    console.log('marketingFlag: ', marketingFlag);
     const [nickNameCheck, setNickNameCheck] = useState(0); // 닉네임 중복 체크
-    console.log('nickNameCheck: ', nickNameCheck);
 
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -135,6 +133,7 @@ const AddPage = ({navigation, route}) => {
         const result = {...info, ...marketingFlag};
 
         AsyncStorage.setItem('user', JSON.stringify(info));
+        console.log(12345, result);
 
         try{
             const response = await axios({
@@ -145,6 +144,7 @@ const AddPage = ({navigation, route}) => {
                 },
                 data: result
             });
+            console.log('response data: ', response.data);
             const decoded = jwtDecode(response.data.token);
             AsyncStorage.setItem('userId', String(decoded.id));
             AsyncStorage.setItem('token', response.data.token);
@@ -158,16 +158,15 @@ const AddPage = ({navigation, route}) => {
                     },
                     url: 'https://momsnote.net/api/main/data',
                 });
+                
 
                 AsyncStorage.setItem('user', JSON.stringify(response2.data.data));
                 navigation.reset({routes: [{name: "main"}]});
 
                 }catch(error){
-                    console.log('user axios error: ', error);
                     return undefined;
                 }
             }catch(error){
-                console.log('회원가입 error:', error);
             }
     }
 
@@ -217,7 +216,9 @@ const AddPage = ({navigation, route}) => {
             setChecked(arr);
         }
 
-        isChecked[3] ? setMarketingFlag(prevState => ({...prevState, marketingFlag: 0})) : setMarketingFlag(prevState => ({...prevState, marketingFlag: 1}));
+        if(e == 0 || e == 3){
+            isChecked[3] ? setMarketingFlag(prevState => ({...prevState, marketingFlag: 0})) : setMarketingFlag(prevState => ({...prevState, marketingFlag: 1}));
+        }
     }
     const check = async(e) => {
         try{
@@ -231,7 +232,6 @@ const AddPage = ({navigation, route}) => {
             });
             setNickNameCheck(response.data);
             }catch(error){
-                console.log('check error: ', error);
                 return undefined;
             }
         }

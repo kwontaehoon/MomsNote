@@ -57,7 +57,6 @@ const CheckBoxModal = ({modal, setModal, commentId}) => {
                   },
                   data: { commentId: commentId }
                 });
-                console.log('response: ', response.data);
             }catch(error){
               console.log('error: ', error);
             }
