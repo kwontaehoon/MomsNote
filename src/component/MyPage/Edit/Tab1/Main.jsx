@@ -121,6 +121,7 @@ const Talk1 = ({navigation}: any) => {
                     babyName: `${info.babyName}`
                   }
                 });
+                console.log('@@@@ response data: ', response);
                 info.provider == 'google' ?
                 AsyncStorage.setItem('google_user', JSON.stringify(info))
                 :

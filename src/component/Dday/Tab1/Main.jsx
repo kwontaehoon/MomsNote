@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
 const Talk1 = ({navigation, week}) => {
 
   const [info, setInfo] = useState([]);
+  console.log('info: ', info);
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -43,7 +44,7 @@ const Talk1 = ({navigation, week}) => {
           method: 'post',
           url: 'https://momsnote.net/api/letter/list',
           data : {
-            subcategory: `${week.findIndex(x => x === true)+1}주`
+            subcategory: `${week.findIndex(x => x === true)+1}`
         }
       });
       if(response.data == ''){ setInfo('0'); }else setInfo(response.data);

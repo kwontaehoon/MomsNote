@@ -207,9 +207,10 @@ const styles = StyleSheet.create({
 const Talk1Sub = ({navigation, route}) => {
 
     const info = route.params;
-    console.log('체험단 상세: ', info);
+    console.log('@@@@ info2: ', info.boardId);
     const exp = useSelector(state => { return state.experience.data; });
     const [info2, setInfo2] = useState(exp);
+    console.log('info2: ', info2);
 
     const DATA = [
         {
@@ -222,18 +223,16 @@ const Talk1Sub = ({navigation, route}) => {
     const isFocused = useIsFocused();
 
     const [async, setAsync] = useState(); // 임시저장 및 체험단 정보 저장 유무
-    console.log('async: ', async == true);
     const [asyncFlag, setAsyncFlag] = useState(); // 신청을 한번이라도했는지 유무
-    console.log('asyncFlag: ', asyncFlag);
     const [userInfo, setUserInfo] = useState(); // user 정보 asyncStorage
     const boardLikeFlag = useSelector(state => { return state.boardLikeFlag.data });
     const boardLike = useSelector(state => { return state.boardLikeFlag.data });
     const boardLikeFlagSet = useSelector(state => { return state.boardLikeFlag.refresh });
     const boardLikeSet = useSelector(state => { return state.boardLike.refresh });
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
-    console.log('체험단 상세정보 boardAppFlag: ', boardAppFlag);
+    console.log('@@@@ boardAppFlag: ', boardAppFlag);
     const myExp = useSelector(state => { return state.myExp.data});
-    console.log('myExp: ', myExp);
+    console.log('@@@@ myExp: ', myExp);
     const winList = useSelector(state => { return state.winList.data });
     
     const [filter, setFilter] = useState(false);
@@ -311,7 +310,6 @@ const Talk1Sub = ({navigation, route}) => {
     const submit = async() => {
         
         const token = await AsyncStorage.getItem('token');
-        console.log('token: ', token);
         try{
             const response = await axios({
                 method: 'post',
@@ -439,7 +437,7 @@ const Talk1Sub = ({navigation, route}) => {
 </View>
 
             <FlatList data={DATA} renderItem={renderItem2}
-                keyExtractor={index => String(index)} showsVerticalScrollIndicator={false}>
+             showsVerticalScrollIndicator={false}>
             </FlatList>
 
 
@@ -516,22 +514,22 @@ const Talk1Sub = ({navigation, route}) => {
    {moment(info.registrationEndDate).diff(moment(), "days") < 0 ?
     <View style={[styles.footerBox, {width: '20%'}]}>
         <Like width={20} fill='#BDBDBD'/>  
-        <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {info2[0].recommend}</Text>
+        <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {info2[0]?.recommend}</Text>
     </View>
    : boardLikeFlag == 0 ? 
    <TouchableOpacity style={[styles.footerBox, {width: '20%'}]} onPress={recommend}>
        <Like width={20} fill='#BDBDBD'/>  
-       <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {info2[0].recommend}</Text>
+       <Text style={{fontSize: 16, fontWeight: '500', color: '#BDBDBD'}}> {info2[0]?.recommend}</Text>
    </TouchableOpacity>
    :
    <TouchableOpacity style={[styles.footerBox, {width: '20%'}]}  onPress={recommendminus}>
        <Heart width={20} fill='#FEA100'/> 
-       <Text style={{fontSize: 16, fontWeight: '500', color: '#FEA100'}}> {info2[0].recommend}</Text>
+       <Text style={{fontSize: 16, fontWeight: '500', color: '#FEA100'}}> {info2[0]?.recommend}</Text>
    </TouchableOpacity>
    }
 
    <View style={[styles.footerBox, {width: '3%', borderWidth: 0}]}></View>
-   { boardAppFlag.status == 200 ?
+   { boardAppFlag == 200 || boardAppFlag?.status == 200 ?
     <TouchableOpacity style={[styles.footerBox, {width: '75%'}]} onPress={()=>navigation.navigate('신청 정보 확인', route.params)}>
         <Text style={{fontSize: 20, fontWeight: '500'}}>신청 정보 확인</Text>
     </TouchableOpacity>
@@ -541,7 +539,7 @@ const Talk1Sub = ({navigation, route}) => {
         <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
     </View> :
     <TouchableOpacity style={styles.footerBox2} onPress={()=>
-       {myExp == 0  ? setModalVisible(!modalVisible) : !async ? (setCompleteModal(!completeModal), submit()) : setModal4(!modal4); }}>
+       {myExp == 0 ?  setModalVisible(!modalVisible) : !async ? (setCompleteModal(!completeModal), submit()) : setModal4(!modal4); }}>
        <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
     </TouchableOpacity>
    }

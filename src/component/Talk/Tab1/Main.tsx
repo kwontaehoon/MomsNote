@@ -185,7 +185,7 @@ const Talk1 = ({navigation, route}:any) => {
     },
     {
       id: '5',
-      title: '질문게시판'
+      title: '질문 게시판'
     }
   ];
 

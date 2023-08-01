@@ -253,7 +253,7 @@ const Main = ({modal, setModal, modal6, setModal6, setModalVisible2}) => {
                         <TouchableOpacity style={[styles.mainBoxSub, {width: '40%', alignItems: 'flex-start'}]}>
                             <Text style={{fontWeight: '500', marginBottom: 3}}></Text>
                             <Text style={{marginBottom: 3, color: '#757575'}} ellipsizeMode='tail' numberOfLines={1}></Text>
-                            <Text style={{color: '#9E9E9E'}}>구매 344건</Text>
+                            <Text style={{color: '#9E9E9E'}}></Text>
                         </TouchableOpacity>
                         <View style={[styles.mainBoxSub, {width: '36%', alignItems: 'flex-end'}]}>
                             <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 3}}>

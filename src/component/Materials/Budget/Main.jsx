@@ -320,7 +320,7 @@ const capture = async() => {
           arr.push(
         <TouchableOpacity style={styles.mainBox3} onLongPress={()=>setModal5(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1} key={index}>
             <View style={[styles.filterBox2, {justifyContent: 'flex-start'}]}><Text style={{fontWeight: '500'}}>{x.needsName}</Text></View>
-            <View style={styles.filterBox2}><Text numberOfLines={2} style={{lineHeight: 20}}>{x.itemName == null ? '-' : x.itemName}</Text></View>
+            <View style={styles.filterBox2}><Text numberOfLines={2} style={{lineHeight: 20}}>{x.itemBrand == null ? '-' : x.itemBrand}</Text></View>
             <TouchableOpacity style={[styles.filterBox2, {justifyContent: 'flex-end'}]} onLongPress={()=>setModal6(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1}>
               <Text style={{fontWeight: '600'}}>{x.itemPrice == null ? '0' : (x.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
               <Text> 원</Text>

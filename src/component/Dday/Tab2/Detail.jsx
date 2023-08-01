@@ -511,7 +511,7 @@ const Talk1Sub = ({navigation, route}) => {
       );
 
 
-  return comment == '' || userInfo == undefined || boardLike == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return comment == '' || userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <SafeAreaProvider>
         <SafeAreaView style={styles.container}>
 

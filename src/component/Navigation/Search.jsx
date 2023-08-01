@@ -131,9 +131,9 @@ const Main = ({ navigation }) => {
   const [momsSearch, setMomsSearch] = useState();
   const [materialSearch, setMaterialSearch] = useState();
   const [commentSearch, setCommentSearch] = useState();
+  console.log('commentSearch: ', commentSearch);
   const [experienceSearch, setExperienceSearch] = useState();
   const [guideSearch, setGuideSearch] = useState();
-  console.log('guideSearch: ', guideSearch);
   const [eventSearch, setEventSearch] = useState();
   const [governmentSearch, setGovernmentSearch] = useState();
   const [qnaSearch, setQnaSearch] = useState();
@@ -395,7 +395,7 @@ const Main = ({ navigation }) => {
     let arr = [];
     commentSearch?.filter((x, index) => {
       arr.push(
-        <TouchableOpacity style={styles.momstalk} key={index}>
+        <TouchableOpacity style={styles.momstalk} key={index} onPress={() => navigation.navigate('맘스토크 상세내용', {item: x})}>
           <TouchableOpacity style={styles.dotBox} onPress={() => setModal(!modal)}><More /></TouchableOpacity>
           <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${x.profileImage}` }} style={styles.profile} />
           <View>
@@ -433,7 +433,7 @@ const Main = ({ navigation }) => {
     let arr = [];
     guideSearch?.filter((x, index) => {
       arr.push(
-        <TouchableOpacity style={styles.momstalk} key={index} onPress={() => navigation.navigate('맘스가이드 상세내용', x)}>
+        <TouchableOpacity style={[styles.momstalk]} key={index} onPress={() => navigation.navigate('맘스가이드 상세내용', x)}>
           <View style={styles.profile2}>
             {x.savedName == null ? '' : <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x.savedName.split('|')[0]}` }} style={{ width: '100%', height: '100%' }} />}
           </View>

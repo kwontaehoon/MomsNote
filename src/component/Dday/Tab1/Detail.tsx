@@ -276,7 +276,7 @@ const Talk1Sub = ({navigation, route}) => {
         }
         
         setTimeout(() => {
-            dispatch(postDdayToday({subcategory: `${info[0].weeks}주`}));
+            dispatch(postDdayToday({subcategory: `${info[0].weeks}`}));
         }, 100);
 
         user();
@@ -322,7 +322,7 @@ const Talk1Sub = ({navigation, route}) => {
                 });
             }catch(error){
             }
-        dispatch(postDdayToday({subcategory: `${info[0].weeks}주`}));
+        dispatch(postDdayToday({subcategory: `${info[0].weeks}`}));
         dispatch(postComment(commentData));
         onPressFunction();
     }
@@ -343,7 +343,7 @@ const Talk1Sub = ({navigation, route}) => {
                     type: 'plus'
                   }
                 });
-                dispatch(postDdayToday({subcategory: `${info[0].weeks}주`}));
+                dispatch(postDdayToday({subcategory: `${info[0].weeks}`}));
                 setBoardLike();
             }catch(error){
             }
@@ -364,7 +364,7 @@ const Talk1Sub = ({navigation, route}) => {
                     type: 'minus'
                   }
                 });
-                dispatch(postDdayToday({subcategory: `${info[0].weeks}주`}));
+                dispatch(postDdayToday({subcategory: `${info[0].weeks}`}));
                 setBoardLike();
             }catch(error){
             } 
@@ -501,7 +501,7 @@ const Talk1Sub = ({navigation, route}) => {
       );
 
 
-  return comment == '' || userInfo == undefined || boardLike == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
+  return comment == '' || userInfo == undefined ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <SafeAreaProvider>
         <SafeAreaView style={styles.container}>
 

@@ -97,6 +97,7 @@ const Talk1 = ({navigation}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.guide.data });
+  console.log('info: ', info);
   const guideSet = useSelector(state => { return state.guide.refresh });
   const infoCount = useSelector(state => { return state.guideCount.data });
   const guideCountSet = useSelector(state => { return state.guideCount.refresh });
@@ -114,6 +115,7 @@ const Talk1 = ({navigation}) => {
   useEffect(()=>{
     const momsTalk = async() => {
       const filter = await AsyncStorage.getItem('momsInfoTab');
+      console.log('@@@@ filter: ', filter);
 
       if(filter){
         const arr = DATA.map(x => x.title == filter);

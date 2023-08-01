@@ -137,6 +137,7 @@ const Withdraw = ({navigation, route}) => {
     const [SMSInputNumber, setSMSInputNumber] = useState(''); // 입력한 SMS 번호
 
     const appFlag = useSelector(state => { return state.boardAppFlag.data; });
+    console.log('@@@@ appFlag: ', appFlag);
 
     const [modal, setModal] = useState(false);
     
@@ -159,6 +160,7 @@ const Withdraw = ({navigation, route}) => {
     useEffect(()=>{
         const appflag = async() => {
             const async = await AsyncStorage.getItem('applicationFlag');
+            console.log('@@@@ async: ', async);
             dispatch(postBoardAppFlag({experienceId: Number(async)}));
         }
         appflag();

@@ -2,7 +2,7 @@
   "expo": {
     "name": "맘스노트",
     "slug": "Project1Type",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "scheme": "com.momsnote2",
     "icon": "./public/assets/image/1024icon.png",
@@ -20,7 +20,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.momsnote2"
+      "bundleIdentifier": "com.momsnote"
     },
     "android": {
       "adaptiveIcon": {
@@ -29,7 +29,7 @@
         "googleServicesFile": "./google-services.json"
       },
       "package": "com.momsnote2",
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "favicon": "./public/assets/favicon.png"
