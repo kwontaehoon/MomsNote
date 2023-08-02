@@ -243,8 +243,6 @@ const Navigation = ({navigation, route}) => {
   const info = useSelector(state => { return state.material.data; });
   const self = useSelector(state => { return state.materialSelf.data });
   const [materialFlag, setMaterialFlag] = useState(null);
-  console.log('materialFlag: ', materialFlag);
-
   const Alarm = useSelector(state => { return state.alarm.data; });
   const [AlarmFlag, setAlarmFlag] = useState(false);
   const [purchaseCount, setPurchaseCount] = useState(null); // 전체 구매 갯수

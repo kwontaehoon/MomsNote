@@ -241,6 +241,7 @@ const Home = ({ navigation }) => {
     const mainData = useSelector(state => { return state.user.data; });
     const Alarm = useSelector(state => { return state.alarm.data; });
     const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
+    console.log('captureURL: ', captureURL);
     const [bubble, setBubble] = useState([true]); // 말풍선
     const [modal, setModal] = useState(true); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
@@ -343,7 +344,7 @@ const Home = ({ navigation }) => {
                 toValue: 0,
                 useNativeDriver: true,
                 duration: 1500,
-            }).start();
+            }, setCaptureURL(undefined)).start();
         });
     }
 
@@ -386,7 +387,7 @@ const Home = ({ navigation }) => {
                 </View>}
                 <View style={styles.mainBox3}>
                     <View style={styles.mainBox3Sub}>
-                        <TouchableOpacity style={[styles.captureBox, { display: captureURL === undefined ? 'flex' : 'none' }]} onPress={capture}>
+                        <TouchableOpacity style={[styles.captureBox, { display: !captureURL ? 'flex' : 'none' }]} onPress={capture}>
                             <Icon2 name='download' size={22} style={{ color: '#FE9000' }} />
                         </TouchableOpacity>
                     </View>

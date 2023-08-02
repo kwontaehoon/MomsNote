@@ -217,7 +217,6 @@ const Talk1Sub = ({navigation, route}) => {
             tag: null,
         }
     ); // 댓글 입력
-    console.log('insert: ', insert);
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요 Flag
     const [boardData, setBoardData] = useState({
         order: 'new',

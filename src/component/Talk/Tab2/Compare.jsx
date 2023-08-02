@@ -273,7 +273,6 @@ const Talk1Sub = ({navigation, route}) => {
   }, []);
 
   const submit = async(e) => {
-    console.log('e: ', e);
     const token = await AsyncStorage.getItem('token');
     try{
         const response = await axios({
