@@ -97,7 +97,7 @@ const Main = ({navigation}) => {
 
     useEffect( () => {
       if(flatListRef.current){
-          flatListRef.current.scrollToIndex({animated: true,index:selectNumber});
+          flatListRef.current.scrollToIndex({animated: true, index:selectNumber});
       }
   },[selectNumber])
 

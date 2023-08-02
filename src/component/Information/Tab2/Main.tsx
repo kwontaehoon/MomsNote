@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, StatusBar, SafeAreaView } from 'react-native'
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
@@ -14,6 +14,7 @@ import Modal from './Modal/DatePick'
 import Arrow_left from '../../../../public/assets/svg/Arrow-Left.svg'
 import Arrow_right from '../../../../public/assets/svg/Arrow-Right.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { postUser } from '../../../Redux/Slices/UserSlice'
 
 const styles = StyleSheet.create({
   container:{
@@ -114,11 +115,12 @@ const Talk1 = ({navigation}: any) => {
   ];
   
     const dispatch = useDispatch();
+    const flatListRef = useRef();
     const eventSet = useSelector(state => { return state.event.refresh });
     const info = useSelector(state => { return state.event.data; });
     const [year, setYear] = useState(moment().format('YYYY'));
-    const [week, setWeek] = useState([true, false, false, false, false, false,
-    false, false, false, false, false, false]);
+    const [week, setWeek] = useState([]);
+    console.log('@@@: ', week);
     const infoCount = useSelector(state => { return state.eventCount.data; });
 
     const [loading, setLoading] = useState(false);
@@ -126,6 +128,7 @@ const Talk1 = ({navigation}: any) => {
     const [modal, setModal] = useState(false);
 
     const [refreshing, setRefreshing] = useState(false);
+    const [selectNumber, setSelectNumber] = useState(0);
 
     useEffect(async()=>{
       const month = await AsyncStorage.getItem('eventMonth');
@@ -143,6 +146,12 @@ const Talk1 = ({navigation}: any) => {
       dispatch(postEventCount(eventSet));
       setLoading(false);
     }, [eventSet, refreshing]);
+
+    useEffect( () => {
+      if(flatListRef.current){
+          flatListRef.current.scrollToIndex({animated: true, index:selectNumber});
+      }
+  },[selectNumber])
 
     const change = (e) => { // 몇 주차 border, 글자두께 변경
       let arr = Array.from({length: 12}, ()=>{ return false});
@@ -165,6 +174,7 @@ const Talk1 = ({navigation}: any) => {
         end: `${new Date().getFullYear()}-${e}`
       }))
     }
+    
 
     const dateFilter = (item) => {
       const days = ['일', '월', '화', '수', '목', '금', '토'];
@@ -201,7 +211,7 @@ const Talk1 = ({navigation}: any) => {
   const renderItem = ({ item }) => (
     <>
       {<TouchableOpacity style={styles.main2} onPress={()=>navigation.navigate('행사정보 상세페이지', item)}>
-          <Text style={{fontWeight: '500'}} numberOfLines={1} ellipsizeMode='tail'>{item.title}</Text>
+          <Text style={{fontWeight: '500', maxWidth: '60%'}} numberOfLines={2} ellipsizeMode='tail'>{item.title}</Text>
           <View style={styles.dateBox}>{dateFilter(item)}</View>
       </TouchableOpacity>}
     </>
@@ -237,6 +247,7 @@ const Talk1 = ({navigation}: any) => {
           </View>
           <View style={styles.headerBox2}>
           <FlatList data={DATA2} renderItem={renderItem2}
+              ref={flatListRef} initialScrollIndex={week.findIndex(x => x)}
               keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
           </FlatList>
           </View>

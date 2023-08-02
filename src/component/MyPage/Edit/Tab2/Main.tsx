@@ -14,6 +14,7 @@ import {
   } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux'
 import { postBoardAppFlag } from '../../../../Redux/Slices/BoardAppFlagSlice'
+import { postMyExp } from '../../../../Redux/Slices/MyExpSlice'
 
 
 const styles = StyleSheet.create({
@@ -138,6 +139,8 @@ const Withdraw = ({navigation, route}) => {
 
     const appFlag = useSelector(state => { return state.boardAppFlag.data; });
     console.log('@@@@ appFlag: ', appFlag);
+    const myExp = useSelector(state => { return state.myExp.data});
+    console.log('@@@@ myExp: ', myExp);
 
     const [modal, setModal] = useState(false);
     
@@ -158,22 +161,19 @@ const Withdraw = ({navigation, route}) => {
     const [seconds, setSeconds] = useState(parseInt(0));
 
     useEffect(()=>{
-        const appflag = async() => {
-            const async = await AsyncStorage.getItem('applicationFlag');
-            console.log('@@@@ async: ', async);
-            dispatch(postBoardAppFlag({experienceId: Number(async)}));
-        }
-        appflag();
-    }, []);
+        dispatch(postMyExp());
+    }, []); 
 
     useEffect(()=>{
-        const experienceId = async() => {
-            const async = await AsyncStorage.getItem('applicationFlag');
+        dispatch(postBoardAppFlag({experienceId: myExp[0]?.experienceId}));
+    }, [myExp]);
+
+
+    useEffect(()=>{
+        if(myExp.length !== 0){
             setInfo(appFlag.data);
         }
-    //    setInfo(prvState => ({...prvState, address: route == undefined ? '' : route}));
-       experienceId();
-    }, [route, appFlag])
+    }, [route, appFlag, myExp])
 
     useEffect(() => {
         const countdown = setInterval(() => {
