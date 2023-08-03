@@ -241,7 +241,6 @@ const Home = ({ navigation }) => {
     const mainData = useSelector(state => { return state.user.data; });
     const Alarm = useSelector(state => { return state.alarm.data; });
     const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
-    console.log('captureURL: ', captureURL);
     const [bubble, setBubble] = useState([true]); // 말풍선
     const [modal, setModal] = useState(true); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;

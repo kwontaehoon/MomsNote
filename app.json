@@ -25,11 +25,12 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./public/assets/image/androidLogo.png",
-        "backgroundColor": "#FAA61A",
-        "googleServicesFile": "./google-services.json"
+        "backgroundColor": "#FAA61A"
       },
       "package": "com.momsnote2",
-      "versionCode": 3
+      "versionCode": 3,
+      "googleServicesFile": "./google-services.json"
+      
     },
     "web": {
       "favicon": "./public/assets/favicon.png"
