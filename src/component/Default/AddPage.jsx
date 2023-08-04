@@ -159,16 +159,14 @@ const AddPage = ({navigation, route}) => {
                     url: 'https://momsnote.net/api/main/data',
                 });
                 
-                console.log('response22: ', response2.data);
+
                 AsyncStorage.setItem('user', JSON.stringify(response2.data.data));
                 navigation.reset({routes: [{name: "main"}]});
 
                 }catch(error){
-                    console.log('error: ', error);
                     return undefined;
                 }
             }catch(error){
-                console.log('error2: ', error);
             }
     }
 

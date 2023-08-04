@@ -187,7 +187,6 @@ const Talk1Sub = ({navigation, route}) => {
   const ref = useRef();
   const dispatch = useDispatch();
   const info = useSelector(state => state.material.data);
-  console.log('info: ', info);
   const materialSet = useSelector(state => state.material.refresh);
   const animation = useRef(new Animated.Value(0)).current;
   const [test, setTest] = useState(); // 캡쳐 uri
@@ -239,14 +238,6 @@ const Talk1Sub = ({navigation, route}) => {
       } else sum += x.itemPrice;
     });
     setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
-
-    const arr = DATA.map(x=>{
-      if((info.filter(y => x.title == y.category && y.id == 1).length !== 0)){
-          return true;
-      }else return false;
-  }); 
-  console.log('arr: ', arr);
-  setList(arr);
   }, [info]);
 
   useEffect(()=>{
@@ -296,9 +287,7 @@ const capture = async() => {
   const filtering = (e) => { // 품목 브랜드 가격 부분 none || flex
     if(info?.filter(x => x.category == e && x.id == 1) == ''){
       return(
-        <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}>
-          <Text>선택된 품목이 없습니다.</Text>
-        </View>
+        <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}><Text>선택된 품목이 없습니다.</Text></View>
       )
     }else return(
         <View style={styles.mainBox2}>
@@ -351,9 +340,11 @@ const capture = async() => {
             {SVGSelect(index)}
             <View style={[styles.titleBox, {marginLeft: 8}]}><Text style={{fontSize: 16, fontWeight: '500'}}>{item.title}</Text></View>
           </View>
-          <View style={{display: list[index] ? 'flex' : 'none'}}>
-            {filtering(item.title)}
-            <List title={item.title}/>
+          <View style={{display: list[item.id] ? 'none' : 'flex'}}>
+           { 
+            filtering(item.title)
+          }
+              <List title={item.title}/>
           </View>
       </View>
     );

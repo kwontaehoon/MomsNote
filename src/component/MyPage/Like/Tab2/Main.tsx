@@ -39,6 +39,14 @@ useEffect(()=>{
   dispatch(postMyLikeList());
 }, []);
 
+const dayCalculate = (date) => {
+  switch(true){
+    case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
+    case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
+    default: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'day')}일 전</Text>
+  }
+}
+
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('출산리스트 공유 상세내용', item)}>
         <View style={styles.clockBox}>

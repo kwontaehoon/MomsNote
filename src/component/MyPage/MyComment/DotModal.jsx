@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import axios from 'axios'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -44,21 +43,19 @@ const styles = StyleSheet.create({
     }
 })
 
-const CheckBoxModal = ({modal, setModal}) => {
-
-    console.log('commentsId: ', modal.commentsId);
+const CheckBoxModal = ({modal, setModal, commentId}) => {
 
     const commentDelete = async() => {
         const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
-                  method: 'post',
+                  method: 'delete',
                   url: 'https://momsnote.net/api/comments/delete',
                   headers: { 
                     'Authorization': `bearer ${token}`, 
                     'Content-Type': 'application/json'
                   },
-                  data: { commentsId: modal.commentsId }
+                  data: { commentId: commentId }
                 });
             }catch(error){
               console.log('error: ', error);
@@ -73,7 +70,7 @@ const CheckBoxModal = ({modal, setModal}) => {
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
                     <View style={[styles.main, {height: 62}]}>
-                    <TouchableOpacity style={[styles.mainBox, {borderColor: '#424242'}]} onPress={()=>{commentDelete(); setModal({...modal, open: false});}}>
+                    <TouchableOpacity style={[styles.mainBox, {borderColor: '#424242'}]} onPress={()=>setModal(!modal)}>
                         <Text style={{color: '#F23737', fontSize: 20}}>삭제하기</Text>
                     </TouchableOpacity>
                 </View>

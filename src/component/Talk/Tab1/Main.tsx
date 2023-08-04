@@ -204,7 +204,6 @@ const Talk1 = ({navigation, route}:any) => {
   const infoCount = useSelector(state => { return state.boardCount.data; });
   const boardPopular = useSelector(state => { return state.boardPopular.data });
   const [loading, setLoading] = useState(false);
-  console.log('loading: ', loading);
 
   const [modalVisible, setModalVisible] = useState({
     open: false,
@@ -231,21 +230,21 @@ const Talk1 = ({navigation, route}:any) => {
       dispatch(postBoardCount({subcategory: await AsyncStorage.getItem('momsTalkTab')}));
     }
     filteringSet();
+    setLoading(true);
+    
     dispatch(postBoardPopular());
+    
     tab();
-    setLoading(false);
   }, [filter, value]);
 
   useEffect(()=>{
-    setLoading(true);
+
     if(info?.length !== 0){
       setPlus({...plus, newInfo: info});
     }
-    setLoading(false);
   }, [info]);
 
   useEffect(()=>{
-    setLoading(true);
     const momsTalk = async() => {
       const asyncStorage = await AsyncStorage.getItem('momsTalk');
       const filter = await AsyncStorage.getItem('momsTalkTab');
@@ -258,10 +257,10 @@ const Talk1 = ({navigation, route}:any) => {
       setModalVisible(prevState => ({...prevState, asyncStorage: asyncStorage}));
     }
     momsTalk();
-    setLoading(false);
   }, []);
 
     const filteringSet = async() => {
+      
       const tab = await AsyncStorage.getItem('momsTalkTab');
       dispatch(postBoard(!await AsyncStorage.getItem('momsTalk_filter') ? {
         order: 'new',
@@ -281,6 +280,7 @@ const Talk1 = ({navigation, route}:any) => {
       subcategory: tab
     })
       ));
+      setLoading(false);
   }
   
   const change = async(e) => { // 카테고리 배경색상, 글자 색상 변경 onpress
@@ -343,7 +343,9 @@ const Talk1 = ({navigation, route}:any) => {
         if(response?.data?.length == 0){
           return;
         }else{
+          console.log('## response: ', response);
           const addInfo = [...plus?.newInfo, ...response.data];
+          console.log('## addInfo: ', addInfo);
           setPlus({...plus, newInfo: addInfo, page: plus.page+1});
         }
     } catch (error) {

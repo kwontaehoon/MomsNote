@@ -5,7 +5,6 @@ import Talk1 from './Tab1/Main'
 import Talk2 from './Tab2/Main'
 import Talk3 from './Tab3/Main'
 import { useIsFocused } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
     container:{
@@ -47,14 +46,10 @@ const Main = ({navigation, route}) => {
         }
     }
 
-    const filter_func = async(e) => {
+    const filter_func = (e) => {
         let arr = [false, false, false];
         arr[e] = true;
         setFilter(arr);
-        AsyncStorage.setItem('momsTalk_filter', '최신 순');
-        AsyncStorage.setItem('materialList_filter', '최신 순');
-        AsyncStorage.setItem('event_filter', '최신 순');
-        AsyncStorage.setItem('momsTalkTab', '전체');
     }
 
   return (

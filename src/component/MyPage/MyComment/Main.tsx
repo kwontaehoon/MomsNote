@@ -53,22 +53,23 @@ const Main = () => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.myComment.data; });
+  const [info2, setInfo2] = useState();
   const myCommentSet = useSelector(state => { return state.myComment.refresh; });
   const myCommentCountSet = useSelector(state => { return state.myComment.refresh; });
   const user = useSelector(state => {return state.user.data});
   const [modal, setModal] = useState({
     open: false,
-    contents: ''
+    content: ''
   }); // dot modal
 
   useEffect(()=>{
     dispatch(postMyComment(myCommentSet));
     dispatch(postMyCommentCount(myCommentCountSet));
 
-  }, [modal]);
+  }, []);
 
 const dotClick = (e) => {
-  setModal({...modal, open: true, commentsId: e.commentsId});
+  setModal(prevState => ({...prevState, open: true, content: e}));
 }
   
   const renderItem = ({ item }) => (

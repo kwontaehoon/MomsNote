@@ -227,7 +227,7 @@ function MainScreen() {
       <Tab.Screen name="맘스 정보" options={{tabBarIcon: ({focused, color}) => (focused ? <Campaign2 /> : <Campaign />), unmountOnBlur: true}}
       listeners={{tabPress: async(e)=>{ 
         AsyncStorage.removeItem('eventMonth');
-        AsyncStorage.setItem('momsInfoTab', '전체');
+        AsyncStorage.setItem('momsTalkTab', '전체');
       }}}>
         {()=>(
                <Stack.Navigator>
