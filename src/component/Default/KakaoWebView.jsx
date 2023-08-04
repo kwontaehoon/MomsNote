@@ -25,6 +25,7 @@ const Main = ({navigation}) => {
 
       try{
         const response = await axios.get(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${kakaoAcceess}`);
+        console.log('kakao response: ', response);
         const response2 = await axios.get(`https://kapi.kakao.com/v1/user/access_token_info`, {
              headers: `Authorization: Bearer ${response.data.access_token}`
         });

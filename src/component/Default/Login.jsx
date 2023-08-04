@@ -74,7 +74,7 @@ const Main = ({navigation, route}) => {
     WebBrowser.maybeCompleteAuthSession();
     const [request, response, promptAsync] = Google.useAuthRequest({
         expoClientId: '673560692803-8gner3okerjtf8444afhnqptdjfeh6vl.apps.googleusercontent.com',
-        expo: 'https://auth.expo.io/@gju04195/Project1Type',
+        // expo: '673560692803-8gner3okerjtf8444afhnqptdjfeh6vl.apps.googleusercontent.com',
         iosClientId: '673560692803-h11u319oi5pni5p6ng84ddvkm3gt6p21.apps.googleusercontent.com',
         androidClientId: '673560692803-b20hb831hqiqh9u1ndvr7dntsr7hdl3h.apps.googleusercontent.com',
       });
@@ -91,6 +91,7 @@ const Main = ({navigation, route}) => {
         console.log('googleAccessToken: ', googleAccessToken);
         try{
             const response = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${googleAccessToken}`);
+            console.log('google response: ', response);
             const response2 = await axios({
                 method: 'post',
                 url: 'https://momsnote.net/login',
@@ -101,8 +102,9 @@ const Main = ({navigation, route}) => {
                     username: `google_${response.data.sub}`
                 }
             });
-            console.log('response2: ', response2);
+            console.log('google response2: ', response2);
             const decode = jwtDecode(response2.data.token);
+            console.log('decode: ', decode);
             AsyncStorage.setItem('token', response2.data.token);
             AsyncStorage.setItem('userId', String(decode.id));
                         
@@ -132,7 +134,7 @@ const Main = ({navigation, route}) => {
 
 
         }catch(error){
-            console.log('error: ', error);
+            console.log('aa error: ', error);
         }
     }
 
