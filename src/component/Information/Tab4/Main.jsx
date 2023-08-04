@@ -61,6 +61,7 @@ const Talk1 = ({ navigation }) => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     const qna = useSelector(state => { return state.qna.data; });
+    console.log('qna: ', qna);
     const qnaSet = useSelector(state => { return state.qna.refresh; });
 
     const [categories, setCategories] = useState([]);
@@ -70,9 +71,7 @@ const Talk1 = ({ navigation }) => {
         page: 1,
         category: '전체'
     });
-    console.log('plus: ', plus.newInfo, categories[filter?.findIndex(x => x)]);
     const [filter, setFilter] = useState(); // 서브 카테고리
-    console.log('filter: ', filter);
     const [qnaFilter, setQnaFilter] = useState(Array.from({ length: qna?.length }, () => { return false }));
 
     const [refreshing, setRefreshing] = useState(false);
@@ -89,7 +88,6 @@ const Talk1 = ({ navigation }) => {
     }, [qna]);
 
     useEffect(() => {
-        console.log('@@@@@@@@@@@@@@@@@: ', categories[filter?.findIndex(x => x)]);
         const category = async () => {
             try {
                 const response = await axios({

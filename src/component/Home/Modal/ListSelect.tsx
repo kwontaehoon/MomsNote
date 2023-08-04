@@ -57,7 +57,8 @@ const Main = ({navigation, modal, setModal}) => {
     }, []);
 
     const rec = async() => {
-        AsyncStorage.setItem('recommendList', 'rec')
+        AsyncStorage.removeItem('materialFlag');
+        AsyncStorage.setItem('recommendList', 'rec');
         navigation.navigate('출산 준비물');
     }
 

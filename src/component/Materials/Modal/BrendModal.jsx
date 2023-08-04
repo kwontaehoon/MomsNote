@@ -226,10 +226,11 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
                     <Text>원</Text>
                 </View>
                 
+                {!item.url ? '' : 
                 <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>{setModalVisible2(prevState => ({...prevState, open: false})), setModal4(prevState=>({...prevState, open: true, link: item.url}))}}>
                     <Text style={{fontWeight: '600', fontSize: 13, color: '#FEA100'}}>최저가 보기</Text>
                     <Arrow_Right fill='#FEA100' width={16} height={16}/>
-                </TouchableOpacity>
+                </TouchableOpacity>}
             </View>
         </View>
     );

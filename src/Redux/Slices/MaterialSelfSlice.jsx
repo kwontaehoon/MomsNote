@@ -14,7 +14,6 @@ export const postMaterialSelf = createAsyncThunk("postMaterialSelfSlice/async", 
           },
           data : data
       });
-      console.log('@@@@@@@@@@@ response: ', response.data);
       return response.data;
       }catch(error){
           console.log('materialSelf redux axios error: ', error);

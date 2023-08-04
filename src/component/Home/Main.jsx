@@ -343,7 +343,7 @@ const Home = ({ navigation }) => {
                 toValue: 0,
                 useNativeDriver: true,
                 duration: 1500,
-            }).start();
+            }, setCaptureURL(undefined)).start();
         });
     }
 
@@ -386,7 +386,7 @@ const Home = ({ navigation }) => {
                 </View>}
                 <View style={styles.mainBox3}>
                     <View style={styles.mainBox3Sub}>
-                        <TouchableOpacity style={[styles.captureBox, { display: captureURL === undefined ? 'flex' : 'none' }]} onPress={capture}>
+                        <TouchableOpacity style={[styles.captureBox, { display: !captureURL ? 'flex' : 'none' }]} onPress={capture}>
                             <Icon2 name='download' size={22} style={{ color: '#FE9000' }} />
                         </TouchableOpacity>
                     </View>

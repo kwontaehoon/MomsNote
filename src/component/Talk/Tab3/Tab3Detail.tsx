@@ -231,6 +231,7 @@ const Talk1Sub = ({navigation, route}) => {
     const boardLikeSet = useSelector(state => { return state.boardLike.refresh });
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
     const winList = useSelector(state => { return state.winList.data });
+    const myExp = useSelector(state => { return state.myExp.data });
     
     const [filter, setFilter] = useState(false);
     const [modalVisible, setModalVisible] = useState(false); // 체험단 신청정보 입력 -> asnyc storage

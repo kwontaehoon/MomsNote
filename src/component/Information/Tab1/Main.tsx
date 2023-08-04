@@ -115,7 +115,6 @@ const Talk1 = ({navigation}) => {
   useEffect(()=>{
     const momsTalk = async() => {
       const filter = await AsyncStorage.getItem('momsInfoTab');
-      console.log('@@@@ filter: ', filter);
 
       if(filter){
         const arr = DATA.map(x => x.title == filter);

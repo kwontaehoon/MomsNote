@@ -79,11 +79,9 @@ const Talk3 = ({navigation}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => {return state.experience.data});
-  
+
   const infoCount = useSelector(state => { return state.experienceCount.data});
   const experienceSet = useSelector(state => { return state.experience.refresh; });
-
-  console.log('## info : ', info, infoCount, experienceSet);
 
   const [plus, setPlus] = useState();
   const [loading, setLoading] = useState(false);
@@ -121,9 +119,18 @@ const Talk3 = ({navigation}) => {
   const filtering = async(e) => {
     AsyncStorage.setItem('event_filter', e.label);
     const filter = await AsyncStorage.getItem('event_filter');
-    console.log('filter: ', filter);
     filter == '인기 순' ? dispatch(setExperienceFilter({filter: 'new'})) : dispatch(setExperienceFilter({filter: 'best'}))
   };
+
+  const dateFiltering = (e) => {
+    console.log('e: ', e, moment(e.applicationEndDate).diff(new Date(), 'day'));
+    switch(true){
+      case moment(e.applicationEndDate).diff(new Date(), 'day') > 0: return <Text>신청 {moment(e.applicationEndDate).diff(new Date(), 'day')}일 남음</Text>;
+      case moment(e.registrationEndDate).diff(new Date(), 'day') > 0: return <Text>등록 {moment(e.registrationEndDate).diff(new Date(), 'day')}일 남음</Text>;
+      default: <Text>발표 {moment(e.openDate).diff(new Date(), 'day')}일 남음</Text>
+    }
+    return 123;
+  }
 
   const onEnd = async () => {
     setLoading(true);
@@ -138,9 +145,7 @@ const Talk3 = ({navigation}) => {
                 page: 2
             }
         });
-        console.log('## response: ', response);
         const addInfo = [...plus, ...response.data];
-        console.log('## addInfo: ', addInfo);
         setPlus(addInfo);
 
     } catch (error) {
@@ -188,7 +193,7 @@ const Talk3 = ({navigation}) => {
         { item.savedName !== null ?<Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} /> : ''}
       </View>
       <View style={styles.contentBox}>
-        <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>등록{moment(item.registrationEndDate).diff(moment(), "days")+1}일 남음</Text></View>
+        <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>{dateFiltering(item)}</Text></View>
         <View style={styles.content}><Text style={{fontWeight: '500'}} numberOfLines={1} ellipsizeMode='tail'>{item.title}</Text></View>
         <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#9E9E9E', fontSize: 13}}>신청 {item.appCount}명/모집 {item.maxPeople}명</Text></View>
       </View>
