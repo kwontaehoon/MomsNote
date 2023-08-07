@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
     imageBox2:{
         height: 100,
         position: 'absolute',
-        left: '30%',
-        top: -130,
+        left: '40%',
+        top: -140,
     },
     imageBox3:{
         height: 100,
@@ -100,6 +100,7 @@ const Main = ({navigation, modal, setModal, setModal2, modalFlag}) => {
     useEffect(()=>{
         const list = async() =>{
             const materialList = await AsyncStorage.getItem('recommendList');
+            console.log('materialList: ', materialList);
             setList(materialList);
         }
         list();
@@ -111,7 +112,7 @@ const Main = ({navigation, modal, setModal, setModal2, modalFlag}) => {
         list == null ? setModal(false) : (setModal(false), setModal2(false));
     }
 
-  return list ? '' : (
+  return (
     <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
         onRequestClose={() => {
     setModal(!modal)}}>

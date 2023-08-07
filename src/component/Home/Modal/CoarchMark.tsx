@@ -68,14 +68,14 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         position: 'absolute',
-        left: -120,
+        left: -110,
         top: '50%',
     },
     imageBox2:{
         width: 150,
         height: 150,
         position: 'absolute',
-        left: 20,
+        left: 5,
     },
     imageBox3:{
         width: '100%',
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         position: 'absolute',
-        left: '20%',
+        left: '50%',
         top: -120,
     },
     imageBox5:{
@@ -241,7 +241,7 @@ const Main = ({modal, setModal, modalFlag}) => {
                         <View style={styles.Bottom}>
                             <Text style={{color: 'white', fontSize: 15, textAlign: 'center', fontWeight: '700'}}>커뮤니티, 주수별 정보 등 다양한 정보를 얻을 수 있어요!</Text>
                         </View>
-                        <View style={styles.Top}><Image source={require('../../../../public/assets/coachmark/arrow3.png')} style={styles.image} resizeMode='contain'/></View>
+                        <View style={styles.Top}><Image source={require('../../../../public/assets/coachmark/arrow7.png')} style={styles.image} resizeMode='contain'/></View>
 
                     </View>
                     <View style={styles.imageBox3Sub}>

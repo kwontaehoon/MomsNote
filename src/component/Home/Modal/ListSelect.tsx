@@ -71,7 +71,7 @@ const Main = ({navigation, modal, setModal}) => {
   return (
     <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true} hardwareAccelerated
         onRequestClose={() => {
-    setModal(!modal)}}>
+    setModal(false)}}>
     <View style={styles.modalContainer}>
         <View style={styles.modalView}>
             <View style={styles.modalContainer2}>

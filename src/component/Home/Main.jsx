@@ -242,7 +242,7 @@ const Home = ({ navigation }) => {
     const Alarm = useSelector(state => { return state.alarm.data; });
     const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
     const [bubble, setBubble] = useState([true]); // 말풍선
-    const [modal, setModal] = useState(true); // 모달 원하는 출산준비물 리스트
+    const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
     const [modal2, setModal2] = useState(false); // 코치마크
     const [modal3, setModal3] = useState(false); // 출산준비물 리스트 코치마크
@@ -253,14 +253,17 @@ const Home = ({ navigation }) => {
     useEffect(() => {
         const recommendList = async () => {
             const asyncStorage = await AsyncStorage.getItem('recommendList');
+            console.log('asyncStorage: ', asyncStorage);
             const coarchMark = await AsyncStorage.getItem('coarchMarkHome');
+            console.log('coarchMark: ', coarchMark);
             const coarchMark2 = await AsyncStorage.getItem('coarchMarkHome2');
-            coarchMark == null ? setModal2(true) : setModal2(false);
+            console.log('coarchMark2: ', coarchMark2);
+            !coarchMark ? setModal2(true) : setModal2(false);
             const user = await AsyncStorage.getItem('user');
             setUserInfo(JSON.parse(user));
 
-            asyncStorage == null ? setModal(true) : '';
-            coarchMark2 == null ? (setModal(true), setModal3(true)) : '';
+            !asyncStorage ? setModal(true) : setModal(false);
+            !coarchMark2 ? (setModal(true), setModal3(true)) : (setModal(false), setModal3(false));
         }
         recommendList();
 
@@ -308,9 +311,6 @@ const Home = ({ navigation }) => {
     useEffect(() => {
         const recommendList = async () => {
             const asyncStorage = await AsyncStorage.getItem('recommendList');
-            if (!asyncStorage) {
-                setModal(true);
-            } else setModal(false);
         }
         recommendList();
     }, [modal]);
