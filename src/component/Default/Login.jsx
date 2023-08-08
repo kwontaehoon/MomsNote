@@ -88,7 +88,6 @@ const Main = ({navigation, route}) => {
     }, [response]);
 
     const GoogleGetId = async(googleAccessToken) => {
-        console.log('googleAccessToken: ', googleAccessToken);
         try{
             const response = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${googleAccessToken}`);
             console.log('google response: ', response);
@@ -102,9 +101,7 @@ const Main = ({navigation, route}) => {
                     username: `google_${response.data.sub}`
                 }
             });
-            console.log('google response2: ', response2);
             const decode = jwtDecode(response2.data.token);
-            console.log('decode: ', decode);
             AsyncStorage.setItem('token', response2.data.token);
             AsyncStorage.setItem('userId', String(decode.id));
                         
@@ -172,6 +169,7 @@ const Main = ({navigation, route}) => {
                 </TouchableOpacity>
 
                 { Platform.OS == 'ios' ? <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#000000'}]} onPress={ async () => {
+                    console.log('@@@@ apple @@@@')
                         try {
                         const credential = await AppleAuthentication.signInAsync({
                             requestedScopes: [
@@ -180,8 +178,9 @@ const Main = ({navigation, route}) => {
                             ],
                         });
                         // signed in
-                        const decode = jwtDecode(credential.identityToken);
-                        AsyncStorage.setItem('userId', jwtDecode(String(decode.id)));
+                        const decode = await jwtDecode(credential.identityToken);
+                        console.log('apple credential.identityToken: ', decode.sub, decode.email);
+                        AsyncStorage.setItem('userId', decode.email);
 
                         const response = await axios({
                             method: 'post',
@@ -190,10 +189,11 @@ const Main = ({navigation, route}) => {
                             'Content-Type': 'application/json'
                             },
                             data : {
-                                username: `apple_${jwtDecode(credential.identityToken).sub}`
+                                username: `apple_${decode.sub}`
                             }
                         });
                         AsyncStorage.setItem('token', response.data.token);
+                        console.log('apple response: ', response);
                         
                         if(response.data.status == 'success'){
                             try{
@@ -216,7 +216,7 @@ const Main = ({navigation, route}) => {
                         }else if(response.data.status == 'expire'){
                             setModal(!modal);
                         }else{
-                            navigation.navigate('추가 정보 입력', ['apple', decode.sub]);
+                            navigation.navigate('추가 정보 입력', ['apple', decode.sub, decode.email]);
                         }
                         
                         } catch (e) {
@@ -224,6 +224,7 @@ const Main = ({navigation, route}) => {
                             // handle that the user canceled the sign-in flow
                         } else {
                             // handle other errors
+                            console.log('apple error: ', e);
                             
                         }
                         }
