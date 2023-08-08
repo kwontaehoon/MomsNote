@@ -133,7 +133,6 @@ const AddPage = ({navigation, route}) => {
         const result = {...info, ...marketingFlag};
 
         AsyncStorage.setItem('user', JSON.stringify(info));
-        console.log(12345, result);
 
         try{
             const response = await axios({
@@ -144,7 +143,6 @@ const AddPage = ({navigation, route}) => {
                 },
                 data: result
             });
-            console.log('response data: ', response.data);
             const decoded = jwtDecode(response.data.token);
             AsyncStorage.setItem('userId', String(decoded.id));
             AsyncStorage.setItem('token', response.data.token);
@@ -159,7 +157,6 @@ const AddPage = ({navigation, route}) => {
                     url: 'https://momsnote.net/api/main/data',
                 });
                 
-                console.log('response22: ', response2.data);
                 AsyncStorage.setItem('user', JSON.stringify(response2.data.data));
                 navigation.reset({routes: [{name: "main"}]});
 

@@ -6,6 +6,9 @@ import axios from 'axios'
 import Calendar from '../../../../../public/assets/svg/Calendar.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
+import { useSelector } from 'react-redux'
+import { postUser } from '../../../../Redux/Slices/UserSlice'
+import { useDispatch } from 'react-redux'
 
 const styles = StyleSheet.create({
     container:{
@@ -79,6 +82,8 @@ const Talk1 = ({navigation}: any) => {
         }
     ];
 
+    const dispatch = useDispatch();
+
     const [info, setInfo] = useState({
         username: '',
         nickname: '',
@@ -88,6 +93,9 @@ const Talk1 = ({navigation}: any) => {
         provider: '',
         providerId: '',
     });
+    console.log('info: ', info);
+    const user = useSelector(state => { return state.user.data });
+    console.log('user: ', user);
 
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
 
@@ -98,10 +106,11 @@ const Talk1 = ({navigation}: any) => {
     useEffect(()=>{
         const userInfo = async() => {
             const user = await AsyncStorage.getItem('user');
-            const a = JSON.parse(user);
+            console.log('@@@ user: ', user);
             setInfo(JSON.parse(user));
         }
         userInfo();
+        dispatch(postUser());
     }, []);
 
     const submit = async() => {
@@ -206,10 +215,10 @@ const Talk1 = ({navigation}: any) => {
                 <View style={styles.mainBox5}>
                     <View style={styles.exitBox}><Text style={{color: '#757575'}} onPress={()=>navigation.navigate('회원탈퇴')}>회원탈퇴</Text></View>
                 </View>
-                {info.nickname.includes(' ') || info.babyName.includes(' ') ? <Text style={styles.notFind}>공란 없이 입력 해 주세요.</Text> :  ''}
+                {info?.nickname?.includes(' ') || info?.babyName?.includes(' ') ? <Text style={styles.notFind}>공란 없이 입력 해 주세요.</Text> :  ''}
             </View>
             <View style={styles.footer}>
-                {info.nickname.trim() == '' || info.babyName.trim() == '' || info.nickname.includes(' ') || info.babyName.includes(' ') ?
+                {info?.nickname?.trim() == '' || info?.babyName?.trim() == '' || info?.nickname?.includes(' ') || info?.babyName?.includes(' ') ?
                 <View style={[styles.footerBox, {backgroundColor: '#E0E0E0'}]}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>적용</Text>
                 </View>

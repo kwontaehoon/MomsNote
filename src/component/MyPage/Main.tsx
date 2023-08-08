@@ -121,7 +121,7 @@ const Main = ({navigation}) => {
                     :  <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${user.profile}` }} style={{ width: 72, height: 72, borderRadius: 36}}/>}
                 </TouchableOpacity>
                 <View style={styles.infoBox}>
-                    <Text style={{fontSize: 20, fontWeight : 'bold'}}>{userInfo.nickname}</Text>
+                    <Text style={{fontSize: 20, fontWeight : 'bold'}}>{user.nickname}</Text>
                 </View>
             </View>
             <View style={styles.headerBox2}>
@@ -151,7 +151,7 @@ const Main = ({navigation}) => {
     </>
   );
 
-  return userInfo == undefined ? <View></View> : (
+  return !userInfo ? <View></View> : (
     <View style={styles.container}>
         <FlatList data={DATA} renderItem={renderItem}
             keyExtractor={item => item.id}>
