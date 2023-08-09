@@ -256,6 +256,13 @@ const Talk1Sub = ({navigation, route}) => {
         dispatch(postWinList({ experienceId: info.experienceId }));
         dispatch(postMyExp());
 
+        const hits = async() => {
+            const hits = await AsyncStorage.getItem('hits');
+
+            hits == null || hits.split('|').filter(x => x == String(info.boardId)) == '' ? 
+            (dispatch(postHits({boardId: info.boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info.boardId}`)) : ''
+        }
+        hits();
     }, [isFocused]);
 
     useEffect(()=>{

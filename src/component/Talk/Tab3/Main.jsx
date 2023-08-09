@@ -123,13 +123,12 @@ const Talk3 = ({navigation}) => {
   };
 
   const dateFiltering = (e) => {
-    console.log('e: ', e, moment(e.applicationEndDate).diff(new Date(), 'day'));
+    console.log('e: ', e.title, moment(e.applicationEndDate).diff(new Date(), 'day')+1);
     switch(true){
-      case moment(e.applicationEndDate).diff(new Date(), 'day') > 0: return <Text>신청 {moment(e.applicationEndDate).diff(new Date(), 'day')}일 남음</Text>;
-      case moment(e.registrationEndDate).diff(new Date(), 'day') > 0: return <Text>등록 {moment(e.registrationEndDate).diff(new Date(), 'day')}일 남음</Text>;
-      default: <Text>발표 {moment(e.openDate).diff(new Date(), 'day')}일 남음</Text>
+      case moment(e.applicationEndDate).diff(new Date(), 'day')+1 > 0: return <Text>신청 {moment(e.applicationEndDate).diff(new Date(), 'day')+1}일 남음</Text>;
+      case moment(e.registrationEndDate).diff(new Date(), 'day')+1 > 0: return <Text>등록 {moment(e.registrationEndDate).diff(new Date(), 'day')+1}일 남음</Text>;
+      default: <Text>발표 {moment(e.openDate).diff(new Date(), 'day')+1}일 남음</Text>
     }
-    return 123;
   }
 
   const onEnd = async () => {

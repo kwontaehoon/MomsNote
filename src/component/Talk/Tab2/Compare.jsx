@@ -196,7 +196,10 @@ const Talk1Sub = ({navigation, route}) => {
     const dispatch = useDispatch();
     const info = useSelector(state => { return state.shareList.data; });
     const material = useSelector(state => { return state.material.data; });
-    const [list, setList] = useState(Array.from({length: 9}, () => {return true})); // list display
+    console.log('material: ', material);
+    const [list, setList] = useState(Array.from({length: 9}, () => true)); // 게시글 list display
+    const [userList, setUserList] = useState(Array.from({length: 9}, () => true));
+    console.log('userList: ', userList);
     const animation = useRef(new Animated.Value(0)).current;
     const [myList, setMyList] = useState(false);
 
@@ -256,11 +259,18 @@ const Talk1Sub = ({navigation, route}) => {
 
   useEffect(()=>{
     const arr = DATA2.map(x=>{
-        if((info.filter(y => x.title == y.category).length !== 0)){
+        if((info.filter(y => (x.title == y.category && y.buyStatus == 1)).length !== 0)){
             return true;
         }else return false;
     }); 
     setList(arr);
+
+    const arr2 = DATA2.map(x=>{
+      if((material.filter(y => (x.title == y.category && y.id == 1)).length !== 0)){
+          return true;
+      }else return false;
+  }); 
+  setUserList(arr2);
 }, [info]);
 
 
@@ -291,7 +301,6 @@ const Talk1Sub = ({navigation, route}) => {
               itemBrand: e.itemBrand,
             }
         });
-        console.log('responseeeee: ', response.data);
         }catch(error){
             console.log('comment axios error:', error)
         }
@@ -370,12 +379,12 @@ const Talk1Sub = ({navigation, route}) => {
               <>
                   <View style={styles.listMain} key={index}>
                       <TouchableOpacity style={styles.arrowBox}
-                          onPress={()=>arrow(x.id)}>{list[x.id] ? <Icon name="angle-up" size={22}/> : <Icon name='angle-down' size={22}/>}
+                          onPress={()=>arrow(x.id)}>{userList[x.id] ? <Icon name="angle-up" size={22}/> : <Icon name='angle-down' size={22}/>}
                       </TouchableOpacity>
                       <Image source={x.icon}/>
                       <Text style={{fontSize: 16, marginLeft: 8, fontWeight: '500'}}>{x.title}</Text>
                   </View>
-                  <View style={{display: list[index] ? 'flex' : 'none'}}>
+                  <View style={{display: userList[index] ? 'flex' : 'none'}}>
                         {filtering(x.title, material)}
                         <List4 title={x.title}/>
                   </View>

@@ -114,6 +114,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
 
     const dispatch = useDispatch();
     const [info, setInfo] = useState(); // 브랜드 list
+    console.log('info: ', info);
     const [selectBrand, setSelectBrand] = useState({
         needsId: null,
         needsBrandId: 0,

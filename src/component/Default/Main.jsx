@@ -12,7 +12,7 @@ const Main = ({navigation}) => {
 
     useEffect(()=>{
         const login = async() => {
-            // AsyncStorage.removeItem('login');
+            AsyncStorage.removeItem('login');
             // AsyncStorage.clear();
             const asyncStorage = await AsyncStorage.getItem('login');
             // AsyncStorage.setItem('momsInfo', '전체');

@@ -134,6 +134,7 @@ const Main = ({navigation}) => {
     useEffect(()=>{
         dispatch(postUser());
         const user2 = async() => {
+            console.log('user: ', user);
             setLoading(false);
 
             const arr = Array.from({length: 3}, () => {return false});

@@ -234,6 +234,7 @@ const Home = ({ navigation }) => {
     }, []);
 
     const ref = useRef();
+    const isFocused = useIsFocused();
     const [date, setDate] = useState(new Date());
     const boardPopular = useSelector(state => { return state.boardPopular.data });
     const materialPopular = useSelector(state => { return state.materialPopular.data });
@@ -259,8 +260,7 @@ const Home = ({ navigation }) => {
             const coarchMark2 = await AsyncStorage.getItem('coarchMarkHome2');
             console.log('coarchMark2: ', coarchMark2);
             !coarchMark ? setModal2(true) : setModal2(false);
-            const user = await AsyncStorage.getItem('user');
-            setUserInfo(JSON.parse(user));
+            
 
             !asyncStorage ? setModal(true) : setModal(false);
             !coarchMark2 ? (setModal(true), setModal3(true)) : (setModal(false), setModal3(false));
@@ -270,6 +270,14 @@ const Home = ({ navigation }) => {
         dispatch(postUser());
         dispatch(postAlarm({ page: 1 }));
     }, []);
+
+    useEffect(()=>{
+        const userInfoUpdate = async() => {
+            const user = await AsyncStorage.getItem('user');
+            setUserInfo(JSON.parse(user));
+        }
+        userInfoUpdate();
+    }, [isFocused]);
 
 
     useEffect(()=>{

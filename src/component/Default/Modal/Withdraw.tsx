@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     },
 })
 
-const NoticeModal = ({modal, setModal}) => {
+const NoticeModal = ({navigation, route, modal, setModal}) => {
 
   return (
     <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
@@ -51,7 +51,10 @@ const NoticeModal = ({modal, setModal}) => {
                             <Text style={{fontSize: 16, paddingTop: 10}}>동일 계정 로그인은 탈퇴하고 7일 후 가입 가능합니다.</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal} onPress={()=>setModal(!modal)}>
+                            <TouchableOpacity style={styles.modal} onPress={()=>{
+                                setModal(!modal);
+                                navigation.reset({routes: [{name: "로그인 페이지"}]})
+                                }}>
                               <Text style={{color: 'white', fontSize: 16}}>확인</Text>
                             </TouchableOpacity>
                         </View>

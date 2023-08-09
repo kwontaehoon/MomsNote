@@ -131,7 +131,7 @@ const Main = ({navigation, route}) => {
 
 
         }catch(error){
-            console.log('aa error: ', error);
+
         }
     }
 
@@ -149,7 +149,7 @@ const Main = ({navigation, route}) => {
             <FocusAwareStatusBar />
         <SafeAreaView style={[styles.container, {marginBottom: Platform.OS == 'ios' ? 30 : 0}]}>
 
-            <Modal modal={modal} setModal={setModal}/>
+            <Modal navigation={navigation} route={route} modal={modal} setModal={setModal}/>
 
             <View style={styles.header}>
                 <View style={{position: 'absolute', bottom: '-25%'}}><Logo2 /></View>
@@ -159,7 +159,7 @@ const Main = ({navigation, route}) => {
                 <Logo />
             </View>
             <View style={styles.footer}>
-                <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#FEE500'}]} onPress={()=>navigation.navigate('카카오 로그인')}>
+                <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#FEE500'}]} onPress={()=>navigation.navigate('카카오 로그인', {modal, setModal})}>
                     <View style={styles.iconBox}><Kakao width={22} height={20}/></View>
                     <Text style={{color: '#212121', fontWeight: '400'}}>카카오톡으로 시작하기</Text>
                 </TouchableOpacity>

@@ -99,22 +99,20 @@ const styles = StyleSheet.create({
         borderColor: '#F5F5F5',
         borderBottomWidth: 1,
     },
-    // tbody:{
-    //     borderWidth: 2,
-        
-    // },
-    // table:{
-    //     borderWidth: 1,
-    //     borderColor: 'red'
-    // },
-    td:{
-        borderWidth: 1,
-        flex: 1
-    },
-    p:{
-
-        flex: 1
-    }
+    table: {
+        borderTopWidth:1,
+        borderLeftWidth:1,
+      },
+      tr: {
+        borderBottomWidth: 1,
+      },
+      td: {
+        borderRightWidth: 1,
+      },
+      p: {
+        alignSelf: 'flex-start',
+      },
+      
   })
 
 const Talk1Sub = ({navigation, route}) => {
@@ -194,7 +192,7 @@ const Talk1Sub = ({navigation, route}) => {
                     <Text style={{fontSize: 20, fontWeight: '400', marginBottom: 3, lineHeight: 25}}>{item.title}</Text>
                 </View>
                 <View style={styles.mainBox2}>
-                    <RenderHtml source={{html: `${item.contents}`}} tagsStyles={styles}/>
+                    <RenderHtml contentWidth={700} source={{html: `${item.contents}`}} tagsStyles={styles}/>
                 </View>
                 {item.savedName === null ? '' : ImageBox()}
             </View>

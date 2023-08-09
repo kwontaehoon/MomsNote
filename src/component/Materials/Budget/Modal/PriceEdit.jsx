@@ -68,12 +68,10 @@ const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
         needsId: 0,
         itemPrice: 0,
     });
-    console.log('info: ', info);
 
     const comma = (e) => {
     
-        console.log('e: ', e);
-        setInfo({...info, needsId: modal6?.content?.needsId, itemPrice: Number(e.replaceAll(',', ''))});
+        setInfo({...info, needsId: modal6?.content?.needsId, itemPrice: e});
     }
 
     const edit = async() => {
@@ -88,14 +86,16 @@ const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
                 url: 'https://momsnote.net/api/needs/update/price',
                 data : info
         });
+        console.log('response: ', response);
          }catch(error){
              console.log('가격 수정 axios error: ', error);
         }
         setModal6({...modal6, open: false});
+        setInfo({...info, needsId: 0, itemPrice: 0});
         // setModal7({...modal7, open: true});
     }
 
-  return modal6.content == null ? <View></View> : (
+  return !modal6.content ? <View></View> : (
     <Modal animationType="fade" transparent={true} visible={modal6.open} statusBarTranslucent={true}
             onRequestClose={() => {
             setModal6(!modal6)}}>
@@ -113,8 +113,8 @@ const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
 
                             <View style={styles.mainBox}>
                                 <View style={styles.priceBox}><Text>원</Text></View>
-                                <TextInput style={{fontWeight: '600'}} textAlign='right' placeholder={info.itemPrice == null ? '0' : `${(modal6.content.itemPrice)}`} placeholderTextColor={'black'}
-                                    onChangeText={(e)=>comma(e)} maxLength={11}
+                                <TextInput style={{fontWeight: '600'}} textAlign='right' placeholder={(!modal6.content.itemPrice || modal6.content.itemPrice == 0) ? '0' : `${(modal6.content.itemPrice)}`} placeholderTextColor={'black'}
+                                    onChangeText={(e)=>comma(e)} maxLength={11} value={info.itemPrice}
                                     keyboardType='number-pad'>
                                 </TextInput>
                             </View>
