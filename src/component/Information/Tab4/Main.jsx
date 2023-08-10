@@ -9,8 +9,10 @@ import { postQna, setQnaRefresh } from '../../../Redux/Slices/QnaSlice'
 
 const styles = StyleSheet.create({
     container: {
-        height: Dimensions.get('window').height - 175,
+        flex: 1,
         backgroundColor: 'white',
+        borderWidth: 2,
+        borderColor: 'red'
     },
     header: {
         height: 100,
@@ -30,10 +32,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     main: {
-        marginBottom: 100
+        marginBottom: 50,
+        borderWidth: 1
     },
     mainBox: {
-        padding: 15,
+        height: 50,
+        paddingLeft: 15,
+        paddingRight: 15,
+        borderWidth: 2,
         justifyContent: 'center',
         backgroundColor: '#F5F5F5'
     },
@@ -61,7 +67,6 @@ const Talk1 = ({ navigation }) => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     const qna = useSelector(state => { return state.qna.data; });
-    console.log('qna: ', qna);
     const qnaSet = useSelector(state => { return state.qna.refresh; });
 
     const [categories, setCategories] = useState([]);
@@ -179,20 +184,20 @@ const Talk1 = ({ navigation }) => {
     return plus == undefined || qna == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container} />
         : (
             <View style={styles.container}>
-                <View style={styles.header}>
+                {/* <View style={styles.header}>
                     <FlatList data={categories} renderItem={renderItem2}
                         keyExtractor={(item, index) => String(index)} horizontal={true} showsHorizontalScrollIndicator={false}>
                     </FlatList>
-                </View>
+                </View> */}
                 <View style={styles.main}>
                     {qna == 0 ||  plus.newInfo == 0 ?
                         <View style={{ marginTop: 150, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ color: '#757575' }}>등록된 게시물이 없습니다.</Text>
                         </View> :
                         <View>
-                            <View style={styles.mainBox}>
+                            {/* <View style={styles.mainBox}>
                                 <Text style={{ fontSize: 16, fontWeight: '700' }}>{categories[filter?.findIndex(x => x)]?.name}({plus?.newInfo?.length})</Text>
-                            </View>
+                            </View> */}
                             <FlatList data={DATA} renderItem={renderItem}
                                 onRefresh={onRefreshing} refreshing={refreshing}
                                 onEndReached={() => onEnd()}

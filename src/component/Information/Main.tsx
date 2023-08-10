@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, StatusBar, Dimensions } from 'react-native'
 import Tab1 from './Tab1/Main'
 import Tab2 from './Tab2/Main'
 import Tab3 from './Tab3/Main'
@@ -8,7 +8,7 @@ import { useIsFocused } from '@react-navigation/native'
 
 const styles = StyleSheet.create({
   container:{
-    height: '93%',
+    height: Dimensions.get('window').height - 135 + StatusBar.currentHeight,
     backgroundColor: 'white',
   },
   header:{

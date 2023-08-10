@@ -539,7 +539,7 @@ const Talk1Sub = ({navigation, route}) => {
         <Text style={{fontSize: 20, fontWeight: '500'}}>신청 정보 확인</Text>
     </TouchableOpacity>
     :
-    moment(info.registrationEndDate).diff(moment(), "days") < 0 ?
+    moment(info.applicationEndDate).diff(moment(), "days") < 0 ?
     <View style={[styles.footerBox2, {backgroundColor: '#EEEEEE'}]}>
         <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
     </View> :

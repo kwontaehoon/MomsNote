@@ -185,6 +185,8 @@ const styles = StyleSheet.create({
 })
 const Register = ({ navigation, route }) => {
 
+    console.log('@@ route: ', route.params);
+
     const boardSet = useSelector(state => { return state.board.refresh; });
 
     const DATA = [{ id: '0', title: '전체' }];
@@ -204,11 +206,11 @@ const Register = ({ navigation, route }) => {
         },
         {
             id: '3',
-            title: '고민 상담'
+            title: '고민상담'
         },
         {
             id: '4',
-            title: '질문 게시판'
+            title: '질문게시판'
         },
     ];
     const dispatch = useDispatch();
@@ -230,8 +232,10 @@ const Register = ({ navigation, route }) => {
             video: [],
         }
     );
+    console.log('info: ', info);
 
     useEffect(() => {
+        console.log('@@ 123');
         dispatch(postUser());
         const load = async () => {
             const asyncStorage = await AsyncStorage.getItem('momsTalk');
@@ -251,6 +255,19 @@ const Register = ({ navigation, route }) => {
                 default: AsyncStorage.removeItem('momsTalk');
             }
             setUserInfo(JSON.parse(user));
+
+            if(route.params){
+                let arr = Array.from({ length: 5}, () => false);
+                switch(route.params[0].category){
+                    case '자유게시판': arr[0] = true; break;
+                    case '일상이야기': arr[1] = true; break;
+                    case '임신정보':  arr[2] = true; break;
+                    case '고민상담': arr[3] = true; break;
+                    case '질문게시판': arr[4] = true; break;
+                }
+                console.log('@@ arr: ', arr);
+                setFilter(arr);
+            }
         }
         load();
 
@@ -269,7 +286,7 @@ const Register = ({ navigation, route }) => {
         );
 
         return () => backHandler.remove();
-    }, [info]);
+    }, []);
 
 
 
@@ -336,6 +353,7 @@ const Register = ({ navigation, route }) => {
             }
         }
     };
+
 
     const complete = async () => {
         switch (true) {

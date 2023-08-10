@@ -106,7 +106,6 @@ const Register = ({navigation, route}) => {
     useEffect(()=>{
         const load = async() => {
             const asyncStorage = await AsyncStorage.getItem('materialList');
-            console.log('출산리스트 asyncStorage: ', asyncStorage);
             switch(typeof(route.params)){
                 case 'string': setData(JSON.parse(asyncStorage)); break;
                 case 'object': {

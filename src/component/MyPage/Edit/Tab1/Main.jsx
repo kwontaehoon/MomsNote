@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         paddingTop: 40,
     },
     mainBox:{
-        height: 140,
+        marginBottom: 20
     },
     textBox:{
         borderBottomWidth: 2,
@@ -93,9 +93,8 @@ const Talk1 = ({navigation}: any) => {
         provider: '',
         providerId: '',
     });
-    console.log('info: ', info);
     const user = useSelector(state => { return state.user.data });
-    console.log('user: ', user);
+    console.log('@@ user: ', user);
 
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
 
@@ -103,10 +102,11 @@ const Talk1 = ({navigation}: any) => {
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
 
+    const [nickNameCheck, setNickNameCheck] = useState(0);
+
     useEffect(()=>{
         const userInfo = async() => {
             const user = await AsyncStorage.getItem('user');
-            console.log('@@@ user: ', user);
             setInfo(JSON.parse(user));
         }
         userInfo();
@@ -142,6 +142,24 @@ const Talk1 = ({navigation}: any) => {
             }catch(error){
               console.log('내 정보 수정 tab1 error: ', error);
             } 
+    }
+
+    const check = async(e) => {
+        try{
+            const response = await axios({
+                method: 'post',
+                headers: { 
+                    'Content-Type': 'application/json'
+                  },
+                url: 'https://momsnote.net/api/nickname/check',
+                data: {nickname: e}
+            });
+            if(e == user.nickname){
+                return
+            }else setNickNameCheck(response.data);
+            }catch(error){
+                return undefined;
+        }
     }
 
     const onChange = (event, selectedDate) => {
@@ -184,11 +202,15 @@ const Talk1 = ({navigation}: any) => {
                 <View style={styles.mainBox}>
                     <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>닉네임</Text>
                     <Text style={{color: '#757575', marginBottom: 20}}>8글자 이내로 입력해주세요.</Text>
-                        <TextInput placeholder='닉네임 입력' style={[styles.textBox, {borderColor: bottomColor[0] ? '#FEB401' : '#EEEEEE'}]} maxLength={8}
+                        <TextInput placeholder='닉네임 입력' style={[styles.textBox, {borderColor: nickNameCheck == 1 ? 'red' : bottomColor[0] ? '#FEB401' : '#EEEEEE'}]} maxLength={8}
                             value={info.nickname} onFocus={()=>change(0)}
-                            onChangeText={(e) => { setInfo((prevState) => ({ ...prevState, nickname: e}));}}>
+                            onChangeText={(e) => {  check(e); setInfo((prevState) => ({ ...prevState, nickname: e}));}}>
                         </TextInput>
+                        <View style={{display: nickNameCheck == 1 ? 'flex' : 'none', marginTop: 10, marginBottom: 10}}>
+                    <Text style={{color: 'red'}}>중복된 닉네임 입니다.</Text>
                 </View>
+                </View>
+                
                 <View style={[styles.mainBox2, {height: 130}]}>
                     <Text style={{fontWeight: 'bold', marginBottom: 5, fontSize: 16}}>이메일</Text>
                     <Text style={{fontSize: 15, paddingTop: 5, paddingBottom: 5, color: '#757575'}}>이메일 정보는 변경이 불가합니다.</Text>
@@ -218,7 +240,7 @@ const Talk1 = ({navigation}: any) => {
                 {info?.nickname?.includes(' ') || info?.babyName?.includes(' ') ? <Text style={styles.notFind}>공란 없이 입력 해 주세요.</Text> :  ''}
             </View>
             <View style={styles.footer}>
-                {info?.nickname?.trim() == '' || info?.babyName?.trim() == '' || info?.nickname?.includes(' ') || info?.babyName?.includes(' ') ?
+                {info?.nickname?.trim() == '' || info?.babyName?.trim() == '' || info?.nickname?.includes(' ') || info?.babyName?.includes(' ') || nickNameCheck == 1 ?
                 <View style={[styles.footerBox, {backgroundColor: '#E0E0E0'}]}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>적용</Text>
                 </View>

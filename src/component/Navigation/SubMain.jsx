@@ -261,6 +261,7 @@ function MainScreen() {
                             borderWidth: 0,
                             elevation: 0,
                             shadowOpacity: 0,
+                            height: 80
                         },
                         })}
                         />

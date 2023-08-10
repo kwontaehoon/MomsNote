@@ -203,21 +203,16 @@ const Main = ({modal, setModal, modalFlag}) => {
 
     const [isChecked, setIsChecked] = useState(false);
     const [recommendListCoachMark, setRecommendListCoachMark] = useState(false);
-    console.log('recommentListCoarchMark: ', recommendListCoachMark, modalFlag);
 
     useEffect(()=>{
-        const asyncFlag = async() => {
-            const async = await AsyncStorage.getItem('recommendList');
-            !async ? setRecommendListCoachMark(false) : setRecommendListCoachMark(true)
-        }
-        asyncFlag();
+
     }, []);
 
     const close = async() => {
         isChecked ? (AsyncStorage.setItem('coarchMarkHome', '1'), setModal(false)) : setModal(false);
-      }
+    }
 
-  return !modalFlag || !recommendListCoachMark ? '' :  (
+  return (
         <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
             onRequestClose={() => {setModal(!modal)}}>
             <View style={styles.modalContainer}>

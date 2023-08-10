@@ -117,7 +117,7 @@ const Main = ({navigation}) => {
           <View style={styles.header2Box2}> 
             <FlatList data={DATA3} renderItem={renderItem}
               ref={flatListRef}
-              initialScrollIndex={user?.week-3}
+              initialScrollIndex={user?.week-1}
               keyExtractor={item => Number(item.id)} horizontal={true} showsHorizontalScrollIndicator={false}>
             </FlatList>
           </View>

@@ -153,12 +153,14 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8, setModal, info2}) => {
                     });
                     setModalVisible8(!modalVisible8);
                     setModal(prevState => ({...prevState, open: true, content: '품목이 추가되었습니다.', buttonCount: 1}));
+                    setInfo({...info, category: '카테고리 선택(필수)', needsName: ''});
                 }catch(error){
                   console.log('error: ', error);
                 }
             return;
         }
         setModal(prevState => ({...prevState, open: true, content: '중복된 항목이 존재합니다.', buttonCount: 1}));
+        setInfo({...info, category: '카테고리 선택(필수)', needsName: ''});
         setModalVisible8(!modalVisible8);
     }
 

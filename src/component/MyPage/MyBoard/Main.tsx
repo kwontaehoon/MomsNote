@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     justifyContent: 'center',
-    width: '100%'
+    width: '100%',
   },
   videoImage: {
     position: 'absolute',
@@ -74,15 +74,15 @@ const Talk1 = ({ navigation, route }: any) => {
 
     if (infoFiltering[0].charAt(infoFiltering[0].length - 1) == '4') {
       return (
-        <View style={styles.mainBoxSub}>
+        <View>
           <View style={styles.videoImage}><Icon name='play' size={17} style={{ color: 'white' }} /></View>
           <Video source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${infoFiltering[0]}` }} style={{ width: 68, height: 68 }} resizeMode='cover' />
         </View>
       )
     } else {
       return (
-        <View style={styles.mainBoxSub}>
-          <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.split('|')[0]}` }} style={{ width: 68, height: 68 }} />
+        <View>
+          <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.split('|')[0]}` }} style={{ width: 68, height: 68 }} resizeMode='cover' />
         </View>
       )
     }
@@ -90,7 +90,7 @@ const Talk1 = ({ navigation, route }: any) => {
 
   const renderItem2 = ({ item }: any) => (
     <TouchableOpacity style={styles.mainBox} onPress={() => navigation.navigate('맘스토크 상세내용', { item })} activeOpacity={1}>
-      {item.savedName == null ? '' : <ImageBox item={item.savedName} />}
+      {!item.savedName ? '' : <ImageBox item={item.savedName} />}
       <View style={styles.mainBoxSub}>
         <Text style={{ fontSize: 15, paddingTop: 2 }} numberOfLines={1}>{item.title} </Text>
 

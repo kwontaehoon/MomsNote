@@ -227,11 +227,7 @@ const Home = ({ navigation }) => {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(postBoardPopular());
-        dispatch(postMaterialPopularSlice());
-        dispatch(postInfoPopularSlice());
-    }, []);
+    
 
     const ref = useRef();
     const isFocused = useIsFocused();
@@ -242,28 +238,33 @@ const Home = ({ navigation }) => {
     const mainData = useSelector(state => { return state.user.data; });
     const Alarm = useSelector(state => { return state.alarm.data; });
     const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
-    const [bubble, setBubble] = useState([true]); // 말풍선
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
+    console.log('@@ modal: ', modal);
     const animation = useRef(new Animated.Value(0)).current;
     const [modal2, setModal2] = useState(false); // 코치마크
+    console.log('@@ modal2: ', modal2);
     const [modal3, setModal3] = useState(false); // 출산준비물 리스트 코치마크
+    console.log('@@ modal3: ', modal3);
     const [userInfo, setUserInfo] = useState();
     const [AlarmFlag, setAlarmFlag] = useState(false);
-    const [bubbleContent, setBubbleContent] = useState();
+    const [bubbleContent, setBubbleContent] = useState(); // 말풍선 내용
+    const [bubbleImage, setBubbleImage] = useState(); // 말풍선 이미지
+
+    useEffect(() => {
+        dispatch(postBoardPopular());
+        dispatch(postMaterialPopularSlice());
+        dispatch(postInfoPopularSlice());
+    }, []);
 
     useEffect(() => {
         const recommendList = async () => {
-            const asyncStorage = await AsyncStorage.getItem('recommendList');
-            console.log('asyncStorage: ', asyncStorage);
-            const coarchMark = await AsyncStorage.getItem('coarchMarkHome');
-            console.log('coarchMark: ', coarchMark);
-            const coarchMark2 = await AsyncStorage.getItem('coarchMarkHome2');
-            console.log('coarchMark2: ', coarchMark2);
-            !coarchMark ? setModal2(true) : setModal2(false);
-            
-
-            !asyncStorage ? setModal(true) : setModal(false);
-            !coarchMark2 ? (setModal(true), setModal3(true)) : (setModal(false), setModal3(false));
+            // const asyncStorage = await AsyncStorage.getItem('recommendList');
+            // console.log('@@asyncStorage: ', asyncStorage);
+            // const coarchMark = await AsyncStorage.getItem('coarchMarkHome');
+            // console.log('coarchMark: ', coarchMark);
+            // const coarchMark2 = await AsyncStorage.getItem('coarchMarkHome2');
+            // console.log('coarchMark2: ', coarchMark2);
+            // !coarchMark ? setModal2(true) : setModal2(false);
         }
         recommendList();
 
@@ -313,15 +314,18 @@ const Home = ({ navigation }) => {
     useEffect(()=>{
         if (mainData?.length !== 0) {
             setBubbleContent(mainData?.contents[0]?.split('|')[0]);
+            setBubbleImage(mainData?.weekImage[0]);
         }
     }, [mainData]);
 
     useEffect(() => {
         const recommendList = async () => {
             const asyncStorage = await AsyncStorage.getItem('recommendList');
+            (!modal3 && !asyncStorage) ? setModal(true) : '';
+            (!modal3) ? setModal2(true) : '';
         }
         recommendList();
-    }, [modal]);
+    }, [modal, modal3]);
 
     const capture = async () => {
         opacity_ani();
@@ -335,10 +339,15 @@ const Home = ({ navigation }) => {
     const bubbleRandom = () => {
 
         let arr = Array.from({ length: mainData?.contents.length }, () => { return false });
-        let random = Math.floor(Math.random() * mainData.contents?.length);
+        let mainImage = Array.from({ length: mainData?.weekImage.length }, () => { return false });
 
+        let random = Math.floor(Math.random() * mainData.contents?.length);
+        let randomImage = Math.floor(Math.random() * mainData.weekImage?.length);
+       
         arr[random] = true;
+        mainImage[randomImage] = true;
         setBubbleContent(mainData?.contents[arr.findIndex(x => x)]);
+        setBubbleImage(mainData?.weekImage[mainImage.findIndex(x => x)]);
     }
 
     const opacity_ani = () => {
@@ -388,7 +397,7 @@ const Home = ({ navigation }) => {
                         <Text>{bubbleContent}</Text>
                     </View>
                     <TouchableOpacity style={styles.profileBox} activeOpacity={1} onPress={bubbleRandom}>
-                        <Image style={styles.profileBox} source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/d-day/${mainData.weekImage}` }} />
+                        <Image style={styles.profileBox} source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/d-day/${bubbleImage}` }} />
                     </TouchableOpacity>
 
                 </View>}
@@ -527,8 +536,8 @@ const Home = ({ navigation }) => {
                     </View>
 
                     <Modal navigation={navigation} modal={modal} setModal={setModal} />
-                    <CoarchMark modal={modal2} setModal={setModal2} modalFlag={modal3} />
-                    <CoarchMark2 modal={modal3} setModal={setModal3} setModal2={setModal} modalFlag={modal2} />
+                    <CoarchMark modal={modal2} modalFlag={modal3} />
+                    <CoarchMark2 modal={modal3} setModal={setModal3} modalFlag={modal2} />
 
                     <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => item.id}>

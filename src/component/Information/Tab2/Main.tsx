@@ -127,14 +127,15 @@ const Talk1 = ({ navigation }: any) => {
   const [modal, setModal] = useState(false);
 
   const [refreshing, setRefreshing] = useState(false);
-  const [selectNumber, setSelectNumber] = useState(0);
 
-  useEffect(async () => {
-    const month = await AsyncStorage.getItem('eventMonth');
+  useEffect(() => {
+    const month = new Date().getMonth();
+    console.log('@@ month: ', month);
     const arr = Array.from({ length: 12 }, () => { return false });
     if (!month) {
-      arr[moment().format('M') - 1] = true;
-    } else arr[Number(month) - 1] = true;
+      arr[moment().format('M')] = true;
+    } else arr[Number(month)] = true;
+    console.log('@@ arr: ', arr);
 
     setWeek(arr);
   }, []);
@@ -210,14 +211,14 @@ const Talk1 = ({ navigation }: any) => {
   const renderItem = ({ item }) => (
     <>
       {<TouchableOpacity style={styles.main2} onPress={() => navigation.navigate('행사정보 상세페이지', item)}>
-        <Text style={{ fontWeight: '500', maxWidth: '60%' }} numberOfLines={2} ellipsizeMode='tail'>{item.title}</Text>
+        <Text style={{ fontWeight: '500', maxWidth: '50%' }} numberOfLines={2} ellipsizeMode='tail'>{item.title}</Text>
         <View style={styles.dateBox}>{dateFilter(item)}</View>
       </TouchableOpacity>}
     </>
   );
 
   const renderItem2 = ({ item }) => (
-    <TouchableOpacity style={styles.scrollBox} onPress={() => change(item.id)}>
+    <TouchableOpacity style={styles.scrollBox} onPress={() => change(item.id)}> 
       <Text style={{
         fontSize: 16, padding: 3, fontWeight: week[item.id] ? 'bold' : '400',
         color: week[item.id] ? 'black' : '#9E9E9E', borderBottomWidth: week[item.id] ? 2 : 0
@@ -248,7 +249,7 @@ const Talk1 = ({ navigation }: any) => {
             </View>
             <View style={styles.headerBox2}>
               <FlatList data={DATA2} renderItem={renderItem2}
-                ref={flatListRef} initialScrollIndex={week.findIndex(x => x)}
+                ref={flatListRef} initialScrollIndex={week.findIndex(x => x) < 9 ? week.findIndex(x => x) : 8}
                 keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
               </FlatList>
             </View>

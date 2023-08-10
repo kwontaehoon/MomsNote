@@ -107,9 +107,7 @@ const Main = ({navigation, modal, setModal, setModal2, modalFlag}) => {
     }, []);
 
     const close = async() => {
-        isChecked ? list == null ? (AsyncStorage.setItem('coarchMarkHome2', '1'), setModal(false)) : (AsyncStorage.setItem('coarchMarkHome2', '1'), setModal(false), setModal2(false))
-        :
-        list == null ? setModal(false) : (setModal(false), setModal2(false));
+        isChecked ? (AsyncStorage.setItem('coarchMarkHome2', '1'), setModal(false)) : (AsyncStorage.setItem('coarchMarkHome2', '1'), setModal(false))
     }
 
   return (
@@ -118,6 +116,31 @@ const Main = ({navigation, modal, setModal, setModal2, modalFlag}) => {
     setModal(!modal)}}>
     <View style={styles.modalContainer}>
         <View style={styles.modalView}>
+
+                    <View style={[styles.modalContainer2, {position: 'absolute', backgroundColor: 'white', opacity: 0.5}]}>
+                        <View style={[styles.modalBox, { justifyContent: 'flex-start' }]}>
+                            <Text style={{ fontSize: 15, textAlign: 'center', lineHeight: 20 }}>출산 준비물 리스트를 생성합니다. 실제 맘들이 추천한 리스트로 보시겠어요?</Text>
+                        </View>
+                        <TouchableOpacity style={styles.modalBox2}>
+                            <View style={styles.counting}><Text></Text></View>
+                            <Text style={{ fontSize: 15, fontWeight: '500', color: 'white' }}>네, 추천 리스트로 보여주세요.</Text>
+                        </TouchableOpacity>
+                        <View style={styles.modalBox}>
+                            <Text style={{ fontSize: 15, lineHeight: 20 }}>많은 임산부들이 추천한 품목을 필수, 권장, 선택 항목으로 나눠서 알기 쉽게 보여줘요!</Text>
+                        </View>
+                        <TouchableOpacity style={styles.modalBox2}>
+                            <View style={styles.counting}><Text></Text></View>
+                            <Text style={{ fontSize: 15, fontWeight: '500', color: 'white' }}>아니요, 직접 작성할게요.</Text>
+                        </TouchableOpacity>
+                        <View style={styles.modalBox}>
+                            <Text style={{ fontSize: 15, lineHeight: 20 }}>카테고리만 기본 제공하며, 필요한 품목을 직접 작성할 수 있어요.</Text>
+                        </View>
+                        <View style={styles.modalBox}>
+                            <Text style={{ color: '#EF1E1E', fontSize: 13, lineHeight: 20 }}>Tip!
+                                <Text style={{ color: '#757575', fontSize: 13 }}> 초보 엄마라면 추천 리스트를 바탕으로 나에게 맞는 출산준비물 리스트를 작성해 보세요.</Text>
+                            </Text>
+                        </View>
+                    </View>
 
                 <View style={styles.imageBox}>
                     <View style={[styles.Top, {alignItems: 'flex-start', padding: 5}]}><Close fill='white' onPress={close}/></View>
