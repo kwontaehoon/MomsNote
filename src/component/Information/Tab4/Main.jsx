@@ -11,8 +11,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
-        borderWidth: 2,
-        borderColor: 'red'
     },
     header: {
         height: 100,
@@ -32,14 +30,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     main: {
-        marginBottom: 50,
-        borderWidth: 1
+        marginBottom: 130,
     },
     mainBox: {
         height: 50,
         paddingLeft: 15,
         paddingRight: 15,
-        borderWidth: 2,
         justifyContent: 'center',
         backgroundColor: '#F5F5F5'
     },
@@ -80,6 +76,8 @@ const Talk1 = ({ navigation }) => {
     const [qnaFilter, setQnaFilter] = useState(Array.from({ length: qna?.length }, () => { return false }));
 
     const [refreshing, setRefreshing] = useState(false);
+    const [allCount, setAllCount] = useState(0);
+    console.log('allCount: ', allCount);
 
     useEffect(() => {
         dispatch(postQna(qnaSet));
@@ -107,6 +105,22 @@ const Talk1 = ({ navigation }) => {
                 return undefined;
             }
         }
+
+        const count = async () => {
+            try {
+                const response = await axios({
+                    method: 'post',
+                    url: 'https://momsnote.net/api/qna/count',
+
+                });
+                setAllCount(response.data);
+
+            } catch (error) {
+                console.log('qna categories axios error: ', error);
+                return undefined;
+            }
+        }
+        count();
         category();
 
         const arr = Array.from({ length: categories?.length }, () => { return false; });
@@ -184,20 +198,20 @@ const Talk1 = ({ navigation }) => {
     return plus == undefined || qna == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container} />
         : (
             <View style={styles.container}>
-                {/* <View style={styles.header}>
+                <View style={styles.header}>
                     <FlatList data={categories} renderItem={renderItem2}
                         keyExtractor={(item, index) => String(index)} horizontal={true} showsHorizontalScrollIndicator={false}>
                     </FlatList>
-                </View> */}
+                </View>
                 <View style={styles.main}>
                     {qna == 0 ||  plus.newInfo == 0 ?
                         <View style={{ marginTop: 150, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ color: '#757575' }}>등록된 게시물이 없습니다.</Text>
                         </View> :
                         <View>
-                            {/* <View style={styles.mainBox}>
+                            <View style={styles.mainBox}>
                                 <Text style={{ fontSize: 16, fontWeight: '700' }}>{categories[filter?.findIndex(x => x)]?.name}({plus?.newInfo?.length})</Text>
-                            </View> */}
+                            </View>
                             <FlatList data={DATA} renderItem={renderItem}
                                 onRefresh={onRefreshing} refreshing={refreshing}
                                 onEndReached={() => onEnd()}

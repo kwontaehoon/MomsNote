@@ -199,17 +199,21 @@ const styles = StyleSheet.create({
     },
     
 })
-const Main = ({modal, setModal, modalFlag}) => {
+const Main = ({modal, setModal}) => {
 
     const [isChecked, setIsChecked] = useState(false);
-    const [recommendListCoachMark, setRecommendListCoachMark] = useState(false);
+    const [list, setList] = useState();
 
     useEffect(()=>{
-
+        const list = async() =>{
+            const coarchMark2 = await AsyncStorage.getItem('coarchMarkHome2');
+            setList(coarchMark2);
+        }
+        list();
     }, []);
 
     const close = async() => {
-        isChecked ? (AsyncStorage.setItem('coarchMarkHome', '1'), setModal(false)) : setModal(false);
+        isChecked ? (AsyncStorage.setItem('coarchMarkHome2', '1'), setModal(false)) : setModal(false);
     }
 
   return (

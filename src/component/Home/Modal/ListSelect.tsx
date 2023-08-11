@@ -50,10 +50,17 @@ const Main = ({ navigation, modal, setModal }) => {
     const dispatch = useDispatch();
     const reccount = useSelector(state => { return state.needsCounting.data; });
     const selfcount = useSelector(state => { return state.needsCountingSelf.data; });
+    const [list, setList] = useState();
 
     useEffect(() => {
         dispatch(postNeedsCounting({ type: '추천' }));
         dispatch(postNeedsCountingSelf({ type: '직접' }))
+
+            const list = async() =>{
+                const recommendList = await AsyncStorage.getItem('recommendList');
+                setList(recommendList);
+            }
+            list();
     }, []);
 
     const rec = async () => {
@@ -68,7 +75,7 @@ const Main = ({ navigation, modal, setModal }) => {
         navigation.navigate('출산 준비물');
     }
 
-    return (
+    return list ? '' : (
         <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true} hardwareAccelerated
             onRequestClose={() => {
                 setModal(false)

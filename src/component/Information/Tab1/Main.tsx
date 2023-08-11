@@ -100,6 +100,7 @@ const Talk1 = ({navigation}) => {
   console.log('info: ', info);
   const guideSet = useSelector(state => { return state.guide.refresh });
   const infoCount = useSelector(state => { return state.guideCount.data });
+  console.log('infoCount: ', infoCount);
   const guideCountSet = useSelector(state => { return state.guideCount.refresh });
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
@@ -111,6 +112,7 @@ const Talk1 = ({navigation}) => {
     page: 1,
     subcategory: '전체'
   });
+  console.log('@@ plus: ', plus);
 
   useEffect(()=>{
     const momsTalk = async() => {
@@ -134,7 +136,7 @@ const Talk1 = ({navigation}) => {
       }));
     }
     
-    dispatch(postGuideCount(guideCountSet));
+    dispatch(postGuideCount('전체'));
     setLoading(false);
     async();
   }, [guideSet, guideCountSet]);
@@ -214,7 +216,7 @@ const Talk1 = ({navigation}) => {
       <View style={styles.header2}>
         <View style={styles.header2FilterBox}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{fontSize: 16, fontWeight: '600'}}>{infoCount}</Text>
+            <Text style={{fontSize: 16, fontWeight: '600'}}>{plus?.newInfo?.length}</Text>
             <Text style={{fontSize: 16}}> 건</Text>
           </View>
         </View>

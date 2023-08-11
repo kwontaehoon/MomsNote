@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   main: {
+    marginBottom: 100
   },
   main2: {
     borderWidth: 1,
@@ -130,7 +131,7 @@ const Talk1 = ({ navigation }: any) => {
 
   useEffect(() => {
     const month = new Date().getMonth();
-    console.log('@@ month: ', month);
+    console.log('@@ month: ',  week.findIndex(x => x));
     const arr = Array.from({ length: 12 }, () => { return false });
     if (!month) {
       arr[moment().format('M')] = true;
@@ -249,7 +250,7 @@ const Talk1 = ({ navigation }: any) => {
             </View>
             <View style={styles.headerBox2}>
               <FlatList data={DATA2} renderItem={renderItem2}
-                ref={flatListRef} initialScrollIndex={week.findIndex(x => x) < 9 ? week.findIndex(x => x) : 8}
+                ref={flatListRef} initialScrollIndex={week.findIndex(x => x) < 9 ? week.findIndex(x => x)+3 : 8}
                 keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
               </FlatList>
             </View>

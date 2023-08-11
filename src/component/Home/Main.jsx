@@ -7,8 +7,8 @@ import Modal from './Modal/ListSelect'
 import moment from 'moment'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-import CoarchMark from './Modal/CoarchMark'
 import CoarchMark2 from './Modal/CoarchMark2'
+import MaterialCoarchMark from './Modal/MaterialCoarchMark'
 import Bell from '../../../public/assets/svg/Bell.svg'
 import MyPage from '../../../public/assets/svg/Mypage.svg'
 
@@ -321,11 +321,19 @@ const Home = ({ navigation }) => {
     useEffect(() => {
         const recommendList = async () => {
             const asyncStorage = await AsyncStorage.getItem('recommendList');
-            (!modal3 && !asyncStorage) ? setModal(true) : '';
-            (!modal3) ? setModal2(true) : '';
+            console.log('asyncStorage: ', asyncStorage);
+            const materialCoarchMark = await AsyncStorage.getItem('materialCoarchMark');
+            console.log('materialCoarchMark: ', materialCoarchMark);
+            const coarchMark2 = await AsyncStorage.getItem('coarchMarkHome2');
+            console.log('coarchMark2: ', coarchMark2);
+
+            // (!modal3 && !asyncStorage) ? setModal(true) : '';
+            !materialCoarchMark ? setModal3(true) : setModal3(false);
+            (!asyncStorage && !modal3) ? setModal(true) : setModal(false);
+            (!modal && !modal3) ? setModal2(false) : setModal2(false);
         }
         recommendList();
-    }, [modal, modal3]);
+    }, [modal3]);
 
     const capture = async () => {
         opacity_ani();
@@ -536,8 +544,8 @@ const Home = ({ navigation }) => {
                     </View>
 
                     <Modal navigation={navigation} modal={modal} setModal={setModal} />
-                    <CoarchMark modal={modal2} modalFlag={modal3} />
-                    <CoarchMark2 modal={modal3} setModal={setModal3} modalFlag={modal2} />
+                    <CoarchMark2 modal={modal2} setModal={setModal2} modalFlag={modal3} />
+                    <MaterialCoarchMark modal={modal3} setModal={setModal3} modalFlag={modal2} />
 
                     <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => item.id}>
