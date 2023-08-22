@@ -344,7 +344,6 @@ const Register = ({ navigation, route }) => {
             if(size.size /1024/1024 > 100){
                 setModal2Content('100MB 미만의 동영상을 등록해 주세요.');
                 setModalVisible2(!modalVisible2);
-                return;
             }else{
                 setInfo((prevState) => ({
                     ...prevState,

@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
         right: 15,
     }
 })
-const Main = ({ navigation, modal, setModal }) => {
+const Main = ({ navigation, modal, setModal, materialCoarchMarkModal, setMaterialCoarchMarkModal }) => {
+    console.log('materdialCoarchMarkModal: ', materialCoarchMarkModal);
 
     const dispatch = useDispatch();
     const reccount = useSelector(state => { return state.needsCounting.data; });
@@ -59,9 +60,13 @@ const Main = ({ navigation, modal, setModal }) => {
             const list = async() =>{
                 const recommendList = await AsyncStorage.getItem('recommendList');
                 setList(recommendList);
+
+                !recommendList ? !materialCoarchMarkModal ? setModal(true) : setModal(false) : setModal(false);
             }
-            list();
-    }, []);
+        list();
+    }, [materialCoarchMarkModal]);
+
+    
 
     const rec = async () => {
         AsyncStorage.removeItem('materialFlag');

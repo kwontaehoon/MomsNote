@@ -235,16 +235,14 @@ const Home = ({ navigation }) => {
     const boardPopular = useSelector(state => { return state.boardPopular.data });
     const materialPopular = useSelector(state => { return state.materialPopular.data });
     const infoPopular = useSelector(state => { return state.infoPopular.data });
+    console.log('infoPopular: ', infoPopular);
     const mainData = useSelector(state => { return state.user.data; });
     const Alarm = useSelector(state => { return state.alarm.data; });
     const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
-    console.log('@@ modal: ', modal);
     const animation = useRef(new Animated.Value(0)).current;
     const [modal2, setModal2] = useState(false); // 코치마크
-    console.log('@@ modal2: ', modal2);
     const [modal3, setModal3] = useState(false); // 출산준비물 리스트 코치마크
-    console.log('@@ modal3: ', modal3);
     const [userInfo, setUserInfo] = useState();
     const [AlarmFlag, setAlarmFlag] = useState(false);
     const [bubbleContent, setBubbleContent] = useState(); // 말풍선 내용
@@ -257,22 +255,14 @@ const Home = ({ navigation }) => {
     }, []);
 
     useEffect(() => {
-        const recommendList = async () => {
-            // const asyncStorage = await AsyncStorage.getItem('recommendList');
-            // console.log('@@asyncStorage: ', asyncStorage);
-            // const coarchMark = await AsyncStorage.getItem('coarchMarkHome');
-            // console.log('coarchMark: ', coarchMark);
-            // const coarchMark2 = await AsyncStorage.getItem('coarchMarkHome2');
-            // console.log('coarchMark2: ', coarchMark2);
-            // !coarchMark ? setModal2(true) : setModal2(false);
-        }
-        recommendList();
 
         dispatch(postUser());
         dispatch(postAlarm({ page: 1 }));
+
     }, []);
 
     useEffect(()=>{
+
         const userInfoUpdate = async() => {
             const user = await AsyncStorage.getItem('user');
             setUserInfo(JSON.parse(user));
@@ -298,6 +288,7 @@ const Home = ({ navigation }) => {
             // Do something when the screen is unfocused
             // Useful for cleanup functions
           };
+          
     }, []));
 
     const save = async () => {
@@ -322,18 +313,16 @@ const Home = ({ navigation }) => {
         const recommendList = async () => {
             const asyncStorage = await AsyncStorage.getItem('recommendList');
             console.log('asyncStorage: ', asyncStorage);
-            const materialCoarchMark = await AsyncStorage.getItem('materialCoarchMark');
-            console.log('materialCoarchMark: ', materialCoarchMark);
-            const coarchMark2 = await AsyncStorage.getItem('coarchMarkHome2');
-            console.log('coarchMark2: ', coarchMark2);
+            // const materialCoarchMark = await AsyncStorage.getItem('materialCoarchMark');
+            // console.log('materialCoarchMark: ', materialCoarchMark);
+            // const coarchMark2 = await AsyncStorage.getItem('coarchMarkHome2');
+            // console.log('coarchMark2: ', coarchMark2);
 
-            // (!modal3 && !asyncStorage) ? setModal(true) : '';
-            !materialCoarchMark ? setModal3(true) : setModal3(false);
-            (!asyncStorage && !modal3) ? setModal(true) : setModal(false);
-            (!modal && !modal3) ? setModal2(false) : setModal2(false);
+            !modal3 ?  !asyncStorage ? setModal(true) : setModal(false) : setModal(false);
         }
         recommendList();
-    }, [modal3]);
+    }, [modal]);
+
 
     const capture = async () => {
         opacity_ani();
@@ -543,9 +532,9 @@ const Home = ({ navigation }) => {
                         </View>
                     </View>
 
-                    <Modal navigation={navigation} modal={modal} setModal={setModal} />
+                    <Modal navigation={navigation} modal={modal} setModal={setModal} materialCoarchMarkModal={modal3} setMaterialCoarchMarkModal={setModal3} />
                     <CoarchMark2 modal={modal2} setModal={setModal2} modalFlag={modal3} />
-                    <MaterialCoarchMark modal={modal3} setModal={setModal3} modalFlag={modal2} />
+                    <MaterialCoarchMark modal={modal3} setModal={setModal3} recommendListModal={modal} setRecommendListModal={setModal} />
 
                     <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => item.id}>

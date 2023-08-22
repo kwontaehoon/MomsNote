@@ -103,9 +103,12 @@ const styles = StyleSheet.create({
     zIndex: 999
 },
   dateBox:{
-    position: 'absolute',
-    right: 10,
-    top: 50,
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    height: '100%',
+    marginBottom: 20,
+    marginRight: 10,
   },
   mainBoxSub2:{
     flexDirection: 'row',
@@ -204,7 +207,6 @@ const Talk1 = ({navigation, route}:any) => {
   const infoCount = useSelector(state => { return state.boardCount.data; });
   const boardPopular = useSelector(state => { return state.boardPopular.data });
   const [loading, setLoading] = useState(false);
-  console.log('loading: ', loading);
 
   const [modalVisible, setModalVisible] = useState({
     open: false,
@@ -392,8 +394,8 @@ const Talk1 = ({navigation, route}:any) => {
   const renderItem2 = ({ item }:any) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', {item})} activeOpacity={1}>
         { item.savedName == null ? '' : <ImageBox item={item.savedName}/>  }
-        <View style={[styles.mainBoxSub, {paddingTop: 5, width: '65%', alignItems: 'flex-start'}]}>
-          <Text style={{fontSize: 15, paddingTop: 2}} numberOfLines={1}>{item.title} </Text>
+        <View style={[styles.mainBoxSub, {paddingTop: 5, width: '55%', alignItems: 'flex-start'}]}>
+          <Text style={{fontSize: 15, paddingTop: 2}} numberOfLines={1}>{item.title}</Text>
           <View style={styles.mainBoxSub2}>
             <Text style={{fontSize: 13, color: '#9E9E9E'}}>{item.nickname} </Text>
             <Like width={12} height={17} fill='#9E9E9E'/>
@@ -402,7 +404,7 @@ const Talk1 = ({navigation, route}:any) => {
             <Text style={{fontSize: 13, color: '#9E9E9E'}}> {item.commentsCount}</Text>
           </View>
         </View>
-        <View style={[styles.dateBox, {justifyContent: 'center', alignItems: 'flex-end'}]}>
+        <View style={[styles.dateBox, ]}>
          {dayCalculate(item.boardDate)}
         </View>
     </TouchableOpacity>
