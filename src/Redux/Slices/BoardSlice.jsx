@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const postBoard = createAsyncThunk("postBoardSlice/async", async (data) => {
+  console.log('@@ data: ', data);
     try{
       const response = await axios({
           method: 'post',
@@ -22,7 +23,7 @@ const initialState = {
     data: [],
     refresh: {
       order: 'new',
-      count: 1,
+      count: 5,
       page: 1,
       subcategory: '전체'
     }
@@ -33,20 +34,13 @@ export const boardSlice = createSlice({
     initialState,
     reducers: {
       setBoardRefresh:(state, action)=>{
-        console.log('카테고리');
         state.refresh.subcategory = action.payload.subcategory;
       },
       setBoardCount:(state, action)=>{
-        console.log('카운트');
-        console.log('state: ', state);
-        console.log('action: ', action);
         state.refresh.page = action.payload.page;
         state.refresh.count = action.payload.count;
       },
       setBoardFilter:(state, action)=>{
-        console.log('필터링');
-        console.log('state: ', state);
-        console.log('action: ', action);
         state.refresh.order = action.payload.filter;
       }
     },

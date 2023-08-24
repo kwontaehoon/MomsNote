@@ -76,7 +76,10 @@ const Talk1 = ({ navigation }) => {
     const [qnaFilter, setQnaFilter] = useState(Array.from({ length: qna?.length }, () => { return false }));
 
     const [refreshing, setRefreshing] = useState(false);
-    const [allCount, setAllCount] = useState(0);
+    const [allCount, setAllCount] = useState({
+        tab: 0,
+        count: 0
+    });
     console.log('allCount: ', allCount);
 
     useEffect(() => {
@@ -106,20 +109,6 @@ const Talk1 = ({ navigation }) => {
             }
         }
 
-        const count = async () => {
-            try {
-                const response = await axios({
-                    method: 'post',
-                    url: 'https://momsnote.net/api/qna/count',
-
-                });
-                setAllCount(response.data);
-
-            } catch (error) {
-                console.log('qna categories axios error: ', error);
-                return undefined;
-            }
-        }
         count();
         category();
 
@@ -133,6 +122,25 @@ const Talk1 = ({ navigation }) => {
         arr[e] = !arr[e];
         setFilter(arr);
         dispatch(setQnaRefresh({ category: category, page: 1 }));
+    }
+
+    const count = async (e) => {
+        try {
+            const response = await axios({
+                method: 'post',
+                url: 'https://momsnote.net/api/qna/count',
+                data: {
+                    qnaCategoryId: e
+                }
+
+            });
+            console.log('response: ', response.data);
+            setAllCount({...allCount, count: response.data});
+
+        } catch (error) {
+            console.log('qna categories axios error: ', error);
+            return undefined;
+        }
     }
 
     const change2 = (e) => {
@@ -152,7 +160,6 @@ const Talk1 = ({ navigation }) => {
                 }
             });
             const addInfo = [...plus?.newInfo, ...response?.data];
-            console.log('addInfo: ', addInfo);
             setPlus({...plus, newInfo: addInfo, page: plus.page+1});
 
         } catch (error) {
@@ -182,14 +189,11 @@ const Talk1 = ({ navigation }) => {
                 </View>
             )
         })
-
-
-
     );
 
     const renderItem2 = ({ item, index }) => (
         <View style={{ justifyContent: 'center' }}>
-            <TouchableOpacity style={[styles.headerFilterBox, { backgroundColor: filter[index] ? '#FEA100' : 'white' }]} onPress={() => change(item.name, index)}>
+            <TouchableOpacity style={[styles.headerFilterBox, { backgroundColor: filter[index] ? '#FEA100' : 'white' }]} onPress={() => { change(item.name, index); count(index)}}>
                 <Text style={{ color: filter[index] ? 'white' : 'black', fontWeight: '400', fontSize: 14 }}>{item?.name}</Text>
             </TouchableOpacity>
         </View>
@@ -210,7 +214,7 @@ const Talk1 = ({ navigation }) => {
                         </View> :
                         <View>
                             <View style={styles.mainBox}>
-                                <Text style={{ fontSize: 16, fontWeight: '700' }}>{categories[filter?.findIndex(x => x)]?.name}({plus?.newInfo?.length})</Text>
+                                <Text style={{ fontSize: 16, fontWeight: '700' }}>{categories[filter?.findIndex(x => x)]?.name}({allCount.count})</Text>
                             </View>
                             <FlatList data={DATA} renderItem={renderItem}
                                 onRefresh={onRefreshing} refreshing={refreshing}

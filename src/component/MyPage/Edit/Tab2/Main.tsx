@@ -138,9 +138,7 @@ const Withdraw = ({navigation, route}) => {
     const [SMSInputNumber, setSMSInputNumber] = useState(''); // 입력한 SMS 번호
 
     const appFlag = useSelector(state => { return state.boardAppFlag.data; });
-    console.log('@@@@ appFlag: ', appFlag);
     const myExp = useSelector(state => { return state.myExp.data});
-    console.log('@@@@ myExp: ', myExp);
 
     const [modal, setModal] = useState(false);
     
@@ -316,9 +314,15 @@ const Withdraw = ({navigation, route}) => {
                     <TextInput style={styles.textBox} placeholder='상세주소 입력' value={info?.addressDetails} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, addressDetails: e }))}></TextInput>
                 </View>
                 <View style={styles.footer}>
+                    {info?.memberName && info.address && info.addressDetails ? 
                     <TouchableOpacity style={styles.buttonBox} onPress={()=>setModal(!modal)}>
                         <Text style={{fontSize: 18, fontWeight: '600', color: 'white'}}>적용</Text>
                     </TouchableOpacity>
+                    :
+                    <TouchableOpacity style={[styles.buttonBox, {backgroundColor: '#E6E6E6'}]}>
+                        <Text style={{fontSize: 18, fontWeight: '600', color: 'white'}}>적용</Text>
+                    </TouchableOpacity>
+                    }
                 </View>
             </View>
         </View>
@@ -333,7 +337,7 @@ const Withdraw = ({navigation, route}) => {
           <SafeAreaView style={styles.container}>
             
             <FlatList data={DATA} renderItem={renderItem}
-            keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
+                keyExtractor={item => item.id} showsVerticalScrollIndicator={false}>
             </FlatList>
 
             <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}

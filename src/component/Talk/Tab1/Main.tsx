@@ -188,7 +188,7 @@ const Talk1 = ({navigation, route}:any) => {
     },
     {
       id: '5',
-      title: '질문 게시판'
+      title: '질문게시판'
     }
   ];
 
@@ -225,6 +225,7 @@ const Talk1 = ({navigation, route}:any) => {
     page: 1,
     category: '전체'
   });
+
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(()=>{
@@ -267,18 +268,18 @@ const Talk1 = ({navigation, route}:any) => {
       const tab = await AsyncStorage.getItem('momsTalkTab');
       dispatch(postBoard(!await AsyncStorage.getItem('momsTalk_filter') ? {
         order: 'new',
-        count: 1,
+        count: 50,
         page: 1,
         subcategory: tab
       } : await AsyncStorage.getItem('momsTalk_filter') == '인기 순' ?
     ( setValue('2'), {
       order: 'best',
-      count: 1,
+      count: 50,
       page: 1,
       subcategory: tab
     }) : ( setValue('1'), {
       order: 'new',
-      count: 1,
+      count: 50,
       page: 1,
       subcategory: tab
     })
