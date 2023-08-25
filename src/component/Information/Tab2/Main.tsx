@@ -118,7 +118,9 @@ const Talk1 = ({ navigation }: any) => {
   const dispatch = useDispatch();
   const flatListRef = useRef();
   const eventSet = useSelector(state => { return state.event.refresh });
+  console.log('@@ eventSet: ', eventSet);
   const info = useSelector(state => { return state.event.data; });
+  console.log('@@ info: ', info);
   const [year, setYear] = useState(moment().format('YYYY'));
   const [week, setWeek] = useState([]);
   const infoCount = useSelector(state => { return state.eventCount.data; });
@@ -131,7 +133,6 @@ const Talk1 = ({ navigation }: any) => {
 
   useEffect(() => {
     const month = new Date().getMonth();
-    console.log('@@ month: ',  week.findIndex(x => x));
     const arr = Array.from({ length: 12 }, () => { return false });
     if (!month) {
       arr[moment().format('M')] = true;
@@ -142,17 +143,14 @@ const Talk1 = ({ navigation }: any) => {
   }, []);
 
   useEffect(() => {
+    let arr = moment().format('M')-1;
+    if(arr-9 < 0){ arr = '0' + (arr+1); } else arr += 1;
+
     setLoading(true);
     dispatch(postEvent(eventSet));
     dispatch(postEventCount(eventSet));
     setLoading(false);
   }, [eventSet, refreshing]);
-
-  // useEffect(() => {
-  //   if (flatListRef.current) {
-  //     flatListRef.current.scrollToIndex({ animated: true, index: selectNumber });
-  //   }
-  // }, [selectNumber])
 
   const change = (e) => { // 몇 주차 border, 글자두께 변경
     let arr = Array.from({ length: 12 }, () => { return false });

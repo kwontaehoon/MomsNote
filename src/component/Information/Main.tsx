@@ -5,6 +5,9 @@ import Tab2 from './Tab2/Main'
 import Tab3 from './Tab3/Main'
 import Tab4 from './Tab4/Main'
 import { useIsFocused } from '@react-navigation/native'
+import { postEvent } from '../../Redux/Slices/EventSlice'
+import moment from 'moment'
+import { useDispatch } from 'react-redux'
 
 const styles = StyleSheet.create({
   container:{
@@ -30,6 +33,9 @@ const styles = StyleSheet.create({
 const Information = ({navigation, route}) => {
 
     const isFocused = useIsFocused();
+    const dispatch = useDispatch();
+
+    const [year, setYear] = useState(moment().format('YYYY'));
 
     useEffect(()=>{
         const arr = [false, true, false, false];
@@ -39,9 +45,17 @@ const Information = ({navigation, route}) => {
   const [filter, setFilter] = useState([true, false, false, false]);
 
   const filter_func = (e) => {
+    let y = Number(year);
+
     let arr = Array.from({length: 4}, () => {return false})
     arr[e] = true;
     setFilter(arr);
+
+    dispatch(setEventRefresh({
+      page: 1,
+      count: 1,
+      date: `${y}-${m}`
+    }));
   }
 
   const List = ({navigation}):any => {

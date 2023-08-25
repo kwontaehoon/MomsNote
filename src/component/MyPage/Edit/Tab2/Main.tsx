@@ -138,7 +138,9 @@ const Withdraw = ({navigation, route}) => {
     const [SMSInputNumber, setSMSInputNumber] = useState(''); // 입력한 SMS 번호
 
     const appFlag = useSelector(state => { return state.boardAppFlag.data; });
+    console.log('appFlag: ', appFlag);
     const myExp = useSelector(state => { return state.myExp.data});
+    console.log('myExp: ', myExp);
 
     const [modal, setModal] = useState(false);
     
@@ -306,7 +308,7 @@ const Withdraw = ({navigation, route}) => {
                     <Text style={{fontSize: 16, fontWeight: '500'}}>배송지</Text>
                     <View>
                         <TouchableOpacity style={styles.textBox} activeOpacity={1} onPress={()=>navigation.navigate('주소 찾기2')}>
-                            {info?.address == '' ? <Text>주소 검색하기</Text>
+                            {info?.address == '' || !info ? <Text>주소 검색하기</Text>
                             : <Text>{info?.address}</Text>}
                         </TouchableOpacity>
                         <View style={styles.postBox}><Icon name='right' size={15}/></View>

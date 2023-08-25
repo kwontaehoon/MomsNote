@@ -47,10 +47,10 @@ const Terms1 = ({navigation}) => {
         url: 'https://momsnote.net/policy',
         data : {
           sort: "이용약관",
-          page: 1
+          page: 0
       }
     });
-    setInfo(response.data.data);
+    setInfo(response?.data?.data?.policy);
     }
     terms();
   }, []);
@@ -78,7 +78,7 @@ const Terms1 = ({navigation}) => {
 
   return info == undefined || info == '' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
-      <FlatList data={DATA} renderItem={renderItem} keyExtractor={index => String(index)} showsVerticalScrollIndicator={false}></FlatList>
+      <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}></FlatList>
     </View>
   )
 }

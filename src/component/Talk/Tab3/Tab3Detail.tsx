@@ -230,6 +230,7 @@ const Talk1Sub = ({navigation, route}) => {
     const boardLikeFlagSet = useSelector(state => { return state.boardLikeFlag.refresh });
     const boardLikeSet = useSelector(state => { return state.boardLike.refresh });
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
+    console.log('boardAppFlag: ', boardAppFlag, info?.experienceId);
     const winList = useSelector(state => { return state.winList.data });
     const myExp = useSelector(state => { return state.myExp.data });
     
@@ -252,7 +253,7 @@ const Talk1Sub = ({navigation, route}) => {
             count: 1,
             page: 1,
         }));
-        dispatch(postBoardAppFlag({ experienceId: info.experienceId }));
+        dispatch(postBoardAppFlag({ experienceId: info?.experienceId }));
         dispatch(postWinList({ experienceId: info.experienceId }));
         dispatch(postMyExp());
 

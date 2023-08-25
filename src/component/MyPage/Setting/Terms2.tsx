@@ -50,7 +50,7 @@ const Terms1 = ({navigation}) => {
           page: 0
       }
     });
-    setInfo(response.data.data);
+    setInfo(response?.data?.data?.policy);
     }
     terms();
   }, []);

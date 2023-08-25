@@ -89,7 +89,7 @@ const Talk1 = ({ navigation, route }: any) => {
   }
 
   const renderItem2 = ({ item }: any) => (
-    <TouchableOpacity style={styles.mainBox} onPress={() => navigation.navigate('맘스토크 상세내용', { item })} activeOpacity={1}>
+    <TouchableOpacity style={styles.mainBox} onPress={() => navigation.navigate('맘스토크 상세내용', {item})} activeOpacity={1}>
       {!item.savedName ? '' : <ImageBox item={item.savedName} />}
       <View style={styles.mainBoxSub}>
         <Text style={{ fontSize: 15, paddingTop: 2 }} numberOfLines={1}>{item.title} </Text>
