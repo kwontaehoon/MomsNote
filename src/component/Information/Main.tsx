@@ -5,7 +5,7 @@ import Tab2 from './Tab2/Main'
 import Tab3 from './Tab3/Main'
 import Tab4 from './Tab4/Main'
 import { useIsFocused } from '@react-navigation/native'
-import { postEvent } from '../../Redux/Slices/EventSlice'
+import { postEvent, setEventRefresh } from '../../Redux/Slices/EventSlice'
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
 
@@ -51,10 +51,14 @@ const Information = ({navigation, route}) => {
     arr[e] = true;
     setFilter(arr);
 
+    if (e - 9 < 0) {
+      e = '0' + (e + 1);
+    } else e += 1;
+
     dispatch(setEventRefresh({
       page: 1,
       count: 1,
-      date: `${y}-${m}`
+      date: `${y}-${e}`
     }));
   }
 

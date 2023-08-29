@@ -81,6 +81,8 @@ const styles = StyleSheet.create({
 })
 const Register = ({navigation, route}) => {
 
+    console.log('route: ', route.params);
+
     const DATA = [
         {
           id: '0',
@@ -100,7 +102,6 @@ const Register = ({navigation, route}) => {
             contents: '',
         }
     );
-    console.log('data: ', data);
     const [loading, setLoading] = useState();
 
     useEffect(()=>{
@@ -136,20 +137,43 @@ const Register = ({navigation, route}) => {
 
     const submit = async() => {
         const token = await AsyncStorage.getItem('token');
-        try{
-          const response = await axios({
-                method: 'post',
-                url: 'https://momsnote.net/api/needs/share/save',
-                headers: { 
-                    'Authorization': `bearer ${token}`, 
-                    'Content-Type': 'application/json'
-                  },
-                data: data
-              });
-          }catch(error){
-            console.log('출산리스트 글쓰기 error: ', error);
-          }
-          dispatch(postMaterialShare(materialShareSet));
+        if(typeof(route.params) == 'object'){
+            console.log('@@ 수정하기', route.params[0]?.boardId, data.title, data.contents);
+            try{
+                const response = await axios({
+                    method: 'post',
+                    url: 'https://momsnote.net/api/needs/share/update',
+                    headers: { 
+                        'Authorization': `bearer ${token}`, 
+                        'Content-Type': 'application/json'
+                      },
+                    data: {
+                        boardId: route.params[0]?.boardId,
+                        title: data.title,
+                        contents: data.contents
+                    }
+                  });
+                  navigation.goBack(); return;
+            }catch(error){
+                console.group('출산리스트 수정하기 error: ', error);
+            }
+        }else{
+            console.log('@@ 작성하기')
+            try{
+                const response = await axios({
+                      method: 'post',
+                      url: 'https://momsnote.net/api/needs/share/save',
+                      headers: { 
+                          'Authorization': `bearer ${token}`, 
+                          'Content-Type': 'application/json'
+                        },
+                      data: data
+                    });
+                }catch(error){
+                  console.log('출산리스트 글쓰기 error: ', error);
+                }
+        }
+          dispatch(postMaterialShare(materialShareSet)); 
     }
 
     const boardSave = async(e) => {

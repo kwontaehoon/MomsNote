@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const postGuideCount = createAsyncThunk("postGuideCountSlice/async", async (data) => {
+  console.log('data: ', data);
     try{
       const response = await axios({
           method: 'post',

@@ -97,7 +97,6 @@ const Talk1 = ({navigation}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.guide.data });
-  console.log('info: ', info);
   const guideSet = useSelector(state => { return state.guide.refresh });
   const infoCount = useSelector(state => { return state.guideCount.data });
   console.log('infoCount: ', infoCount);
@@ -112,7 +111,6 @@ const Talk1 = ({navigation}) => {
     page: 1,
     subcategory: '전체'
   });
-  console.log('@@ plus: ', plus);
 
   useEffect(()=>{
     const momsTalk = async() => {
@@ -130,13 +128,13 @@ const Talk1 = ({navigation}) => {
     setLoading(true);
     const async = async() => {
       dispatch(postGuide({
-        count: 5,
+        count: 50,
         page: 1,
         subcategory: await AsyncStorage.getItem('momsInfoTab')
       }));
     }
     
-    dispatch(postGuideCount('전체'));
+    dispatch(postGuideCount(guideCountSet));
     setLoading(false);
     async();
   }, [guideSet, guideCountSet]);
@@ -174,6 +172,7 @@ const Talk1 = ({navigation}) => {
 
 
   const change = async(e) => { // 카테고리 배경색상, 글자 색상 변경
+    console.log('e: ', DATA[e].title);
     await AsyncStorage.setItem('momsInfoTab', DATA[e].title);
     let arr = Array.from({length: 6}, () => {return false});
     arr[e] = !arr[e];
@@ -216,7 +215,7 @@ const Talk1 = ({navigation}) => {
       <View style={styles.header2}>
         <View style={styles.header2FilterBox}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{fontSize: 16, fontWeight: '600'}}>{plus?.newInfo?.length}</Text>
+            <Text style={{fontSize: 16, fontWeight: '600'}}>{infoCount}</Text>
             <Text style={{fontSize: 16}}> 건</Text>
           </View>
         </View>

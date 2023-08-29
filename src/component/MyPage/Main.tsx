@@ -94,7 +94,7 @@ const Main = ({navigation}) => {
     const newImageUri =  "file:///" + (result.assets[0].uri).split("file:/").join("");
 
     let data = new FormData();
-    data.append('file', {uri: newImageUri, name: newImageUri.split("/").pop(), type: mime.getType(newImageUri)});
+    data.append('file', {uri: newImageUri, name: newImageUri.split("/").pop(), type: 'image/png'});
     const token = await AsyncStorage.getItem('token');
     try{
         const response = await axios({
@@ -106,6 +106,7 @@ const Main = ({navigation}) => {
               },
               data: data
             });
+            console.log('response: ', response);
             setRefresh(result.assets[0].uri);
         }catch(error){
           console.log('프로필변경 error: ', error);

@@ -185,8 +185,6 @@ const styles = StyleSheet.create({
 })
 const Register = ({ navigation, route }) => {
 
-    console.log('@@ route: ', route.params);
-
     const boardSet = useSelector(state => { return state.board.refresh; });
 
     const DATA = [{ id: '0', title: '전체' }];
@@ -235,7 +233,6 @@ const Register = ({ navigation, route }) => {
     console.log('info: ', info);
 
     useEffect(() => {
-        console.log('@@ 123');
         dispatch(postUser());
         const load = async () => {
             const asyncStorage = await AsyncStorage.getItem('momsTalk');
@@ -340,7 +337,6 @@ const Register = ({ navigation, route }) => {
         if (!result.canceled) {
             arr = [result.assets[0].uri];
             const size = await FileSystem.getInfoAsync(result.uri);
-            console.log('size: ', size.size /1024/1024);
             if(size.size /1024/1024 > 100){
                 setModal2Content('100MB 미만의 동영상을 등록해 주세요.');
                 setModalVisible2(!modalVisible2);

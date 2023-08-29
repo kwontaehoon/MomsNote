@@ -285,11 +285,13 @@ const Talk1Sub = ({navigation, route}) => {
         },
     ];
 
+    console.log('앙');
+
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
     const info = [route.params];
+    console.log('출산리스트 route: ', info);
     const info2 = useSelector(state => { return state.shareList.data }); // 게시글 리스트
-    console.log('info2: ', info2);
     const materialShare = useSelector(state => { return state.materialShare.data });
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
     const [info3, setInfo3] = useState(useSelector(state => { return state.materialShare.data }));
