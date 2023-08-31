@@ -184,14 +184,24 @@ const Talk1Sub = ({navigation, route}) => {
     },
   ];
 
+  const DATA2 = [
+    { category: '산모용품', deleteStatus: 1, id: 1, needsName: '손목 보호대', itemBrand: '-', itemPrice: 39900 },
+    { category: '산모용품', deleteStatus: 1, id: 1, needsName: '양말', itemBrand: '-', itemPrice: 24700 },
+    { category: '산모용품', needsName: '유두 보호 크림', deleteStatus: 1, id: 1, itemBrand: '프리하우스', itemPrice: 5200 },
+    { category: '산모용품', needsName: '손목 보호대', deleteStatus: 1, id: 1, itemBrand: '마미즈', itemPrice: 5900 },
+    { category: '산모용품', deleteStatus: 1, id: 1, needsName: '수유 브라', itemBrand: '화이트', itemPrice: 12800 },
+    { category: '산모용품', deleteStatus: 1, id: 1, needsName: '수유 나시', itemBrand: '시크릿데이', itemPrice: 4700 },
+    { category: '산모용품', deleteStatus: 1, id: 1, needsName: '임부용 팬티', itemBrand: '디펜드', itemPrice: 20000 },
+  ]
+  
+
   const ref = useRef();
   const dispatch = useDispatch();
   const info = useSelector(state => state.material.data);
-  console.log('info: ', info);
   const materialSet = useSelector(state => state.material.refresh);
   const animation = useRef(new Animated.Value(0)).current;
   const [test, setTest] = useState(); // 캡쳐 uri
-  const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
+  const [list, setList] = useState(Array.from({length: 8}, () => {return modal9 ? true : false})); // list display
   const [modalVisible2, setModalVisible2] = useState(false); // 공유 확인 유무 
   const [modalVisible3, setModalVisible3] = useState(false); // 공유 작성
   const [modalVisible4, setModalVisible4] = useState(false); // 공유 등록 확인
@@ -245,8 +255,7 @@ const Talk1Sub = ({navigation, route}) => {
           return true;
       }else return false;
   }); 
-  console.log('arr: ', arr);
-  setList(arr);
+  // setList(arr);
   }, [info]);
 
   useEffect(()=>{
@@ -326,7 +335,7 @@ const capture = async() => {
   const List = ({title}) => {
     let arr = [];
 
-    info?.filter((x, index)=>{
+    (modal9 ? DATA2 : info)?.filter((x, index)=>{
       if(x.category == title && x.deleteStatus == 1 && x.id == 1){
           arr.push(
         <TouchableOpacity style={styles.mainBox3} onLongPress={()=>setModal5(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1} key={index}>
@@ -380,7 +389,7 @@ const capture = async() => {
       <DotModal modal5={modal5} setModal5={setModal5} />
       <PriceEdit modal6={modal6} setModal6={setModal6} setModal7={setModal7} />
       <FirstModal modal={modal7} setModal={setModal7} />
-      <CoarchMark modal={modal8} setModal={setModal8}/>
+      {/* <CoarchMark modal={modal8} setModal={setModal8}/> */}
       <CoarchMark2 modal={modal9} setModal={setModal9} setModal2={setModal8} />
 
       <View style={styles.header}>

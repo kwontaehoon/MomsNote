@@ -339,7 +339,7 @@ const Navigation = ({navigation, route}) => {
         dispatch(postMaterialSelf({order: !materialSort ? 'need' : 'buy'}));
       }
       unsubscribe();
-  }, [modalVisible8, modalVisible10, materialFlag]);
+  }, [modalVisible6, modalVisible8, modalVisible10, materialFlag]);
 
   useEffect(()=>{
     if(info == 0){

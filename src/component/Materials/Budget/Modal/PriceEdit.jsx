@@ -69,7 +69,6 @@ const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
         itemPrice: 0,
     });
 
-    console.log('@@ info: ', info, modal6?.content?.needsId);
     const comma = (e) => {
     
         setInfo({...info, needsId: modal6?.content?.needsId, itemPrice: e});

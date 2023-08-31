@@ -46,6 +46,8 @@ const Information = ({navigation, route}) => {
 
   const filter_func = (e) => {
     let y = Number(year);
+    let month = moment().format('M');
+    if(month-9 <= 0){ month = '0' + (month); } else month += 1;
 
     let arr = Array.from({length: 4}, () => {return false})
     arr[e] = true;
@@ -58,7 +60,7 @@ const Information = ({navigation, route}) => {
     dispatch(setEventRefresh({
       page: 1,
       count: 1,
-      date: `${y}-${e}`
+      date: `${y}-${month}`
     }));
   }
 

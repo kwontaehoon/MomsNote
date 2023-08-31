@@ -104,6 +104,7 @@ const Information = ({navigation}) => {
   const [momsSearch, setMomsSearch] = useState();
   const [materialSearch, setMaterialSearch] = useState();
   const [commentSearch, setCommentSearch] = useState();
+  console.log('## commentSearch: ', commentSearch);
   const [experienceSearch, setExperienceSearch] = useState();
   const [guideSearch, setGuideSearch] = useState();
 

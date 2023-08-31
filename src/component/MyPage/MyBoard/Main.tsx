@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     justifyContent: 'center',
-    width: '100%',
+    flex: 1,
   },
   videoImage: {
     position: 'absolute',
@@ -62,7 +62,7 @@ const Talk1 = ({ navigation, route }: any) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.myBoard.data; });
-  console.log('내가쓴게시물 info: ', info);
+  console.log('## 내가쓴게시물 info: ', info);
 
   useEffect(() => {
     dispatch(postMyBoard());

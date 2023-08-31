@@ -28,11 +28,11 @@ const styles = StyleSheet.create({
     modalBox2:{
         height: 44,
         borderWidth: 1,
-        borderColor: '#FE7000',
+        borderColor: '#fb8c00',
         justifyContent: 'center',
         borderRadius: 4,
         alignItems: 'center',
-        backgroundColor: '#FE7000'
+        backgroundColor: '#fb8c00'
     },
     buttonBox:{
         borderWidth: 1,

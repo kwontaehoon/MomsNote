@@ -24,20 +24,12 @@ const Main = ({navigation}) => {
 
   const DATA = [{id: '0'}];
 
-  const dispatch = useDispatch();
-  const materialShare = useSelector(state => { return state.materialShare.data});
-  const materialShareSet = useSelector(state => { return state.materialShare.refresh });
-  const board = useSelector(state => { return state.board.data });
-  const boardSet = useSelector(state => { return state.board.refresh; });
-
   const [info, setInfo] = useState();
+  console.log('## info: ', info);
   
   const isFocused = useIsFocused();
 
   useEffect(()=>{
-
-    dispatch(postMaterialShare(materialShareSet));
-    dispatch(postBoard(boardSet));
 
     const alarm = async() => {
       const token = await AsyncStorage.getItem('token');
@@ -73,11 +65,9 @@ const Main = ({navigation}) => {
       }
 
       if(item.category == '맘스 토크'){
-        const momsTalk = board.filter(x => x.boardId == item.boardId);
-        navigation.navigate('맘스토크 상세내용', {item: momsTalk[0]});
+        navigation.navigate('맘스토크 상세내용', {item: item});
       }else if(item.category == '출산리스트 공유'){
-        const materialList = materialShare.filter(x => x.boardId == item.boardId);
-        navigation.navigate('출산리스트 공유 상세내용', materialList[0]);
+        navigation.navigate('출산리스트 공유 상세내용', item);
       }else if(item.type == '문의'){
         navigation.navigate('문의 상세', item);
       }
@@ -89,14 +79,14 @@ const Main = ({navigation}) => {
     info?.filter((x, index) => {
       if(x.type == '댓글'){
         arr.push(
-          <TouchableOpacity style={styles.main} key={index} onPress={()=>info[index].readFlag ? '' : navi(x)}>
+          <TouchableOpacity style={styles.main} key={index} onPress={()=>navi(x)}>
             <Text style={{fontSize: 15, fontWeight: '500', marginBottom: 5, color: info[index].readFlag ? '#9E9E9E' : ''}}>{info[index].nickname}님이 회원님의 게시글에 댓글을 남겼습니다.</Text>
             <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(info[index].notificationDate).format('YY.MM.DD')}.</Text>
           </TouchableOpacity>
         )
       }else if(x.type == '문의'){
         arr.push(
-          <TouchableOpacity style={styles.main} key={index} onPress={()=>info[index].readFlag ? '' : navi(x)}>
+          <TouchableOpacity style={styles.main} key={index} onPress={()=>navi(x)}>
             <Text style={{fontSize: 15, fontWeight: '500', marginBottom: 5, color: info[index].readFlag ? '#9E9E9E' : ''}}>회원님의 문의에 답변이 달렸습니다.</Text>
             <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment(info[index].notificationDate).format('YY.MM.DD')}.</Text>
           </TouchableOpacity>

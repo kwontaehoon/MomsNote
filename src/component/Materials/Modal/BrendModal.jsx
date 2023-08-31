@@ -181,6 +181,14 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
                     needsDataId: selectBrand.needsDataId
                 }
             });
+            console.log('## response: ', {
+                needsId: selectBrand.needsId,
+                    needsBrandId: selectBrand.needsBrandId,
+                    itemBrand: x.brandName,
+                    itemName: x.productName,
+                    itemPrice: x.price,
+                    needsDataId: selectBrand.needsDataId
+            });
             }catch(error){
                 console.log('comment axios error:', error)
             }

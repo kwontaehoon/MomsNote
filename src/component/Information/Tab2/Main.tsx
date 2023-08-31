@@ -118,11 +118,10 @@ const Talk1 = ({ navigation }: any) => {
   const dispatch = useDispatch();
   const flatListRef = useRef();
   const eventSet = useSelector(state => { return state.event.refresh });
-  console.log('@@ eventSet: ', eventSet);
   const info = useSelector(state => { return state.event.data; });
-  console.log('@@ info: ', info);
   const [year, setYear] = useState(moment().format('YYYY'));
   const [week, setWeek] = useState([]);
+  console.log('## week: ', week);
   const infoCount = useSelector(state => { return state.eventCount.data; });
 
   const [loading, setLoading] = useState(false);
@@ -130,6 +129,9 @@ const Talk1 = ({ navigation }: any) => {
   const [modal, setModal] = useState(false);
 
   const [refreshing, setRefreshing] = useState(false);
+
+  const [month, setMonth] = useState(0);
+  console.log('## month: ', month);
 
   useEffect(() => {
     const month = new Date().getMonth();
@@ -140,6 +142,7 @@ const Talk1 = ({ navigation }: any) => {
     console.log('@@ arr: ', arr);
 
     setWeek(arr);
+    console.log('##: ', week.findIndex(x => x));
   }, []);
 
   useEffect(() => {
@@ -151,6 +154,10 @@ const Talk1 = ({ navigation }: any) => {
     dispatch(postEventCount(eventSet));
     setLoading(false);
   }, [eventSet, refreshing]);
+
+  useEffect(()=>{
+    setMonth(week.findIndex(x => x));
+  }, [week]);
 
   const change = (e) => { // 몇 주차 border, 글자두께 변경
     let arr = Array.from({ length: 12 }, () => { return false });
@@ -247,10 +254,10 @@ const Talk1 = ({ navigation }: any) => {
               <TouchableOpacity style={{ position: 'absolute', right: 0 }} onPress={() => yearCount('plus')}><Arrow_right fill='black' /></TouchableOpacity>
             </View>
             <View style={styles.headerBox2}>
-              <FlatList data={DATA2} renderItem={renderItem2}
-                ref={flatListRef} initialScrollIndex={week.findIndex(x => x) < 9 ? week.findIndex(x => x)+3 : 8}
+              {month == -1 ? '' : <FlatList data={DATA2} renderItem={renderItem2}
+                ref={flatListRef} initialScrollIndex={week.findIndex(x => x) < 7 ? month : 6}
                 keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
-              </FlatList>
+              </FlatList>}
             </View>
           </View>
           <View style={styles.main}>
