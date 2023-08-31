@@ -174,7 +174,7 @@ const Talk3 = ({navigation}) => {
   
 
   const renderItem = ({ item }) =>
-    item.appCount >= item.maxPeople || moment(item.registrationEndDate).diff(moment(), "days") < 0 ?
+    moment(item.registrationEndDate).diff(moment(), "days") < 0 ?
     (
       <TouchableOpacity style={[styles.mainBox, {opacity: 0.5}]} onPress={()=>navigation.navigate('체험단 상세페이지', item)}>
         <View style={styles.imageBox}>

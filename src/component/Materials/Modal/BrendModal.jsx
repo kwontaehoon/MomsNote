@@ -114,7 +114,6 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
 
     const dispatch = useDispatch();
     const [info, setInfo] = useState(); // 브랜드 list
-    console.log('info: ', info);
     const [selectBrand, setSelectBrand] = useState({
         needsId: null,
         needsBrandId: 0,
@@ -219,7 +218,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
             <TouchableOpacity style={[styles.mainBoxSub, {width: '40%', alignItems: 'flex-start'}]} onPress={()=>selectSubmit(item)}>
                 <Text style={{fontWeight: '500', marginBottom: 3}}>[{item.brandName}]</Text>
                 <Text style={{marginBottom: 3, color: '#757575'}} ellipsizeMode='tail' numberOfLines={1}>{item.productName}</Text>
-                <Text style={{color: '#9E9E9E'}}>구매 344건</Text>
+                <Text style={{color: '#9E9E9E'}}>구매 {item.buy}건</Text>
             </TouchableOpacity>
             <View style={[styles.mainBoxSub, {width: '36%', alignItems: 'flex-end'}]}>
                 <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 3}}>

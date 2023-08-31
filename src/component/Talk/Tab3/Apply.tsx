@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Check from '../../../../public/assets/svg/Check.svg'
 import ArrowRight from '../../../../public/assets/svg/Arrow-Right.svg'
+import ArrowBottom from '../../../../public/assets/svg/Arrow-Bottom.svg'
 
 import Modal from './Modal/AuthComplete'
 import Modal2 from './Modal/AuthFail'
@@ -18,6 +19,7 @@ import Modal6 from './Modal/Save'
 import Modal7 from './Modal/PhoneNumber'
 import Modal8 from './Modal/Complete'
 import Modal9 from './Modal/TelCheck'
+import SelectItem from './Modal/ItemSelect'
 
 import { useSelector } from 'react-redux'
 import {
@@ -55,6 +57,16 @@ const styles = StyleSheet.create({
     },
     mainBox:{
         marginBottom: 30,
+    },
+    inputBox:{
+        marginTop: 10,
+        borderWidth: 1,
+        height: 36,
+        marginBottom: 40,
+        display: 'flex',
+        justifyContent: 'center',
+        borderColor: '#E6E6E6',
+        position: 'relative'
     },
     textBox:{
         marginTop: 10,
@@ -143,6 +155,8 @@ const styles = StyleSheet.create({
 })
 const Withdraw = ({navigation, route}) => {
 
+    console.log('## route: ', route.params);
+
     const DATA = [
         {
           id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -166,6 +180,7 @@ const Withdraw = ({navigation, route}) => {
     const [telCheck, setTelCheck] = useState(null);
 
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
+    console.log('##: ', boardAppFlag);
 
     const [modal, setModal] = useState(false); // 핸드폰 인증 완료
     const [modal2, setModal2] = useState(false); // 핸드폰 인증 실패
@@ -176,6 +191,12 @@ const Withdraw = ({navigation, route}) => {
     const [modal7, setModal7] = useState(false); // 폰 넘버 갯수 11자이하
     const [modal8, setModal8] = useState(false); // 체험단 신청 완료
     const [modal9, setModal9] = useState(false); // 핸드폰 번호 중복
+    const [selectItemModal, setSelectItemModal] = useState({
+        open: false,
+        itemName: '',
+        itemCount: '',
+        selectItem: '',
+    }); // 상품갯수 선택 모달
     
     const [info, setInfo] = useState( // post info
         {
@@ -189,8 +210,6 @@ const Withdraw = ({navigation, route}) => {
             youtube: '',
         }
     );
-    console.log('info: ', info);
-
     const dispatch = useDispatch();
     const [minutes, setMinutes] = useState(parseInt(3));
     const [seconds, setSeconds] = useState(parseInt(0));
@@ -390,7 +409,18 @@ const Withdraw = ({navigation, route}) => {
                     </View>
                     <TextInput style={styles.textBox} placeholder='상세주소 입력' value={info.addressDetails} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, addressDetails: e }))}></TextInput>
                 </View>
+                
+                {!route?.params?.itemName || route?.params?.itemName?.length == 0 ? '' : 
+                <View>
+                    <Text style={{fontSize: 16, fontWeight: '500'}}>상품선택</Text>
+                    <TouchableOpacity style={styles.inputBox} onPress={()=>setSelectItemModal({...selectItemModal, open: true, itemName: route?.params?.itemName, itemCount: route?.params?.itemAmount})}>
+                        <Text style={{marginLeft: 10, color: '#A9B4B5', borderRadius: 20}}>{selectItemModal.selectItem == '' ? '상품을 선택해주세요.' : selectItemModal.selectItem}</Text>
+                        <View style={{position: 'absolute', right: 10}}><ArrowBottom fill='black' /></View>
+                    </TouchableOpacity>
+                </View>}
+
                 <View style={[styles.mainBox, {flexDirection: 'row', borderBottomWidth: 1, height: 40, borderColor: '#EEEEEE', marginBottom: 15}]}>
+                    
                 <Checkbox
                     style={styles.checkbox}
                     value={isChecked[0]}
@@ -445,6 +475,7 @@ const Withdraw = ({navigation, route}) => {
             <Modal7 modal7={modal7} setModal7={setModal7} />
             <Modal8 navigation={navigation} modal={modal8} setModal={setModal8} />
             <Modal9 modal={modal9} setModal={setModal9} />
+            {!route?.params?.itemName || route?.params?.itemName?.length == 0 ? '' :<SelectItem modal={selectItemModal} setModal={setSelectItemModal}/>}
             
 
             <FlatList data={DATA} renderItem={renderItem}

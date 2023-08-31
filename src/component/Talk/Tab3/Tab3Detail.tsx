@@ -207,10 +207,9 @@ const styles = StyleSheet.create({
 const Talk1Sub = ({navigation, route}) => {
 
     const info = route.params;
-    console.log('@@@@ info: ', info);
     const exp = useSelector(state => { return state.experience.data; });
     const [info2, setInfo2] = useState(exp);
-    console.log('@@@@ info2: ', info2);
+    console.log('## info2: ', info2);
 
     const DATA = [
         {
