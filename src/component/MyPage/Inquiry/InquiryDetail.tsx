@@ -33,15 +33,17 @@ const styles = StyleSheet.create({
 })
 const InquiryDetail = ({route}) => {
 
+    console.log('## inquiry route params: ', route.params);
+
     const renderItem = ({ item }) => (
         <View>
             <View style={styles.header}>
                 <View style={styles.statusBox}><Text style={{color: '#757575'}}>{item.status}</Text></View>
-                <Text style={{fontSize: 15, fontWeight: '600', marginBottom: 3, color: '#424242'}}>{item.title}</Text>
+                <Text style={{fontSize: 15, fontWeight: '600', marginBottom: 3, color: '#424242'}}>{item.title || item.inquiryTitle}</Text>
                 <Text style={{color: '#9E9E9E'}}>{moment(item.inquiryDate).format('YYYY/MM/DD')}</Text>
             </View>
             <View style={styles.main}>
-                <Text style={{lineHeight: 20}}>{item.contents}</Text>
+                <Text style={{lineHeight: 20}}>{item.contents || item.inquiryContents}</Text>
             </View>
             {item.answerDate == null ? <View></View> :
             <View style={styles.main2}>

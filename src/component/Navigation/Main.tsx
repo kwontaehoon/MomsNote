@@ -156,7 +156,7 @@ const Navigation = () => {
                             <View style={styles.header}>
                                 <View style={styles.headerBox}>
                                     <TouchableOpacity style={styles.iconBox} onPress={()=>navigation.goBack()}><Back/></TouchableOpacity>
-                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>공지사항</Text>
+                                    <Text style={{fontSize: 18, fontWeight: '600', paddingLeft: 5}}>1:1 문의</Text>
                                 </View>
                             </View>
                         ),

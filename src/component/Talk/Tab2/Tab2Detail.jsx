@@ -230,6 +230,8 @@ const styles = StyleSheet.create({
 })
 const Talk1Sub = ({navigation, route}) => {
 
+    console.log('## talk2 route: ', route.params);
+
     Keyboard.addListener('keyboardDidShow', () => {
         setPageHeight(true);
     });
@@ -285,16 +287,15 @@ const Talk1Sub = ({navigation, route}) => {
         },
     ];
 
-    console.log('앙');
-
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
     const info = [route.params];
-    console.log('출산리스트 route: ', info);
+    console.log('## 출산리스트 route: ', info, info[0].boardId);
     const info2 = useSelector(state => { return state.shareList.data }); // 게시글 리스트
     const materialShare = useSelector(state => { return state.materialShare.data });
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
     const [info3, setInfo3] = useState(useSelector(state => { return state.materialShare.data }));
+    console.log('## info3: ', info3);
 
     const user = useSelector(state => { return state.user.data; });
 
@@ -352,9 +353,7 @@ const Talk1Sub = ({navigation, route}) => {
             (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`)) : ''
         }
 
-        setTimeout(() => {
-            dispatch(postMaterialShare(materialShareSet));
-        }, 100);
+   
 
         hits();
     }, [isFocused]);
