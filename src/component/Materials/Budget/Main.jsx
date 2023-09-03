@@ -202,6 +202,7 @@ const Talk1Sub = ({navigation, route}) => {
   const animation = useRef(new Animated.Value(0)).current;
   const [test, setTest] = useState(); // 캡쳐 uri
   const [list, setList] = useState(Array.from({length: 8}, () => {return modal9 ? true : false})); // list display
+  console.log('## list: ', list);
   const [modalVisible2, setModalVisible2] = useState(false); // 공유 확인 유무 
   const [modalVisible3, setModalVisible3] = useState(false); // 공유 작성
   const [modalVisible4, setModalVisible4] = useState(false); // 공유 등록 확인
@@ -255,7 +256,7 @@ const Talk1Sub = ({navigation, route}) => {
           return true;
       }else return false;
   }); 
-  // setList(arr);
+  setList(arr);
   }, [info]);
 
   useEffect(()=>{

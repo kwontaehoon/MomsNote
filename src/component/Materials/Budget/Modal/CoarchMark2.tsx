@@ -13,6 +13,13 @@ import { postMaterial } from '../../../../Redux/Slices/MaterialSlice'
 
 import M1 from '../../../../../public/assets/svg/1.svg'
 import M2 from '../../../../../public/assets/svg/2.svg'
+import M3 from '../../../../../public/assets/svg/3.svg'
+import M4 from '../../../../../public/assets/svg/4.svg'
+import M5 from '../../../../../public/assets/svg/5.svg'
+import M6 from '../../../../../public/assets/svg/6.svg'
+import M7 from '../../../../../public/assets/svg/7.svg'
+import M8 from '../../../../../public/assets/svg/8.svg'
+import M9 from '../../../../../public/assets/svg/9.svg'
 import Close from '../.././../../../public/assets/svg/Close.svg'
 
 import Checkbox from 'expo-checkbox';
@@ -32,10 +39,6 @@ const styles = StyleSheet.create({
     elevation: 5,
     paddingTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
   },
-  modalContainer2: {
-    width: '80%',
-    borderRadius: 15,
-  },
   modalBox: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -48,7 +51,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 3,
-    marginBottom: 7,
+    marginBottom: 7
   },
   imageBox: {
     position: 'absolute',
@@ -60,7 +63,7 @@ const styles = StyleSheet.create({
     left: 50,
     top: 60,
     flexDirection: 'row',
-    height: 100
+    height: 100,
   },
   imageBox3: {
     position: 'absolute',
@@ -91,11 +94,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   Bottom: {
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   header: {
     justifyContent: 'flex-start',
-    padding: 18,
+    height: '10%',
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -106,7 +109,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   main: {
-    height: '70%',
+    height: '64%',
   },
   mainBox: {
     flexDirection: 'row',
@@ -145,7 +148,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   footer: {
-    height: '26.5%',
+    height: '26%',
   },
   footerBox: {
     padding: 15,
@@ -180,21 +183,41 @@ const Talk1Sub = ({ modal, setModal, setModal2 }) => {
       id: 0,
       title: '산모용품',
       icon: require('../../../../../public/assets/image/1.png'),
-    }, {
+    },
+    {
       id: 1,
       title: '수유용품',
       icon: require('../../../../../public/assets/image/2.png'),
     },
+    {
+      id: 2,
+      title: '위생용품',
+      icon: require('../../../../../public/assets/image/3.png'),
+    },
+    {
+      id: 3,
+      title: '목욕용품',
+      icon: require('../../../../../public/assets/image/4.png'),
+    },
+    {
+      id: 4,
+      title: '침구류',
+      icon: require('../../../../../public/assets/image/5.png'),
+    },
+    {
+      id: 5,
+      title: '아기의류',
+      icon: require('../../../../../public/assets/image/6.png'),
+    }
   ];
 
   const DATA2 = [
-    { needsName: '산모패드', itemName: '마더스베이비', itemPrice: 39900 },
-    { needsName: '양말', itemName: '마더스베이비', itemPrice: 39900 },
-    { needsName: '유두 보호 크림', itemName: '마더스베이비', itemPrice: 39900 },
-    { needsName: '손목 보호대', itemName: '마더스베이비', itemPrice: 39900 },
-    { needsName: '수유 브라', itemName: '마더스베이비', itemPrice: 39900 },
-    { needsName: '수유 나시', itemName: '마더스베이비', itemPrice: 39900 },
-    { needsName: '임부용 팬티', itemName: '마더스베이비', itemPrice: 39900 },
+    { needsName: '', itemName: '', itemBrand: '', itemPrice: null },
+    { needsName: '양말', itemName: '마더스베이비', itemBrand: '마더스베이비', itemPrice: 39900 },
+    { needsName: '유두 보호 크림', itemName: '마더스베이비', itemBrand: '마더스베이비', itemPrice: 39900 },
+    { needsName: '손목 보호대', itemName: '마더스베이비', itemBrand: '마더스베이비', itemPrice: 39900 },
+    { needsName: '수유 브라', itemName: '마더스베이비', itemBrand: '마더스베이비', itemPrice: 39900 },
+    { needsName: '수유 나시', itemName: '마더스베이비', itemBrand: '마더스베이비', itemPrice: 39900 },
   ]
 
   const info = useSelector(state => state.material.data);
@@ -202,7 +225,7 @@ const Talk1Sub = ({ modal, setModal, setModal2 }) => {
   const [isChecked, setIsChecked] = useState(false);
   const dispatch = useDispatch();
   const materialSet = useSelector(state => state.material.refresh);
-  const [list, setList] = useState(Array.from({ length: 8 }, () => { return false })); // list display
+  const [list, setList] = useState([true, false, false, false, false, false]); // list display
   const [modalVisible2, setModalVisible2] = useState(false); // 공유 확인 유무 
   const [modal5, setModal5] = useState({
     open: false,
@@ -236,14 +259,33 @@ const Talk1Sub = ({ modal, setModal, setModal2 }) => {
       : (setModal(false), setModal2(false));
   }
 
+  const SVGSelect = (e) => {
+    switch (e) {
+      case 0: return (<M1 />)
+      case 1: return (<M2 />)
+      case 2: return (<M3 />)
+      case 3: return (<M4 />)
+      case 4: return (<M5 />)
+      case 5: return (<M6 />)
+      case 6: return (<M7 />)
+      case 7: return (<M8 />)
+      case 8: return (<M9 />)
+    }
+  }
+
 
   const filtering = (e) => { // 품목 브랜드 가격 부분 none || flex
-
-    return (
+    if (info?.filter(x => x.category == e) == '') {
+      return (
+        <View style={{ height: 100, justifyContent: 'center', alignItems: 'center' }}>
+          <Text>선택된 품목이 없습니다.</Text>
+        </View>
+      )
+    } else return (
       <View style={styles.mainBox2}>
-        <View style={styles.filterBox}><Text></Text></View>
-        <View style={styles.filterBox}><Text></Text></View>
-        <View style={styles.filterBox}><Text></Text></View>
+        <View style={styles.filterBox}><Text>품목</Text></View>
+        <View style={styles.filterBox}><Text>브랜드</Text></View>
+        <View style={styles.filterBox}><Text>금액</Text></View>
       </View>
     )
   }
@@ -252,16 +294,52 @@ const Talk1Sub = ({ modal, setModal, setModal2 }) => {
   const List = ({ title }) => {
     let arr = [];
 
-    info?.filter((x, index) => {
+    DATA2?.filter((x, index) => {
       arr.push(
-        <TouchableOpacity style={styles.mainBox3} key={index}>
-          <View style={[styles.filterBox2, { justifyContent: 'flex-start' }]}>
-            <Text style={{ fontWeight: '500' }}></Text>
-          </View>
-          <View style={styles.filterBox2}><Text></Text></View>
-          <TouchableOpacity style={[styles.filterBox2, { justifyContent: 'flex-end' }]} onLongPress={() => setModal6(prevState => ({ ...prevState, open: true, content: x }))} delayLongPress={1500} activeOpacity={1}>
-            <Text style={{ fontWeight: '600' }}></Text>
-            <Text></Text>
+        <TouchableOpacity style={styles.mainBox3} delayLongPress={1500} activeOpacity={1} key={index}>
+          {index == 0 && <View>
+            <TouchableOpacity style={styles.mainBox3}>
+              <View style={styles.imageBox2}>
+                <View style={[styles.Top, { justifyContent: 'flex-start' }]}><Image source={require('../../../../../public/assets/coachmark/arrow8.png')} style={styles.image} resizeMode='contain' /></View>
+                <View style={styles.Bottom}>
+                  <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>꾸~욱 클릭하면</Text>
+                  <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>삭제가 가능해요!</Text>
+                </View>
+              </View>
+
+              <View style={{ backgroundColor: 'white', flexDirection: 'row', width: '67%', borderRadius: 10, borderStyle: 'dashed', borderWidth: 2, borderColor: '#FEA100', paddingLeft: 10 }}>
+                <View style={{ width: '50%', justifyContent: 'center', alignItems: 'flex-start' }}>
+                  <Text style={{ fontWeight: '500' }}>산모패드</Text>
+                </View>
+                <View style={{ width: '50%', justifyContent: 'center', alignItems: 'center' }}>
+                  <Text>마더스베이비</Text></View>
+              </View>
+
+              <TouchableOpacity style={[styles.filterBox2, { justifyContent: 'flex-end' }]}>
+
+                <View style={{ backgroundColor: 'white', flexDirection: 'row', padding: 10, borderRadius: 10, borderStyle: 'dashed', borderWidth: 2, borderColor: '#FEA100' }}>
+
+                  <View style={styles.imageBox}>
+                    <View style={styles.Top}><Image source={require('../../../../../public/assets/coachmark/arrow12.png')} style={styles.image} resizeMode='contain' /></View>
+                    <View style={styles.Bottom}>
+                      <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>꾸~욱 클릭하면 다른 맘의</Text>
+                      <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>브랜드 품목을 내 리스트에</Text>
+                      <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>담을 수 있어요!</Text>
+                    </View>
+                  </View>
+
+                  <Text style={{ fontWeight: '600' }}>39,900</Text>
+                  <Text> 원</Text>
+                </View>
+              </TouchableOpacity>
+            </TouchableOpacity>
+          </View>}
+
+          <View style={[styles.filterBox2, { justifyContent: 'flex-start' }]}><Text style={{ fontWeight: '500' }}>{x.needsName}</Text></View>
+          <View style={styles.filterBox2}><Text numberOfLines={2} style={{ lineHeight: 20 }}>{x.itemBrand == null ? '-' : x.itemBrand}</Text></View>
+          <TouchableOpacity style={[styles.filterBox2, { justifyContent: 'flex-end' }]} delayLongPress={1500} activeOpacity={1}>
+            <Text style={{ fontWeight: '600' }}>{x.itemPrice == null ? '0' : (x.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
+            <Text> 원</Text>
           </TouchableOpacity>
         </TouchableOpacity>
       )
@@ -273,30 +351,20 @@ const Talk1Sub = ({ modal, setModal, setModal2 }) => {
     <View>
       <View style={styles.mainBox}>
         <TouchableOpacity style={styles.arrowBox}
-          onPress={() => arrow(item.id)}>
+          onPress={() => arrow(item.id)}>{list[item.id] ? <Icon name="angle-down" size={22} /> : <Icon name='angle-up' size={22} />}
         </TouchableOpacity>
-        <View style={[styles.titleBox, { marginLeft: 8 }]}><Text style={{ fontSize: 16, fontWeight: '500' }}></Text></View>
+        {SVGSelect(index)}
+        <View style={[styles.titleBox, { marginLeft: 8 }]}><Text style={{ fontSize: 16, fontWeight: '500' }}>{item.title}</Text></View>
       </View>
-      <View style={{ display: list[item.id] ? 'none' : 'flex' }}>
-        {
-          filtering(item.title)
-        }
-        <TouchableOpacity style={styles.mainBox3}>
-          <View style={[styles.filterBox2, { justifyContent: 'flex-start' }]}><Text style={{ fontWeight: '500' }}></Text></View>
-          <View style={styles.filterBox2}><Text></Text></View>
-          <TouchableOpacity style={[styles.filterBox2, { justifyContent: 'flex-end' }]}>
-            <Text style={{ fontWeight: '600' }}></Text>
-            <Text></Text>
-          </TouchableOpacity>
-
-        </TouchableOpacity>
+      <View style={{ display: list[index] ? 'flex' : 'none' }}>
+        {filtering(item.title)}
         <List title={item.title} />
       </View>
     </View>
   );
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
+    <Modal animationType="fade" visible={modal} statusBarTranslucent={true}
       onRequestClose={() => { setModal(!modal) }}>
       <View style={styles.modalContainer}>
         <View style={styles.modalView}>
@@ -321,96 +389,44 @@ const Talk1Sub = ({ modal, setModal, setModal2 }) => {
             </View>
           </View>
 
-          <View>
-            <View style={styles.main}>
+          <View style={styles.main}>
+            <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false} scrollEnabled={false}
+              keyExtractor={item => item.id}>
+            </FlatList>
+          </View>
 
-              <View>
-                <View style={styles.mainBox}>
-                  <TouchableOpacity style={styles.arrowBox}></TouchableOpacity>
-                  <View style={[styles.titleBox, { marginLeft: 8 }]}><Text style={{ fontSize: 16, fontWeight: '500' }}></Text></View>
-                </View>
-                <View>
-                  {
-                    filtering('산모용품')
-                  }
-                  <TouchableOpacity style={styles.mainBox3}>
-
-                    <View style={styles.imageBox2}>
-                      <View style={[styles.Top, { justifyContent: 'flex-start' }]}><Image source={require('../../../../../public/assets/coachmark/arrow8.png')} style={styles.image} resizeMode='contain' /></View>
-                      <View style={styles.Bottom}>
-                        <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>꾸~욱 클릭하면</Text>
-                        <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>삭제가 가능해요!</Text>
-                      </View>
-                    </View>
-
-                    <View style={{ backgroundColor: 'white', flexDirection: 'row', width: '67%', borderRadius: 10, borderStyle: 'dashed', borderWidth: 2, borderColor: '#FEA100', paddingLeft: 10 }}>
-                      <View style={{ width: '50%', justifyContent: 'center', alignItems: 'flex-start' }}>
-                        <Text style={{ fontWeight: '500' }}>산모패드</Text>
-                      </View>
-                      <View style={{ width: '50%', justifyContent: 'center', alignItems: 'center' }}>
-                        <Text>마더스베이비</Text></View>
-                    </View>
-
-                    <TouchableOpacity style={[styles.filterBox2, { justifyContent: 'flex-end' }]}>
-
-                      <View style={{ backgroundColor: 'white', flexDirection: 'row', padding: 10, borderRadius: 10, borderStyle: 'dashed', borderWidth: 2, borderColor: '#FEA100' }}>
-
-                        <View style={styles.imageBox}>
-                          <View style={styles.Top}><Image source={require('../../../../../public/assets/coachmark/arrow12.png')} style={styles.image} resizeMode='contain' /></View>
-                          <View style={styles.Bottom}>
-                            <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>꾸~욱 클릭하면 다른 맘의</Text>
-                            <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>브랜드 품목을 내 리스트에</Text>
-                            <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>담을 수 있어요!</Text>
-                          </View>
-                        </View>
-
-                        <Text style={{ fontWeight: '600' }}>39,900</Text>
-                        <Text> 원</Text>
-                      </View>
-                    </TouchableOpacity>
-                  </TouchableOpacity>
-                  {/* <List title={item.title}/> */}
+          <View style={styles.footer}>
+            <View style={styles.footerBox}>
+              <View style={styles.arrowBox}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ fontSize: 18, fontWeight: '500' }}>0 원</Text>
+                  <Text></Text>
                 </View>
               </View>
-
-              <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false} scrollEnabled={false}
-                keyExtractor={item => item.id}>
-              </FlatList>
-
+              <Text style={{ fontSize: 18, fontWeight: '500' }}>총 예산</Text>
             </View>
-            <View style={styles.footer}>
-              <View style={styles.footerBox}>
-                <View style={styles.arrowBox}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={{ fontSize: 18, fontWeight: '500' }}></Text>
-                    <Text></Text>
-                  </View>
-                </View>
-                <Text style={{ fontSize: 18, fontWeight: '500' }}></Text>
-              </View>
-              <View style={[styles.footerBox, { padding: 5, paddingLeft: 20 }]}>
-                <View style={styles.arrowBox}></View>
-                <Text style={{ color: '#616161' }}></Text>
-              </View>
-              <View style={[styles.footerBox, { padding: 5, paddingLeft: 20 }]}>
-                <View style={styles.arrowBox}></View>
-                <Text style={{ color: '#616161' }}></Text>
-              </View>
-              <TouchableOpacity style={styles.buttonBox} onPress={() => setModalVisible2(!modalVisible2)}>
-
-                <View style={styles.imageBox3}>
-                  <View style={[styles.Top, { justifyContent: 'flex-end' }]}><Image source={require('../../../../../public/assets/coachmark/arrow9.png')} style={styles.image} resizeMode='contain' /></View>
-                  <View style={[styles.Bottom, { paddingTop: '30%' }]}>
-                    <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>내 출산준비물 리스트를</Text>
-                    <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>공유 및 비교해요!</Text>
-                  </View>
-                </View>
-
-                <View style={styles.button}>
-                  <Text style={{ color: 'white', fontWeight: '600', fontSize: 18 }}>출산 리스트 게시판 공유</Text>
-                </View>
-              </TouchableOpacity>
+            <View style={[styles.footerBox, { padding: 5, paddingLeft: 20 }]}>
+              <View style={styles.arrowBox}><Text>{(sumResult.sum).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</Text></View>
+              <Text style={{ color: '#616161' }}>ㄴ 구매 금액</Text>
             </View>
+            <View style={[styles.footerBox, { padding: 5, paddingLeft: 20 }]}>
+              <View style={styles.arrowBox}><Text>{(sumResult.exp).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</Text></View>
+              <Text style={{ color: '#616161' }}>ㄴ 구매 예정 금액</Text>
+            </View>
+            <TouchableOpacity style={styles.buttonBox} onPress={() => setModalVisible2(!modalVisible2)}>
+
+              <View style={styles.imageBox3}>
+                <View style={[styles.Top, { justifyContent: 'flex-end' }]}><Image source={require('../../../../../public/assets/coachmark/arrow9.png')} style={styles.image} resizeMode='contain' /></View>
+                <View style={[styles.Bottom, { paddingTop: '30%' }]}>
+                  <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>내 출산준비물 리스트를</Text>
+                  <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>공유 및 비교해요!</Text>
+                </View>
+              </View>
+
+              <View style={styles.button}>
+                <Text style={{ color: 'white', fontWeight: '600', fontSize: 18 }}>출산 리스트 게시판 공유</Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

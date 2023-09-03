@@ -100,18 +100,27 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     table: {
-        borderTopWidth:1,
-        borderLeftWidth:1,
-      },
-      tr: {
-        borderBottomWidth: 1,
-      },
-      td: {
-        borderRightWidth: 1,
-      },
-      p: {
+        borderWidth: 1
+    },
+    div: {
+        marginTop: 5,
+        marginBottom: 5
+    },
+    p: {
         alignSelf: 'flex-start',
-      },
+    },
+    strong: {
+
+    },
+    tbody: {
+
+    },
+    tr: {
+
+    },
+    td: {
+
+    }
       
   })
 

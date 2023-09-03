@@ -312,10 +312,6 @@ const optionBox = (e) => {
           <View style={[styles.filterBox, {width: '28%'}]}><Text>브랜드</Text></View>
         </View>
             <View style={[styles.main3BoxHeader]}>
-            <View style={[styles.filterBox, {width: '12%'}]}>  
-          <Checkbox
-              style={styles.checkbox}/>
-          </View>
           <TouchableOpacity style={[styles.filterBox, {flexDirection: 'row', justifyContent: 'flex-start', width: '60%'}]}>
             {optionBox('필수')}
             <View style={{backgroundColor: 'white', padding: 10, marginLeft: 15, borderRadius: 10, borderStyle: 'dashed', borderColor: '#FEA100', borderWidth: 2}}>
