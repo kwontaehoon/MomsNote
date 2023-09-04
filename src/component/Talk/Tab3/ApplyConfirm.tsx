@@ -134,6 +134,7 @@ const Withdraw = ({ navigation, route }) => {
                 data: { applicationId: info.data.applicationId }
             });
             console.log('체험단 신청 취소 response: ', response.data);
+            console.log('## response: ', response);
             navigation.goBack();
             setModal2(!modal2);
         } catch (error) {

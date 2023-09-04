@@ -180,7 +180,10 @@ const Withdraw = ({navigation, route}) => {
     const [telCheck, setTelCheck] = useState(null);
 
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
-    console.log('##: ', boardAppFlag);
+    console.log('## boardFlag: ', boardAppFlag);
+
+    const [appFlag, setAppFlag] = useState();
+    console.log('## appFlag: ', appFlag);
 
     const [modal, setModal] = useState(false); // 핸드폰 인증 완료
     const [modal2, setModal2] = useState(false); // 핸드폰 인증 실패
@@ -213,6 +216,26 @@ const Withdraw = ({navigation, route}) => {
     const dispatch = useDispatch();
     const [minutes, setMinutes] = useState(parseInt(3));
     const [seconds, setSeconds] = useState(parseInt(0));
+
+    useEffect(()=>{
+        const appFlag = async()=>{
+            const token = await AsyncStorage.getItem('token');
+            try {
+                const response = await axios({
+                    method: 'get',
+                    headers: { 
+                        'Authorization': `Bearer ${token}`, 
+                        'Content-Type': 'application/json'
+                      },
+                    url: 'https://momsnote.net/api/user/moreInfo',
+                });
+                setAppFlag(response.data.data);
+            } catch (error) {
+
+            }
+        }
+        appFlag();
+    }, []);
 
     useEffect(()=>{
         const load = async() => {

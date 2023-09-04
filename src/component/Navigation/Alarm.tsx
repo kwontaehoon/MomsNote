@@ -67,7 +67,7 @@ const Main = ({navigation}) => {
       if(item.category == '맘스 토크'){
         navigation.navigate('맘스토크 상세내용', {item: item});
       }else if(item.category == '출산리스트 공유'){
-        navigation.navigate('출산리스트 공유 상세내용', {...item});
+        navigation.navigate('출산리스트 공유 상세내용', item);
       }else if(item.type == '문의'){
         navigation.navigate('문의 상세', item);
       }

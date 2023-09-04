@@ -395,7 +395,7 @@ const Main = ({ navigation }) => {
     let arr = [];
     commentSearch?.filter((x, index) => {
       arr.push(
-        <TouchableOpacity style={styles.momstalk} key={index} onPress={() => navigation.navigate('맘스토크 상세내용', {item: x})}>
+        <TouchableOpacity style={styles.momstalk} key={index} onPress={() => x.category == '맘스 토크' ? navigation.navigate('맘스토크 상세내용', {item: x}) : navigation.navigate('출산리스트 공유 상세내용', x)}>
           <TouchableOpacity style={styles.dotBox} onPress={() => setModal(!modal)}><More /></TouchableOpacity>
           <Image source={{ uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/profile/${x.profileImage}` }} style={styles.profile} />
           <View>

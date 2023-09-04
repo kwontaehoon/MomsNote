@@ -229,7 +229,7 @@ const Talk1Sub = ({navigation, route}) => {
     const boardLikeFlagSet = useSelector(state => { return state.boardLikeFlag.refresh });
     const boardLikeSet = useSelector(state => { return state.boardLike.refresh });
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
-    console.log('boardAppFlag: ', boardAppFlag, info?.experienceId);
+    console.log('## boardAppFlag: ', boardAppFlag);
     const winList = useSelector(state => { return state.winList.data });
     const myExp = useSelector(state => { return state.myExp.data });
     
@@ -544,7 +544,7 @@ const Talk1Sub = ({navigation, route}) => {
         <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
     </View> :
     <TouchableOpacity style={styles.footerBox2} onPress={()=>
-       {myExp == 0 ?  setModalVisible(!modalVisible) : !async ? (setCompleteModal(!completeModal), submit()) : setModal4(!modal4); }}>
+       {!async ?  navigation.navigate('신청 정보', route.params) : setModal4(!modal4); }}>
        <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
     </TouchableOpacity>
    }
