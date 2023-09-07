@@ -18,12 +18,12 @@ const Main = ({navigation, route}) => {
   console.log('route: ', route);
 
     const REST_API_KEY = '5b53b00ed1940f2bd5a026d96a0ae0ce'; // 클라이언트 꺼
+    // const REST_API_KEY = '7d1cb1e652f5ee8aaffc2e7ce0547c9b'
     const REDIRECT_URI = 'https://momsnote.s3.ap-northeast-2.amazonaws.com/setting/splash.png';
 
     const runFirst = `window.ReactNativeWebView.postMessage("this is message from web")`;
 
     const kakaoTokenId = async(kakaoAcceess) => {
-      console.log(123);
       try{
         const response = await axios.get(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${kakaoAcceess}`);
         console.log('response: ', response);

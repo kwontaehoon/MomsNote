@@ -407,7 +407,7 @@ const Home = ({ navigation }) => {
                     <View style={[styles.mainBox3Sub, { width: '70%' }]}>
                         <View style={styles.DdayBox}>
                             <Text style={{ color: '#FE9000', fontSize: 24, fontWeight: '700', marginBottom: 3 }}>
-                                D-{mainData.dday} ({mainData.week}주차 {mainData.day}일)
+                                D{mainData.dday < 0 ? `+${String(mainData.dday).replace(/[^0-9]/g,'')}` : `-${mainData.dday}`} ({mainData.week}주차 {mainData.day}일)
                             </Text>
                             <Text style={{ color: '#424242', fontSize: 15 }}>
                                 예정일 : {moment(userInfo.dueDate).format("YYYY")}년 {moment(userInfo.dueDate).format("MM")}월 {moment(userInfo.dueDate).format("DD")}일</Text>

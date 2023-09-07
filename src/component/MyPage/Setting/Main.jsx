@@ -103,6 +103,7 @@ const Main = ({navigation}) => {
 
     const dispatch = useDispatch();
     const [isEnabled, setIsEnabled] = useState(Array.from({length: 3}, () => { return false })); // 스위치 토글
+    console.log('## isEnabled: ', isEnabled);
     const [clockDisplay, setClockDisplay] = useState(false); // 시작 종료 시간 display
     const [modalVisible, setModalVisible] = useState(false); // 알람 끄기 modal
     const [modalVisible2, setModalVisible2] = useState(false); // 로그아웃 modal
@@ -134,7 +135,6 @@ const Main = ({navigation}) => {
     useEffect(()=>{
         dispatch(postUser());
         const user2 = async() => {
-            console.log('user: ', user);
             setLoading(false);
 
             const arr = Array.from({length: 3}, () => {return false});
@@ -179,17 +179,18 @@ const Main = ({navigation}) => {
     }
 
     const toggleSwitch = async(e) => {
+        console.log('## e: ', e);
         let arr = [...isEnabled];
 
-        if(e === 0 && isEnabled[0]){
+        if(e == 0 && isEnabled[0]){
             setModal2(!modal2);
             return;
-        }else if(e === 0 && isEnabled[0] == false){
+        }else if(e === 0 && !isEnabled[0]){
             arr[0] = true;
             marketing(true);
         }
 
-        if(e === 1 && isEnabled[1]){
+        if(e == 1 && isEnabled[1]){
             setModalVisible(!modalVisible);
             await AsyncStorage.removeItem('activeAlarm');  
         }else if(e === 1 && isEnabled[1] == false){
@@ -204,6 +205,7 @@ const Main = ({navigation}) => {
             await AsyncStorage.setItem('alarmSetting', '1');
             arr[2] = true;
         }
+        console.log('## arr: ', arr);
         setIsEnabled(arr);
     }
   
@@ -233,6 +235,7 @@ const Main = ({navigation}) => {
     };
 
     const marketing = async(e) => {
+        console.log('#### e: ', e);
         const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
@@ -246,8 +249,9 @@ const Main = ({navigation}) => {
             });
 
             let arr= [...isEnabled];
-            e ? arr[0] = true : arr[0] = (false,setModal2(!modal2))
+            e ? arr[0] = true : (arr[0] = false, setModal2(!modal2))
             setIsEnabled(arr);
+            console.log('## response: ', response);
 
             }catch(error){
                 console.log('marketing axios error: ', error);

@@ -29,8 +29,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     main2ImageBox: {
-        maxWidth: 200,
+        maxWidth: 250,
         height: '100%',
+        borderWidth: 1
     },
     image:{
         width: '100%',
