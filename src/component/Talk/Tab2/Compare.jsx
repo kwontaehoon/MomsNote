@@ -196,7 +196,6 @@ const Talk1Sub = ({navigation, route}) => {
     const dispatch = useDispatch();
     const info = useSelector(state => { return state.shareList.data; });
     const material = useSelector(state => { return state.material.data; });
-    console.log('material: ', material);
     const [list, setList] = useState(Array.from({length: 9}, () => true)); // 게시글 list display
     const [userList, setUserList] = useState(Array.from({length: 9}, () => true));
     console.log('userList: ', userList);

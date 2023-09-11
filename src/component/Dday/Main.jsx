@@ -52,14 +52,19 @@ const Main = ({navigation}) => {
     const flatListRef = useRef();
     const dispatch = useDispatch();
     const user = useSelector(state => { return state.user.data; });
+    console.log('## user: ', user);
 
     const [filter, setFilter] = useState([true, false]); // filter tab 오늘의편지 or 이 시기에는?
-    const [week, setWeek] = useState(Array.from({length: 40}, () => { return false }));
+    const [week, setWeek] = useState([]);
+    console.log('## week: ', week);
 
     const [selectNumber, setSelectNumber] = useState(0);
 
     useEffect(()=>{
       dispatch(postUser());
+      // const arr = Array.from({length: 40}, () => false);
+      // arr[user.week] = true;
+      // setWeek(arr);
     }, []);
 
     useEffect(()=>{
@@ -117,7 +122,7 @@ const Main = ({navigation}) => {
           <View style={styles.header2Box2}> 
             <FlatList data={DATA3} renderItem={renderItem}
               ref={flatListRef}
-              initialScrollIndex={user?.week-1}
+              initialScrollIndex={10}
               keyExtractor={item => Number(item.id)} horizontal={true} showsHorizontalScrollIndicator={false}>
             </FlatList>
           </View>

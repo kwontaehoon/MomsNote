@@ -213,11 +213,11 @@ const Talk1Sub = ({ modal, setModal, setModal2 }) => {
 
   const DATA2 = [
     { needsName: '', itemName: '', itemBrand: '', itemPrice: null },
-    { needsName: '양말', itemName: '마더스베이비', itemBrand: '마더스베이비', itemPrice: 39900 },
-    { needsName: '유두 보호 크림', itemName: '마더스베이비', itemBrand: '마더스베이비', itemPrice: 39900 },
-    { needsName: '손목 보호대', itemName: '마더스베이비', itemBrand: '마더스베이비', itemPrice: 39900 },
-    { needsName: '수유 브라', itemName: '마더스베이비', itemBrand: '마더스베이비', itemPrice: 39900 },
-    { needsName: '수유 나시', itemName: '마더스베이비', itemBrand: '마더스베이비', itemPrice: 39900 },
+    { needsName: '양말', itemName: '무압박양말', itemBrand: '아르모엘', itemPrice: 2700 },
+    { needsName: '유두 보호 크림', itemName: '연고', itemBrand: '비판텐', itemPrice: 37840 },
+    { needsName: '손목 보호대', itemName: '손목보호대', itemBrand: '마더스케이', itemPrice: 12000 },
+    { needsName: '튼살크림', itemName: '아토팜 매터니티', itemBrand: '아토팜', itemPrice: 13790 },
+    { needsName: '산모복대', itemName: '산후목대', itemBrand: '마미즈', itemPrice: 25200 },
   ]
 
   const info = useSelector(state => state.material.data);

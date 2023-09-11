@@ -126,7 +126,6 @@ const Talk1Sub = ({route}) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => state.material.data);
-  console.log('나의 출산리스트: ', info);
   const [list, setList] = useState(Array.from({length: 8}, () => {return false})); // list display
   const [sumResult, setSumResult] = useState({
     sum: 0,
@@ -148,6 +147,14 @@ const Talk1Sub = ({route}) => {
       });
     }
     setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
+
+    const arr = DATA.map(x=>{
+      if((info.filter(y => x.title == y.category && y.id == 1).length == 0)){
+          return true;
+      }else return false;
+  }); 
+  setList(arr);
+  
   }, [info]);
 
   const arrow = (e) => { // arrow 누르면 서브페이지 display
@@ -159,7 +166,9 @@ const Talk1Sub = ({route}) => {
   const filtering = (e) => { // 품목 브랜드 가격 부분 none || flex
     if(info?.filter(x => x.category == e && x.id == 1) == ''){
       return(
-        <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}><Text>검색 결과가 없습니다.</Text></View>
+        <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}>
+          <Text>선택된 품목이 없습니다.</Text>
+        </View>
       )
     }else return(
         <View style={styles.mainBox2}>
