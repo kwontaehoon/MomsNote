@@ -46,6 +46,7 @@ import QnaReducer from '../Slices/QnaSlice'
 import HashTagReducer from '../Slices/HashTagSlice'
 import NeedsCountingReducer from '../Slices/NeedsCountingSlice'
 import NeedsCountingSelfReducer from '../Slices/NeedsCountingSelfSlice'
+import ApplyInfoReducer from '../Slices/ApplyInfoSlice'
 
 
 
@@ -97,6 +98,7 @@ export const store = configureStore({
     qna: QnaReducer,
     hashTag: HashTagReducer,
     needsCounting: NeedsCountingReducer,
-    needsCountingSelf: NeedsCountingSelfReducer
+    needsCountingSelf: NeedsCountingSelfReducer,
+    applyInfo: ApplyInfoReducer
   },
 })

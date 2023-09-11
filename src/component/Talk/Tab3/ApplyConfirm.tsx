@@ -123,7 +123,7 @@ const Withdraw = ({ navigation, route }) => {
     const [modal2, setModal2] = useState(false); // 취소
 
     useEffect(() => {
-        dispatch(postBoardAppFlag({ experienceId: 109 }));
+        dispatch(postBoardAppFlag({ experienceId: route.params.experienceId }));
     }, []);
 
     const submit = async () => {

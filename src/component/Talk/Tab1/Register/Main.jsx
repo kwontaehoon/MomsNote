@@ -185,6 +185,8 @@ const styles = StyleSheet.create({
 })
 const Register = ({ navigation, route }) => {
 
+    console.log('## route params: ', route.params);
+
     const boardSet = useSelector(state => { return state.board.refresh; });
 
     const DATA = [{ id: '0', title: '전체' }];
@@ -216,6 +218,7 @@ const Register = ({ navigation, route }) => {
     const [modalVisible2, setModalVisible2] = useState(false); // 취소시 모달창
     const [modal2Content, setModal2Content] = useState(false); // 완료시 모달 내용
     const [filter, setFilter] = useState(Array.from({ length: 5 }, () => { return false })); // 카테고리
+    console.log('## filter: ', filter);
     const [userInfo, setUserInfo] = useState();
     const user = useSelector(state => { return state.user.data; });
 
@@ -240,6 +243,10 @@ const Register = ({ navigation, route }) => {
             switch (typeof (route.params)) {
                 case 'string': setInfo(JSON.parse(asyncStorage)); break;
                 case 'object': {
+                    const arr = [...filter];
+                    arr[DATA2.findIndex(x=>x.title == route.params[0].subcategory)] = true;
+                    console.log('## arr: ', arr);
+                    setFilter(arr)
                     setInfo(prevState => ({
                         ...prevState, title: route.params[0].title, contents: route.params[0].contents,
                         imageFile: [],
@@ -252,19 +259,6 @@ const Register = ({ navigation, route }) => {
                 default: AsyncStorage.removeItem('momsTalk');
             }
             setUserInfo(JSON.parse(user));
-
-            if(route.params){
-                let arr = Array.from({ length: 5}, () => false);
-                switch(route.params[0].category){
-                    case '자유게시판': arr[0] = true; break;
-                    case '일상이야기': arr[1] = true; break;
-                    case '임신정보':  arr[2] = true; break;
-                    case '고민상담': arr[3] = true; break;
-                    case '질문게시판': arr[4] = true; break;
-                }
-                console.log('@@ arr: ', arr);
-                setFilter(arr);
-            }
         }
         load();
 

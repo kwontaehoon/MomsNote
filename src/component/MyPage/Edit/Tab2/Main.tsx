@@ -12,6 +12,10 @@ import {
     SafeAreaProvider,
     useSafeAreaInsets,
   } from 'react-native-safe-area-context';
+import { postApplyInfo } from '../../../../Redux/Slices/ApplyInfoSlice'
+import { useDispatch } from 'react-redux'
+import { postAlarm } from '../../../../Redux/Slices/AlarmSlice'
+import { postMyBoard } from '../../../../Redux/Slices/MyBoardSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -117,6 +121,8 @@ const styles = StyleSheet.create({
 })
 const Withdraw = ({navigation, route}) => {
 
+    const dispatch = useDispatch();
+
     const DATA = [
         {
           id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -126,16 +132,15 @@ const Withdraw = ({navigation, route}) => {
 
     console.log('## route: ', route);
 
-    const [isChecked, setChecked] = useState(Array.from({length: 3}, ()=>{ return false })); // check box
-
     const [SMSFlag, setSMSFlag] = useState({
         open: false,
         flag: 1 // 이미 인증했는지 검증
     }); // 본인인증 확인유무
     const [SMSNumber, setSMSNumber] = useState(); // SMS 번호
 
-    const [appFlag, setAppFlag] = useState();
+    const appFlag =  useSelector(state => { return state.applyInfo.data; });
     console.log('## appFlag: ', appFlag);
+
     const [SMSInputNumber, setSMSInputNumber] = useState(''); // 입력한 SMS 번호
 
     const [modal, setModal] = useState({
@@ -160,25 +165,8 @@ const Withdraw = ({navigation, route}) => {
     const [seconds, setSeconds] = useState(parseInt(0));
 
     useEffect(()=>{
-
-        const appFlag = async()=>{
-            const token = await AsyncStorage.getItem('token');
-            try {
-                const response = await axios({
-                    method: 'get',
-                    headers: { 
-                        'Authorization': `Bearer ${token}`, 
-                        'Content-Type': 'application/json'
-                      },
-                    url: 'https://momsnote.net/api/user/moreInfo',
-                });
-                setAppFlag(response.data.data);
-            } catch (error) {
-
-            }
-        }
-        appFlag();
-    }, []); 
+        dispatch(postApplyInfo());
+    }, []);
 
     useEffect(()=>{
         if(appFlag == 400){
