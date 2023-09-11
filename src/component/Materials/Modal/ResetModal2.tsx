@@ -89,24 +89,24 @@ const Main = ({modalVisible6, setModalVisible6, setMaterialFlag}) => {
                     'Authorization': `Bearer ${token}`, 
                     'Content-Type': 'application/json'
                   },
-                  data: {}
+                  data: {resetStatus: "recommend"}
                 });
+                console.log('## 추천 리스트 response: ', response);
             }catch(error){
               console.log('실제맘 추천 리스트 error: ', error);
             }
 
             try{
-                const response = await axios({ 
+                const response2 = await axios({ 
                   method: 'post',
-                  url: 'https://momsnote.net/api/needs/list/rec',
+                  url: 'https://momsnote.net/api/needs/list/reset/recommend',
                   headers: { 
                     'Authorization': `Bearer ${token}`, 
                     'Content-Type': 'application/json'
                   },
-                  data: {
-                    order: 'need'
-                  }
+                  data: {}
                 });
+                console.log('## 추천리스트 response2: ', response2);
             }catch(error){
               console.log('실제맘 추천 리스트 error: ', error);
             }
@@ -121,8 +121,9 @@ const Main = ({modalVisible6, setModalVisible6, setMaterialFlag}) => {
                     'Authorization': `Bearer ${token}`, 
                     'Content-Type': 'application/json'
                   },
-                  data: {}
+                  data: {resetStatus: "self"}
                 });
+                console.log('## 직접 작성 response: ', response);
             }catch(error){
               console.log('실제맘 추천 리스트 error: ', error);
             }
