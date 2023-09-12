@@ -506,8 +506,8 @@ const save = async() => {
               color={x.id == 0 ? undefined : '#FEB401'}
               onValueChange={()=>{
                 switch(true){
-                  case x.id == 0 && purchaseCheckBox == null : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: !x.needsBrandId ? x.needsId : x.needsBrandId, needsId: x.needsId})); break;
-                  case x.id == 0 : purchase(x.needsId, x.needsBrandId); break;
+                  case x.id == 0 && !purchaseCheckBox : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: !x.needsBrandId ? x.needsId : x.needsBrandId, needsId: x.needsId})); break;
+                  case x.id == 0 : console.log('앙'); purchase(x.needsId, !x.needsBrandId ? x.needsId : x.needsBrandId); break;
                   default : purchaseCencel(x.needsId);
                 }
               }}

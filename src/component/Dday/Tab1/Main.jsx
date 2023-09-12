@@ -34,8 +34,6 @@ const styles = StyleSheet.create({
 const Talk1 = ({navigation, week}) => {
 
   const [info, setInfo] = useState([]);
-  console.log('info: ', info);
-
   const [refreshing, setRefreshing] = useState(false);
 
     useEffect(()=>{

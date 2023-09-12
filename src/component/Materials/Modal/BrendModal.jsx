@@ -114,6 +114,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
 
     const dispatch = useDispatch();
     const [info, setInfo] = useState(); // 브랜드 list
+    console.log('## info: ', info, modalVisible2);
     const [selectBrand, setSelectBrand] = useState({
         needsId: null,
         needsBrandId: 0,
@@ -122,8 +123,6 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
         needsDataId: null,
         itemBrand: '',
     });
-
-    console.log('## info: ', info);
 
     const hashTag = useSelector(state => { return state.hashTag.data; });
 
@@ -175,21 +174,13 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
                     'Content-Type': 'application/json'
                   },
                 data: {
-                    needsId: selectBrand.needsId,
-                    needsBrandId: selectBrand.needsBrandId,
+                    needsId: x.needsId,
+                    needsBrandId: x.needsBrandId,
                     itemBrand: x.brandName,
                     itemName: x.productName,
                     itemPrice: x.price,
                     needsDataId: selectBrand.needsDataId
                 }
-            });
-            console.log('## response: ', {
-                needsId: selectBrand.needsId,
-                    needsBrandId: selectBrand.needsBrandId,
-                    itemBrand: x.brandName,
-                    itemName: x.productName,
-                    itemPrice: x.price,
-                    needsDataId: selectBrand.needsDataId
             });
             }catch(error){
                 console.log('comment axios error:', error)

@@ -195,11 +195,10 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = useSelector(state => { return state.shareList.data; });
+    console.log('## info: ', info);
     const material = useSelector(state => { return state.material.data; });
-    console.log('material: ', material);
     const [list, setList] = useState(Array.from({length: 9}, () => true)); // 게시글 list display
     const [userList, setUserList] = useState(Array.from({length: 9}, () => true));
-    console.log('userList: ', userList);
     const animation = useRef(new Animated.Value(0)).current;
     const [myList, setMyList] = useState(false);
 
@@ -220,8 +219,10 @@ const Talk1Sub = ({navigation, route}) => {
       open: false,
       needsId: null,
       needsBrandId: null,
-      needsName: ''
+      needsName: '',
+      itemPrice: null
     });
+
     const [modal2, setModal2] = useState(false); // 수정 내용 적용하시겠습니까 모달
 
     const [modal3, setModal3] = useState({ // 수정되었습니다 모달
@@ -296,7 +297,7 @@ const Talk1Sub = ({navigation, route}) => {
               needsId: e.needsId,
               needsBrandId: e.needsBrandId,
               itemName: e.itemName,
-              itemPrice: 0,
+              itemPrice: e.itemPrice,
               needsDataId: e.needsId,
               itemBrand: e.itemBrand,
             }
@@ -352,9 +353,9 @@ const Talk1Sub = ({navigation, route}) => {
               arr.push(
                    <TouchableOpacity style={styles.listMain2} onLongPress={()=>{
                     if(!x.itemBrand){
-                      setModal(prevState => ({...prevState, open: true, needsId: x.needsId, needsBrandId: x.needsBrandId, needsName: x.needsName}));
+                      setModal(prevState => ({...prevState, open: true, needsId: x.needsId, needsBrandId: x.needsBrandId, needsName: x.needsName, itemPrice: x.itemPrice}));
                     }else{
-                      setSelectBrand({...selectBrand, needsId: e.needsId, needsBrandId: e.needsBrandId, needsDataId: e.needsId, itemName: e.itemName, itemBrand: e.itemBrand});
+                      setSelectBrand({...selectBrand, needsId: e.needsId, needsBrandId: e.needsBrandId, needsDataId: e.needsId, itemName: e.itemName, itemBrand: e.itemBrand, itemPrice: x.itemPrice});
                       submit(x);
                     }
                    

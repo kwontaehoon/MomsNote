@@ -169,7 +169,6 @@ const Main = ({navigation, route}) => {
                 </TouchableOpacity>
 
                 { Platform.OS == 'ios' ? <TouchableOpacity style={[styles.footerBox, {backgroundColor: '#000000'}]} onPress={ async () => {
-                    console.log('@@@@ apple @@@@')
                         try {
                         const credential = await AppleAuthentication.signInAsync({
                             requestedScopes: [

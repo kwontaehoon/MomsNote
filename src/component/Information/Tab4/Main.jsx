@@ -80,7 +80,6 @@ const Talk1 = ({ navigation }) => {
         tab: 0,
         count: 0
     });
-    console.log('allCount: ', allCount);
 
     useEffect(() => {
         dispatch(postQna(qnaSet));

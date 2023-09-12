@@ -292,6 +292,7 @@ const Talk1Sub = ({navigation, route}) => {
     const info = [route.params];
     console.log('## 출산리스트 route: ', info, info[0].boardId);
     const info2 = useSelector(state => { return state.shareList.data }); // 게시글 리스트
+    console.log('## info2: ', info2);
     const materialShare = useSelector(state => { return state.materialShare.data });
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
     const [info3, setInfo3] = useState(useSelector(state => { return state.materialShare.data }));
@@ -566,6 +567,7 @@ const Talk1Sub = ({navigation, route}) => {
     const List2 = (e) => {
         let arr = [];
         info2.filter((x, index)=>{
+            console.log('##', x.itemPrice);
             if(x.category == e.title && x.buyStatus == 1){
                 arr.push(
                      <View style={styles.listMain2} key={index}>
