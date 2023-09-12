@@ -52,13 +52,18 @@ const Main = ({navigation}) => {
     const flatListRef = useRef();
     const dispatch = useDispatch();
     const user = useSelector(state => { return state.user.data; });
+    console.log('## user: ', user);
 
     const [filter, setFilter] = useState([true, false]); // filter tab 오늘의편지 or 이 시기에는?
-    const [week, setWeek] = useState(Array.from({length: 50}, () => { return false }));
+    const [week, setWeek] = useState([]);
+
     const [selectNumber, setSelectNumber] = useState(0);
 
     useEffect(()=>{
       dispatch(postUser());
+      // const arr = Array.from({length: 40}, () => false);
+      // arr[user.week] = true;
+      // setWeek(arr);
     }, []);
 
     useEffect(()=>{

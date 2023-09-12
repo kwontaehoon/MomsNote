@@ -274,7 +274,7 @@ const Main = ({navigation}) => {
             }
             AsyncStorage.setItem('login', '1');
             setModalVisible2(!modalVisible2);
-            navigation.navigate('초기접근');
+            navigation.reset({routes: [{name: "초기접근"}]});
     }
 
     const renderItem = ({ item }) => (
