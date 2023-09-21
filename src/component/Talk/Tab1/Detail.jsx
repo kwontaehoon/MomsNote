@@ -376,10 +376,11 @@ const Talk1Sub = ({navigation, route}) => {
     const ImageBox = () => {
         const arr = [];
         const a = (info[0].savedName.split('|')).filter(x => {
-            if(x.charAt(x.length-1) === '4'){ arr.push(x); }else return x;
+            return x;
         });
         
         const infoFiltering = [...arr, ...a];
+        console.log('### infoFiltering: ', infoFiltering);
         switch(true){
     
             case info[0].savedName.split('|').length == 1: return(

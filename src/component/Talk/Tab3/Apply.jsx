@@ -180,10 +180,10 @@ const Withdraw = ({navigation, route}) => {
     const [telCheck, setTelCheck] = useState(null);
 
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
-    console.log('## boardFlag: ', boardAppFlag);
+    console.log('### boardFlag: ', boardAppFlag);
 
     const [appFlag, setAppFlag] = useState();
-    console.log('## appFlag: ', appFlag);
+    console.log('### appFlag: ', appFlag);
 
     const [modal, setModal] = useState(false); // 핸드폰 인증 완료
     const [modal2, setModal2] = useState(false); // 핸드폰 인증 실패
@@ -213,6 +213,7 @@ const Withdraw = ({navigation, route}) => {
             youtube: '',
         }
     );
+    console.log('### info: ', info);
     const dispatch = useDispatch();
     const [minutes, setMinutes] = useState(parseInt(3));
     const [seconds, setSeconds] = useState(parseInt(0));
@@ -249,12 +250,11 @@ const Withdraw = ({navigation, route}) => {
                     asyncStorage == null ? '' : setInfo(JSON.parse(asyncStorage));
                 } break;
                 case typeof(route.params) == 'string': setInfo(prvState => ({...prvState, address: route.params})); break;
-                case async !== null && boardAppFlag.status == 200 : setInfo(boardAppFlag.data); break;
-                default: console.log('default');
+                default: setInfo(appFlag); break;
             }
         }
         load();
-    }, [route])
+    }, [route, appFlag]);
 
     useEffect(() => {
         const countdown = setInterval(() => {
@@ -359,15 +359,15 @@ const Withdraw = ({navigation, route}) => {
             <View style={styles.header}>
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>신청 정보</Text>
                 <TouchableOpacity style={styles.headerBox}><Icon name='close' size={20} onPress={()=>
-                    info.memberName == '' && info.tel == '' && info.blog == '' && info.youtube == '' && info.insta == '' &&
-                    info.address == '' && info.addressDetails == '' ? navigation.goBack() : setModal6(!modal6)
+                    info?.memberName == '' && info.tel == '' && info.blog == '' && info.youtube == '' && info.insta == '' &&
+                    info?.address == '' && info.addressDetails == '' ? navigation.goBack() : setModal6(!modal6)
                 }/>
                 </TouchableOpacity>
             </View>
             <View style={styles.main}>
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>이름</Text>
-                    <TextInput style={styles.textBox} placeholder='이름 입력' value={info.memberName} maxLength={8}
+                    <TextInput style={styles.textBox} placeholder='이름 입력' value={info?.memberName} maxLength={8}
                         onChangeText={(e) => {
                             if(e !== '÷' && e.match(regExp) == null && e.match(regNumber) == null){
                                 setInfo((prevState) => ({...prevState, memberName: e.replace(' ', '') }));
@@ -382,7 +382,7 @@ const Withdraw = ({navigation, route}) => {
                     </View> : ''}
 
                     <Text style={{fontSize: 16, fontWeight: '500'}}>연락처</Text>
-                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info.tel} keyboardType='number-pad' maxLength={11}
+                    <TextInput style={styles.textBox} placeholder='휴대폰 번호 입력(-제외)' value={info?.tel} keyboardType='number-pad' maxLength={11}
                          onChangeText={(e) => setInfo((prevState) => ({...prevState, tel: e}))}
                          onBlur={()=>check()}>
                     </TextInput>
@@ -410,14 +410,14 @@ const Withdraw = ({navigation, route}) => {
                 <View style={styles.mainBox}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>SNS 계정</Text>
                     <Text style={{color: 'red', marginTop: 5, fontWeight: '500'}}>리뷰에 사용할 계정은 계정 아이디(네이버는 블로그 주소 아이디)을 입력해주세요.</Text>
-                    <TextInput style={styles.textBox} placeholder='네이버 블로그' value={info.blog}
+                    <TextInput style={styles.textBox} placeholder='네이버 블로그' value={info?.blog}
                         onChangeText={(e) => setInfo((prevState) => ({
                             ...prevState, blog: e
                         }))}></TextInput>
-                    <TextInput style={styles.textBox} placeholder='인스타그램' value={info.insta}
+                    <TextInput style={styles.textBox} placeholder='인스타그램' value={info?.insta}
                         onChangeText={(e) => setInfo((prevState) => ({ ...prevState, insta: e }))}>
                     </TextInput>
-                    <TextInput style={styles.textBox} placeholder='유튜브' value={info.youtube}
+                    <TextInput style={styles.textBox} placeholder='유튜브' value={info?.youtube}
                         onChangeText={(e) => setInfo((prevState) => ({ ...prevState, youtube: e }))}>
                     </TextInput>
                 </View>
@@ -425,12 +425,12 @@ const Withdraw = ({navigation, route}) => {
                     <Text style={{fontSize: 16, fontWeight: '500'}}>배송지</Text>
                     <View>
                         <TouchableOpacity style={styles.textBox} activeOpacity={1} onPress={()=>navigation.navigate('주소 찾기')}>
-                            {info.address == '' ? <Text>주소 검색하기</Text>
-                            : <Text>{info.address}</Text>}
+                            {info?.address == '' ? <Text>주소 검색하기</Text>
+                            : <Text>{info?.address}</Text>}
                         </TouchableOpacity>
                         <View style={styles.postBox}><ArrowRight fill={'black'}/></View>
                     </View>
-                    <TextInput style={styles.textBox} placeholder='상세주소 입력' value={info.addressDetails} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, addressDetails: e }))}></TextInput>
+                    <TextInput style={styles.textBox} placeholder='상세주소 입력' value={info?.addressDetails} onChangeText={(e) => setInfo((prevState) => ({ ...prevState, addressDetails: e }))}></TextInput>
                 </View>
                 
                 {!route?.params?.itemName || route?.params?.itemName?.length == 0 ? '' : 
@@ -469,8 +469,8 @@ const Withdraw = ({navigation, route}) => {
                     <Text style={{color: '#EF1E1E', fontWeight: '600'}}>[필독] 캠페인 유의사항 및 제 3자 제공에 동의합니다.</Text>
                 </View>
                 <View style={[styles.mainBox, {alignItems: 'center'}]}>
-                    {info.memberName.trim() == '' || info.tel.trim() == '' || info.address.trim() == '' || info.addressDetails.trim() == '' ||
-                    (info.blog == '' && info.youtube == '' && info.insta == '') || SMSFlag.flag == 0 || !isChecked[0]
+                    {(info.memberName.trim() == '' || info.tel.trim() == '' || info.address.trim() == '' || info.addressDetails.trim() == '' ||
+                    (info.blog == '' && info.youtube == '' && info.insta == '') || SMSFlag.flag == 0 || !isChecked[0])
                     ?
                     <View style={styles.buttonBox}><Text style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>체험단 신청</Text></View>
                     : <TouchableOpacity style={[styles.buttonBox, {backgroundColor: '#FEA100'}]} onPress={submit}>
@@ -481,7 +481,7 @@ const Withdraw = ({navigation, route}) => {
         </View>
       );
 
-  return boardAppFlag == '' ? '' : (
+  return boardAppFlag == '' || !info ? '' : (
 
     <SafeAreaProvider>
             <SafeAreaView style={{ backgroundColor: 'white' }}>

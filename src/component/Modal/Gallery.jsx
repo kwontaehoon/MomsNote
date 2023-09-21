@@ -73,7 +73,9 @@ const styles = StyleSheet.create({
 
 const Gallery = ({navigation, route}) => {
 
+  console.log('### route: ', route.params);
   const [newArr, setNewArr] = useState();
+  console.log('### newArr: ', newArr);
 
   const FocusAwareStatusBar = () => {
     const isFocused = useIsFocused();
@@ -86,6 +88,7 @@ const Gallery = ({navigation, route}) => {
 
   useEffect(()=>{
     const arr = route.params[0].filter(x => x !== route.params[0][route.params[1]]);
+    console.log('### arr: ', arr);
     arr.unshift(route.params[0][route.params[1]]);
     setNewArr(arr);
   }, []);
@@ -105,8 +108,8 @@ const Gallery = ({navigation, route}) => {
 
       <Swiper style={styles.wrapper} showsButtons={false} dot={<View style={styles.dot}/>} activeDot={<View style={styles.dotActive}/>}>
         {newArr?.map((x) => {
+          console.log('### xxx: ', x);
           if(x.charAt(x.length-1) !== '4'){
-            console.log('a');
           return(
             <View style={styles.mainBox}>
               <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image} key={x} resizeMode='contain'/>
