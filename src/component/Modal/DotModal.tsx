@@ -49,6 +49,8 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({navigation, modal, setModal, modal2, setModal2, modal3, setModal3, modal6, setModal6, modal7, setModal7, commentsId, info}) => {
 
+    console.log('### dotmodal: ', info);
+
     const dispatch = useDispatch();
     const [userId, setUserId] = useState();
     const boardSet = useSelector(state => { return state.board.refresh; });

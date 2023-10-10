@@ -203,6 +203,7 @@ const Talk1Sub = ({navigation, route}) => {
     const dispatch = useDispatch();
     const boardInfo = useSelector(state => { return state.board.data });
     const [info, setInfo] = useState(useSelector(state => { return state.board.data } ));
+    console.log('### 맘스토크 info: ', info);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
@@ -380,7 +381,6 @@ const Talk1Sub = ({navigation, route}) => {
         });
         
         const infoFiltering = [...arr, ...a];
-        console.log('### infoFiltering: ', infoFiltering);
         switch(true){
     
             case info[0].savedName.split('|').length == 1: return(

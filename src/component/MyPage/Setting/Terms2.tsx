@@ -7,7 +7,10 @@ import ArrowRight from '../../../../public/assets/svg/Arrow-Right.svg'
 const styles = StyleSheet.create({
     container:{
       height: '100%',
-      backgroundColor: 'white',  
+      backgroundColor: 'white',
+      borderWidth: 3,
+      display: 'flex',
+      flexDirection: 'column'
     },
     header:{
       margin: 40,
@@ -21,6 +24,8 @@ const styles = StyleSheet.create({
       height: 100,
       alignItems: 'center',
       justifyContent: 'center',
+      borderWidth: 1,
+      flex: 1,
     },
     buttonBox:{
       borderWidth: 1,
@@ -67,10 +72,6 @@ const Terms1 = ({navigation}) => {
           <Text style={{fontSize: 16, lineHeight: 22}}>{info}</Text>
         </View>
         <View style={styles.footer}>
-          <TouchableOpacity style={styles.buttonBox} onPress={()=>navigation.navigate('이전 개인정보처리방침')}>
-            <Text>이전 개인정보처리방침 보기</Text>
-            <ArrowRight fill='black' width={16} height={16}/>
-          </TouchableOpacity>
         </View>
     </View>
     )

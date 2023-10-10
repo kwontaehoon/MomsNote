@@ -196,14 +196,15 @@ const styles = StyleSheet.create({
       },
       td: {
         borderRightWidth: 1,
+        
       },
       p:{
         alignSelf: 'flex-start',
-
+        
+        },
         strong:{
             borderWidth: 1
         }
-        },
     
 })
 const Talk1Sub = ({navigation, route}) => {

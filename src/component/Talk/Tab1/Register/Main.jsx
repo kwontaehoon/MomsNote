@@ -12,6 +12,7 @@ import moment from 'moment'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { postUser } from '../../../../Redux/Slices/UserSlice'
 import * as FileSystem from 'expo-file-system'
+import { Video } from 'expo-av'
 
 const styles = StyleSheet.create({
     container: {
@@ -218,7 +219,6 @@ const Register = ({ navigation, route }) => {
     const [modalVisible2, setModalVisible2] = useState(false); // 취소시 모달창
     const [modal2Content, setModal2Content] = useState(false); // 완료시 모달 내용
     const [filter, setFilter] = useState(Array.from({ length: 5 }, () => { return false })); // 카테고리
-    console.log('## filter: ', filter);
     const [userInfo, setUserInfo] = useState();
     const user = useSelector(state => { return state.user.data; });
 
@@ -233,7 +233,7 @@ const Register = ({ navigation, route }) => {
             video: [],
         }
     );
-    console.log('info: ', info);
+    console.log('### info: ', info, route.params);
 
     useEffect(() => {
         dispatch(postUser());
@@ -245,14 +245,11 @@ const Register = ({ navigation, route }) => {
                 case 'object': {
                     const arr = [...filter];
                     arr[DATA2.findIndex(x=>x.title == route.params[0].subcategory)] = true;
-                    console.log('## arr: ', arr);
                     setFilter(arr)
                     setInfo(prevState => ({
                         ...prevState, title: route.params[0].title, contents: route.params[0].contents,
-                        imageFile: [],
-                        video: []
-                        // imageFile: route.params[0].savedName.split('|').filter(x => x.charAt(x.length-1) == 'g'),
-                        // video: route.params[0].savedName.split('|').filter(x => x.charAt(x.length-1) == 4)
+                        imageFile: route.params[0].savedName.split('|').filter(x => x.charAt(x.length-1) == 'g'),
+                        video: route.params[0].savedName.split('|').filter(x => x.charAt(x.length-1) == 4)
                     })
                     )
                 }; break;
@@ -403,11 +400,22 @@ const Register = ({ navigation, route }) => {
 
         const token = await AsyncStorage.getItem('token');
         let data = new FormData();
-        data.append('subcategory', DATA2[filter.findIndex(x => x === true)].title);
+        data.append('subcategory', DATA2[filter.findIndex(x => x)].title);
         data.append('title', info.title);
         data.append('contents', info.contents);
-        route.params[0] !== undefined ? data.append('boardId', route.params[0].boardId) : ''
-        // data.append('files', {uri: info.video, name: 'board.mp4', type: 'video/mp4'});
+        route.params[0] ? data.append('boardId', route.params[0].boardId) : ''
+        
+        if (info.imageFile !== undefined) {
+            info.imageFile.filter(x => {
+                data.append('files', { uri: x, name: 'board.png', type: 'image/png' });
+            })
+        }
+
+        if (info.video !== undefined) {
+            info.video.filter(x => {
+                data.append('files', { uri: x, name: 'board.mp4', type: 'video/mp4' });
+            })
+        }
 
         try {
             const response = await axios({
@@ -536,7 +544,7 @@ const Register = ({ navigation, route }) => {
             <TouchableOpacity style={styles.close} onPress={() => close(index, 'image')}>
                 <Icon2 name='close' size={16} style={{ color: 'white' }} />
             </TouchableOpacity>
-            <Image source={{ uri: item }} style={{ width: 80, height: 80, borderRadius: 5 }} />
+            <Image source={{ uri: typeof (route.params) == 'object' ?  `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item}` : item }} style={{ width: 80, height: 80, borderRadius: 5 }} />
         </View>
     );
 
@@ -546,7 +554,7 @@ const Register = ({ navigation, route }) => {
                 <Icon2 name='close' size={16} style={{ color: 'white' }} />
             </TouchableOpacity>
             <View>
-                <Image source={{ uri: item }} style={{ width: 80, height: 80, borderRadius: 5, }} />
+                <Video source={{ uri: typeof (route.params) == 'object' ?  `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item}` : item }} style={{ width: 80, height: 80, borderRadius: 5 }} />
                 <View style={styles.start}>
                     <Icon name='play' size={17} style={{ color: 'white' }} />
                 </View>

@@ -7,7 +7,7 @@ import ArrowRight from '../../../../public/assets/svg/Arrow-Right.svg'
 const styles = StyleSheet.create({
     container:{
       height: '100%',
-      backgroundColor: 'white',  
+      backgroundColor: 'white',
     },
     header:{
       margin: 40,

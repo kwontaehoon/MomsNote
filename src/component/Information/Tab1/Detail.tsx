@@ -205,7 +205,7 @@ const Talk1Sub = ({navigation, route}) => {
                 </View>
                 {item.savedName === null ? '' : ImageBox()}
             </View>
-        </View>
+        </View>  
       );
 
 

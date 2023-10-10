@@ -103,11 +103,14 @@ const Main = ({navigation}) => {
 
     const dispatch = useDispatch();
     const [isEnabled, setIsEnabled] = useState(Array.from({length: 3}, () => { return false })); // 스위치 토글
-    console.log('## isEnabled: ', isEnabled);
+    console.log('### isEnabled: ', isEnabled);
     const [clockDisplay, setClockDisplay] = useState(false); // 시작 종료 시간 display
     const [modalVisible, setModalVisible] = useState(false); // 알람 끄기 modal
     const [modalVisible2, setModalVisible2] = useState(false); // 로그아웃 modal
-    const [modal2, setModal2] = useState(false); // 마케팅 수신동의
+    const [modal2, setModal2] = useState({
+        open: false,
+        content: false
+    }); // 마케팅 수신동의
     const [modal3, setModal3] = useState({
         open: '',
         clock: '',
@@ -135,6 +138,7 @@ const Main = ({navigation}) => {
     useEffect(()=>{
         dispatch(postUser());
         const user2 = async() => {
+            console.log('### userrr: ', modal2.content, user.marketing);
             setLoading(false);
 
             const arr = Array.from({length: 3}, () => {return false});
@@ -150,15 +154,15 @@ const Main = ({navigation}) => {
             const alarmEndHours = await  AsyncStorage.getItem('alarmEndHours');
             const alarmEndMinutes = await  AsyncStorage.getItem('alarmEndMinutes');
 
-            user.marketing ? arr[0] = true : '';
-            activeAlarm == null ? '' : arr[1] = true;
-            alarmSetting == null ? '' : arr[2] = true;
+            (modal2.content || !user.marketing) ? arr[0] = false : arr[0] = true;
+            !activeAlarm ? '' : arr[1] = true;
+            !alarmSetting ? '' : arr[2] = true;
 
             setIsEnabled(arr);
-            if(alarmStartHours !== null && alarmStartMinutes !== null){
+            if(alarmStartHours && alarmStartMinutes){
                 setModal3(prevState => ({...prevState, clock: alarmStartClock, hours: alarmStartHours, minutes: alarmStartMinutes}));
             }
-            if(alarmEndHours !== null && alarmEndMinutes !== null){
+            if(alarmEndHours && alarmEndMinutes){
                 setModal4(prevState => ({...prevState, clock: alarmEndClock, hours: alarmEndHours, minutes: alarmEndMinutes}));
             }
             setLoading(true);
@@ -179,11 +183,10 @@ const Main = ({navigation}) => {
     }
 
     const toggleSwitch = async(e) => {
-        console.log('## e: ', e);
         let arr = [...isEnabled];
 
         if(e == 0 && isEnabled[0]){
-            setModal2(!modal2);
+            setModal2({...modal2, open: !modal2.open});
             return;
         }else if(e === 0 && !isEnabled[0]){
             arr[0] = true;
@@ -205,37 +208,11 @@ const Main = ({navigation}) => {
             await AsyncStorage.setItem('alarmSetting', '1');
             arr[2] = true;
         }
-        console.log('## arr: ', arr);
+        console.log('### arr: ', arr);
         setIsEnabled(arr);
     }
-  
-    const onChange = (event, selectedDate) => {;
-
-        let Hours = selectedDate.getHours();
-        let Minutes = selectedDate.getMinutes();
-        
-        Hours = Hours < 10 ? `0${Hours}` : Hours;
-        Minutes = Minutes < 10 ? `0${Minutes}` : Minutes;
-       
-        
-        setShow(false);
-        if(clock === 'start'){
-            setAlarmStart(`${Hours}:${Minutes}`);
-        }else setAlarmEnd(`${Hours}:${Minutes}`);
-    };
-  
-    const showMode = (currentMode) => {
-      if (Platform.OS === 'android') {
-        setShow(false);
-        // for iOS, add a button that closes the picker
-      }else{
-        setShow(true);
-      }
-      setMode(currentMode);
-    };
 
     const marketing = async(e) => {
-        console.log('#### e: ', e);
         const token = await AsyncStorage.getItem('token');
         try{
             const response = await axios({
@@ -249,7 +226,7 @@ const Main = ({navigation}) => {
             });
 
             let arr= [...isEnabled];
-            e ? arr[0] = true : (arr[0] = false, setModal2(!modal2))
+            e ? arr[0] = true : (arr[0] = false, etModal2({...modal2, open: modal2.open}))
             setIsEnabled(arr);
             console.log('## response: ', response);
 
@@ -407,9 +384,9 @@ const Main = ({navigation}) => {
                 </View>
             </View>
         </Modal>
-        <Modal animationType="fade" transparent={true} visible={modal2} statusBarTranslucent={true}
+        <Modal animationType="fade" transparent={true} visible={modal2.open} statusBarTranslucent={true}
             onRequestClose={() => {
-            setModal2(!modal2)}}>
+            setModal2({...modal2, open: false})}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
@@ -417,8 +394,16 @@ const Main = ({navigation}) => {
                             <Text style={{fontSize: 16, lineHeight: 25, textAlign: 'center'}}>각종 이벤트 알림을 받으실 수 없습니다. 마케팅 수신동의를 해제하시겠습니까?</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal} onPress={()=>marketing(false)}><Text style={{color: 'white', fontSize: 16}}>해제</Text></TouchableOpacity>
-                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModal2(!modal2)}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
+                            <TouchableOpacity style={styles.modal} 
+                                onPress={()=>{
+                                    marketing(false);
+                                    const arr = [...isEnabled];
+                                    arr[0] = false;
+                                    setIsEnabled(arr);
+                                    setModal2({...modal2, open: false, content: true});
+                                    }}>
+                                <Text style={{color: 'white', fontSize: 16}}>해제</Text></TouchableOpacity>
+                            <TouchableOpacity style={[styles.modal, {backgroundColor: 'white', borderWidth: 1, borderColor: '#EEEEEE'}]} onPress={()=>setModal2({...modal2, open: false})}><Text style={{color: 'black', fontSize: 16}}>취소</Text></TouchableOpacity>
                         </View>
                     </View>
                 </View>
