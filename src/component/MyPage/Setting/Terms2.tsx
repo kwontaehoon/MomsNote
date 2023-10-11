@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
     container:{
       height: '100%',
       backgroundColor: 'white',
-      borderWidth: 3,
       display: 'flex',
       flexDirection: 'column'
     },
@@ -24,17 +23,25 @@ const styles = StyleSheet.create({
       height: 100,
       alignItems: 'center',
       justifyContent: 'center',
-      borderWidth: 1,
+      marginLeft: 20,
+      marginRight: 20,
       flex: 1,
     },
     buttonBox:{
-      borderWidth: 1,
-      width: 200,
+      width: '100%',
       height: 50,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
     },
+    button: {
+      flexDirection: 'row',
+      height: '100%',
+      borderWidth: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      flex: 1
+    }
 })
 const Terms1 = ({navigation}) => {
 
@@ -45,6 +52,8 @@ const Terms1 = ({navigation}) => {
     },
   ];
 
+  const [page, setPage] = useState(0);
+
   useEffect(()=>{
     const terms = async() => {
       const response = await axios({
@@ -52,13 +61,13 @@ const Terms1 = ({navigation}) => {
         url: 'https://momsnote.net/policy',
         data : {
           sort: "개인정보처리방침",
-          page: 0
+          page: page
       }
     });
-    setInfo(response?.data?.data?.policy);
+    setInfo(response?.data?.data);
     }
     terms();
-  }, []);
+  }, [page]);
 
   const [info, setInfo] = useState();
 
@@ -69,9 +78,19 @@ const Terms1 = ({navigation}) => {
           <Text style={{fontSize: 24, fontWeight: '700'}}>맘스노트 개인정보처리방침</Text>
         </View>
         <View style={styles.main}>
-          <Text style={{fontSize: 16, lineHeight: 22}}>{info}</Text>
+          <Text style={{fontSize: 16, lineHeight: 22}}>{info.policy}</Text>
         </View>
         <View style={styles.footer}>
+          <View style={styles.buttonBox}>
+            <TouchableOpacity style={[styles.button, {marginRight: 5}]} onPress={()=>page == 0 ? '' : setPage(page-1)}>
+              <Text style={{marginRight: 10}}>이전 이용약관 보기</Text>
+              <ArrowRight fill='black' width={16} height={16}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.button, {marginLeft: 5}]} onPress={()=> page+1 == info.count ? '' : setPage(page+1)}>
+              <Text style={{marginRight: 10}}>다음 이용약관 보기</Text>
+              <ArrowRight fill='black' width={16} height={16}/>
+            </TouchableOpacity>
+          </View>
         </View>
     </View>
     )

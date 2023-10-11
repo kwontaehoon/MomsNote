@@ -47,7 +47,7 @@ const Information = ({navigation, route}) => {
   const filter_func = (e) => {
     let y = Number(year);
     let month = moment().format('M');
-    if(month-9 <= 0){ month = '0' + (month); } else month += 1;
+    if(month < 10){ month = '0' + (month); }
 
     let arr = Array.from({length: 4}, () => {return false})
     arr[e] = true;

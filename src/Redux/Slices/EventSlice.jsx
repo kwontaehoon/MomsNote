@@ -16,9 +16,9 @@ export const postEvent = createAsyncThunk("postEventSlice/async", async (data) =
       }
 });
 
-let arr = moment().format('M')-1;
-if(arr-9 < 0){ arr = '0' + (arr+1); } else arr += 1;
-console.log('## arr: ', arr);
+let arr = moment().format('M');
+if(arr < 10){ arr = '0' + (arr+1); }
+console.log('### arr: ', arr);
 
 const initialState = {
     loading: false,
@@ -35,7 +35,7 @@ export const eventSlice = createSlice({
     initialState,
     reducers: {
       setEventRefresh:(state, action)=>{
-        console.log('## action.payload: ', action.payload.date, action.payload.count);
+        console.log('### action.payload: ', action.payload.date, action.payload.count);
         state.refresh.date = action.payload.date;
         state.refresh.count = action.payload.count;
       },

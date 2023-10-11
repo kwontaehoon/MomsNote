@@ -120,7 +120,7 @@ const Talk1 = ({ navigation }: any) => {
   const eventSet = useSelector(state => { return state.event.refresh });
   const info = useSelector(state => { return state.event.data; });
   const [year, setYear] = useState(moment().format('YYYY'));
-  const [week, setWeek] = useState([]);
+  const [week, setWeek] = useState(Array.from({ length: 12 }, () => { return false }));
   const infoCount = useSelector(state => { return state.eventCount.data; });
 
   const [loading, setLoading] = useState(false);
@@ -132,18 +132,14 @@ const Talk1 = ({ navigation }: any) => {
   const [month, setMonth] = useState(0);
 
   useEffect(() => {
-    const month = new Date().getMonth();
     const arr = Array.from({ length: 12 }, () => { return false });
-    if (!month) {
-      arr[moment().format('M')] = true;
-    } else arr[Number(month)] = true;
-
+    arr[eventSet.date.split('-')[1] -1] = true;
     setWeek(arr);
   }, []);
 
   useEffect(() => {
-    let arr = moment().format('M')-1;
-    if(arr-9 < 0){ arr = '0' + (arr+1); } else arr += 1;
+    let arr = moment().format('M')
+    if(arr < 10){ arr = '0' + (arr+1); }
 
     setLoading(true);
     dispatch(postEvent(eventSet));

@@ -21,15 +21,25 @@ const styles = StyleSheet.create({
       height: 100,
       alignItems: 'center',
       justifyContent: 'center',
+      marginLeft: 20,
+      marginRight: 20,
+      flex: 1,
     },
     buttonBox:{
-      borderWidth: 1,
-      width: 170,
+      width: '100%',
       height: 50,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
     },
+    button: {
+      flexDirection: 'row',
+      height: '100%',
+      borderWidth: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      flex: 1
+    }
 })
 const Terms1 = ({navigation}) => {
 
@@ -39,6 +49,8 @@ const Terms1 = ({navigation}) => {
       title: 'First Item',
     },
   ];
+
+  const [page, setPage] = useState(0);
 
   useEffect(()=>{
     const terms = async() => {
@@ -50,10 +62,10 @@ const Terms1 = ({navigation}) => {
           page: 0
       }
     });
-    setInfo(response?.data?.data?.policy);
+    setInfo(response?.data?.data);
     }
     terms();
-  }, []);
+  }, [page]);
 
   const [info, setInfo] = useState();
 
@@ -64,13 +76,19 @@ const Terms1 = ({navigation}) => {
           <Text style={{fontSize: 24, fontWeight: '700'}}>맘스노트 이용약관</Text>
         </View>
         <View style={styles.main}>
-          <Text style={{fontSize: 16, lineHeight: 22}}>{info}</Text>
+          <Text style={{fontSize: 16, lineHeight: 22}}>{info.policy}</Text>
         </View>
         <View style={styles.footer}>
-          <TouchableOpacity style={styles.buttonBox} onPress={()=>navigation.navigate('이전 이용약관')}>
-            <Text>이전 이용약관 보기</Text>
-            <ArrowRight fill='black' width={16} height={16}/>
-          </TouchableOpacity>
+          <View style={styles.buttonBox}>
+            <TouchableOpacity style={[styles.button, {marginRight: 5}]} onPress={()=>page == 0 ? '' : setPage(page-1)}>
+              <Text style={{marginRight: 10}}>이전 이용약관 보기</Text>
+              <ArrowRight fill='black' width={16} height={16}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.button, {marginLeft: 5}]} onPress={()=> page+1 == info.count ? '' : setPage(page+1)}>
+              <Text style={{marginRight: 10}}>다음 이용약관 보기</Text>
+              <ArrowRight fill='black' width={16} height={16}/>
+            </TouchableOpacity>
+          </View>
         </View>
     </View>
     )
