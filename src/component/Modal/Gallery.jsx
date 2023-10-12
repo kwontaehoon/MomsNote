@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Text, View, StyleSheet, Image, StatusBar, Button, TouchableOpacity, SafeAreaView, Platform } from 'react-native'
+import { Text, View, StyleSheet, Image, StatusBar, Button, TouchableOpacity, SafeAreaView, Platform, ActivityIndicator } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Swiper from 'react-native-swiper'
 import { useIsFocused } from '@react-navigation/native'
@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
   container:{
     backgroundColor: 'black',
     marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
+    height: '100%',
     borderWidth: 1,
   },
   header:{
@@ -73,27 +74,29 @@ const styles = StyleSheet.create({
 
 const Gallery = ({navigation, route}) => {
 
-  console.log('### route: ', route.params);
   const [newArr, setNewArr] = useState();
-  console.log('### newArr: ', newArr);
+
 
   const FocusAwareStatusBar = () => {
     const isFocused = useIsFocused();
     return isFocused ? <StatusBar backgroundColor='black' barStyle={'white'} /> : null;
   }
 
-  const video = React.useRef(null);
+  const [loading, setLoading] = useState(true);
 
-  const saveName = route.params[0];
+  const video = React.useRef(null);
 
   useEffect(()=>{
     const arr = route.params[0].filter(x => x !== route.params[0][route.params[1]]);
-    console.log('### arr: ', arr);
     arr.unshift(route.params[0][route.params[1]]);
-    setNewArr(arr);
+      setNewArr(arr);
+      route.params[0] = arr;
+      setLoading(false);
   }, []);
+  console.log('### newArr: ', route.params[0], newArr, loading);
 
-  return newArr && (
+  return !newArr && loading ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : 
+  (
     <SafeAreaProvider>
           <SafeAreaView style={{ backgroundColor: 'black' }}>
             <StatusBar />
@@ -106,9 +109,9 @@ const Gallery = ({navigation, route}) => {
         </View>
         <View style={styles.main}>
 
+      {
       <Swiper style={styles.wrapper} showsButtons={false} dot={<View style={styles.dot}/>} activeDot={<View style={styles.dotActive}/>}>
         {newArr?.map((x) => {
-          console.log('### xxx: ', x);
           if(x.charAt(x.length-1) !== '4'){
           return(
             <View style={styles.mainBox}>
@@ -119,10 +122,10 @@ const Gallery = ({navigation, route}) => {
               <View style={styles.mainBox}>
                 <Video source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}}
                   style={styles.image}
-                  useNativeControls
-                  resizeMode='cover'
+                  // useNativeControls
+                  resizeMode='contain'
                   ref={video}
-                  isLooping={false}
+                  isLooping={true}
                   />
               </View>
             )
@@ -130,7 +133,7 @@ const Gallery = ({navigation, route}) => {
         }
       )}
         
-      </Swiper>
+      </Swiper>}
         
         </View>
     </SafeAreaView>

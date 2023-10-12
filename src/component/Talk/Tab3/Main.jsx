@@ -189,7 +189,7 @@ const Talk3 = ({navigation}) => {
     ):(
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('체험단 상세페이지', item)}>
       <View style={styles.imageBox}>
-        { item.savedName !== null ?<Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} /> : ''}
+        { item.savedName ?<Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item.savedName.split('|')[0]}`}} style={{width: '100%', height: '100%', borderRadius: 8}} /> : ''}
       </View>
       <View style={styles.contentBox}>
         <View style={[styles.content, {justifyContent: 'flex-end'}]}><Text style={{color: '#FE9000', fontSize: 13, fontWeight: '600'}}>{dateFiltering(item)}</Text></View>

@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({ modal, setModal }) => {
 
-    console.log('## modal: ', modal);
+    console.log('### modal: ', modal);
 
     const itemName = modal.itemName.split('|');
     const itemCount = modal.itemCount.split('|');
@@ -75,13 +75,13 @@ const CheckBoxModal = ({ modal, setModal }) => {
                             </View>
                             {itemName.map((x, index) => {
                                 return (
-                                    <View key={index} style={styles.mainBox2} onPress={() => complete(0)}>
+                                    <View key={index} style={styles.mainBox2}>
                                         <TouchableOpacity style={[styles.checkBox, {backgroundColor: !filter[index] ? '#E6E6E6' : '#FE7000'}]} 
                                         onPress={()=>{
                                             const arr = Array.from({length: itemName?.length}, ()=>false);
                                             arr[index] = !arr[index];
                                             setFilter(arr);
-                                            setModal({...modal, open: false, selectItem: itemName[index]});
+                                            setModal({...modal, open: false, selectItem: itemName[index], selectCount: 1});
                                         }}>
                                             <Icon name="check" size={16} style={{color: !filter[index] ? 'white' : 'white'}} />
                                         </TouchableOpacity>
@@ -90,8 +90,12 @@ const CheckBoxModal = ({ modal, setModal }) => {
                                             const arr = [...filter];
                                             arr[index] = !arr[index];
                                             setFilter(arr);
-                                            setModal({...modal, open: false, selectItem: itemName[index]});
-                                        }}><Text>{x}</Text></TouchableOpacity>
+                                            setModal({...modal, open: false, selectItem: itemName[index], selectCount: 2});
+                                        }}><Text>{x}</Text>
+                                        </TouchableOpacity>
+                                        <View style={{marginLeft: 5}}>
+                                            <Text>{itemCount[index]}개</Text>
+                                        </View>
                                     </View>
                                 )
                             })}

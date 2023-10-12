@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, SafeAreaView, StatusBar, Platform } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, SafeAreaView, StatusBar, Platform, ActivityIndicator } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/AntDesign'
 import Checkbox from 'expo-checkbox'
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
 })
 const Withdraw = ({navigation, route}) => {
 
-    console.log('## route: ', route.params);
+    console.log('### route: ', route.params);
 
     const DATA = [
         {
@@ -199,7 +199,9 @@ const Withdraw = ({navigation, route}) => {
         itemName: '',
         itemCount: '',
         selectItem: '',
+        selectCount: '',
     }); // 상품갯수 선택 모달
+    console.log('### selectItemModal: ', selectItemModal);
     
     const [info, setInfo] = useState( // post info
         {
@@ -207,7 +209,7 @@ const Withdraw = ({navigation, route}) => {
             tel: '',
             address: '',
             addressDetails: '',
-            experienceId: Number(route.params.experienceId),
+            experienceId: '',
             blog: '',
             insta: '',
             youtube: '',
@@ -247,7 +249,7 @@ const Withdraw = ({navigation, route}) => {
                 case route.params == '신청 정보 불러오기': {
                     const asyncStorage = await AsyncStorage.getItem('application');
         
-                    asyncStorage == null ? '' : setInfo(JSON.parse(asyncStorage));
+                    !asyncStorage ? '' : setInfo(JSON.parse(asyncStorage));
                 } break;
                 case typeof(route.params) == 'string': setInfo(prvState => ({...prvState, address: route.params})); break;
                 default: setInfo(appFlag); break;
@@ -336,19 +338,22 @@ const Withdraw = ({navigation, route}) => {
     const submit = async() => {
         
         const token = await AsyncStorage.getItem('token');
+        console.log('###########: ', {...info, experienceId: Number(route.params.experienceId), itemName: selectItemModal.selectItem, itemAmount: selectItemModal.selectCount}, token);
         try{
             const response = await axios({
                 method: 'post',
                 url: 'https://momsnote.net/api/application/regi',
-                headers: { 
-                    'Authorization': `bearer ${token}`,
+                    headers: { 
+                    'Authorization': `Bearer ${token}`, 
                     'Content-Type': 'application/json'
                 },
-                data: info
+                data: {
+                    ...info, experienceId: Number(route.params.experienceId), itemName: selectItemModal.itemName, itemAmount: selectItemModal.itemCount
+                }
             });
             console.log('체험단 신청 response: ', response.data);
             AsyncStorage.setItem('applicationFlag', `${info.experienceId}`);
-            setModal8(!modal8);
+            // setModal8(!modal8);
         }catch(error){
             console.log('체험단 신청 error: ', error);
         }
@@ -481,7 +486,7 @@ const Withdraw = ({navigation, route}) => {
         </View>
       );
 
-  return boardAppFlag == '' || !info ? '' : (
+  return boardAppFlag == '' || !info ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/>  : (
 
     <SafeAreaProvider>
             <SafeAreaView style={{ backgroundColor: 'white' }}>

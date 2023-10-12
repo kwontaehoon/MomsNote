@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, SafeAreaView, StatusBar } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, SafeAreaView, StatusBar,BackHandler } from 'react-native'
 import Slick from 'react-native-slick'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import { WithLocalSvg } from "react-native-svg"
@@ -69,6 +69,17 @@ const Main = ({navigation, route}) => {
         if(route?.params == 'expire'){
             setModal(true);
         }
+
+        const backAction = () => {
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+
+        return () => backHandler.remove();
     }, []);
 
     WebBrowser.maybeCompleteAuthSession();
@@ -126,6 +137,7 @@ const Main = ({navigation, route}) => {
                 AsyncStorage.setItem('login', '2');
             }else if(response2.data.status == 'expire'){
                 setModal(!modal);
+                return;
             }else{
                 navigation.navigate('추가 정보 입력', ['google', response.data.sub, response.data.email]);
             }

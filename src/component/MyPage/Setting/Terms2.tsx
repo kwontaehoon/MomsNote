@@ -83,11 +83,11 @@ const Terms1 = ({navigation}) => {
         <View style={styles.footer}>
           <View style={styles.buttonBox}>
             <TouchableOpacity style={[styles.button, {marginRight: 5}]} onPress={()=>page == 0 ? '' : setPage(page-1)}>
-              <Text style={{marginRight: 10}}>이전 이용약관 보기</Text>
+              <Text style={{marginRight: 10}}>이전 개인정보처리방침 보기</Text>
               <ArrowRight fill='black' width={16} height={16}/>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.button, {marginLeft: 5}]} onPress={()=> page+1 == info.count ? '' : setPage(page+1)}>
-              <Text style={{marginRight: 10}}>다음 이용약관 보기</Text>
+              <Text style={{marginRight: 10}}>다음 개인정보처리방침 보기</Text>
               <ArrowRight fill='black' width={16} height={16}/>
             </TouchableOpacity>
           </View>

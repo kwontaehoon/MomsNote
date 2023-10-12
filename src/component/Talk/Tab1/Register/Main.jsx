@@ -248,8 +248,8 @@ const Register = ({ navigation, route }) => {
                     setFilter(arr)
                     setInfo(prevState => ({
                         ...prevState, title: route.params[0].title, contents: route.params[0].contents,
-                        imageFile: route.params[0].savedName.split('|').filter(x => x.charAt(x.length-1) == 'g'),
-                        video: route.params[0].savedName.split('|').filter(x => x.charAt(x.length-1) == 4)
+                        imageFile: !route?.params[0]?.savedName ? '' : route?.params[0]?.savedName.split('|').filter(x => x.charAt(x.length-1) == 'g'),
+                        video: !route?.params[0]?.savedName ? '' : route?.params[0]?.savedName.split('|').filter(x => x.charAt(x.length-1) == 4)
                     })
                     )
                 }; break;
