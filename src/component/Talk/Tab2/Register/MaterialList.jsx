@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndi
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSelector, useDispatch } from 'react-redux'
 import { postMaterial } from '../../../../Redux/Slices/MaterialSlice'
+import DotModal from '../Modal/DotModal'
 
 import M1 from '../../../../../public/assets/svg/1.svg'
 import M2 from '../../../../../public/assets/svg/2.svg'
@@ -132,6 +133,11 @@ const Talk1Sub = ({route}) => {
     exp: 0
   });
 
+  const [modal, setModal] = useState({
+    open: false,
+    content: null,
+  }); // onLongPress dot 품목삭제 모달
+
   useEffect(()=>{
     dispatch(postMaterial({ order: 'buy' }));
   }, []);
@@ -199,14 +205,14 @@ const Talk1Sub = ({route}) => {
     info?.filter((x, index)=>{
       if(x.category == title && x.deleteStatus == 1 && x.id == 1){
               arr.push(
-        <View style={styles.mainBox3} key={index}>
+        <TouchableOpacity style={styles.mainBox3} onLongPress={()=>setModal(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1} key={index}>
             <View style={[styles.filterBox2, {justifyContent: 'flex-start'}]}><Text style={{fontWeight: '500'}}>{x.needsName}</Text></View>
             <View style={styles.filterBox2}><Text style={{textAlign: 'center', lineHeight: 20}}>{!x.itemBrand ? '-' : x.itemBrand}</Text></View>
             <View style={[styles.filterBox2, {justifyContent: 'flex-end'}]}>
               <Text style={{fontWeight: '600'}}>{x.itemPrice == null ? 0 : (x.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
               <Text> 원</Text>
             </View>
-        </View>
+        </TouchableOpacity>
       )}
     })
 
@@ -233,6 +239,9 @@ const Talk1Sub = ({route}) => {
 
   return info == '' || info == '0' ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <View style={styles.container}>
+
+    <DotModal modal={modal} setModal={setModal} />
+
       <View style={styles.main}>
         <View></View>
         <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}

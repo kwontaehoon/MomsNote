@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     table: {
-        borderWidth: 1
+        height: '100%'
     },
     div: {
         marginTop: 5,
@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
     },
     p: {
         alignSelf: 'flex-start',
+        // width: '100%'
     },
     strong: {
 
@@ -115,11 +116,16 @@ const styles = StyleSheet.create({
     tbody: {
 
     },
+    img:{
+    },
     tr: {
-
+        
     },
     td: {
-
+        borderWidth: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
       
   })

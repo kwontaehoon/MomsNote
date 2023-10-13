@@ -44,9 +44,9 @@ const styles = StyleSheet.create({
     }
 })
 
-const CheckBoxModal = ({modal5, setModal5}) => {
+const CheckBoxModal = ({modal, setModal}) => {
 
-    console.log('### modal5: ', modal5);
+    console.log('### modal: ', modal);
 
     const dispatch = useDispatch();
 
@@ -60,7 +60,7 @@ const CheckBoxModal = ({modal5, setModal5}) => {
                   'Authorization': `bearer ${token}`, 
                   'Content-Type': 'application/json'
                 },
-                data: { needsId: modal5.content.needsId }
+                data: { needsId: modal.content.needsId }
                 });
             }catch(error){
               console.log('error: ', error);
@@ -68,13 +68,13 @@ const CheckBoxModal = ({modal5, setModal5}) => {
         dispatch(postMaterial({
             order: 'need'
         }));
-        setModal5(prevState => ({...prevState, open: false}));
+        setModal(prevState => ({...prevState, open: false}));
     }
 
   return (
-    <Modal animationType="fade" transparent={true} visible={modal5.open} statusBarTranslucent={true}
+    <Modal animationType="fade" transparent={true} visible={modal.open} statusBarTranslucent={true}
             onRequestClose={() => {
-            setModal5(prevState => ({...prevState, open: true}))}}>
+            setModal(prevState => ({...prevState, open: true}))}}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
@@ -82,7 +82,7 @@ const CheckBoxModal = ({modal5, setModal5}) => {
                             <Text style={{color: '#F23737', fontWeight: '600', fontSize: 20}}>품목 삭제</Text>
                        </TouchableOpacity>
                        <View style={{height: 10}}></View>
-                       <TouchableOpacity style={styles.footer} onPress={()=>setModal5(prevState => ({...prevState, open: false}))} activeOpacity={1}>
+                       <TouchableOpacity style={styles.footer} onPress={()=>setModal(prevState => ({...prevState, open: false}))} activeOpacity={1}>
                             <Text style={{color: '#1E88E5', fontWeight: '600', fontSize: 20}}>취소</Text>
                         </TouchableOpacity>
                     </View>

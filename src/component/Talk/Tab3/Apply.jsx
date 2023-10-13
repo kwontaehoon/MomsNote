@@ -348,12 +348,13 @@ const Withdraw = ({navigation, route}) => {
                     'Content-Type': 'application/json'
                 },
                 data: {
-                    ...info, experienceId: Number(route.params.experienceId), itemName: selectItemModal.itemName, itemAmount: selectItemModal.itemCount
+                    ...info, experienceId: Number(route.params.experienceId), itemName: selectItemModal.itemName, itemAmount: selectItemModal.selectCount
+
                 }
             });
             console.log('체험단 신청 response: ', response.data);
             AsyncStorage.setItem('applicationFlag', `${info.experienceId}`);
-            // setModal8(!modal8);
+            setModal8(!modal8);
         }catch(error){
             console.log('체험단 신청 error: ', error);
         }
