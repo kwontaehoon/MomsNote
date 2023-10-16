@@ -8,6 +8,7 @@ import { useIsFocused } from '@react-navigation/native'
 import { postEvent, setEventRefresh } from '../../Redux/Slices/EventSlice'
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
+import ScrollTest from './Tab1/ScrollTest'
 
 const styles = StyleSheet.create({
   container:{
@@ -66,7 +67,7 @@ const Information = ({navigation, route}) => {
 
   const List = ({navigation}):any => {
     switch(true){
-        case filter[0] === true: return <Tab1 navigation={navigation}/>
+        case filter[0] === true: return <ScrollTest navigation={navigation}/>
         case filter[1] === true: return <Tab2 navigation={navigation}/>
         case filter[2] === true: return <Tab3 navigation={navigation}/>
         case filter[3] === true: return <Tab4 navigation={navigation}/>
@@ -76,8 +77,11 @@ const Information = ({navigation, route}) => {
   return (
     <View style={styles.container}>
         <View style={styles.header}>
-            <TouchableOpacity style={[styles.headerBox, {borderBottomColor: filter[0] ? 'orange' : '#ECEFF1'}]} onPress={()=>filter_func(0)}>
+            {/* <TouchableOpacity style={[styles.headerBox, {borderBottomColor: filter[0] ? 'orange' : '#ECEFF1'}]} onPress={()=>filter_func(0)}>
                 <Text style={{fontWeight: 'bold', fontSize: 16, color: filter[0] ? 'orange' : '#BDBDBD'}}>맘스가이드</Text>
+            </TouchableOpacity> */}
+            <TouchableOpacity style={[styles.headerBox, {borderBottomColor: filter[0] ? 'orange' : '#ECEFF1'}]} onPress={()=>filter_func(0)}>
+                <Text style={{fontWeight: 'bold', fontSize: 16, color: filter[0] ? 'orange' : '#BDBDBD'}}>스크롤 테스트</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.headerBox, {borderBottomColor: filter[1] ? 'orange' : '#ECEFF1'}]} onPress={()=>filter_func(1)}>
                 <Text style={{fontWeight: 'bold', fontSize: 16, color: filter[1] ? 'orange' : '#BDBDBD'}}>행사 정보</Text>

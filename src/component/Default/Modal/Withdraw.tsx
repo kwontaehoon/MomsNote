@@ -48,7 +48,7 @@ const NoticeModal = ({navigation, route, modal, setModal}) => {
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
                         <View style={styles.modalBox}>
-                            <Text style={{fontSize: 16, paddingTop: 10}}>동일 계정 로그인은 탈퇴하고 7일 후 가입 가능합니다.</Text>
+                            <Text style={{fontSize: 16, paddingTop: 10}}>동일 계정 로그인은 탈퇴하고 3일 후 가입 가능합니다.</Text>
                         </View>
                         <View style={styles.modalBox}>
                             <TouchableOpacity style={styles.modal} onPress={()=>{

@@ -171,7 +171,6 @@ const Talk1 = ({navigation}) => {
 
 
   const change = async(e) => { // 카테고리 배경색상, 글자 색상 변경
-    console.log('e: ', DATA[e].title);
     await AsyncStorage.setItem('momsInfoTab', DATA[e].title);
     let arr = Array.from({length: 6}, () => {return false});
     arr[e] = !arr[e];

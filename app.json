@@ -2,7 +2,7 @@
   "expo": {
     "name": "맘스노트",
     "slug": "Project1Type",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "orientation": "portrait",
     "scheme": "com.momsnote2",
     "icon": "./public/assets/image/1024icon.png",
@@ -20,7 +20,11 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.momsnote"
+      "bundleIdentifier": "com.momsnote",
+      "infoPlist": { 
+        "NSPhotoLibraryAddUsageDescription": "We needs photo library permissions to allow you to upload profile images.",
+        "NSPhotoLibraryUsageDescription": "We needs photo library permissions to allow you to upload profile images."
+      }
     },
     
     "android": {
@@ -29,7 +33,7 @@
         "backgroundColor": "#FAA61A"
       },
       "package": "com.momsnote2",
-      "versionCode": 5,
+      "versionCode": 6,
       "googleServicesFile": "./google-services.json"
       
     },

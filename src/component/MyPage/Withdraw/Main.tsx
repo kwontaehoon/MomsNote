@@ -119,7 +119,7 @@ const Main = ({navigation}) => {
             <View style={styles.mainBox}>
                 <Text style={{fontWeight: 'bold', fontSize: 15, marginBottom: 10}}>[회원 탈퇴 시 유의사항]</Text>
                 <Text style={{marginBottom: 15, lineHeight: 20}}><Icon name='dot-single' size={15}/>
-                    탈퇴 후 7일 동안 동일 이메일로 재가입이 불가합니다.
+                    탈퇴 후 3일 동안 동일 이메일로 재가입이 불가합니다.
                 </Text>
             </View>
             <View style={styles.mainBox}>
