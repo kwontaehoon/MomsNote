@@ -195,10 +195,10 @@ const Talk1Sub = ({navigation, route}) => {
 
     const dispatch = useDispatch();
     const info = useSelector(state => { return state.shareList.data; });
-    console.log('## info: ', info);
     const material = useSelector(state => { return state.material.data; });
     const [list, setList] = useState(Array.from({length: 9}, () => true)); // 게시글 list display
     const [userList, setUserList] = useState(Array.from({length: 9}, () => true));
+    console.log('### userList: ', userList);
     const animation = useRef(new Animated.Value(0)).current;
     const [myList, setMyList] = useState(false);
 
@@ -239,7 +239,7 @@ const Talk1Sub = ({navigation, route}) => {
 
   useEffect(()=>{
     dispatch(postMaterial({ order: 'need'}));
-    dispatch(postShareList({ boardId: route.params.boardId }))
+    dispatch(postShareList({ boardId: route.params.boardId }));
   }, [modal4, modal]);
 
   useEffect(()=>{
@@ -272,7 +272,7 @@ const Talk1Sub = ({navigation, route}) => {
       }else return false;
   }); 
   setUserList(arr2);
-}, [info]);
+}, [info, material]);
 
 
   useEffect(()=>{
@@ -286,11 +286,11 @@ const Talk1Sub = ({navigation, route}) => {
   const submit = async(e) => {
     const token = await AsyncStorage.getItem('token');
     try{
-        const response = await axios({
+        await axios({
             method: 'post',
             url: 'https://momsnote.net/api/needs/add/brand',
             headers: { 
-                'Authorization': `bearer ${token}`, 
+                'Authorization': `bearer ${token}`,  
                 'Content-Type': 'application/json'
               },
             data: {
@@ -305,7 +305,24 @@ const Talk1Sub = ({navigation, route}) => {
         }catch(error){
             console.log('comment axios error:', error)
         }
-        dispatch(postMaterial({order: 'need'}));
+
+    try{
+      await axios({
+          method: 'post',
+          url: 'https://momsnote.net/api/needs/buy/needs',
+          headers: { 
+            'Authorization': `bearer ${token}`,  
+            'Content-Type': 'application/json'
+          },
+          data: {
+            needsBrandId: e.needsBrandId,
+            needsId: e.needsId
+          }
+      });
+      }catch(error){
+          console.log('출산준비물 구매 error:', error);
+      }
+      dispatch(postMaterial({ order: 'need'}));
       setModal3(prevState => ({...prevState, open: true, content: '출산리스트가 수정되었습니다.', buttonCount: 1}));
 }
 

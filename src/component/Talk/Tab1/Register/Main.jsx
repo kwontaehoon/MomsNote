@@ -346,7 +346,7 @@ const Register = ({ navigation, route }) => {
             case filter.filter(x => x === true).length === 0: setModal2Content('카테고리를 선택해주세요.'); break;
             case info.title === '': setModal2Content('제목을 입력해주세요.'); break;
             case info.contents === '': setModal2Content('게시글 내용을 입력해주세요.'); break;
-            case typeof (route.params) == 'object': edit(), navigation.navigate('맘스 톡'); return;
+            case typeof (route.params) == 'object': edit(); return;
             default: submit(); return;
         }
         setModalVisible2(!modalVisible2);
@@ -361,13 +361,13 @@ const Register = ({ navigation, route }) => {
         data.append('contents', info.contents);
         // data.append('files', {uri: info.video, name: 'board.mp4', type: 'video/mp4'});
 
-        if (info.imageFile !== undefined) {
+        if (info.imageFile) {
             info.imageFile.filter(x => {
                 data.append('files', { uri: x, name: 'board.png', type: 'image/png' });
             })
         }
 
-        if (info.video !== undefined) {
+        if (info.video) {
             info.video.filter(x => {
                 data.append('files', { uri: x, name: 'board.mp4', type: 'video/mp4' });
             })
@@ -398,6 +398,8 @@ const Register = ({ navigation, route }) => {
 
     const edit = async () => {
 
+        console.log('### submit info: ', info);
+
         const token = await AsyncStorage.getItem('token');
         let data = new FormData();
         data.append('subcategory', DATA2[filter.findIndex(x => x)].title);
@@ -405,13 +407,13 @@ const Register = ({ navigation, route }) => {
         data.append('contents', info.contents);
         route.params[0] ? data.append('boardId', route.params[0].boardId) : ''
         
-        if (info.imageFile !== undefined) {
+        if (info.imageFile) {
             info.imageFile.filter(x => {
                 data.append('files', { uri: x, name: 'board.png', type: 'image/png' });
             })
         }
 
-        if (info.video !== undefined) {
+        if (info.video) {
             info.video.filter(x => {
                 data.append('files', { uri: x, name: 'board.mp4', type: 'video/mp4' });
             })
@@ -426,9 +428,9 @@ const Register = ({ navigation, route }) => {
                 },
                 data: data
             });
-            console.log('response: ', response.data);
+            console.log('### edit response: ', response.data);
         } catch (error) {
-            console.log('게시판 수정 error: ', error);
+            console.log('### edit 게시판 수정 error: ', error);
         }
         dispatch(postBoard(boardSet));
     }
@@ -544,7 +546,7 @@ const Register = ({ navigation, route }) => {
             <TouchableOpacity style={styles.close} onPress={() => close(index, 'image')}>
                 <Icon2 name='close' size={16} style={{ color: 'white' }} />
             </TouchableOpacity>
-            <Image source={{ uri: typeof (route.params) == 'object' ?  `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item}` : item }} style={{ width: 80, height: 80, borderRadius: 5 }} />
+            <Image source={{ uri: !item.includes('file') ?  `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item}` : item }} style={{ width: 80, height: 80, borderRadius: 5 }} />
         </View>
     );
 
