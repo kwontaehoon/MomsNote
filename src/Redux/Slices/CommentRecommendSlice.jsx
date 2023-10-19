@@ -10,7 +10,6 @@ export const postCommentRecommend = createAsyncThunk("postCommentRecommendSlice/
       });
       return response.data;
       }catch(error){
-          console.log('commentRecommend axios error: ', error);
       }
 });
 

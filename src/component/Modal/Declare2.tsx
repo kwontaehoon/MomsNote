@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, FlatList } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/FontAwesome'
@@ -144,7 +144,6 @@ const CheckBoxModal = ({modal4, setModal4, modal6, setModal6, commentsId}) => {
                     data: info
                 });
             }catch(error){
-              console.log('error: ', error);
             }
     }
 

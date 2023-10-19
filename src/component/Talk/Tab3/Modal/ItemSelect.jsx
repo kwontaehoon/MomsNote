@@ -49,16 +49,10 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({ modal, setModal }) => {
 
-    console.log('### modal: ', modal);
-
     const itemName = modal.itemName.split('|');
     const itemCount = modal.itemCount.split('|');
 
     const [filter, setFilter] = useState(Array.from({length: itemName?.length}, () => false)); // 체크, 폰트 색상
-
-    const complete = async (e) => {
-        
-    }
 
     return (
         <Modal animationType="slide" transparent={true} visible={modal.open} statusBarTranslucent={true}

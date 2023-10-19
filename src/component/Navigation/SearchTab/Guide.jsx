@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Image } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native'
+import { useDispatch } from 'react-redux'
 import { postGuideCount } from '../../../Redux/Slices/GuideCountSlice'
-import { postGuide, setGuideRefresh, setGuideCount } from '../../../Redux/Slices/GuideSlice'
-import { setGuideCountRefresh } from '../../../Redux/Slices/GuideCountSlice'
+import { postGuide } from '../../../Redux/Slices/GuideSlice'
 import { Platform } from 'expo-modules-core'
 
 const styles = StyleSheet.create({
@@ -55,8 +54,6 @@ const Talk1 = ({navigation, route}) => {
 
   const dispatch = useDispatch();
   const [info, setInfo] = useState(route.params);
-  console.log('맘스가이드 전체 data: ', route.params);
-
   const [refreshing, setRefreshing] = useState(false);
 
 

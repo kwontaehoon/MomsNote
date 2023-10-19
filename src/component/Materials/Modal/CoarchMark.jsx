@@ -1,21 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator, Modal, StatusBar, Platform, Animated } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Modal, Platform } from 'react-native'
 import Icon3 from 'react-native-vector-icons/Feather'
 import Checkbox from 'expo-checkbox';
 import { useSelector, useDispatch } from 'react-redux';
 import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
-
-import M1 from '../../../../public/assets/svg/1.svg'
-import M2 from '../../../../public/assets/svg/2.svg'
-import M3 from '../../../../public/assets/svg/3.svg'
-import M4 from '../../../../public/assets/svg/4.svg'
-import M5 from '../../../../public/assets/svg/5.svg'
-import M6 from '../../../../public/assets/svg/6.svg'
-import M7 from '../../../../public/assets/svg/7.svg'
-import M8 from '../../../../public/assets/svg/8.svg'
-import M9 from '../../../../public/assets/svg/9.svg'
 import More from '../../../../public/assets/svg/More.svg'
 import Sort from '../../../../public/assets/svg/Sort.svg'
 import Download from '../../../../public/assets/svg/Download.svg'
@@ -231,6 +220,7 @@ imageBox6:{
     position: 'absolute',
     left: 20,
     top: 50,
+    zIndex: 999
 },
 image:{
     width: 50,
@@ -363,7 +353,7 @@ const optionBox = (e) => {
 
   return (
         <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}
-            onRequestClose={() => setModal(false)}>
+            onRequestClose={() =>setModal(false)}>
             <View style={styles.modalContainer}>
             <View style={styles.modalView}>
 

@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, FlatList } from 'react-native'
-import Icon from 'react-native-vector-icons/AntDesign'
+import { View, Text, StyleSheet, Modal, TouchableOpacity, FlatList } from 'react-native'
 import Icon2 from 'react-native-vector-icons/FontAwesome'
 import Checkbox from 'expo-checkbox'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
 import Close from '../../../../public/assets/svg/Close.svg'
 
 const styles = StyleSheet.create({
@@ -206,7 +204,6 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
                 data: { id: data.delete.join() }
                 });
             }catch(error){
-              console.log('error: ', error);
             }
         try{
             const response = await axios({
@@ -219,7 +216,6 @@ const CheckBoxModal = ({setModal, setModal2, modalVisible9, setModalVisible9}) =
                 data: { id: data.deleteCencel.join() }
                 });
             }catch(error){
-                console.log('error: ', error);
             }    
         dispatch(postMaterial(materialSet));
     }

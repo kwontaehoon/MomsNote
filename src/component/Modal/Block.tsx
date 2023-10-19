@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Switch, Modal, Platform } from 'react-native'
+import React from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -96,7 +96,6 @@ const Main = ({modal2, setModal2, userId, ani}) => {
                 }
                 });
             }catch(error){
-              console.log('error: ', error);
             }
     }
 

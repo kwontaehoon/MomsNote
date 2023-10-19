@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, ActivityIndicator } from 'react-native'
+import React from 'react'
+import { StyleSheet } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import { WebView } from 'react-native-webview';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Modal from './Modal/Withdraw'
 import jwtDecode from 'jwt-decode';
 
 const styles = StyleSheet.create({
@@ -15,7 +14,6 @@ const styles = StyleSheet.create({
     },
 })
 const Main = ({navigation, route}) => {
-  console.log('route: ', route);
 
     const REST_API_KEY = '5b53b00ed1940f2bd5a026d96a0ae0ce'; // 클라이언트 꺼
     // const REST_API_KEY = '7d1cb1e652f5ee8aaffc2e7ce0547c9b'
@@ -26,11 +24,9 @@ const Main = ({navigation, route}) => {
     const kakaoTokenId = async(kakaoAcceess) => {
       try{
         const response = await axios.get(`https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${kakaoAcceess}`);
-        console.log('response: ', response);
         const response2 = await axios.get(`https://kapi.kakao.com/v1/user/access_token_info`, {
              headers: `Authorization: Bearer ${response.data.access_token}`
         });
-        console.log('response2: ', response2);
         const response3 = await axios({
           method: 'post',
           url: 'https://momsnote.net/login',
@@ -41,7 +37,6 @@ const Main = ({navigation, route}) => {
             username: `kakao_${response2.data.id}`
           }
         });
-        console.log('response3: ', response3.data.status);
         const decode = jwtDecode(response3.data.token);
         AsyncStorage.setItem('token', response3.data.token);
         AsyncStorage.setItem('userId', String(decode.id));
@@ -58,7 +53,6 @@ const Main = ({navigation, route}) => {
               });
               AsyncStorage.setItem('user', JSON.stringify(response4.data.data));
               }catch(error){
-                  console.log('user axios error: ', error);
                   return undefined;
               }
 
@@ -72,7 +66,6 @@ const Main = ({navigation, route}) => {
       }
 
     }catch(error){
-        console.log('kakao error: ', error);
     }
     }
 
@@ -84,10 +77,8 @@ const Main = ({navigation, route}) => {
       source={{ uri: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`}}
       onMessage={event => {
         const data = event.nativeEvent.url;
-        console.log('data: ', data);
         let error = '';
         let condition = '';
-        console.log('condition: ', condition);
 
         if(data !== null){
           condition = data.indexOf('code=');

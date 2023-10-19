@@ -6,18 +6,8 @@ export const getList = createAsyncThunk("counterSlice/async", async () => {
     const response = await axios.get("https://momsnote.net/exp/details")
     return response.data;
   }catch(error){
-    console.log('error: ', error);
   }
 });
-
-// export const getMomsTalk = createAsyncThunk("counterSlice/async", async () => {
-//   try{
-//     const response = await axios.get('https://momsnote.net/api/board/list');
-//     return response.data;
-//   }catch(error){
-//     console.log('error: ', error);
-//   }
-// })
 
 const initialState = {
   loading: false,
@@ -36,19 +26,6 @@ export const counterSlice = createSlice({
   )}
 })
 
-// export const MomsTalk = createSlice({
-//     name: 'MomsTalk',
-//     initialState,
-//     reducers: {},
-//     extraReducers: (bulider) => {
-//       bulider.addCase(getMomsTalk.fulfilled, (state, action) => {
-//         state.loading = 'success';
-//         state.data = action.payload;
-//       })
-//     }
-// })
-
-// Action creators are generated for each case reducer function
 export const data = (state) => state.counterSlice.data;
 
 export default counterSlice.reducer

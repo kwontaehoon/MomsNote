@@ -5,18 +5,15 @@ import axios from 'axios'
 import moment from 'moment'
 import {
   SafeAreaProvider,
-  useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import Modal from './Modal/DotModal'
 import Modal2 from './Modal/CommentDelete'
-
 import Back from '../../../public/assets/svg/Back.svg'
 import Search from '../../../public/assets/svg/Search.svg'
 import Arrow from '../../../public/assets/svg/Arrow-Right.svg'
 import Chat from '../../../public/assets/svg/Chat.svg'
 import Like from '../../../public/assets/svg/Like.svg'
 import More from '../../../public/assets/svg/More.svg'
-
 import Q from '../../../public/assets/svg/Q.svg'
 
 const styles = StyleSheet.create({
@@ -131,7 +128,6 @@ const Main = ({ navigation }) => {
   const [momsSearch, setMomsSearch] = useState();
   const [materialSearch, setMaterialSearch] = useState();
   const [commentSearch, setCommentSearch] = useState();
-  console.log('commentSearch: ', commentSearch);
   const [experienceSearch, setExperienceSearch] = useState();
   const [guideSearch, setGuideSearch] = useState();
   const [eventSearch, setEventSearch] = useState();
@@ -157,7 +153,6 @@ const Main = ({ navigation }) => {
         });
         setMomsSearch(response.data);
       } catch (error) {
-        console.log('boardSearch axios error', error);
         setMomsSearch(undefined);
       }
     }
@@ -177,7 +172,6 @@ const Main = ({ navigation }) => {
         });
         setMaterialSearch(response.data);
       } catch (error) {
-        console.log('materialSerach axios error', error);
         setMaterialSearch(undefined);
       }
     }
@@ -197,7 +191,6 @@ const Main = ({ navigation }) => {
         });
         setCommentSearch(response.data);
       } catch (error) {
-        console.log('commentSearch axios error', error);
         setCommentSearch(undefined);
       }
     }
@@ -215,10 +208,8 @@ const Main = ({ navigation }) => {
           },
           data: { keyword: search }
         });
-        console.log('experienceSearch: ', response.data);
         setExperienceSearch(response.data);
       } catch (error) {
-        console.log('experienceSearch axios error', error);
         setExperienceSearch(undefined);
       }
     }
@@ -236,10 +227,8 @@ const Main = ({ navigation }) => {
           },
           data: { keyword: search }
         });
-        console.log('guideSearch: ', response.data);
         setGuideSearch(response.data);
       } catch (error) {
-        console.log('guideSearch axios error', error);
         setGuideSearch(undefined);
       }
     }
@@ -257,10 +246,8 @@ const Main = ({ navigation }) => {
           },
           data: { keyword: search }
         });
-        console.log('eventSearch: ', response.data);
         setEventSearch(response.data);
       } catch (error) {
-        console.log('eventSearch axios error', error);
         setEventSearch(undefined);
       }
     }
@@ -278,10 +265,8 @@ const Main = ({ navigation }) => {
           },
           data: { keyword: search }
         });
-        console.log('governmentSearch: ', response.data);
         setGovernmentSearch(response.data);
       } catch (error) {
-        console.log('governmentSearch axios error', error);
         setGovernmentSearch(undefined);
       }
     }
@@ -299,11 +284,9 @@ const Main = ({ navigation }) => {
           },
           data: { keyword: search }
         });
-        console.log('qnaSearch: ', response.data);
         setQnaSearch(response.data);
         setQnaFilter(Array.from({ length: response?.data?.length }, () => { return false }));
       } catch (error) {
-        console.log('qnaSearch axios error', error);
         setQnaSearch(undefined);
       }
     }

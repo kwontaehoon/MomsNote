@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 
@@ -65,7 +65,6 @@ const Block = () => {
                 });
                 setInfo(response.data);
             }catch(error){
-                console.log('block axios error');
             }
         }
         block();
@@ -84,7 +83,6 @@ const Block = () => {
                 data: { blockUserId: id }
                 });
             }catch(error){
-              console.log('error: ', error);
             }
     }
 

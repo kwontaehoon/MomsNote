@@ -10,7 +10,6 @@ export const postLetterCount = createAsyncThunk("postLetterCountSlice/async", as
       });
       return response.data;
       }catch(error){
-          console.log('letterCount axios error: ', error);
       }
 });
 

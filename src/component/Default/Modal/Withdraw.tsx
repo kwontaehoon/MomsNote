@@ -1,7 +1,5 @@
 import React from 'react'
 import {View, Text, StyleSheet, TouchableOpacity, Modal} from 'react-native'
-import Checkbox from 'expo-checkbox'
-
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -38,7 +36,7 @@ const styles = StyleSheet.create({
     },
 })
 
-const NoticeModal = ({navigation, route, modal, setModal}) => {
+const NoticeModal = ({navigation, modal, setModal}) => {
 
   return (
     <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true}

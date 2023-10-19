@@ -76,7 +76,6 @@ const CheckBoxModal = ({modalVisible, setModalVisible, filter}) => {
             }
         });
         }catch(error){
-            console.log('출산준비물 구매 error:', error);
         }
         dispatch(postMaterial({ order: filter}));
         setModalVisible(prevState => ({...prevState, open: false}));

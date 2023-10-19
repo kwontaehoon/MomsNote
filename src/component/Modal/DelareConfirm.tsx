@@ -1,7 +1,5 @@
 import React from 'react'
 import {View, Text, StyleSheet, TouchableOpacity, Modal} from 'react-native'
-import Checkbox from 'expo-checkbox'
-
 
 const styles = StyleSheet.create({
     modalContainer:{

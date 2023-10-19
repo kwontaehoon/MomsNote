@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Switch, Modal, Platform } from 'react-native'
+import React from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         borderColor: '#EEEEEE'
     },
 })
-const Main = ({modalVisible5, setModalVisible5, modalVisible6, setModalVisible6}) => {
+const Main = ({modalVisible5, setModalVisible5, setModalVisible6}) => {
 
   return (
     <Modal animationType="fade" transparent={true} statusBarTranslucent={true} visible={modalVisible5}

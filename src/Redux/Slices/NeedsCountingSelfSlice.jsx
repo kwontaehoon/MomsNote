@@ -10,7 +10,6 @@ export const postNeedsCountingSelf = createAsyncThunk("postNeedsCountingSelfSlic
       });
       if(response.data == ''){ return '0'; }else return response.data;
       }catch(error){
-          console.log('Self axios error: ', error);
           return undefined;
       }
 });

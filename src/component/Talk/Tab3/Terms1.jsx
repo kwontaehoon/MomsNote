@@ -39,7 +39,6 @@ const Terms1 = () => {
   ];
 
   const [info, setInfo] = useState();
-  console.log('info: ', info);
 
   useEffect(()=>{
     const terms = async() => {
@@ -57,7 +56,6 @@ const Terms1 = () => {
     });
     setInfo(response.data.data);
   }catch(error){
-    console.log('error: ', error);
   }
   }
     terms();

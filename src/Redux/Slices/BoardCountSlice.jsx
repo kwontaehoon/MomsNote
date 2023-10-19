@@ -10,7 +10,6 @@ export const postBoardCount = createAsyncThunk("postBoardCountSlice/async", asyn
       });
       return response.data;
       }catch(error){
-          console.log('boardCount axios error: ', error);
           return undefined;
       }
 });

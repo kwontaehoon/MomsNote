@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
-import Checkbox from 'expo-checkbox'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -46,8 +45,6 @@ const CheckBoxModal = ({modal7, setModal7, info, commentsId}) => {
 
     const dispatch = useDispatch();
 
-    console.log('modal7 info: ', info);
-
     const CommentDelete = async() => {
         const token = await AsyncStorage.getItem('token');
         try{
@@ -60,9 +57,7 @@ const CheckBoxModal = ({modal7, setModal7, info, commentsId}) => {
                   },
                   data: { commentsId: commentsId[1] }
                 });
-                console.log('댓글 삭제 response: ', response.data);
             }catch(error){
-              console.log('error: ', error);
             }
             dispatch(postComment({
                 count: 1,

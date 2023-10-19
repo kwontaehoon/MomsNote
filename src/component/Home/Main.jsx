@@ -1,27 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Alert, SafeAreaView, StatusBar, Animated, Platform, Image, BackHandler } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, SafeAreaView, StatusBar, Animated, Platform, Image } from 'react-native'
 import Icon2 from 'react-native-vector-icons/Feather'
 import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
 import Modal from './Modal/ListSelect'
 import moment from 'moment'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-
 import CoarchMark2 from './Modal/CoarchMark2'
 import MaterialCoarchMark from './Modal/MaterialCoarchMark'
 import Bell from '../../../public/assets/svg/Bell.svg'
 import MyPage from '../../../public/assets/svg/Mypage.svg'
-
 import { useFocusEffect, useIsFocused } from '@react-navigation/native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
-
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoardPopular } from '../../Redux/Slices/BoardPopularSlice'
 import { postMaterialPopularSlice } from '../../Redux/Slices/MaterialPopularSlice'
 import { postInfoPopularSlice } from '../../Redux/Slices/InfoPopularSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { postUser } from '../../Redux/Slices/UserSlice'
-import { postEvent, setEventRefresh } from '../../Redux/Slices/EventSlice'
+import { setEventRefresh } from '../../Redux/Slices/EventSlice'
 import { postAlarm } from '../../Redux/Slices/AlarmSlice'
 
 
@@ -235,7 +232,6 @@ const Home = ({ navigation }) => {
     const boardPopular = useSelector(state => { return state.boardPopular.data });
     const materialPopular = useSelector(state => { return state.materialPopular.data });
     const infoPopular = useSelector(state => { return state.infoPopular.data });
-    console.log('infoPopular: ', infoPopular);
     const mainData = useSelector(state => { return state.user.data; });
     const Alarm = useSelector(state => { return state.alarm.data; });
     const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
@@ -312,11 +308,9 @@ const Home = ({ navigation }) => {
     useEffect(() => {
         const recommendList = async () => {
             const asyncStorage = await AsyncStorage.getItem('recommendList');
-            console.log('asyncStorage: ', asyncStorage);
             // const materialCoarchMark = await AsyncStorage.getItem('materialCoarchMark');
-            // console.log('materialCoarchMark: ', materialCoarchMark);
             // const coarchMark2 = await AsyncStorage.getItem('coarchMarkHome2');
-            // console.log('coarchMark2: ', coarchMark2);
+
 
             !modal3 ?  !asyncStorage ? setModal(true) : setModal(false) : setModal(false);
         }
@@ -522,6 +516,11 @@ const Home = ({ navigation }) => {
                 <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, { height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null }]} />
 
                 : <SafeAreaView style={[styles.container, { height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null }]}>
+                    
+                    <Modal navigation={navigation} modal={modal} setModal={setModal} materialCoarchMarkModal={modal3} setMaterialCoarchMarkModal={setModal3} />
+                    <CoarchMark2 modal={modal2} setModal={setModal2} modalFlag={modal3} />
+                    <MaterialCoarchMark modal={modal3} setModal={setModal3} recommendListModal={modal} setRecommendListModal={setModal} />
+
                     <View style={styles.header}>
                         <View style={styles.headerBar}>
                             <TouchableOpacity style={{ padding: 20 }} onPress={() => navigation.navigate('알림')}>
@@ -531,10 +530,6 @@ const Home = ({ navigation }) => {
                             <MyPage style={{ marginRight: 5 }} onPress={() => navigation.navigate('마이페이지')} />
                         </View>
                     </View>
-
-                    <Modal navigation={navigation} modal={modal} setModal={setModal} materialCoarchMarkModal={modal3} setMaterialCoarchMarkModal={setModal3} />
-                    <CoarchMark2 modal={modal2} setModal={setModal2} modalFlag={modal3} />
-                    <MaterialCoarchMark modal={modal3} setModal={setModal3} recommendListModal={modal} setRecommendListModal={setModal} />
 
                     <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => item.id}>

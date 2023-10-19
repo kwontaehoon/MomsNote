@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Switch, Modal, Platform } from 'react-native'
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Switch, Modal } from 'react-native'
 import axios from 'axios'
-import DateTimePicker from '@react-native-community/datetimepicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSelector } from 'react-redux'
 import { postUser } from '../../../Redux/Slices/UserSlice'
@@ -103,7 +102,6 @@ const Main = ({navigation}) => {
 
     const dispatch = useDispatch();
     const [isEnabled, setIsEnabled] = useState(Array.from({length: 3}, () => { return false })); // 스위치 토글
-    console.log('### isEnabled: ', isEnabled);
     const [clockDisplay, setClockDisplay] = useState(false); // 시작 종료 시간 display
     const [modalVisible, setModalVisible] = useState(false); // 알람 끄기 modal
     const [modalVisible2, setModalVisible2] = useState(false); // 로그아웃 modal
@@ -138,7 +136,6 @@ const Main = ({navigation}) => {
     useEffect(()=>{
         dispatch(postUser());
         const user2 = async() => {
-            console.log('### userrr: ', modal2.content, user.marketing);
             setLoading(false);
 
             const arr = Array.from({length: 3}, () => {return false});
@@ -208,7 +205,6 @@ const Main = ({navigation}) => {
             await AsyncStorage.setItem('alarmSetting', '1');
             arr[2] = true;
         }
-        console.log('### arr: ', arr);
         setIsEnabled(arr);
     }
 
@@ -228,10 +224,7 @@ const Main = ({navigation}) => {
             let arr= [...isEnabled];
             e ? arr[0] = true : (arr[0] = false, etModal2({...modal2, open: modal2.open}))
             setIsEnabled(arr);
-            console.log('## response: ', response);
-
             }catch(error){
-                console.log('marketing axios error: ', error);
             }
     }
 
@@ -247,7 +240,6 @@ const Main = ({navigation}) => {
                   },
             });
             }catch(error){
-                console.log('kakao logout axios error: ', error);
             }
             AsyncStorage.setItem('login', '1');
             setModalVisible2(!modalVisible2);
@@ -331,7 +323,7 @@ const Main = ({navigation}) => {
                 </TouchableOpacity>
                 <View style={styles.mainBox}>
                     <View style={styles.mainBoxSub}><Text style={styles.text}>버전정보</Text></View>
-                    <View style={[styles.mainBoxSub, {alignItems: 'flex-end'}]}><Text style={{fontSize: 13, color: '#9E9E9E'}}>현재 1.0.6 / 최신 1.0.6</Text></View>
+                    <View style={[styles.mainBoxSub, {alignItems: 'flex-end'}]}><Text style={{fontSize: 13, color: '#9E9E9E'}}>현재 1.0.7 / 최신 1.0.7</Text></View>
                 </View>
                 <View style={styles.mainBox}>
                     <View style={styles.mainBoxSub}><Text style={styles.text} onPress={()=>setModalVisible2(!modalVisible2)}>로그아웃</Text></View>

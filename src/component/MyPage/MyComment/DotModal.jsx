@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
@@ -46,8 +46,6 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({modal, setModal}) => {
 
-    console.log('commentsId: ', modal.commentsId);
-
     const commentDelete = async() => {
         const token = await AsyncStorage.getItem('token');
         try{
@@ -61,7 +59,6 @@ const CheckBoxModal = ({modal, setModal}) => {
                   data: { commentsId: modal.commentsId }
                 });
             }catch(error){
-              console.log('error: ', error);
             }
     }
 

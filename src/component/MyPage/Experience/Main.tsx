@@ -26,14 +26,6 @@ const styles = StyleSheet.create({
 })
 const Main = ({navigation}:any) => {
 
-    useEffect(()=>{
-        async function b(){
-            const response = await axios.get('http://192.168.1.140:4000/api/test');
-            console.log('response: ', response.data);
-          }
-          b();
-    }, [])
-
     const [modalVisible, setModalVisible] = useState(false); // imodal
     const [filter, setFilter] = useState([true, false, false]); // tab
     const [info, setInfo] = useState([

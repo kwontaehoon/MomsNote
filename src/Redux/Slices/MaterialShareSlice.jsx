@@ -10,7 +10,6 @@ export const postMaterialShare = createAsyncThunk("postMaterialShareSlice/async"
       });
       if(response.data == ''){ return '0'; }else return response.data;
       }catch(error){
-          console.log('MaterialShare axios error: ', error);
           return undefined;
       }
 });

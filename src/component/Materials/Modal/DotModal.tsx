@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
 
 const styles = StyleSheet.create({

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Modal, Image } from 'react-native'
-
 import Close from '../.././../../public/assets/svg/Close.svg'
 import Checkbox from 'expo-checkbox';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -92,10 +91,9 @@ const styles = StyleSheet.create({
 
 
 })
-const Main = ({ modal, setModal, recommendListModal, setRecommendListModal }) => {
+const Main = ({ modal, setModal }) => {
 
     const [isChecked, setIsChecked] = useState(false);
-    console.log('isChecked: ', isChecked);
     const [list, setList] = useState();
 
     useEffect(()=>{

@@ -16,7 +16,6 @@ export const postBoardLike = createAsyncThunk("postBoardLikeSlice/async", async 
       });
       return response.data;
       }catch(error){
-          console.log('boardLike axios error: ', error);
           return undefined;
       }
 });

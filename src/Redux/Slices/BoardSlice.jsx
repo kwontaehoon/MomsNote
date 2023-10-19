@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const postBoard = createAsyncThunk("postBoardSlice/async", async (data) => {
-  console.log('@@ data: ', data);
     try{
       const response = await axios({
           method: 'post',
@@ -11,7 +10,6 @@ export const postBoard = createAsyncThunk("postBoardSlice/async", async (data) =
       });
       if(response.data == ''){ return '0'; }else return response.data;
       }catch(error){
-          console.log('board axios error: ', error);
           return undefined;
       }
 });

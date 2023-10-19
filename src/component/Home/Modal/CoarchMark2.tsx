@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image, Modal, Platform } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
-
 import Bell from '../../../../public/assets/svg/Bell.svg'
 import MyPage from '../../../../public/assets/svg/Mypage.svg'
 import Icon2 from 'react-native-vector-icons/Feather'

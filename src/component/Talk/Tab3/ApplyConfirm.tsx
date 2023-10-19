@@ -3,10 +3,7 @@ import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, SafeArea
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Icon from 'react-native-vector-icons/AntDesign'
 import axios from 'axios'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
 import Check from '.././../../../public/assets/svg/Check.svg'
-
 import {
     SafeAreaProvider,
 } from 'react-native-safe-area-context';
@@ -102,8 +99,6 @@ const styles = StyleSheet.create({
 })
 const Withdraw = ({ navigation, route }) => {
 
-    console.log('신청 정보 취소 route: ', route.params);
-
     const DATA = [
         {
             id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -112,7 +107,6 @@ const Withdraw = ({ navigation, route }) => {
     ];
     const dispatch = useDispatch();
     const info = useSelector(state => { return state.boardAppFlag.data });
-    console.log('신청정보 info: ', info);
 
     const [SMSFlag, setSMSFlag] = useState({
         open: false,
@@ -133,12 +127,9 @@ const Withdraw = ({ navigation, route }) => {
                 url: 'https://momsnote.net/application/delete',
                 data: { applicationId: info.data.applicationId }
             });
-            console.log('체험단 신청 취소 response: ', response.data);
-            console.log('## response: ', response);
             navigation.goBack();
             setModal2(!modal2);
         } catch (error) {
-            console.log('체험단 신청 취소 error: ', error);
         }
     }
 

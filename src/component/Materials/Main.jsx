@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator, SafeAreaView, StatusBar, Platform, Animated, BackHandler } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, SafeAreaView, StatusBar, Platform, Animated } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon3 from 'react-native-vector-icons/Feather'
 import Checkbox from 'expo-checkbox';
@@ -24,11 +24,9 @@ import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux';
-import { postMaterial, setMaterialRefresh } from '../../Redux/Slices/MaterialSlice'
+import { postMaterial } from '../../Redux/Slices/MaterialSlice'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { postAlarm } from '../../Redux/Slices/AlarmSlice';
-
-
 import M1 from '../../../public/assets/svg/1.svg'
 import M2 from '../../../public/assets/svg/2.svg'
 import M3 from '../../../public/assets/svg/3.svg'
@@ -378,7 +376,6 @@ const Navigation = ({navigation, route}) => {
           }
       });
       }catch(error){
-          console.log('출산준비물 구매 error:', error);
       }
       dispatch(postMaterial({order: filter}));
   }
@@ -399,7 +396,6 @@ const Navigation = ({navigation, route}) => {
       });
       dispatch(postMaterial({order: filter}));
       }catch(error){
-          console.log('출산준비물 리스트 error:', error);
       }
   }
   
@@ -507,7 +503,7 @@ const save = async() => {
               onValueChange={()=>{
                 switch(true){
                   case x.id == 0 && !purchaseCheckBox : setModalVisible(prevState => ({...prevState, open: true, needsBrandId: !x.needsBrandId ? x.needsId : x.needsBrandId, needsId: x.needsId})); break;
-                  case x.id == 0 : console.log('앙'); purchase(x.needsId, !x.needsBrandId ? x.needsId : x.needsBrandId); break;
+                  case x.id == 0 : purchase(x.needsId, !x.needsBrandId ? x.needsId : x.needsBrandId); break;
                   default : purchaseCencel(x.needsId);
                 }
               }}

@@ -16,7 +16,6 @@ export const postCommentFlag = createAsyncThunk("postCommentFlagSlice/async", as
       });
       return response.data;
       }catch(error){
-          console.log('commentFlag axios error: ', error);
       }
 });
 

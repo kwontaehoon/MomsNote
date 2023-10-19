@@ -1,8 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Share } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import { Video } from 'expo-av';
-
 import Back from '../../../../public/assets/svg/Back.svg'
 import Share2 from '../../../../public/assets/svg/Share.svg'
 import RenderHtml from 'react-native-render-html';
@@ -110,8 +109,6 @@ const styles = StyleSheet.create({
 const Talk1Sub = ({navigation, route}) => {
 
     const info = [route.params];
-
-    const [comment, setComment] = useState([]);
 
     const ImageBox = () => {
         const arr = [];

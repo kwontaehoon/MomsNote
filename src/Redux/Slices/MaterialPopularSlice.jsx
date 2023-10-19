@@ -13,7 +13,6 @@ export const postMaterialPopularSlice = createAsyncThunk("postMaterialPopularSli
       });
       if(response.data == ''){ return '0' }else return response.data
 ;      }catch(error){
-          console.log('MaterialPopularSlice redux axios error: ', error);
           return undefined;
       }
 });

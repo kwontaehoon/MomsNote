@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Modal, BackHandler } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { postNeedsCounting } from '../../../Redux/Slices/NeedsCountingSlice'
@@ -45,8 +44,7 @@ const styles = StyleSheet.create({
         right: 15,
     }
 })
-const Main = ({ navigation, modal, setModal, materialCoarchMarkModal, setMaterialCoarchMarkModal }) => {
-    console.log('materdialCoarchMarkModal: ', materialCoarchMarkModal);
+const Main = ({ navigation, modal, setModal, materialCoarchMarkModal }) => {
 
     const dispatch = useDispatch();
     const reccount = useSelector(state => { return state.needsCounting.data; });
@@ -65,8 +63,6 @@ const Main = ({ navigation, modal, setModal, materialCoarchMarkModal, setMateria
             }
         list();
     }, [materialCoarchMarkModal]);
-
-    
 
     const rec = async () => {
         AsyncStorage.removeItem('materialFlag');

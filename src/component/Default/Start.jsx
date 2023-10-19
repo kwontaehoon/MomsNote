@@ -4,10 +4,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import Swiper from 'react-native-swiper'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 
-import OnBoarding1 from '../../../public/assets/svg/onBoarding1.svg'
-import OnBoarding2 from '../../../public/assets/svg/onBoarding2.svg'
-import OnBoarding3 from '../../../public/assets/svg/onBoarding3.svg'
-
 const styles = StyleSheet.create({
     container:{
         backgroundColor: 'white',

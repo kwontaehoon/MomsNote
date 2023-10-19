@@ -16,7 +16,6 @@ export const postMyLikeBoard = createAsyncThunk("postMyLikeBoardSlice/async", as
       });
       if(response.data == ''){return '0';}else return response.data;
       }catch(error){
-          console.log('myLikeBoard axios error: ', error);
           return undefined;
       }
 });

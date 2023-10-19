@@ -16,7 +16,6 @@ export const postBoardAppFlag = createAsyncThunk("postAppFlagSlice/async", async
       });
       return response.data;
       }catch(error){
-          console.log('BoardAppFlag axios error: ', error);
           return 400;
       }
 });

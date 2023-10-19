@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Modal, Activ
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 import moment from 'moment'
-import { Video, AVPlaybackStatus } from 'expo-av';
+import { Video } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import Swiper from 'react-native-swiper'
-import { setBoardRefresh, setBoardCount, setBoardFilter } from '../../../Redux/Slices/BoardSlice'
+import { setBoardRefresh, setBoardFilter } from '../../../Redux/Slices/BoardSlice'
 
 import Like from '../../../../public/assets/svg/Like.svg'
 import Chat from '../../../../public/assets/svg/Chat.svg'
@@ -202,7 +202,6 @@ const Talk1 = ({navigation, route}:any) => {
   
   const dispatch = useDispatch();
   const info = useSelector(state => { return state.board.data; });
-  const boardSet = useSelector(state => { return state.board.refresh; });
   const boardCountSet = useSelector(state => { return state.boardCount.refresh; });
   const infoCount = useSelector(state => { return state.boardCount.data; });
   const boardPopular = useSelector(state => { return state.boardPopular.data });
@@ -350,7 +349,6 @@ const Talk1 = ({navigation, route}:any) => {
           setPlus({...plus, newInfo: addInfo, page: plus.page+1});
         }
     } catch (error) {
-        console.log('qna axios error: ', error);
         return undefined;
     }
 }

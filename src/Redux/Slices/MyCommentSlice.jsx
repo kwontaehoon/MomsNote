@@ -16,7 +16,6 @@ export const postMyComment = createAsyncThunk("postMyCommentSlice/async", async 
       });
       if(response.data == ''){ return '0'; }else return response.data;
       }catch(error){
-          console.log('myComment axios error: ', error);
           return undefined;
       }
 });

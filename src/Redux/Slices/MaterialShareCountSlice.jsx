@@ -10,7 +10,6 @@ export const postMaterialShareCount = createAsyncThunk("postMaterialShareCountSl
       });
       return response.data;
       }catch(error){
-          console.log('materialShareCount axios error: ', error);
       }
 });
 

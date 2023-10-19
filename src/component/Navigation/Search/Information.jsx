@@ -2,17 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, SafeAreaView, Image, StatusBar } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import axios from 'axios'
-import moment from 'moment'
 import {
   SafeAreaProvider,
-  useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import Back from '../../../../public/assets/svg/Back.svg'
 import Search from '../../../../public/assets/svg/Search.svg'
 import Arrow from '../../../../public/assets/svg/Arrow-Right.svg'
-import Chat from '../../../../public/assets/svg/Chat.svg'
-import Like from '../../../../public/assets/svg/Like.svg'
-import More from '../../../../public/assets/svg/More.svg'
 
 const styles = StyleSheet.create({
   container:{
@@ -104,7 +99,6 @@ const Information = ({navigation}) => {
   const [momsSearch, setMomsSearch] = useState();
   const [materialSearch, setMaterialSearch] = useState();
   const [commentSearch, setCommentSearch] = useState();
-  console.log('## commentSearch: ', commentSearch);
   const [experienceSearch, setExperienceSearch] = useState();
   const [guideSearch, setGuideSearch] = useState();
 
@@ -119,10 +113,8 @@ const Information = ({navigation}) => {
                 },
                 data: { keyword: search }
             });
-            console.log('boardSearch: ', response.data);
             setMomsSearch(response.data);
         }catch(error){
-            console.log('boardSearch axios error', error);
             setMomsSearch(undefined);
         }
     }
@@ -140,10 +132,8 @@ useEffect(()=>{
               },
               data: { keyword: search }
           });
-          console.log('materialSearch: ', response.data);
           setMaterialSearch(response.data);
       }catch(error){
-          console.log('materialSerach axios error', error);
           setMaterialSearch(undefined);
       }
   }
@@ -161,10 +151,8 @@ useEffect(()=>{
               },
               data: { keyword: search }
           });
-          console.log('commentSearch', response.data);
           setCommentSearch(response.data);
       }catch(error){
-          console.log('commentSearch axios error', error);
           setCommentSearch(undefined);
       }
   }
@@ -182,10 +170,8 @@ useEffect(()=>{
               },
               data: { keyword: search }
           });
-          console.log('experienceSearch: ', response.data);
           setExperienceSearch(response.data);
       }catch(error){
-          console.log('experienceSearch axios error', error);
           setExperienceSearch(undefined);
       }
   }
@@ -203,10 +189,8 @@ useEffect(()=>{
               },
               data: { keyword: search }
           });
-          console.log('guideSearch: ', response.data);
           setGuideSearch(response.data);
       }catch(error){
-          console.log('guideSearch axios error', error);
           setGuideSearch(undefined);
       }
   }

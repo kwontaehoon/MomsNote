@@ -3,9 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ActivityIndi
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import moment from 'moment'
-import { useSelector, useDispatch } from 'react-redux'
-import { postMaterialShare } from '../../Redux/Slices/MaterialShareSlice'
-import { postBoard } from '../../Redux/Slices/BoardSlice'
 import { useIsFocused } from '@react-navigation/native'
 
 const styles = StyleSheet.create({
@@ -25,7 +22,6 @@ const Main = ({navigation}) => {
   const DATA = [{id: '0'}];
 
   const [info, setInfo] = useState();
-  console.log('## info: ', info);
   
   const isFocused = useIsFocused();
 
@@ -45,7 +41,6 @@ const Main = ({navigation}) => {
               });
               if(response.data == ''){ return setInfo('0') }else setInfo(response.data.data);
           }catch(error){
-            console.log('알림 error: ', error);
           }
     }
     alarm();
@@ -61,7 +56,6 @@ const Main = ({navigation}) => {
           });
           setInfo(response.data.data);
       }catch(error){
-        console.log('알림 error: ', error);
       }
 
       if(item.category == '맘스 토크'){

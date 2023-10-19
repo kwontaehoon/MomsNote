@@ -12,7 +12,6 @@ export const postGovernmentCount = createAsyncThunk("postGovernmentCountSlice/as
       });
       return response.data;
       }catch(error){
-          console.log('governmentCount axios error: ', error);
       }
 });
 

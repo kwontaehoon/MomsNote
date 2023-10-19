@@ -1,18 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal, KeyboardAvoidingView } from 'react-native'
-import axios from 'axios'
-import { WebView } from 'react-native-webview';
-
 import Arrow_Right from '../../../../public/assets/svg/Arrow-Right.svg'
 import Reset from '../../../../public/assets/svg/Reset.svg'
 import Crown from '../../../../public/assets/svg/crown.svg'
 import Crown2 from '../../../../public/assets/svg/crown2.svg'
 import Crown3 from '../../../../public/assets/svg/crown3.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
-
-import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
-import { useDispatch } from 'react-redux'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     modalContainer:{

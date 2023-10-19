@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, FlatList, KeyboardAvoidingView } from 'react-native'
-import Icon from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/FontAwesome'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
 import Close from '../../../../public/assets/svg/Close.svg'
 
 const styles = StyleSheet.create({
@@ -155,7 +153,6 @@ const CheckBoxModal = ({modalVisible8, setModalVisible8, setModal, info2}) => {
                     setModal(prevState => ({...prevState, open: true, content: '품목이 추가되었습니다.', buttonCount: 1}));
                     setInfo({...info, category: '카테고리 선택(필수)', needsName: ''});
                 }catch(error){
-                  console.log('error: ', error);
                 }
             return;
         }

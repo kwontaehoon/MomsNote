@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, BackHandler, Modal, KeyboardAvoidingView } from 'react-native'
-import axios from 'axios'
+import React from 'react'
+import { View, StyleSheet, Modal, KeyboardAvoidingView } from 'react-native'
 import { WebView } from 'react-native-webview';
 
 const styles = StyleSheet.create({

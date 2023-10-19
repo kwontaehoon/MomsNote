@@ -13,7 +13,6 @@ export const postGuide = createAsyncThunk("postGuideSlice/async", async (data) =
       });
       if(response.data == ''){ return '0'; }else return response.data;
       }catch(error){
-          console.log('guide axios error: ', error);
       }
 });
 
@@ -32,7 +31,6 @@ export const guideSlice = createSlice({
     initialState,
     reducers: {
       setGuideRefresh:(state, action)=>{
-        console.log('action: ', action.payload.subcategory);
         state.refresh.subcategory = action.payload.subcategory;
       },
       setGuideCount:(state, action)=>{

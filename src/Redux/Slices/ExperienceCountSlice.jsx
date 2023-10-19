@@ -10,7 +10,6 @@ export const postExperienceCount = createAsyncThunk("postExperienceCountSlice/as
       });
       return response.data;
       }catch(error){
-          console.log('experienceCount axios error: ', error);
       }
 });
 

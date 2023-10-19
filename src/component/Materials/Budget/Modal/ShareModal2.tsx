@@ -107,7 +107,6 @@ const CheckBoxModal = ({modalVisible3, setModalVisible3, modalVisible4, setModal
             setModalVisible3(!modalVisible3);
             setModalVisible4(!modalVisible4);
             }catch(error){
-                console.log('출산공유리스트 axios error: ', error);
             }
     }
 

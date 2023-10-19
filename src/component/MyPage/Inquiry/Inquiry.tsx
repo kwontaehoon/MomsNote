@@ -83,7 +83,6 @@ const Inquiry2 = ({filter, setFilter}) => {
             setFilter(!filter);
           }
       }catch(error){
-        console.log('error: ', error);
       }
   }
 

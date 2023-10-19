@@ -1,25 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Modal, StatusBar, Image, SafeAreaView, Platform, Share } from 'react-native'
-import Icon2 from 'react-native-vector-icons/AntDesign'
 import ContentsURL from './Modal/ContentsURL'
-import axios from 'axios'
 import moment from 'moment'
 import Swiper from 'react-native-swiper'
 import CompleteModal from './Modal/Complete'
-
 import Like from '../../../../public/assets/svg/Like.svg'
 import Heart from '../../../../public/assets/svg/Heart-1.svg'
-import More from '../../../../public/assets/svg/More.svg'
 import Share2 from '../../../../public/assets/svg/Share.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
-
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import {
     SafeAreaProvider,
-    useSafeAreaInsets,
   } from 'react-native-safe-area-context';
-
-
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { postBoardLikeFlag } from '../../../Redux/Slices/BoardLikeFlagSlice'
@@ -29,7 +21,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useIsFocused } from '@react-navigation/native'
 import { postWinList } from '../../../Redux/Slices/WinListSlice'
 import { postHits } from '../../../Redux/Slices/HitsSlice'
-
 import Modal2 from '../../Modal/First'
 import { postExperience } from '../../../Redux/Slices/ExperienceSlice'
 import { postMyExp } from '../../../Redux/Slices/MyExpSlice'
@@ -209,7 +200,6 @@ const Talk1Sub = ({navigation, route}) => {
     const info = route.params;
     const exp = useSelector(state => { return state.experience.data; });
     const [info2, setInfo2] = useState(exp);
-    console.log('## info2: ', info2);
 
     const DATA = [
         {
@@ -222,17 +212,10 @@ const Talk1Sub = ({navigation, route}) => {
     const isFocused = useIsFocused();
 
     const [async, setAsync] = useState(); // 임시저장 및 체험단 정보 저장 유무
-    const [asyncFlag, setAsyncFlag] = useState(); // 신청을 한번이라도했는지 유무
     const [userInfo, setUserInfo] = useState(); // user 정보 asyncStorage
     const boardLikeFlag = useSelector(state => { return state.boardLikeFlag.data });
-    const boardLike = useSelector(state => { return state.boardLikeFlag.data });
-    const boardLikeFlagSet = useSelector(state => { return state.boardLikeFlag.refresh });
-    const boardLikeSet = useSelector(state => { return state.boardLike.refresh });
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
-    console.log('### boardAppFlag: ', boardAppFlag);
     const winList = useSelector(state => { return state.winList.data });
-    const myExp = useSelector(state => { return state.myExp.data });
-    
     const [filter, setFilter] = useState(false);
     const [modalVisible, setModalVisible] = useState(false); // 체험단 신청정보 입력 -> asnyc storage
     const [modalVisible2, setModalVisible2] = useState(false); // 체험단 신청완료
@@ -310,25 +293,6 @@ const Talk1Sub = ({navigation, route}) => {
         Share.share({
             message: `[맘스노트] ${info2[0].title}`,
         })
-    }
-
-    const submit = async() => {
-        
-        const token = await AsyncStorage.getItem('token');
-        try{
-            const response = await axios({
-                method: 'post',
-                url: 'https://momsnote.net/api/application/regi',
-                headers: { 
-                    'Authorization': `bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                data: info
-            });
-            AsyncStorage.setItem('applicationFlag', `${info.experienceId}`);
-        }catch(error){
-            console.log('체험단 신청 error: ', error);
-        }
     }
 
     const renderItem = ({ item }:any) => (

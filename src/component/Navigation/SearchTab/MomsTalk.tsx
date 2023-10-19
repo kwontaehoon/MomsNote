@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, KeyboardAvoidingView, Image } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
-import axios from 'axios'
+import { View, Text, StyleSheet, FlatList, Image } from 'react-native'
 import moment from 'moment'
-
 import Chat from '../../../../public/assets/svg/Chat.svg'
 import Like from '../../../../public/assets/svg/Like.svg'
 
@@ -56,7 +53,6 @@ const Main = ({navigation, route}) => {
   ];
 
   const [momsSearch, setMomsSearch] = useState(route.params);
-  console.log('momsSearch: ', momsSearch);
 
   const dayCalculate = (date) => {
     switch(true){

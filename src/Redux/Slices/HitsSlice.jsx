@@ -13,7 +13,6 @@ export const postHits = createAsyncThunk("postHitsSlice/async", async (data) => 
       });
       return response.data;
       }catch(error){
-          console.log('hits axios error: ', error);
       }
 });
 

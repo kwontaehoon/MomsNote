@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, FlatList, TextInput, SafeAreaView, Modal, Image, StatusBar, Platform, BackHandler } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, FlatList, TextInput, SafeAreaView, Modal, Image, StatusBar, Platform, BackHandler } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/AntDesign'
 import { getStatusBarHeight } from "react-native-status-bar-height"
@@ -8,7 +8,6 @@ import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../../Redux/Slices/BoardSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import moment from 'moment'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { postUser } from '../../../../Redux/Slices/UserSlice'
 import * as FileSystem from 'expo-file-system'
@@ -186,8 +185,6 @@ const styles = StyleSheet.create({
 })
 const Register = ({ navigation, route }) => {
 
-    console.log('## route params: ', route.params);
-
     const boardSet = useSelector(state => { return state.board.refresh; });
 
     const DATA = [{ id: '0', title: '전체' }];
@@ -221,6 +218,7 @@ const Register = ({ navigation, route }) => {
     const [filter, setFilter] = useState(Array.from({ length: 5 }, () => { return false })); // 카테고리
     const [userInfo, setUserInfo] = useState();
     const user = useSelector(state => { return state.user.data; });
+    const [deleteFile, setDeleteFile] = useState([]); // 수정시 삭제한 파일 들어감
 
     const [loading, setLoading] = useState(false); // 완료시 로딩
 
@@ -233,7 +231,6 @@ const Register = ({ navigation, route }) => {
             video: [],
         }
     );
-    console.log('### info: ', info, route.params);
 
     useEffect(() => {
         dispatch(postUser());
@@ -311,7 +308,6 @@ const Register = ({ navigation, route }) => {
 
     const pickVideo = async () => {
 
-        
         if (info.video.length === 1) {
             setModal2Content('동영상은 최대 1개만 업로드 가능합니다.');
             setModalVisible2(!modalVisible2); return;
@@ -384,12 +380,10 @@ const Register = ({ navigation, route }) => {
                     },
                     data: data
                 });
-                console.log('response: ', response.data);
                 setLoading(false);
                 dispatch(postBoard(boardSet));
                 navigation.goBack();
             } catch (error) {
-                console.log('error: ', error);
                 alert(`게시글 작성 error: ${error}`);
             }
         }, 3000);
@@ -397,8 +391,6 @@ const Register = ({ navigation, route }) => {
     }
 
     const edit = async () => {
-
-        console.log('### submit info: ', info);
 
         const token = await AsyncStorage.getItem('token');
         let data = new FormData();
@@ -408,9 +400,17 @@ const Register = ({ navigation, route }) => {
         route.params[0] ? data.append('boardId', route.params[0].boardId) : ''
         
         if (info.imageFile) {
-            info.imageFile.filter(x => {
-                data.append('files', { uri: x, name: 'board.png', type: 'image/png' });
-            })
+            if(typeof(route.params) == 'object'){
+                info.imageFile.filter(x => {
+                    if(x.includes('file:///')){
+                        data.append('files', { uri: x, name: 'board.png', type: 'image/png' });
+                    }else return;
+                })
+            }else{
+                info.imageFile.filter(x => {
+                    data.append('files', { uri: x, name: 'board.png', type: 'image/png' });
+                })
+            }
         }
 
         if (info.video) {
@@ -428,14 +428,35 @@ const Register = ({ navigation, route }) => {
                 },
                 data: data
             });
-            console.log('### edit response: ', response.data);
         } catch (error) {
-            console.log('### edit 게시판 수정 error: ', error);
         }
+
+        try {
+            const response = await axios({
+                method: 'delete',
+                url: 'https://momsnote.net/api/board/file/delete',
+                headers: {
+                    'Authorization': `bearer ${token}`,
+                },
+                data: { savedName: deleteFile }
+            });
+        } catch (error) {
+        }
+
         dispatch(postBoard(boardSet));
+        setLoading(false);
+                dispatch(postBoard(boardSet));
+                navigation.goBack();
     }
 
-    const close = (id, name) => {
+    const close = (id, name, item) => {
+
+        if(typeof(route.params) == 'object'){
+            const arr = [...deleteFile];
+            arr.push(item);
+            setDeleteFile(arr);
+        }
+
         let arr = [];
         if (name === 'video') {
             setInfo((prevState) => ({
@@ -543,7 +564,7 @@ const Register = ({ navigation, route }) => {
 
     const renderItem3 = ({ item, index }) => (
         <View style={styles.filter2}>
-            <TouchableOpacity style={styles.close} onPress={() => close(index, 'image')}>
+            <TouchableOpacity style={styles.close} onPress={() => close(index, 'image', item)}>
                 <Icon2 name='close' size={16} style={{ color: 'white' }} />
             </TouchableOpacity>
             <Image source={{ uri: !item.includes('file') ?  `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item}` : item }} style={{ width: 80, height: 80, borderRadius: 5 }} />
@@ -552,11 +573,11 @@ const Register = ({ navigation, route }) => {
 
     const renderItem4 = ({ item }) => (
         <View style={styles.filter2}>
-            <TouchableOpacity style={styles.close} onPress={() => close(item.image, 'video')}>
+            <TouchableOpacity style={styles.close} onPress={() => close(item.image, 'video', item)}>
                 <Icon2 name='close' size={16} style={{ color: 'white' }} />
             </TouchableOpacity>
             <View>
-                <Video source={{ uri: typeof (route.params) == 'object' ?  `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item}` : item }} style={{ width: 80, height: 80, borderRadius: 5 }} />
+                <Video source={{ uri: !item.includes('file') ?   `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${item}` : item }} style={{ width: 80, height: 80, borderRadius: 5 }} />
                 <View style={styles.start}>
                     <Icon name='play' size={17} style={{ color: 'white' }} />
                 </View>

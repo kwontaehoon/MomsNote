@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
@@ -75,7 +75,6 @@ const Talk3 = ({navigation}: any) => {
 
   const dispatch = useDispatch();
   const info = useSelector(state => {return state.myLikeExp.data});
-  console.log('info: ', info);
   const infoCount = useSelector(state => { return state.experienceCount.data});
   const experienceCountSet = useSelector(state => { return state.experience.refresh; });
 

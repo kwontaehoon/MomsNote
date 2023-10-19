@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Animated, Platform, SafeAreaView, StatusBar, BackHandler } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Animated, Platform, SafeAreaView, StatusBar } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSelector } from 'react-redux'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
@@ -11,19 +11,14 @@ import ConfirmModal from './Modal/ConfirmModal'
 import DotModal from './Modal/DotModal'
 import PriceEdit from './Modal/PriceEdit'
 import FirstModal from '../../Modal/First'
-import CoarchMark from './Modal/CoarchMark'
 import CoarchMark2 from './Modal/CoarchMark2'
-
 import Download from '../../../../public/assets/svg/Download.svg'
 import Back from '../../../../public/assets/svg/Back.svg'
-
 import { useDispatch } from 'react-redux'
 import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
 import {
   SafeAreaProvider,
-  useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-
 import M1 from '../../../../public/assets/svg/1.svg'
 import M2 from '../../../../public/assets/svg/2.svg'
 import M3 from '../../../../public/assets/svg/3.svg'

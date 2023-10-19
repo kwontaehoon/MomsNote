@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
 import Close from '../../../../../public/assets/svg/Close.svg'
 
 const styles = StyleSheet.create({
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
 
 })
 
-const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
+const CheckBoxModal = ({modal6, setModal6}) => {
 
     const [info, setInfo] = useState({
         needsId: modal6?.content?.needsId,
@@ -86,13 +85,10 @@ const CheckBoxModal = ({modal6, setModal6, setModal7}) => {
                 url: 'https://momsnote.net/api/needs/update/price',
                 data : info
         });
-        console.log('response: ', response);
          }catch(error){
-             console.log('가격 수정 axios error: ', error);
         }
         setModal6({...modal6, open: false});
         setInfo({...info, needsId: 0, itemPrice: 0});
-        // setModal7({...modal7, open: true});
     }
 
   return !modal6.content ? <View></View> : (

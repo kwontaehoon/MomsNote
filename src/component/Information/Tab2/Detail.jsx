@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, Keyboard, Share, ActivityIndicator, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Animated, Keyboard, Share, ActivityIndicator } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Modal from '../../Modal/DotModal'
 import Modal2 from '../../Modal/Block'
@@ -7,13 +7,12 @@ import Modal3 from '../..//Modal/Declare'
 import Modal4 from '../..//Modal/DelareConfirm'
 import Modal6 from '../../Modal/Declare2'
 import Modal7 from '../../Modal/CommentDelete'
-import { Video, AVPlaybackStatus } from 'expo-av';
+import { Video } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
 import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
 import { postHits } from '../../../Redux/Slices/HitsSlice'
 import moment from 'moment'
-
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Back from '../../../../public/assets/svg/Back.svg'
 import Share2 from '../../../../public/assets/svg/Share.svg'
@@ -202,9 +201,7 @@ const Talk1Sub = ({navigation, route}) => {
 
     const info = [route.params];
     const info2 = useSelector(state => { return state.event.data; });
-    const [info3, setInfo3] = useState();
     const eventSet = useSelector(state => { return state.event.refresh });
-
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
 

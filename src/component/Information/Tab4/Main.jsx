@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Dimensions, StatusBar } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native'
 import axios from 'axios'
-
 import Q from '../../../../public/assets/svg/Q.svg'
-import A from '../../../../public/assets/svg/A.svg'
 import { useSelector, useDispatch } from 'react-redux'
 import { postQna, setQnaRefresh } from '../../../Redux/Slices/QnaSlice'
 
@@ -51,7 +49,7 @@ const styles = StyleSheet.create({
 })
 
 
-const Talk1 = ({ navigation }) => {
+const Talk1 = () => {
 
     const DATA = [
         {
@@ -103,7 +101,6 @@ const Talk1 = ({ navigation }) => {
                 setCategories(response.data);
 
             } catch (error) {
-                console.log('qna categories axios error: ', error);
                 return undefined;
             }
         }
@@ -133,11 +130,9 @@ const Talk1 = ({ navigation }) => {
                 }
 
             });
-            console.log('response: ', response.data);
             setAllCount({...allCount, count: response.data});
 
         } catch (error) {
-            console.log('qna categories axios error: ', error);
             return undefined;
         }
     }
@@ -162,7 +157,6 @@ const Talk1 = ({ navigation }) => {
             setPlus({...plus, newInfo: addInfo, page: plus.page+1});
 
         } catch (error) {
-            console.log('qna axios error: ', error);
             return undefined;
         }
     }

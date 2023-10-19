@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { getStatusBarHeight } from "react-native-status-bar-height"; 
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal, StatusBar } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Talk1 from './Tab1/Main'
 import Talk2 from './Tab2/Main'
 import Talk3 from './Tab3/Main'
@@ -28,7 +27,6 @@ const styles = StyleSheet.create({
 })
 const Main = ({navigation, route}) => {
 
-    console.log('맘스 톡 route: ', route.params);
     const isFocused = useIsFocused();
 
     useEffect(()=>{

@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
-import Checkbox from 'expo-checkbox'
 import { postComment } from '../../Redux/Slices/CommentSlice'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -59,7 +58,6 @@ const CheckBoxModal = ({modal7, setModal7, info, commentsId}) => {
                   data: { commentsId: commentsId[1] }
                 });
             }catch(error){
-              console.log('error: ', error);
             }
             dispatch(postComment({
                 count: 1,

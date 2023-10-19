@@ -8,7 +8,7 @@ import Modal4 from '../..//Modal/DelareConfirm'
 import Modal6 from '../../Modal/Declare2'
 import Modal7 from '../../Modal/CommentDelete'
 import moment from 'moment'
-import { Video, AVPlaybackStatus } from 'expo-av';
+import { Video } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
 import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
@@ -16,7 +16,6 @@ import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
     SafeAreaProvider,
-    useSafeAreaInsets,
   } from 'react-native-safe-area-context';
 import { useIsFocused } from '@react-navigation/native'
 import Comment from './Comment'
@@ -202,7 +201,6 @@ const Talk1Sub = ({navigation, route}) => {
     const dispatch = useDispatch();
     const boardInfo = useSelector(state => { return state.board.data });
     const [info, setInfo] = useState(useSelector(state => { return state.board.data } ));
-    console.log('### 맘스토크 info: ', info, route.params);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
@@ -293,7 +291,6 @@ const Talk1Sub = ({navigation, route}) => {
                 });
                 setBoardLike(response.data);
             }catch(error){
-                console.log('LikeFlag axios error');
                 return undefined; 
             }
         }
@@ -313,7 +310,6 @@ const Talk1Sub = ({navigation, route}) => {
                   data: insert
                 });
             }catch(error){
-              console.log('댓글 작성 error: ', error);
             }
         dispatch(postBoard(boardData));
         dispatch(postComment(commentData));
@@ -339,7 +335,6 @@ const Talk1Sub = ({navigation, route}) => {
                 dispatch(postBoard(boardData));
                 setBoardLike();
             }catch(error){
-              console.log('게시판 좋아요 error: ', error);
             }
     }
 
@@ -361,7 +356,6 @@ const Talk1Sub = ({navigation, route}) => {
                 dispatch(postBoard(boardData));
                 setBoardLike();
             }catch(error){
-              console.log('게시판 좋아요 error: ', error);
             }
     }
 

@@ -10,7 +10,6 @@ export const postMyCommentCount = createAsyncThunk("postMyCommentCountSlice/asyn
       });
       return response.data;
       }catch(error){
-          console.log('myCommentCount axios error: ', error);
       }
 });
 

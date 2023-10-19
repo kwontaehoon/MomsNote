@@ -11,10 +11,8 @@ export const postInfoPopularSlice = createAsyncThunk("postInfoPopularSlice/async
           },
           data : {}
       });
-      // console.log('infoPopularSlice data: ', response.data);
       if(response.data == ''){ return '0' }else return response.data;
       }catch(error){
-          // console.log('InfoPopularSlice redux axios error: ', error.response);
           return undefined;
       }
 });

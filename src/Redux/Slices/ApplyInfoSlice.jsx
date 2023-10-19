@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -13,10 +13,8 @@ export const postApplyInfo = createAsyncThunk("postApplyInfoSlice/async", async 
           },
           url: 'https://momsnote.net/api/user/moreInfo',
       });
-      console.log('## response: ', response.data);
       if(response.data == ''){ return '0' }else return response.data.data;
       }catch(error){
-          console.log('applyInfo axios error: ', error);
           return undefined;
       }
 });

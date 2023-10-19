@@ -11,7 +11,6 @@ export const postQna = createAsyncThunk("postQnaSlice/async", async (data) => {
       if(response.data == ''){ return '0' }else return response.data;
       
       }catch(error){
-          console.log('qna axios error: ', error);
           return undefined;
       }
 });

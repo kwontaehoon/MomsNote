@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, KeyboardAvoidingView, Modal, Platform } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
-import Icon from 'react-native-vector-icons/FontAwesome'
-import DateTimePicker from '@react-native-community/datetimepicker'
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, KeyboardAvoidingView, Modal } from 'react-native'
 import Close from '../../../../../public/assets/svg/Close.svg'
 import axios from 'axios'
 
@@ -130,9 +127,7 @@ const Main = ({modalVisible3, setModalVisible3}) => {
                     applicationUrl: info
                   }
                 });
-                console.log('response: ', response.data);
             }catch(error){
-              console.log('error: ', error);
             }
     }
 

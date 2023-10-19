@@ -11,7 +11,6 @@ export const postEventCount = createAsyncThunk("postEventCountSlice/async", asyn
       });
       return response.data;
       }catch(error){
-          console.log('event axios error: ', error);
       }
 });
 

@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
       height: 50,
       alignItems: 'center',
       justifyContent: 'center',
+      borderWidth: 2
     },
     main: {
       marginBottom: 100
@@ -100,8 +101,14 @@ const SetCheckBox = () => {
       ];
 
     const flatListRef = useRef();
-    const [selectNumber, setSelectNumber] = useState(0);
+    const [selectNumber, setSelectNumber] = useState(8);
     const [week, setWeek] = useState(Array.from({ length: 12 }, () => { return false }));
+
+    useEffect( () => {
+      if(flatListRef.current){
+          flatListRef.current.scrollToIndex({animated: true, index: selectNumber});
+      }
+    },[selectNumber])
 
     const renderItem = ({ item }) => (
         <TouchableOpacity style={styles.scrollBox} onPress={() => change(item.id)}> 
@@ -111,23 +118,16 @@ const SetCheckBox = () => {
         }}>{item.id + 1}월</Text>
       </TouchableOpacity>
     );
-    useEffect(()=>{
-        // setSelectNumber(7);
-    }, []);
-    useEffect( () => {
-        if(flatListRef.current){
-            flatListRef.current.scrollToIndex({animated: true, index: selectNumber});
-        }
-    },[selectNumber])
+
     return(
       <>
         <View style={{ height: 80 }}>
             <FlatList
                 ref={flatListRef}
                 initialScrollIndex={0}
-                // initialNumToRender={7}
                 data={data}
                 renderItem={renderItem}
+                getItemLayout={(data, index) => ({length: 12, offset: 70 * index, index})}
                 keyExtractor={item => item.key}
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}

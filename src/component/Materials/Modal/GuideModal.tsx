@@ -1,9 +1,6 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal, Image } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
+import React from 'react'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Modal, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
-import Icon2 from 'react-native-vector-icons/Ionicons'
-import drugs from '../../../public/assets/drugs.png'
 
 const styles = StyleSheet.create({
     modalContainer:{
@@ -85,7 +82,7 @@ const styles = StyleSheet.create({
     }
 })
 
-const Main = ({modalVisible4, setModalVisible4, modalVisible2, setModalVisible2}) => {
+const Main = ({modalVisible4, setModalVisible4, setModalVisible2}) => {
 
     const optionBox = (e) => {
         switch(e){

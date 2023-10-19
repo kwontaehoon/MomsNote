@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Text, View, StyleSheet, Image, StatusBar, Button, TouchableOpacity, SafeAreaView, Platform, ActivityIndicator } from 'react-native'
+import { View, StyleSheet, Image, StatusBar, TouchableOpacity, SafeAreaView, Platform, ActivityIndicator } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import Swiper from 'react-native-swiper'
 import { useIsFocused } from '@react-navigation/native'
-import { Video, AVPlaybackStatus } from 'expo-av';
+import { Video } from 'expo-av';
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-
 import Close from '../../../public/assets/svg/Close.svg'
 
 const styles = StyleSheet.create({
@@ -76,7 +75,6 @@ const Gallery = ({navigation, route}) => {
 
   const [newArr, setNewArr] = useState();
 
-
   const FocusAwareStatusBar = () => {
     const isFocused = useIsFocused();
     return isFocused ? <StatusBar backgroundColor='black' barStyle={'white'} /> : null;
@@ -93,7 +91,6 @@ const Gallery = ({navigation, route}) => {
       route.params[0] = arr;
       setLoading(false);
   }, []);
-  console.log('### newArr: ', route.params[0], newArr, loading);
 
   return !newArr && loading ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : 
   (

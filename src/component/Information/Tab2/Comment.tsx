@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
 import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
 import moment from 'moment'
-
 import Like from '../../../../public/assets/svg/Like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
 import More from '../../../../public/assets/svg/More.svg'
@@ -64,7 +63,6 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                   }
                 });
             }catch(error){
-              console.log('error: ', error);
             }
             dispatch(postComment(commentData));
             dispatch(postCommentFlag({boardId: info[0].boardId}));

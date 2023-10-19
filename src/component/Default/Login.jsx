@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, SafeAreaView, StatusBar,BackHandler } from 'react-native'
-import Slick from 'react-native-slick'
-import { getStatusBarHeight } from "react-native-status-bar-height"
-import { WithLocalSvg } from "react-native-svg"
+import { View, Text, StyleSheet, TouchableOpacity, Platform, SafeAreaView, StatusBar,BackHandler } from 'react-native'
 import Kakao from '../../../public/assets/svg/kakao.svg'
 import Apple from '../../../public/assets/svg/apple.svg'
 import GoogleIcon from '../../../public/assets/svg/google.svg'
@@ -11,18 +8,14 @@ import Logo2 from '../../../public/assets/svg/Logo2.svg'
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
 import * as AppleAuthentication from 'expo-apple-authentication';
-import * as Linking from 'expo-linking';
 import axios from 'axios'
 import Modal from './Modal/Withdraw'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useIsFocused } from '@react-navigation/native'
 import {
     SafeAreaProvider,
-    useSafeAreaInsets,
   } from 'react-native-safe-area-context';
-import { AppleAuthenticationCredentialState } from 'expo-apple-authentication'
 import jwtDecode from 'jwt-decode'
-import { useDispatch } from 'react-redux'
 
 const styles = StyleSheet.create({
     container:{
@@ -94,7 +87,6 @@ const Main = ({navigation, route}) => {
     React.useEffect(() => {
         if (response?.type === 'success') {
             const { authentication } = response;
-            console.log('authentication: ', authentication);
             GoogleGetId(authentication.accessToken);
         }
     }, [response]);
@@ -102,7 +94,6 @@ const Main = ({navigation, route}) => {
     const GoogleGetId = async(googleAccessToken) => {
         try{
             const response = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${googleAccessToken}`);
-            console.log('google response: ', response);
             const response2 = await axios({
                 method: 'post',
                 url: 'https://momsnote.net/login',
@@ -129,7 +120,6 @@ const Main = ({navigation, route}) => {
                     });
                     AsyncStorage.setItem('user', JSON.stringify(response3.data.data));
                     }catch(error){
-                        console.log('user axios error: ', error);
                         return undefined;
                     }
 
@@ -191,7 +181,6 @@ const Main = ({navigation, route}) => {
                         });
                         // signed in
                         const decode = await jwtDecode(credential.identityToken);
-                        console.log('apple credential.identityToken: ', decode.sub, decode.email);
                         AsyncStorage.setItem('userId', decode.email);
 
                         const response = await axios({
@@ -205,7 +194,6 @@ const Main = ({navigation, route}) => {
                             }
                         });
                         AsyncStorage.setItem('token', response.data.token);
-                        console.log('apple response: ', response);
                         
                         if(response.data.status == 'success'){
                             try{
@@ -219,7 +207,6 @@ const Main = ({navigation, route}) => {
                                 });
                                 AsyncStorage.setItem('user', JSON.stringify(response2.data));
                                 }catch(error){
-                                    console.log('user axios error: ', error);
                                     return undefined;
                                 }
             
@@ -236,8 +223,6 @@ const Main = ({navigation, route}) => {
                             // handle that the user canceled the sign-in flow
                         } else {
                             // handle other errors
-                            console.log('apple error: ', e);
-                            
                         }
                         }
                     }}>

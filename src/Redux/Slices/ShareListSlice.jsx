@@ -13,7 +13,6 @@ export const postShareList = createAsyncThunk("postShareList/async", async (data
       });
       return response.data;
       }catch(error){
-          console.log('shareList redux axios error: ', error);
       }
 });
 

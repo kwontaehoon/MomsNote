@@ -5,11 +5,9 @@ import Icon from 'react-native-vector-icons/AntDesign'
 import Checkbox from 'expo-checkbox'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
 import Check from '../../../../public/assets/svg/Check.svg'
 import ArrowRight from '../../../../public/assets/svg/Arrow-Right.svg'
 import ArrowBottom from '../../../../public/assets/svg/Arrow-Bottom.svg'
-
 import Modal from './Modal/AuthComplete'
 import Modal2 from './Modal/AuthFail'
 import Modal3 from './Modal/AuthReady'
@@ -20,7 +18,6 @@ import Modal7 from './Modal/PhoneNumber'
 import Modal8 from './Modal/Complete'
 import Modal9 from './Modal/TelCheck'
 import SelectItem from './Modal/ItemSelect'
-
 import { useSelector } from 'react-redux'
 import {
     SafeAreaProvider
@@ -155,8 +152,6 @@ const styles = StyleSheet.create({
 })
 const Withdraw = ({navigation, route}) => {
 
-    console.log('### route: ', route.params);
-
     const DATA = [
         {
           id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -180,11 +175,8 @@ const Withdraw = ({navigation, route}) => {
     const [telCheck, setTelCheck] = useState(null);
 
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
-    console.log('### boardFlag: ', boardAppFlag);
 
     const [appFlag, setAppFlag] = useState();
-    console.log('### appFlag: ', appFlag);
-
     const [modal, setModal] = useState(false); // 핸드폰 인증 완료
     const [modal2, setModal2] = useState(false); // 핸드폰 인증 실패
     const [modal3, setModal3] = useState(false); // 핸드폰 인증 이미 완료
@@ -201,7 +193,6 @@ const Withdraw = ({navigation, route}) => {
         selectItem: '',
         selectCount: '',
     }); // 상품갯수 선택 모달
-    console.log('### selectItemModal: ', selectItemModal);
     
     const [info, setInfo] = useState( // post info
         {
@@ -215,7 +206,6 @@ const Withdraw = ({navigation, route}) => {
             youtube: '',
         }
     );
-    console.log('### info: ', info);
     const dispatch = useDispatch();
     const [minutes, setMinutes] = useState(parseInt(3));
     const [seconds, setSeconds] = useState(parseInt(0));
@@ -285,10 +275,8 @@ const Withdraw = ({navigation, route}) => {
                   method: 'post',
                   url: `https://momsnote.net/api/send/code?phone=${info.tel}`,
                 });
-                console.log('response: ', response.data);
                 setSMSNumber(response.data.data);
             }catch(error){
-              console.log('error: ', error);
             }
     }
 
@@ -328,17 +316,13 @@ const Withdraw = ({navigation, route}) => {
                 },
                 data: {tel: info.tel}
             });
-            console.log('response: ', response.data);
             setTelCheck(response.data);
         }catch(error){
-            console.log('핸드폰 중복체크 error: ', error);
         }
     }
 
     const submit = async() => {
-        
         const token = await AsyncStorage.getItem('token');
-        console.log('###########: ', {...info, experienceId: Number(route.params.experienceId), itemName: selectItemModal.selectItem, itemAmount: selectItemModal.selectCount}, token);
         try{
             const response = await axios({
                 method: 'post',
@@ -352,11 +336,9 @@ const Withdraw = ({navigation, route}) => {
 
                 }
             });
-            console.log('체험단 신청 response: ', response.data);
             AsyncStorage.setItem('applicationFlag', `${info.experienceId}`);
             setModal8(!modal8);
         }catch(error){
-            console.log('체험단 신청 error: ', error);
         }
     }
     

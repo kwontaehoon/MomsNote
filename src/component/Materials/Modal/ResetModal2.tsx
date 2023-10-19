@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Switch, Modal, Platform } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 
@@ -91,9 +91,7 @@ const Main = ({modalVisible6, setModalVisible6, setMaterialFlag}) => {
                   },
                   data: {resetStatus: "recommend"}
                 });
-                console.log('## 추천 리스트 response: ', response);
             }catch(error){
-              console.log('실제맘 추천 리스트 error: ', error);
             }
 
             try{
@@ -106,9 +104,7 @@ const Main = ({modalVisible6, setModalVisible6, setMaterialFlag}) => {
                   },
                   data: {}
                 });
-                console.log('## 추천리스트 response2: ', response2);
             }catch(error){
-              console.log('실제맘 추천 리스트 error: ', error);
             }
         }else{
             await AsyncStorage.setItem('materialFlag', 'self');
@@ -123,9 +119,7 @@ const Main = ({modalVisible6, setModalVisible6, setMaterialFlag}) => {
                   },
                   data: {resetStatus: "self"}
                 });
-                console.log('## 직접 작성 response: ', response);
             }catch(error){
-              console.log('실제맘 추천 리스트 error: ', error);
             }
 
             try{
@@ -137,9 +131,7 @@ const Main = ({modalVisible6, setModalVisible6, setMaterialFlag}) => {
                         'Content-Type': 'application/json'
                       },
                     });
-                    console.log('response: ', response);
                 }catch(error){
-                  console.log('직접 작성 error: ', error);
                 }
         }
         setModalVisible6(prevState => ({...prevState, open: false, content: null}))

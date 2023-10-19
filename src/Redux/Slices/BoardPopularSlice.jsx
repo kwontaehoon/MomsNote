@@ -13,7 +13,6 @@ export const postBoardPopular = createAsyncThunk("postBoardPopularSlice/async", 
       });
       if(response.data == ''){ return '0' }else return response.data;
       }catch(error){
-          console.log('BoardPopularSlice redux axios error: ', error);
           return undefined;
       }
 });

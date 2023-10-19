@@ -1,23 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Image, Animated, SafeAreaView, StatusBar } from 'react-native'
-import { getStatusBarHeight } from "react-native-status-bar-height"
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Animated, SafeAreaView, StatusBar } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSelector, useDispatch } from 'react-redux'
 import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
-
 import Modal from './Modal/BrandEditModal'
 import Modal2 from './Modal/Confirm'
 import Modal3 from '../../Modal/First'
 import Modal4 from '../../Materials/Budget/Modal/PriceEdit'
 import CoarchMark from './Modal/CoarchMark'
-
 import ArrowTop from '../../../../public/assets/svg/Arrow-Top.svg'
 import ArrowBottom from '../../../../public/assets/svg/Arrow-Bottom.svg'
 import { postShareList } from '../../../Redux/Slices/ShareListSlice'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
-
 
 const styles = StyleSheet.create({
     container:{
@@ -198,7 +194,6 @@ const Talk1Sub = ({navigation, route}) => {
     const material = useSelector(state => { return state.material.data; });
     const [list, setList] = useState(Array.from({length: 9}, () => true)); // 게시글 list display
     const [userList, setUserList] = useState(Array.from({length: 9}, () => true));
-    console.log('### userList: ', userList);
     const animation = useRef(new Animated.Value(0)).current;
     const [myList, setMyList] = useState(false);
 
@@ -206,24 +201,21 @@ const Talk1Sub = ({navigation, route}) => {
       sum: 0,
       exp: 0
     });
-    const [selectBrand, setSelectBrand] = useState({
-      needsId: null,
-      needsBrandId: 0,
-      itemName: '',
-      itemPrice: 0,
-      needsDataId: null,
-      itemBrand: '',
-    });
 
     const [modal, setModal] = useState({ // 브랜드 선택 모달
       open: false,
       needsId: null,
       needsBrandId: null,
       needsName: '',
-      itemPrice: null
+      itemPrice: null,
+      flag: ''
     });
 
-    const [modal2, setModal2] = useState(false); // 수정 내용 적용하시겠습니까 모달
+    const [modal2, setModal2] = useState({
+      open: false,
+      content: '',
+      flag: ''
+    }); // 해당 브랜드로 수정하시겠습니까? 모달
 
     const [modal3, setModal3] = useState({ // 수정되었습니다 모달
       open: false,
@@ -241,6 +233,13 @@ const Talk1Sub = ({navigation, route}) => {
     dispatch(postMaterial({ order: 'need'}));
     dispatch(postShareList({ boardId: route.params.boardId }));
   }, [modal4, modal]);
+
+  useEffect(()=>{
+    if(modal.flag == 'edit'){
+      setModal3({...modal3, open: true, content: '리스트에 적용되었습니다.', flag: ''});
+    }
+    dispatch(postMaterial({ order: 'need'})); 
+  }, [modal]);
 
   useEffect(()=>{
     let sum = 0;
@@ -278,54 +277,17 @@ const Talk1Sub = ({navigation, route}) => {
   useEffect(()=>{
     const coarch = async() => {
       const coarchMark = await AsyncStorage.getItem('coarchMarkMaterialList');
-      coarchMark == null ? setCoarchMarkModal(true) : setCoarchMarkModal(false);
+      !coarchMark ? setCoarchMarkModal(true) : setCoarchMarkModal(false);
     }
     coarch();
   }, []);
 
-  const submit = async(e) => {
-    const token = await AsyncStorage.getItem('token');
-    try{
-        await axios({
-            method: 'post',
-            url: 'https://momsnote.net/api/needs/add/brand',
-            headers: { 
-                'Authorization': `bearer ${token}`,  
-                'Content-Type': 'application/json'
-              },
-            data: {
-              needsId: e.needsId,
-              needsBrandId: e.needsBrandId,
-              itemName: e.itemName,
-              itemPrice: e.itemPrice,
-              needsDataId: e.needsId,
-              itemBrand: e.itemBrand,
-            }
-        });
-        }catch(error){
-            console.log('comment axios error:', error)
-        }
-
-    try{
-      await axios({
-          method: 'post',
-          url: 'https://momsnote.net/api/needs/buy/needs',
-          headers: { 
-            'Authorization': `bearer ${token}`,  
-            'Content-Type': 'application/json'
-          },
-          data: {
-            needsBrandId: e.needsBrandId,
-            needsId: e.needsId
-          }
-      });
-      }catch(error){
-          console.log('출산준비물 구매 error:', error);
-      }
-      dispatch(postMaterial({ order: 'need'}));
+  useEffect(()=>{
+    if(modal2.flag == 'edit'){
       setModal3(prevState => ({...prevState, open: true, content: '출산리스트가 수정되었습니다.', buttonCount: 1}));
-}
-
+    }
+    dispatch(postMaterial({ order: 'need'})); 
+  }, [modal2]);
 
   const filtering = (e, title) => { // 품목 브랜드 가격 부분 none || flex
     if(title.filter(x => x.category == e).length == 0){
@@ -370,10 +332,9 @@ const Talk1Sub = ({navigation, route}) => {
               arr.push(
                    <TouchableOpacity style={styles.listMain2} onLongPress={()=>{
                     if(!x.itemBrand){
-                      setModal(prevState => ({...prevState, open: true, needsId: x.needsId, needsBrandId: x.needsBrandId, needsName: x.needsName, itemPrice: x.itemPrice}));
+                      setModal(prevState => ({...prevState, open: true, needsId: x.needsId, needsBrandId: x.needsBrandId, needsName: x.needsName, itemPrice: x.itemPrice, flag: ''}));
                     }else{
-                      setSelectBrand({...selectBrand, needsId: e.needsId, needsBrandId: e.needsBrandId, needsDataId: e.needsId, itemName: e.itemName, itemBrand: e.itemBrand, itemPrice: x.itemPrice});
-                      submit(x);
+                      setModal2({...modal2, open: true, content: x, flag: ''});
                     }
                    
                     }} delayLongPress={1500} activeOpacity={1} key={index}>

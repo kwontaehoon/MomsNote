@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 // 신청유무
@@ -16,7 +16,6 @@ export const postBoardApp = createAsyncThunk("postBoardAppSlice/async", async (d
       });
       return response.data;
       }catch(error){
-          console.log('boardApp axios error: ', error);
           return undefined;
       }
 });

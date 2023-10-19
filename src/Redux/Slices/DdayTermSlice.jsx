@@ -10,7 +10,6 @@ export const postDdayTerm = createAsyncThunk("postDdayTermSlice/async", async (d
       });
       return response.data;
       }catch(error){
-          console.log('ddayTerm axios error: ', error);
       }
 });
 

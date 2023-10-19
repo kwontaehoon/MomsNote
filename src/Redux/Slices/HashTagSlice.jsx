@@ -13,7 +13,6 @@ export const postHashTag = createAsyncThunk("postHashTagSlice/async", async (dat
       });
       if(response.data == ''){ return '0'; }else return response.data;
       }catch(error){
-          console.log('guide axios error: ', error);
       }
 });
 

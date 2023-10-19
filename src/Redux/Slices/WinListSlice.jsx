@@ -13,7 +13,6 @@ export const postWinList = createAsyncThunk("postWinListSlice/async", async (dat
       });
       return response.data;
       }catch(error){
-          console.log('winList axios error: ', error);
           return undefined;
       }
 });

@@ -10,7 +10,6 @@ export const postPeriodCount = createAsyncThunk("postPeriodCountSlice/async", as
       });
       return response.data;
       }catch(error){
-          console.log('periodCount axios error: ', error);
       }
 });
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height"; 
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, TextInput, Platform, StatusBar, SafeAreaView } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, Platform, StatusBar, SafeAreaView } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon3 from 'react-native-vector-icons/Feather'
 import Checkbox from 'expo-checkbox';
@@ -13,7 +13,7 @@ import SecondModal from '../../Modal/Second'
 import ViewShot from 'react-native-view-shot'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux';
-import { postMaterial, setMaterialRefresh } from '../../../Redux/Slices/MaterialSlice';
+import { postMaterial } from '../../../Redux/Slices/MaterialSlice';
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import Search from '../../../../public/assets/svg/Search.svg'
@@ -250,7 +250,6 @@ const Navigation = ({navigation, route}) => {
             });
             setMaterialSearch(response.data);
         }catch(error){
-            console.log('materialSearch axios error', error);
             setMaterialSearch(undefined);
         }
     }
@@ -273,7 +272,6 @@ const purchase = async(needsId, needsBrandId) =>{
         }
     });
     }catch(error){
-        console.log('출산준비물 구매 error:', error);
     }
     dispatch(postMaterial({order: 'need'}));
     setRefresh(`구매${needsBrandId}`);
@@ -294,7 +292,6 @@ const purchaseCencel = async(needsId) => {
         }
     });
     }catch(error){
-        console.log('출산준비물 리스트 error:', error);
     }
     dispatch(postMaterial(materialSet));
     setRefresh(`구매캔슬${needsId}`);

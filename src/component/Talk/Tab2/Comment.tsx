@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
 import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
 import moment from 'moment'
-
 import Like from '../../../../public/assets/svg/Like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
 import More from '../../../../public/assets/svg/More.svg'
@@ -60,9 +59,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                     type: 'plus'
                   }
                 });
-                console.log('response: ', response.data);
             }catch(error){
-              console.log('error: ', error);
             }
             dispatch(postComment(commentData));
             dispatch(postCommentFlag({boardId: info[0].boardId}));
@@ -84,11 +81,9 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                     type: 'minus'
                   }
                 });
-                console.log('response: ', response.data);
                 dispatch(postComment(commentData));
                 dispatch(postCommentFlag({boardId: info[0].boardId}));
             }catch(error){
-              console.log('게시판 좋아요 error: ', error);
             }
     }
 

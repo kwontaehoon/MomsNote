@@ -8,13 +8,10 @@ import { postEventCount } from '../../../Redux/Slices/EventCountSlice'
 import { setEventCount } from '../../../Redux/Slices/EventSlice'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { Platform } from 'expo-modules-core'
-
 import Modal from './Modal/DatePick'
-
 import Arrow_left from '../../../../public/assets/svg/Arrow-Left.svg'
 import Arrow_right from '../../../../public/assets/svg/Arrow-Right.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { postUser } from '../../../Redux/Slices/UserSlice'
 
 const styles = StyleSheet.create({
   container: {
@@ -135,6 +132,10 @@ const Talk1 = ({ navigation }: any) => {
     const arr = Array.from({ length: 12 }, () => { return false });
     arr[eventSet.date.split('-')[1] -1] = true;
     setWeek(arr);
+    if(flatListRef.current){
+      flatListRef.current.scrollToIndex({animated: true, index: arr.findIndex(x=>x)});
+    }
+    setMonth(arr.findIndex(x=>x));
   }, []);
 
   useEffect(() => {
@@ -147,9 +148,7 @@ const Talk1 = ({ navigation }: any) => {
     setLoading(false);
   }, [eventSet, refreshing]);
 
-  useEffect(()=>{
-    setMonth(week.findIndex(x => x));
-  }, [week]);
+
 
   const change = (e) => { // 몇 주차 border, 글자두께 변경
     let arr = Array.from({ length: 12 }, () => { return false });
@@ -246,20 +245,30 @@ const Talk1 = ({ navigation }: any) => {
               <TouchableOpacity style={{ position: 'absolute', right: 0 }} onPress={() => yearCount('plus')}><Arrow_right fill='black' /></TouchableOpacity>
             </View>
             <View style={styles.headerBox2}>
-              {month == -1 ? '' : <FlatList data={DATA2} renderItem={renderItem2}
-                ref={flatListRef} initialScrollIndex={week.findIndex(x => x) < 7 ? month : 7}
-                keyExtractor={item => item.id} horizontal={true} showsHorizontalScrollIndicator={false}>
-              </FlatList>}
+              <FlatList
+              data={DATA2} renderItem={renderItem2}
+                ref={flatListRef}
+                initialScrollIndex={month > 7 ? 6 : month}
+                getItemLayout={(data, index) => ({length: 12, offset: 70 * index, index})}
+                keyExtractor={item => item.id}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}>
+              </FlatList>
             </View>
           </View>
           <View style={styles.main}>
             {info == '0' ? <View style={{ marginTop: 150, alignItems: 'center' }}><Text style={{ fontSize: 16, color: '#757575' }}>등록된 게시물이 없습니다.</Text></View>
               :
-              <FlatList data={info} renderItem={renderItem} onEndReached={() => {
+              <FlatList 
+              data={info} renderItem={renderItem} 
+              onEndReached={() => {
                 dispatch(setEventCount({ page: infoCount > (eventSet.page * 30) ? eventSet.page + 1 : eventSet.page, count: infoCount }));
-              }} onEndReachedThreshold={0}
-                onRefresh={onRefreshing} refreshing={refreshing}
-                keyExtractor={item => String(item.boardId)} showsVerticalScrollIndicator={false}
+              }} 
+              onEndReachedThreshold={0}
+                onRefresh={onRefreshing}
+                refreshing={refreshing}
+                keyExtractor={item => String(item.boardId)}
+                showsVerticalScrollIndicator={false}
                 ListFooterComponent={loading && <ActivityIndicator />}>
               </FlatList>
             }

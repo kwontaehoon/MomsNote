@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Image } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { postGuideCount } from '../../../Redux/Slices/GuideCountSlice'
-import { postGuide, setGuideRefresh, setGuideCount } from '../../../Redux/Slices/GuideSlice'
+import { postGuide, setGuideRefresh } from '../../../Redux/Slices/GuideSlice'
 import { setGuideCountRefresh } from '../../../Redux/Slices/GuideCountSlice'
 import { Platform } from 'expo-modules-core'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -164,11 +164,9 @@ const Talk1 = ({navigation}) => {
           setPlus({...plus, newInfo: addInfo, page: plus.page+1});
         }
     } catch (error) {
-        console.log('qna axios error: ', error);
         return undefined;
     }
 }
-
 
   const change = async(e) => { // 카테고리 배경색상, 글자 색상 변경
     await AsyncStorage.setItem('momsInfoTab', DATA[e].title);

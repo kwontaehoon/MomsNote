@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Switch, Modal, Platform } from 'react-native'
-import axios from 'axios'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import React from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native'
 
 const styles = StyleSheet.create({
     container:{

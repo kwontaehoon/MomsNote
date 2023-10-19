@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const postNeedsCounting = createAsyncThunk("postNeedsCountingSlice/async", async (data) => {
     try{
@@ -11,7 +10,6 @@ export const postNeedsCounting = createAsyncThunk("postNeedsCountingSlice/async"
       });
       if(response.data == ''){ return '0'; }else return response.data;
       }catch(error){
-          console.log('myExp axios error: ', error);
           return undefined;
       }
 });

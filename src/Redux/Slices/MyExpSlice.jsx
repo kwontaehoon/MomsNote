@@ -16,7 +16,6 @@ export const postMyExp = createAsyncThunk("postMyExpSlice/async", async (data) =
       });
       if(response.data == ''){ return '0'; }else return response.data;
       }catch(error){
-          console.log('myExp axios error: ', error);
           return undefined;
       }
 });

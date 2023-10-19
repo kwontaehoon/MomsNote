@@ -10,7 +10,6 @@ export const postListPopular = createAsyncThunk("postListPopularSlice/async", as
       });
       return response.data;
       }catch(error){
-          console.log('ListPopular axios error: ', error);
       }
 });
 

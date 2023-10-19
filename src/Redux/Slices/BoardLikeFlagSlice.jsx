@@ -16,7 +16,6 @@ export const postBoardLikeFlag = createAsyncThunk("postBoardLikeFlagSlice/async"
       });
       return response.data;
       }catch(error){
-          console.log('boardLikeFlag axios error: ', error);
           return undefined;
       }
 });

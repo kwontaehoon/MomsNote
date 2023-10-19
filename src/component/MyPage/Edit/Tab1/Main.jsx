@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Platform } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import axios from 'axios'
-
 import Calendar from '../../../../../public/assets/svg/Calendar.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
@@ -94,7 +93,6 @@ const Talk1 = ({navigation}: any) => {
         providerId: '',
     });
     const user = useSelector(state => { return state.user.data });
-    console.log('@@ user: ', user);
 
     const [bottomColor, setBottomColor] = useState(Array.from({length: 4}, ()=>{return false})); // bottom color
 
@@ -130,7 +128,6 @@ const Talk1 = ({navigation}: any) => {
                     babyName: `${info.babyName}`
                   }
                 });
-                console.log('@@@@ response data: ', response);
                 info.provider == 'google' ?
                 AsyncStorage.setItem('google_user', JSON.stringify(info))
                 :
@@ -140,7 +137,6 @@ const Talk1 = ({navigation}: any) => {
                 
                 navigation.goBack();
             }catch(error){
-              console.log('내 정보 수정 tab1 error: ', error);
             } 
     }
 

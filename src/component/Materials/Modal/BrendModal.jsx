@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal, KeyboardAvoidingView, BackHandler } from 'react-native'
 import axios from 'axios'
-
 import Arrow_Right from '../../../../public/assets/svg/Arrow-Right.svg'
 import Reset from '../../../../public/assets/svg/Reset.svg'
 import Crown from '../../../../public/assets/svg/crown.svg'
 import Crown2 from '../../../../public/assets/svg/crown2.svg'
 import Crown3 from '../../../../public/assets/svg/crown3.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
-
 import { postMaterial } from '../../../Redux/Slices/MaterialSlice'
 import { useDispatch } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -114,7 +112,6 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
 
     const dispatch = useDispatch();
     const [info, setInfo] = useState(); // 브랜드 list
-    console.log('## info: ', info, modalVisible2);
     const [selectBrand, setSelectBrand] = useState({
         needsId: null,
         needsBrandId: 0,
@@ -145,7 +142,6 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
             });
             setInfo(response.data);
             }catch(error){
-                console.log('comment axios error:', error);
                 setInfo(undefined);
             }
         } 
@@ -183,7 +179,6 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
                 }
             });
             }catch(error){
-                console.log('comment axios error:', error)
             }
             dispatch(postMaterial({order: filter}));
             setModalVisible2(prevState => ({...prevState, open: false})),
@@ -203,7 +198,6 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
                 data: selectBrand
             });
             }catch(error){
-                console.log('comment axios error:', error)
             }
             dispatch(postMaterial({order: filter}));
             setInfo([]);
@@ -247,7 +241,7 @@ const Main = ({modalVisible2, setModalVisible2, modal, setModal, setModal2, moda
                 <View style={styles.modalContainer2}>
                     <View style={styles.header}>
                         <TouchableOpacity style={styles.closeBox} 
-                            onPress={()=>(setSelectBrand(prevState => ({...prevState, itemBrand: '', itemName: ''})),setModalVisible2(prevState=> ({...prevState, open: false})))}>
+                            onPress={()=>(setSelectBrand(prevState => ({...prevState, itemBrand: '', itemName: ''})), setModalVisible2(prevState=> ({...prevState, open: false})))}>
                                 <Close fill={'black'}/>
                         </TouchableOpacity>
                         <Text style={{color: '#212121', fontSize: 18, fontWeight: '700'}}>브랜드 선택</Text>

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -16,7 +16,6 @@ export const postAlarm = createAsyncThunk("postAlarmSlice/async", async () => {
       });
       if(response.data == ''){ return setInfo('0') }else return response.data.data;
       }catch(error){
-          console.log('alarm axios error: ', error);
           return undefined;
       }
 });

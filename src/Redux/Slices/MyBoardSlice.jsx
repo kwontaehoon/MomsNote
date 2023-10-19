@@ -16,7 +16,6 @@ export const postMyBoard = createAsyncThunk("postMyBoardSlice/async", async (dat
       });
       if(response.data == ''){ return '0'; }else return response.data;
       }catch(error){
-          console.log('myBoard axios error: ', error);
           return undefined;
       }
 });

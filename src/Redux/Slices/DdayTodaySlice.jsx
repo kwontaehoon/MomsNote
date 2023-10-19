@@ -10,7 +10,6 @@ export const postDdayToday = createAsyncThunk("postDdayTodaySlice/async", async 
       });
       return response.data;
       }catch(error){
-          console.log('ddayToday axios error: ', error);
       }
 });
 
@@ -27,8 +26,6 @@ export const ddayTodaySlice = createSlice({
     initialState,
     reducers: {
       setDdayTodayRefresh:(state, action)=>{
-        console.log('refresh 카운트');
-        console.log('refresh state: ', state);
         state.refresh.subcategory = action.payload.subcategory;
       },
     },

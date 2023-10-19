@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import Postcode from '@actbase/react-daum-postcode'
 
 const styles = StyleSheet.create({
@@ -11,8 +11,6 @@ const styles = StyleSheet.create({
     }
 })
 const Post = ({navigation, route}) => {
-
-    console.log('daum 주소: ', route);
 
     const getAddressData = data => {
         let defaultAddress = ''; // 기본주소

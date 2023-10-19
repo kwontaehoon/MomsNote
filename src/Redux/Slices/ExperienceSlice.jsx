@@ -13,7 +13,6 @@ export const postExperience = createAsyncThunk("postExperienceSlice/async", asyn
       });
       if(response.data == ''){ return '0'; }else return response.data;
       }catch(error){
-          console.log('experience axios error: ', error);
       }
 });
 

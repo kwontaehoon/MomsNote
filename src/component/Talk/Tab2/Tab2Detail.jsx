@@ -9,7 +9,6 @@ import Modal6 from '../../Modal/Declare2'
 import Modal7 from '../../Modal/CommentDelete'
 import moment from 'moment'
 import { useSelector, useDispatch } from 'react-redux'
-import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
 import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -42,7 +41,6 @@ import { postShareList } from '../../../Redux/Slices/ShareListSlice'
 import { postHits } from '../../../Redux/Slices/HitsSlice'
 import { postMaterialShare } from '../../../Redux/Slices/MaterialShareSlice'
 import { postUser } from '../../../Redux/Slices/UserSlice'
-import CoarchMark from './Modal/CoarchMark'
 
 const styles = StyleSheet.create({
     container:{
@@ -230,8 +228,6 @@ const styles = StyleSheet.create({
 })
 const Talk1Sub = ({navigation, route}) => {
 
-    console.log('## talk2 route: ', route.params);
-
     Keyboard.addListener('keyboardDidShow', () => {
         setPageHeight(true);
     });
@@ -290,16 +286,11 @@ const Talk1Sub = ({navigation, route}) => {
     const dispatch = useDispatch();
     const isFocused = useIsFocused();
     const info = [route.params];
-    console.log('## 출산리스트 route: ', info, info[0].boardId);
     const info2 = useSelector(state => { return state.shareList.data }); // 게시글 리스트
-    console.log('## info2: ', info2);
     const materialShare = useSelector(state => { return state.materialShare.data });
     const materialShareSet = useSelector(state => { return state.materialShare.refresh });
     const [info3, setInfo3] = useState(useSelector(state => { return state.materialShare.data }));
-    console.log('## info2: ', info2, info3);
-
     const user = useSelector(state => { return state.user.data; });
-
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
@@ -353,9 +344,6 @@ const Talk1Sub = ({navigation, route}) => {
             hits == null || hits.split('|').filter(x => x == String(info[0].boardId)) == '' ? 
             (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`)) : ''
         }
-
-   
-
         hits();
     }, [isFocused]);
 
@@ -401,7 +389,6 @@ const Talk1Sub = ({navigation, route}) => {
                 });
                 setBoardLike(response.data);
             }catch(error){
-                console.log('like axios error');
             }
         }
         likeInfo();
@@ -420,14 +407,12 @@ const Talk1Sub = ({navigation, route}) => {
                   data: insert
                 });
             }catch(error){
-              console.log('출산 리스트 댓글 작성 error: ', error);
             }
         dispatch(postMaterialShare(materialShareSet));
         dispatch(postComment(commentData));
         onPressFunction();
     }
     
-
     const likeplus = async() => { // 게시판 좋아요
         const token = await AsyncStorage.getItem('token');
         try{
@@ -446,7 +431,6 @@ const Talk1Sub = ({navigation, route}) => {
                 dispatch(postMaterialShare(materialShareSet));
                 setBoardLike();
             }catch(error){
-              console.log('출산 리스트 좋아요 error: ', error);
             }
     }
 
@@ -469,7 +453,6 @@ const Talk1Sub = ({navigation, route}) => {
                 dispatch(postMaterialShare(materialShareSet));
                 setBoardLike();
             }catch(error){
-              console.log('출산 리스트 좋아요 error: ', error);
             }
     }
 
@@ -567,7 +550,6 @@ const Talk1Sub = ({navigation, route}) => {
     const List2 = (e) => {
         let arr = [];
         info2.filter((x, index)=>{
-            console.log('##', x.itemPrice);
             if(x.category == e.title && x.buyStatus == 1){
                 arr.push(
                      <View style={styles.listMain2} key={index}>

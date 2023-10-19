@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, SafeAreaView, StatusBar, Modal } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
-import Checkbox from 'expo-checkbox'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
 import Check from '.././../../../../public/assets/svg/Check.svg'
-
 import { useSelector } from 'react-redux'
 import {
     SafeAreaProvider,
-    useSafeAreaInsets,
   } from 'react-native-safe-area-context';
 import { postApplyInfo } from '../../../../Redux/Slices/ApplyInfoSlice'
 import { useDispatch } from 'react-redux'
-import { postAlarm } from '../../../../Redux/Slices/AlarmSlice'
-import { postMyBoard } from '../../../../Redux/Slices/MyBoardSlice'
 
 const styles = StyleSheet.create({
     container:{
@@ -130,8 +124,6 @@ const Withdraw = ({navigation, route}) => {
         },
     ];
 
-    console.log('## route: ', route);
-
     const [SMSFlag, setSMSFlag] = useState({
         open: false,
         flag: 1 // 이미 인증했는지 검증
@@ -139,8 +131,6 @@ const Withdraw = ({navigation, route}) => {
     const [SMSNumber, setSMSNumber] = useState(); // SMS 번호
 
     const appFlag =  useSelector(state => { return state.applyInfo.data; });
-    console.log('## appFlag: ', appFlag);
-
     const [SMSInputNumber, setSMSInputNumber] = useState(''); // 입력한 SMS 번호
 
     const [modal, setModal] = useState({
@@ -159,7 +149,6 @@ const Withdraw = ({navigation, route}) => {
             youtube: '',
         }
     );
-    console.log('## info: ', info.address);
 
     const [minutes, setMinutes] = useState(parseInt(3));
     const [seconds, setSeconds] = useState(parseInt(0));
@@ -203,7 +192,6 @@ const Withdraw = ({navigation, route}) => {
                 });
                 setSMSNumber(response.data.data);
             }catch(error){
-              console.log('error: ', error);
             }
     }
 
@@ -233,10 +221,8 @@ const Withdraw = ({navigation, route}) => {
                 },
                 data: info
             });
-            console.log('## response: ', response);
             navigation.goBack();
         }catch(error){
-            console.log('체험단 신청 error: ', error);
         }
     }
     

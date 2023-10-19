@@ -153,7 +153,6 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4, boardId}) => {
                     data: info
                 });
             }catch(error){
-              console.log('error: ', error);
             }
     }
 

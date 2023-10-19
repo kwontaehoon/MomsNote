@@ -7,23 +7,18 @@ import Modal3 from '../..//Modal/Declare'
 import Modal4 from '../..//Modal/DelareConfirm'
 import Modal6 from '../../Modal/Declare2'
 import Modal7 from '../../Modal/CommentDelete'
-
-import { Video, AVPlaybackStatus } from 'expo-av';
+import { Video } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
-import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
 import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
     SafeAreaProvider,
-    useSafeAreaInsets,
   } from 'react-native-safe-area-context';
-import { useIsFocused } from '@react-navigation/native'
 import Comment from './Comment'
 import axios from 'axios'
 import ViewShot from 'react-native-view-shot'
 import * as MediaLibrary from 'expo-media-library'
-
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Chat from '../../../../public/assets/svg/Chat.svg'
 import Like from '../../../../public/assets/svg/Like.svg'
@@ -32,9 +27,7 @@ import Back from '../../../../public/assets/svg/Back.svg'
 import Share2 from '../../../../public/assets/svg/Share.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
 import Download from '../../../../public/assets/svg/Download.svg'
-
 import { postHits } from '../../../Redux/Slices/HitsSlice'
-import { postDdayToday } from '../../../Redux/Slices/DdayTodaySlice'
 import { postDdayTerm } from '../../../Redux/Slices/DdayTermSlice'
 import RenderHtml from 'react-native-render-html';
 
@@ -227,12 +220,6 @@ const Talk1Sub = ({navigation, route}) => {
         }
     ); // 댓글 입력
     const [boardLike, setBoardLike] = useState(); // 게시판 좋아요
-    const [boardData, setBoardData] = useState({
-        order: 'new',
-        count: 5,
-        page: 1,
-        subcategory: '전체'
-    })
 
     const [commentData, setCommentData] = useState({
         boardId: info[0].boardId,
@@ -267,7 +254,7 @@ const Talk1Sub = ({navigation, route}) => {
         const hits = async() => {
             const hits = await AsyncStorage.getItem('hits');
 
-            hits == null || hits.split('|').filter(x => x == String(info[0].boardId)) == '' ? 
+            !hits || hits.split('|').filter(x => x == String(info[0].boardId)) == '' ? 
             (dispatch(postHits({boardId: info[0].boardId})), AsyncStorage.setItem('hits', String(hits)+`|${info[0].boardId}`)) : ''
         }
 
@@ -417,7 +404,7 @@ const Talk1Sub = ({navigation, route}) => {
       }
 
     const ImageBox = () => {
-        const arr:any[] = [];
+        const arr = [];
         const a = (info[0].savedName.split('|')).filter(x => {
             if(x.charAt(x.length-1) === '4'){ arr.push(x); }else return x;
         });

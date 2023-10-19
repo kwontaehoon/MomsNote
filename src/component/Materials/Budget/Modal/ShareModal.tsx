@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
-import Checkbox from 'expo-checkbox'
 
 const styles = StyleSheet.create({
     modalContainer:{

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Keyboard, Image } from 'react-native'
+import React from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSelector, useDispatch } from 'react-redux'
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     },
 })
 const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData}) => {
-
 
     const commentLike = useSelector(state => { return state.commentFlag.data; });
     const dispatch = useDispatch();
@@ -185,7 +184,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
         <List />
         <View style={styles.commentRes}></View>
     </>
-  ): <View><Text>gg</Text></View>
+  ) : ''
 }
 
 export default Comment

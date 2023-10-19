@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
 export const postGuideCount = createAsyncThunk("postGuideCountSlice/async", async (data) => {
-  console.log('data: ', data);
     try{
       const response = await axios({
           method: 'post',
@@ -12,10 +11,8 @@ export const postGuideCount = createAsyncThunk("postGuideCountSlice/async", asyn
           url: 'https://momsnote.net/api/guideboard/count',
           data : data
       });
-      console.log('@@@ response DATA: ', response.data);
       return response.data;
       }catch(error){
-          console.log('guideCount axios error: ', error);
       }
 });
 
@@ -32,8 +29,6 @@ export const guideCountSlice = createSlice({
     initialState,
     reducers: {
       setGuideCountRefresh:(state, action)=>{
-        console.log('state: ', state.refresh);
-        console.log('action: ', action.payload.subcategory);
         state.refresh.subcategory = action.payload.subcategory;
       },
     },

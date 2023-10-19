@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ActivityIndicator } from 'react-native'
 import DropDownPicker from 'react-native-dropdown-picker'
-
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { postExperience } from '../../../Redux/Slices/ExperienceSlice'
-import { setExperienceCount, setExperienceFilter } from '../../../Redux/Slices/ExperienceSlice'
+import { setExperienceFilter } from '../../../Redux/Slices/ExperienceSlice'
 import { postExperienceCount } from '../../../Redux/Slices/ExperienceCountSlice'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -123,7 +122,6 @@ const Talk3 = ({navigation}) => {
   };
 
   const dateFiltering = (e) => {
-    console.log('e: ', e.title, moment(e.applicationEndDate).diff(new Date(), 'day')+1);
     switch(true){
       case moment(e.applicationEndDate).diff(new Date(), 'day')+1 > 0: return <Text>신청 {moment(e.applicationEndDate).diff(new Date(), 'day')+1}일 남음</Text>;
       case moment(e.registrationEndDate).diff(new Date(), 'day')+1 > 0: return <Text>등록 {moment(e.registrationEndDate).diff(new Date(), 'day')+1}일 남음</Text>;
@@ -148,7 +146,6 @@ const Talk3 = ({navigation}) => {
         setPlus(addInfo);
 
     } catch (error) {
-        console.log('qna axios error: ', error);
         return undefined;
     }
 }

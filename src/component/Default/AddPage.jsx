@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Platform } from 'react-native'
 import Checkbox from 'expo-checkbox'
 import DateTimePicker from '@react-native-community/datetimepicker'
@@ -161,11 +161,9 @@ const AddPage = ({navigation, route}) => {
                 navigation.reset({routes: [{name: "main"}]});
 
                 }catch(error){
-                    console.log('error: ', error);
                     return undefined;
                 }
             }catch(error){
-                console.log('error2: ', error);
             }
     }
 

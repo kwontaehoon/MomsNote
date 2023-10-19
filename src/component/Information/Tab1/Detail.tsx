@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, Image, An
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import { Video } from 'expo-av';
 import { SafeAreaProvider } from 'react-native-safe-area-context' 
-
 import Back from '../../../../public/assets/svg/Back.svg'
 import Share2 from '../../../../public/assets/svg/Share.svg'
 import Icon from 'react-native-vector-icons/FontAwesome'

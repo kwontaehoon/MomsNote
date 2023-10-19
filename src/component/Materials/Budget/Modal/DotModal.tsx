@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
@@ -46,8 +46,6 @@ const styles = StyleSheet.create({
 
 const CheckBoxModal = ({modal5, setModal5}) => {
 
-    console.log('### modal5: ', modal5);
-
     const dispatch = useDispatch();
 
     const delete2 = async() => {
@@ -63,7 +61,6 @@ const CheckBoxModal = ({modal5, setModal5}) => {
                 data: { needsId: modal5.content.needsId }
                 });
             }catch(error){
-              console.log('error: ', error);
         }
         dispatch(postMaterial({
             order: 'need'

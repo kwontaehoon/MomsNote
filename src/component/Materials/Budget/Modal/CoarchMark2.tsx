@@ -1,16 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Animated, Platform, Modal, Image } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Platform, Modal, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSelector } from 'react-redux'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
-
-
 import Download from '../../../../../public/assets/svg/Download.svg'
-import Back from '../../../../../public/assets/svg/Back.svg'
-
 import { useDispatch } from 'react-redux'
 import { postMaterial } from '../../../../Redux/Slices/MaterialSlice'
-
 import M1 from '../../../../../public/assets/svg/1.svg'
 import M2 from '../../../../../public/assets/svg/2.svg'
 import M3 from '../../../../../public/assets/svg/3.svg'
@@ -77,6 +72,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 20,
     top: 50,
+    zIndex: 999
   },
   checkbox: {
     width: 20,

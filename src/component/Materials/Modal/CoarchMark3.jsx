@@ -1,13 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal, KeyboardAvoidingView, Image } from 'react-native'
-import axios from 'axios'
-import { WebView } from 'react-native-webview';
-
 import Arrow_Right from '../../../../public/assets/svg/Arrow-Right.svg'
-import Reset from '../../../../public/assets/svg/Reset.svg'
-import Crown from '../../../../public/assets/svg/crown.svg'
-import Crown2 from '../../../../public/assets/svg/crown2.svg'
-import Crown3 from '../../../../public/assets/svg/crown3.svg'
 import Close from '../../../../public/assets/svg/Close.svg'
 import Checkbox from 'expo-checkbox';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -152,7 +145,7 @@ const styles = StyleSheet.create({
     },
 })
 
-const Main = ({modal, setModal, modal6, setModal6, setModalVisible2}) => {
+const Main = ({modal, setModal, setModal6}) => {
 
     const DATA = [
         {
@@ -178,7 +171,6 @@ const Main = ({modal, setModal, modal6, setModal6, setModalVisible2}) => {
         }
     ]
     const [isChecked, setIsChecked] = useState(false);
-    const [info, setInfo] = useState(); // 브랜드 lists
     const [selectBrand, setSelectBrand] = useState({
         needsId: null,
         needsBrandId: 0,

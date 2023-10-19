@@ -81,8 +81,6 @@ const styles = StyleSheet.create({
 })
 const Register = ({navigation, route}) => {
 
-    console.log('route: ', route.params);
-
     const DATA = [
         {
           id: '0',
@@ -138,7 +136,6 @@ const Register = ({navigation, route}) => {
     const submit = async() => {
         const token = await AsyncStorage.getItem('token');
         if(typeof(route.params) == 'object'){
-            console.log('@@ 수정하기', route.params[0]?.boardId, data.title, data.contents);
             try{
                 const response = await axios({
                     method: 'post',
@@ -155,10 +152,8 @@ const Register = ({navigation, route}) => {
                   });
                   navigation.goBack(); return;
             }catch(error){
-                console.group('출산리스트 수정하기 error: ', error);
             }
         }else{
-            console.log('@@ 작성하기')
             try{
                 const response = await axios({
                       method: 'post',
@@ -170,7 +165,6 @@ const Register = ({navigation, route}) => {
                       data: data
                     });
                 }catch(error){
-                  console.log('출산리스트 글쓰기 error: ', error);
                 }
         }
           dispatch(postMaterialShare(materialShareSet)); 
