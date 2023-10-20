@@ -9,7 +9,6 @@ export const postInfoPopularSlice = createAsyncThunk("postInfoPopularSlice/async
           headers: { 
             'Content-Type': 'application/json'
           },
-          data : {}
       });
       if(response.data == ''){ return '0' }else return response.data;
       }catch(error){

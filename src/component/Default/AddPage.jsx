@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Platform } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Platform, Dimensions } from 'react-native'
 import Checkbox from 'expo-checkbox'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import axios from 'axios'
@@ -332,10 +332,11 @@ const AddPage = ({navigation, route}) => {
 
         {show && (
           <DateTimePicker
-            testID="dateTimePicker"
             value={date}
             mode={mode}
             is24Hour={true}
+            display={Platform.OS == 'ios' ? 'inline' : ''}
+            style={{position: 'absolute', height: Dimensions.get('window').height/2, backgroundColor: '#FFFFFF', zIndex: 999, left: 25, borderWidth: 1, borderColor: '#E6E6E6', borderRadius: 20}}
             onChange={onChange}
           />
         )}

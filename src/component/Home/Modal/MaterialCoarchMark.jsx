@@ -91,15 +91,14 @@ const styles = StyleSheet.create({
 
 
 })
-const Main = ({ modal, setModal }) => {
+const Main = ({ modal, setModal, recommendListModal, setRecommendListModal }) => {
 
     const [isChecked, setIsChecked] = useState(false);
-    const [list, setList] = useState();
 
     useEffect(()=>{
         const list = async() =>{
             const materialCoarchMark = await AsyncStorage.getItem('materialCoarchMark');
-            setList(materialCoarchMark);
+            console.log('materialCoarchMark: ', materialCoarchMark);
 
             !materialCoarchMark ? setModal(true) : setModal(false);
 
@@ -108,7 +107,7 @@ const Main = ({ modal, setModal }) => {
     }, []);
 
     const close = async() => {
-        isChecked ? (AsyncStorage.setItem('materialCoarchMark', '1'), setModal(false)) : setModal(false);
+        isChecked ? (AsyncStorage.setItem('materialCoarchMark', '1'), setModal(false), setRecommendListModal(true)) : setModal(false);
     }
 
   return (

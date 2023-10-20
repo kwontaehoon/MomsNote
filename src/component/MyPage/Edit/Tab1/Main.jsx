@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Platform } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Platform, Dimensions } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import axios from 'axios'
 import Calendar from '../../../../../public/assets/svg/Calendar.svg'
@@ -256,6 +256,8 @@ const Talk1 = ({navigation}: any) => {
             testID="dateTimePicker"
             value={date}
             mode={mode}
+            display={Platform.OS == 'ios' ? 'inline' : ''}
+            style={{position: 'absolute', height: Dimensions.get('window').height/2, backgroundColor: '#FFFFFF', zIndex: 999, left: 25, borderWidth: 1, borderColor: '#E6E6E6', borderRadius: 20}}
             is24Hour={true}
             onChange={onChange}
           />

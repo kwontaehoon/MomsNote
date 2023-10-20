@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, 
 import Icon2 from 'react-native-vector-icons/Feather'
 import * as MediaLibrary from 'expo-media-library'
 import ViewShot from 'react-native-view-shot'
-import Modal from './Modal/ListSelect'
+import ListSelect from './Modal/ListSelect'
 import moment from 'moment'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import CoarchMark2 from './Modal/CoarchMark2'
@@ -187,7 +187,6 @@ const styles = StyleSheet.create({
     },
     albumPhoto: {
         height: 156,
-        borderWidth: 1,
         borderRadius: 10,
     },
     albumTitle: {
@@ -224,7 +223,7 @@ const Home = ({ navigation }) => {
 
     const dispatch = useDispatch();
 
-    
+
 
     const ref = useRef();
     const isFocused = useIsFocused();
@@ -236,9 +235,12 @@ const Home = ({ navigation }) => {
     const Alarm = useSelector(state => { return state.alarm.data; });
     const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
+    console.log('modal: ', modal);
     const animation = useRef(new Animated.Value(0)).current;
     const [modal2, setModal2] = useState(false); // 코치마크
+
     const [modal3, setModal3] = useState(false); // 출산준비물 리스트 코치마크
+    console.log('modal3: ', modal3);
     const [userInfo, setUserInfo] = useState();
     const [AlarmFlag, setAlarmFlag] = useState(false);
     const [bubbleContent, setBubbleContent] = useState(); // 말풍선 내용
@@ -251,15 +253,14 @@ const Home = ({ navigation }) => {
     }, []);
 
     useEffect(() => {
-
         dispatch(postUser());
         dispatch(postAlarm({ page: 1 }));
 
     }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
 
-        const userInfoUpdate = async() => {
+        const userInfoUpdate = async () => {
             const user = await AsyncStorage.getItem('user');
             setUserInfo(JSON.parse(user));
         }
@@ -267,9 +268,9 @@ const Home = ({ navigation }) => {
     }, [isFocused]);
 
 
-    useEffect(()=>{
-        Alarm?.filter(x => !x?.readFlag ) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
-      }, [Alarm]);
+    useEffect(() => {
+        Alarm?.filter(x => !x?.readFlag) == '' ? setAlarmFlag(false) : setAlarmFlag(true);
+    }, [Alarm]);
 
     useEffect(() => {
         save();
@@ -277,15 +278,15 @@ const Home = ({ navigation }) => {
 
     useFocusEffect(
         React.useCallback(() => {
-          // Do something when the screen is focused
-          dispatch(postAlarm({page: 1}));
-    
-          return () => {
-            // Do something when the screen is unfocused
-            // Useful for cleanup functions
-          };
-          
-    }, []));
+            // Do something when the screen is focused
+            dispatch(postAlarm({ page: 1 }));
+
+            return () => {
+                // Do something when the screen is unfocused
+                // Useful for cleanup functions
+            };
+
+        }, []));
 
     const save = async () => {
 
@@ -298,7 +299,7 @@ const Home = ({ navigation }) => {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         if (mainData?.length !== 0) {
             setBubbleContent(mainData?.contents[0]?.split('|')[0]);
             setBubbleImage(mainData?.weekImage[0]);
@@ -312,7 +313,7 @@ const Home = ({ navigation }) => {
             // const coarchMark2 = await AsyncStorage.getItem('coarchMarkHome2');
 
 
-            !modal3 ?  !asyncStorage ? setModal(true) : setModal(false) : setModal(false);
+            !modal3 ? !asyncStorage ? setModal(true) : setModal(false) : setModal(false);
         }
         recommendList();
     }, [modal]);
@@ -334,7 +335,7 @@ const Home = ({ navigation }) => {
 
         let random = Math.floor(Math.random() * mainData.contents?.length);
         let randomImage = Math.floor(Math.random() * mainData.weekImage?.length);
-       
+
         arr[random] = true;
         mainImage[randomImage] = true;
         setBubbleContent(mainData?.contents[arr.findIndex(x => x)]);
@@ -382,7 +383,7 @@ const Home = ({ navigation }) => {
                     <Text style={{ color: '#424242', fontSize: 18, marginBottom: 3 }}>{date.getFullYear()}년 {moment(date).format("MM")}월 {date.getDate()}일</Text>
                     <Text style={{ color: '#212121', fontSize: 32, fontWeight: '700' }}>{userInfo.babyName}</Text>
                 </View>
-                {bubbleContent == '' ? '' :<View style={styles.mainBox2}>
+                {bubbleContent == '' ? '' : <View style={styles.mainBox2}>
                     <View style={styles.bubble} key={index}>
                         <View style={[styles.triangle]}></View>
                         <Text>{bubbleContent}</Text>
@@ -401,7 +402,7 @@ const Home = ({ navigation }) => {
                     <View style={[styles.mainBox3Sub, { width: '70%' }]}>
                         <View style={styles.DdayBox}>
                             <Text style={{ color: '#FE9000', fontSize: 24, fontWeight: '700', marginBottom: 3 }}>
-                                D{mainData.dday < 0 ? `+${String(mainData.dday).replace(/[^0-9]/g,'')}` : `-${mainData.dday}`} ({mainData.week}주차 {mainData.day}일)
+                                D{mainData.dday < 0 ? `+${String(mainData.dday).replace(/[^0-9]/g, '')}` : `-${mainData.dday}`} ({mainData.week}주차 {mainData.day}일)
                             </Text>
                             <Text style={{ color: '#424242', fontSize: 15 }}>
                                 예정일 : {moment(userInfo.dueDate).format("YYYY")}년 {moment(userInfo.dueDate).format("MM")}월 {moment(userInfo.dueDate).format("DD")}일</Text>
@@ -516,8 +517,8 @@ const Home = ({ navigation }) => {
                 <ActivityIndicator size={'large'} color='#E0E0E0' style={[styles.container, { height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null }]} />
 
                 : <SafeAreaView style={[styles.container, { height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null }]}>
-                    
-                    <Modal navigation={navigation} modal={modal} setModal={setModal} materialCoarchMarkModal={modal3} setMaterialCoarchMarkModal={setModal3} />
+
+                    <ListSelect navigation={navigation} modal={modal} setModal={setModal} materialCoarchMarkModal={modal3} setMaterialCoarchMarkModal={setModal3} />
                     <CoarchMark2 modal={modal2} setModal={setModal2} modalFlag={modal3} />
                     <MaterialCoarchMark modal={modal3} setModal={setModal3} recommendListModal={modal} setRecommendListModal={setModal} />
 

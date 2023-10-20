@@ -136,7 +136,8 @@ const CheckBoxModal = ({modal3, setModal3, modal4, setModal4, boardId}) => {
     useEffect(()=>{
         const user = async() => {
             const user = await AsyncStorage.getItem('userId');
-            setInfo(prevState => ({...prevState, userId: JSON.parse(user)}));
+            console.log('modal2 user: ', user);
+            setInfo(prevState => ({...prevState, userId: user}));
         }
         user();
     }, [])

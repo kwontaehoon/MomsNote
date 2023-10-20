@@ -205,7 +205,7 @@ const Main = ({navigation, route}) => {
                                     },
                                     url: 'https://momsnote.net/api/main/data',
                                 });
-                                AsyncStorage.setItem('user', JSON.stringify(response2.data));
+                                AsyncStorage.setItem('user', JSON.stringify(response2.data.data));
                                 }catch(error){
                                     return undefined;
                                 }

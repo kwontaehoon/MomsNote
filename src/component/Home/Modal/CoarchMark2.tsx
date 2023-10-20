@@ -206,6 +206,7 @@ const Main = ({modal, setModal}) => {
     useEffect(()=>{
         const list = async() =>{
             const coarchMark2 = await AsyncStorage.getItem('coarchMarkHome2');
+            console.log('coarchMark2: ', coarchMark2);
             setList(coarchMark2);
         }
         list();

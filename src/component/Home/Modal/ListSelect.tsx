@@ -57,6 +57,7 @@ const Main = ({ navigation, modal, setModal, materialCoarchMarkModal }) => {
 
             const list = async() =>{
                 const recommendList = await AsyncStorage.getItem('recommendList');
+                console.log('recommendList: ', recommendList);
                 setList(recommendList);
 
                 !recommendList ? !materialCoarchMarkModal ? setModal(true) : setModal(false) : setModal(false);

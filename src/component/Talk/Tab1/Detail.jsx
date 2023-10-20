@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
         borderColor: '#F5F5F5',
         borderBottomWidth: 1,
         paddingLeft: 20,
-        alignItems: 'center'
+        alignItems: 'center',
     },
     likeBox:{
         flexDirection: 'row',
@@ -201,6 +201,7 @@ const Talk1Sub = ({navigation, route}) => {
     const dispatch = useDispatch();
     const boardInfo = useSelector(state => { return state.board.data });
     const [info, setInfo] = useState(useSelector(state => { return state.board.data } ));
+    console.log('### info: ', info);
 
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
@@ -253,6 +254,7 @@ const Talk1Sub = ({navigation, route}) => {
         dispatch(postCommentFlag({boardId: route.params.item.boardId}));
         const user = async() => {
             const user = await AsyncStorage.getItem('user');
+            console.log('talk1 user: ', JSON.parse(user));
             setUserInfo(JSON.parse(user));
         }
         const hits = async() => {

@@ -99,6 +99,7 @@ const Talk1 = ({navigation}) => {
   const info = useSelector(state => { return state.guide.data });
   const guideSet = useSelector(state => { return state.guide.refresh });
   const infoCount = useSelector(state => { return state.guideCount.data });
+  console.log('### infoCount: ', infoCount);
   const guideCountSet = useSelector(state => { return state.guideCount.refresh });
 
   const [filter, setFilter] = useState([true, false, false, false, false, false]);
@@ -174,7 +175,6 @@ const Talk1 = ({navigation}) => {
     arr[e] = !arr[e];
     setFilter(arr);
     setPlus({...plus, page: 1, subcategory: DATA[e].title});
-    dispatch(setGuideRefresh({subcategory: DATA[e].title}));
     dispatch(setGuideCountRefresh({subcategory: DATA[e].title}));
   }
 
