@@ -1,11 +1,13 @@
 import React from 'react'
 import { View, StyleSheet, Modal, KeyboardAvoidingView } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { WebView } from 'react-native-webview';
 
 const styles = StyleSheet.create({
     modalContainer: {
         justifyContent: "center",
         alignItems: "center",
+        borderWidth: 3,
     },
     modalView: {
         width: '100%',
@@ -35,6 +37,7 @@ const Main = ({ modal4, setModal4, modalVisible2, setModalVisible2 }) => {
                 setModalVisible2({...modalVisible2, open: true});
             }}
         >
+            <TouchableOpacity activeOpacity={1} onPress={()=>setModal4({...modal4, open: false})}>
             <KeyboardAvoidingView behavior='height' style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <View style={styles.modalContainer2}>
@@ -47,6 +50,7 @@ const Main = ({ modal4, setModal4, modalVisible2, setModalVisible2 }) => {
                     </View>
                 </View>
             </KeyboardAvoidingView>
+            </TouchableOpacity>
         </Modal>
     )
 }

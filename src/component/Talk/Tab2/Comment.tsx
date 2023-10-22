@@ -119,9 +119,9 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                             <Text>삭제된 댓글입니다.</Text></View> : <View>
                         <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>{x.contents}</Text>
                         <View style={styles.likeBox}>
-                            {commentLike.includes(x.commentsId) ? <Like2 width={16} height={16} fill='#FE9000' onPress={()=>commentminus(x.commentsId)}/>
+                            {commentLike.includes(x.commentsId) ? <Like2 width={20} height={20} fill='#FE9000' onPress={()=>commentminus(x.commentsId)}/>
                             :
-                            <Like width={16} height={16} fill='#9E9E9E' onPress={()=>commentplus(x.commentsId)}/>}
+                            <Like width={20} height={20} fill='#9E9E9E' onPress={()=>commentplus(x.commentsId)}/>}
                             {commentLike.includes(x.commentsId) ? <Text style={{color: '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 {x.recommend}</Text>
                             :
                             <Text style={{color: '#9E9E9E', fontSize: 13, paddingRight: 10}}> 추천 {x.recommend}</Text>}
@@ -166,9 +166,9 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                             <Text>{x.contents}</Text>
                         </View>
                         <View style={styles.likeBox}>
-                        {commentLike.includes(x.commentsId) ? <Like2 width={16} height={16} fill='#FE9000' onPress={()=>commentminus(x.commentsId)}/>
+                        {commentLike.includes(x.commentsId) ? <Like2 width={20} height={20} fill='#FE9000' onPress={()=>commentminus(x.commentsId)}/>
                         :
-                        <Like width={16} height={16} fill='#9E9E9E' onPress={()=>commentplus(x.commentsId)}/>}
+                        <Like width={20} height={20} fill='#9E9E9E' onPress={()=>commentplus(x.commentsId)}/>}
                         {commentLike.includes(x.commentsId) ? <Text style={{color: '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 {x.recommend}</Text>
                         :
                         <Text style={{color: '#9E9E9E', fontSize: 13, paddingRight: 10}}> 추천 {x.recommend}</Text>}

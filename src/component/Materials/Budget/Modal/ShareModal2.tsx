@@ -116,7 +116,7 @@ const CheckBoxModal = ({modalVisible3, setModalVisible3, modalVisible4, setModal
             onRequestClose={() => {
             setModalVisible3(!modalVisible3)}}>
             <View style={styles.modalContainer}>
-                <View style={styles.modalView}>
+                <TouchableOpacity style={styles.modalView} activeOpacity={1} onPress={()=>setModalVisible3(!modalVisible3)}>
                     <KeyboardAvoidingView style={styles.modalContainer2} behavior='padding'>
 
                        <View style={[styles.main, {paddingBottom: Platform.OS == 'ios' ? 35 : 0}]}>
@@ -135,7 +135,7 @@ const CheckBoxModal = ({modalVisible3, setModalVisible3, modalVisible4, setModal
                             </TouchableOpacity>
                        </View>
                     </KeyboardAvoidingView>
-                </View>
+                </TouchableOpacity>
             </View>
         </Modal>
   )

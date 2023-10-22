@@ -119,10 +119,10 @@ const Gallery = ({navigation, route}) => {
               <View style={styles.mainBox}>
                 <Video source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}}
                   style={styles.image}
-                  // useNativeControls
+                  useNativeControls
                   resizeMode='contain'
                   ref={video}
-                  isLooping={true}
+                  isLooping={false}
                   />
               </View>
             )

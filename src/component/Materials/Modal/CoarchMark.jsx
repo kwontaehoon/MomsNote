@@ -154,7 +154,8 @@ modalView:{
     backgroundColor: "rgba(0,0,0,0.5)",
     shadowColor: "#000",
     elevation: 5,
-    paddingTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
+    paddingTop: getStatusBarHeight(),
+
 },
 modalContainer2:{
     width: '80%',
@@ -358,7 +359,11 @@ const optionBox = (e) => {
             <View style={styles.modalView}>
 
             <View style={styles.imageBox6}>
-                    <View style={[styles.Top, {alignItems: 'flex-start', padding: 5}]}><Close fill='white' onPress={close}/></View>
+                    <View style={[styles.Top, {alignItems: 'flex-start', padding: 5}]}>
+                        <TouchableOpacity onPress={close}>
+                            <Close fill='white' />
+                        </TouchableOpacity>
+                    </View>
                     <View style={[styles.Bottom, {paddingTop: 10, flexDirection: 'row', justifyContent: 'flex-start'}]}>
                         <Text style={{color: '#FEA100', fontSize: 15, fontWeight: '700'}}>다시 보지 않기</Text>
                         <Checkbox
@@ -384,8 +389,8 @@ const optionBox = (e) => {
             <TouchableOpacity style={{marginRight: 20}}><Download/></TouchableOpacity>
             <TouchableOpacity style={{marginRight: 20}}><Search/></TouchableOpacity>
             </View>
-            <TouchableOpacity style={{marginRight: 20}}><Bell/></TouchableOpacity>
-            <TouchableOpacity style={{marginRight: 5}}><MyPage/></TouchableOpacity>
+            <TouchableOpacity style={{marginRight: 20, opacity: 0}}><Bell/></TouchableOpacity>
+            <TouchableOpacity style={{marginRight: 5, opacity: 0}}><MyPage/></TouchableOpacity>
         </View>
       </View>
       <View style={styles.header2}>

@@ -106,7 +106,6 @@ headerBar:{
     backgroundColor: '#FEA100',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'absolute',
     bottom: 0,
   },
   saveModal:{
@@ -420,7 +419,7 @@ const capture = async() => {
           <View style={styles.arrowBox}><Text>{(sumResult.exp).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</Text></View>
           <Text style={{color: '#616161'}}>ㄴ 구매 예정 금액</Text>
         </View>
-        <TouchableOpacity style={styles.buttonBox} onPress={()=>setModalVisible2(!modalVisible2)}>
+        <TouchableOpacity style={[styles.buttonBox, {position: Platform.OS == 'ios' ? '' : 'absolute', marginTop: Platform.OS == 'ios' ? 5 : ''}]} onPress={()=>setModalVisible2(!modalVisible2)}>
           <Text style={{color: 'white', fontWeight: '600', fontSize: 16}}>출산 리스트 게시판 공유</Text>
         </TouchableOpacity>
       </View>

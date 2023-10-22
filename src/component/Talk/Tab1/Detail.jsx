@@ -201,8 +201,6 @@ const Talk1Sub = ({navigation, route}) => {
     const dispatch = useDispatch();
     const boardInfo = useSelector(state => { return state.board.data });
     const [info, setInfo] = useState(useSelector(state => { return state.board.data } ));
-    console.log('### info: ', info);
-
     const [pageHeight, setPageHeight] = useState(false); // 키보드 나옴에따라 높낮이 설정
     const comment = useSelector(state => { return state.comment.data; });
     const [commentsId, setCommentsId] = useState([undefined, undefined]); // 댓글 더보기에서 commentid 때매만듬
@@ -466,9 +464,9 @@ const Talk1Sub = ({navigation, route}) => {
                 {!item.savedName ? <View></View> : ImageBox(index)}
                 <View style={styles.mainBox3}>
                     <View style={styles.likeBox}>
-                        {boardLike == 0 | boardLike == undefined ? <Like width={16} height={16} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={16} height={16} fill='#FE9000' onPress={likeminus}/>}
+                        {boardLike == 0 | boardLike == undefined ? <Like width={20} height={20} fill='#9E9E9E' onPress={likeplus}/> : <Like2 width={20} height={20} fill='#FE9000' onPress={likeminus}/>}
                         <Text style={{color: boardLike == 0 || boardLike == undefined ? '#9E9E9E' : '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 { item.recommend }</Text>
-                        <Chat width={16} height={16}/>
+                        <Chat width={20} height={20}/>
                         <Text style={{color: '#9E9E9E', fontSize: 13}}> 댓글 {item.commentsCount}</Text>
                     </View>
                     <View style={styles.lookupBox}>

@@ -221,7 +221,6 @@ const Withdraw = ({navigation, route}) => {
                 },
                 data: info
             });
-            navigation.goBack();
         }catch(error){
         }
     }
@@ -328,7 +327,7 @@ const Withdraw = ({navigation, route}) => {
                             <Text style={{fontSize: 16, paddingTop: 10}}>{modal.content}</Text>
                         </View>
                         <View style={styles.modalBox}>
-                            <TouchableOpacity style={styles.modal} onPress={()=>{setModal({...modal, open: false})}}>
+                            <TouchableOpacity style={styles.modal} onPress={()=>{setModal({...modal, open: false}); navigation.goBack()}}>
                                 <Text style={{color: 'white', fontSize: 16}}>확인</Text>
                             </TouchableOpacity>
                         </View>
