@@ -175,8 +175,10 @@ const Withdraw = ({navigation, route}) => {
     const [telCheck, setTelCheck] = useState(null);
 
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
+    console.log('### boardAppFlag: ', boardAppFlag);
 
     const [appFlag, setAppFlag] = useState();
+    console.log('### appFlag: ', appFlag);
     const [modal, setModal] = useState(false); // 핸드폰 인증 완료
     const [modal2, setModal2] = useState(false); // 핸드폰 인증 실패
     const [modal3, setModal3] = useState(false); // 핸드폰 인증 이미 완료
@@ -206,6 +208,7 @@ const Withdraw = ({navigation, route}) => {
             youtube: '',
         }
     );
+    console.log('### info: ', info);
     const dispatch = useDispatch();
     const [minutes, setMinutes] = useState(parseInt(3));
     const [seconds, setSeconds] = useState(parseInt(0));
@@ -242,7 +245,7 @@ const Withdraw = ({navigation, route}) => {
                     !asyncStorage ? '' : setInfo(JSON.parse(asyncStorage));
                 } break;
                 case typeof(route.params) == 'string': setInfo(prvState => ({...prvState, address: route.params})); break;
-                default: setInfo(appFlag); break;
+                default: !appFlag ? '' : setInfo(appFlag); break;
             }
         }
         load();

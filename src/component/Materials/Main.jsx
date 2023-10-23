@@ -86,9 +86,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   main:{
+    backgroundColor: Platform.OS == 'ios' ?  '' : 'white'
   },
   mainBox:{
-    backgroundColor: '#F5F5F5',
+
   },
   mainBox2:{
     flexDirection: 'row',

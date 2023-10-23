@@ -31,76 +31,76 @@ import M9 from '../../../../public/assets/svg/9.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
-  container:{
-      flex: 1,
-      backgroundColor: 'white',
-      marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    marginTop: Platform.OS == 'ios' ? 0 : getStatusBarHeight(),
   },
-  header:{
+  header: {
     justifyContent: 'center',
     padding: 18,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-},
-headerBar:{
+  },
+  headerBar: {
     position: 'absolute',
     right: 20,
     alignItems: 'center',
     flexDirection: 'row',
-},
-  main:{
+  },
+  main: {
     height: '70%',
   },
-  mainBox:{
+  mainBox: {
     flexDirection: 'row',
     padding: 20,
     alignItems: 'center',
-    backgroundColor: '#F5F5F5',
+
   },
-  titleBox:{
+  titleBox: {
     width: '50%',
     justifyContent: 'center'
-},
-  arrowBox:{
+  },
+  arrowBox: {
     position: 'absolute',
     right: 15,
     alignItems: 'center',
     justifyContent: 'center'
   },
-  mainBox2:{
+  mainBox2: {
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderColor: '#F5F5F5',
   },
-  filterBox:{
+  filterBox: {
     width: '33.4%',
     height: 30,
     alignItems: 'center',
     justifyContent: 'center'
   },
-  mainBox3:{
+  mainBox3: {
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderColor: '#F5F5F5',
     paddingLeft: 15,
     paddingRight: 15,
   },
-  filterBox2:{
+  filterBox2: {
     width: '33.4%',
     height: 48,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
   },
-  footer:{
+  footer: {
     height: '26%',
   },
-  footerBox:{
+  footerBox: {
     padding: 15,
     justifyContent: 'center',
   },
-  buttonBox:{
+  buttonBox: {
     width: '100%',
     height: 56,
     backgroundColor: '#FEA100',
@@ -108,7 +108,7 @@ headerBar:{
     justifyContent: 'center',
     bottom: 0,
   },
-  saveModal:{
+  saveModal: {
     width: '90%',
     height: 40,
     backgroundColor: 'black',
@@ -116,8 +116,8 @@ headerBar:{
     borderRadius: 10,
     justifyContent: 'center',
     paddingLeft: 20,
-},
-saveModalBox:{
+  },
+  saveModalBox: {
     width: '100%',
     height: 40,
     position: 'absolute',
@@ -125,10 +125,10 @@ saveModalBox:{
     bottom: 40,
     alignItems: 'center',
     justifyContent: 'center',
-},
+  },
 })
 
-const Talk1Sub = ({navigation, route}) => {
+const Talk1Sub = ({ navigation, route }) => {
 
   const DATA = [
     {
@@ -187,7 +187,7 @@ const Talk1Sub = ({navigation, route}) => {
     { category: '산모용품', deleteStatus: 1, id: 1, needsName: '수유 나시', itemBrand: '시크릿데이', itemPrice: 4700 },
     { category: '산모용품', deleteStatus: 1, id: 1, needsName: '임부용 팬티', itemBrand: '디펜드', itemPrice: 20000 },
   ]
-  
+
 
   const ref = useRef();
   const dispatch = useDispatch();
@@ -195,7 +195,7 @@ const Talk1Sub = ({navigation, route}) => {
   const materialSet = useSelector(state => state.material.refresh);
   const animation = useRef(new Animated.Value(0)).current;
   const [test, setTest] = useState(); // 캡쳐 uri
-  const [list, setList] = useState(Array.from({length: 8}, () => {return modal9 ? true : false})); // list display
+  const [list, setList] = useState(Array.from({ length: 8 }, () => { return modal9 ? true : false })); // list display
   const [modalVisible2, setModalVisible2] = useState(false); // 공유 확인 유무 
   const [modalVisible3, setModalVisible3] = useState(false); // 공유 작성
   const [modalVisible4, setModalVisible4] = useState(false); // 공유 등록 확인
@@ -221,74 +221,74 @@ const Talk1Sub = ({navigation, route}) => {
     exp: 0
   }); // 총 예산
 
-  useEffect(()=>{
-    const coarch = async() => {
+  useEffect(() => {
+    const coarch = async () => {
       const coarch = await AsyncStorage.getItem('coarchMarkBudget');
       coarch == null ? (setModal8(true), setModal9(true)) : ''
     }
     coarch();
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(postMaterial(materialSet));
   }, [modal6, modal5]);
 
-  useEffect(()=>{
+  useEffect(() => {
     let sum = 0;
     let exp = 0;
 
-    info?.filter(x=>{
-      if(x.id == 0 && x.needsBrandId !== null){
+    info?.filter(x => {
+      if (x.id == 0 && x.needsBrandId !== null) {
         exp += x.itemPrice
       } else sum += x.itemPrice;
     });
-    setSumResult(prevState => ({...prevState, sum: sum, exp: exp}));
+    setSumResult(prevState => ({ ...prevState, sum: sum, exp: exp }));
 
-    const arr = DATA.map(x=>{
-      if((info.filter(y => x.title == y.category && y.id == 1).length !== 0)){
-          return true;
-      }else return false;
-  }); 
-  setList(arr);
+    const arr = DATA.map(x => {
+      if ((info.filter(y => x.title == y.category && y.id == 1).length !== 0)) {
+        return true;
+      } else return false;
+    });
+    setList(arr);
   }, [info]);
 
-  useEffect(()=>{
+  useEffect(() => {
     save();
-}, [test]);
+  }, [test]);
 
-const SVGSelect = (e) => {
-  switch(e){
-      case 0: return(<M1 />) 
-      case 1: return(<M2 fill={'red'} />) 
-      case 2: return(<M3 />) 
-      case 3: return(<M4 />) 
-      case 4: return(<M5 />) 
-      case 5: return(<M6 />) 
-      case 6: return(<M7 />) 
-      case 7: return(<M8 />) 
-      case 8: return(<M9 />) 
+  const SVGSelect = (e) => {
+    switch (e) {
+      case 0: return (<M1 />)
+      case 1: return (<M2 fill={'red'} />)
+      case 2: return (<M3 />)
+      case 3: return (<M4 />)
+      case 4: return (<M5 />)
+      case 5: return (<M6 />)
+      case 6: return (<M7 />)
+      case 7: return (<M8 />)
+      case 8: return (<M9 />)
+    }
   }
-}
 
-const save = async() => {
-   
-    if(test !== undefined){
-        let { status } = await MediaLibrary.requestPermissionsAsync();
-        const asset = await MediaLibrary.createAssetAsync(test);
-        const moms = await MediaLibrary.getAlbumAsync('맘스노트');
-             
+  const save = async () => {
+
+    if (test !== undefined) {
+      let { status } = await MediaLibrary.requestPermissionsAsync();
+      const asset = await MediaLibrary.createAssetAsync(test);
+      const moms = await MediaLibrary.getAlbumAsync('맘스노트');
+
     }
     setTest(undefined);
-}
+  }
 
-const capture = async() => {
+  const capture = async () => {
     opacity_ani();
     setTest('1');
 
     ref.current.capture().then(uri => {
-        setTest(uri);
-      });
-}
+      setTest(uri);
+    });
+  }
 
   const arrow = (e) => { // arrow 누르면 서브페이지 display
     let arr = [...list];
@@ -297,136 +297,137 @@ const capture = async() => {
   }
 
   const filtering = (e) => { // 품목 브랜드 가격 부분 none || flex
-    if(info?.filter(x => x.category == e && x.id == 1) == ''){
-      return(
-        <View style={{height: 100, justifyContent: 'center', alignItems: 'center'}}>
+    if (info?.filter(x => x.category == e && x.id == 1) == '') {
+      return (
+        <View style={{ height: 100, justifyContent: 'center', alignItems: 'center' }}>
           <Text>선택된 품목이 없습니다.</Text>
         </View>
       )
-    }else return(
-        <View style={styles.mainBox2}>
-            <View style={styles.filterBox}><Text>품목</Text></View>
-            <View style={styles.filterBox}><Text>브랜드</Text></View>
-            <View style={styles.filterBox}><Text>금액</Text></View>
-        </View>
+    } else return (
+      <View style={styles.mainBox2}>
+        <View style={styles.filterBox}><Text>품목</Text></View>
+        <View style={styles.filterBox}><Text>브랜드</Text></View>
+        <View style={styles.filterBox}><Text>금액</Text></View>
+      </View>
     )
   }
 
   const opacity_ani = () => {
     Animated.timing(animation, {
-        toValue: 1,
+      toValue: 1,
+      useNativeDriver: true,
+      duration: 1500,
+    }).start(() => {
+      Animated.timing(animation, {
+        toValue: 0,
         useNativeDriver: true,
         duration: 1500,
-    }).start(()=>{
-        Animated.timing(animation, {
-            toValue: 0,
-            useNativeDriver: true,
-            duration: 1500,
-        }).start();
+      }).start();
     });
-}
+  }
 
-  const List = ({title}) => {
+  const List = ({ title }) => {
     let arr = [];
 
-    (modal9 ? DATA2 : info)?.filter((x, index)=>{
-      if(x.category == title && x.deleteStatus == 1 && x.id == 1){
-          arr.push(
-        <TouchableOpacity style={styles.mainBox3} onLongPress={()=>setModal5(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1} key={index}>
-            <View style={[styles.filterBox2, {justifyContent: 'flex-start'}]}><Text style={{fontWeight: '500'}}>{x.needsName}</Text></View>
-            <View style={styles.filterBox2}><Text numberOfLines={2} style={{lineHeight: 20}}>{!x.itemBrand ? '-' : x.itemBrand}</Text></View>
-            <TouchableOpacity style={[styles.filterBox2, {justifyContent: 'flex-end'}]} onLongPress={()=>setModal6(prevState => ({...prevState, open: true, content: x}))} delayLongPress={1500} activeOpacity={1}>
-              <Text style={{fontWeight: '600'}}>{!x.itemPrice ? '0' : (x.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
+    (modal9 ? DATA2 : info)?.filter((x, index) => {
+      if (x.category == title && x.deleteStatus == 1 && x.id == 1) {
+        arr.push(
+          <TouchableOpacity style={styles.mainBox3} onLongPress={() => setModal5(prevState => ({ ...prevState, open: true, content: x }))} delayLongPress={1500} activeOpacity={1} key={index}>
+            <View style={[styles.filterBox2, { justifyContent: 'flex-start' }]}><Text style={{ fontWeight: '500' }}>{x.needsName}</Text></View>
+            <View style={styles.filterBox2}><Text numberOfLines={2} style={{ lineHeight: 20 }}>{!x.itemBrand ? '-' : x.itemBrand}</Text></View>
+            <TouchableOpacity style={[styles.filterBox2, { justifyContent: 'flex-end' }]} onLongPress={() => setModal6(prevState => ({ ...prevState, open: true, content: x }))} delayLongPress={1500} activeOpacity={1}>
+              <Text style={{ fontWeight: '600' }}>{!x.itemPrice ? '0' : (x.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
               <Text> 원</Text>
             </TouchableOpacity>
-        </TouchableOpacity>
-      )}
+          </TouchableOpacity>
+        )
+      }
     })
     return arr;
   }
 
   const renderItem = ({ item, index }) => (
-      <View>
-          <View style={styles.mainBox}>
-            <TouchableOpacity style={styles.arrowBox}
-                onPress={()=>arrow(item.id)}>{list[item.id] ? <Icon name="angle-down" size={22}/> : <Icon name='angle-up' size={22}/>}
-            </TouchableOpacity>
-            {SVGSelect(index)}
-            <View style={[styles.titleBox, {marginLeft: 8}]}><Text style={{fontSize: 16, fontWeight: '500'}}>{item.title}</Text></View>
-          </View>
-          <View style={{display: list[index] ? 'flex' : 'none'}}>
-            {filtering(item.title)}
-            <List title={item.title}/>
-          </View>
+    <View>
+      <View style={styles.mainBox}>
+        <TouchableOpacity style={styles.arrowBox}
+          onPress={() => arrow(item.id)}>{list[item.id] ? <Icon name="angle-down" size={22} /> : <Icon name='angle-up' size={22} />}
+        </TouchableOpacity>
+        {SVGSelect(index)}
+        <View style={[styles.titleBox, { marginLeft: 8 }]}><Text style={{ fontSize: 16, fontWeight: '500' }}>{item.title}</Text></View>
       </View>
-    );
+      <View style={{ display: list[index] ? 'flex' : 'none' }}>
+        {filtering(item.title)}
+        <List title={item.title} />
+      </View>
+    </View>
+  );
 
   return (
-    
+
     <SafeAreaProvider>
 
-        <SafeAreaView style={{ backgroundColor: 'white' }}>
-            <StatusBar />
-        </SafeAreaView>
+      <SafeAreaView style={{ backgroundColor: 'white' }}>
+        <StatusBar />
+      </SafeAreaView>
 
-        <SafeAreaView style={[styles.container, {height: Platform.OS == 'ios' ? '94%' : '90.5%'}]}>
+      <SafeAreaView style={[styles.container, { height: Platform.OS == 'ios' ? '94%' : '90.5%' }]}>
 
-      <Animated.View style={[styles.saveModalBox, {opacity: animation}]}>
-                <View style={styles.saveModal}>
-                    <Text style={{color: 'white'}}>총 예산이 내 앨범에 저장되었습니다.</Text>
-                </View>
-      </Animated.View>
-
-      <ShareModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modalVisible3={modalVisible3} setModalVisible3={setModalVisible3} />
-      <ShareModal2 modalVisible3={modalVisible3} setModalVisible3={setModalVisible3} modalVisible4={modalVisible4} setModalVisible4={setModalVisible4}/>
-      <ConfirmModal navigation={navigation} modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} />
-      <DotModal modal5={modal5} setModal5={setModal5} />
-      <PriceEdit modal6={modal6} setModal6={setModal6} setModal7={setModal7} />
-      <FirstModal modal={modal7} setModal={setModal7} />
-      {/* <CoarchMark modal={modal8} setModal={setModal8}/> */}
-      <CoarchMark2 modal={modal9} setModal={setModal9} setModal2={setModal8} />
-
-      <View style={styles.header}>
-                    <TouchableOpacity onPress={()=>navigation.goBack()}><Back /></TouchableOpacity>
-                    <Text style={{fontSize: 18, fontWeight: '600', marginLeft: 10}}>총 예산</Text>
-                  <View style={styles.headerBar}>
-                      <TouchableOpacity style={{marginRight: 5}} onPress={capture}><Download/></TouchableOpacity>
-                  </View>
-        </View>
-
-      <ViewShot ref={ref} options={{ fileName: "MomsNote", format: "png", quality: 1 }} style={{backgroundColor: 'white'}}>
-      <View style={styles.main}>
-        <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
-              keyExtractor={item => item.id}>
-        </FlatList>
-      </View>
-
-      <View style={styles.footer}>
-        <View style={styles.footerBox}>
-          <View style={styles.arrowBox}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={{fontSize: 18, fontWeight: '500'}}>{(sumResult.sum + sumResult.exp).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} </Text>
-              <Text>원</Text>
-            </View>
+        <Animated.View style={[styles.saveModalBox, { opacity: animation }]}>
+          <View style={styles.saveModal}>
+            <Text style={{ color: 'white' }}>총 예산이 내 앨범에 저장되었습니다.</Text>
           </View>
-          <Text style={{fontSize: 18, fontWeight: '500'}}>총 예산</Text>
+        </Animated.View>
+
+        <ShareModal modalVisible2={modalVisible2} setModalVisible2={setModalVisible2} modalVisible3={modalVisible3} setModalVisible3={setModalVisible3} />
+        <ShareModal2 modalVisible3={modalVisible3} setModalVisible3={setModalVisible3} modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} />
+        <ConfirmModal navigation={navigation} modalVisible4={modalVisible4} setModalVisible4={setModalVisible4} />
+        <DotModal modal5={modal5} setModal5={setModal5} />
+        <PriceEdit modal6={modal6} setModal6={setModal6} setModal7={setModal7} />
+        <FirstModal modal={modal7} setModal={setModal7} />
+        {/* <CoarchMark modal={modal8} setModal={setModal8}/> */}
+        <CoarchMark2 modal={modal9} setModal={setModal9} setModal2={setModal8} />
+
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()}><Back /></TouchableOpacity>
+          <Text style={{ fontSize: 18, fontWeight: '600', marginLeft: 10 }}>총 예산</Text>
+          <View style={styles.headerBar}>
+            <TouchableOpacity style={{ marginRight: 5 }} onPress={capture}><Download /></TouchableOpacity>
+          </View>
         </View>
-        <View style={[styles.footerBox, {padding: 5, paddingLeft: 20}]}>
-          <View style={styles.arrowBox}><Text>{(sumResult.sum).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</Text></View>
-          <Text style={{color: '#616161'}}>ㄴ 구매 금액</Text>
-        </View>
-        <View style={[styles.footerBox, {padding: 5, paddingLeft: 20}]}>
-          <View style={styles.arrowBox}><Text>{(sumResult.exp).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</Text></View>
-          <Text style={{color: '#616161'}}>ㄴ 구매 예정 금액</Text>
-        </View>
-        <TouchableOpacity style={[styles.buttonBox, {position: Platform.OS == 'ios' ? '' : 'absolute', marginTop: Platform.OS == 'ios' ? 5 : ''}]} onPress={()=>setModalVisible2(!modalVisible2)}>
-          <Text style={{color: 'white', fontWeight: '600', fontSize: 16}}>출산 리스트 게시판 공유</Text>
-        </TouchableOpacity>
-      </View>
-        
+
+        <ViewShot style={{ backgroundColor: Platform.OS == 'ios' ? '' : 'white' }} ref={ref} options={{ fileName: "MomsNote", format: "png", quality: 1 }}>
+          <View style={styles.main}>
+            <FlatList data={DATA} renderItem={renderItem} showsVerticalScrollIndicator={false}
+              keyExtractor={item => item.id}>
+            </FlatList>
+          </View>
+
+          <View style={styles.footer}>
+            <View style={styles.footerBox}>
+              <View style={styles.arrowBox}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ fontSize: 18, fontWeight: '500' }}>{(sumResult.sum + sumResult.exp).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} </Text>
+                  <Text>원</Text>
+                </View>
+              </View>
+              <Text style={{ fontSize: 18, fontWeight: '500' }}>총 예산</Text>
+            </View>
+            <View style={[styles.footerBox, { padding: 5, paddingLeft: 20 }]}>
+              <View style={styles.arrowBox}><Text>{(sumResult.sum).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</Text></View>
+              <Text style={{ color: '#616161' }}>ㄴ 구매 금액</Text>
+            </View>
+            <View style={[styles.footerBox, { padding: 5, paddingLeft: 20 }]}>
+              <View style={styles.arrowBox}><Text>{(sumResult.exp).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} 원</Text></View>
+              <Text style={{ color: '#616161' }}>ㄴ 구매 예정 금액</Text>
+            </View>
+            <TouchableOpacity style={[styles.buttonBox, { position: Platform.OS == 'ios' ? 'relative' : 'absolute', marginTop: Platform.OS == 'ios' ? 5 : 0 }]} onPress={() => setModalVisible2(!modalVisible2)}>
+              <Text style={{ color: 'white', fontWeight: '600', fontSize: 16 }}>출산 리스트 게시판 공유</Text>
+            </TouchableOpacity>
+          </View>
+
         </ViewShot>
-        </SafeAreaView>
-        </SafeAreaProvider>
+      </SafeAreaView>
+    </SafeAreaProvider>
   )
 }
 

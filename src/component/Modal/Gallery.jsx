@@ -74,6 +74,8 @@ const styles = StyleSheet.create({
 const Gallery = ({navigation, route}) => {
 
   const [newArr, setNewArr] = useState();
+  console.log('route.params: ', route.params[0], route.params[1]);
+  console.log('new Arr: ', newArr);
 
   const FocusAwareStatusBar = () => {
     const isFocused = useIsFocused();
@@ -81,6 +83,7 @@ const Gallery = ({navigation, route}) => {
   }
 
   const [loading, setLoading] = useState(true);
+  console.log('loading: ', loading);
 
   const video = React.useRef(null);
 
@@ -92,7 +95,8 @@ const Gallery = ({navigation, route}) => {
       setLoading(false);
   }, []);
 
-  return !newArr && loading ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : 
+  return loading ? 
+  <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : 
   (
     <SafeAreaProvider>
           <SafeAreaView style={{ backgroundColor: 'black' }}>
@@ -109,6 +113,7 @@ const Gallery = ({navigation, route}) => {
       {
       <Swiper style={styles.wrapper} showsButtons={false} dot={<View style={styles.dot}/>} activeDot={<View style={styles.dotActive}/>}>
         {newArr?.map((x) => {
+          console.log('xxx: ', x);
           if(x.charAt(x.length-1) !== '4'){
           return(
             <View style={styles.mainBox}>

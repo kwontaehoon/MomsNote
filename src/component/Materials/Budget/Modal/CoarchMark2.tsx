@@ -25,6 +25,8 @@ const styles = StyleSheet.create({
   modalContainer: {
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: 'white',
+    position: 'absolute',
   },
   modalView: {
     width: '100%',
@@ -50,8 +52,9 @@ const styles = StyleSheet.create({
   },
   imageBox: {
     position: 'absolute',
-    right: 10,
+    right: 0,
     top: 50,
+    zIndex: 200,
   },
   imageBox2: {
     position: 'absolute',
@@ -59,6 +62,7 @@ const styles = StyleSheet.create({
     top: 60,
     flexDirection: 'row',
     height: 100,
+    zIndex: 200
   },
   imageBox3: {
     position: 'absolute',
@@ -129,7 +133,7 @@ const styles = StyleSheet.create({
     width: '33.4%',
     height: 30,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   mainBox3: {
     flexDirection: 'row',
@@ -141,7 +145,6 @@ const styles = StyleSheet.create({
     height: 48,
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
   },
   footer: {
     height: '26%',
@@ -313,14 +316,13 @@ const Talk1Sub = ({ modal, setModal, setModal2 }) => {
 
               <TouchableOpacity style={[styles.filterBox2, { justifyContent: 'flex-end' }]}>
 
-                <View style={{ backgroundColor: 'white', flexDirection: 'row', padding: 10, borderRadius: 10, borderStyle: 'dashed', borderWidth: 2, borderColor: '#FEA100' }}>
+                <View style={{ backgroundColor: 'white', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', padding: 10, height: '100%', borderRadius: 10, borderStyle: 'dashed', borderWidth: 2, borderColor: '#FEA100' }}>
 
                   <View style={styles.imageBox}>
                     <View style={styles.Top}><Image source={require('../../../../../public/assets/coachmark/arrow12.png')} style={styles.image} resizeMode='contain' /></View>
                     <View style={styles.Bottom}>
-                      <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>꾸~욱 클릭하면 다른 맘의</Text>
-                      <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>브랜드 품목을 내 리스트에</Text>
-                      <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>담을 수 있어요!</Text>
+                      <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>꾸~욱 클릭하면</Text>
+                      <Text style={{ color: 'white', fontSize: 15, textAlign: 'center' }}>금액 수정이 가능해요!</Text>
                     </View>
                   </View>
 
@@ -331,9 +333,9 @@ const Talk1Sub = ({ modal, setModal, setModal2 }) => {
             </TouchableOpacity>
           </View>}
 
-          <View style={[styles.filterBox2, { justifyContent: 'flex-start' }]}><Text style={{ fontWeight: '500' }}>{x.needsName}</Text></View>
+          <View style={styles.filterBox2}><Text style={{ fontWeight: '500' }}>{x.needsName}</Text></View>
           <View style={styles.filterBox2}><Text numberOfLines={2} style={{ lineHeight: 20 }}>{x.itemBrand == null ? '-' : x.itemBrand}</Text></View>
-          <TouchableOpacity style={[styles.filterBox2, { justifyContent: 'flex-end' }]} delayLongPress={1500} activeOpacity={1}>
+          <TouchableOpacity style={[styles.filterBox2, { flexDirection: 'row' }]} delayLongPress={1500} activeOpacity={1}>
             <Text style={{ fontWeight: '600' }}>{x.itemPrice == null ? '0' : (x.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
             <Text> 원</Text>
           </TouchableOpacity>
@@ -360,7 +362,7 @@ const Talk1Sub = ({ modal, setModal, setModal2 }) => {
   );
 
   return (
-    <Modal animationType="fade" visible={modal} statusBarTranslucent={true}
+    <Modal animationType='fade' transparent={true} visible={modal} statusBarTranslucent={true}
       onRequestClose={() => { setModal(!modal) }}>
       <View style={styles.modalContainer}>
         <View style={styles.modalView}>

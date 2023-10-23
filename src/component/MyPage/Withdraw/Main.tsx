@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList, Modal, SafeAreaView, StatusBar, Platform } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, FlatList, Modal, SafeAreaView, StatusBar, Platform, ActivityIndicator } from 'react-native'
 import Icon from 'react-native-vector-icons/Entypo'
 import Checkbox from 'expo-checkbox'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -89,6 +89,7 @@ const Main = ({navigation}) => {
     const [isChecked, setCheck] = useState(false); // 체크박스
     const [modalVisible, setModalVisible] = useState(false); //회원탈퇴 확인 modal
     const [modal, setModal] = useState(false); // 회원탈퇴 감사했습니다 모달
+    const [loading, setLoading] = useState(false);
 
     const withdraw = async() => {
         const token = await AsyncStorage.getItem('token');
@@ -138,7 +139,7 @@ const Main = ({navigation}) => {
     </View>
       );
       
-  return (
+  return loading ? <ActivityIndicator size={'large'} color='#E0E0E0' style={styles.container}/> : (
     <SafeAreaProvider>
 
         <SafeAreaView style={{ backgroundColor: 'white' }}>

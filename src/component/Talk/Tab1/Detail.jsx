@@ -252,7 +252,6 @@ const Talk1Sub = ({navigation, route}) => {
         dispatch(postCommentFlag({boardId: route.params.item.boardId}));
         const user = async() => {
             const user = await AsyncStorage.getItem('user');
-            console.log('talk1 user: ', JSON.parse(user));
             setUserInfo(JSON.parse(user));
         }
         const hits = async() => {
@@ -391,13 +390,13 @@ const Talk1Sub = ({navigation, route}) => {
                     {infoFiltering.map((x, index)=>{
                         if(x.charAt(x.length-1) === '4'){
                             return (
-                                <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', [infoFiltering, 0])} activeOpacity={1}>
+                                <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', [infoFiltering, index])} activeOpacity={1} key={index}>
                                     <View style={styles.videoImage}><Icon name='play' size={17} style={{color: 'white'}}/></View>
                                     <Video source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image2} resizeMode='cover'/>
                                 </TouchableOpacity>
                             )
                         }else return (
-                            <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', [infoFiltering, 1])} activeOpacity={1}>
+                            <TouchableOpacity style={styles.imageBox} onPress={()=>navigation.navigate('갤러리', [infoFiltering, index])} activeOpacity={1} key={index}>
                                     <Image source={{uri: `https://momsnote.s3.ap-northeast-2.amazonaws.com/board/${x}`}} style={styles.image2}/>
                             </TouchableOpacity>
                         )

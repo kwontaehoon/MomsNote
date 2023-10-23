@@ -235,12 +235,9 @@ const Home = ({ navigation }) => {
     const Alarm = useSelector(state => { return state.alarm.data; });
     const [captureURL, setCaptureURL] = useState(undefined); // 캡쳐 uri
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
-    console.log('modal: ', modal);
     const animation = useRef(new Animated.Value(0)).current;
     const [modal2, setModal2] = useState(false); // 코치마크
-
-    const [modal3, setModal3] = useState(false); // 출산준비물 리스트 코치마크
-    console.log('modal3: ', modal3);
+    const [modal3, setModal3] = useState(Platform.OS == 'ios' ? true : false); // 출산준비물 리스트 코치마크
     const [userInfo, setUserInfo] = useState();
     const [AlarmFlag, setAlarmFlag] = useState(false);
     const [bubbleContent, setBubbleContent] = useState(); // 말풍선 내용
@@ -309,14 +306,12 @@ const Home = ({ navigation }) => {
     useEffect(() => {
         const recommendList = async () => {
             const asyncStorage = await AsyncStorage.getItem('recommendList');
-            // const materialCoarchMark = await AsyncStorage.getItem('materialCoarchMark');
-            // const coarchMark2 = await AsyncStorage.getItem('coarchMarkHome2');
-
 
             !modal3 ? !asyncStorage ? setModal(true) : setModal(false) : setModal(false);
         }
         recommendList();
     }, [modal]);
+
 
 
     const capture = async () => {

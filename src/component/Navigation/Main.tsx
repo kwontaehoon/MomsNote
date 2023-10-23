@@ -311,8 +311,44 @@ const Navigation = () => {
                     <Stack.Screen name="출산리스트" component={MaterialList} />
                     <Stack.Screen name="신청 정보" component={Apply} options={{ title: '', headerShown: false }} />
                     <Stack.Screen name="신청 정보 확인" component={ApplyConfirm} options={{ title: '', headerShown: false }} />
-                    <Stack.Screen name="주소 찾기" component={Post} options={{ title: '' }} />
-                    <Stack.Screen name="주소 찾기2" component={Post2} options={{ title: '' }} />
+                    <Stack.Screen name="주소 찾기" component={Post} options={({ navigation, route }) => ({
+                        headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <TouchableOpacity style={styles.iconBox} onPress={() => navigation.goBack()}><Back /></TouchableOpacity>
+                                    <Text style={{ fontSize: 18, fontWeight: '600', paddingLeft: 5 }}></Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                            <View></View>
+                        },
+                        headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                            height: 110
+                        },
+                    })} />
+                    <Stack.Screen name="주소 찾기2" component={Post2} options={({ navigation, route }) => ({
+                        headerLeft: () => (
+                            <View style={styles.header}>
+                                <View style={styles.headerBox}>
+                                    <TouchableOpacity style={styles.iconBox} onPress={() => navigation.goBack()}><Back /></TouchableOpacity>
+                                    <Text style={{ fontSize: 18, fontWeight: '600', paddingLeft: 5 }}></Text>
+                                </View>
+                            </View>
+                        ),
+                        headerTitle(props) {
+                            <View></View>
+                        },
+                        headerStyle: {
+                            borderWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                            height: 110
+                        },
+                    })} />
 
                     <Stack.Screen name="설정" component={Setting} options={({ navigation, route }) => ({
                         headerLeft: () => (

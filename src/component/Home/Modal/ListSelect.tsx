@@ -58,6 +58,7 @@ const Main = ({ navigation, modal, setModal, materialCoarchMarkModal }) => {
             const list = async() =>{
                 const recommendList = await AsyncStorage.getItem('recommendList');
                 console.log('recommendList: ', recommendList);
+                console.log('materialCoarchMarkModal: ', materialCoarchMarkModal);
                 setList(recommendList);
 
                 !recommendList ? !materialCoarchMarkModal ? setModal(true) : setModal(false) : setModal(false);
@@ -77,7 +78,7 @@ const Main = ({ navigation, modal, setModal, materialCoarchMarkModal }) => {
         navigation.navigate('출산 준비물');
     }
 
-    return list ? '' : (
+    return  (
         <Modal animationType="fade" transparent={true} visible={modal} statusBarTranslucent={true} hardwareAccelerated
             onRequestClose={() => {
                 setModal(false)

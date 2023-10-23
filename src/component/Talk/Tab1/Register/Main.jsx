@@ -397,6 +397,7 @@ const Register = ({ navigation, route }) => {
         data.append('subcategory', DATA2[filter.findIndex(x => x)].title);
         data.append('title', info.title);
         data.append('contents', info.contents);
+        data.append('files', null);
         route.params[0] ? data.append('boardId', route.params[0].boardId) : ''
         
         if (info.imageFile) {
@@ -411,6 +412,8 @@ const Register = ({ navigation, route }) => {
                     data.append('files', { uri: x, name: 'board.png', type: 'image/png' });
                 })
             }
+        }else{
+            data.append('files', null);
         }
 
         if (info.video) {

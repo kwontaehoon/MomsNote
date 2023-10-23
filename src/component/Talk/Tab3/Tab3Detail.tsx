@@ -259,7 +259,7 @@ const Talk1Sub = ({navigation, route}) => {
             const asyncStorage3 = await AsyncStorage.getItem('applicationFlag');
             setUserInfo(JSON.parse(asyncStorage2));
             setAsync(asyncStorage);        
-            setAsyncFlag(asyncStorage3);
+            // setAsyncFlag(asyncStorage3);
         }
         load();
     }, [isFocused]);

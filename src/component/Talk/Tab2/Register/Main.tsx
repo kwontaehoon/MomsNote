@@ -134,6 +134,7 @@ const Register = ({navigation, route}) => {
     }
 
     const submit = async() => {
+        setLoading(true);
         const token = await AsyncStorage.getItem('token');
         if(typeof(route.params) == 'object'){
             try{
@@ -164,6 +165,7 @@ const Register = ({navigation, route}) => {
                         },
                       data: data
                     });
+                    setLoading(false);
                 }catch(error){
                 }
         }
