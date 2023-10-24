@@ -284,7 +284,8 @@ const Register = ({ navigation, route }) => {
     const pickImage = async () => {
         if (info.imageFile.length === 7) {
             setModal2Content('이미지는 최대 7장 업로드 가능합니다.');
-            setModalVisible2(!modalVisible2); return;
+            setModalVisible2(!modalVisible2); 
+            return;
         }
         let arr = [];
         // No permissions request is necessary for launching the image library
@@ -417,9 +418,19 @@ const Register = ({ navigation, route }) => {
         }
 
         if (info.video) {
-            info.video.filter(x => {
-                data.append('files', { uri: x, name: 'board.mp4', type: 'video/mp4' });
-            })
+            if(typeof(route.params) == 'object'){
+                info.video.filter(x=>{
+                    if(x.includes('file:///')){
+                        data.append('files', { uri: x, name: 'board.mp4', type: 'video/mp4' });
+                    }else return;
+                })
+            }else{
+                info.video.filter(x => {
+                    data.append('files', { uri: x, name: 'board.mp4', type: 'video/mp4' });
+                })
+            }
+        }else{
+            data.append('files', null);
         }
 
         try {
@@ -628,7 +639,7 @@ const Register = ({ navigation, route }) => {
                             <View style={styles.modalContainer2}>
                                 <View style={styles.modalBox}><Text style={{ fontSize: 16, paddingTop: 10 }}>{modal2Content}</Text></View>
                                 <View style={styles.modalBox}>
-                                    <TouchableOpacity style={styles.modal} onPress={complete}><Text style={{ color: 'white', fontSize: 16 }}>확인</Text></TouchableOpacity>
+                                    <TouchableOpacity style={styles.modal} onPress={()=>setModalVisible2(false)}><Text style={{ color: 'white', fontSize: 16 }}>확인</Text></TouchableOpacity>
                                 </View>
                             </View>
                         </View>

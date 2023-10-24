@@ -87,7 +87,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
             }
     }
 
-    const dayCalculate = (date:number) => {
+    const dayCalculate = (date) => {
         
         switch(true){
           case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>

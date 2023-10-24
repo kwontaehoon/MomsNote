@@ -8,9 +8,8 @@ import Modal4 from '../..//Modal/DelareConfirm'
 import Modal6 from '../../Modal/Declare2'
 import Modal7 from '../../Modal/CommentDelete'
 
-import { Video, AVPlaybackStatus } from 'expo-av';
+import { Video } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'
-import { postBoard } from '../../../Redux/Slices/BoardSlice'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
 import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -36,7 +35,6 @@ import Download from '../../../../public/assets/svg/Download.svg'
 import { postHits } from '../../../Redux/Slices/HitsSlice'
 import { postDdayToday } from '../../../Redux/Slices/DdayTodaySlice'
 
-import { useWindowDimensions } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 
 const styles = StyleSheet.create({
@@ -412,7 +410,7 @@ const Talk1Sub = ({navigation, route}) => {
       }
 
       const ImageBox = () => {
-        const arr:any[] = [];
+        const arr = [];
         const a = (info[0].savedName.split('|')).filter(x => {
             if(x.charAt(x.length-1) === '4'){ arr.push(x); }else return x;
         });

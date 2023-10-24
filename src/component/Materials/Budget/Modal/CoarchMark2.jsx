@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
   imageBox: {
     position: 'absolute',
-    right: 0,
+    right: -20,
     top: 50,
     zIndex: 200,
   },
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   footer: {
-    height: '26%',
+    height: '22%',
   },
   footerBox: {
     padding: 15,
@@ -333,9 +333,9 @@ const Talk1Sub = ({ modal, setModal, setModal2 }) => {
             </TouchableOpacity>
           </View>}
 
-          <View style={styles.filterBox2}><Text style={{ fontWeight: '500' }}>{x.needsName}</Text></View>
-          <View style={styles.filterBox2}><Text numberOfLines={2} style={{ lineHeight: 20 }}>{x.itemBrand == null ? '-' : x.itemBrand}</Text></View>
-          <TouchableOpacity style={[styles.filterBox2, { flexDirection: 'row' }]} delayLongPress={1500} activeOpacity={1}>
+          <View style={styles.filterBox2}><Text style={{ fontWeight: '500', opacity: 0.4 }}>{x.needsName}</Text></View>
+          <View style={styles.filterBox2}><Text numberOfLines={2} style={{ lineHeight: 20, opacity: 0.4 }}>{x.itemBrand == null ? '-' : x.itemBrand}</Text></View>
+          <TouchableOpacity style={[styles.filterBox2, { flexDirection: 'row', opacity: 0.4 }]} delayLongPress={1500} activeOpacity={1}>
             <Text style={{ fontWeight: '600' }}>{x.itemPrice == null ? '0' : (x.itemPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
             <Text> 원</Text>
           </TouchableOpacity>
@@ -368,7 +368,11 @@ const Talk1Sub = ({ modal, setModal, setModal2 }) => {
         <View style={styles.modalView}>
 
           <View style={styles.imageBox4}>
-            <View style={[styles.Top, { alignItems: 'flex-start' }]}><Close fill='white' onPress={() => close()} /></View>
+            <View style={[styles.Top, { alignItems: 'flex-start' }]}>
+              <TouchableOpacity onPress={close}>
+                  <Close fill='white' />
+                </TouchableOpacity>
+            </View>
             <View style={[styles.Bottom, { paddingTop: 10, flexDirection: 'row' }]}>
               <Text style={{ color: '#FEA100', fontSize: 15, fontWeight: '700' }}>다시 보지 않기</Text>
               <Checkbox

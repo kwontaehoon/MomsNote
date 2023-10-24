@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
   }
 })
 
-
 const Talk1 = ({navigation, week}) => {
 
   const [info, setInfo] = useState([]);

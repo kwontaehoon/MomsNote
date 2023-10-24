@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
 })
 
 
-const Talk1 = ({navigation, route}:any) => {
+const Talk1 = ({navigation, route}) => {
 
   const DATA = [
     {
@@ -231,9 +231,9 @@ const Talk1 = ({navigation, route}:any) => {
     setLoading(true);
     const tab = async() => {
       dispatch(postBoardCount({subcategory: await AsyncStorage.getItem('momsTalkTab')}));
+      filteringSet();
     }
-    filteringSet();
-    dispatch(postBoardPopular());
+    
     tab();
     setLoading(false);
   }, [filter, value]);
@@ -260,6 +260,7 @@ const Talk1 = ({navigation, route}:any) => {
       setModalVisible(prevState => ({...prevState, asyncStorage: asyncStorage}));
     }
     momsTalk();
+    dispatch(postBoardPopular());
     setLoading(false);
   }, []);
 
@@ -295,7 +296,7 @@ const Talk1 = ({navigation, route}:any) => {
     dispatch(setBoardCountRefresh({subcategory: DATA[e].title}));
   }
 
-  const dayCalculate = (date:number) => {
+  const dayCalculate = (date) => {
     switch(true){
       case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
       case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>
@@ -303,9 +304,9 @@ const Talk1 = ({navigation, route}:any) => {
     }
   }
 
-  const ImageBox = ({item}:any) => {
-    const arr:string[] = [];
-    const a = (item.split('|')).filter((x:string) => { if(x.charAt(x.length-1) === '4'){ arr.push(x); }else return x;});
+  const ImageBox = ({item}) => {
+    const arr = [];
+    const a = (item.split('|')).filter((x) => { if(x.charAt(x.length-1) === '4'){ arr.push(x); }else return x;});
     const infoFiltering = [...arr, ...a];
 
     if(infoFiltering[0].charAt(infoFiltering[0].length-1) == '4'){
@@ -382,7 +383,7 @@ const Talk1 = ({navigation, route}:any) => {
   }
 
 
-  const renderItem = ({ item }:any) => (
+  const renderItem = ({ item }) => (
     <View style={{justifyContent: 'center'}}>
       <TouchableOpacity style={[styles.headerFilterBox, {backgroundColor: filter[item.id] ? '#FEA100' : 'white'}]} onPress={()=>change(item.id)}>
           <Text style={{color: filter[item.id] ? 'white' : 'black', fontWeight: '400', fontSize: 14}}>{item.title}</Text>
@@ -390,7 +391,7 @@ const Talk1 = ({navigation, route}:any) => {
     </View>
   );
 
-  const renderItem2 = ({ item }:any) => (
+  const renderItem2 = ({ item }) => (
     <TouchableOpacity style={styles.mainBox} onPress={()=>navigation.navigate('맘스토크 상세내용', {item})} activeOpacity={1}>
         { item.savedName == null ? '' : <ImageBox item={item.savedName}/>  }
         <View style={[styles.mainBoxSub, {paddingTop: 5, width: '55%', alignItems: 'flex-start'}]}>

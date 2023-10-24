@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Modal, Platform } from 'react-native'
 import Icon3 from 'react-native-vector-icons/Feather'

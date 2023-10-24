@@ -1,9 +1,5 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native'
-import axios from 'axios'
-import { useDispatch } from 'react-redux'
-import { postMaterial } from '../../../../Redux/Slices/MaterialSlice'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const styles = StyleSheet.create({
     modalContainer:{

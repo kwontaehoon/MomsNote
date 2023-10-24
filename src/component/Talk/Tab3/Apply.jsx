@@ -174,11 +174,11 @@ const Withdraw = ({navigation, route}) => {
 
     const [telCheck, setTelCheck] = useState(null);
 
+    const [experienceId, setExperienceId] = useState(route.params[1] == '신청하기' ? route.params[0].experienceId: '');
+
     const boardAppFlag = useSelector(state => { return state.boardAppFlag.data });
-    console.log('### boardAppFlag: ', boardAppFlag);
 
     const [appFlag, setAppFlag] = useState();
-    console.log('### appFlag: ', appFlag);
     const [modal, setModal] = useState(false); // 핸드폰 인증 완료
     const [modal2, setModal2] = useState(false); // 핸드폰 인증 실패
     const [modal3, setModal3] = useState(false); // 핸드폰 인증 이미 완료
@@ -208,7 +208,7 @@ const Withdraw = ({navigation, route}) => {
             youtube: '',
         }
     );
-    console.log('### info: ', info);
+
     const dispatch = useDispatch();
     const [minutes, setMinutes] = useState(parseInt(3));
     const [seconds, setSeconds] = useState(parseInt(0));
@@ -335,7 +335,7 @@ const Withdraw = ({navigation, route}) => {
                     'Content-Type': 'application/json'
                 },
                 data: {
-                    ...info, experienceId: Number(route.params.experienceId), itemName: selectItemModal.itemName, itemAmount: selectItemModal.selectCount
+                    ...info, experienceId: experienceId, itemName: selectItemModal.itemName, itemAmount: selectItemModal.selectCount
 
                 }
             });

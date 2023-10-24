@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { postGuideCount } from '../../../Redux/Slices/GuideCountSlice'
 import { postGuide, setGuideRefresh } from '../../../Redux/Slices/GuideSlice'

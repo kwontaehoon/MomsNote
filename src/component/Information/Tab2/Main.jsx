@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 })
 
 
-const Talk1 = ({ navigation }: any) => {
+const Talk1 = ({ navigation }) => {
 
   const DATA2 = [
     {

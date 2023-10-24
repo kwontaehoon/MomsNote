@@ -237,7 +237,7 @@ const Home = ({ navigation }) => {
     const [modal, setModal] = useState(false); // 모달 원하는 출산준비물 리스트
     const animation = useRef(new Animated.Value(0)).current;
     const [modal2, setModal2] = useState(false); // 코치마크
-    const [modal3, setModal3] = useState(Platform.OS == 'ios' ? true : false); // 출산준비물 리스트 코치마크
+    const [modal3, setModal3] = useState(Platform.OS == 'ios' ? false : false); // 출산준비물 리스트 코치마크
     const [userInfo, setUserInfo] = useState();
     const [AlarmFlag, setAlarmFlag] = useState(false);
     const [bubbleContent, setBubbleContent] = useState(); // 말풍선 내용
@@ -247,6 +247,15 @@ const Home = ({ navigation }) => {
         dispatch(postBoardPopular());
         dispatch(postMaterialPopularSlice());
         dispatch(postInfoPopularSlice());
+
+        const materialCoarchMark = async() => {
+
+            if(Platform.OS == 'ios'){
+                const materialCoarchMark = await AsyncStorage.getItem('materialCoarchMark');
+                materialCoarchMark ? setModal3(false) : setModal3(true);
+            }
+        }
+        materialCoarchMark();
     }, []);
 
     useEffect(() => {
@@ -513,7 +522,7 @@ const Home = ({ navigation }) => {
 
                 : <SafeAreaView style={[styles.container, { height: Platform.OS == 'ios' ? null : '91%', flex: Platform.OS === 'ios' ? 1 : null }]}>
 
-                    <ListSelect navigation={navigation} modal={modal} setModal={setModal} materialCoarchMarkModal={modal3} setMaterialCoarchMarkModal={setModal3} />
+                    <ListSelect navigation={navigation} modal={modal} setModal={setModal} materialCoarchMarkModal={modal3} />
                     <CoarchMark2 modal={modal2} setModal={setModal2} modalFlag={modal3} />
                     <MaterialCoarchMark modal={modal3} setModal={setModal3} recommendListModal={modal} setRecommendListModal={setModal} />
 

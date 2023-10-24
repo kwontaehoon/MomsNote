@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { postComment } from '../../../Redux/Slices/CommentSlice'
 import { postCommentFlag } from '../../../Redux/Slices/CommentFlag'
 import moment from 'moment'
-
 import Like from '../../../../public/assets/svg/Like.svg'
 import Like2 from '../../../../public/assets/svg/Heart-1.svg'
 import More from '../../../../public/assets/svg/More.svg'
@@ -22,6 +21,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     profileBox:{
+        borderWidth: 1,
         width: 28,
         height: 28,
         borderRadius: 14,
@@ -40,11 +40,14 @@ const styles = StyleSheet.create({
 })
 const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData}) => {
 
+
     const commentLike = useSelector(state => { return state.commentFlag.data; });
+
     const dispatch = useDispatch();
 
     const commentplus = async(id) => { // 댓글 추천
         const token = await AsyncStorage.getItem('token');
+
         try{
             const response = await axios({ 
                   method: 'post',
@@ -59,33 +62,13 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                     type: 'plus'
                   }
                 });
-            }catch(error){}
+            }catch(error){
+            }
             dispatch(postComment(commentData));
             dispatch(postCommentFlag({boardId: info[0].boardId}));
     }
 
-    const commentminus = async(id) => { // 댓글 추천 취소
-        const token = await AsyncStorage.getItem('token');
-        try{
-            const response = await axios({
-                  method: 'post',
-                  url: 'https://momsnote.net/api/comments/recommend',
-                  headers: { 
-                    'Authorization': `Bearer ${token}`, 
-                    'Content-Type': 'application/json'
-                  },
-                  data: {
-                    boardId: info[0].boardId,
-                    commentsId: id,
-                    type: 'minus'
-                  }
-                });
-                dispatch(postComment(commentData));
-                dispatch(postCommentFlag({boardId: info[0].boardId}));
-            }catch(error){}
-    }
-
-    const dayCalculate = (date:number) => {
+    const dayCalculate = (date) => {
         
         switch(true){
           case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
@@ -96,11 +79,8 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
 
     const List = () => {
         let arr = [];
-        let refFilter = [];
         info.filter((x, index) => {
-            refFilter.push(x.ref);
-            const count = refFilter.filter(y => y == x.ref).length;
-            if(x.step === 0 && (count == 1 && !x.deleteFlag)){
+            if(x.step === 0){
                 arr.push(
                     
                     <View key={index}>
@@ -113,11 +93,11 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                             </View>
                         </View>
                         
-                        { x.deleteFlag == 1 ? <View style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>
+                        { x.deleteFlag ? <View style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>
                             <Text>삭제된 댓글입니다.</Text></View> : <View>
                         <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>{x.contents}</Text>
                         <View style={styles.likeBox}>
-                            {commentLike.includes(x.commentsId) ? <Like2 width={20} height={20} fill='#FE9000' onPress={()=>commentminus(x.commentsId)}/>
+                            {commentLike.includes(x.commentsId) ? <Like2 width={20} height={20} fill='#FE9000'/>
                             :
                             <Like width={20} height={20} fill='#9E9E9E' onPress={()=>commentplus(x.commentsId)}/>}
                             {commentLike.includes(x.commentsId) ? <Text style={{color: '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 {x.recommend}</Text>
@@ -128,8 +108,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                                         setInsert((prevState) => ({...prevState,
                                         boardId: x.boardId,    
                                         ref: x.ref,
-                                        level: 1,
-                                        tag: x.nickname})),
+                                        level: 1})),
                                         setCommentsId(x.nickname);}
                                 }>댓글달기
                             </Text> 
@@ -142,7 +121,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
         })
         return arr;
     }
-
+    
     const List2 = (e) => {
         let arr = [];
         info.filter((x, index)=>{
@@ -156,15 +135,11 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
                         <Text style={{fontSize: 13, fontWeight: '500', color: '#BDBDBD'}}>{dayCalculate(x.commentsDate)}</Text>
                     </View>
                   
-                  { x.deleteFlag == 1 ? <View style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>
-                            <Text>삭제된 댓글입니다.</Text></View>
-                    : <View>
-                        <View style={{flexDirection: 'row', paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>
-                            <Text style={{fontWeight: '500'}}>[{x.tag}] </Text>
-                            <Text>{x.contents}</Text>
-                        </View>
-                        <View style={styles.likeBox}>
-                        {commentLike.includes(x.commentsId) ? <Like2 width={20} height={20} fill='#FE9000' onPress={()=>commentminus(x.commentsId)}/>
+                  { x.deleteFlag ? <View style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>
+                            <Text>삭제된 댓글입니다.</Text></View> : <View>
+                    <Text style={{paddingLeft: 45, fontSize: 15, marginBottom: 10, marginRight: 25, lineHeight: 20}}>{x.contents}</Text>
+                    <View style={styles.likeBox}>
+                        {commentLike.includes(x.commentsId) ? <Like2 width={20} height={20} fill='#FE9000'/>
                         :
                         <Like width={20} height={20} fill='#9E9E9E' onPress={()=>commentplus(x.commentsId)}/>}
                         {commentLike.includes(x.commentsId) ? <Text style={{color: '#FE9000', fontSize: 13, paddingRight: 10}}> 추천 {x.recommend}</Text>
@@ -184,7 +159,7 @@ const Comment = ({info, setCommentsId, setInsert, modal, setModal, commentData})
         <List />
         <View style={styles.commentRes}></View>
     </>
-  ) : ''
+  ): <View><Text>gg</Text></View>
 }
 
 export default Comment

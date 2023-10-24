@@ -183,17 +183,19 @@ const Main = ({navigation}) => {
         let arr = [...isEnabled];
 
         if(e == 0 && isEnabled[0]){
-            setModal2({...modal2, open: !modal2.open});
+            setModal2({open: !modal2.open});
             return;
         }else if(e === 0 && !isEnabled[0]){
             arr[0] = true;
+            setIsEnabled({...isEnabled, content: false});
             marketing(true);
         }
 
         if(e == 1 && isEnabled[1]){
             setModalVisible(!modalVisible);
-            await AsyncStorage.removeItem('activeAlarm');  
-        }else if(e === 1 && isEnabled[1] == false){
+            await AsyncStorage.removeItem('activeAlarm'); 
+            await AsyncStorage.removeItem('alarmSetting'); 
+        }else if(e === 1 && !isEnabled[1]){
             arr[e] = !arr[e];
             await AsyncStorage.setItem('activeAlarm', '1');
         }
@@ -201,7 +203,7 @@ const Main = ({navigation}) => {
         if(e === 2 && isEnabled[2]){
             await AsyncStorage.removeItem('alarmSetting');
             arr[2] = false;
-        }else if(e === 2 && isEnabled[2] == false){
+        }else if(e === 2 && !isEnabled[2]){
             await AsyncStorage.setItem('alarmSetting', '1');
             arr[2] = true;
         }

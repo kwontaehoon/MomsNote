@@ -273,7 +273,7 @@ const Talk1Sub = ({navigation, route}) => {
         if(boardInfo !== '' && boardInfo !== '0'){
             setInfo(boardInfo.filter(x => x.boardId == route.params.item.boardId));
         }
-    }, [boardInfo, isFocused]);
+    }, [boardInfo]);
 
     useEffect(()=>{ // 게시물 추천 Flag
         const likeInfo = async() => {
@@ -358,7 +358,7 @@ const Talk1Sub = ({navigation, route}) => {
             }
     }
 
-    const dayCalculate = (date:number) => {
+    const dayCalculate = (date) => {
         switch(true){
           case moment().diff(moment(date), 'minute') < 60: return <Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'minute')}분 전</Text>
           case moment().diff(moment(date), 'hour') < 24: return<Text style={{color: '#9E9E9E', fontSize: 12}}>{moment().diff(moment(date), 'hour')}시간 전</Text>

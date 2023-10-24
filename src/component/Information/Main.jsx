@@ -5,7 +5,7 @@ import Tab2 from './Tab2/Main'
 import Tab3 from './Tab3/Main'
 import Tab4 from './Tab4/Main'
 import { useIsFocused } from '@react-navigation/native'
-import { postEvent, setEventRefresh } from '../../Redux/Slices/EventSlice'
+import { setEventRefresh } from '../../Redux/Slices/EventSlice'
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
 

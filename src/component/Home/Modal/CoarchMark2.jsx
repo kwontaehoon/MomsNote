@@ -11,7 +11,6 @@ import Campaign from '../../../../public/assets/svg/campaign.svg'
 import Baby from '../../../../public/assets/svg/Baby.svg'
 import Close from '../.././../../public/assets/svg/Close.svg'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
 import Checkbox from 'expo-checkbox';
 
 const styles = StyleSheet.create({
@@ -206,7 +205,6 @@ const Main = ({modal, setModal}) => {
     useEffect(()=>{
         const list = async() =>{
             const coarchMark2 = await AsyncStorage.getItem('coarchMarkHome2');
-            console.log('coarchMark2: ', coarchMark2);
             setList(coarchMark2);
         }
         list();

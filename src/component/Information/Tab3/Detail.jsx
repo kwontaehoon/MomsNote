@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Share } from 'react-native'
 import { getStatusBarHeight } from "react-native-status-bar-height"
 import { Video } from 'expo-av';

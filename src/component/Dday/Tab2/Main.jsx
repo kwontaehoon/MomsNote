@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 })
 
 
-const Talk1 = ({navigation, week}: any) => {
+const Talk1 = ({navigation, week}) => {
 
   const [info, setInfo] = useState([]);
   const [refresh, setRefresh] = useState(false); // 추천, 댓글 등록, 댓글 삭제 누르면 정보를 다시받아야해서 새로고침 state

@@ -235,7 +235,7 @@ const Talk1Sub = ({navigation, route}) => {
             count: 1,
             page: 1,
         }));
-        dispatch(postBoardAppFlag({ experienceId: info?.experienceId }));
+        dispatch(postBoardAppFlag({ experienceId: info?.experienceId}));
         dispatch(postWinList({ experienceId: info.experienceId }));
         dispatch(postMyExp());
 
@@ -295,7 +295,7 @@ const Talk1Sub = ({navigation, route}) => {
         })
     }
 
-    const renderItem = ({ item }:any) => (
+    const renderItem = ({ item }) => (
         
         <View>
             <Swiper style={styles.header2} showsButtons={false} dot={<View style={styles.dot}/>} activeDot={<View style={styles.dotActive}/>}>
@@ -349,7 +349,7 @@ const Talk1Sub = ({navigation, route}) => {
         )
     }
 
-    const List = ({item}:any) => {
+    const List = ({item}) => {
         switch(filter){
             case false : return (
                 <View style={styles.main3Box2}>
@@ -508,7 +508,7 @@ const Talk1Sub = ({navigation, route}) => {
         <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
     </View> :
     <TouchableOpacity style={styles.footerBox2} onPress={()=>
-       {!async ?  navigation.navigate('신청 정보', route.params) : setModal4(!modal4); }}>
+       {!async ?  navigation.navigate('신청 정보', [route.params, '신청하기']) : setModal4(!modal4); }}>
        <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>신청하기</Text>
     </TouchableOpacity>
    }

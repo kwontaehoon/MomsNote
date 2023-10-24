@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
 })
 
 
-const Talk1 = ({navigation}: any) => {
+const Talk1 = ({navigation}) => {
 
     const DATA = [
         {
@@ -253,7 +253,6 @@ const Talk1 = ({navigation}: any) => {
     <View style={[styles.container, {height: '90.5%'}]}>
         {show && (
           <DateTimePicker
-            testID="dateTimePicker"
             value={date}
             mode={mode}
             display={Platform.OS == 'ios' ? 'inline' : ''}
