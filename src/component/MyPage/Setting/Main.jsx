@@ -325,7 +325,7 @@ const Main = ({navigation}) => {
                 </TouchableOpacity>
                 <View style={styles.mainBox}>
                     <View style={styles.mainBoxSub}><Text style={styles.text}>버전정보</Text></View>
-                    <View style={[styles.mainBoxSub, {alignItems: 'flex-end'}]}><Text style={{fontSize: 13, color: '#9E9E9E'}}>현재 1.0.7 / 최신 1.0.7</Text></View>
+                    <View style={[styles.mainBoxSub, {alignItems: 'flex-end'}]}><Text style={{fontSize: 13, color: '#9E9E9E'}}>현재 1.0.9 / 최신 1.0.9</Text></View>
                 </View>
                 <View style={styles.mainBox}>
                     <View style={styles.mainBoxSub}><Text style={styles.text} onPress={()=>setModalVisible2(!modalVisible2)}>로그아웃</Text></View>
