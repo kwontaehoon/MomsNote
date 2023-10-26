@@ -2,7 +2,7 @@
   "expo": {
     "name": "맘스노트",
     "slug": "Project1Type",
-    "version": "1.0.9",
+    "version": "1.0.8",
     "orientation": "portrait",
     "scheme": "com.momsnote2",
     "icon": "./public/assets/image/1024icon.png",
@@ -28,7 +28,6 @@
     },
     
     "android": {
-      "apiLevel": 33,
       "config": {
         "targetSdk": 33
       },
@@ -37,7 +36,7 @@
         "backgroundColor": "#FAA61A"
       },
       "package": "com.momsnote2",
-      "versionCode": 9,
+      "versionCode": 8,
       "googleServicesFile": "./google-services.json"
       
     },
